@@ -1,0 +1,277 @@
+#include <avr/pgmspace.h>
+#include <avr/eeprom.h>
+#include "Hardware.h"
+#include "AnalogInputs.h"
+#include "memory.h"
+#include "LcdPrint.h"
+
+
+AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS] EEMEM;
+
+
+void AnalogInputs::restoreDefault()
+{
+	CalibrationPoint p0,p1;
+	FOR_ALL_PHY_INPUTS(name) {
+		setCalibrationSize(name, 2);
+		p0 = pgm_read<CalibrationPoint>(&inputsP_[name].p0);
+		p1 = pgm_read<CalibrationPoint>(&inputsP_[name].p1);
+		setCalibrationPoint(name, 0, p0);
+		setCalibrationPoint(name, 1, p1);
+	}
+}
+
+uint8_t AnalogInputs::getCalibrationSize(Name name)
+{
+	if(name >= PHYSICAL_INPUTS) return 0;
+	return eeprom_read_byte(&calibration[name].size);
+}
+void AnalogInputs::getCalibrationPoint(CalibrationPoint &x, Name name, uint8_t i)
+{
+	if(name >= PHYSICAL_INPUTS || i >= MAX_CALIBRATION_POINTS) {
+		x.x = x.y = 1;
+		return;
+	}
+	eeprom_read<CalibrationPoint>(x,&calibration[name].p[i]);
+}
+void AnalogInputs::setCalibrationSize(Name name, uint8_t s)
+{
+	if(name >= PHYSICAL_INPUTS) return;
+	return eeprom_write_byte(&calibration[name].size, s);
+}
+void AnalogInputs::setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &x)
+{
+	if(name >= PHYSICAL_INPUTS || i >= MAX_CALIBRATION_POINTS) return;
+	eeprom_write<CalibrationPoint>(&calibration[name].p[i], x);
+}
+
+
+void AnalogInputs::measureValue(Name name)
+{
+	if(name >=  PHYSICAL_INPUTS)
+		return;
+	MeasureFunction f = pgm_read<MeasureFunction>(&(inputsP_[name].f));
+	measured_[name] = f();
+}
+
+void AnalogInputs::doFullMeasurement()
+{
+	clearAvr();
+	for(uint16_t i=0; i < AVR_MAX_COUNT; i++)
+		doMeasurement();
+}
+
+void AnalogInputs::clearAvr()
+{
+	avrCount_ = 0;
+	currentInput_ = Name(0);
+	FOR_ALL_PHY_INPUTS(name) {
+		avrSum_[name] = 0;
+	}
+}
+
+int AnalogInputs::getConnectedBalancePorts() const
+{
+	AnalogInputs::ValueType oneVolt = 1000;
+	for(int i=0; i < 6; i++){
+		if(real_[Name(Vb0+i)] < oneVolt) return i;
+	}
+	return 6;
+}
+
+
+void AnalogInputs::doVirtualCalculations()
+{
+	int ports = getConnectedBalancePorts();
+	AnalogInputs::ValueType oneVolt = 1000;
+	AnalogInputs::ValueType balancer = 0;
+	AnalogInputs::ValueType out = real_[Vout];
+
+	for(int i=0; i < ports; i++) {
+		balancer += real_[Name(Vb0+i)];
+	}
+
+	setReal(Vbalacer, balancer);
+	if(balancer == 0 || (out > balancer && out - balancer > oneVolt)) {
+		//balancer not connected or big error in calibration
+		setReal(VoutBalancer, out);
+		setReal(VobInfo, Vout);
+		setReal(VbalanceInfo, 0);
+	} else {
+		setReal(VoutBalancer, balancer);
+		setReal(VobInfo, Vbalacer);
+		setReal(VbalanceInfo, ports);
+	}
+}
+
+void AnalogInputs::doCalculations()
+{
+	calculationTime_ = timer.getMiliseconds();
+	FOR_ALL_PHY_INPUTS(name) {
+		x_[name] = avrSum_[name] / avrCount_;
+		ValueType real = calibrateValue(name, x_[name]);
+		setReal(name, real);
+	}
+	doVirtualCalculations();
+	clearAvr();
+}
+
+void AnalogInputs::setReal(Name name, ValueType real)
+{
+	if(absDiff(real_[name], real) > STABLE_VALUE_ERROR)
+		stableCount_[name] = 0;
+	else
+		stableCount_[name]++;
+
+	real_[name] = real;
+}
+void AnalogInputs::resetStable()
+{
+	FOR_ALL_INPUTS(name) {
+		stableCount_[name] = 0;
+	}
+}
+
+
+
+
+void AnalogInputs::doMeasurement(uint32_t count)
+{
+	while (count) {
+		count--;
+		measureValue(currentInput_);
+		avrSum_[currentInput_] += measured_[currentInput_];
+		currentInput_ = Name(currentInput_ + 1);
+		if(currentInput_ == VirtualInputs) {
+			currentInput_ = Name(0);
+			avrCount_++;
+			if(avrCount_ == AVR_MAX_COUNT) {
+				doCalculations();
+			}
+		}
+	}
+}
+
+AnalogInputs::ValueType AnalogInputs::getValue(Name name) const
+{
+	if(name >=  PHYSICAL_INPUTS)
+		return 0;
+	return x_[name];
+}
+AnalogInputs::ValueType AnalogInputs::getRealValue(Name name) const
+{
+	return real_[name];
+}
+AnalogInputs::ValueType AnalogInputs::getMeasuredValue(Name name) const
+{
+	if(name >=  PHYSICAL_INPUTS)
+		return 0;
+	return measured_[name];
+}
+
+
+AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType v) const
+{
+	//TODO: do it with more points
+	CalibrationPoint p;
+	getCalibrationPoint(p, name, 1);
+	uint32_t y = v;
+	y*=p.y;
+	y/=p.x;
+	return y;
+}
+AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType v) const
+{
+	//TODO: do it with more points
+	CalibrationPoint p;
+	getCalibrationPoint(p, name, 1);
+	uint32_t y = v;
+	y*=p.x;
+	y/=p.y;
+	return y;
+}
+
+
+
+
+AnalogInputs::AnalogInputs(const DefaultValues * inputs_P): inputsP_(inputs_P), avrCount_(0)
+{
+	calculationTime_ = 0;
+	FOR_ALL_PHY_INPUTS(name) {
+		measured_[name] = 0;
+		avrSum_[name] = 0;
+		x_[name] = 0;
+		real_[name] = 0;
+		stableCount_[name] = 0;
+	}
+	clearAvr();
+}
+
+AnalogInputs::Type AnalogInputs::getType(Name name)
+{
+	switch(name){
+	case VirtualInputs:
+		return Unknown;
+	case Ismps:
+	case IsmpsValue:
+	case Idischarge:
+	case IdischargeValue:
+		return Current;
+	case Tintern:
+	case Textern:
+		return Temperature;
+	default:
+		return Voltage;
+	}
+}
+
+void AnalogInputs::printRealValue(Name name, uint8_t dig) const
+{
+	ValueType x = analogInputs.getRealValue(name);
+	Type t = getType(name);
+	print(x, t, dig);
+}
+void AnalogInputs::printMeasuredValue(Name name, uint8_t dig) const
+{
+	ValueType x = calibrateValue(name, analogInputs.getMeasuredValue(name));
+	Type t = getType(name);
+	print(x, t, dig);
+}
+
+void AnalogInputs::print(ValueType x, Type type, uint8_t dig)
+{
+	if(dig == 0)
+		return;
+	dig--;
+	bool dot = true;
+	char unit = 'U';
+	switch (type) {
+	case Current:
+		dot = false;
+		unit ='A';
+		break;
+	case Voltage:
+		unit ='V';
+		break;
+	case Temperature:
+		unit ='C';
+		x*=10;
+		break;
+	case Resistance:
+		dot = false;
+		//TODO: ??
+		unit ='W';
+		break;
+	case Unknown:
+		break;
+	case Charge:
+		dot = false;
+		dig--;
+		unit ='h';
+		break;
+	}
+	lcdPrintEValue(x, (int8_t) dig, dot);
+	lcd.print(unit);
+
+	if(type == Charge) 	lcd.print('A');
+}
