@@ -1,7 +1,7 @@
 include(${CMAKE_SOURCE_DIR}/arduino/arduino.cmake)
 
 
-set(HEADERS
+set(HEADER_FILES
         Arduino.h
         binary.h
         Client.h
@@ -22,9 +22,7 @@ set(HEADERS
         WString.h
 )
 
-
-
-set(SOURCE_SMALL
+set(SOURCE_FILES
         main.cpp
         new.cpp
         WString.cpp
@@ -32,18 +30,8 @@ set(SOURCE_SMALL
         wiring_analog.c
         wiring.c
         wiring_digital.c
-)
 
 
-
-add_library (arduino_small
-        ${HEADERS}
-        ${SOURCE_SMALL}
-)
-
-add_library (arduino
-        ${HEADERS}
-        ${SOURCE_SMALL}
         CDC.cpp
         HardwareSerial.cpp
         HID.cpp
@@ -56,4 +44,9 @@ add_library (arduino
         WInterrupts.c
         wiring_pulse.c
         wiring_shift.c
+)
+
+add_library (arduino
+        ${HEADER_FILES}
+        ${SOURCE_FILES}
 )

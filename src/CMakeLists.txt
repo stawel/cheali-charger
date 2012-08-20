@@ -1,4 +1,4 @@
-set(SOURCE
+set(SOURCE_FILES
         AnalogInputs.cpp
         AnalogInputs.h
         Balancer.cpp
@@ -55,29 +55,28 @@ include(${CMAKE_SOURCE_DIR}/arduino/arduino.cmake)
 
 include_directories(${CMAKE_SOURCE_DIR}/arduino/cores/arduino ${CMAKE_SOURCE_DIR}/arduino/variants/atmega32)
 
-link_libraries(arduino_small)
+link_libraries(arduino)
 link_libraries(m)
 
-add_executable(cheali-charger ${SOURCE})
+add_executable(cheali-charger ${SOURCE_FILES})
 
 
-ADD_CUSTOM_COMMAND(
+add_custom_command(
     TARGET cheali-charger
     POST_BUILD
     COMMAND avr-objcopy -R .eeprom -O ihex $<TARGET_FILE:cheali-charger> $<TARGET_FILE:cheali-charger>.hex)
 
-ADD_CUSTOM_COMMAND(
+add_custom_command(
     TARGET cheali-charger
     POST_BUILD
     COMMAND avr-objcopy -R .eeprom -O binary $<TARGET_FILE:cheali-charger> $<TARGET_FILE:cheali-charger>.bin)
 
-ADD_CUSTOM_COMMAND(
+add_custom_command(
     TARGET cheali-charger
     POST_BUILD
     COMMAND avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex $<TARGET_FILE:cheali-charger> $<TARGET_FILE:cheali-charger>.eep)
 
 
-ADD_CUSTOM_COMMAND(
-    TARGET cheali-charger
-    POST_BUILD
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/avr-size.sh $<TARGET_FILE:cheali-charger> $<TARGET_FILE:cheali-charger>.size )
+add_custom_target(cheali-charger.size ALL
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/avr-size.sh $<TARGET_FILE:cheali-charger> $<TARGET_FILE:cheali-charger>.size 
+    DEPENDS cheali-charger)
