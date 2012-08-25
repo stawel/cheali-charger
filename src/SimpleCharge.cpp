@@ -7,8 +7,8 @@
 
 void SimpleCharge::powerOn()
 {
-	smps.setRealValue(ProgramData::currentProgramData.I);
 	smps.powerOn();
+	smps.setRealValue(ProgramData::currentProgramData.I);
 }
 
 void SimpleCharge::powerOff()

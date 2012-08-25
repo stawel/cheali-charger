@@ -12,6 +12,7 @@ void TheveninCharge::powerOff()
 
 void TheveninCharge::powerOn()
 {
+	smps.powerOn();
 	analogInputs.resetStable();
 	t_.init(smps.getVout());
 
@@ -24,7 +25,6 @@ void TheveninCharge::powerOn()
 	smallestSmpsValue_ = smps.getValue();
 
 	balancer.powerOn();
-	smps.powerOn();
 }
 
 

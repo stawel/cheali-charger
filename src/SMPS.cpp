@@ -66,6 +66,14 @@ void SMPS::powerOff(STATE reason)
 	state_ = reason;
 	setError(PSTR("charging"), PSTR("complete !!"));
 }
+
+void SMPS::doInterrupt()
+{
+       if(isPowerOn()) {
+               charge_+=getIout();
+       }
+}
+
 uint32_t SMPS::getOnTimeSec() const
 {
 	return (timer.getMiliseconds() - startTime_ ) / 1000;

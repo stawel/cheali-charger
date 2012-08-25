@@ -5,6 +5,8 @@
 
 static void callback() {
 	timer.doInterrupt();
+	smps.doInterrupt();
+
 }
 
 

@@ -161,7 +161,6 @@ public:
 	{
 		value = 0;
 		dispVal = 0;
-		smps.setValue(value);
 		smps.powerOn();
 		analogInputs.doFullMeasurement();
 		uint8_t key;

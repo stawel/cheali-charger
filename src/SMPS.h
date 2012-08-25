@@ -29,7 +29,8 @@ public:
 
 	void powerOn();
 	void powerOff(STATE reason = CHARGING_COMPLETE);
-	bool isEnabled() const { return state_ == CHARGING; }
+
+	void doInterrupt();
 
 	void setError(const char * error1, const char * error2);
 	const char * getError1() { return error1_; }

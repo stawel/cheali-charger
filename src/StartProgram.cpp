@@ -49,16 +49,19 @@ void charge() {
 
 	uint8_t key;
 	bool run = true;
+	ChargingStrategy::statusType status = ChargingStrategy::RUNNING;
 	getChargeStrategy().powerOn();
 	lcd.clear();
 	uint8_t screen = 0, screen_limit = sizeOfArray(chargeScreens);
 	do {
 		screens.display(chargeScreens[screen]);
 		key = selectIndexWithKeyboard(screen, screen_limit);
-		ChargingStrategy::statusType  status = getChargeStrategy().doStrategy();
-		if(status == ChargingStrategy::COMPLETE && run) {
-			chargingComplete();
-			run = false;
+		if(run) {
+			status = getChargeStrategy().doStrategy();
+			if(status != ChargingStrategy::RUNNING) {
+				chargingComplete();
+				run = false;
+			}
 		}
 	} while(key != BUTTON_STOP);
 
