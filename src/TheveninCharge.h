@@ -10,8 +10,8 @@ public:
 	double smpsVcorretion_;
 	uint16_t smallestSmpsValue_;
 
-	double minICharge_;
-	bool Imax_, Imin_;
+	bool Imax_;
+	bool Ifalling_;
 
 	TheveninCharge(){}
 	virtual void powerOn();
@@ -20,6 +20,7 @@ public:
 	void setI(double i);
 	bool isSmallSmpsValue();
 	void correctSmpsValue();
+	bool isMaxVout() const;
 //	bool isBalancer() const;
 };
 

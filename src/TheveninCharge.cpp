@@ -20,9 +20,11 @@ void TheveninCharge::powerOn()
 	smpsVcorretion_ = analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue,Amps10);
 	smpsVcorretion_ /= Amps10;
 
-	minICharge_ = ProgramData::currentProgramData.I/10;
-	smps.setRealValue(minICharge_);
+	AnalogInputs::ValueType minICharge = ProgramData::currentProgramData.I/10;
+	smps.setRealValue(minICharge);
 	smallestSmpsValue_ = smps.getValue();
+
+	Ifalling_ = false;
 
 	balancer.powerOn();
 }
@@ -31,24 +33,33 @@ void TheveninCharge::powerOn()
 ChargingStrategy::statusType TheveninCharge::doStrategy()
 {
 	bool stable = isStable();
+	double i;
+	bool ismaxVout;
 	screens.Rth_ = t_.Rth_*1000000;
 	screens.Vth_ = t_.Vth_;
 
 	if(stable) {
-		AnalogInputs::ValueType Vc = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
+		//test for maximum output voltage reached
+		ismaxVout = isMaxVout();
+		if(ismaxVout) {
+			Ifalling_ = true;
+		}
 
-		if(smps.getIout() <= minICharge_ && analogInputs.getStableCount(smps.Vm_) > 10 ) {
-			if(Vc <= smps.getVout() || balancer.isCharged()) {
+		//test for charge complete
+		if(isSmallSmpsValue()
+			&& analogInputs.getStableCount(smps.Vm_) > 10
+			&& ismaxVout) {
 				smps.powerOff(SMPS::CHARGING_COMPLETE);
 				return COMPLETE;
 			}
-		}
 
+		//calculate new  output current "i"
 		t_.calculateRthVth(smps.getVout(),smps.getIout());
 		balancer.calculateRthVth(smps.getIout());
 
 		correctSmpsValue();
-		double i;
+
+		AnalogInputs::ValueType Vc = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
 		i = min(t_.calculateI(Vc), balancer.calculateI());
 
 		setI(i);
@@ -80,18 +91,26 @@ void TheveninCharge::setI(double i)
 		value = smallestSmpsValue_;
 	}
 
-	if(smps.getValue() != value) {
+	if((smps.getValue() != value && !Ifalling_) ||
+			smps.getValue() > value) {
+
 		t_.storeLast(smps.getVout(), smps.getIout());
+		balancer.storeLast(smps.getIout());
+
 		analogInputs.resetStable();
 		smps.setValue(value);
-
-		balancer.storeLast(smps.getIout());
 	}
 }
 
 bool TheveninCharge::isSmallSmpsValue()
 {
 	return smps.getValue() <= smallestSmpsValue_;
+}
+
+bool TheveninCharge::isMaxVout() const
+{
+	AnalogInputs::ValueType Vc = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
+	return Vc <= smps.getVout() || balancer.isMaxVout();
 }
 
 /*bool TheveninCharge::isBalancer() const

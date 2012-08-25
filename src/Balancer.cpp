@@ -206,7 +206,7 @@ double Balancer::calculateI() const
 	return i;
 }
 
-bool Balancer::isCharged() const
+bool Balancer::isMaxVout() const
 {
 	for(uint8_t c = 0; c < cells_; c++) {
 		if(getV(c) >= ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VCharge))

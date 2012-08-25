@@ -40,7 +40,7 @@ public:
 	uint8_t getMin() const;
 	static AnalogInputs::ValueType getV(uint8_t cell);
 	bool isPowerOn() const;
-	bool isCharged() const;
+	bool isMaxVout() const;
 	bool isStable() const;
 
 	//Thevenin methods
