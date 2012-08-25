@@ -3,8 +3,9 @@
 
 #include "Hardware.h"
 #include "Thevenin.h"
+#include "ChargingStrategy.h"
 
-class Balancer {
+class Balancer : public ChargingStrategy {
 public:
 	//TODO: "error" should be changeable
 	const static AnalogInputs::ValueType error = 3;
@@ -26,13 +27,12 @@ public:
 
 
 	Balancer();
-	void powerOn();
-	void powerOff();
+	virtual void powerOn();
+	virtual void powerOff();
+	virtual statusType doStrategy();
 	void startBalacing();
 	void trySaveVon();
 	uint32_t balanceTime() const;
-
-	void doStrategy();
 
 	uint16_t calculateBalance();
 	void setBalance(uint16_t v);

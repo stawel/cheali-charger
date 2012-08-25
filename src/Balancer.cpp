@@ -147,10 +147,10 @@ uint32_t Balancer::balanceTime() const
 }
 
 
-void Balancer::doStrategy()
+ChargingStrategy::statusType Balancer::doStrategy()
 {
 	if(!on_)
-		return;
+		return COMPLETE;
 	if(isStable()) {
 		if(balance_ == 0) {
 			startBalacing();
@@ -162,6 +162,7 @@ void Balancer::doStrategy()
 			}
 		}
 	}
+	return RUNNING;
 }
 
 bool Balancer::isPowerOn() const

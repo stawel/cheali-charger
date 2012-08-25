@@ -26,10 +26,11 @@ void buzzerOff(){
 
 SimpleCharge simple;
 TheveninCharge thevenin;
-ChargingStrategy &getChargeStrategy()
-{
-	return thevenin;
-}
+Screen::ScreenType theveninScreens[] =
+{ Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
+  Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
+Screen::ScreenType balanceScreens[] =
+{ Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5/*, Screen::ScreenTemperature */};
 
 
 void chargingComplete()
@@ -42,22 +43,19 @@ void chargingComplete()
 }
 
 
-void charge() {
-	Screen::ScreenType chargeScreens[] =
-	{ Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
-	  Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
-
+void charge(ChargingStrategy &strategy, Screen::ScreenType chargeScreens[], uint8_t screen_limit)
+{
 	uint8_t key;
 	bool run = true;
 	ChargingStrategy::statusType status = ChargingStrategy::RUNNING;
-	getChargeStrategy().powerOn();
+	strategy.powerOn();
 	lcd.clear();
-	uint8_t screen = 0, screen_limit = sizeOfArray(chargeScreens);
+	uint8_t screen = 0;
 	do {
 		screens.display(chargeScreens[screen]);
 		key = selectIndexWithKeyboard(screen, screen_limit);
 		if(run) {
-			status = getChargeStrategy().doStrategy();
+			status = strategy.doStrategy();
 			if(status != ChargingStrategy::RUNNING) {
 				chargingComplete();
 				run = false;
@@ -65,64 +63,8 @@ void charge() {
 		}
 	} while(key != BUTTON_STOP);
 
-	getChargeStrategy().powerOff();
+	strategy.powerOff();
 }
-
-void balance() {
-
-	Screen::ScreenType chargeScreens[] =
-	{ //Screen::Screen1,
-	  Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5/*, Screen::ScreenTemperature */};
-
-	uint8_t key;
-	bool run = true;
-	balancer.powerOn();
-	lcd.clear();
-	int ut=0;
-	int bal=0;
-	uint8_t screen = 0, screen_limit = sizeOfArray(chargeScreens);
-	do {
-		screens.display(chargeScreens[screen]);
-		key = selectIndexWithKeyboard(screen, screen_limit);
-		if(run)
-			balancer.doStrategy();
-		if(!balancer.isPowerOn() && run) {
-			chargingComplete();
-			run = false;
-		}
-	} while(key != BUTTON_STOP);
-	balancer.powerOff();
-}
-
-
-void balance_test() {
-	Screen::ScreenType chargeScreens[] =
-	{ //Screen::Screen1,
-	  Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5/*, Screen::ScreenTemperature */};
-
-	uint8_t key;
-	bool run = true;
-	balancer.powerOn();
-	lcd.clear();
-	int ut=0;
-	int bal=0;
-	uint8_t screen = 0, screen_limit = sizeOfArray(chargeScreens);
-	do {
-		screens.display(chargeScreens[screen]);
-		key = selectIndexWithKeyboard(screen, screen_limit);
-		if(!balancer.isPowerOn() && run) {
-		//	chargingComplete();
-			run = false;
-		}
-		if(key & BUTTON_INC & BUTTON_START) bal ++;
-		if(key & BUTTON_DEC & BUTTON_START) bal --;
-		balancer.setBalance(bal);
-	} while(key != BUTTON_STOP);
-	balancer.powerOff();
-}
-
-
-
 
 uint16_t getChargeProcent(){
 	uint16_t v1,v2, add = 0;
@@ -190,14 +132,14 @@ void startProgram(ProgramData::ProgramType prog)
 	if(startInfo()) {
 		switch(prog) {
 		case ProgramData::Charge:
-				charge();
+				charge(thevenin, theveninScreens, sizeOfArray(theveninScreens));
 				break;
 		case ProgramData::Balance:
-				balance();
+				charge(balancer, balanceScreens, sizeOfArray(balanceScreens));
 				break;
 		case ProgramData::FastCharge:
 				//TODO:
-				balance_test();
+				charge(balancer, balanceScreens, sizeOfArray(balanceScreens));
 				break;
 		}
 	}
