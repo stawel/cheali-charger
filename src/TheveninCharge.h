@@ -14,11 +14,12 @@ public:
 	bool Imax_, Imin_;
 
 	TheveninCharge(){}
-	virtual void powerOn(SMPS &s);
-	virtual void doStrategy(SMPS &);
-	void setI(SMPS &s, double i);
-	bool isSmallSmpsValue(SMPS &s);
-	void correctSmpsValue(SMPS &s);
+	virtual void powerOn();
+	virtual statusType doStrategy();
+	virtual void powerOff();
+	void setI(double i);
+	bool isSmallSmpsValue();
+	void correctSmpsValue();
 //	bool isBalancer() const;
 };
 

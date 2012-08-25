@@ -49,25 +49,24 @@ void charge() {
 
 	uint8_t key;
 	bool run = true;
-	smps.setStrategy(& getChargeStrategy());
-	smps.powerOn();
+	getChargeStrategy().powerOn();
 	lcd.clear();
 	uint8_t screen = 0, screen_limit = sizeOfArray(chargeScreens);
 	do {
 		screens.display(chargeScreens[screen]);
 		key = selectIndexWithKeyboard(screen, screen_limit);
-		if(!smps.isPowerOn() && run) {
-			balancer.powerOff();
+		ChargingStrategy::statusType  status = getChargeStrategy().doStrategy();
+		if(status == ChargingStrategy::COMPLETE && run) {
 			chargingComplete();
 			run = false;
 		}
 	} while(key != BUTTON_STOP);
 
-	smps.powerOff(SMPS::STOP);
-	balancer.powerOff();
+	getChargeStrategy().powerOff();
 }
 
 void balance() {
+
 	Screen::ScreenType chargeScreens[] =
 	{ //Screen::Screen1,
 	  Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5/*, Screen::ScreenTemperature */};

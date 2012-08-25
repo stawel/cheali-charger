@@ -3,13 +3,13 @@
 
 #include <inttypes.h>
 
-class SMPS;
-
 class ChargingStrategy {
 public:
+	enum statusType {ERROR, COMPLETE, RUNNING};
 	ChargingStrategy() {}
-	virtual void powerOn(SMPS &){};
-	virtual void doStrategy(SMPS &);
+	virtual void powerOn(){};
+	virtual statusType doStrategy(){ return RUNNING;};
+	virtual void powerOff(){};
 };
 
 

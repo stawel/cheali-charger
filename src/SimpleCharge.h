@@ -9,9 +9,10 @@
 class SimpleCharge : public ChargingStrategy {
 public:
 	SimpleCharge(){};
-	virtual void powerOn(SMPS &s);
-	virtual void doStrategy(SMPS &);
-	bool isStable(SMPS &s);
+	virtual void powerOn();
+	virtual statusType doStrategy();
+	virtual void powerOff();
+	bool isStable();
 };
 
 

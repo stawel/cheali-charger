@@ -4,31 +4,38 @@
 #include "Hardware.h"
 
 
-void SimpleCharge::powerOn(SMPS &s)
+
+void SimpleCharge::powerOn()
 {
-	s.setRealValue(ProgramData::currentProgramData.I);
+	smps.setRealValue(ProgramData::currentProgramData.I);
+	smps.powerOn();
 }
 
-void SimpleCharge::doStrategy(SMPS &s)
+void SimpleCharge::powerOff()
 {
-	if(s.getIout() 	>= ProgramData::currentProgramData.I) {
-		s.setError(PSTR("Error: Maximum"),PSTR("current exceeded"));
-		return;
+	smps.powerOff();
+}
+
+ChargingStrategy::statusType SimpleCharge::doStrategy()
+{
+	if(smps.getIout() 	>= ProgramData::currentProgramData.I) {
+		smps.setError(PSTR("Error: Maximum"),PSTR("current exceeded"));
+		return ERROR;
 	}
-	if(s.getVout() 	>= ProgramData::currentProgramData.getVoltage(ProgramData::VCharge)) {
-		s.powerOff(SMPS::CHARGING_COMPLETE);
-		return;
+	if(smps.getVout() 	>= ProgramData::currentProgramData.getVoltage(ProgramData::VCharge)) {
+		smps.powerOff(SMPS::CHARGING_COMPLETE);
+		return COMPLETE;
 	}
-	if(s.getCharge() > ProgramData::currentProgramData.C) {
-		s.powerOff(SMPS::CHARGING_COMPLETE);
-		return;
+	if(smps.getCharge() > ProgramData::currentProgramData.C) {
+		smps.powerOff(SMPS::CHARGING_COMPLETE);
+		return COMPLETE;
 	}
 }
 
 
-bool SimpleCharge::isStable(SMPS &s)
+bool SimpleCharge::isStable()
 {
-	return analogInputs.isStable(s.Vm_) && analogInputs.isStable(s.Im_);
+	return analogInputs.isStable(smps.Vm_) && analogInputs.isStable(smps.Im_);
 }
 
 

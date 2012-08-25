@@ -81,39 +81,3 @@ AnalogInputs analogInputs(inputs_P);
 
 LiquidCrystal lcd(LCD_ENABLE_RS, LCD_ENABLE_PIN,
 		LCD_D0_PIN, LCD_D1_PIN, LCD_D2_PIN, LCD_D3_PIN);
-
-
-///////////////////////////////////////////////////////////////////
-/*
-#include "ChargingStrategy.h"
-#include "SimpleFastCharge.h"
-ChargingStrategy s;
-NewChargingStrategy ns;
-SimpleAutoCharge sa;
-
-class Test {
-public:
-	Test() {
-		hardware::init();
-		lcd.print(mux.digitalRead(0));
-		hardware::delay(12);
-		lcd.print(keyboard.getPressedWithSpeed());
-		volatile double d = 14.5;
-		lcd.print(d);
-		analogInputs.doMeasurement();
-		analogInputs.measureValue(AnalogInputs::Vout);
-		lcd.print(analogInputs.getValue(AnalogInputs::Vout));
-		lcd.print(analogInputs.getRealValue(AnalogInputs::Vout));
-		lcd.print(timer.getMiliseconds());
-		smps.setStrategy(s);
-		smps.powerOn();
-		smps.setStrategy(ns);
-		lcd.print(smps.getCharge());
-		smps.setStrategy(sa);
-		smps.powerOff();
-	}
-};
-
-Test test;
-
-*/

@@ -4,60 +4,68 @@
 #include "ProgramData.h"
 #include "Screen.h"
 
-void TheveninCharge::powerOn(SMPS &s)
+
+void TheveninCharge::powerOff()
+{
+	smps.powerOff();
+}
+
+void TheveninCharge::powerOn()
 {
 	analogInputs.resetStable();
-	t_.init(s.getVout());
+	t_.init(smps.getVout());
 
 	AnalogInputs::ValueType Amps10 = 10000;
 	smpsVcorretion_ = analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue,Amps10);
 	smpsVcorretion_ /= Amps10;
 
 	minICharge_ = ProgramData::currentProgramData.I/10;
-	s.setRealValue(minICharge_);
-	smallestSmpsValue_ = s.getValue();
+	smps.setRealValue(minICharge_);
+	smallestSmpsValue_ = smps.getValue();
 
 	balancer.powerOn();
+	smps.powerOn();
 }
 
 
-void TheveninCharge::doStrategy(SMPS &s)
+ChargingStrategy::statusType TheveninCharge::doStrategy()
 {
-	bool stable = isStable(s);
+	bool stable = isStable();
 	screens.Rth_ = t_.Rth_*1000000;
 	screens.Vth_ = t_.Vth_;
 
 	if(stable) {
 		AnalogInputs::ValueType Vc = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
 
-		if(s.getIout() <= minICharge_ && analogInputs.getStableCount(s.Vm_) > 10 ) {
-			if(Vc <= s.getVout() || balancer.isCharged()) {
-				s.powerOff(SMPS::CHARGING_COMPLETE);
-				return;
+		if(smps.getIout() <= minICharge_ && analogInputs.getStableCount(smps.Vm_) > 10 ) {
+			if(Vc <= smps.getVout() || balancer.isCharged()) {
+				smps.powerOff(SMPS::CHARGING_COMPLETE);
+				return COMPLETE;
 			}
 		}
 
-		t_.calculateRthVth(s.getVout(),s.getIout());
-		balancer.calculateRthVth(s.getIout());
+		t_.calculateRthVth(smps.getVout(),smps.getIout());
+		balancer.calculateRthVth(smps.getIout());
 
-		correctSmpsValue(s);
+		correctSmpsValue();
 		double i;
 		i = min(t_.calculateI(Vc), balancer.calculateI());
 
-		setI(s, i);
+		setI(i);
 	}
+	return RUNNING;
 }
 
-void TheveninCharge::correctSmpsValue(SMPS &s)
+void TheveninCharge::correctSmpsValue()
 {
 	if(Imax_) {
-		smpsVcorretion_  = s.getValue();
-		smpsVcorretion_ /= s.getIout();
+		smpsVcorretion_  = smps.getValue();
+		smpsVcorretion_ /= smps.getIout();
 	}
 }
 
 
-void TheveninCharge::setI(SMPS &s, double i)
+void TheveninCharge::setI(double i)
 {
 	screens.I_ = i;
 	if(i > ProgramData::currentProgramData.I) {
@@ -72,18 +80,18 @@ void TheveninCharge::setI(SMPS &s, double i)
 		value = smallestSmpsValue_;
 	}
 
-	if(s.getValue() != value) {
-		t_.storeLast(s.getVout(), s.getIout());
+	if(smps.getValue() != value) {
+		t_.storeLast(smps.getVout(), smps.getIout());
 		analogInputs.resetStable();
-		s.setValue(value);
+		smps.setValue(value);
 
-		balancer.storeLast(s.getIout());
+		balancer.storeLast(smps.getIout());
 	}
 }
 
-bool TheveninCharge::isSmallSmpsValue(SMPS &s)
+bool TheveninCharge::isSmallSmpsValue()
 {
-	return s.getValue() <= smallestSmpsValue_;
+	return smps.getValue() <= smallestSmpsValue_;
 }
 
 /*bool TheveninCharge::isBalancer() const

@@ -161,7 +161,6 @@ public:
 	{
 		value = 0;
 		dispVal = 0;
-		smps.setStrategy(NULL);
 		smps.setValue(value);
 		smps.powerOn();
 		analogInputs.doFullMeasurement();

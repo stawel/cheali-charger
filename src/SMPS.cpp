@@ -8,7 +8,6 @@
 
 SMPS::SMPS(AnalogInputs::Name inV, AnalogInputs::Name inI):
 Vm_(inV), Im_(inI),
-strategy_(NULL),
 startTime_(0), charge_(0)
 {
 	pinMode(SMPS_VALUE_PIN, OUTPUT);
@@ -25,26 +24,6 @@ void SMPS::setError(const char * error1,const char * error2)
 	error1_ = error1;
 	error2_ = error2;
 	return;
-}
-
-void SMPS::setStrategy(ChargingStrategy *s)
-{
-	char oldSREG;
-	oldSREG= SREG;
-	cli();							// Disable interrupts
-	strategy_ = s;
-	SREG = oldSREG;
-	return;
-}
-
-
-void SMPS::doInterrupt()
-{
-	if(isPowerOn()) {
-		charge_+=getIout();
-		if(strategy_)
-			strategy_->doStrategy(*this);
-	}
 }
 
 void SMPS::setValue(uint16_t value)
@@ -72,8 +51,6 @@ void SMPS::powerOn()
 	state_ = CHARGING;
 	startTime_ = timer.getMiliseconds();
 	charge_ = 0;
-	if(strategy_)
-		strategy_->powerOn(*this);
 }
 
 #include "GTPowerA610.h"

@@ -27,8 +27,6 @@ public:
 	void setValue(uint16_t value);
 	void setRealValue(uint16_t I);
 
-	void doInterrupt();
-
 	void powerOn();
 	void powerOff(STATE reason = CHARGING_COMPLETE);
 	bool isEnabled() const { return state_ == CHARGING; }
@@ -37,14 +35,12 @@ public:
 	const char * getError1() { return error1_; }
 	const char * getError2() { return error2_; }
 
-	void setStrategy(ChargingStrategy *s);
 	uint32_t getOnTimeSec() const;
 	double getCharge() const;
 
 	AnalogInputs::Name Vm_;
 	AnalogInputs::Name Im_;
 protected:
-	ChargingStrategy *strategy_;
 
 	STATE state_;
 	uint16_t value_;
