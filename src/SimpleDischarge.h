@@ -1,4 +1,4 @@
-#ifndef DISCHARGESTRATEGY_H_
+#ifndef SIMPLEDISCHARGE_H_
 #define SIMPLEDISCHARGE_H_
 
 #include "ChargingStrategy.h"
@@ -15,4 +15,4 @@ public:
 	bool isMinVout() const;
 };
 
-#endif /* DISCHARGESTRATEGY_H_ */
+#endif /* SIMPLEDISCHARGE_H_ */
