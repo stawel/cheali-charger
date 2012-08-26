@@ -37,8 +37,8 @@ set(SOURCE_FILES
         SimpleCharge.h
         SMPS.cpp
         SMPS.h
-        StartProgram.cpp
-        StartProgram.h
+        Program.cpp
+        Program.h
         TheveninCharge.cpp
         TheveninCharge.h
         Thevenin.cpp
