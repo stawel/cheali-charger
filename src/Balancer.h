@@ -39,13 +39,14 @@ public:
 	void setBalance(uint8_t port, bool v);
 	uint8_t getCellMinV() const;
 	static AnalogInputs::ValueType getV(uint8_t cell);
-	AnalogInputs::ValueType getPresumedV(uint8_t cell);
+	AnalogInputs::ValueType getPresumedV(uint8_t cell) const;
 	bool isPowerOn() const;
-	bool isMaxVout() const;
+	bool isMaxVout(AnalogInputs::ValueType maxV) const;
+	bool isMinVout(AnalogInputs::ValueType minV) const;
 	bool isStable() const;
 
 	//Thevenin methods
-	double calculateI() const;
+	double calculateI(AnalogInputs::ValueType v) const;
 	void calculateRthVth(AnalogInputs::ValueType i);
 	void calculateRth(AnalogInputs::ValueType i);
 	void calculateVth(AnalogInputs::ValueType i);

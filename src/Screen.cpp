@@ -84,23 +84,43 @@ uint8_t Screen::display(ScreenType screen, uint8_t blink )
 
 uint8_t Screen::displayScreen1(uint8_t blink)
 {
+	double charge = 0;
+	char c = 'N';
+	uint16_t value = 0;
+	AnalogInputs::Name I;
+
 	BLINK_START;
 	lcd.setCursor(0,0);
 
-	analogInputs.print(smps.getCharge(), AnalogInputs::Charge, 8);
+	c= 'N';
+	if(smps.isPowerOn()) {
+		c = 'C';
+		charge = smps.getCharge();
+		value = smps.getValue();
+		I = AnalogInputs::Ismps;
+	}
+	if(discharger.isPowerOn()) {
+		c = 'D';
+		charge = discharger.getDischarge();
+		value = discharger.getValue();
+		I = AnalogInputs::Idischarge;
+
+		if(smps.isPowerOn()) c = 'E';
+	}
+
+	analogInputs.print(charge, AnalogInputs::Charge, 8);
 	lcd.print(' ');
-	analogInputs.printRealValue(smps.Im_,  7);
+	analogInputs.printRealValue(I,  7);
 	lcdPrintSpaces();
 
 	lcd.setCursor(0,1);
-	lcd.print(smps.isPowerOn() ? 'C' : 'N');
+	lcd.print(c);
 	lcd.print('=');
-	lcdPrintEValueI(smps.getValue(), 	4, PSTR("   "));
-	analogInputs.printRealValue(smps.Vm_, 	7);
+	lcdPrintEValueI(value, 	4, PSTR("   "));
+	analogInputs.printRealValue(AnalogInputs::Vout, 	7);
 	lcdPrintSpaces();
 	BLINK_END;
 }
-
 
 uint8_t Screen::displayScreenCIVlimits(uint8_t blink)
 {

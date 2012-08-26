@@ -107,6 +107,7 @@
 #include "AnalogInputs.h"
 #include "Timer.h"
 #include "SMPS.h"
+#include "Discharger.h"
 #include "Balancer.h"
 
 extern LiquidCrystal lcd;
@@ -115,6 +116,7 @@ extern Keyboard keyboard;
 extern AnalogInputs analogInputs;
 extern Timer timer;
 extern SMPS smps;
+extern Discharger discharger;
 extern Balancer balancer;
 
 namespace hardware {

@@ -7,11 +7,16 @@ uint16_t smpsValue()
 	return smps.getValue();
 }
 
+uint16_t dischargerValue()
+{
+	return discharger.getValue();
+}
+
 AnalogInputs::DefaultValues inputs_P[AnalogInputs::PHYSICAL_INPUTS] PROGMEM =
 {
 		{AnalogInputs::analogValue<OUTPUT_VOLATAGE_PIN>,	{0,0}, 	{27516, 12552}},	//Vout
 		{AnalogInputs::analogValue<SMPS_CURRENT_PIN>,		{0,0}, 	{1024, 200}},		//Ismps
-		{AnalogInputs::analogValue<DISCHARGE_CURRENT_PIN>,	{0,0},	{1,1}},	 			//Idischarge
+		{AnalogInputs::analogValue<DISCHARGE_CURRENT_PIN>,	{0,0},	{8960, 1000}},	 	//Idischarge
 
 		{mux.analogRead<MADDR_V_OUTMUX>, 	{0, 0}, 	{24832, 12552}},  	//VoutMux
 		{mux.analogRead<MADDR_T_INTERN>, 	{0, 0}, 	{43520, 2000}},		//Tintern
@@ -25,8 +30,8 @@ AnalogInputs::DefaultValues inputs_P[AnalogInputs::PHYSICAL_INPUTS] PROGMEM =
 		{mux.analogRead<MADDR_V_BALANSER4>,	{0, 0}, 	{51834, 3966}},			//Vb4
 		{mux.analogRead<MADDR_V_BALANSER5>,	{0, 0}, 	{51834, 3966}},			//Vb5
 
-		{smpsValue,		{0,0}, 	{836, 2250}},			//IsmpsValue
-		{smpsValue,		{0,0},	{1,1}},	 			//IdischargeValue
+		{smpsValue,				{0,0}, 	{836, 2250}},			//IsmpsValue
+		{dischargerValue,		{0,0},	{653,1000}},	 		//IdischargeValue
 };
 
 
@@ -76,6 +81,7 @@ Multiplexer mux;
 Keyboard keyboard;
 Timer timer;
 SMPS smps(AnalogInputs::Vout, AnalogInputs::Ismps);
+Discharger discharger;
 Balancer balancer;
 AnalogInputs analogInputs(inputs_P);
 

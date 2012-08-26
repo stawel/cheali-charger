@@ -3,8 +3,6 @@
 
 
 #include "ChargingStrategy.h"
-#include "AnalogInputs.h"
-
 
 class SimpleCharge : public ChargingStrategy {
 public:

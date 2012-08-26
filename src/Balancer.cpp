@@ -37,7 +37,7 @@ AnalogInputs::ValueType Balancer::getV(uint8_t cell)
 	return analogInputs.getRealValue(AnalogInputs::Name(AnalogInputs::Vb0+cell));
 }
 
-AnalogInputs::ValueType Balancer::getPresumedV(uint8_t cell)
+AnalogInputs::ValueType Balancer::getPresumedV(uint8_t cell) const
 {
 	if(balance_ == 0)
 		return getV(cell);
@@ -209,22 +209,38 @@ void Balancer::calculateVth(AnalogInputs::ValueType i)
 	}
 }
 
-double Balancer::calculateI() const
+double Balancer::calculateI(AnalogInputs::ValueType v) const
 {
 	double i = MAX_CHARGE_I;
 	for(uint8_t c = 0; c < cells_; c++) {
-		i = min(i, t_[c].calculateI(ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VCharge)));
+		i = min(i, t_[c].calculateI(v));
 	}
 	return i;
 }
 
-bool Balancer::isMaxVout() const
+bool Balancer::isMaxVout(AnalogInputs::ValueType maxV) const
 {
 	for(uint8_t c = 0; c < cells_; c++) {
-		if(getV(c) >= ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VCharge))
+		if(getV(c) >= maxV)
 			return true;
+		if(getPresumedV(c) >= maxV)
+			return true;
+
 	}
 	return false;
 }
+
+bool Balancer::isMinVout(AnalogInputs::ValueType minV) const
+{
+	for(uint8_t c = 0; c < cells_; c++) {
+		if(getV(c) <= minV)
+			return true;
+		if(getPresumedV(c) <= minV)
+			return true;
+
+	}
+	return false;
+}
+
 
 

@@ -1,4 +1,3 @@
-//#include <Arduino.h>
 #include "TimerOne.h"
 #include "Hardware.h"
 #include "SMPS.h"

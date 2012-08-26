@@ -59,8 +59,9 @@ ChargingStrategy::statusType TheveninCharge::doStrategy()
 
 		correctSmpsValue();
 
-		AnalogInputs::ValueType Vc = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
-		i = min(t_.calculateI(Vc), balancer.calculateI());
+		AnalogInputs::ValueType Vc 			= ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
+		AnalogInputs::ValueType Vc_per_cell = ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VCharge);
+		i = min(t_.calculateI(Vc), balancer.calculateI(Vc_per_cell));
 
 		setI(i);
 	}
@@ -74,7 +75,6 @@ void TheveninCharge::correctSmpsValue()
 		smpsVcorretion_ /= smps.getIout();
 	}
 }
-
 
 void TheveninCharge::setI(double i)
 {
@@ -110,12 +110,7 @@ bool TheveninCharge::isSmallSmpsValue()
 bool TheveninCharge::isMaxVout() const
 {
 	AnalogInputs::ValueType Vc = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
-	return Vc <= smps.getVout() || balancer.isMaxVout();
+	AnalogInputs::ValueType Vc_per_cell = ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VCharge);
+
+	return Vc <= smps.getVout() || balancer.isMaxVout(Vc_per_cell);
 }
-
-/*bool TheveninCharge::isBalancer() const
-{
-	return ProgramData::currentProgramData.balanceType == ProgramData::BEnable;
-}*/
-
-

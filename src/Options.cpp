@@ -13,7 +13,8 @@ char string_o4[] PROGMEM = "calibrate B0-2";
 char string_o5[] PROGMEM = "calibrate B3-5";
 char string_o6[] PROGMEM = "calibrate T";
 char string_o7[] PROGMEM = "calibrate Vin";
-char string_o8[] PROGMEM = "reset default";
+char string_o8[] PROGMEM = "calibrate dis";
+char string_o9[] PROGMEM = "reset default";
 
 const char * optionsMainMenu[] PROGMEM =
 { string_o1,
@@ -24,6 +25,7 @@ const char * optionsMainMenu[] PROGMEM =
   string_o6,
   string_o7,
   string_o8,
+  string_o9,
 };
 
 
@@ -104,6 +106,13 @@ public:
 		print_m_3(PSTR("Iv:"),   AnalogInputs::IsmpsValue);
 	}
 
+	void printCalibrateDis()
+	{
+		print_v();
+		print_m_2(PSTR(" Io:"), AnalogInputs::Idischarge);
+		print_m_3(PSTR("Iv:"),   AnalogInputs::IdischargeValue);
+	}
+
 	void printCalibrateVout()
 	{
 		print_v();
@@ -182,6 +191,33 @@ public:
 		} while(key != BUTTON_STOP);
 		smps.powerOff();
 	}
+
+	void calibrateDis()
+	{
+		value = 0;
+		dispVal = 0;
+		discharger.powerOn();
+		analogInputs.doFullMeasurement();
+		uint8_t key;
+		do {
+			printCalibrateDis();
+			key = keyboard.getPressedWithSpeed();
+			if(key == BUTTON_INC && value < 760*2) {
+				value++;
+				discharger.setValue(value);
+			}
+			if(key == BUTTON_DEC && value > 0) {
+				value--;
+				discharger.setValue(value);
+			}
+			if(key == BUTTON_START) {
+				dispVal = (dispVal+1)%3;
+			}
+
+		} while(key != BUTTON_STOP);
+		discharger.powerOff();
+	}
+
 };
 
 void timeM()
@@ -225,7 +261,8 @@ void Options::run()
 			case 4: c.calibrate(3); break;
 			case 5: c.calibrate(4); break;
 			case 6: c.calibrate(5); break;
-			case 7: resetDefault(); break;
+			case 7: c.calibrateDis(); break;
+			case 8: resetDefault(); break;
 			}
 			optionsMenu.render();
 			release = true;

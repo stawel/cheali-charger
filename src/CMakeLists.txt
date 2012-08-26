@@ -35,8 +35,12 @@ set(SOURCE_FILES
         Screen.h
         SimpleCharge.cpp
         SimpleCharge.h
+        SimpleDischarge.cpp
+        SimpleDischarge.h
         SMPS.cpp
         SMPS.h
+        Discharger.cpp
+        Discharger.h
         Program.cpp
         Program.h
         TheveninCharge.cpp

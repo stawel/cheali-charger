@@ -6,6 +6,7 @@
 #include "Screen.h"
 #include "SimpleCharge.h"
 #include "TheveninCharge.h"
+#include "SimpleDischarge.h"
 
 bool buzzer = false;
 
@@ -33,12 +34,18 @@ void Program::printProgram2chars(ProgramType prog)
 
 SimpleCharge simple;
 TheveninCharge thevenin;
+SimpleDischarge discharge;
+
+//TODO: program memory
 Screen::ScreenType theveninScreens[] =
 { Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
   Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
 Screen::ScreenType balanceScreens[] =
 { Screen::ScreenBalancer0_2, Screen::ScreenBalancer0_2M,
   Screen::ScreenBalancer3_5, Screen::ScreenBalancer3_5M /*, Screen::ScreenTemperature */};
+Screen::ScreenType dischargeScreens[] =
+{ Screen::Screen1, Screen::ScreenTime,
+  Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
 
 
 void chargingComplete()
@@ -148,6 +155,9 @@ void Program::run(ProgramType prog)
 				break;
 		case Program::Balance:
 				charge(balancer, balanceScreens, sizeOfArray(balanceScreens));
+				break;
+		case Program::Discharge:
+				charge(discharge, dischargeScreens, sizeOfArray(dischargeScreens));
 				break;
 		default:
 		case Program::FastCharge:
