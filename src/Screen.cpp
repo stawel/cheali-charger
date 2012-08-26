@@ -150,10 +150,15 @@ uint8_t Screen::displayScreenTemperature(uint8_t blink)
 	BLINK_END;
 }
 
+void Screen::displayStrings(const char *s1, const char *s2) const
+{
+	lcd.setCursor(0,0); lcdPrint_P(s1);
+	lcd.setCursor(0,1); lcdPrint_P(s2);
+}
+
 uint8_t Screen::displayChargeEnded(uint8_t blink)
 {
-	lcd.setCursor(0,0); lcdPrint_P(smps.getError1());
-	lcd.setCursor(0,1); lcdPrint_P(smps.getError2());
+	displayStrings(smps.getError1(), smps.getError2());
 	BLINK_NON;
 }
 

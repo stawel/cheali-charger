@@ -27,7 +27,6 @@ int ProgramDataMenu::getBlinkIndex()
 }
 
 
-#define SAVE_POS 8
 void ProgramDataMenu::printItem(int index)
 {
 	int blink = getBlinkIndex();
@@ -36,12 +35,8 @@ void ProgramDataMenu::printItem(int index)
 	case 1:	lcdPrint_P(PSTR("V:  ")); 		BLINK(p_.printVoltageString());	break;
 	case 2:	lcdPrint_P(PSTR("Ic: ")); 		BLINK(p_.printChargeString()); 	break;
 	case 3:	lcdPrint_P(PSTR("Imax: ")); 	BLINK(p_.printCurrentString()); break;
-	case 4:	lcdPrint_P(PSTR("Prog: ")); 	BLINK(p_.printProgramString()); break;
-	case 5:	lcdPrint_P(PSTR("Bal: ")); 	BLINK(p_.printBalanceString()); break;
-	case 6:	lcdPrint_P(PSTR("Vm:  ")); 	BLINK(p_.printVoltageInputString()); break;
-	case 7:	lcdPrint_P(PSTR("Im:  ")); 	BLINK(p_.printCurrentInputString()); break;
-
-	case SAVE_POS:	lcdPrint_P(PSTR("     save")); 						break;
+	case PROGRAM_DATA_MENU_SIZE-1:
+			lcdPrint_P(PSTR("     save")); 						break;
 	}
 }
 
@@ -52,14 +47,10 @@ bool ProgramDataMenu::editItem(int index, uint8_t key)
 	dir *= keyboard.getSpeedFactor();
 
 	switch(index) {
-	case 0:	p_.changeBattery(dir); 	break;
-	case 1:	p_.changeVoltage(dir); 	break;
-	case 2:	p_.changeCharge(dir); 		break;
+	case 0: p_.changeBattery(dir); 	break;
+	case 1: p_.changeVoltage(dir); 	break;
+	case 2: p_.changeCharge(dir); 		break;
 	case 3: p_.changeCurrent(dir); 		break;
-	case 4:	p_.changeProgram(dir); 		break;
-	case 5:	p_.changeBalance(dir); 		break;
-	case 6:	p_.changeVoltageInput(dir); 		break;
-	case 7:	p_.changeCurrentInput(dir); 		break;
 	default:
 		return false;
 	}
@@ -116,7 +107,8 @@ bool ProgramDataMenu::edit() {
 		if(key == BUTTON_NONE) release = false;
 
 		if(!release && key == BUTTON_START)  {
-			if(getIndex() == SAVE_POS) return true;
+			//"save" selected
+			if(getIndex() == PROGRAM_DATA_MENU_SIZE - 1) return true;
 			editIndex(getIndex());
 		}
 	} while(key != BUTTON_STOP || release);

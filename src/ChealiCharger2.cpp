@@ -20,24 +20,44 @@ MainMenu mainMenu(&mainMenuData, progmemMainMenu, 1);
 ProgramData currentProgram;
 
 char charge_str[] PROGMEM = "charge";
-char balCha_str[] PROGMEM = "balance+charge";
+char chaBal_str[] PROGMEM = "charge+balance";
 char balanc_str[] PROGMEM = "balance";
 char discha_str[] PROGMEM = "discharge";
 char fastCh_str[] PROGMEM = "fast charge";
 char storag_str[] PROGMEM = "storage";
+char stoBal_str[] PROGMEM = "storage+balanc";
 char edName_str[] PROGMEM = "edit name";
 char edBatt_str[] PROGMEM = "edit battery";
 
+struct programMemuType {
+	const char * str;
+	Program::ProgramType type;
+};
+
 const char * progmemMainMenu2[] PROGMEM =
 { charge_str,
-  balCha_str,
+  chaBal_str,
   balanc_str,
   discha_str,
   fastCh_str,
   storag_str,
+  stoBal_str,
   edName_str,
   edBatt_str
 };
+
+Program::ProgramType progmemMainMenu2Type[] PROGMEM =
+{ Program::Charge,
+  Program::Charge_Balance,
+  Program::Balance,
+  Program::Discharge,
+  Program::FastCharge,
+  Program::Storage,
+  Program::Storage_Balance,
+  Program::EditName,
+  Program::EditBattery
+};
+
 
 
 void napiecie();
@@ -63,34 +83,21 @@ void doProgram(int index)
 
 		if(!release && key == BUTTON_START)  {
 			int i = doMenu.getIndex();
-			switch(i) {
-			case 0:
-				startProgram(ProgramData::Charge);
-				doMenu.render();
-				release = true;
-				break;
-			case 2:
-				startProgram(ProgramData::Balance);
-				doMenu.render();
-				release = true;
-				break;
-			case 4:
-				startProgram(ProgramData::FastCharge);
-				doMenu.render();
-				release = true;
-				break;
-			case 6:
+			Program::ProgramType prog = pgm_read(&progmemMainMenu2Type[i]);
+			switch(prog) {
+			case Program::EditName:
 				editMenuName(index);
-				doMenu.render();
-				release = true;
 				break;
-			case 7:
+			case Program::EditBattery:
 				if(ProgramData::currentProgramData.edit())
 					ProgramData::saveProgramData(index);
-				doMenu.render();
-				release = true;
+				break;
+			default:
+				Program::run(prog);
 				break;
 			}
+			doMenu.render();
+			release = true;
 		}
 	} while(key != BUTTON_STOP || release);
 }

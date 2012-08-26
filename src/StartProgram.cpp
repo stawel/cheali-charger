@@ -24,6 +24,13 @@ void buzzerOff(){
 }
 
 
+char programString[] PROGMEM = "ChCBBlDiFCStSBENEB";
+void Program::printProgram2chars(ProgramType prog)
+{
+	//TODO: ??
+	lcdPrint_P(programString+prog*2, 2);
+}
+
 SimpleCharge simple;
 TheveninCharge thevenin;
 Screen::ScreenType theveninScreens[] =
@@ -41,6 +48,13 @@ void chargingComplete()
 	buzzerOn();
 	do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
 	buzzerOff();
+}
+
+void notImplemented()
+{
+	lcd.clear();
+	screens.displayStrings(PSTR("Function not"), PSTR("implemented yet"));
+	do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
 }
 
 
@@ -83,14 +97,14 @@ uint16_t getChargeProcent(){
 	return v/10 + add;
 }
 
-void printStartInfo()
+void Program::printStartInfo(ProgramType prog)
 {
 	lcd.setCursor(0,0);
 	ProgramData::currentProgramData.printBatteryString(4);
 	lcd.print(' ');
 	ProgramData::currentProgramData.printVoltageString();
 	lcd.print(' ');
-	ProgramData::currentProgramData.printProgramString();
+	printProgram2chars(prog);
 	analogInputs.doFullMeasurement();
 
 	lcd.setCursor(0,1);
@@ -106,14 +120,14 @@ void printStartInfo()
 	lcd.print(analogInputs.getConnectedBalancePorts());
 }
 
-bool startInfo()
+bool Program::startInfo(ProgramType prog)
 {
 	uint8_t key;
 	bool ok = false;
 	lcd.clear();
 	hardware::setBatteryOutput(true);
 	do {
-		printStartInfo();
+		printStartInfo(prog);
 		key = keyboard.getPressedWithSpeed();
 		if(key == BUTTON_START) {
 			ok = true;
@@ -125,22 +139,20 @@ bool startInfo()
 	return ok;
 }
 
-
-void startProgram(ProgramData::ProgramType prog)
+void Program::run(ProgramType prog)
 {
-
-	ProgramData::currentProgramData.initSmps();
-	if(startInfo()) {
+	if(startInfo(prog)) {
 		switch(prog) {
-		case ProgramData::Charge:
+		case Program::Charge:
 				charge(thevenin, theveninScreens, sizeOfArray(theveninScreens));
 				break;
-		case ProgramData::Balance:
+		case Program::Balance:
 				charge(balancer, balanceScreens, sizeOfArray(balanceScreens));
 				break;
-		case ProgramData::FastCharge:
+		default:
+		case Program::FastCharge:
 				//TODO:
-				charge(balancer, balanceScreens, sizeOfArray(balanceScreens));
+				notImplemented();
 				break;
 		}
 	}
