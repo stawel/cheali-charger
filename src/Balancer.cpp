@@ -7,8 +7,9 @@ void Balancer::powerOn()
 {
 	cells_ = analogInputs.getRealValue(AnalogInputs::VbalanceInfo);
 	for(int i = 0; i < cells_; i++) {
-		t_[i].init(getV(i));
-		Voff_[i] = Von_[i] = 0;
+		AnalogInputs::ValueType vi = getV(i);
+		t_[i].init(vi);
+		Voff_[i] = Von_[i] = vi;
 	}
 	balance_ = 0;
 	on_ = true;
@@ -16,7 +17,7 @@ void Balancer::powerOn()
 	startSwitchTime_ = startSwitchTime_ = 0;
 }
 
-uint8_t Balancer::getMin() const
+uint8_t Balancer::getCellMinV() const
 {
 	uint8_t c = 0;
 	AnalogInputs::ValueType vmin = 65535;
@@ -36,6 +37,16 @@ AnalogInputs::ValueType Balancer::getV(uint8_t cell)
 	return analogInputs.getRealValue(AnalogInputs::Name(AnalogInputs::Vb0+cell));
 }
 
+AnalogInputs::ValueType Balancer::getPresumedV(uint8_t cell)
+{
+	if(balance_ == 0)
+		return getV(cell);
+
+	if(savedVon_)
+		return (getV(cell) + Voff_[cell]) - Von_[cell] ;
+	else
+		return Voff_[cell];
+}
 
 
 void Balancer::powerOff()
@@ -82,14 +93,14 @@ void Balancer::startBalacing()
 	if(balance_ != 0 || !on_)
 		return;
 
-	minCell_ = getMin();
+	minCell_ = getCellMinV();
 
 	AnalogInputs::ValueType vmin = getV(minCell_);
 
 	bool off = true;
 	for(int i = 0; i < cells_; i++) {
-		Von_[i] = Voff_[i] = getV(i) - vmin;
-		if(Von_[i] > error)
+		Von_[i] = Voff_[i] = getV(i);
+		if(Von_[i] - vmin > error)
 			off = false;
 	}
 
@@ -104,17 +115,17 @@ void Balancer::startBalacing()
 
 uint16_t Balancer::calculateBalance()
 {
-	int16_t vmin = getV(minCell_);
+	int16_t vmin = getPresumedV(minCell_);
 	uint16_t retu = 0, b = 1;
 	for(uint8_t c = 0; c < cells_; c++) {
-		int16_t v = getV(c);
+		int16_t v = getPresumedV(c);
 		if(b & balance_) {
 			// if ON
-			if(v - vmin > Von_[c] - Voff_[c])
+			if(v > vmin)
 				retu |=b;
 		} else {
 			// if OFF
-			if(v - vmin > Von_[c] - Voff_[c] + (error+1)/2)
+			if(v > vmin + (error+1)/2)
 				retu |=b;
 		}
 		b<<=1;
@@ -137,7 +148,7 @@ void Balancer::trySaveVon() {
 	savedVon_ = true;
 	AnalogInputs::ValueType vmin = getV(minCell_);
 	for(uint8_t c = 0; c < cells_; c++) {
-		Von_[c] = getV(c) - vmin;
+		Von_[c] = getV(c);
 	}
 }
 

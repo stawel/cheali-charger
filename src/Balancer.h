@@ -37,8 +37,9 @@ public:
 	uint16_t calculateBalance();
 	void setBalance(uint16_t v);
 	void setBalance(uint8_t port, bool v);
-	uint8_t getMin() const;
+	uint8_t getCellMinV() const;
 	static AnalogInputs::ValueType getV(uint8_t cell);
+	AnalogInputs::ValueType getPresumedV(uint8_t cell);
 	bool isPowerOn() const;
 	bool isMaxVout() const;
 	bool isStable() const;

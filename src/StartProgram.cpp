@@ -30,7 +30,8 @@ Screen::ScreenType theveninScreens[] =
 { Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
   Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
 Screen::ScreenType balanceScreens[] =
-{ Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5/*, Screen::ScreenTemperature */};
+{ Screen::ScreenBalancer0_2, Screen::ScreenBalancer0_2M,
+  Screen::ScreenBalancer3_5, Screen::ScreenBalancer3_5M /*, Screen::ScreenTemperature */};
 
 
 void chargingComplete()

@@ -3,7 +3,68 @@
 #include "LcdPrint.h"
 #include "ProgramData.h"
 
+namespace {
+	AnalogInputs::ValueType getBalanceValue(int cell, bool mesured)
+	{
+		if(mesured)
+			return balancer.getV(cell);
+		else
+			return balancer.getPresumedV(cell);
+	}
 
+	void printBalancer(int cell, bool mesured) {
+		analogInputs.print(getBalanceValue(cell, mesured), AnalogInputs::Voltage , 6);
+	}
+
+	uint8_t displayBalanceInfo(int from, bool mesured)
+	{
+		lcd.setCursor(0,0);
+
+		char c;
+		if(!mesured) {
+			if(balancer.balance_ == 0) {
+				if(!balancer.isStable())
+					c = 'm';
+				else
+					c = ' ';
+			} else {
+				if(balancer.savedVon_)
+					c = 'B';
+				else
+					c = 'b';
+			}
+		} else {
+			c='M';
+		}
+		lcd.print(c);
+
+		uint8_t  j = 1;
+		for(uint8_t i = 0; i < 6; i++) {
+			if(balancer.balance_ > 0 && i == balancer.minCell_)
+				lcd.print('_');
+			else
+				lcd.print((balancer.balance_&j)&&1);
+			j<<=1;
+		}
+		lcd.print(' ');
+
+		char nr = '0' + from;
+		lcd.print(nr++);
+		lcd.print(':');
+		printBalancer(from+0, mesured);
+		lcdPrintSpaces();
+
+		lcd.setCursor(0,1);
+		lcd.print(nr++);
+		lcd.print(':');
+		printBalancer(from+1, mesured);
+		lcd.print(nr++);
+		lcd.print(':');
+		printBalancer(from+2, mesured);
+		lcdPrintSpaces();
+		BLINK_NON;
+	}
+}
 
 uint8_t Screen::display(ScreenType screen, uint8_t blink )
 {
@@ -12,8 +73,10 @@ uint8_t Screen::display(ScreenType screen, uint8_t blink )
 	case ScreenCIVlimits:	return displayScreenCIVlimits(blink);
 	case ScreenTime:		return displayScreenTime(blink);
 	case ScreenTemperature:	return displayScreenTemperature(blink);
-	case ScreenBalancer0_2:	return displayScreenBalancer0_2(blink);
-	case ScreenBalancer3_5:	return displayScreenBalancer3_5(blink);
+	case ScreenBalancer0_2:	return displayBalanceInfo(0, false);
+	case ScreenBalancer3_5:	return displayBalanceInfo(3, false);
+	case ScreenBalancer0_2M:return displayBalanceInfo(0, true);
+	case ScreenBalancer3_5M:return displayBalanceInfo(3, true);
 	case ScreenRthVth:		return displayRthVth(blink);
 	}
 	return -1;
@@ -86,53 +149,6 @@ uint8_t Screen::displayScreenTemperature(uint8_t blink)
 	lcdPrintSpaces();
 	BLINK_END;
 }
-
-
-uint8_t Screen::displayScreenBalancer0_2(uint8_t blink)
-{
-	lcd.setCursor(0,0);
-//	lcdPrint_P(PSTR("balance "));
-
-	lcd.print(balancer.minCell_);
-	lcd.print((balancer.balance_&1)&&1);
-	lcd.print((balancer.balance_&2)&&1);
-	lcd.print((balancer.balance_&4)&&1);
-	lcd.print((balancer.balance_&8)&&1);
-	lcd.print((balancer.balance_&16)&&1);
-	lcd.print((balancer.balance_&32)&&1);
-	lcd.print(' ');
-
-	lcdPrint_P(PSTR("0:"));
-	analogInputs.printRealValue(AnalogInputs::Vb0,	6);
-	lcdPrintSpaces();
-
-	lcd.setCursor(0,1);
-	lcdPrint_P(PSTR("1:"));
-	analogInputs.printRealValue(AnalogInputs::Vb1,	6);
-	lcdPrint_P(PSTR("2:"));
-	analogInputs.printRealValue(AnalogInputs::Vb2,	6);
-	lcdPrintSpaces();
-	BLINK_NON;
-}
-
-uint8_t Screen::displayScreenBalancer3_5(uint8_t blink)
-{
-	lcd.setCursor(0,0);
-	lcdPrint_P(PSTR("balance "));
-	lcdPrint_P(PSTR("3:"));
-	analogInputs.printRealValue(AnalogInputs::Vb3,	6);
-	lcdPrintSpaces();
-
-	lcd.setCursor(0,1);
-	lcdPrint_P(PSTR("4:"));
-	analogInputs.printRealValue(AnalogInputs::Vb4,	6);
-	lcdPrint_P(PSTR("5:"));
-	analogInputs.printRealValue(AnalogInputs::Vb5,	6);
-	lcdPrintSpaces();
-	BLINK_NON;
-}
-
-
 
 uint8_t Screen::displayChargeEnded(uint8_t blink)
 {
