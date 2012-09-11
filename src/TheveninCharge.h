@@ -15,7 +15,7 @@ public:
 
 	uint16_t minChargeC_;
 
-	TheveninCharge(){ minChargeC_ = 1;}
+	TheveninCharge(){}
 	virtual void powerOn();
 	virtual statusType doStrategy();
 	virtual void powerOff();
