@@ -14,8 +14,10 @@ class ChargingStrategy;
 class SMPS {
 public:
 	enum STATE { CHARGING, CHARGING_COMPLETE, ERROR, STOP};
+	static const AnalogInputs::Name VName = AnalogInputs::VoutBalancer;
+	static const AnalogInputs::Name IName = AnalogInputs::Ismps;
 
-	SMPS(AnalogInputs::Name inV, AnalogInputs::Name inI);
+	SMPS();
 
 	AnalogInputs::ValueType getVout() const;
 	AnalogInputs::ValueType getIout() const;
@@ -39,8 +41,6 @@ public:
 	uint32_t getOnTimeSec() const;
 	double getCharge() const;
 
-	AnalogInputs::Name Vm_;
-	AnalogInputs::Name Im_;
 protected:
 
 	STATE state_;

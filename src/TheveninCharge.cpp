@@ -20,7 +20,7 @@ void TheveninCharge::powerOn()
 	smpsVcorretion_ = analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue,Amps10);
 	smpsVcorretion_ /= Amps10;
 
-	AnalogInputs::ValueType minICharge = ProgramData::currentProgramData.I/10;
+	AnalogInputs::ValueType minICharge = ProgramData::currentProgramData.I / minChargeC_;
 	smps.setRealValue(minICharge);
 	smallestSmpsValue_ = smps.getValue();
 
@@ -47,7 +47,7 @@ ChargingStrategy::statusType TheveninCharge::doStrategy()
 
 		//test for charge complete
 		if(isSmallSmpsValue()
-			&& analogInputs.getStableCount(smps.Vm_) > 10
+			&& analogInputs.getStableCount(smps.VName) > 10
 			&& ismaxVout) {
 				smps.powerOff(SMPS::CHARGING_COMPLETE);
 				return COMPLETE;
@@ -113,4 +113,9 @@ bool TheveninCharge::isMaxVout() const
 	AnalogInputs::ValueType Vc_per_cell = ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VCharge);
 
 	return Vc <= smps.getVout() || balancer.isMaxVout(Vc_per_cell);
+}
+
+void TheveninCharge::setMinChargeC(uint16_t v)
+{
+	minChargeC_ = v;
 }

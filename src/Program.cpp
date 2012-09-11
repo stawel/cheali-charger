@@ -151,6 +151,7 @@ void Program::run(ProgramType prog)
 	if(startInfo(prog)) {
 		switch(prog) {
 		case Program::Charge:
+				thevenin.setMinChargeC(10);
 				charge(thevenin, theveninScreens, sizeOfArray(theveninScreens));
 				break;
 		case Program::Balance:
@@ -159,8 +160,11 @@ void Program::run(ProgramType prog)
 		case Program::Discharge:
 				charge(discharge, dischargeScreens, sizeOfArray(dischargeScreens));
 				break;
-		default:
 		case Program::FastCharge:
+				thevenin.setMinChargeC(5);
+				charge(thevenin, theveninScreens, sizeOfArray(theveninScreens));
+				break;
+		default:
 				//TODO:
 				notImplemented();
 				break;

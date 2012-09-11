@@ -3,11 +3,8 @@
 #include "SMPS.h"
 #include "ChargingStrategy.h"
 
-#ifndef DUMMYSMPS_H_
 
-SMPS::SMPS(AnalogInputs::Name inV, AnalogInputs::Name inI):
-Vm_(inV), Im_(inI),
-startTime_(0), charge_(0)
+SMPS::SMPS()
 {
 	pinMode(SMPS_VALUE_PIN, OUTPUT);
 	pinMode(SMPS_DISABLE_PIN, OUTPUT);
@@ -89,14 +86,12 @@ double SMPS::getCharge() const
 
 AnalogInputs::ValueType SMPS::getVout() const
 {
-	return analogInputs.getRealValue(Vm_);
+	return analogInputs.getRealValue(VName);
 }
 
 AnalogInputs::ValueType SMPS::getIout() const
 {
-	return analogInputs.getRealValue(Im_);
+	return analogInputs.getRealValue(IName);
 }
 
-
-#endif //DUMMYSMPS_H_
 

@@ -80,7 +80,7 @@ void hardware::delay(uint32_t t)
 Multiplexer mux;
 Keyboard keyboard;
 Timer timer;
-SMPS smps(AnalogInputs::Vout, AnalogInputs::Ismps);
+SMPS smps;
 Discharger discharger;
 Balancer balancer;
 AnalogInputs analogInputs(inputs_P);

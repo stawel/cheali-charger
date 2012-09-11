@@ -13,7 +13,9 @@ public:
 	bool Imax_;
 	bool Ifalling_;
 
-	TheveninCharge(){}
+	uint16_t minChargeC_;
+
+	TheveninCharge(){ minChargeC_ = 1;}
 	virtual void powerOn();
 	virtual statusType doStrategy();
 	virtual void powerOff();
@@ -22,6 +24,8 @@ public:
 	void correctSmpsValue();
 	bool isMaxVout() const;
 //	bool isBalancer() const;
+
+	void setMinChargeC(uint16_t v);
 };
 
 #endif /* THEVENINCHARGE_H_ */

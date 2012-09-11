@@ -35,7 +35,7 @@ ChargingStrategy::statusType SimpleCharge::doStrategy()
 
 bool SimpleCharge::isStable()
 {
-	return analogInputs.isStable(smps.Vm_) && analogInputs.isStable(smps.Im_);
+	return analogInputs.isStable(smps.VName) && analogInputs.isStable(smps.IName);
 }
 
 
