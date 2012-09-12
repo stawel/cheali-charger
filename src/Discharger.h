@@ -9,7 +9,7 @@
 class Discharger {
 public:
 	enum STATE { DISCHARGING, DISCHARGING_COMPLETE, ERROR};
-	static const AnalogInputs::Name VName = AnalogInputs::Vout;
+	static const AnalogInputs::Name VName = AnalogInputs::VoutBalancer;
 	static const AnalogInputs::Name IName = AnalogInputs::Idischarge;
 
 	Discharger();

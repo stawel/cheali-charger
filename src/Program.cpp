@@ -8,6 +8,7 @@
 #include "TheveninCharge.h"
 #include "SimpleDischarge.h"
 #include "Monitor.h"
+#include "Storage.h"
 
 bool buzzer = false;
 
@@ -34,8 +35,6 @@ void Program::printProgram2chars(ProgramType prog)
 }
 
 SimpleCharge simple;
-TheveninCharge thevenin;
-SimpleDischarge discharge;
 
 //TODO: program memory
 Screen::ScreenType theveninScreens[] =
@@ -46,6 +45,9 @@ Screen::ScreenType balanceScreens[] =
   Screen::ScreenBalancer3_5, Screen::ScreenBalancer3_5M /*, Screen::ScreenTemperature */};
 Screen::ScreenType dischargeScreens[] =
 { Screen::Screen1, Screen::ScreenTime,
+  Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
+Screen::ScreenType storageScreens[] =
+{ Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
   Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
 
 
@@ -168,23 +170,30 @@ void Program::run(ProgramType prog)
 	if(startInfo(prog)) {
 		switch(prog) {
 		case Program::Charge:
-				thevenin.setMinChargeC(10);
-				charge(thevenin, theveninScreens, sizeOfArray(theveninScreens));
-				break;
+			theveninCharge.setMinChargeC(10);
+			charge(theveninCharge, theveninScreens, sizeOfArray(theveninScreens));
+			break;
 		case Program::Balance:
-				charge(balancer, balanceScreens, sizeOfArray(balanceScreens));
-				break;
+			charge(balancer, balanceScreens, sizeOfArray(balanceScreens));
+			break;
 		case Program::Discharge:
-				charge(discharge, dischargeScreens, sizeOfArray(dischargeScreens));
-				break;
+			//TODO: implement discharge current
+			simpleDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.I);
+			charge(simpleDischarge, dischargeScreens, sizeOfArray(dischargeScreens));
+			break;
 		case Program::FastCharge:
-				thevenin.setMinChargeC(5);
-				charge(thevenin, theveninScreens, sizeOfArray(theveninScreens));
-				break;
+			theveninCharge.setMinChargeC(5);
+			charge(theveninCharge, theveninScreens, sizeOfArray(theveninScreens));
+			break;
+		case Program::Storage:
+		case Program::Storage_Balance:
+			storage.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage), ProgramData::currentProgramData.I);
+			charge(storage, storageScreens, sizeOfArray(storageScreens));
+			break;
 		default:
-				//TODO:
-				notImplemented();
-				break;
+			//TODO:
+			notImplemented();
+			break;
 		}
 	}
 }

@@ -5,6 +5,8 @@
 #include "Screen.h"
 
 
+TheveninCharge theveninCharge;
+
 void TheveninCharge::powerOff()
 {
 	smps.powerOff();
@@ -119,3 +121,5 @@ void TheveninCharge::setMinChargeC(uint16_t v)
 {
 	minChargeC_ = v;
 }
+
+

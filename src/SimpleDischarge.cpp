@@ -2,6 +2,9 @@
 #include "Hardware.h"
 #include "ProgramData.h"
 
+
+SimpleDischarge simpleDischarge;
+
 void SimpleDischarge::powerOff()
 {
 	discharger.powerOff();
@@ -12,8 +15,7 @@ void SimpleDischarge::powerOn()
 	discharger.powerOn();
 	balancer.powerOn();
 
-	//TODO: implement discharge current
-	discharger.setRealValue(ProgramData::currentProgramData.I);
+	discharger.setRealValue(I_);
 }
 
 
@@ -29,8 +31,8 @@ ChargingStrategy::statusType SimpleDischarge::doStrategy()
 
 bool SimpleDischarge::isMinVout() const
 {
-	AnalogInputs::ValueType Vc = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
-	AnalogInputs::ValueType Vc_per_cell = ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VDischarge);
+	AnalogInputs::ValueType Vc = V_;
+	AnalogInputs::ValueType Vc_per_cell = balancer.calculatePerCell(Vc);
 
 	return Vc >= discharger.getVout() || balancer.isMinVout(Vc_per_cell);
 }

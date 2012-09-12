@@ -25,7 +25,10 @@ public:
 	bool isMaxVout() const;
 //	bool isBalancer() const;
 
-	void setMinChargeC(uint16_t v);
+	void setMinChargeC(uint16_t v = 10);
 };
+
+extern TheveninCharge theveninCharge;
+
 
 #endif /* THEVENINCHARGE_H_ */

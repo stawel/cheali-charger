@@ -38,8 +38,10 @@ public:
 	void setBalance(uint16_t v);
 	void setBalance(uint8_t port, bool v);
 	uint8_t getCellMinV() const;
+	uint8_t getCells() const { return cells_; }
 	static AnalogInputs::ValueType getV(uint8_t cell);
 	AnalogInputs::ValueType getPresumedV(uint8_t cell) const;
+	AnalogInputs::ValueType getRealV(uint8_t cell) const { return getPresumedV(cell); }
 	bool isPowerOn() const;
 	bool isMaxVout(AnalogInputs::ValueType maxV) const;
 	bool isMinVout(AnalogInputs::ValueType minV) const;
@@ -51,6 +53,8 @@ public:
 	void calculateRth(AnalogInputs::ValueType i);
 	void calculateVth(AnalogInputs::ValueType i);
 	void storeLast(AnalogInputs::ValueType ILast);
+
+	AnalogInputs::ValueType calculatePerCell(AnalogInputs::ValueType v) const;
 };
 
 #endif /* BALANCER_H_ */

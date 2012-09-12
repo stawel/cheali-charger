@@ -242,5 +242,10 @@ bool Balancer::isMinVout(AnalogInputs::ValueType minV) const
 	return false;
 }
 
-
+AnalogInputs::ValueType Balancer::calculatePerCell(AnalogInputs::ValueType v) const
+{
+	if(cells_ == 0)
+		return 0;
+	return v/cells_;
+}
 

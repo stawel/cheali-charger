@@ -45,6 +45,10 @@ set(SOURCE_FILES
         Program.h
         TheveninCharge.cpp
         TheveninCharge.h
+        Storage.cpp
+        Storage.h
+        TheveninVtLimitCharge.cpp
+        TheveninVtLimitCharge.h
         Thevenin.cpp
         Thevenin.h
         Timer.cpp
