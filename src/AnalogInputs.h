@@ -117,6 +117,7 @@ public:
 	uint16_t getStableCount(Name name) const { return stableCount_[name]; };
 	bool isStable(Name name) const { return stableCount_[name] >= STABLE_MIN_VALUE; };
 	void resetStable();
+
 protected:
 	void setReal(Name name, ValueType real);
 	const DefaultValues * inputsP_;

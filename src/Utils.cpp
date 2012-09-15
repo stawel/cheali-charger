@@ -19,4 +19,16 @@ uint8_t setTypedValueWithKeyboard(double &x, uint8_t type)
 
 
 
-
+bool testTinern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on)
+{
+	AnalogInputs::ValueType t = analogInputs.getRealValue(AnalogInputs::Tintern);
+	bool retu = false;
+	if(t < off) {
+		retu = true;
+		more =  false;
+	} else if(t > on) {
+		retu = true;
+		more = true;
+	}
+	return retu;
+}

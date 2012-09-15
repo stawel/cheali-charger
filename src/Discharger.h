@@ -4,7 +4,9 @@
 #include "AnalogInputs.h"
 #include "Timer.h"
 
-#define UPPERBOUND_DISCHARGER_VALUE ((F_CPU / 2000000) * INTERRUPT_PERIOD_MICROSECONDS)
+#define DISCHARGER_UPPERBOUND_VALUE ((F_CPU / 2000000) * INTERRUPT_PERIOD_MICROSECONDS)
+#define DISCHARGER_TEMPERATURE_DISABLE ANALOG_CELCIUS(60)
+#define DISCHARGER_TEMPERATURE_ENABLE  ANALOG_CELCIUS(55)
 
 class Discharger {
 public:
@@ -32,10 +34,14 @@ public:
 	uint32_t getOnTimeSec() const;
 	double getDischarge() const;
 
+	uint16_t correctValueTintern(uint16_t v);
+
 protected:
+	void finalizeValueTintern();
 	STATE state_;
-	uint16_t value_;
+	uint16_t value_,valueSet_;
 	uint16_t startTime_;
+	bool tempcutoff_;
 	double discharge_;
 };
 

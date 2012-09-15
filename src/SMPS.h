@@ -6,8 +6,8 @@
 #include "AnalogInputs.h"
 #include "Timer.h"
 
-#define MAX_SMPS_VALUE 			((F_CPU / 2000000) * INTERRUPT_PERIOD_MICROSECONDS)
-#define UPPERBOUND_SMP_VALUE 	(MAX_SMPS_VALUE/4)
+#define SMPS_MAX_VALUE 			((F_CPU / 2000000) * INTERRUPT_PERIOD_MICROSECONDS)
+#define SMPS_UPPERBOUND_VALUE 	(SMPS_MAX_VALUE/4)
 
 class ChargingStrategy;
 

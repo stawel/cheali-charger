@@ -2,6 +2,7 @@
 #include "Hardware.h"
 
 #include "Monitor.h"
+#include "Utils.h"
 
 
 Monitor monitor;
@@ -9,14 +10,10 @@ Monitor monitor;
 
 void Monitor::doInterrupt()
 {
-	AnalogInputs::ValueType t = analogInputs.getRealValue(AnalogInputs::Tintern);
-
+	bool on;
 	//TODO: make configurable
-	if(t < ANALOG_CELCIUS(40))
-		hardware::setFan(false);
-
-	if(t > ANALOG_CELCIUS(50))
-		hardware::setFan(true);
+	if(testTinern(on, ANALOG_CELCIUS(40), ANALOG_CELCIUS(50)))
+		hardware::setFan(on);
 }
 
 Monitor::statusType Monitor::run()
@@ -30,7 +27,7 @@ Monitor::statusType Monitor::monitorInternalTemperature()
 	AnalogInputs::ValueType t = analogInputs.getRealValue(AnalogInputs::Tintern);
 
 	//TODO: make configurable
-	if(t > ANALOG_CELCIUS(60))
+	if(t > ANALOG_CELCIUS(65))
 		return ERROR;
 
 	return OK;

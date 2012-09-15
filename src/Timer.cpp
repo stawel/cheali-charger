@@ -6,6 +6,7 @@
 static void callback() {
 	timer.doInterrupt();
 	smps.doInterrupt();
+	discharger.doInterrupt();
 	monitor.doInterrupt();
 }
 

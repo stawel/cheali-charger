@@ -24,8 +24,8 @@ void SMPS::setError(const char * error1,const char * error2)
 
 void SMPS::setValue(uint16_t value)
 {
-	if(value > UPPERBOUND_SMP_VALUE)
-		value = UPPERBOUND_SMP_VALUE;
+	if(value > SMPS_UPPERBOUND_VALUE)
+		value = SMPS_UPPERBOUND_VALUE;
 	value_ = value;
 	Timer1.pwm(SMPS_VALUE_PIN, value_);
 }
