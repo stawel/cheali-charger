@@ -8,6 +8,8 @@ public:
 	uint16_t Rth_;
 	uint16_t Vth_;
 	uint16_t I_;
+	double charge_;
+
 
 	Screen() {};
 	enum VariableType { Voltage, Current, Charge, Temperature, Unknown };

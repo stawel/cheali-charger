@@ -183,6 +183,8 @@ AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x) con
 	a  = p1.x; a -= p0.x;
 	y /= a;
 	y += p0.y;
+
+	if(y < 0) y = 0;
 	return y;
 }
 AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType y) const
@@ -198,6 +200,8 @@ AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType
 	a  = p1.y; a -= p0.y;
 	x /= a;
 	x += p0.x;
+
+	if(x < 0) x = 0;
 	return x;
 }
 

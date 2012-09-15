@@ -84,11 +84,10 @@ uint8_t Screen::display(ScreenType screen, uint8_t blink )
 
 uint8_t Screen::displayScreen1(uint8_t blink)
 {
-	double charge = 0;
 	char c = 'N';
 	uint16_t value = 0;
-	AnalogInputs::Name I;
-	AnalogInputs::Name V;
+	AnalogInputs::Name I = smps.IName;
+	AnalogInputs::Name V = smps.VName;
 
 	BLINK_START;
 	lcd.setCursor(0,0);
@@ -96,14 +95,12 @@ uint8_t Screen::displayScreen1(uint8_t blink)
 	c= 'N';
 	if(smps.isPowerOn()) {
 		c = 'C';
-		charge = smps.getCharge();
+		charge_ = smps.getCharge();
 		value = smps.getValue();
-		I = smps.IName;
-		V = smps.VName;
 	}
 	if(discharger.isPowerOn()) {
 		c = 'D';
-		charge = discharger.getDischarge();
+		charge_ = discharger.getDischarge();
 		value = discharger.getValue();
 		I = discharger.IName;
 		V = discharger.VName;
@@ -111,7 +108,7 @@ uint8_t Screen::displayScreen1(uint8_t blink)
 		if(smps.isPowerOn()) c = 'E';
 	}
 
-	analogInputs.print(charge, AnalogInputs::Charge, 8);
+	analogInputs.print(charge_, AnalogInputs::Charge, 8);
 	lcd.print(' ');
 	analogInputs.printRealValue(I,  7);
 	lcdPrintSpaces();
