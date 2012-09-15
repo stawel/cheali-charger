@@ -1,12 +1,12 @@
 #include "Timer.h"
 #include "TimerOne.h"
 #include "Hardware.h"
-
+#include "Monitor.h"
 
 static void callback() {
 	timer.doInterrupt();
 	smps.doInterrupt();
-
+	monitor.doInterrupt();
 }
 
 

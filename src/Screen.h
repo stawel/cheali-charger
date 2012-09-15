@@ -30,6 +30,8 @@ public:
 	uint8_t displayChargeEnded(uint8_t blink = -1);
 	uint8_t displayRthVth(uint8_t blink = -1);
 
+	void displayMonitorError();
+
 	void displayStrings(const char *s1, const char *s2) const;
 };
 

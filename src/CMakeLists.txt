@@ -53,11 +53,15 @@ set(SOURCE_FILES
         TimerOne.h
         Utils.cpp
         Utils.h
+
+        Monitor.cpp
+        Monitor.h
 )
 
 include(${CMAKE_SOURCE_DIR}/arduino/arduino.cmake)
 
 include_directories(${CMAKE_SOURCE_DIR}/arduino/cores/arduino ${CMAKE_SOURCE_DIR}/arduino/variants/atmega32)
+include_directories(/usr/lib/avr/include/)
 
 link_libraries(arduino)
 link_libraries(m)

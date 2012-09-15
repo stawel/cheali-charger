@@ -12,6 +12,10 @@
 #define FOR_ALL_PHY_INPUTS(iterator) for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::PHYSICAL_INPUTS; iterator = AnalogInputs::Name(iterator + 1) )
 #define FOR_ALL_INPUTS(iterator)     for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::ALL_INPUTS;      iterator = AnalogInputs::Name(iterator + 1) )
 
+#define ANALOG_CELCIUS(x) ((AnalogInputs::ValueType)((x)*100))
+#define ANALOG_VOLTS(x) ((AnalogInputs::ValueType)((x)*1000))
+#define ANALOG_AMPS(x) ((AnalogInputs::ValueType)((x)*1000))
+
 class AnalogInputs {
 public:
 	typedef uint16_t ValueType;
@@ -79,8 +83,8 @@ public:
 	ValueType getRealValue(Name name) const;
 	ValueType getMeasuredValue(Name name) const;
 
-	ValueType calibrateValue(Name name, ValueType v) const;
-	ValueType reverseCalibrateValue(Name name, ValueType v) const;
+	ValueType calibrateValue(Name name, ValueType x) const;
+	ValueType reverseCalibrateValue(Name name, ValueType y) const;
 
 	void measureValue(Name name);
 	void doMeasurement(uint32_t count = PHYSICAL_INPUTS);

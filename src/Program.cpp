@@ -7,6 +7,7 @@
 #include "SimpleCharge.h"
 #include "TheveninCharge.h"
 #include "SimpleDischarge.h"
+#include "Monitor.h"
 
 bool buzzer = false;
 
@@ -56,6 +57,14 @@ void chargingComplete()
 	do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
 	buzzerOff();
 }
+void chargingMonitorError()
+{
+	lcd.clear();
+	screens.displayChargeEnded();
+	buzzerOn();
+	do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
+	buzzerOff();
+}
 
 void notImplemented()
 {
@@ -70,6 +79,7 @@ void charge(ChargingStrategy &strategy, Screen::ScreenType chargeScreens[], uint
 	uint8_t key;
 	bool run = true;
 	ChargingStrategy::statusType status = ChargingStrategy::RUNNING;
+	Monitor::statusType mstatus;
 	strategy.powerOn();
 	lcd.clear();
 	uint8_t screen = 0;
@@ -77,8 +87,15 @@ void charge(ChargingStrategy &strategy, Screen::ScreenType chargeScreens[], uint
 		screens.display(chargeScreens[screen]);
 		key = selectIndexWithKeyboard(screen, screen_limit);
 		if(run) {
+			mstatus = monitor.run();
+			if(mstatus != Monitor::OK) {
+				strategy.powerOff();
+				chargingMonitorError();
+				run = false;
+			}
 			status = strategy.doStrategy();
 			if(status != ChargingStrategy::RUNNING) {
+				strategy.powerOff();
 				chargingComplete();
 				run = false;
 			}

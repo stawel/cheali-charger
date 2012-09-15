@@ -2,6 +2,7 @@
 #include "LcdPrint.h"
 #include "MainMenu.h"
 #include "SMPS.h"
+#include "Monitor.h"
 
 extern MainMenu::MenuData mainMenuData;
 

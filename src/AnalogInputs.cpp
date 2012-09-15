@@ -170,25 +170,35 @@ AnalogInputs::ValueType AnalogInputs::getMeasuredValue(Name name) const
 }
 
 
-AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType v) const
+AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x) const
 {
 	//TODO: do it with more points
-	CalibrationPoint p;
-	getCalibrationPoint(p, name, 1);
-	uint32_t y = v;
-	y*=p.y;
-	y/=p.x;
+	CalibrationPoint p0, p1;
+	getCalibrationPoint(p0, name, 0);
+	getCalibrationPoint(p1, name, 1);
+	int32_t y,a;
+	y  = p1.y; y -= p0.y;
+	a  =  x;   a -= p0.x;
+	y *= a;
+	a  = p1.x; a -= p0.x;
+	y /= a;
+	y += p0.y;
 	return y;
 }
-AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType v) const
+AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType y) const
 {
 	//TODO: do it with more points
-	CalibrationPoint p;
-	getCalibrationPoint(p, name, 1);
-	uint32_t y = v;
-	y*=p.x;
-	y/=p.y;
-	return y;
+	CalibrationPoint p0, p1;
+	getCalibrationPoint(p0, name, 0);
+	getCalibrationPoint(p1, name, 1);
+	int32_t x,a;
+	x  = p1.x; x -= p0.x;
+	a  =  y;   a -= p0.y;
+	x *= a;
+	a  = p1.y; a -= p0.y;
+	x /= a;
+	x += p0.x;
+	return x;
 }
 
 

@@ -185,6 +185,12 @@ uint8_t Screen::displayChargeEnded(uint8_t blink)
 	BLINK_NON;
 }
 
+void Screen::displayMonitorError()
+{
+	displayStrings(PSTR("Monitor"), PSTR("error"));
+}
+
+
 uint8_t Screen::displayRthVth(uint8_t blink)
 {
 	lcd.setCursor(0,0);

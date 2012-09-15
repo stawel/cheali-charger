@@ -19,7 +19,7 @@ AnalogInputs::DefaultValues inputs_P[AnalogInputs::PHYSICAL_INPUTS] PROGMEM =
 		{AnalogInputs::analogValue<DISCHARGE_CURRENT_PIN>,	{0,0},	{8960, 1000}},	 	//Idischarge
 
 		{mux.analogRead<MADDR_V_OUTMUX>, 	{0, 0}, 	{24832, 12552}},  	//VoutMux
-		{mux.analogRead<MADDR_T_INTERN>, 	{0, 0}, 	{43520, 2000}},		//Tintern
+		{mux.analogRead<MADDR_T_INTERN>, 	{21500, ANALOG_CELCIUS(52)}, {41023, ANALOG_CELCIUS(29)}},	//Tintern
 		{mux.analogRead<MADDR_V_IN>,		{0, 0}, 	{48000, 13930}},  	//Vin
 		{mux.analogRead<MADDR_T_EXTERN>,	{0, 0}, 	{1, 1}},			//Textern
 
@@ -48,7 +48,9 @@ void hardware::init()
 	analogReference(EXTERNAL);
 	pinMode(BACKLIGHT_PIN, OUTPUT);
 	pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
+	pinMode(FAN_PIN, OUTPUT);
 	setBatteryOutput(false);
+	setFan(false);
 
 	lcd.begin(LCD_COLUMNS, LCD_LINES);
 	mux.init();
@@ -63,6 +65,11 @@ void hardware::setLCDBacklight(uint16_t val)
 void hardware::setBatteryOutput(bool enable)
 {
 	digitalWrite(OUTPUT_DISABLE_PIN, !enable);
+}
+
+void hardware::setFan(bool enable)
+{
+	digitalWrite(FAN_PIN, enable);
 }
 
 
