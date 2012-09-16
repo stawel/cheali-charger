@@ -9,12 +9,14 @@ public:
 
 	AnalogInputs::ValueType V_;
 	State state;
+	bool doBalance_;
 
 	Storage(){}
 	virtual void powerOn();
 	virtual statusType doStrategy();
 	virtual void powerOff();
 	void setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I);
+	void setDoBalance(bool v);
 };
 
 extern Storage storage;

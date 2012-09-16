@@ -12,6 +12,11 @@ public:
 	static void printStartInfo(ProgramType prog);
 	static void printProgram2chars(ProgramType prog);
 	static bool startInfo(ProgramType prog);
+
+	static void runStorage(bool balance);
+	static void runTheveninCharge(int minChargeC);
+	static void runDischarge();
+	static void runBalance();
 };
 
 

@@ -44,7 +44,7 @@ ChargingStrategy::statusType Storage::doStrategy()
 			break;
 	}
 
-	if(status == COMPLETE) {
+	if(status == COMPLETE && doBalance_) {
 		status = RUNNING;
 		state = Balance;
 	}
@@ -57,5 +57,10 @@ void Storage::setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I)
 	V_ = V;
 	theveninVtLimitCharge.setVtLimit(V);
 	simpleDischarge.setVI(V,I);
+}
+
+void Storage::setDoBalance(bool v)
+{
+	doBalance_ = v;
 }
 

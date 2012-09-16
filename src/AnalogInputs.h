@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-#define MAX_CALIBRATION_POINTS 10
+#define MAX_CALIBRATION_POINTS 2
 
 #define ANALOG_INPUTS_RESOLUTION 		16  // bits
 #define STD_ANALOG_INPUTS_RESOLUTION 	10  // bits

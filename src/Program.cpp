@@ -165,30 +165,49 @@ bool Program::startInfo(ProgramType prog)
 	return ok;
 }
 
+void Program::runStorage(bool balance)
+{
+	storage.setDoBalance(balance);
+	storage.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage), ProgramData::currentProgramData.I);
+	charge(storage, storageScreens, sizeOfArray(storageScreens));
+}
+void Program::runTheveninCharge(int minChargeC)
+{
+	theveninCharge.setMinChargeC(minChargeC);
+	charge(theveninCharge, theveninScreens, sizeOfArray(theveninScreens));
+}
+void Program::runDischarge()
+{
+	//TODO: implement discharge current
+	simpleDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.I);
+	charge(simpleDischarge, dischargeScreens, sizeOfArray(dischargeScreens));
+}
+
+void Program::runBalance()
+{
+	charge(balancer, balanceScreens, sizeOfArray(balanceScreens));
+}
+
 void Program::run(ProgramType prog)
 {
 	if(startInfo(prog)) {
 		switch(prog) {
 		case Program::Charge:
-			theveninCharge.setMinChargeC(10);
-			charge(theveninCharge, theveninScreens, sizeOfArray(theveninScreens));
+			runTheveninCharge(10);
 			break;
 		case Program::Balance:
-			charge(balancer, balanceScreens, sizeOfArray(balanceScreens));
+			runBalance();
 			break;
 		case Program::Discharge:
-			//TODO: implement discharge current
-			simpleDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.I);
-			charge(simpleDischarge, dischargeScreens, sizeOfArray(dischargeScreens));
+			runDischarge();
 			break;
 		case Program::FastCharge:
-			theveninCharge.setMinChargeC(5);
-			charge(theveninCharge, theveninScreens, sizeOfArray(theveninScreens));
+			runTheveninCharge(5);
 			break;
 		case Program::Storage:
+			runStorage(false);
 		case Program::Storage_Balance:
-			storage.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage), ProgramData::currentProgramData.I);
-			charge(storage, storageScreens, sizeOfArray(storageScreens));
+			runStorage(true);
 			break;
 		default:
 			//TODO:
