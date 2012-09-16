@@ -6,7 +6,7 @@
 #include "Hardware.h"
 
 
-#define MAX_PROGRAMS 16
+#define MAX_PROGRAMS 32
 
 struct ProgramData {
 	enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo, 				LAST_BATTERY_TYPE};

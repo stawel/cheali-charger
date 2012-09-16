@@ -63,7 +63,6 @@ const char * calibrateIMenu[] PROGMEM =
 	string_cI1,
 };
 
-
 void Calibrate::calibrateI(screenType screen, AnalogInputs::Name name1, AnalogInputs::Name name2)
 {
 	MainMenu menu(NULL, calibrateIMenu, sizeOfArray(calibrateIMenu));
@@ -87,6 +86,18 @@ void Calibrate::calibrateI(screenType screen, AnalogInputs::Name name1, AnalogIn
 	} while(i >= 0);
 }
 
+void Calibrate::copyVbalVout()
+{
+	AnalogInputs::CalibrationPoint p;
+	if(calibrate(SCREEN_VOUT_VBAL)) {
+		p.x = analogInputs.getValue(AnalogInputs::Vout);
+		p.y = analogInputs.getRealValue(AnalogInputs::Vbalacer);
+		analogInputs.setCalibrationPoint(AnalogInputs::Vout, 1, p);
+
+		p.x = analogInputs.getValue(AnalogInputs::VoutMux);
+		analogInputs.setCalibrationPoint(AnalogInputs::VoutMux, 1, p);
+	}
+}
 
 void Calibrate::run()
 {
@@ -95,7 +106,9 @@ void Calibrate::run()
 	do {
 		i = menu.runSimple();
 		switch(i) {
+		case 2: copyVbalVout(); break;
 		case 3: calibrateI(SCREEN_IOUT, AnalogInputs::Ismps, AnalogInputs::IsmpsValue); break;
+		case 4: calibrateI(SCREEN_IDISCHARGE, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue); break;
 		case 8: runInfo(); break;
 		default:
 				Screen::notImplemented(); break;
@@ -182,6 +195,13 @@ void Calibrate::printCalibrateVout()
 	print_m_3(PSTR("VoutMux:"), AnalogInputs::VoutMux);
 }
 
+void Calibrate::printCalibrateVoutVbal()
+{
+	print_v();
+	print_m_2(PSTR(" Vo:"), AnalogInputs::Vout);
+	print_m_3(PSTR("Vbal:"), AnalogInputs::Vbalacer);
+}
+
 void Calibrate::printCalibrateB0_2()
 {
 	print_v(5);
@@ -219,51 +239,35 @@ void Calibrate::printCalibrateVin()
 
 void Calibrate::printCalibrate(int p) {
 	switch(p) {
-	case SCREEN_IOUT: printCalibrateI(); 		break;
-	case 1: printCalibrateVout(); 	break;
-	case 2: printCalibrateB0_2(); 	break;
-	case 3: printCalibrateB3_5(); 	break;
-	case 4: printCalibrateT(); 		break;
-	case 5: printCalibrateVin(); 	break;
+	case SCREEN_IOUT: 		printCalibrateI(); 		break;
+	case 1: 				printCalibrateVout(); 	break;
+	case 2: 				printCalibrateB0_2(); 	break;
+	case 3: 				printCalibrateB3_5(); 	break;
+	case 4: 				printCalibrateT(); 		break;
+	case 5: 				printCalibrateVin(); 	break;
+	case SCREEN_VOUT_VBAL: 	printCalibrateVoutVbal(); 	break;
 	}
 }
 
 void Calibrate::info(int p)
 {
-	value_ = 0;
-	dispVal_ = 2;
-	smps.powerOn();
-	analogInputs.doFullMeasurement();
-	uint8_t key;
-	do {
-		printCalibrate(p);
-		key = keyboard.getPressedWithSpeed();
-		if(key == BUTTON_INC && value_ < 760) {
-			value_++;
-			smps.setValue(value_);
-		}
-		if(key == BUTTON_DEC && value_ > 0) {
-			value_--;
-			smps.setValue(value_);
-		}
-		if(key == BUTTON_START) {
-			dispVal_ = (dispVal_+1)%3;
-		}
-
-	} while(key != BUTTON_STOP);
-	smps.powerOff();
+	calibrate(p);
 }
 
 bool Calibrate::calibrate(int p)
 {
+	if(p == SCREEN_IDISCHARGE)
+		return calibrateDischarge();
+
 	bool retu = false;
 	value_ = 0;
-	dispVal_ = 2;
+	dispVal_ = 0;
 	smps.powerOn();
 	analogInputs.doFullMeasurement();
-	uint8_t key;
+	uint8_t key, last_key;
 	do {
 		printCalibrate(p);
+		last_key = key;
 		key = keyboard.getPressedWithSpeed();
 		if(key == BUTTON_INC && value_ < 760) {
 			value_++;
@@ -273,9 +277,11 @@ bool Calibrate::calibrate(int p)
 			value_--;
 			smps.setValue(value_);
 		}
-		if(key == BUTTON_START && keyboard.getSpeed() == 5) {
+		if(key == BUTTON_START && keyboard.getSpeed() == ACCEPT_DELAY) {
 			retu = true;
 			break;
+		} if(key == BUTTON_NONE && last_key == BUTTON_START) {
+			dispVal_ = (dispVal_+1)%3;
 		}
 
 	} while(key != BUTTON_STOP);
@@ -285,13 +291,20 @@ bool Calibrate::calibrate(int p)
 
 void Calibrate::infoDis()
 {
+	calibrateDischarge();
+}
+
+bool Calibrate::calibrateDischarge()
+{
+	bool retu = false;
 	value_ = 0;
 	dispVal_ = 0;
 	discharger.powerOn();
 	analogInputs.doFullMeasurement();
-	uint8_t key;
+	uint8_t key, last_key;
 	do {
 		printCalibrateDis();
+		last_key = key;
 		key = keyboard.getPressedWithSpeed();
 		if(key == BUTTON_INC && value_ < 760*2) {
 			value_++;
@@ -301,13 +314,17 @@ void Calibrate::infoDis()
 			value_--;
 			discharger.setValue(value_);
 		}
-		if(key == BUTTON_START) {
+		if(key == BUTTON_START && keyboard.getSpeed() == ACCEPT_DELAY) {
+			retu = true;
+			break;
+		} if(key == BUTTON_NONE && last_key == BUTTON_START) {
 			dispVal_ = (dispVal_+1)%3;
 		}
-
 	} while(key != BUTTON_STOP);
 	discharger.powerOff();
+	return retu;
 }
+
 
 void Calibrate::infoTimeM()
 {
