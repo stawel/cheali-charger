@@ -19,9 +19,6 @@ const char * optionsMainMenu[] PROGMEM =
   string_o3,
 };
 
-MainMenu optionsMenu(NULL, optionsMainMenu, sizeOfArray(optionsMainMenu));
-
-
 void Options::resetDefault()
 {
 	lcd.clear();
@@ -47,24 +44,16 @@ void Options::resetDefault()
 
 void Options::run()
 {
-	uint8_t key;
-	bool release = true;
-	optionsMenu.render();
+	MainMenu optionsMenu(NULL, optionsMainMenu, sizeOfArray(optionsMainMenu));
 	Calibrate calibrate;
+	int i;
 
 	do {
-		key = optionsMenu.run();
-		if(key == BUTTON_NONE) release = false;
-
-		if(!release && key == BUTTON_START)  {
-			int i = optionsMenu.getIndex();
-			switch(i) {
-			case 0: Screen::notImplemented(); break;
-			case 1: calibrate.run(); break;
-			case 2: resetDefault(); break;
-			}
-			optionsMenu.render();
-			release = true;
+		i = optionsMenu.runSimple();
+		switch(i) {
+		case 0: Screen::notImplemented(); break;
+		case 1: calibrate.run(); break;
+		case 2: resetDefault(); break;
 		}
-	} while(key != BUTTON_STOP || release);
+	} while(i>=0);
 }
