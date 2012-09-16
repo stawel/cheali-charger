@@ -28,7 +28,7 @@ void Discharger::setValue(uint16_t value)
 	if(value > DISCHARGER_UPPERBOUND_VALUE)
 		value = DISCHARGER_UPPERBOUND_VALUE;
 	valueSet_ = value;
-	finalizeValueTintern();
+	finalizeValueTintern(true);
 }
 
 uint16_t Discharger::correctValueTintern(uint16_t v)
@@ -40,10 +40,10 @@ uint16_t Discharger::correctValueTintern(uint16_t v)
 	return v;
 }
 
-void Discharger::finalizeValueTintern()
+void Discharger::finalizeValueTintern(bool force)
 {
 	uint16_t  v = correctValueTintern(valueSet_);
-	if(v != value_) {
+	if(v != value_ || force) {
 		value_ = v;
 		Timer1.pwm(DISCHARGE_VALUE_PIN, value_);
 	}
@@ -83,7 +83,7 @@ void Discharger::doInterrupt()
 {
     if(isPowerOn()) {
             discharge_+=getIout();
-            finalizeValueTintern();
+            finalizeValueTintern(false);
     }
 }
 

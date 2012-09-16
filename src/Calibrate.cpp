@@ -99,13 +99,33 @@ void Calibrate::copyVbalVout()
 	}
 }
 
+void Calibrate::setBalancer(AnalogInputs::Name firstName)
+{
+	AnalogInputs::Name name = AnalogInputs::Name(firstName + blink_);
+	uint8_t x,y;
+	switch(blink_) {
+	case 0:	x = 10; y = 0; break;
+	case 1: x = 2;  y = 1; break;
+	case 2: x = 10; y = 1; break;
+	}
+	AnalogInputs::CalibrationPoint p;
+	p.y = analogInputs.getRealValue(name);
+	if(setValue(x, y, p.y, AnalogInputs::Voltage, 6)) {
+		p.x = analogInputs.getValue(name);
+		analogInputs.setCalibrationPoint(name, 1, p);
+	}
+}
+
 void Calibrate::run()
 {
 	MainMenu menu(NULL, calibrateMenu, sizeOfArray(calibrateMenu));
 	int i;
 	do {
 		i = menu.runSimple();
+		if(i<0) break;
 		switch(i) {
+		case 0: calibrateBlink(SCREEN_B0_2_BLINK, 3); break;
+		case 1: calibrateBlink(SCREEN_B3_5_BLINK, 3); break;
 		case 2: copyVbalVout(); break;
 		case 3: calibrateI(SCREEN_IOUT, AnalogInputs::Ismps, AnalogInputs::IsmpsValue); break;
 		case 4: calibrateI(SCREEN_IDISCHARGE, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue); break;
@@ -123,7 +143,7 @@ void Calibrate::runInfo()
 	do {
 		i = menu.runSimple();
 		if(i >= 0 && i<=5)
-			info(i);
+			info(screenType(i));
 
 		switch(i) {
 		case 6: infoDis(); break;
@@ -144,9 +164,8 @@ void Calibrate::print_v(uint8_t dig){
 	lcdPrintEValueU(value_, dig);
 }
 
-void Calibrate::print_m(const char *str, AnalogInputs::Name name, int dig)
+void Calibrate::print_d(AnalogInputs::Name name, int dig)
 {
-	lcdPrint_P(str);
 	switch(dispVal_) {
 	case 0:	lcdPrintEValueU(analogInputs.getValue(name), dig-2);
 			break;
@@ -155,6 +174,12 @@ void Calibrate::print_m(const char *str, AnalogInputs::Name name, int dig)
 	case 2: analogInputs.printMeasuredValue(name, dig);
 			break;
 	}
+}
+
+void Calibrate::print_m(const char *str, AnalogInputs::Name name, int dig)
+{
+	lcdPrint_P(str);
+	print_d(name, dig);
 }
 
 void Calibrate::print_m_2(const char *str, AnalogInputs::Name name, int dig)
@@ -212,6 +237,49 @@ void Calibrate::printCalibrateB0_2()
 	if(dispVal_ == 0) lcd.print(' ');
 	print_m_2(PSTR("2:"), AnalogInputs::Vb2, dig);
 }
+void Calibrate::printCalibrateB0_2_Blink()
+{
+	lcd.setCursor(0,0);
+	lcdPrintSpaces(7);
+	uint8_t dig = 7;
+	if(dispVal_ != 0) dig = 6;
+
+	lcdPrint_P(PSTR(" 0:"));
+	if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb0, dig);
+	else lcdPrintSpaces(dig);
+
+	lcd.setCursor(0,1);
+	lcdPrint_P(PSTR("1:"));
+	if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb1, dig);
+	else lcdPrintSpaces(dig);
+
+	if(dispVal_ == 0) lcd.print(' ');
+	lcdPrint_P(PSTR("2:"));
+	if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb2, dig);
+	else lcdPrintSpaces(dig);
+}
+
+void Calibrate::printCalibrateB3_5_Blink()
+{
+	lcd.setCursor(0,0);
+	lcdPrintSpaces(7);
+	uint8_t dig = 7;
+	if(dispVal_ != 0) dig = 6;
+
+	lcdPrint_P(PSTR(" 3:"));
+	if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb3, dig);
+	else lcdPrintSpaces(dig);
+
+	lcd.setCursor(0,1);
+	lcdPrint_P(PSTR("4:"));
+	if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb4, dig);
+	else lcdPrintSpaces(dig);
+
+	if(dispVal_ == 0) lcd.print(' ');
+	lcdPrint_P(PSTR("5:"));
+	if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb5, dig);
+	else lcdPrintSpaces(dig);
+}
 
 void Calibrate::printCalibrateB3_5()
 {
@@ -237,33 +305,105 @@ void Calibrate::printCalibrateVin()
 	print_m_3(PSTR("Vin:"), AnalogInputs::Vin);
 }
 
-void Calibrate::printCalibrate(int p) {
+void Calibrate::printCalibrate(screenType p) {
 	switch(p) {
 	case SCREEN_IOUT: 		printCalibrateI(); 		break;
-	case 1: 				printCalibrateVout(); 	break;
-	case 2: 				printCalibrateB0_2(); 	break;
-	case 3: 				printCalibrateB3_5(); 	break;
+	case SCREEN_VOUT:		printCalibrateVout(); 	break;
+	case SCREEN_B0_2:		printCalibrateB0_2(); 	break;
+	case SCREEN_B3_5: 		printCalibrateB3_5(); 	break;
 	case 4: 				printCalibrateT(); 		break;
 	case 5: 				printCalibrateVin(); 	break;
 	case SCREEN_VOUT_VBAL: 	printCalibrateVoutVbal(); 	break;
+	case SCREEN_B0_2_BLINK:	printCalibrateB0_2_Blink(); break;
+	case SCREEN_B3_5_BLINK:	printCalibrateB3_5_Blink(); break;
 	}
 }
 
-void Calibrate::info(int p)
+void Calibrate::info(screenType p)
 {
 	calibrate(p);
 }
 
-bool Calibrate::calibrate(int p)
+void Calibrate::setBlink(screenType screen)
+{
+	switch (screen) {
+		case SCREEN_B0_2_BLINK:		setBalancer(AnalogInputs::Vb0); break;
+		case SCREEN_B3_5_BLINK:		setBalancer(AnalogInputs::Vb3); break;
+	}
+}
+
+bool Calibrate::calibrateBlink(screenType p, int8_t maxBlink)
+{
+	bool retu = false;
+	bool released = false;
+	dispVal_ = 1;
+	blink_ = 0;
+	blinkOn_ = true;
+	uint8_t blinkCount = 0;
+	smps.powerOn();
+	uint8_t key, last_key;
+	do {
+		printCalibrate(p);
+		key = keyboard.getPressedWithSpeed();
+
+		blinkOn_ = (blinkCount%6) != 0;
+		blinkCount++;
+		if(key == BUTTON_INC && blink_ < maxBlink - 1)  blink_++;
+		if(key == BUTTON_DEC && blink_ > 0)  			blink_--;
+
+		if(key == BUTTON_START && released) {
+			setBlink(p);
+			released = false;
+		}
+		if(key == BUTTON_NONE) released = true;
+		else blinkCount = 0;
+
+	} while(key != BUTTON_STOP || !released);
+	smps.powerOff();
+	return retu;
+}
+
+
+bool Calibrate::setValue(uint8_t x, uint8_t y, AnalogInputs::ValueType &v, AnalogInputs::Type type, uint8_t dig)
+{
+	bool retu = false;
+	bool released = false;
+	uint8_t key;
+	int dir;
+	do {
+		dir = 0;
+		lcd.setCursor(x,y);
+		if(blinkOn_)	AnalogInputs::print(v, type, dig);
+		else 			lcdPrintSpaces(dig);
+		blinkOn_ = !blinkOn_;
+
+		key = keyboard.getPressedWithSpeed();
+		if(key == BUTTON_INC) dir  = 1;
+		if(key == BUTTON_DEC) dir = -1;
+		if(key == BUTTON_START && keyboard.getSpeed() == ACCEPT_DELAY && released) {
+			retu = true;
+			break;
+		}
+		if(key == BUTTON_NONE) released = true;
+		else blinkOn_ = true;
+
+		dir *= keyboard.getSpeedFactor();
+		v+=dir;
+	} while(key != BUTTON_STOP);
+	return retu;
+}
+
+
+bool Calibrate::calibrate(screenType p)
 {
 	if(p == SCREEN_IDISCHARGE)
 		return calibrateDischarge();
 
 	bool retu = false;
+	bool released = false;
 	value_ = 0;
-	dispVal_ = 0;
+	dispVal_ = 1;
 	smps.powerOn();
-	analogInputs.doFullMeasurement();
 	uint8_t key, last_key;
 	do {
 		printCalibrate(p);
@@ -277,12 +417,14 @@ bool Calibrate::calibrate(int p)
 			value_--;
 			smps.setValue(value_);
 		}
-		if(key == BUTTON_START && keyboard.getSpeed() == ACCEPT_DELAY) {
+		if(key == BUTTON_START && keyboard.getSpeed() == ACCEPT_DELAY && released) {
 			retu = true;
 			break;
-		} if(key == BUTTON_NONE && last_key == BUTTON_START) {
+		}
+		if(key == BUTTON_NONE && last_key == BUTTON_START && released) {
 			dispVal_ = (dispVal_+1)%3;
 		}
+		if(key == BUTTON_NONE) released = true;
 
 	} while(key != BUTTON_STOP);
 	smps.powerOff();
@@ -297,10 +439,10 @@ void Calibrate::infoDis()
 bool Calibrate::calibrateDischarge()
 {
 	bool retu = false;
+	bool released = false;
 	value_ = 0;
-	dispVal_ = 0;
+	dispVal_ = 1;
 	discharger.powerOn();
-	analogInputs.doFullMeasurement();
 	uint8_t key, last_key;
 	do {
 		printCalibrateDis();
@@ -314,12 +456,13 @@ bool Calibrate::calibrateDischarge()
 			value_--;
 			discharger.setValue(value_);
 		}
-		if(key == BUTTON_START && keyboard.getSpeed() == ACCEPT_DELAY) {
+		if(key == BUTTON_START && keyboard.getSpeed() == ACCEPT_DELAY && released) {
 			retu = true;
 			break;
-		} if(key == BUTTON_NONE && last_key == BUTTON_START) {
+		} if(key == BUTTON_NONE && last_key == BUTTON_START  && released) {
 			dispVal_ = (dispVal_+1)%3;
 		}
+		if(key == BUTTON_NONE) released = true;
 	} while(key != BUTTON_STOP);
 	discharger.powerOff();
 	return retu;

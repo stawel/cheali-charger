@@ -37,7 +37,7 @@ public:
 	uint16_t correctValueTintern(uint16_t v);
 
 protected:
-	void finalizeValueTintern();
+	void finalizeValueTintern(bool force);
 	STATE state_;
 	uint16_t value_,valueSet_;
 	uint16_t startTime_;
