@@ -21,8 +21,9 @@ set(SOURCE_FILES
         LiquidCrystal.cpp
         LiquidCrystal.h
         MainMenu.h
-        memory.h
         Menu.h
+        Menu.cpp
+        memory.h
         Multiplexer.cpp
         Multiplexer.h
         ProgramData.cpp

@@ -2,8 +2,6 @@
 #define MENU_H_
 
 #include <inttypes.h>
-#include "Hardware.h"
-#include "LcdPrint.h"
 
 class Menu {
 public:
@@ -13,79 +11,20 @@ public:
 	bool render_;
 	bool waitRelease_;
 public:
-	Menu(uint8_t size):
-		pos_(0), begin_(0), size_(size), render_(true), waitRelease_(true){}
-
+	Menu(uint8_t size);
 	void render() { render_ = true; }
 
-	uint8_t run() {
-		uint8_t button = keyboard.getPressedWithSpeed();
-		uint8_t index = getIndex();
-		switch (button) {
-		case BUTTON_INC:
-			incIndex();
-			break;
-		case BUTTON_DEC:
-			decIndex();
-			break;
-		}
-		if(index != getIndex())
-			render_ = true;
+	uint8_t run();
+	int runSimple();
 
-		if(render_)
-			display();
+	void incIndex();
+	void decIndex();
 
-		return button;
-	}
-	int runSimple() {
-		uint8_t key;
-		render();
-		do {
-			key = run();
-			if(key == BUTTON_NONE) waitRelease_ = false;
-
-			if(!waitRelease_ && key == BUTTON_START)  {
-				waitRelease_ = true;
-				return getIndex();
-			}
-		} while(key != BUTTON_STOP || waitRelease_);
-		return -1;
-	}
-
-
-	void incIndex() {
-		if(pos_ < LCD_LINES - 1) pos_++;
-		else if( begin_ + pos_ < getMenuSize() - 1) begin_++;
-	}
-	void decIndex() {
-		if(pos_ > 0) pos_--;
-		else if(begin_ > 0) begin_--;
-	}
-
-	uint8_t getIndex() {
-		return begin_ + pos_;
-	}
-
+	uint8_t getIndex() { return begin_ + pos_; }
 	virtual void printItem(int i) {}
+	uint8_t getMenuSize() const { return size_; }
 
-	uint8_t getMenuSize(){
-		return size_;
-	}
-
-	void display() {
-		uint8_t lines = LCD_LINES;
-		for(uint8_t i = 0; i < lines; i++) {
-			lcd.setCursor(0, i);
-			lcd.print(' ');
-			printItem(i+begin_);
-			lcdPrintSpaces();
-		}
-		lcd.setCursor(0,pos_);
-		lcd.print('>');
-		lcd.setCursor(LCD_COLUMNS - 1,pos_);
-		lcd.print('<');
-		render_ = false;
-	}
+	void display();
 };
 
 #endif /* MENU_H_ */
