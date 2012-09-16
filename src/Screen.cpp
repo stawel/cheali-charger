@@ -3,6 +3,9 @@
 #include "LcdPrint.h"
 #include "ProgramData.h"
 
+
+Screen screens;
+
 namespace {
 	AnalogInputs::ValueType getBalanceValue(int cell, bool mesured)
 	{
@@ -205,6 +208,12 @@ uint8_t Screen::displayRthVth(uint8_t blink)
 	BLINK_NON;
 }
 
+void Screen::notImplemented()
+{
+	lcd.clear();
+	screens.displayStrings(PSTR("Function not"), PSTR("implemented yet"));
+	do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
+}
 
-Screen screens;
+
 

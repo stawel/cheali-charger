@@ -11,9 +11,10 @@ public:
 	uint8_t begin_;
 	uint8_t size_;
 	bool render_;
+	bool waitRelease_;
 public:
 	Menu(uint8_t size):
-		pos_(0), begin_(0), size_(size), render_(true){}
+		pos_(0), begin_(0), size_(size), render_(true), waitRelease_(true){}
 
 	void render() { render_ = true; }
 
@@ -36,6 +37,21 @@ public:
 
 		return button;
 	}
+	int runSimple() {
+		uint8_t key;
+		render();
+		do {
+			key = run();
+			if(key == BUTTON_NONE) waitRelease_ = false;
+
+			if(!waitRelease_ && key == BUTTON_START)  {
+				waitRelease_ = true;
+				return getIndex();
+			}
+		} while(key != BUTTON_STOP || waitRelease_);
+		return -1;
+	}
+
 
 	void incIndex() {
 		if(pos_ < LCD_LINES - 1) pos_++;

@@ -68,14 +68,6 @@ void chargingMonitorError()
 	buzzerOff();
 }
 
-void notImplemented()
-{
-	lcd.clear();
-	screens.displayStrings(PSTR("Function not"), PSTR("implemented yet"));
-	do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
-}
-
-
 void charge(ChargingStrategy &strategy, Screen::ScreenType chargeScreens[], uint8_t screen_limit)
 {
 	uint8_t key;
@@ -211,7 +203,7 @@ void Program::run(ProgramType prog)
 			break;
 		default:
 			//TODO:
-			notImplemented();
+			Screen::notImplemented();
 			break;
 		}
 	}

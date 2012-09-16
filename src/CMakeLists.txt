@@ -25,8 +25,6 @@ set(SOURCE_FILES
         Menu.h
         Multiplexer.cpp
         Multiplexer.h
-        Options.cpp
-        Options.h
         ProgramData.cpp
         ProgramData.h
         ProgramDataMenu.cpp
@@ -60,6 +58,11 @@ set(SOURCE_FILES
 
         Monitor.cpp
         Monitor.h
+
+        Calibrate.cpp
+        Calibrate.h
+        Options.cpp
+        Options.h
 )
 
 include(${CMAKE_SOURCE_DIR}/arduino/arduino.cmake)
