@@ -5,8 +5,12 @@
 
 class Calibrate {
 public:
-	uint16_t value;
-	uint16_t dispVal;
+	uint16_t value_;
+	uint8_t dispVal_;
+
+	enum screenType { SCREEN_IOUT = 0};
+
+	Calibrate(){};
 
 	void print_v(uint8_t dig = 3);
 	void print_m(const char *str, AnalogInputs::Name name, int dig = 7);
@@ -22,12 +26,15 @@ public:
 	void printCalibrateVin();
 
 	void printCalibrate(int p);
-	void calibrate(int p);
-	void calibrateDis();
-	void timeM();
+	void info(int p);
+	void infoDis();
+	void infoTimeM();
 
 	void run();
 	void runInfo();
+	bool calibrate(int p);
+
+	void calibrateI(screenType screen, AnalogInputs::Name name1, AnalogInputs::Name name2);
 };
 
 #endif /* CALIBRATE_H_ */
