@@ -19,7 +19,7 @@ namespace {
 		analogInputs.print(getBalanceValue(cell, mesured), AnalogInputs::Voltage , 6);
 	}
 
-	uint8_t displayBalanceInfo(int from, bool mesured)
+	void displayBalanceInfo(int from, bool mesured)
 	{
 		lcd.setCursor(0,0);
 
@@ -65,34 +65,31 @@ namespace {
 		lcd.print(':');
 		printBalancer(from+2, mesured);
 		lcdPrintSpaces();
-		BLINK_NON;
 	}
 }
 
-uint8_t Screen::display(ScreenType screen, uint8_t blink )
+void Screen::display(ScreenType screen)
 {
 	switch(screen) {
-	case Screen1: 			return displayScreen1(blink);
-	case ScreenCIVlimits:	return displayScreenCIVlimits(blink);
-	case ScreenTime:		return displayScreenTime(blink);
-	case ScreenTemperature:	return displayScreenTemperature(blink);
+	case Screen1: 			return displayScreen1();
+	case ScreenCIVlimits:	return displayScreenCIVlimits();
+	case ScreenTime:		return displayScreenTime();
+	case ScreenTemperature:	return displayScreenTemperature();
 	case ScreenBalancer0_2:	return displayBalanceInfo(0, false);
 	case ScreenBalancer3_5:	return displayBalanceInfo(3, false);
 	case ScreenBalancer0_2M:return displayBalanceInfo(0, true);
 	case ScreenBalancer3_5M:return displayBalanceInfo(3, true);
-	case ScreenRthVth:		return displayRthVth(blink);
+	case ScreenRthVth:		return displayRthVth();
 	}
-	return -1;
 }
 
-uint8_t Screen::displayScreen1(uint8_t blink)
+void Screen::displayScreen1()
 {
 	char c = 'N';
 	uint16_t value = 0;
 	AnalogInputs::Name I = smps.IName;
 	AnalogInputs::Name V = smps.VName;
 
-	BLINK_START;
 	lcd.setCursor(0,0);
 
 	c= 'N';
@@ -122,10 +119,9 @@ uint8_t Screen::displayScreen1(uint8_t blink)
 	lcdPrintEValueI(value, 	4, PSTR("   "));
 	analogInputs.printRealValue(V, 	7);
 	lcdPrintSpaces();
-	BLINK_END;
 }
 
-uint8_t Screen::displayScreenCIVlimits(uint8_t blink)
+void Screen::displayScreenCIVlimits()
 {
 	lcd.setCursor(0,0);
 	analogInputs.print(ProgramData::currentProgramData.C, AnalogInputs::Charge, 8);
@@ -137,12 +133,10 @@ uint8_t Screen::displayScreenCIVlimits(uint8_t blink)
 	lcdPrint_P(PSTR("Limits: "));
 	analogInputs.print(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), AnalogInputs::Voltage, 7);
 	lcdPrintSpaces();
-	BLINK_NON;
 }
 
-uint8_t Screen::displayScreenTime(uint8_t blink)
+void Screen::displayScreenTime()
 {
-	BLINK_START;
 	long t_up = timer.getMiliseconds();
 	t_up /= 1000;
 
@@ -155,12 +149,10 @@ uint8_t Screen::displayScreenTime(uint8_t blink)
 	lcdPrint_P(PSTR("c="));
 	lcdPrintEValueI(smps.getOnTimeSec(), 	5, PSTR("/"));
 	lcdPrintEValueI(14567,	 				5, PSTR("s     "));
-	BLINK_END;
 }
 
-uint8_t Screen::displayScreenTemperature(uint8_t blink)
+void Screen::displayScreenTemperature()
 {
-	BLINK_START;
 	lcd.setCursor(0,0);
 	lcdPrint_P(PSTR("Text="));
 	analogInputs.printRealValue(AnalogInputs::Textern,	4);
@@ -170,7 +162,6 @@ uint8_t Screen::displayScreenTemperature(uint8_t blink)
 	lcdPrint_P(PSTR("Tint="));
 	analogInputs.printRealValue(AnalogInputs::Tintern,	4);
 	lcdPrintSpaces();
-	BLINK_END;
 }
 
 void Screen::displayStrings(const char *s1, const char *s2) const
@@ -179,10 +170,9 @@ void Screen::displayStrings(const char *s1, const char *s2) const
 	lcd.setCursor(0,1); lcdPrint_P(s2);
 }
 
-uint8_t Screen::displayChargeEnded(uint8_t blink)
+void Screen::displayChargeEnded()
 {
 	displayStrings(smps.getError1(), smps.getError2());
-	BLINK_NON;
 }
 
 void Screen::displayMonitorError()
@@ -191,7 +181,7 @@ void Screen::displayMonitorError()
 }
 
 
-uint8_t Screen::displayRthVth(uint8_t blink)
+void Screen::displayRthVth()
 {
 	lcd.setCursor(0,0);
 
@@ -205,7 +195,6 @@ uint8_t Screen::displayRthVth(uint8_t blink)
 	lcdPrint_P(PSTR(" "));
 	analogInputs.print(valueTh_, AnalogInputs::Unknown, 8);
 	lcdPrintSpaces();
-	BLINK_NON;
 }
 
 void Screen::notImplemented()

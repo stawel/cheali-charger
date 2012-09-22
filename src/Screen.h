@@ -18,19 +18,19 @@ public:
 		ScreenBalancer0_2M, ScreenBalancer3_5M,
 			ScreenRthVth};
 
-	uint8_t display(ScreenType screen, uint8_t blink = -1);
+	void display(ScreenType screen);
 
-	uint8_t displayScreen1(uint8_t blink = -1);
-	uint8_t displayScreenCIVlimits(uint8_t blink = -1);
-	uint8_t displayScreenBalancer0_2(uint8_t blink = -1);
-	uint8_t displayScreenBalancer3_5(uint8_t blink = -1);
-	uint8_t displayScreenBalancer0_2R(uint8_t blink = -1);
-	uint8_t displayScreenBalancer3_5R(uint8_t blink = -1);
-	uint8_t displayScreenTime(uint8_t blink = -1);
-	uint8_t displayScreenTemperature(uint8_t blink = -1);
+	void displayScreen1();
+	void displayScreenCIVlimits();
+	void displayScreenBalancer0_2();
+	void displayScreenBalancer3_5();
+	void displayScreenBalancer0_2R();
+	void displayScreenBalancer3_5R();
+	void displayScreenTime();
+	void displayScreenTemperature();
 
-	uint8_t displayChargeEnded(uint8_t blink = -1);
-	uint8_t displayRthVth(uint8_t blink = -1);
+	void displayChargeEnded();
+	void displayRthVth();
 
 	void displayMonitorError();
 
