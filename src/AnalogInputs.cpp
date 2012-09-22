@@ -106,7 +106,7 @@ void AnalogInputs::doVirtualCalculations()
 
 void AnalogInputs::doCalculations()
 {
-	calculationTime_ = timer.getMiliseconds();
+	calculationCount_++;
 	FOR_ALL_PHY_INPUTS(name) {
 		x_[name] = avrSum_[name] / avrCount_;
 		ValueType real = calibrateValue(name, x_[name]);
@@ -210,7 +210,7 @@ AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType
 
 AnalogInputs::AnalogInputs(const DefaultValues * inputs_P): inputsP_(inputs_P), avrCount_(0)
 {
-	calculationTime_ = 0;
+	calculationCount_ = 0;
 	FOR_ALL_PHY_INPUTS(name) {
 		measured_[name] = 0;
 		avrSum_[name] = 0;

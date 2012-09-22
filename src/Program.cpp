@@ -72,6 +72,7 @@ void charge(ChargingStrategy &strategy, Screen::ScreenType chargeScreens[], uint
 {
 	uint8_t key;
 	bool run = true;
+	uint16_t newMesurmentData = 0;
 	ChargingStrategy::statusType status = ChargingStrategy::RUNNING;
 	Monitor::statusType mstatus;
 	strategy.powerOn();
@@ -87,11 +88,14 @@ void charge(ChargingStrategy &strategy, Screen::ScreenType chargeScreens[], uint
 				chargingMonitorError();
 				run = false;
 			}
-			status = strategy.doStrategy();
-			if(status != ChargingStrategy::RUNNING) {
-				strategy.powerOff();
-				chargingComplete();
-				run = false;
+			if(newMesurmentData != analogInputs.getCalculationCount()) {
+				newMesurmentData = analogInputs.getCalculationCount();
+				status = strategy.doStrategy();
+				if(status != ChargingStrategy::RUNNING) {
+					strategy.powerOff();
+					chargingComplete();
+					run = false;
+				}
 			}
 		}
 	} while(key != BUTTON_STOP);

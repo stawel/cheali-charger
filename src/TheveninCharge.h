@@ -11,8 +11,8 @@ public:
 	uint16_t maxSmpsValue_;
 
 	bool Ifalling_;
-
 	uint16_t minChargeC_;
+	uint8_t fullCount_;
 
 	TheveninCharge(){}
 	virtual void powerOn();

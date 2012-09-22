@@ -23,6 +23,7 @@ void TheveninCharge::powerOn()
 	smps.setValue(minSmpsValue_);
 
 	Ifalling_ = false;
+	fullCount_ = 0;
 
 	balancer.powerOn();
 }
@@ -36,20 +37,19 @@ ChargingStrategy::statusType TheveninCharge::doStrategy()
 	screens.Rth_ = t_.Rth_*1000000;
 	screens.Vth_ = t_.Vth_;
 
+	ismaxVout = isMaxVout();
+
+	//test for charge complete
+	if(isMinSmpsValue() && ismaxVout && fullCount_++ >= 10) {
+				smps.powerOff(SMPS::CHARGING_COMPLETE);
+				return COMPLETE;
+	} else fullCount_ = 0;
+
 	if(stable) {
 		//test for maximum output voltage reached
-		ismaxVout = isMaxVout();
 		if(ismaxVout) {
 			Ifalling_ = true;
 		}
-
-		//test for charge complete
-		if(isMinSmpsValue()
-			&& analogInputs.getStableCount(smps.VName) > 10
-			&& ismaxVout) {
-				smps.powerOff(SMPS::CHARGING_COMPLETE);
-				return COMPLETE;
-			}
 
 		//calculate new  output current "i"
 		t_.calculateRthVth(smps.getVout(),smps.getValue());
@@ -66,7 +66,7 @@ ChargingStrategy::statusType TheveninCharge::doStrategy()
 
 void TheveninCharge::setI(double i)
 {
-	screens.I_ = i;
+	screens.valueTh_ = i;
 	if(i > maxSmpsValue_) {
 		i = maxSmpsValue_;
 	}

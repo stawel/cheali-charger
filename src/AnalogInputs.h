@@ -109,7 +109,7 @@ public:
 		return MAKE_ANALOG_INPUTS_RESOLUTION(::analogRead(analogInput), STD_ANALOG_INPUTS_RESOLUTION);
 	}
 
-	uint32_t getCalculationTime() { return calculationTime_; }
+	uint16_t getCalculationCount() { return calculationCount_; }
 	void printRealValue(Name name, uint8_t dig) const;
 	void printMeasuredValue(Name name, uint8_t dig) const;
 	static void print(ValueType v, Type type, uint8_t dig);
@@ -129,7 +129,7 @@ protected:
 	ValueType real_[ALL_INPUTS];
 	uint16_t stableCount_[ALL_INPUTS];
 
-	uint32_t calculationTime_;
+	uint16_t calculationCount_;
 };
 
 inline AnalogInputs::ValueType absDiff(AnalogInputs::ValueType x, AnalogInputs::ValueType y)

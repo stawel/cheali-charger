@@ -7,7 +7,7 @@ class Screen {
 public:
 	uint16_t Rth_;
 	uint16_t Vth_;
-	uint16_t I_;
+	uint16_t valueTh_;
 	double charge_;
 
 

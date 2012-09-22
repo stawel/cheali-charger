@@ -203,7 +203,7 @@ uint8_t Screen::displayRthVth(uint8_t blink)
 	lcdPrint_P(PSTR(""));
 	analogInputs.print(Vth_, AnalogInputs::Voltage, 7);
 	lcdPrint_P(PSTR(" "));
-	analogInputs.print(I_, AnalogInputs::Current, 8);
+	analogInputs.print(valueTh_, AnalogInputs::Unknown, 8);
 	lcdPrintSpaces();
 	BLINK_NON;
 }
