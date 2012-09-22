@@ -9,6 +9,7 @@
 #include "TheveninDischarge.h"
 #include "Monitor.h"
 #include "Storage.h"
+#include "memory.h"
 
 namespace {
 bool buzzer = false;
@@ -38,16 +39,16 @@ void printProgram2chars(Program::ProgramType prog)
 SimpleCharge simple;
 
 //TODO: program memory
-Screen::ScreenType theveninScreens[] =
+Screen::ScreenType theveninScreens[] PROGMEM =
 { Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
   Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
-Screen::ScreenType balanceScreens[] =
+Screen::ScreenType balanceScreens[] PROGMEM =
 { Screen::ScreenBalancer0_2, Screen::ScreenBalancer0_2M,
   Screen::ScreenBalancer3_5, Screen::ScreenBalancer3_5M /*, Screen::ScreenTemperature */};
-Screen::ScreenType dischargeScreens[] =
+Screen::ScreenType dischargeScreens[] PROGMEM =
 { Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenTime,
   Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
-Screen::ScreenType storageScreens[] =
+Screen::ScreenType storageScreens[] PROGMEM =
 { Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
   Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
 
@@ -69,7 +70,7 @@ void chargingMonitorError()
 	buzzerOff();
 }
 
-void doStrategy(Strategy &strategy, Screen::ScreenType chargeScreens[], uint8_t screen_limit)
+void doStrategy(Strategy &strategy, const Screen::ScreenType chargeScreens[], uint8_t screen_limit)
 {
 	uint8_t key;
 	bool run = true;
@@ -80,7 +81,7 @@ void doStrategy(Strategy &strategy, Screen::ScreenType chargeScreens[], uint8_t 
 	lcd.clear();
 	uint8_t screen = 0;
 	do {
-		screens.display(chargeScreens[screen]);
+		screens.display(pgm_read<Screen::ScreenType>(&chargeScreens[screen]));
 		key = selectIndexWithKeyboard(screen, screen_limit);
 		if(run) {
 			mstatus = monitor.run();
