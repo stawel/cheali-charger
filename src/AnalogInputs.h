@@ -31,7 +31,6 @@ public:
 		CalibrationPoint p1;
 	};
 	struct Calibration {
-		uint8_t size;
 		CalibrationPoint p[MAX_CALIBRATION_POINTS];
 	};
 
@@ -94,9 +93,7 @@ public:
 	void clearAvr();
 
 	void restoreDefault();
-	static uint8_t getCalibrationSize(Name name);
 	static void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);
-	static void setCalibrationSize(Name name, uint8_t s);
 	static void setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &p);
 
 	int getConnectedBalancePorts() const;

@@ -13,7 +13,6 @@ void AnalogInputs::restoreDefault()
 {
 	CalibrationPoint p0,p1;
 	FOR_ALL_PHY_INPUTS(name) {
-		setCalibrationSize(name, 2);
 		p0 = pgm_read<CalibrationPoint>(&inputsP_[name].p0);
 		p1 = pgm_read<CalibrationPoint>(&inputsP_[name].p1);
 		setCalibrationPoint(name, 0, p0);
@@ -21,11 +20,6 @@ void AnalogInputs::restoreDefault()
 	}
 }
 
-uint8_t AnalogInputs::getCalibrationSize(Name name)
-{
-	if(name >= PHYSICAL_INPUTS) return 0;
-	return eeprom_read_byte(&calibration[name].size);
-}
 void AnalogInputs::getCalibrationPoint(CalibrationPoint &x, Name name, uint8_t i)
 {
 	if(name >= PHYSICAL_INPUTS || i >= MAX_CALIBRATION_POINTS) {
@@ -33,11 +27,6 @@ void AnalogInputs::getCalibrationPoint(CalibrationPoint &x, Name name, uint8_t i
 		return;
 	}
 	eeprom_read<CalibrationPoint>(x,&calibration[name].p[i]);
-}
-void AnalogInputs::setCalibrationSize(Name name, uint8_t s)
-{
-	if(name >= PHYSICAL_INPUTS) return;
-	return eeprom_write_byte(&calibration[name].size, s);
 }
 void AnalogInputs::setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &x)
 {

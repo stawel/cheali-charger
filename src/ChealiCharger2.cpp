@@ -60,7 +60,6 @@ Program::ProgramType progmemMainMenu2Type[] PROGMEM =
 
 
 
-void napiecie();
 MainMenu doMenu(NULL, progmemMainMenu2, sizeOfArray(progmemMainMenu2));
 
 void editMenuName(int index) {
@@ -108,17 +107,14 @@ int backlight_val = 1200;
 
 void loop()
 {
-	uint8_t key = mainMenu.run();
-	if(key == BUTTON_START)  {
-		int index = mainMenu.getIndex();
+	int index = mainMenu.runSimple();
+	if(index >= 0)  {
 		switch(index) {
 		case 0:
 			Options::run();
-			mainMenu.render();
 			break;
 		default:
 			doProgram(index - 1);
-			mainMenu.render();
 		}
 	}
 }
@@ -139,29 +135,4 @@ void setup()
 	lcd.setCursor(0,1);
 	lcdPrint_P(PSTR("    welcome ;)"));
 	timer.delay(1000);
-}
-
-void napiecie()
-{
-	uint8_t key;
-	lcd.clear();
-	bool pin = true;
-	do {
-		lcd.setCursor(0,0);
-		lcd.print('p');
-		lcd.print(pin);
-		lcd.print(' ');
-		lcd.print(analogInputs.getRealValue(AnalogInputs::Vin));
-		lcd.print(' ');
-		lcd.print(analogInputs.getRealValue(AnalogInputs::Vout));
-		lcd.print(' ');
-		lcd.setCursor(0,1);
-		lcd.print('s');
-		lcd.print(smps.getValue());
-		lcd.print(' ');
-		lcd.print(analogInputs.getRealValue(AnalogInputs::Tintern));
-		lcd.print(' ');
-
-		key = keyboard.getPressedWithSpeed();
-	} while(key != BUTTON_STOP);
 }
