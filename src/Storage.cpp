@@ -2,12 +2,13 @@
 #include "SimpleDischarge.h"
 #include "Hardware.h"
 #include "Storage.h"
+#include "TheveninCharge.h"
 
 Storage storage;
 
 void Storage::powerOff()
 {
-	theveninVtLimitCharge.powerOff();
+	theveninCharge.powerOff();
 	simpleDischarge.powerOff();
 	balancer.powerOff();
 }
@@ -16,7 +17,7 @@ void Storage::powerOn()
 {
 	balancer.powerOn();
 	if(balancer.isMinVout(balancer.calculatePerCell(V_))) {
-		theveninVtLimitCharge.powerOn();
+		theveninCharge.powerOn();
 		state = Charge;
 	} else {
 		simpleDischarge.powerOn();
@@ -30,7 +31,7 @@ ChargingStrategy::statusType Storage::doStrategy()
 	ChargingStrategy::statusType status;
 	switch(state) {
 		case Charge:
-			status = theveninVtLimitCharge.doStrategy();
+			status = theveninCharge.doStrategy();
 			break;
 		case Discharge:
 			status = simpleDischarge.doStrategy();
@@ -55,7 +56,7 @@ ChargingStrategy::statusType Storage::doStrategy()
 void Storage::setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I)
 {
 	V_ = V;
-	theveninVtLimitCharge.setVtLimit(V);
+	theveninCharge.setVI(V, I);
 	simpleDischarge.setVI(V,I);
 }
 

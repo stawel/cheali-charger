@@ -169,7 +169,8 @@ void Program::runStorage(bool balance)
 }
 void Program::runTheveninCharge(int minChargeC)
 {
-	theveninCharge.setMinChargeC(minChargeC);
+	theveninCharge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.I);
+	theveninCharge.setMinI(ProgramData::currentProgramData.I/minChargeC);
 	charge(theveninCharge, theveninScreens, sizeOfArray(theveninScreens));
 }
 void Program::runDischarge()

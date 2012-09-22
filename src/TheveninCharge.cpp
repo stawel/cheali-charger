@@ -12,14 +12,26 @@ void TheveninCharge::powerOff()
 	smps.powerOff();
 }
 
+
+void TheveninCharge::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
+{
+	maxV_ = v;
+	maxSmpsValue_ = analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue, i);
+	setMinI(i/10);
+}
+void TheveninCharge::setMinI(AnalogInputs::ValueType i)
+{
+	minSmpsValue_ = analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue, i);
+}
+
+
+
 void TheveninCharge::powerOn()
 {
 	smps.powerOn();
 	analogInputs.resetStable();
 	t_.init(smps.getVout());
 
-	maxSmpsValue_ = analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue, ProgramData::currentProgramData.I);
-	minSmpsValue_ = analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue, ProgramData::currentProgramData.I / minChargeC_);
 	smps.setValue(minSmpsValue_);
 
 	Ifalling_ = false;
@@ -93,15 +105,10 @@ bool TheveninCharge::isMinSmpsValue() const
 
 bool TheveninCharge::isMaxVout() const
 {
-	AnalogInputs::ValueType Vc = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
-	AnalogInputs::ValueType Vc_per_cell = ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VCharge);
+	AnalogInputs::ValueType Vc = maxV_;
+	AnalogInputs::ValueType Vc_per_cell = balancer.calculatePerCell(maxV_);
 
 	return Vc <= smps.getVout() || balancer.isMaxVout(Vc_per_cell);
-}
-
-void TheveninCharge::setMinChargeC(uint16_t v)
-{
-	minChargeC_ = v;
 }
 
 

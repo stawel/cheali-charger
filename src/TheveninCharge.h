@@ -6,12 +6,12 @@
 
 class TheveninCharge : public SimpleCharge {
 public:
-	Thevenin t_;
 	uint16_t minSmpsValue_;
 	uint16_t maxSmpsValue_;
+	AnalogInputs::ValueType maxV_;
 
+	Thevenin t_;
 	bool Ifalling_;
-	uint16_t minChargeC_;
 	uint8_t fullCount_;
 
 	TheveninCharge(){}
@@ -23,7 +23,9 @@ public:
 	bool isMaxVout() const;
 //	bool isBalancer() const;
 
-	void setMinChargeC(uint16_t v = 10);
+	void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
+	void setMinI(AnalogInputs::ValueType i);
+
 };
 
 extern TheveninCharge theveninCharge;

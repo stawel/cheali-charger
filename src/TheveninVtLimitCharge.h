@@ -17,7 +17,7 @@ public:
 	void setVtLimit(AnalogInputs::ValueType v) {VtLimit_ = v;}
 };
 
-extern TheveninVtLimitCharge theveninVtLimitCharge;
+//extern TheveninVtLimitCharge theveninVtLimitCharge;
 
 
 #endif /* THEVENINVTLIMITCHARGE_H_ */

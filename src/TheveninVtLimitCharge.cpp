@@ -2,7 +2,7 @@
 #include "TheveninCharge.h"
 #include "TheveninVtLimitCharge.h"
 
-TheveninVtLimitCharge theveninVtLimitCharge;
+//TheveninVtLimitCharge theveninVtLimitCharge;
 
 void TheveninVtLimitCharge::powerOff()
 {
@@ -11,7 +11,6 @@ void TheveninVtLimitCharge::powerOff()
 
 void TheveninVtLimitCharge::powerOn()
 {
-	theveninCharge.setMinChargeC();
 	theveninCharge.powerOn();
 }
 
