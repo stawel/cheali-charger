@@ -52,9 +52,11 @@ ChargingStrategy::statusType TheveninCharge::doStrategy()
 	ismaxVout = isMaxVout();
 
 	//test for charge complete
-	if(isMinSmpsValue() && ismaxVout && fullCount_++ >= 10) {
-				smps.powerOff(SMPS::CHARGING_COMPLETE);
-				return COMPLETE;
+	if(isMinSmpsValue() && ismaxVout) {
+		if(fullCount_++ >= 10) {
+			smps.powerOff(SMPS::CHARGING_COMPLETE);
+			return COMPLETE;
+		}
 	} else fullCount_ = 0;
 
 	if(stable) {
@@ -67,8 +69,8 @@ ChargingStrategy::statusType TheveninCharge::doStrategy()
 		t_.calculateRthVth(smps.getVout(),smps.getValue());
 		balancer.calculateRthVth(smps.getValue());
 
-		AnalogInputs::ValueType Vc 			= ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
-		AnalogInputs::ValueType Vc_per_cell = ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VCharge);
+		AnalogInputs::ValueType Vc = maxV_;
+		AnalogInputs::ValueType Vc_per_cell = balancer.calculatePerCell(maxV_);
 		i = min(t_.calculateI(Vc), balancer.calculateI(Vc_per_cell));
 
 		setI(i);
