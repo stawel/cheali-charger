@@ -11,12 +11,12 @@ AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS] EEMEM;
 
 void AnalogInputs::restoreDefault()
 {
-	CalibrationPoint p0,p1;
+	CalibrationPoint p;
 	FOR_ALL_PHY_INPUTS(name) {
-		p0 = pgm_read<CalibrationPoint>(&inputsP_[name].p0);
-		p1 = pgm_read<CalibrationPoint>(&inputsP_[name].p1);
-		setCalibrationPoint(name, 0, p0);
-		setCalibrationPoint(name, 1, p1);
+		p = pgm_read<CalibrationPoint>(&inputsP_[name].p0);
+		setCalibrationPoint(name, 0, p);
+		p = pgm_read<CalibrationPoint>(&inputsP_[name].p1);
+		setCalibrationPoint(name, 1, p);
 	}
 }
 
