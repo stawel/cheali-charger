@@ -1,15 +1,15 @@
 #include "TheveninVtLimitCharge.h"
-#include "SimpleDischarge.h"
 #include "Hardware.h"
 #include "Storage.h"
 #include "TheveninCharge.h"
+#include "TheveninDischarge.h"
 
 Storage storage;
 
 void Storage::powerOff()
 {
 	theveninCharge.powerOff();
-	simpleDischarge.powerOff();
+	theveninDischarge.powerOff();
 	balancer.powerOff();
 }
 
@@ -20,7 +20,7 @@ void Storage::powerOn()
 		theveninCharge.powerOn();
 		state = Charge;
 	} else {
-		simpleDischarge.powerOn();
+		theveninDischarge.powerOn();
 		state = Discharge;
 	}
 }
@@ -34,7 +34,7 @@ ChargingStrategy::statusType Storage::doStrategy()
 			status = theveninCharge.doStrategy();
 			break;
 		case Discharge:
-			status = simpleDischarge.doStrategy();
+			status = theveninDischarge.doStrategy();
 			break;
 		case Balance:
 			status = balancer.doStrategy();
@@ -57,11 +57,10 @@ void Storage::setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I)
 {
 	V_ = V;
 	theveninCharge.setVI(V, I);
-	simpleDischarge.setVI(V,I);
+	theveninDischarge.setVI(V, I);
 }
 
 void Storage::setDoBalance(bool v)
 {
 	doBalance_ = v;
 }
-
