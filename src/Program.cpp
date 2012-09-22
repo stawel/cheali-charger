@@ -6,7 +6,7 @@
 #include "Screen.h"
 #include "SimpleCharge.h"
 #include "TheveninCharge.h"
-#include "SimpleDischarge.h"
+#include "TheveninDischarge.h"
 #include "Monitor.h"
 #include "Storage.h"
 
@@ -44,7 +44,7 @@ Screen::ScreenType balanceScreens[] =
 { Screen::ScreenBalancer0_2, Screen::ScreenBalancer0_2M,
   Screen::ScreenBalancer3_5, Screen::ScreenBalancer3_5M /*, Screen::ScreenTemperature */};
 Screen::ScreenType dischargeScreens[] =
-{ Screen::Screen1, Screen::ScreenTime,
+{ Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenTime,
   Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
 Screen::ScreenType storageScreens[] =
 { Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
@@ -176,8 +176,8 @@ void Program::runTheveninCharge(int minChargeC)
 void Program::runDischarge()
 {
 	//TODO: implement discharge current
-	simpleDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.I);
-	charge(simpleDischarge, dischargeScreens, sizeOfArray(dischargeScreens));
+	theveninDischarge.setVI(ANALOG_VOLTS(11.7), ProgramData::currentProgramData.I);
+	charge(theveninDischarge, dischargeScreens, sizeOfArray(dischargeScreens));
 }
 
 void Program::runBalance()

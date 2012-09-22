@@ -48,11 +48,12 @@ public:
 	bool isStable() const;
 
 	//Thevenin methods
-	double calculateI(AnalogInputs::ValueType v) const;
-	void calculateRthVth(AnalogInputs::ValueType i);
-	void calculateRth(AnalogInputs::ValueType i);
-	void calculateVth(AnalogInputs::ValueType i);
-	void storeLast(AnalogInputs::ValueType ILast);
+	double calculateMinI(AnalogInputs::ValueType v) const;
+	double calculateMaxI(AnalogInputs::ValueType v) const;
+	void calculateRthVth(Thevenin::CurrentType i);
+	void calculateRth(Thevenin::CurrentType i);
+	void calculateVth(Thevenin::CurrentType i);
+	void storeLast(Thevenin::CurrentType ILast);
 
 	AnalogInputs::ValueType calculatePerCell(AnalogInputs::ValueType v) const;
 };

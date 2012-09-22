@@ -5,19 +5,20 @@
 
 class Thevenin {
 public:
+	typedef int16_t CurrentType;
 	double Vth_;
 	double Rth_;
 
 	AnalogInputs::ValueType VLast_;
-	AnalogInputs::ValueType ILast_;
-	AnalogInputs::ValueType ILastDiff_;
+	CurrentType ILast_;
+	CurrentType ILastDiff_;
 
 
 	Thevenin(){};
-	void storeLast(AnalogInputs::ValueType VLast, AnalogInputs::ValueType ILast);
-	void calculateRthVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
-	void calculateRth(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
-	void calculateVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
+	void storeLast(AnalogInputs::ValueType VLast, CurrentType ILast);
+	void calculateRthVth(AnalogInputs::ValueType v, CurrentType i);
+	void calculateRth(AnalogInputs::ValueType v, CurrentType i);
+	void calculateVth(AnalogInputs::ValueType v, CurrentType i);
 	double calculateI(AnalogInputs::ValueType Vc) const;
 
 	void init(AnalogInputs::ValueType Vth);

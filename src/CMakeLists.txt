@@ -36,6 +36,8 @@ set(SOURCE_FILES
         SimpleCharge.h
         SimpleDischarge.cpp
         SimpleDischarge.h
+        TheveninDischarge.cpp
+        TheveninDischarge.h
         SMPS.cpp
         SMPS.h
         Discharger.cpp

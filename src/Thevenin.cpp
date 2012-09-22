@@ -1,30 +1,28 @@
 #include "Thevenin.h"
 
-
 void Thevenin::init(AnalogInputs::ValueType Vth)
 {
 	VLast_ = Vth_ = Vth;
 	ILastDiff_ = ILast_ = 0;
 	//TODO: ?
-	Rth_ = 0.0030;
+	Rth_ = 0.0300;
 }
 
 double Thevenin::calculateI(AnalogInputs::ValueType Vc) const
 {
-	double i = 0;
-	if(Vc > Vth_) i = Vc-Vth_;
+	double i = Vc-Vth_;
 	i /= Rth_;
 	return i;
 }
 
-void Thevenin::calculateRthVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
+void Thevenin::calculateRthVth(AnalogInputs::ValueType v, CurrentType i)
 {
 	calculateRth(v, i);
 	calculateVth(v, i);
 }
 
 
-void Thevenin::calculateRth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
+void Thevenin::calculateRth(AnalogInputs::ValueType v, CurrentType i)
 {
 	if(absDiff(i, ILast_) > ILastDiff_) {
 		ILastDiff_ = absDiff(i, ILast_);
@@ -35,11 +33,11 @@ void Thevenin::calculateRth(AnalogInputs::ValueType v, AnalogInputs::ValueType i
 		I-=ILast_;
 		R /= I;
 		//TODO: ??
-		if(R>0.000001) Rth_ = R;
+		if(abs(R)>0.000001) Rth_ = R;
 	}
 }
 
-void Thevenin::calculateVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
+void Thevenin::calculateVth(AnalogInputs::ValueType v, CurrentType i)
 {
 	double VRth;
 	VRth = Rth_ * i;
@@ -47,7 +45,7 @@ void Thevenin::calculateVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i
 	else Vth_ = v - VRth;
 }
 
-void Thevenin::storeLast(AnalogInputs::ValueType VLast, AnalogInputs::ValueType ILast)
+void Thevenin::storeLast(AnalogInputs::ValueType VLast, CurrentType ILast)
 {
 	VLast_ = VLast;
 	ILast_ = ILast;

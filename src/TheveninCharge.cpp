@@ -71,7 +71,7 @@ ChargingStrategy::statusType TheveninCharge::doStrategy()
 
 		AnalogInputs::ValueType Vc = maxV_;
 		AnalogInputs::ValueType Vc_per_cell = balancer.calculatePerCell(maxV_);
-		i = min(t_.calculateI(Vc), balancer.calculateI(Vc_per_cell));
+		i = min(t_.calculateI(Vc), balancer.calculateMinI(Vc_per_cell));
 
 		setI(i);
 	}

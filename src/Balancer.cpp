@@ -181,20 +181,20 @@ bool Balancer::isPowerOn() const
 	return on_;
 }
 
-void Balancer::calculateRthVth(AnalogInputs::ValueType i)
+void Balancer::calculateRthVth(Thevenin::CurrentType i)
 {
 	calculateRth(i);
 	calculateVth(i);
 }
 
-void Balancer::calculateRth(AnalogInputs::ValueType i)
+void Balancer::calculateRth(Thevenin::CurrentType i)
 {
 	for(uint8_t c = 0; c < cells_; c++) {
 		t_[c].calculateRth(getV(c),i);
 	}
 }
 
-void Balancer::storeLast(AnalogInputs::ValueType i)
+void Balancer::storeLast(Thevenin::CurrentType i)
 {
 	for(uint8_t c = 0; c < cells_; c++) {
 		t_[c].storeLast(getV(c), i);
@@ -202,18 +202,27 @@ void Balancer::storeLast(AnalogInputs::ValueType i)
 }
 
 
-void Balancer::calculateVth(AnalogInputs::ValueType i)
+void Balancer::calculateVth(Thevenin::CurrentType i)
 {
 	for(uint8_t c = 0; c < cells_; c++) {
 		t_[c].calculateVth(getV(c),i);
 	}
 }
 
-double Balancer::calculateI(AnalogInputs::ValueType v) const
+double Balancer::calculateMinI(AnalogInputs::ValueType v) const
 {
 	double i = MAX_CHARGE_I;
 	for(uint8_t c = 0; c < cells_; c++) {
 		i = min(i, t_[c].calculateI(v));
+	}
+	return i;
+}
+
+double Balancer::calculateMaxI(AnalogInputs::ValueType v) const
+{
+	double i = -MAX_CHARGE_I;
+	for(uint8_t c = 0; c < cells_; c++) {
+		i = max(i, t_[c].calculateI(v));
 	}
 	return i;
 }
