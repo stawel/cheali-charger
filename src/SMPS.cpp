@@ -1,8 +1,6 @@
 #include "TimerOne.h"
 #include "Hardware.h"
 #include "SMPS.h"
-#include "ChargingStrategy.h"
-
 
 SMPS::SMPS()
 {

@@ -10,6 +10,7 @@
 #include "Monitor.h"
 #include "Storage.h"
 
+namespace {
 bool buzzer = false;
 
 void buzzerOn()
@@ -28,7 +29,7 @@ void buzzerOff(){
 
 
 char programString[] PROGMEM = "ChCBBlDiFCStSBENEB";
-void Program::printProgram2chars(ProgramType prog)
+void printProgram2chars(Program::ProgramType prog)
 {
 	//TODO: ??
 	lcdPrint_P(programString+prog*2, 2);
@@ -68,12 +69,12 @@ void chargingMonitorError()
 	buzzerOff();
 }
 
-void charge(ChargingStrategy &strategy, Screen::ScreenType chargeScreens[], uint8_t screen_limit)
+void doStrategy(Strategy &strategy, Screen::ScreenType chargeScreens[], uint8_t screen_limit)
 {
 	uint8_t key;
 	bool run = true;
 	uint16_t newMesurmentData = 0;
-	ChargingStrategy::statusType status = ChargingStrategy::RUNNING;
+	Strategy::statusType status = Strategy::RUNNING;
 	Monitor::statusType mstatus;
 	strategy.powerOn();
 	lcd.clear();
@@ -91,7 +92,7 @@ void charge(ChargingStrategy &strategy, Screen::ScreenType chargeScreens[], uint
 			if(newMesurmentData != analogInputs.getCalculationCount()) {
 				newMesurmentData = analogInputs.getCalculationCount();
 				status = strategy.doStrategy();
-				if(status != ChargingStrategy::RUNNING) {
+				if(status != Strategy::RUNNING) {
 					strategy.powerOff();
 					chargingComplete();
 					run = false;
@@ -118,6 +119,8 @@ uint16_t getChargeProcent(){
 	if(v%10 > 5) add = 1;
 	return v/10 + add;
 }
+
+} //namespace {
 
 void Program::printStartInfo(ProgramType prog)
 {
@@ -165,24 +168,24 @@ void Program::runStorage(bool balance)
 {
 	storage.setDoBalance(balance);
 	storage.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage), ProgramData::currentProgramData.I);
-	charge(storage, storageScreens, sizeOfArray(storageScreens));
+	doStrategy(storage, storageScreens, sizeOfArray(storageScreens));
 }
 void Program::runTheveninCharge(int minChargeC)
 {
 	theveninCharge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.I);
 	theveninCharge.setMinI(ProgramData::currentProgramData.I/minChargeC);
-	charge(theveninCharge, theveninScreens, sizeOfArray(theveninScreens));
+	doStrategy(theveninCharge, theveninScreens, sizeOfArray(theveninScreens));
 }
 void Program::runDischarge()
 {
 	//TODO: implement discharge current
 	theveninDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.I);
-	charge(theveninDischarge, dischargeScreens, sizeOfArray(dischargeScreens));
+	doStrategy(theveninDischarge, dischargeScreens, sizeOfArray(dischargeScreens));
 }
 
 void Program::runBalance()
 {
-	charge(balancer, balanceScreens, sizeOfArray(balanceScreens));
+	doStrategy(balancer, balanceScreens, sizeOfArray(balanceScreens));
 }
 
 void Program::run(ProgramType prog)

@@ -19,7 +19,7 @@ void SimpleDischarge::powerOn()
 }
 
 
-ChargingStrategy::statusType SimpleDischarge::doStrategy()
+Strategy::statusType SimpleDischarge::doStrategy()
 {
 	if(isMinVout()) {
 		discharger.powerOff(Discharger::DISCHARGING_COMPLETE);

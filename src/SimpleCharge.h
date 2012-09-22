@@ -2,9 +2,9 @@
 #define SIMPLECHARGE_H_
 
 
-#include "ChargingStrategy.h"
+#include "Strategy.h"
 
-class SimpleCharge : public ChargingStrategy {
+class SimpleCharge : public Strategy {
 public:
 	SimpleCharge(){};
 	virtual void powerOn();

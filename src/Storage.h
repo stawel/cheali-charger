@@ -3,7 +3,7 @@
 
 #include "SimpleCharge.h"
 
-class Storage : public ChargingStrategy {
+class Storage : public Strategy {
 public:
 	enum State  {Charge, Discharge, Balance};
 

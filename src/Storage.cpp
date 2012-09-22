@@ -26,9 +26,9 @@ void Storage::powerOn()
 }
 
 
-ChargingStrategy::statusType Storage::doStrategy()
+Strategy::statusType Storage::doStrategy()
 {
-	ChargingStrategy::statusType status;
+	Strategy::statusType status;
 	switch(state) {
 		case Charge:
 			status = theveninCharge.doStrategy();

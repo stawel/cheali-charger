@@ -158,7 +158,7 @@ uint32_t Balancer::balanceTime() const
 }
 
 
-ChargingStrategy::statusType Balancer::doStrategy()
+Strategy::statusType Balancer::doStrategy()
 {
 	if(!on_)
 		return COMPLETE;

@@ -41,7 +41,7 @@ void TheveninCharge::powerOn()
 }
 
 
-ChargingStrategy::statusType TheveninCharge::doStrategy()
+Strategy::statusType TheveninCharge::doStrategy()
 {
 	bool stable = isStable();
 	double i;

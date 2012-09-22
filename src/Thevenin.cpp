@@ -5,7 +5,7 @@ void Thevenin::init(AnalogInputs::ValueType Vth)
 	VLast_ = Vth_ = Vth;
 	ILastDiff_ = ILast_ = 0;
 	//TODO: ?
-	Rth_ = 0.0300;
+	Rth_ = 1.000;
 }
 
 double Thevenin::calculateI(AnalogInputs::ValueType Vc) const

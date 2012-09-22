@@ -40,7 +40,7 @@ void TheveninDischarge::powerOn()
 }
 
 
-ChargingStrategy::statusType TheveninDischarge::doStrategy()
+Strategy::statusType TheveninDischarge::doStrategy()
 {
 	bool stable = true;
 	double i;

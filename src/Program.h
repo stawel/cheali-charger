@@ -10,7 +10,6 @@ public:
 	static void run(ProgramType prog);
 
 	static void printStartInfo(ProgramType prog);
-	static void printProgram2chars(ProgramType prog);
 	static bool startInfo(ProgramType prog);
 
 	static void runStorage(bool balance);

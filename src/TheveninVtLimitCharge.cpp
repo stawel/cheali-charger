@@ -15,10 +15,10 @@ void TheveninVtLimitCharge::powerOn()
 }
 
 
-ChargingStrategy::statusType TheveninVtLimitCharge::doStrategy()
+Strategy::statusType TheveninVtLimitCharge::doStrategy()
 {
-	ChargingStrategy::statusType status = theveninCharge.doStrategy();
-	if(status == ChargingStrategy::RUNNING) {
+	Strategy::statusType status = theveninCharge.doStrategy();
+	if(status == Strategy::RUNNING) {
 		uint8_t cells = balancer.getCells();
 		bool reached = true;
 		if(cells > 0) {
@@ -33,7 +33,7 @@ ChargingStrategy::statusType TheveninVtLimitCharge::doStrategy()
 		}
 		if(reached) {
 			powerOff();
-			return ChargingStrategy::COMPLETE;
+			return Strategy::COMPLETE;
 		}
 	}
 	return status;

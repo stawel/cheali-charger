@@ -11,7 +11,7 @@ public:
 
 	TheveninVtLimitCharge(){}
 	void powerOn();
-	ChargingStrategy::statusType doStrategy();
+	Strategy::statusType doStrategy();
 	void powerOff();
 
 	void setVtLimit(AnalogInputs::ValueType v) {VtLimit_ = v;}

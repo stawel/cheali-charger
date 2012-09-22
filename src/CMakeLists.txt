@@ -3,8 +3,8 @@ set(SOURCE_FILES
         AnalogInputs.h
         Balancer.cpp
         Balancer.h
-        ChargingStrategy.cpp
-        ChargingStrategy.h
+        Strategy.cpp
+        Strategy.h
         ChealiCharger2.cpp
         ChealiCharger2.h
         CMakeLists.txt

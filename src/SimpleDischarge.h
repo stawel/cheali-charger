@@ -1,10 +1,10 @@
 #ifndef SIMPLEDISCHARGE_H_
 #define SIMPLEDISCHARGE_H_
 
-#include "ChargingStrategy.h"
+#include "Strategy.h"
 #include "AnalogInputs.h"
 
-class SimpleDischarge : public ChargingStrategy {
+class SimpleDischarge : public Strategy {
 public:
 
 	AnalogInputs::ValueType I_;

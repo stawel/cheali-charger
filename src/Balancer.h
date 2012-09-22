@@ -3,9 +3,9 @@
 
 #include "Hardware.h"
 #include "Thevenin.h"
-#include "ChargingStrategy.h"
+#include "Strategy.h"
 
-class Balancer : public ChargingStrategy {
+class Balancer : public Strategy {
 public:
 	//TODO: "error" should be changeable
 	const static AnalogInputs::ValueType error = 3;
