@@ -7,10 +7,9 @@
 class TheveninCharge : public SimpleCharge {
 public:
 	Thevenin t_;
-	double smpsVcorretion_;
-	uint16_t smallestSmpsValue_;
+	uint16_t minSmpsValue_;
+	uint16_t maxSmpsValue_;
 
-	bool Imax_;
 	bool Ifalling_;
 
 	uint16_t minChargeC_;
@@ -20,8 +19,7 @@ public:
 	virtual statusType doStrategy();
 	virtual void powerOff();
 	void setI(double i);
-	bool isSmallSmpsValue();
-	void correctSmpsValue();
+	bool isMinSmpsValue() const;
 	bool isMaxVout() const;
 //	bool isBalancer() const;
 

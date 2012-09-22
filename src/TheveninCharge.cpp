@@ -18,13 +18,9 @@ void TheveninCharge::powerOn()
 	analogInputs.resetStable();
 	t_.init(smps.getVout());
 
-	AnalogInputs::ValueType Amps10 = 10000;
-	smpsVcorretion_ = analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue,Amps10);
-	smpsVcorretion_ /= Amps10;
-
-	AnalogInputs::ValueType minICharge = ProgramData::currentProgramData.I / minChargeC_;
-	smps.setRealValue(minICharge);
-	smallestSmpsValue_ = smps.getValue();
+	maxSmpsValue_ = analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue, ProgramData::currentProgramData.I);
+	minSmpsValue_ = analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue, ProgramData::currentProgramData.I / minChargeC_);
+	smps.setValue(minSmpsValue_);
 
 	Ifalling_ = false;
 
@@ -48,7 +44,7 @@ ChargingStrategy::statusType TheveninCharge::doStrategy()
 		}
 
 		//test for charge complete
-		if(isSmallSmpsValue()
+		if(isMinSmpsValue()
 			&& analogInputs.getStableCount(smps.VName) > 10
 			&& ismaxVout) {
 				smps.powerOff(SMPS::CHARGING_COMPLETE);
@@ -56,10 +52,8 @@ ChargingStrategy::statusType TheveninCharge::doStrategy()
 			}
 
 		//calculate new  output current "i"
-		t_.calculateRthVth(smps.getVout(),smps.getIout());
-		balancer.calculateRthVth(smps.getIout());
-
-		correctSmpsValue();
+		t_.calculateRthVth(smps.getVout(),smps.getValue());
+		balancer.calculateRthVth(smps.getValue());
 
 		AnalogInputs::ValueType Vc 			= ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
 		AnalogInputs::ValueType Vc_per_cell = ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VCharge);
@@ -70,28 +64,16 @@ ChargingStrategy::statusType TheveninCharge::doStrategy()
 	return RUNNING;
 }
 
-void TheveninCharge::correctSmpsValue()
-{
-	if(Imax_) {
-		smpsVcorretion_  = smps.getValue();
-		smpsVcorretion_ /= smps.getIout();
-	}
-}
-
 void TheveninCharge::setI(double i)
 {
 	screens.I_ = i;
-	if(i > ProgramData::currentProgramData.I) {
-		i = ProgramData::currentProgramData.I;
-		Imax_ = true;
-	} else {
-		Imax_ = false;
+	if(i > maxSmpsValue_) {
+		i = maxSmpsValue_;
 	}
-
-	uint16_t value = i * smpsVcorretion_;
-	if(value < smallestSmpsValue_) {
-		value = smallestSmpsValue_;
+	if(i < minSmpsValue_) {
+		i = minSmpsValue_;
 	}
+	AnalogInputs::ValueType value = i;
 
 	if((smps.getValue() != value && !Ifalling_) ||
 			smps.getValue() > value) {
@@ -104,9 +86,9 @@ void TheveninCharge::setI(double i)
 	}
 }
 
-bool TheveninCharge::isSmallSmpsValue()
+bool TheveninCharge::isMinSmpsValue() const
 {
-	return smps.getValue() <= smallestSmpsValue_;
+	return smps.getValue() <= minSmpsValue_;
 }
 
 bool TheveninCharge::isMaxVout() const
