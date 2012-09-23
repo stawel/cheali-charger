@@ -8,28 +8,28 @@
 
 extern MainMenu::MenuData mainMenuData;
 
-char string_c0[] PROGMEM = "B0-2";
-char string_c1[] PROGMEM = "B3-5";
-char string_c2[] PROGMEM = "B0-5 to Vout";
-char string_c3[] PROGMEM = "Iout";
-char string_c4[] PROGMEM = "Idischarge";
-char string_c5[] PROGMEM = "Vin";
-char string_c6[] PROGMEM = "Tintern";
-char string_c7[] PROGMEM = "Textern";
-char string_c8[] PROGMEM = "Info";
+const char string_c0[] PROGMEM = "B0-2";
+const char string_c1[] PROGMEM = "B3-5";
+const char string_c2[] PROGMEM = "B0-5 to Vout";
+const char string_c3[] PROGMEM = "Iout";
+const char string_c4[] PROGMEM = "Idischarge";
+const char string_c5[] PROGMEM = "Vin";
+const char string_c6[] PROGMEM = "Tintern";
+const char string_c7[] PROGMEM = "Textern";
+const char string_c8[] PROGMEM = "Info";
 
 
-char string_ci0[] PROGMEM = "Iout";
-char string_ci1[] PROGMEM = "Vout";
-char string_ci2[] PROGMEM = "B0-2";
-char string_ci3[] PROGMEM = "B3-5";
-char string_ci4[] PROGMEM = "Temp";
-char string_ci5[] PROGMEM = "Vin";
-char string_ci6[] PROGMEM = "Idischarge";
-char string_ci7[] PROGMEM = "time";
+const char string_ci0[] PROGMEM = "Iout";
+const char string_ci1[] PROGMEM = "Vout";
+const char string_ci2[] PROGMEM = "B0-2";
+const char string_ci3[] PROGMEM = "B3-5";
+const char string_ci4[] PROGMEM = "Temp";
+const char string_ci5[] PROGMEM = "Vin";
+const char string_ci6[] PROGMEM = "Idischarge";
+const char string_ci7[] PROGMEM = "time";
 
 
-const char * calibrateMenu[] PROGMEM =
+const char * const calibrateMenu[] PROGMEM =
 { string_c0,
   string_c1,
   string_c2,
@@ -41,7 +41,7 @@ const char * calibrateMenu[] PROGMEM =
   string_c8,
 };
 
-const char * calibrateInfoMenu[] PROGMEM =
+const char * const calibrateInfoMenu[] PROGMEM =
 { string_ci0,
   string_ci1,
   string_ci2,
@@ -53,11 +53,11 @@ const char * calibrateInfoMenu[] PROGMEM =
 };
 
 
-char string_cI0[] PROGMEM = "50mA";
-char string_cI1[] PROGMEM = "1000mA";
+const char string_cI0[] PROGMEM = "50mA";
+const char string_cI1[] PROGMEM = "1000mA";
 
 
-const char * calibrateIMenu[] PROGMEM =
+const char * const calibrateIMenu[] PROGMEM =
 {
 	string_cI0,
 	string_cI1,

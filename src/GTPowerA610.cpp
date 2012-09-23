@@ -12,7 +12,7 @@ uint16_t dischargerValue()
 	return discharger.getValue();
 }
 
-AnalogInputs::DefaultValues inputs_P[AnalogInputs::PHYSICAL_INPUTS] PROGMEM =
+const AnalogInputs::DefaultValues inputs_P[AnalogInputs::PHYSICAL_INPUTS] PROGMEM =
 {
 		{AnalogInputs::analogValue<OUTPUT_VOLATAGE_PIN>,	{0,0}, 	{27516, 12552}},	//Vout
 		{AnalogInputs::analogValue<SMPS_CURRENT_PIN>,		{0,0}, 	{1024, 200}},		//Ismps

@@ -9,7 +9,7 @@ ProgramData allProgramData[MAX_PROGRAMS] EEMEM;
 ProgramData ProgramData::currentProgramData;
 
 
-uint16_t voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
+const uint16_t voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
 {
 	//  {Idle, Charge, Discharge, Storage};
 		{   	1,     1,      1,	1}, // Unknown
@@ -23,7 +23,7 @@ uint16_t voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VOLTAGE_
 
 };
 
-ProgramData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
+const ProgramData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
 {ProgramData::Unknown, 	2200, 2200, 10000},
 {ProgramData::NiCd, 	2200, 2200, 1},
 {ProgramData::NiMH, 	2200, 2200, 1},
@@ -33,14 +33,14 @@ ProgramData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
 {ProgramData::Lipo, 	2200, 2200, 3}
 };
 
-char b0[] PROGMEM = "Unknown";
-char b1[] PROGMEM = "NiCd";
-char b2[] PROGMEM = "NiMH";
-char b3[] PROGMEM = "Pb";
-char b4[] PROGMEM = "Life";
-char b5[] PROGMEM = "Lilo";
-char b6[] PROGMEM = "Lipo";
-char * batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {b0,b1,b2,b3,b4,b5,b6};
+const char b0[] PROGMEM = "Unknown";
+const char b1[] PROGMEM = "NiCd";
+const char b2[] PROGMEM = "NiMH";
+const char b3[] PROGMEM = "Pb";
+const char b4[] PROGMEM = "Life";
+const char b5[] PROGMEM = "Lilo";
+const char b6[] PROGMEM = "Lipo";
+const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {b0,b1,b2,b3,b4,b5,b6};
 
 void ProgramData::loadProgramData(int index)
 {

@@ -1,18 +1,18 @@
 Using built-in specs.
 COLLECT_GCC=avr-gcc
-COLLECT_LTO_WRAPPER=/usr/lib/gcc/avr/4.5.3/lto-wrapper
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/avr/4.7.0/lto-wrapper
 Target: avr
 Configured with: ../src/configure -v --enable-languages=c,c++ --prefix=/usr/lib --infodir=/usr/share/info --mandir=/usr/share/man --bindir=/usr/bin --libexecdir=/usr/lib --libdir=/usr/lib --enable-shared --with-system-zlib --enable-long-long --enable-nls --without-included-gettext --disable-libssp --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=avr
 Thread model: single
-gcc version 4.5.3 (GCC) 
+gcc version 4.7.0 (GCC) 
 AVR Memory Usage
 ----------------
 Device: Unknown
 
-Program:   27206 bytes
+Program:   26576 bytes
 (.text + .data + .bootloader)
 
-Data:        656 bytes
+Data:        640 bytes
 (.data + .bss + .noinit)
 
 EEPROM:      793 bytes

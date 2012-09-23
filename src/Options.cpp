@@ -9,11 +9,11 @@
 extern MainMenu::MenuData mainMenuData;
 
 
-char string_o1[] PROGMEM = "settings";
-char string_o2[] PROGMEM = "calibrate";
-char string_o3[] PROGMEM = "reset default";
+const char string_o1[] PROGMEM = "settings";
+const char string_o2[] PROGMEM = "calibrate";
+const char string_o3[] PROGMEM = "reset default";
 
-const char * optionsMainMenu[] PROGMEM =
+const char * const optionsMainMenu[] PROGMEM =
 { string_o1,
   string_o2,
   string_o3,

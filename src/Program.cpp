@@ -29,7 +29,7 @@ void buzzerOff(){
 }
 
 
-char programString[] PROGMEM = "ChCBBlDiFCStSBENEB";
+const char programString[] PROGMEM = "ChCBBlDiFCStSBENEB";
 void printProgram2chars(Program::ProgramType prog)
 {
 	//TODO: ??
@@ -39,16 +39,16 @@ void printProgram2chars(Program::ProgramType prog)
 SimpleCharge simple;
 
 //TODO: program memory
-Screen::ScreenType theveninScreens[] PROGMEM =
+const Screen::ScreenType theveninScreens[] PROGMEM =
 { Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
   Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
-Screen::ScreenType balanceScreens[] PROGMEM =
+const Screen::ScreenType balanceScreens[] PROGMEM =
 { Screen::ScreenBalancer0_2, Screen::ScreenBalancer0_2M,
   Screen::ScreenBalancer3_5, Screen::ScreenBalancer3_5M /*, Screen::ScreenTemperature */};
-Screen::ScreenType dischargeScreens[] PROGMEM =
+const Screen::ScreenType dischargeScreens[] PROGMEM =
 { Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenTime,
   Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
-Screen::ScreenType storageScreens[] PROGMEM =
+const Screen::ScreenType storageScreens[] PROGMEM =
 { Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
   Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
 

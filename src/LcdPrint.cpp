@@ -4,7 +4,7 @@
 #include "Hardware.h"
 
 
-char string_lcdPrintSpaces[] PROGMEM = "                ";
+const char string_lcdPrintSpaces[] PROGMEM = "                ";
 
 void lcdPrintSpaces()
 {

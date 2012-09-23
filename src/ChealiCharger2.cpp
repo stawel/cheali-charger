@@ -11,30 +11,30 @@
 
 MainMenu::MenuData mainMenuData EEMEM;
 
-char string_2[] PROGMEM = "options";
+const char string_2[] PROGMEM = "options";
 
-const char * progmemMainMenu[] PROGMEM =
+const char * const progmemMainMenu[] PROGMEM =
 {string_2 };
 
 MainMenu mainMenu(&mainMenuData, progmemMainMenu, 1);
 ProgramData currentProgram;
 
-char charge_str[] PROGMEM = "charge";
-char chaBal_str[] PROGMEM = "charge+balance";
-char balanc_str[] PROGMEM = "balance";
-char discha_str[] PROGMEM = "discharge";
-char fastCh_str[] PROGMEM = "fast charge";
-char storag_str[] PROGMEM = "storage";
-char stoBal_str[] PROGMEM = "storage+balanc";
-char edName_str[] PROGMEM = "edit name";
-char edBatt_str[] PROGMEM = "edit battery";
+const char charge_str[] PROGMEM = "charge";
+const char chaBal_str[] PROGMEM = "charge+balance";
+const char balanc_str[] PROGMEM = "balance";
+const char discha_str[] PROGMEM = "discharge";
+const char fastCh_str[] PROGMEM = "fast charge";
+const char storag_str[] PROGMEM = "storage";
+const char stoBal_str[] PROGMEM = "storage+balanc";
+const char edName_str[] PROGMEM = "edit name";
+const char edBatt_str[] PROGMEM = "edit battery";
 
 struct programMemuType {
 	const char * str;
 	Program::ProgramType type;
 };
 
-const char * progmemMainMenu2[] PROGMEM =
+const char * const progmemMainMenu2[] PROGMEM =
 { charge_str,
   chaBal_str,
   balanc_str,
@@ -46,7 +46,7 @@ const char * progmemMainMenu2[] PROGMEM =
   edBatt_str
 };
 
-Program::ProgramType progmemMainMenu2Type[] PROGMEM =
+const Program::ProgramType progmemMainMenu2Type[] PROGMEM =
 { Program::Charge,
   Program::Charge_Balance,
   Program::Balance,

@@ -36,11 +36,11 @@ public:
 	};
 
 	MenuData * menuE_;
-	const char ** progmemMenu_;
+	const char * const* progmemMenu_;
 	uint8_t progmemMenuItems_;
 
 public:
-	MainMenu(MenuData *menuE, const char ** progmemMenu,uint8_t progmemMenuItems):
+	MainMenu(MenuData *menuE, const char * const* progmemMenu,uint8_t progmemMenuItems):
 			Menu((menuE ? MAINMENU_MAX_ITEMS : 0) + progmemMenuItems),
 			menuE_(menuE), progmemMenu_(progmemMenu), progmemMenuItems_(progmemMenuItems){}
 
