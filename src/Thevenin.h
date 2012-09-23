@@ -10,9 +10,9 @@ public:
 	double Rth_;
 
 	AnalogInputs::ValueType VLast_;
+	AnalogInputs::ValueType VLastDiff_;
 	CurrentType ILast_;
 	CurrentType ILastDiff_;
-
 
 	Thevenin(){};
 	void storeLast(AnalogInputs::ValueType VLast, CurrentType ILast);

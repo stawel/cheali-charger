@@ -3,7 +3,7 @@
 void Thevenin::init(AnalogInputs::ValueType Vth)
 {
 	VLast_ = Vth_ = Vth;
-	ILastDiff_ = ILast_ = 0;
+	VLastDiff_ = ILastDiff_ = ILast_ = 0;
 	//TODO: ?
 	Rth_ = 1.000;
 }
@@ -24,8 +24,9 @@ void Thevenin::calculateRthVth(AnalogInputs::ValueType v, CurrentType i)
 
 void Thevenin::calculateRth(AnalogInputs::ValueType v, CurrentType i)
 {
-	if(absDiff(i, ILast_) > ILastDiff_) {
-		ILastDiff_ = absDiff(i, ILast_);
+	if(absDiff(i, ILast_) > ILastDiff_ || absDiff(v, VLast_) > VLastDiff_ ) {
+		ILastDiff_ = absDiff(i, ILast_)/2;
+		VLastDiff_ = absDiff(v, VLast_)/2;
 		double R,I;
 		R= v;
 		R-= VLast_;
