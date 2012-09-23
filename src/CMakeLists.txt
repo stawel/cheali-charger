@@ -58,6 +58,8 @@ set(SOURCE_FILES
         TimerOne.h
         Utils.cpp
         Utils.h
+        StartInfoStrategy.cpp
+        StartInfoStrategy.h
 
         Monitor.cpp
         Monitor.h

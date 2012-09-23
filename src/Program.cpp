@@ -10,6 +10,7 @@
 #include "Monitor.h"
 #include "Storage.h"
 #include "memory.h"
+#include "StartInfoStrategy.h"
 
 namespace {
 bool buzzer = false;
@@ -28,14 +29,6 @@ void buzzerOff(){
 	}
 }
 
-
-const char programString[] PROGMEM = "ChCBBlDiFCStSBENEB";
-void printProgram2chars(Program::ProgramType prog)
-{
-	//TODO: ??
-	lcdPrint_P(programString+prog*2, 2);
-}
-
 SimpleCharge simple;
 
 //TODO: program memory
@@ -52,6 +45,8 @@ const Screen::ScreenType storageScreens[] PROGMEM =
 { Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
   Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
 
+const Screen::ScreenType startInfoScreens[] PROGMEM =
+{ Screen::ScreenStartInfo, Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5};
 
 void chargingComplete()
 {
@@ -70,7 +65,8 @@ void chargingMonitorError()
 	buzzerOff();
 }
 
-void doStrategy(Strategy &strategy, const Screen::ScreenType chargeScreens[], uint8_t screen_limit)
+Strategy::statusType doStrategy(Strategy &strategy, const Screen::ScreenType chargeScreens[]
+                                                  , uint8_t screen_limit)
 {
 	uint8_t key;
 	bool run = true;
@@ -89,10 +85,16 @@ void doStrategy(Strategy &strategy, const Screen::ScreenType chargeScreens[], ui
 				strategy.powerOff();
 				chargingMonitorError();
 				run = false;
+				status = Strategy::ERROR;
 			}
 			if(newMesurmentData != analogInputs.getCalculationCount()) {
 				newMesurmentData = analogInputs.getCalculationCount();
 				status = strategy.doStrategy();
+				if(status == Strategy::COMPLETE_AND_EXIT) {
+					strategy.powerOff();
+					return status;
+				}
+
 				if(status != Strategy::RUNNING) {
 					strategy.powerOff();
 					chargingComplete();
@@ -103,65 +105,15 @@ void doStrategy(Strategy &strategy, const Screen::ScreenType chargeScreens[], ui
 	} while(key != BUTTON_STOP);
 
 	strategy.powerOff();
+	return status;
 }
 
-
-uint8_t getChargeProcent(){
-	uint16_t v1,v2, v;
-	v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
-	v1 = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
-	v = analogInputs.getRealValue(AnalogInputs::VoutBalancer);
-
-	if(v >= v2) return 100;
-	if(v <= v1) return 0;
-	v-=v1;
-	v2-=v1;
-	v2/=100;
-	v=  v/v2;
-	return v;
-}
 } //namespace {
-
-
-void Program::printStartInfo(ProgramType prog)
-{
-	lcd.setCursor(0,0);
-	ProgramData::currentProgramData.printBatteryString(4);
-	lcd.print(' ');
-	ProgramData::currentProgramData.printVoltageString();
-	lcd.print(' ');
-	printProgram2chars(prog);
-
-	lcd.setCursor(0,1);
-	uint16_t procent = getChargeProcent();
-	if(procent < 10)
-		lcd.print(' ');
-	lcd.print(procent);
-	lcdPrint_P(PSTR("% "));
-
-	analogInputs.printRealValue(AnalogInputs::Vout, 5);
-	lcd.print(' ');
-	analogInputs.printRealValue(AnalogInputs::Vbalacer, 5);
-	lcd.print(analogInputs.getConnectedBalancePorts());
-}
 
 bool Program::startInfo(ProgramType prog)
 {
-	uint8_t key;
-	bool ok = false;
-	lcd.clear();
-	hardware::setBatteryOutput(true);
-	do {
-		printStartInfo(prog);
-		key = keyboard.getPressedWithSpeed();
-		if(key == BUTTON_START) {
-			ok = true;
-			break;
-		}
-	} while(key != BUTTON_STOP);
-
-	hardware::setBatteryOutput(false);
-	return ok;
+	screens.programType_ = prog;
+	return doStrategy(startInfoStrategy, startInfoScreens, sizeOfArray(startInfoScreens)) == Strategy::COMPLETE_AND_EXIT;
 }
 
 void Program::runStorage(bool balance)

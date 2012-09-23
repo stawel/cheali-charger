@@ -80,6 +80,7 @@ void Screen::display(ScreenType screen)
 	case ScreenBalancer0_2M:return displayBalanceInfo(0, true);
 	case ScreenBalancer3_5M:return displayBalanceInfo(3, true);
 	case ScreenRthVth:		return displayRthVth();
+	case ScreenStartInfo: 	return displayStartInfo();
 	}
 }
 
@@ -202,5 +203,48 @@ void Screen::notImplemented()
 	do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
 }
 
+namespace {
+const char programString[] PROGMEM = "ChCBBlDiFCStSBENEB";
+void printProgram2chars(Program::ProgramType prog)
+{
+	//TODO: ??
+	lcdPrint_P(programString+prog*2, 2);
+}
 
+uint8_t getChargeProcent(){
+	uint16_t v1,v2, v;
+	v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
+	v1 = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
+	v = analogInputs.getRealValue(AnalogInputs::VoutBalancer);
 
+	if(v >= v2) return 100;
+	if(v <= v1) return 0;
+	v-=v1;
+	v2-=v1;
+	v2/=100;
+	v=  v/v2;
+	return v;
+}
+}
+
+void Screen::displayStartInfo()
+{
+	lcd.setCursor(0,0);
+	ProgramData::currentProgramData.printBatteryString(4);
+	lcd.print(' ');
+	ProgramData::currentProgramData.printVoltageString();
+	lcd.print(' ');
+	printProgram2chars(programType_);
+
+	lcd.setCursor(0,1);
+	uint16_t procent = getChargeProcent();
+	if(procent < 10)
+		lcd.print(' ');
+	lcd.print(procent);
+	lcdPrint_P(PSTR("% "));
+
+	analogInputs.printRealValue(AnalogInputs::Vout, 5);
+	lcd.print(' ');
+	analogInputs.printRealValue(AnalogInputs::Vbalacer, 5);
+	lcd.print(analogInputs.getConnectedBalancePorts());
+}
