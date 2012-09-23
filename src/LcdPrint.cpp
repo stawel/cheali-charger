@@ -4,16 +4,16 @@
 #include "Hardware.h"
 
 
-const char string_lcdPrintSpaces[] PROGMEM = "                ";
-
 void lcdPrintSpaces()
 {
-	lcdPrint_P(string_lcdPrintSpaces);
+	lcdPrintSpaces(16);
 }
 
 void lcdPrintSpaces(uint8_t n)
 {
-	lcdPrint_P(string_lcdPrintSpaces, n);
+	while(n-->0) {
+		lcd.print(' ');
+	}
 }
 
 

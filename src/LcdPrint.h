@@ -8,7 +8,7 @@ uint8_t digits(unsigned long x);
 
 void lcdPrint_P(const char *str, uint8_t n = LCD_COLUMNS);
 void lcdPrint_E(const char *str, uint8_t n = LCD_COLUMNS);
-void lcdPrint  (const char *str, uint8_t n = LCD_COLUMNS);
+void lcdPrint  (const char *str, uint8_t n);
 void lcdPrintSpaces();
 void lcdPrintSpaces(uint8_t n);
 
