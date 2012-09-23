@@ -4,48 +4,50 @@
 #include "Hardware.h"
 
 
-void lcdPrintSpaces()
+uint8_t lcdPrintSpaces()
 {
-	lcdPrintSpaces(16);
+	return lcdPrintSpaces(16);
 }
 
-void lcdPrintSpaces(uint8_t n)
+uint8_t lcdPrintSpaces(uint8_t n)
 {
-	while(n-->0) {
+	for(uint8_t i=0;i<n;i++)
 		lcd.print(' ');
-	}
+	return n;
 }
 
 
-void lcdPrint(const char *str, uint8_t n)
+uint8_t lcdPrint(const char *str, uint8_t n)
 {
 	if(str) {
 		char buffer[LCD_COLUMNS + 1];
 		if (n > LCD_COLUMNS) n = LCD_COLUMNS;
 		strncpy(buffer, str, n);
 		buffer[n] = 0;
-		lcd.print(buffer);
+		return lcd.print(buffer);
 	}
+	return 0;
 }
 
 
-void lcdPrint_P(const char *str)
+uint8_t lcdPrint_P(const char *str)
 {
-	lcdPrint_P (str, LCD_COLUMNS);
+	return lcdPrint_P (str, LCD_COLUMNS);
 }
 
-void lcdPrint_P(const char *str, uint8_t n)
+uint8_t lcdPrint_P(const char *str, uint8_t n)
 {
 	if(str) {
 		char buffer[LCD_COLUMNS + 1];
 		if (n > LCD_COLUMNS) n = LCD_COLUMNS;
 		strncpy_P(buffer, str, n);
 		buffer[n] = 0;
-		lcd.print(buffer);
+		return lcd.print(buffer);
 	}
+	return 0;
 }
 
-void lcdPrint_E(const char *str, uint8_t n)
+uint8_t lcdPrint_E(const char *str, uint8_t n)
 {
 	if(str) {
 		char buffer[LCD_COLUMNS + 1];
@@ -57,8 +59,9 @@ void lcdPrint_E(const char *str, uint8_t n)
 				break;
 		}
 		buffer[n] = 0;
-		lcd.print(buffer);
+		return lcd.print(buffer);
 	}
+	return 0;
 }
 
 

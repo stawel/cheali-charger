@@ -16,4 +16,6 @@ public:
 	void delay(uint32_t ms) const;
 };
 
+extern Timer timer;
+
 #endif /* TIMER_H_ */

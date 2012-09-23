@@ -11,6 +11,8 @@ static void callback() {
 }
 
 
+Timer timer;
+
 
 Timer::Timer() : _interrupts(0) {
 }

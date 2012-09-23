@@ -86,7 +86,6 @@ void hardware::delay(uint32_t t)
 
 Multiplexer mux;
 Keyboard keyboard;
-Timer timer;
 SMPS smps;
 Discharger discharger;
 Balancer balancer;

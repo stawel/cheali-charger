@@ -3,8 +3,9 @@
 
 #include <inttypes.h>
 #include "Program.h"
+#include "Blink.h"
 
-class Screen {
+class Screen : public Blink {
 public:
 	uint16_t Rth_;
 	uint16_t Vth_;

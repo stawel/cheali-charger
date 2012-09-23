@@ -2,42 +2,18 @@
 #include "LcdPrint.h"
 #include "GTPowerA610.h"
 
-#define BLINK(command) do { if(blink!=index) {command; } else {} }while(false)
-
-bool ProgramDataMenu::getBlink() const
-{
-	if(blinkIndex_ >= 0) {
-		uint16_t mili = timer.getMiliseconds() - blinkStartTime_;
-		mili/=BLINK_SPEED_MS/4;
-		if(!(blinkIndex_ & BLINK_SPEED2))
-			mili/=4;
-		if((mili+blinkStartOff_)%2) return true;
-	}
-	return false;
-}
-
-int ProgramDataMenu::getBlinkIndex()
-{
-	if(getBlink()) {
-		blinkOff_ = true;
-		return blinkIndex_;
-	}
-	blinkOff_ = false;
-	return -1;
-}
-
-
-void ProgramDataMenu::printItem(int index)
+uint8_t ProgramDataMenu::printItem(int index)
 {
 	int blink = getBlinkIndex();
 	switch(index) {
-	case 0:	lcdPrint_P(PSTR("Bat:  "));     BLINK(p_.printBatteryString()); break;
-	case 1:	lcdPrint_P(PSTR("V:  ")); 		BLINK(p_.printVoltageString());	break;
-	case 2:	lcdPrint_P(PSTR("Ic: ")); 		BLINK(p_.printChargeString()); 	break;
-	case 3:	lcdPrint_P(PSTR("Imax: ")); 	BLINK(p_.printCurrentString()); break;
+	case 0:	lcdPrint_P(PSTR("Bat:  "));     BLINK_INDEX(p_.printBatteryString()); break;
+	case 1:	lcdPrint_P(PSTR("V:  ")); 		BLINK_INDEX(p_.printVoltageString());	break;
+	case 2:	lcdPrint_P(PSTR("Ic: ")); 		BLINK_INDEX(p_.printChargeString()); 	break;
+	case 3:	lcdPrint_P(PSTR("Imax: ")); 	BLINK_INDEX(p_.printCurrentString()); break;
 	case PROGRAM_DATA_MENU_SIZE-1:
 			lcdPrint_P(PSTR("     save")); 						break;
 	}
+	return 0;
 }
 
 bool ProgramDataMenu::editItem(int index, uint8_t key)
@@ -57,38 +33,19 @@ bool ProgramDataMenu::editItem(int index, uint8_t key)
 	return true;
 }
 
-void ProgramDataMenu::startBlink(int index, bool off)
-{
-	blinkIndex_ = index;
-	blinkStartTime_ = timer.getMiliseconds();
-	blinkOff_ = false;
-	blinkStartOff_ = off;
-}
-
-void ProgramDataMenu::stopBlink()
-{
-	blinkIndex_ = -1;
-}
-
-void ProgramDataMenu::blinkDisplay()
-{
-	if(getBlink() != blinkOff_)
-		display();
-}
-
 void ProgramDataMenu::editIndex(int index)
 {
-	startBlink(index, true);
+	startBlinkOff(index);
 	ProgramData undo(p_);
 	uint8_t key;
 	do {
 		key =  keyboard.getPressedWithSpeed();
 		if(key == BUTTON_DEC || key == BUTTON_INC) {
 			editItem(index, key);
-			startBlink(index, false);
+			startBlinkOn(index);
 			display();
 		}
-		blinkDisplay();
+	display();
 	} while(key != BUTTON_STOP && key != BUTTON_START);
 
 	stopBlink();

@@ -45,11 +45,11 @@ public:
 			menuE_(menuE), progmemMenu_(progmemMenu), progmemMenuItems_(progmemMenuItems){}
 
 
-	virtual void printItem(int i) {
+	virtual uint8_t printItem(int i) {
 		if(i < progmemMenuItems_) {
-			lcdPrint_P((char*)pgm_read_word(&progmemMenu_[i]), MAINMENU_MAX_ITEM_NAME);
+			return lcdPrint_P((char*)pgm_read_word(&progmemMenu_[i]), MAINMENU_MAX_ITEM_NAME);
 		} else {
-			lcdPrint_E(menuE_->items[i - progmemMenuItems_].name, MAINMENU_MAX_ITEM_NAME);
+			return lcdPrint_E(menuE_->items[i - progmemMenuItems_].name, MAINMENU_MAX_ITEM_NAME);
 		}
 	}
 };

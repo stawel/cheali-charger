@@ -69,27 +69,32 @@ void ProgramData::loadDefault()
 }
 
 
-void ProgramData::printBatteryString(int n) const { lcdPrint_P((char*)pgm_read_word(&batteryString[batteryType]), n); }
+uint8_t ProgramData::printBatteryString(int n) const { return lcdPrint_P((char*)pgm_read_word(&batteryString[batteryType]), n); }
 
-void ProgramData::printVoltageString() const
+uint8_t ProgramData::printVoltageString() const
 {
 	if(batteryType == Unknown) {
 		lcdPrintVoltage(getVoltage(), 7);
+		return 7;
 	} else {
+		uint8_t r = 5+2;
 		lcdPrintVoltage(getVoltage(), 5);
 		lcd.print('/');
-		lcd.print(cells);
+		r+=lcd.print(cells);
 		lcd.print('C');
+		return r;
 	}
 }
 
-void ProgramData::printCurrentString() const
+uint8_t ProgramData::printCurrentString() const
 {
 	lcdPrintCurrent(I, 6);
+	return 6;
 }
-void ProgramData::printChargeString() const
+uint8_t ProgramData::printChargeString() const
 {
 	lcdPrintCharge(C, 8);
+	return 8;
 }
 
 

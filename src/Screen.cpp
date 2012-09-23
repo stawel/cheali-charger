@@ -243,8 +243,16 @@ void Screen::displayStartInfo()
 	lcd.print(procent);
 	lcdPrint_P(PSTR("% "));
 
-	analogInputs.printRealValue(AnalogInputs::Vout, 5);
+	int bindex = getBlinkIndex();
+	if(bindex & 1) analogInputs.printRealValue(AnalogInputs::Vout, 5);
+	else lcdPrintSpaces(5);
+
 	lcd.print(' ');
-	analogInputs.printRealValue(AnalogInputs::Vbalacer, 5);
-	lcd.print(analogInputs.getConnectedBalancePorts());
+
+	if(bindex & 2) analogInputs.printRealValue(AnalogInputs::Vbalacer, 5);
+	else lcdPrintSpaces(5);
+
+	if(bindex & 4) lcd.print(analogInputs.getConnectedBalancePorts());
+	else lcd.print(' ');
+
 }

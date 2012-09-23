@@ -60,6 +60,8 @@ set(SOURCE_FILES
         Utils.h
         StartInfoStrategy.cpp
         StartInfoStrategy.h
+        Blink.cpp
+        Blink.h
 
         Monitor.cpp
         Monitor.h

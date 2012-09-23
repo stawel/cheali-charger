@@ -20,11 +20,11 @@ struct ProgramData {
 
 	bool edit();
 
-	void printBatteryString(int n = LCD_COLUMNS) const;
+	uint8_t printBatteryString(int n = LCD_COLUMNS) const;
 
-	void printVoltageString() const;
-	void printCurrentString() const;
-	void printChargeString() const;
+	uint8_t printVoltageString() const;
+	uint8_t printCurrentString() const;
+	uint8_t printChargeString() const;
 
 	void changeBattery(int direction);
 	void changeVoltage(int direction);

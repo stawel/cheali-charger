@@ -21,7 +21,7 @@ public:
 	void decIndex();
 
 	uint8_t getIndex() { return begin_ + pos_; }
-	virtual void printItem(int i) {}
+	virtual uint8_t printItem(int i) {}
 	uint8_t getMenuSize() const { return size_; }
 
 	void display();
