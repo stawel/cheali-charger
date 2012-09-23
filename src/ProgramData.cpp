@@ -74,11 +74,10 @@ void ProgramData::printBatteryString(int n) const { lcdPrint_P((char*)pgm_read_w
 void ProgramData::printVoltageString() const
 {
 	if(batteryType == Unknown) {
-		lcdPrintEValue(getVoltage(), 6, true);
-		lcd.print('V');
+		lcdPrintVoltage(getVoltage(), 7);
 	} else {
-		lcdPrintEValue(getVoltage(), 4, true);
-		lcdPrint_P(PSTR("V/"));
+		lcdPrintVoltage(getVoltage(), 5);
+		lcd.print('/');
 		lcd.print(cells);
 		lcd.print('C');
 	}
@@ -86,13 +85,11 @@ void ProgramData::printVoltageString() const
 
 void ProgramData::printCurrentString() const
 {
-	lcdPrintEValue(I, 5, false);
-	lcdPrint_P(PSTR("A"));
+	lcdPrintCurrent(I, 6);
 }
 void ProgramData::printChargeString() const
 {
-	lcdPrintEValue(C, 6, false);
-	lcdPrint_P(PSTR("Ah"));
+	lcdPrintCharge(C, 8);
 }
 
 

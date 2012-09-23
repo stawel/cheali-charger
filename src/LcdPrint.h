@@ -3,8 +3,7 @@
 
 #include <stddef.h>
 #include "Hardware.h"
-
-uint8_t digits(unsigned long x);
+#include "AnalogInputs.h"
 
 void lcdPrint_P(const char *str);
 void lcdPrint_P(const char *str, uint8_t n);
@@ -13,11 +12,14 @@ void lcdPrint  (const char *str, uint8_t n);
 void lcdPrintSpaces();
 void lcdPrintSpaces(uint8_t n);
 
+void lcdPrintUnsigned(uint16_t x, int8_t dig = 5);
 
-void lcdPrintEValue(uint16_t x, int8_t dig, bool dot = false);
+void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig);
+void lcdPrintCurrent(AnalogInputs::ValueType i, int8_t dig);
+void lcdPrintVoltage(AnalogInputs::ValueType v, int8_t dig);
+void lcdPrintResistance(AnalogInputs::ValueType r, int8_t dig);
+void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t dig);
 
-void lcdPrintEValueU(uint16_t x, int8_t dig = 5);
-void lcdPrintEValueI(uint16_t x, int8_t dig);
 
 #define BLINK_START uint8_t _start_blink = 0;
 #define BLINK_TEST ( ((blink &0x7f) != _start_blink++) ? 0 : ((blink & BLINK_SPEED2) + 1) )

@@ -109,7 +109,6 @@ public:
 	uint16_t getCalculationCount() { return calculationCount_; }
 	void printRealValue(Name name, uint8_t dig) const;
 	void printMeasuredValue(Name name, uint8_t dig) const;
-	static void print(ValueType v, Type type, uint8_t dig);
 	static Type getType(Name name);
 	uint16_t getStableCount(Name name) const { return stableCount_[name]; };
 	bool isStable(Name name) const { return stableCount_[name] >= STABLE_MIN_VALUE; };

@@ -62,15 +62,18 @@ void lcdPrint_E(const char *str, uint8_t n)
 }
 
 
-uint8_t digits(unsigned long x)
+uint8_t digits(uint16_t x)
 {
 	uint8_t retu = 0;
 	if(x == 0)
-		x = 1;
+		x=1;
 	for(;x!=0; x/=10)
 		retu++;
 	return retu;
 }
+
+namespace {
+
 
 void lcdPrintInf(int8_t dig)
 {
@@ -116,8 +119,9 @@ void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
 		if(dig-- >0) lcd.print(x);
 	}
 }
+}
 
-void lcdPrintEValueU(uint16_t x, int8_t dig)
+void lcdPrintUnsigned(uint16_t x, int8_t dig)
 {
 	const char prefix = ' ';
 	if(dig<=0)
@@ -134,29 +138,64 @@ void lcdPrintEValueU(uint16_t x, int8_t dig)
 }
 
 
-void lcdPrintEValueI(uint16_t x, int8_t dig)
+
+void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig)
 {
-	const char prefix = ' ';
-	if(dig<=0)
+	lcdPrintAnalog(c, AnalogInputs::Charge, dig);
+}
+void lcdPrintCurrent(AnalogInputs::ValueType i, int8_t dig)
+{
+	lcdPrintAnalog(i, AnalogInputs::Current, dig);
+}
+
+void lcdPrintVoltage(AnalogInputs::ValueType v, int8_t dig)
+{
+	lcdPrintAnalog(v, AnalogInputs::Voltage, dig);
+}
+
+void lcdPrintResistance(AnalogInputs::ValueType r, int8_t dig)
+{
+	lcdPrintAnalog(r, AnalogInputs::Resistance, dig);
+}
+
+
+
+void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t dig)
+{
+	if(dig <= 0)
 		return;
-	if(x<0) {
-		lcd.print('-');
-		x=-x;
+	dig--;
+	bool dot = true;
+	char unit = 'U';
+	switch (type) {
+	case AnalogInputs::Current:
+		dot = false;
+		unit ='A';
+		break;
+	case AnalogInputs::Voltage:
+		unit ='V';
+		break;
+	case AnalogInputs::Temperature:
+		unit ='C';
+		x*=10;
+		break;
+	case AnalogInputs::Resistance:
+		dot = false;
+		//TODO: ??
+		unit ='W';
+		break;
+	case AnalogInputs::Unknown:
+		break;
+	case AnalogInputs::Charge:
+		dot = false;
 		dig--;
+		unit ='h';
+		break;
 	}
-	if(dig<=0)
-		return;
-	uint8_t xdig = digits(x);
+	lcdPrintEValue(x, (int8_t) dig, dot);
+	lcd.print(unit);
 
-	if(dig < xdig) {
-		lcdPrintInf(dig);
-	} else {
-		for(;xdig<dig;dig--)
-			lcd.print(prefix);
-		lcd.print(x);
-	}
+	if(type == AnalogInputs::Charge) 	lcd.print('A');
 }
-
-
 
 

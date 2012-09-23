@@ -161,13 +161,13 @@ void Calibrate::print_v(uint8_t dig){
 	case 1: lcdPrint_P(PSTR("r:")); break;
 	case 2: lcdPrint_P(PSTR("R:")); break;
 	}
-	lcdPrintEValueU(value_, dig);
+	lcdPrintUnsigned(value_, dig);
 }
 
 void Calibrate::print_d(AnalogInputs::Name name, int dig)
 {
 	switch(dispVal_) {
-	case 0:	lcdPrintEValueU(analogInputs.getValue(name), dig-2);
+	case 0:	lcdPrintUnsigned(analogInputs.getValue(name), dig-2);
 			break;
 	case 1: analogInputs.printRealValue(name, dig);
 			break;
@@ -373,7 +373,7 @@ bool Calibrate::setValue(uint8_t x, uint8_t y, AnalogInputs::ValueType &v, Analo
 	do {
 		dir = 0;
 		lcd.setCursor(x,y);
-		if(blinkOn_)	AnalogInputs::print(v, type, dig);
+		if(blinkOn_)	lcdPrintAnalog(v, type, dig);
 		else 			lcdPrintSpaces(dig);
 		blinkOn_ = !blinkOn_;
 
@@ -481,10 +481,10 @@ void Calibrate::infoTimeM()
 		t1 = timer.getMiliseconds();
 		lcd.setCursor(0,0);
 		lcdPrint_P(PSTR(" time: "));
-		lcdPrintEValueU(t0);
+		lcd.print(t0);
 		lcd.setCursor(0,1);
 		lcdPrint_P(PSTR("100ms: "));
-		lcdPrintEValueU(t1-t0);
+		lcd.print(t1-t0);
 
 	} while(key != BUTTON_STOP);
 }

@@ -232,49 +232,11 @@ void AnalogInputs::printRealValue(Name name, uint8_t dig) const
 {
 	ValueType x = analogInputs.getRealValue(name);
 	Type t = getType(name);
-	print(x, t, dig);
+	lcdPrintAnalog(x, t, dig);
 }
 void AnalogInputs::printMeasuredValue(Name name, uint8_t dig) const
 {
 	ValueType x = calibrateValue(name, analogInputs.getMeasuredValue(name));
 	Type t = getType(name);
-	print(x, t, dig);
-}
-
-void AnalogInputs::print(ValueType x, Type type, uint8_t dig)
-{
-	if(dig == 0)
-		return;
-	dig--;
-	bool dot = true;
-	char unit = 'U';
-	switch (type) {
-	case Current:
-		dot = false;
-		unit ='A';
-		break;
-	case Voltage:
-		unit ='V';
-		break;
-	case Temperature:
-		unit ='C';
-		x*=10;
-		break;
-	case Resistance:
-		dot = false;
-		//TODO: ??
-		unit ='W';
-		break;
-	case Unknown:
-		break;
-	case Charge:
-		dot = false;
-		dig--;
-		unit ='h';
-		break;
-	}
-	lcdPrintEValue(x, (int8_t) dig, dot);
-	lcd.print(unit);
-
-	if(type == Charge) 	lcd.print('A');
+	lcdPrintAnalog(x, t, dig);
 }
