@@ -15,7 +15,6 @@ void lcdPrintSpaces(uint8_t n);
 
 
 void lcdPrintEValue(uint16_t x, int8_t dig, bool dot = false);
-void lcdPrintEValueEnd(uint16_t x, int8_t dig, bool dot = false, const char *end = NULL);
 
 void lcdPrintEValueU(uint16_t x, int8_t dig = 5, char prefix = ' ');
 void lcdPrintEValueI(uint16_t x, int8_t dig, char prefix = ' ');

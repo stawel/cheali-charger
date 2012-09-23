@@ -133,14 +133,6 @@ void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
 	}
 }
 
-void lcdPrintEValueEnd(uint16_t x, int8_t dig, bool dot, const char *end)
-{
-	lcdPrintEValue(x, dig, dot);
-	lcdPrint_P(end);
-}
-
-
-
 void lcdPrintEValueU(uint16_t x, int8_t dig, char prefix)
 {
 	if(dig<=0)
