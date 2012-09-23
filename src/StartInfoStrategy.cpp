@@ -26,7 +26,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 	should_be_cells = ProgramData::currentProgramData.cells;
 	c = (should_be_cells != is_cells);
 	b = (is_cells == 0);
-	v = (analogInputs.getRealValue(AnalogInputs::Vout) < should_be_cells * ANALOG_VOLTS(1));
+	v = (!analogInputs.isConnected(AnalogInputs::Vout));
 
 	screens.blinkIndex_ = 7;
 	if(c) 	screens.blinkIndex_ -= 4;

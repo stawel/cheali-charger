@@ -61,18 +61,30 @@ void AnalogInputs::clearAvr()
 
 int AnalogInputs::getConnectedBalancePorts() const
 {
-	AnalogInputs::ValueType oneVolt = 1000;
 	for(int i=0; i < 6; i++){
-		if(real_[Name(Vb0+i)] < oneVolt) return i;
+		if(!isConnected(Name(Vb0+i))) return i;
 	}
 	return 6;
 }
+bool AnalogInputs::isConnected(Name name) const
+{
+	AnalogInputs::ValueType x = getRealValue(name);
+	switch(getType(name)) {
+	case Current:
+		return x > ANALOG_AMPS(0.050);
+	case Voltage:
+		return x > ANALOG_VOLTS(1);
+	default:
+		return true;
+	}
+}
+
 
 
 void AnalogInputs::doVirtualCalculations()
 {
 	int ports = getConnectedBalancePorts();
-	AnalogInputs::ValueType oneVolt = 1000;
+	AnalogInputs::ValueType oneVolt = ANALOG_VOLTS(1);
 	AnalogInputs::ValueType balancer = 0;
 	AnalogInputs::ValueType out = real_[Vout];
 

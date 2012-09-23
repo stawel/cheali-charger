@@ -16,7 +16,11 @@ namespace {
 	}
 
 	void printBalancer(int cell, bool mesured) {
-		lcdPrintVoltage(getBalanceValue(cell, mesured), 6);
+		if(analogInputs.isConnected(AnalogInputs::Name(AnalogInputs::Vb0+cell))) {
+			lcdPrintVoltage(getBalanceValue(cell, mesured), 6);
+		} else {
+			lcdPrint_P(PSTR("  --  "));
+		}
 	}
 
 	void displayBalanceInfo(int from, bool mesured)
@@ -43,10 +47,15 @@ namespace {
 
 		uint8_t  j = 1;
 		for(uint8_t i = 0; i < 6; i++) {
-			if(balancer.balance_ > 0 && i == balancer.minCell_)
+			if(balancer.balance_ > 0 && i == balancer.minCell_) {
 				lcd.print('_');
-			else
-				lcd.print((balancer.balance_&j)&&1);
+			} else {
+				if(balancer.isPowerOn()) {
+					lcd.print((balancer.balance_&j)&&1);
+				} else {
+					lcd.print(' ');
+				}
+			}
 			j<<=1;
 		}
 		lcd.print(' ');

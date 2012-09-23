@@ -97,6 +97,7 @@ public:
 	static void setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &p);
 
 	int getConnectedBalancePorts() const;
+	bool isConnected(Name name) const;
 
 	template<uint8_t analogInput>
 	static uint16_t analogValue() {
