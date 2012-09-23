@@ -46,8 +46,3 @@ void Thevenin::calculateVth(AnalogInputs::ValueType v, CurrentType i)
 	else Vth_ = v - VRth;
 }
 
-void Thevenin::storeLast(AnalogInputs::ValueType VLast, CurrentType ILast)
-{
-	VLast_ = VLast;
-	ILast_ = ILast;
-}

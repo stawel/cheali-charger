@@ -15,7 +15,8 @@ public:
 	CurrentType ILastDiff_;
 
 	Thevenin(){};
-	void storeLast(AnalogInputs::ValueType VLast, CurrentType ILast);
+	void storeLast(AnalogInputs::ValueType VLast, CurrentType ILast) { VLast_ = VLast; ILast_ = ILast; }
+
 	void calculateRthVth(AnalogInputs::ValueType v, CurrentType i);
 	void calculateRth(AnalogInputs::ValueType v, CurrentType i);
 	void calculateVth(AnalogInputs::ValueType v, CurrentType i);
