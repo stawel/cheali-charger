@@ -116,7 +116,8 @@ void Screen::displayScreen1()
 	lcd.setCursor(0,1);
 	lcd.print(c);
 	lcd.print('=');
-	lcdPrintEValueI(value, 	4, PSTR("   "));
+	lcdPrintEValueI(value, 	4);
+	lcdPrintSpaces(3);
 	analogInputs.printRealValue(V, 	7);
 	lcdPrintSpaces();
 }
@@ -137,18 +138,16 @@ void Screen::displayScreenCIVlimits()
 
 void Screen::displayScreenTime()
 {
-	long t_up = timer.getMiliseconds();
-	t_up /= 1000;
 
 	lcd.setCursor(0,0);
 	lcdPrint_P(PSTR("C="));
-	lcdPrintEValueI(smps.getCharge(),		5, PSTR("s t="));
-	lcdPrintEValueI(t_up,					5, PSTR("s     "));
+	lcdPrintEValueI(smps.getCharge(),		5); lcdPrint_P(PSTR("s t="));
+	lcdPrintEValueI(timer.getMiliseconds()/1000,	5); lcdPrint_P(PSTR("s     "));
 
 	lcd.setCursor(0,1);
 	lcdPrint_P(PSTR("c="));
-	lcdPrintEValueI(smps.getOnTimeSec(), 	5, PSTR("/"));
-	lcdPrintEValueI(14567,	 				5, PSTR("s     "));
+	lcdPrintEValueI(smps.getOnTimeSec(), 	5); lcdPrint_P(PSTR("/"));
+	lcdPrintEValueI(14567,	 				5); lcdPrint_P(PSTR("s     "));
 }
 
 void Screen::displayScreenTemperature()

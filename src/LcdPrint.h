@@ -16,9 +16,8 @@ void lcdPrintSpaces(uint8_t n);
 
 void lcdPrintEValue(uint16_t x, int8_t dig, bool dot = false);
 
-void lcdPrintEValueU(uint16_t x, int8_t dig = 5, char prefix = ' ');
-void lcdPrintEValueI(uint16_t x, int8_t dig, char prefix = ' ');
-void lcdPrintEValueI(uint16_t x, int8_t dig, const char *end = NULL, uint8_t blink = 0);
+void lcdPrintEValueU(uint16_t x, int8_t dig = 5);
+void lcdPrintEValueI(uint16_t x, int8_t dig);
 
 #define BLINK_START uint8_t _start_blink = 0;
 #define BLINK_TEST ( ((blink &0x7f) != _start_blink++) ? 0 : ((blink & BLINK_SPEED2) + 1) )

@@ -72,24 +72,8 @@ uint8_t digits(unsigned long x)
 	return retu;
 }
 
-void doBlink(int8_t &dig, uint8_t blink)
+void lcdPrintInf(int8_t dig)
 {
-	if(blink && dig > 0) {
-		uint16_t mili = timer.getMiliseconds();
-		mili/=BLINK_SPEED_MS/4;
-		if(!(blink & BLINK_SPEED2))
-			mili/=4;
-		if(mili%2) {
-			do{
-				lcd.print(' ');
-			} while(--dig);
-		}
-	}
-}
-
-void lcdPrintInf(int8_t dig, uint8_t blink = 0)
-{
-	doBlink(dig, blink);
 	for(; dig > 3; dig--)
 		lcd.print(' ');
 
@@ -98,7 +82,7 @@ void lcdPrintInf(int8_t dig, uint8_t blink = 0)
 
 void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
 {
-	char prefix = ' ';
+	const char prefix = ' ';
 	if(dig<=0)
 		return;
 
@@ -133,8 +117,9 @@ void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
 	}
 }
 
-void lcdPrintEValueU(uint16_t x, int8_t dig, char prefix)
+void lcdPrintEValueU(uint16_t x, int8_t dig)
 {
+	const char prefix = ' ';
 	if(dig<=0)
 		return;
 	uint8_t xdig = digits(x);
@@ -149,8 +134,9 @@ void lcdPrintEValueU(uint16_t x, int8_t dig, char prefix)
 }
 
 
-void lcdPrintEValueI(uint16_t x, int8_t dig, char prefix)
+void lcdPrintEValueI(uint16_t x, int8_t dig)
 {
+	const char prefix = ' ';
 	if(dig<=0)
 		return;
 	if(x<0) {
@@ -171,12 +157,6 @@ void lcdPrintEValueI(uint16_t x, int8_t dig, char prefix)
 	}
 }
 
-void lcdPrintEValueI(uint16_t x, int8_t dig, const char *end, uint8_t blink)
-{
-	doBlink(dig, blink);
-	lcdPrintEValueI(x, dig, ' ');
-	lcdPrint_P(end);
-}
 
 
 
