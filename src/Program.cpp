@@ -105,23 +105,23 @@ void doStrategy(Strategy &strategy, const Screen::ScreenType chargeScreens[], ui
 	strategy.powerOff();
 }
 
-uint16_t getChargeProcent(){
-	uint16_t v1,v2, add = 0;
-	uint32_t v;
+
+uint8_t getChargeProcent(){
+	uint16_t v1,v2, v;
 	v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
 	v1 = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
 	v = analogInputs.getRealValue(AnalogInputs::VoutBalancer);
 
-	if(((v*99)/100) >= v2) return 100;
-	if(v<=v1) return 0;
+	if(v >= v2) return 100;
+	if(v <= v1) return 0;
 	v-=v1;
-	v*=1000;
-	v=  v/(v2-v1);
-	if(v%10 > 5) add = 1;
-	return v/10 + add;
+	v2-=v1;
+	v2/=100;
+	v=  v/v2;
+	return v;
 }
-
 } //namespace {
+
 
 void Program::printStartInfo(ProgramType prog)
 {
@@ -131,7 +131,6 @@ void Program::printStartInfo(ProgramType prog)
 	ProgramData::currentProgramData.printVoltageString();
 	lcd.print(' ');
 	printProgram2chars(prog);
-	analogInputs.doFullMeasurement();
 
 	lcd.setCursor(0,1);
 	uint16_t procent = getChargeProcent();

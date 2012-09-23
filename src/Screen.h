@@ -2,6 +2,7 @@
 #define SCREEN_H_
 
 #include <inttypes.h>
+#include "Program.h"
 
 class Screen {
 public:
@@ -37,6 +38,8 @@ public:
 	void displayStrings(const char *s1, const char *s2) const;
 
 	static void notImplemented();
+	static void printStartInfo(Program::ProgramType prog);
+
 };
 
 extern Screen screens;

@@ -1,9 +1,15 @@
 
-- add Rth measurement at the charge end
-- add Buzzer class (sound)
-- add calibration done sound
-- add "info" warning
-- add info sound
-- add "create name"
-- add other battery types
-- add wrong polarity warning
+high priority:
+ - add Rth measurement at the charge end
+ - add "info" warning
+ - add info sound
+ - add other battery types
+ - add wrong polarity warning
+
+
+low priority:
+ - add "create name"
+ - add Buzzer class (sound)
+ - add new "charge complete" msg
+ - add calibration done sound
+
