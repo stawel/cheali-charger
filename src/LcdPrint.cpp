@@ -17,7 +17,7 @@ void lcdPrintSpaces(uint8_t n)
 }
 
 
-void lcdPrint (const char *str, uint8_t n)
+void lcdPrint(const char *str, uint8_t n)
 {
 	if(str) {
 		char buffer[LCD_COLUMNS + 1];
@@ -28,6 +28,11 @@ void lcdPrint (const char *str, uint8_t n)
 	}
 }
 
+
+void lcdPrint_P(const char *str)
+{
+	lcdPrint_P (str, LCD_COLUMNS);
+}
 
 void lcdPrint_P(const char *str, uint8_t n)
 {
