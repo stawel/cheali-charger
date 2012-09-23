@@ -96,9 +96,9 @@ void lcdPrintInf(int8_t dig, uint8_t blink = 0)
 	lcdPrint_P(PSTR("Inf"), dig);
 }
 
-void lcdPrintEValue(uint16_t x, int8_t dig, bool dot, char prefix)
+void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
 {
-
+	char prefix = ' ';
 	if(dig<=0)
 		return;
 
