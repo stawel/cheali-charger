@@ -36,6 +36,7 @@ uint8_t selectIndexWithKeyboard(uint8_t &x, const uint8_t tab_size, bool exactly
 #endif
 
 #define sizeOfArray(x) (sizeof(x)/sizeof((x)[0]))
+#define sign(x) ((x)>0?1:-1)
 
 bool testTinern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on);
 

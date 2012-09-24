@@ -1,47 +1,56 @@
 #include "Thevenin.h"
+#include "Utils.h"
 
-void Thevenin::init(AnalogInputs::ValueType Vth)
+void Thevenin::init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i)
 {
 	VLast_ = Vth_ = Vth;
-	VLastDiff_ = ILastDiff_ = ILast_ = 0;
-	//TODO: ?
-	Rth_ = 1.000;
+	ILastDiff_ = ILast_ = 0;
+
+	Rth_I_ = i;
+	Rth_V_ = Vmax;  Rth_V_ -= Vth;
 }
 
-double Thevenin::calculateI(AnalogInputs::ValueType Vc) const
+AnalogInputs::ValueType Thevenin::calculateI(AnalogInputs::ValueType v) const
 {
-	double i = Vc-Vth_;
-	i /= Rth_;
+	int32_t i;
+	i  = v;
+	i -= Vth_;
+	i *= Rth_I_;
+	i /= Rth_V_;
+	//TODO:
+	if(i >  32000) return  32000;
+	if(i < 0) return 0;
 	return i;
 }
 
-void Thevenin::calculateRthVth(AnalogInputs::ValueType v, CurrentType i)
+void Thevenin::calculateRthVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
 	calculateRth(v, i);
 	calculateVth(v, i);
 }
 
-
-void Thevenin::calculateRth(AnalogInputs::ValueType v, CurrentType i)
+void Thevenin::calculateRth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
-	if(absDiff(i, ILast_) > ILastDiff_ || absDiff(v, VLast_) > VLastDiff_ ) {
-		ILastDiff_ = absDiff(i, ILast_)/2;
-		VLastDiff_ = absDiff(v, VLast_)/2;
-		double R,I;
-		R= v;
-		R-= VLast_;
-		I = i;
-		I-=ILast_;
-		R /= I;
-		//TODO: ??
-		if(abs(R)>0.000001) Rth_ = R;
+	if(absDiff(i, ILast_) > ILastDiff_) {
+		int16_t rth_v,rth_i;
+		rth_v  = v;
+		rth_v -= VLast_;
+		rth_i  = i;
+		rth_i -= ILast_;
+		if(sign(rth_v)*sign(rth_i) == sign(Rth_V_)*sign(Rth_I_)) {
+			ILastDiff_ = absDiff(i, ILast_);
+			Rth_V_ = rth_v;
+			Rth_I_ = rth_i;
+		}
 	}
 }
 
-void Thevenin::calculateVth(AnalogInputs::ValueType v, CurrentType i)
+void Thevenin::calculateVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
-	double VRth;
-	VRth = Rth_ * i;
+	int32_t VRth;
+	VRth = i;
+	VRth *= Rth_V_;
+	VRth /= Rth_I_;
 	if(v < VRth) Vth_ = 0;
 	else Vth_ = v - VRth;
 }

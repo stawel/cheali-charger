@@ -15,7 +15,6 @@ public:
 	uint8_t minCell_;
 	uint16_t balance_;
 	bool on_;
-	Thevenin t_[MAX_BANANCE_CELLS];
 	int16_t Von_[MAX_BANANCE_CELLS], Voff_[MAX_BANANCE_CELLS];
 	bool savedVon_;
 	uint32_t startBalanceTime_;
@@ -46,14 +45,6 @@ public:
 	bool isMaxVout(AnalogInputs::ValueType maxV) const;
 	bool isMinVout(AnalogInputs::ValueType minV) const;
 	bool isStable() const;
-
-	//Thevenin methods
-	double calculateMinI(AnalogInputs::ValueType v) const;
-	double calculateMaxI(AnalogInputs::ValueType v) const;
-	void calculateRthVth(Thevenin::CurrentType i);
-	void calculateRth(Thevenin::CurrentType i);
-	void calculateVth(Thevenin::CurrentType i);
-	void storeLast(Thevenin::CurrentType ILast);
 
 	AnalogInputs::ValueType calculatePerCell(AnalogInputs::ValueType v) const;
 };

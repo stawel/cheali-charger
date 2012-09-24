@@ -193,15 +193,23 @@ void Screen::displayRthVth()
 {
 	lcd.setCursor(0,0);
 
-	lcdPrint_P(PSTR("Rth="));
-	lcdPrintResistance(Rth_, 8);
+	lcdPrint_P(PSTR("V="));
+	//lcdPrintResistance(Rth_, 8);
+	lcd.print(Rth_V_);
+	lcdPrint_P(PSTR(" I="));
+	//lcdPrintResistance(Rth_, 8);
+	lcd.print(Rth_I_);
+
 	lcdPrintSpaces();
 
 	lcd.setCursor(0,1);
 	lcdPrint_P(PSTR(""));
-	lcdPrintVoltage(Vth_, 7);
-	lcdPrint_P(PSTR(" "));
-	lcdPrintUnsigned(valueTh_, 8);
+	//lcdPrintVoltage(Vth_, 7);
+	lcd.print(Vth_);
+	lcd.print('V');
+
+	lcd.print(' ');
+	lcd.print(valueTh_);
 	lcdPrintSpaces();
 }
 
@@ -226,7 +234,7 @@ uint8_t getChargeProcent(){
 	v1 = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
 	v = analogInputs.getRealValue(AnalogInputs::VoutBalancer);
 
-	if(v >= v2) return 100;
+	if(v >= v2) return 99;
 	if(v <= v1) return 0;
 	v-=v1;
 	v2-=v1;

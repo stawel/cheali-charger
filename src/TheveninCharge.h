@@ -3,25 +3,15 @@
 
 #include "SimpleCharge.h"
 #include "Thevenin.h"
+#include "TheveninMethod.h"
 
 class TheveninCharge : public SimpleCharge {
 public:
-	uint16_t minSmpsValue_;
-	uint16_t maxSmpsValue_;
-	AnalogInputs::ValueType maxV_;
-
-	Thevenin t_;
-	bool Ifalling_;
-	uint8_t fullCount_;
-
 	TheveninCharge(){}
 	virtual void powerOn();
 	virtual statusType doStrategy();
 	virtual void powerOff();
-	void setI(double i);
-	bool isMinSmpsValue() const;
-	bool isMaxVout() const;
-//	bool isBalancer() const;
+	bool isEndVout() const;
 
 	void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
 	void setMinI(AnalogInputs::ValueType i);

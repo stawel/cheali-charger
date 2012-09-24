@@ -7,9 +7,10 @@
 
 class Screen : public Blink {
 public:
-	uint16_t Rth_;
-	uint16_t Vth_;
-	uint16_t valueTh_;
+	int16_t Rth_V_;
+	int16_t Rth_I_;
+	AnalogInputs::ValueType Vth_;
+	AnalogInputs::ValueType valueTh_;
 	double charge_;
 	Program::ProgramType programType_;
 

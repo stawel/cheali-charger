@@ -33,9 +33,9 @@ Strategy::statusType SimpleCharge::doStrategy()
 }
 
 
-bool SimpleCharge::isStable()
+bool SimpleCharge::isStable() const
 {
-	return analogInputs.isStable(smps.VName) && analogInputs.isStable(smps.IName);
+	return analogInputs.isStable(smps.VName) && analogInputs.isStable(smps.IName) && balancer.isStable();
 }
 
 

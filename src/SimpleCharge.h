@@ -10,7 +10,7 @@ public:
 	virtual void powerOn();
 	virtual statusType doStrategy();
 	virtual void powerOff();
-	bool isStable();
+	bool isStable() const;
 };
 
 

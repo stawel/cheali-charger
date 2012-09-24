@@ -1,15 +1,14 @@
 
 high priority:
  - add Rth measurement at the charge end
- - add "info" warning
+ - add Buzzer class (sound)
  - add info sound
  - add other battery types
  - add wrong polarity warning
-
+ - automatically change Icharge when Capacity changed
 
 low priority:
  - add "create name"
- - add Buzzer class (sound)
  - add new "charge complete" msg
  - add calibration done sound
 

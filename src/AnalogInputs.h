@@ -129,7 +129,8 @@ protected:
 	uint16_t calculationCount_;
 };
 
-inline AnalogInputs::ValueType absDiff(AnalogInputs::ValueType x, AnalogInputs::ValueType y)
+template<class T>
+inline T absDiff(T x, T y)
 {
 	if(x > y) return x - y;
 	return y - x;

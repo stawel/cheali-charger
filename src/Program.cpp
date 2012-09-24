@@ -131,7 +131,8 @@ void Program::runTheveninCharge(int minChargeC)
 void Program::runDischarge()
 {
 	//TODO: implement discharge current
-	theveninDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.I);
+//	theveninDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.I);
+	theveninDischarge.setVI(ANALOG_VOLTS(12), ProgramData::currentProgramData.I);
 	doStrategy(theveninDischarge, dischargeScreens, sizeOfArray(dischargeScreens));
 }
 

@@ -48,10 +48,10 @@ set(SOURCE_FILES
         TheveninCharge.h
         Storage.cpp
         Storage.h
-        TheveninVtLimitCharge.cpp
-        TheveninVtLimitCharge.h
         Thevenin.cpp
         Thevenin.h
+        TheveninMethod.cpp
+        TheveninMethod.h
         Timer.cpp
         Timer.h
         TimerOne.cpp

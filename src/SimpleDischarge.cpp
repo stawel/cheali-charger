@@ -36,3 +36,9 @@ bool SimpleDischarge::isMinVout() const
 
 	return Vc >= discharger.getVout() || balancer.isMinVout(Vc_per_cell);
 }
+
+
+bool SimpleDischarge::isStable() const
+{
+	return analogInputs.isStable(discharger.VName) && analogInputs.isStable(discharger.IName) && balancer.isStable();
+}

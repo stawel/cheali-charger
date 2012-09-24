@@ -16,6 +16,9 @@ public:
 	virtual void powerOff();
 
 	bool isMinVout() const;
+	bool isStable() const;
+
+
 	void setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I) { I_ = I; V_ = V; };
 };
 
