@@ -13,27 +13,27 @@ struct ProgramData {
 	enum VoltageType {VIdle,VCharge,VDischarge,VStorage, 						LAST_VOLTAGE_TYPE};
 
 	uint8_t batteryType;
-	uint16_t C,I,cells;
+	uint16_t C,Ic,Id,cells;
 
 	uint16_t getVoltagePerCell(VoltageType type = VIdle) const;
-	uint16_t getVoltage(VoltageType type = VIdle) const { return cells * getVoltagePerCell(type); }
+	uint16_t getVoltage(VoltageType type = VIdle) const;
 
 	bool edit();
 
 	uint8_t printBatteryString(int n = LCD_COLUMNS) const;
 
 	uint8_t printVoltageString() const;
-	uint8_t printCurrentString() const;
+	uint8_t printIcString() const;
+	uint8_t printIdString() const;
 	uint8_t printChargeString() const;
 
 	void changeBattery(int direction);
 	void changeVoltage(int direction);
 	void changeCharge(int direction);
-	void changeCurrent(int direction);
+	void changeIc(int direction);
+	void changeId(int direction);
 
 	uint16_t getMaxCells() const;
-	uint16_t getMaxCurrent() const;
-	uint32_t getMaxPower() const;
 
 	void check();
 	void loadDefault();

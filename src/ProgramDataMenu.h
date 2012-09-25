@@ -5,7 +5,7 @@
 #include "ProgramData.h"
 #include "Blink.h"
 
-#define PROGRAM_DATA_MENU_SIZE 5
+#define PROGRAM_DATA_MENU_SIZE 6
 
 class ProgramDataMenu : public Menu, public Blink {
 public:

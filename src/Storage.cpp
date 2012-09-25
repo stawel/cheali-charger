@@ -52,11 +52,11 @@ Strategy::statusType Storage::doStrategy()
 	return status;
 }
 
-void Storage::setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I)
+void Storage::setVII(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic, AnalogInputs::ValueType Id)
 {
 	V_ = V;
-	theveninCharge.setVI(V, I);
-	theveninDischarge.setVI(V, I);
+	theveninCharge.setVI(V, Ic);
+	theveninDischarge.setVI(V, Id);
 }
 
 void Storage::setDoBalance(bool v)

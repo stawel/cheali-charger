@@ -15,7 +15,7 @@ public:
 	virtual void powerOn();
 	virtual statusType doStrategy();
 	virtual void powerOff();
-	void setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I);
+	void setVII(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic, AnalogInputs::ValueType Id);
 	void setDoBalance(bool v);
 };
 

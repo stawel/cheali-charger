@@ -24,13 +24,13 @@ const uint16_t voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VO
 };
 
 const ProgramData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
-{ProgramData::Unknown, 	2200, 2200, 10000},
-{ProgramData::NiCd, 	2200, 2200, 1},
-{ProgramData::NiMH, 	2200, 2200, 1},
-{ProgramData::Pb, 		2200, 2200, 6},
-{ProgramData::Life, 	2200, 2200, 3},
-{ProgramData::Lilo, 	2200, 2200, 3},
-{ProgramData::Lipo, 	2200, 2200, 3}
+{ProgramData::Unknown, 	2200, 2200, 2200, 10000},
+{ProgramData::NiCd, 	2200, 2200, 2200, 1},
+{ProgramData::NiMH, 	2200, 2200, 2200, 1},
+{ProgramData::Pb, 		2200, 2200, 2200, 6},
+{ProgramData::Life, 	2200, 2200, 2200, 3},
+{ProgramData::Lilo, 	2200, 2200, 2200, 3},
+{ProgramData::Lipo, 	2200, 2200, 2200, 3}
 };
 
 const char b0[] PROGMEM = "Unknown";
@@ -56,6 +56,11 @@ uint16_t ProgramData::getVoltagePerCell(VoltageType type) const
 {
 	return pgm_read<uint16_t>(&voltsPerCell[batteryType][type]);
 }
+uint16_t ProgramData::getVoltage(VoltageType type) const
+{
+	return cells * getVoltagePerCell(type);
+}
+
 void ProgramData::restoreDefault()
 {
 	pgm_read(currentProgramData, &defaultProgram[Lipo]);
@@ -86,14 +91,20 @@ uint8_t ProgramData::printVoltageString() const
 	}
 }
 
-uint8_t ProgramData::printCurrentString() const
+uint8_t ProgramData::printIcString() const
 {
-	lcdPrintCurrent(I, 6);
+	lcdPrintCurrent(Ic, 6);
 	return 6;
 }
+uint8_t ProgramData::printIdString() const
+{
+	lcdPrintCurrent(Id, 6);
+	return 6;
+}
+
 uint8_t ProgramData::printChargeString() const
 {
-	lcdPrintCharge(C, 8);
+	lcdPrintCharge(C, 7);
 	return 8;
 }
 
@@ -121,8 +132,13 @@ void change(val_t &v, int direction, uint16_t max)
 void changeMax(uint16_t &v, int direction, uint16_t max)
 {
 	int32_t nv = v;
-	nv += direction;
-	if(nv < 0) nv = 0;
+	int step = 1;
+	if(nv>=100) step = 10;
+	if(nv>=1000) step = 100;
+	if(nv>=10000) step = 1000;
+	nv -= nv%step;
+	nv += direction*step;
+	if(nv < 1) nv = 1;
 	else if(nv > max) nv = max;
 	v = nv;
 }
@@ -141,12 +157,18 @@ void ProgramData::changeVoltage(int direction)
 
 void ProgramData::changeCharge(int direction)
 {
-	changeMax(C, direction, 65535);
+	changeMax(C, direction, 65000);
+	Ic = C;
+	Id = C;
 }
 
-void ProgramData::changeCurrent(int direction)
+void ProgramData::changeIc(int direction)
 {
-	changeMax(I, direction, getMaxCurrent());
+	changeMax(Ic, direction, MAX_CHARGE_I);
+}
+void ProgramData::changeId(int direction)
+{
+	changeMax(Id, direction, MAX_DISCHARGE_I);
 }
 
 uint16_t ProgramData::getMaxCells() const
@@ -155,27 +177,23 @@ uint16_t ProgramData::getMaxCells() const
 	return MAX_CHARGE_V / v;
 }
 
-uint32_t ProgramData::getMaxPower() const
-{
-	return MAX_CHARGE_P;
-}
-
-uint16_t ProgramData::getMaxCurrent() const
-{
-	return MAX_CHARGE_I;
-}
-
 void ProgramData::check()
 {
 	uint16_t v = getMaxCells();
-	uint16_t i = getMaxCurrent();
-	uint32_t p = getMaxPower();
+	uint32_t i2;
 
 	if(cells > v) cells = v;
-	if(I > i) I = i;
+	if(Ic > MAX_CHARGE_I) 		Ic = MAX_CHARGE_I;
+	if(Id > MAX_DISCHARGE_I) 	Id = MAX_DISCHARGE_I;
 
-	uint32_t i2 = p/v;
-	if(I > i2) I = i2;
+	v = getVoltage(VCharge);
+	i2 = MAX_CHARGE_P;
+	i2 *= ANALOG_VOLTS(1);
+	i2 /= v;
+	if(Ic > i2) Ic = i2;
+
+	i2 = MAX_DISCHARGE_P;
+	i2 *= ANALOG_VOLTS(1);
+	i2 /= v;
+	if(Id > i2) Id = i2;
 }
-
-

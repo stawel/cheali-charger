@@ -8,8 +8,9 @@ uint8_t ProgramDataMenu::printItem(int index)
 	switch(index) {
 	case 0:	lcdPrint_P(PSTR("Bat:  "));     BLINK_INDEX(p_.printBatteryString()); break;
 	case 1:	lcdPrint_P(PSTR("V:  ")); 		BLINK_INDEX(p_.printVoltageString());	break;
-	case 2:	lcdPrint_P(PSTR("Ic: ")); 		BLINK_INDEX(p_.printChargeString()); 	break;
-	case 3:	lcdPrint_P(PSTR("Imax: ")); 	BLINK_INDEX(p_.printCurrentString()); break;
+	case 2:	lcdPrint_P(PSTR("Ch: ")); 		BLINK_INDEX(p_.printChargeString()); 	break;
+	case 3:	lcdPrint_P(PSTR("Ic: "));	 	BLINK_INDEX(p_.printIcString()); break;
+	case 4:	lcdPrint_P(PSTR("Id: "));	 	BLINK_INDEX(p_.printIdString()); break;
 	case PROGRAM_DATA_MENU_SIZE-1:
 			lcdPrint_P(PSTR("     save")); 						break;
 	}
@@ -25,8 +26,9 @@ bool ProgramDataMenu::editItem(int index, uint8_t key)
 	switch(index) {
 	case 0: p_.changeBattery(dir); 	break;
 	case 1: p_.changeVoltage(dir); 	break;
-	case 2: p_.changeCharge(dir); 		break;
-	case 3: p_.changeCurrent(dir); 		break;
+	case 2: p_.changeCharge(dir); 	break;
+	case 3: p_.changeIc(dir); 		break;
+	case 4: p_.changeId(dir); 		break;
 	default:
 		return false;
 	}

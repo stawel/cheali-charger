@@ -123,19 +123,19 @@ bool Program::startInfo(ProgramType prog)
 void Program::runStorage(bool balance)
 {
 	storage.setDoBalance(balance);
-	storage.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage), ProgramData::currentProgramData.I);
+	storage.setVII(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage),
+			ProgramData::currentProgramData.Ic, ProgramData::currentProgramData.Id);
 	doStrategy(storage, storageScreens, sizeOfArray(storageScreens));
 }
 void Program::runTheveninCharge(int minChargeC)
 {
-	theveninCharge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.I);
-	theveninCharge.setMinI(ProgramData::currentProgramData.I/minChargeC);
+	theveninCharge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.Ic);
+	theveninCharge.setMinI(ProgramData::currentProgramData.Ic/minChargeC);
 	doStrategy(theveninCharge, theveninScreens, sizeOfArray(theveninScreens));
 }
 void Program::runDischarge()
 {
-	//TODO: implement discharge current
-	theveninDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.I);
+	theveninDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.Id);
 //	theveninDischarge.setVI(ANALOG_VOLTS(12), ProgramData::currentProgramData.I);
 	doStrategy(theveninDischarge, dischargeScreens, sizeOfArray(dischargeScreens));
 }
