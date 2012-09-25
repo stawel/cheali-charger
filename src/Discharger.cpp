@@ -46,6 +46,7 @@ void Discharger::finalizeValueTintern(bool force)
 	if(v != value_ || force) {
 		value_ = v;
 		Timer1.pwm(DISCHARGE_VALUE_PIN, value_);
+		analogInputs.reset();
 	}
 }
 

@@ -13,6 +13,7 @@ uint8_t lcdPrintSpaces();
 uint8_t lcdPrintSpaces(uint8_t n);
 
 void lcdPrintUnsigned(uint16_t x, int8_t dig = 5);
+void lcdPrintSigned(int16_t x, int8_t dig = 5);
 
 void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig);
 void lcdPrintCurrent(AnalogInputs::ValueType i, int8_t dig);

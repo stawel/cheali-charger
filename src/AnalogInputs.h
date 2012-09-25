@@ -91,6 +91,7 @@ public:
 	void doVirtualCalculations();
 	void doCalculations();
 	void clearAvr();
+	void reset();
 
 	void restoreDefault();
 	static void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);

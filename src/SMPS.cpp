@@ -26,6 +26,7 @@ void SMPS::setValue(uint16_t value)
 		value = SMPS_UPPERBOUND_VALUE;
 	value_ = value;
 	Timer1.pwm(SMPS_VALUE_PIN, value_);
+	analogInputs.reset();
 }
 void SMPS::setRealValue(uint16_t I)
 {

@@ -133,6 +133,12 @@ void AnalogInputs::resetStable()
 	}
 }
 
+void AnalogInputs::reset()
+{
+	clearAvr();
+	resetStable();
+}
+
 
 
 

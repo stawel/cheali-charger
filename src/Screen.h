@@ -19,6 +19,10 @@ public:
 	enum ScreenType { Screen1, ScreenCIVlimits, ScreenTime, ScreenTemperature,
 		ScreenBalancer0_2, ScreenBalancer3_5,
 		ScreenBalancer0_2M, ScreenBalancer3_5M,
+		ScreenBalancer0_2RthV, ScreenBalancer3_5RthV,
+		ScreenBalancer0_2RthI, ScreenBalancer3_5RthI,
+		ScreenBalancer0_2Rth, ScreenBalancer3_5Rth,
+
 			ScreenRthVth,
 			ScreenStartInfo};
 

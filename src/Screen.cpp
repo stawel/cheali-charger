@@ -2,28 +2,31 @@
 #include "Screen.h"
 #include "LcdPrint.h"
 #include "ProgramData.h"
-
+#include "TheveninMethod.h"
 
 Screen screens;
 
 namespace {
-	AnalogInputs::ValueType getBalanceValue(int cell, bool mesured)
+	AnalogInputs::ValueType getBalanceValue(uint8_t cell, uint8_t mesured)
 	{
-		if(mesured)
-			return balancer.getV(cell);
-		else
-			return balancer.getPresumedV(cell);
+		switch(mesured) {
+		case 0: return balancer.getPresumedV(cell);
+		case 1:	return balancer.getV(cell);
+		case 2:	return theveninMethod.tBal_[cell].Rth_V_;
+		case 3:	return theveninMethod.tBal_[cell].Rth_I_;
+		case 4:	return abs(theveninMethod.tBal_[cell].Rth_V_*1000/theveninMethod.tBal_[cell].Rth_I_);
+		}
 	}
 
-	void printBalancer(int cell, bool mesured) {
+	void printBalancer(uint8_t cell, uint8_t mesured, AnalogInputs::Type type) {
 		if(analogInputs.isConnected(AnalogInputs::Name(AnalogInputs::Vb0+cell))) {
-			lcdPrintVoltage(getBalanceValue(cell, mesured), 6);
+			lcdPrintAnalog(getBalanceValue(cell, mesured), type, 6);
 		} else {
 			lcdPrint_P(PSTR("  --  "));
 		}
 	}
 
-	void displayBalanceInfo(int from, bool mesured)
+	void displayBalanceInfo(uint8_t from, uint8_t mesured, AnalogInputs::Type type)
 	{
 		lcd.setCursor(0,0);
 
@@ -63,33 +66,40 @@ namespace {
 		char nr = '0' + from;
 		lcd.print(nr++);
 		lcd.print(':');
-		printBalancer(from+0, mesured);
+		printBalancer(from+0, mesured, type);
 		lcdPrintSpaces();
 
 		lcd.setCursor(0,1);
 		lcd.print(nr++);
 		lcd.print(':');
-		printBalancer(from+1, mesured);
+		printBalancer(from+1, mesured, type);
 		lcd.print(nr++);
 		lcd.print(':');
-		printBalancer(from+2, mesured);
+		printBalancer(from+2, mesured, type);
 		lcdPrintSpaces();
 	}
+
 }
 
 void Screen::display(ScreenType screen)
 {
 	switch(screen) {
-	case Screen1: 			return displayScreen1();
-	case ScreenCIVlimits:	return displayScreenCIVlimits();
-	case ScreenTime:		return displayScreenTime();
-	case ScreenTemperature:	return displayScreenTemperature();
-	case ScreenBalancer0_2:	return displayBalanceInfo(0, false);
-	case ScreenBalancer3_5:	return displayBalanceInfo(3, false);
-	case ScreenBalancer0_2M:return displayBalanceInfo(0, true);
-	case ScreenBalancer3_5M:return displayBalanceInfo(3, true);
-	case ScreenRthVth:		return displayRthVth();
-	case ScreenStartInfo: 	return displayStartInfo();
+	case Screen1: 				return displayScreen1();
+	case ScreenCIVlimits:		return displayScreenCIVlimits();
+	case ScreenTime:			return displayScreenTime();
+	case ScreenTemperature:		return displayScreenTemperature();
+	case ScreenBalancer0_2:		return displayBalanceInfo(0, 0, AnalogInputs::Voltage);
+	case ScreenBalancer3_5:		return displayBalanceInfo(3, 0, AnalogInputs::Voltage);
+	case ScreenBalancer0_2M:	return displayBalanceInfo(0, 1, AnalogInputs::Voltage);
+	case ScreenBalancer3_5M:	return displayBalanceInfo(3, 1, AnalogInputs::Voltage);
+	case ScreenBalancer0_2RthV:	return displayBalanceInfo(0, 2, AnalogInputs::Unknown);
+	case ScreenBalancer3_5RthV:	return displayBalanceInfo(3, 2, AnalogInputs::Unknown);
+	case ScreenBalancer0_2RthI:	return displayBalanceInfo(0, 3, AnalogInputs::Unknown);
+	case ScreenBalancer3_5RthI:	return displayBalanceInfo(3, 3, AnalogInputs::Unknown);
+	case ScreenBalancer0_2Rth:	return displayBalanceInfo(0, 4, AnalogInputs::Resistance);
+	case ScreenBalancer3_5Rth:	return displayBalanceInfo(3, 4, AnalogInputs::Resistance);
+	case ScreenRthVth:			return displayRthVth();
+	case ScreenStartInfo: 		return displayStartInfo();
 	}
 }
 

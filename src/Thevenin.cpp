@@ -31,7 +31,7 @@ void Thevenin::calculateRthVth(AnalogInputs::ValueType v, AnalogInputs::ValueTyp
 
 void Thevenin::calculateRth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
-	if(absDiff(i, ILast_) > ILastDiff_) {
+	if(absDiff(i, ILast_) > ILastDiff_ && absDiff(v, VLast_) > 0) {
 		int16_t rth_v,rth_i;
 		rth_v  = v;
 		rth_v -= VLast_;

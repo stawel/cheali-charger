@@ -38,10 +38,8 @@ Strategy::statusType TheveninDischarge::doStrategy()
 	uint16_t oldValue = discharger.getValue();
 
 	//when discharging near the end, the battery voltage is very unstable
-	//we need new discharge values at that point
-	stable = true;
-	if(oldValue == 0)
-		stable = isStable();
+	//but we need new discharge values at that point
+	stable = isStable() || isEndVout;
 
 	//test for charge complete
 	if(theveninMethod.isComlete(isEndVout, oldValue)) {
@@ -51,8 +49,9 @@ Strategy::statusType TheveninDischarge::doStrategy()
 
 	if(stable) {
 		uint16_t value = theveninMethod.calculateNewValue(isEndVout, oldValue);
-		if(value != oldValue)
+		if(value != oldValue) {
 			discharger.setValue(value);
+		}
 	}
 	return RUNNING;
 }

@@ -33,18 +33,19 @@ void TheveninCharge::setMinI(AnalogInputs::ValueType i)
 
 Strategy::statusType TheveninCharge::doStrategy()
 {
-	bool stable = isStable();
-	bool ismaxVout = isEndVout();
+	bool stable;
+	bool isendVout = isEndVout();
 	uint16_t oldValue = smps.getValue();
 
+	stable = isStable() || isendVout;
 	//test for charge complete
-	if(theveninMethod.isComlete(ismaxVout, oldValue)) {
+	if(theveninMethod.isComlete(isendVout, oldValue)) {
 		smps.powerOff(SMPS::CHARGING_COMPLETE);
 		return COMPLETE;
 	}
 
 	if(stable) {
-		uint16_t value = theveninMethod.calculateNewValue(ismaxVout, oldValue);
+		uint16_t value = theveninMethod.calculateNewValue(isendVout, oldValue);
 		if(value != oldValue)
 			smps.setValue(value);
 	}

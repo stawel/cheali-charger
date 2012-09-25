@@ -140,6 +140,31 @@ void lcdPrintUnsigned(uint16_t x, int8_t dig)
 	}
 }
 
+void lcdPrintSigned(int16_t x, int8_t dig)
+{
+	const char prefix = ' ';
+	if(dig<=0)
+		return;
+
+	int16_t y = x;
+	uint8_t xdig = digits(abs(x));
+	if(y<0) {
+		xdig++;
+	}
+
+	if(dig < xdig) {
+		if(y<0) {
+			lcd.print('-');
+			dig--;
+		}
+		lcdPrintInf(dig);
+	} else {
+		for(;xdig<dig;dig--)
+			lcd.print(prefix);
+		lcd.print(y);
+	}
+}
+
 
 
 void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig)
@@ -167,9 +192,9 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
 {
 	if(dig <= 0)
 		return;
-	dig--;
 	bool dot = true;
 	char unit = 'U';
+	dig--;
 	switch (type) {
 	case AnalogInputs::Current:
 		dot = false;
@@ -188,7 +213,9 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
 		unit ='W';
 		break;
 	case AnalogInputs::Unknown:
-		break;
+		lcdPrintSigned(x, dig);
+		lcd.print(unit);
+		return;
 	case AnalogInputs::Charge:
 		dot = false;
 		dig--;
