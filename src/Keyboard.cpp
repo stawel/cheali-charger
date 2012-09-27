@@ -2,6 +2,7 @@
 #include <avr/pgmspace.h>
 #include "Hardware.h"
 #include "Keyboard.h"
+#include "Buzzer.h"
 
 Keyboard::Keyboard(): last_key_(BUTTON_NONE), speed_(0), this_speed_(0)
 {}
@@ -33,6 +34,10 @@ uint8_t Keyboard::getPressedWithSpeed()
 		speed_ = 0;
 		this_speed_ = 0;
 		last_key_ = key;
+
+		if(key != BUTTON_NONE)
+			buzzer.soundKeyboard();
+
 		return last_key_;
 	}
 

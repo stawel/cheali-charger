@@ -11,23 +11,9 @@
 #include "Storage.h"
 #include "memory.h"
 #include "StartInfoStrategy.h"
+#include "Buzzer.h"
 
 namespace {
-bool buzzer = false;
-
-void buzzerOn()
-{
-	buzzer = true;
-	pinMode(BUZZER_PIN, OUTPUT);
-	analogWrite(BUZZER_PIN, 20);
-}
-
-void buzzerOff(){
-	if(buzzer) {
-		buzzer = false;
-		analogWrite(BUZZER_PIN, 0);
-	}
-}
 
 SimpleCharge simple;
 
@@ -56,17 +42,17 @@ void chargingComplete()
 {
 	lcd.clear();
 	screens.displayChargeEnded();
-	buzzerOn();
+	buzzer.soundProgramComplete();
 	do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
-	buzzerOff();
+	buzzer.soundOff();
 }
 void chargingMonitorError()
 {
 	lcd.clear();
 	screens.displayChargeEnded();
-	buzzerOn();
+	buzzer.soundError();
 	do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
-	buzzerOff();
+	buzzer.soundOff();
 }
 
 Strategy::statusType doStrategy(Strategy &strategy, const Screen::ScreenType chargeScreens[]

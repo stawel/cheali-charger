@@ -5,6 +5,7 @@
 #include "Calibrate.h"
 #include "Utils.h"
 #include "Screen.h"
+#include "Buzzer.h"
 
 extern MainMenu::MenuData mainMenuData;
 
@@ -63,6 +64,14 @@ const char * const calibrateIMenu[] PROGMEM =
 	string_cI1,
 };
 
+namespace {
+void setCalibrationPoint(AnalogInputs::Name name, uint8_t i, const AnalogInputs::CalibrationPoint &x)
+{
+	buzzer.soundSave();
+	analogInputs.setCalibrationPoint(name, i, x);
+}
+}
+
 void Calibrate::calibrateI(screenType screen, AnalogInputs::Name name1, AnalogInputs::Name name2)
 {
 	MainMenu menu(NULL, calibrateIMenu, sizeOfArray(calibrateIMenu));
@@ -79,9 +88,9 @@ void Calibrate::calibrateI(screenType screen, AnalogInputs::Name name1, AnalogIn
 				p.y = ANALOG_AMPS(1);
 			}
 			p.x = analogInputs.getValue(name1);
-			analogInputs.setCalibrationPoint(name1, i, p);
+			setCalibrationPoint(name1, i, p);
 			p.x = analogInputs.getValue(name2);
-			analogInputs.setCalibrationPoint(name2, i, p);
+			setCalibrationPoint(name2, i, p);
 		}
 	} while(i >= 0);
 }
@@ -92,10 +101,10 @@ void Calibrate::copyVbalVout()
 	if(calibrate(SCREEN_VOUT_VBAL)) {
 		p.x = analogInputs.getValue(AnalogInputs::Vout);
 		p.y = analogInputs.getRealValue(AnalogInputs::Vbalacer);
-		analogInputs.setCalibrationPoint(AnalogInputs::Vout, 1, p);
+		setCalibrationPoint(AnalogInputs::Vout, 1, p);
 
 		p.x = analogInputs.getValue(AnalogInputs::VoutMux);
-		analogInputs.setCalibrationPoint(AnalogInputs::VoutMux, 1, p);
+		setCalibrationPoint(AnalogInputs::VoutMux, 1, p);
 	}
 }
 
@@ -112,7 +121,7 @@ void Calibrate::setBalancer(AnalogInputs::Name firstName)
 	p.y = analogInputs.getRealValue(name);
 	if(setValue(x, y, p.y, AnalogInputs::Voltage, 6)) {
 		p.x = analogInputs.getValue(name);
-		analogInputs.setCalibrationPoint(name, 1, p);
+		setCalibrationPoint(name, 1, p);
 	}
 }
 
@@ -352,6 +361,7 @@ bool Calibrate::calibrateBlink(screenType p, int8_t maxBlink)
 		if(key == BUTTON_DEC && blink_ > 0)  			blink_--;
 
 		if(key == BUTTON_START && released) {
+			buzzer.soundSelect();
 			setBlink(p);
 			released = false;
 		}
@@ -378,14 +388,13 @@ bool Calibrate::setValue(uint8_t x, uint8_t y, AnalogInputs::ValueType &v, Analo
 		blinkOn_ = !blinkOn_;
 
 		key = keyboard.getPressedWithSpeed();
-		if(key == BUTTON_INC) dir  = 1;
-		if(key == BUTTON_DEC) dir = -1;
+		if(key == BUTTON_INC) {  dir  = 1; blinkOn_ = true; }
+		if(key == BUTTON_DEC) {  dir = -1; blinkOn_ = true; }
 		if(key == BUTTON_START && keyboard.getSpeed() == ACCEPT_DELAY && released) {
 			retu = true;
 			break;
 		}
 		if(key == BUTTON_NONE) released = true;
-		else blinkOn_ = true;
 
 		dir *= keyboard.getSpeedFactor();
 		v+=dir;

@@ -8,6 +8,7 @@
 #include "Program.h"
 #include "Options.h"
 #include "Utils.h"
+#include "Buzzer.h"
 
 MainMenu::MenuData mainMenuData EEMEM;
 
@@ -88,8 +89,10 @@ void doProgram(int index)
 				editMenuName(index);
 				break;
 			case Program::EditBattery:
-				if(ProgramData::currentProgramData.edit())
+				if(ProgramData::currentProgramData.edit()) {
+					buzzer.soundSave();
 					ProgramData::saveProgramData(index);
+				}
 				break;
 			default:
 				Program::run(prog);

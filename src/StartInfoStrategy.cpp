@@ -2,6 +2,7 @@
 #include "StartInfoStrategy.h"
 #include "ProgramData.h"
 #include "Screen.h"
+#include "Buzzer.h"
 
 
 StartInfoStrategy startInfoStrategy;
@@ -33,7 +34,15 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 	if(b) 	screens.blinkIndex_ -= 2;
 	if(v) 	screens.blinkIndex_ -= 1;
 
-	if(!c && !b && !v && keyboard.getPressed() == BUTTON_START)
+	if(c || b || v) {
+		buzzer.soundInfo();
+	} else {
+		buzzer.soundOff();
+	}
+
+	if(!c && !b && !v && keyboard.getPressed() == BUTTON_START) {
+		buzzer.soundStartProgram();
 		return Strategy::COMPLETE_AND_EXIT;
+	}
 	return Strategy::RUNNING;
 }

@@ -70,6 +70,9 @@ set(SOURCE_FILES
         Calibrate.h
         Options.cpp
         Options.h
+
+        Buzzer.cpp
+        Buzzer.h
 )
 
 include(${CMAKE_SOURCE_DIR}/arduino/arduino.cmake)

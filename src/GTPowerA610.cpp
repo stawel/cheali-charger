@@ -49,8 +49,11 @@ void hardware::init()
 	pinMode(BACKLIGHT_PIN, OUTPUT);
 	pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
 	pinMode(FAN_PIN, OUTPUT);
+	pinMode(BUZZER_PIN, OUTPUT);
+
 	setBatteryOutput(false);
 	setFan(false);
+	hardware::setBuzzer(0);
 
 	lcd.begin(LCD_COLUMNS, LCD_LINES);
 	mux.init();
@@ -79,6 +82,10 @@ void hardware::delay(uint32_t t)
 	analogInputs.doMeasurement((AnalogInputs::PHYSICAL_INPUTS*t)/4);
 }
 
+void hardware::setBuzzer(uint16_t val)
+{
+	analogWrite(BUZZER_PIN, val);
+}
 
 
 

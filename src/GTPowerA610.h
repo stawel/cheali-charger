@@ -124,6 +124,7 @@ namespace hardware {
 	uint8_t getKeyPressed();
 	void delay(uint32_t t);
 	void setLCDBacklight(uint16_t val);
+	void setBuzzer(uint16_t val);
 	void setBatteryOutput(bool enable);
 	void setFan(bool enable);
 }

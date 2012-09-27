@@ -52,6 +52,7 @@ public:
 	void calibrateI(screenType screen, AnalogInputs::Name name1, AnalogInputs::Name name2);
 	void setBalancer(AnalogInputs::Name firstName);
 	bool setValue(uint8_t x, uint8_t y, AnalogInputs::ValueType &v, AnalogInputs::Type, uint8_t dig);
+
 };
 
 #endif /* CALIBRATE_H_ */

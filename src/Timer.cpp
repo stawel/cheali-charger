@@ -2,19 +2,21 @@
 #include "TimerOne.h"
 #include "Hardware.h"
 #include "Monitor.h"
+#include "Buzzer.h"
 
 static void callback() {
 	timer.doInterrupt();
 	smps.doInterrupt();
 	discharger.doInterrupt();
 	monitor.doInterrupt();
+	buzzer.doInterrupt();
 }
 
 
 Timer timer;
 
 
-Timer::Timer() : _interrupts(0) {
+Timer::Timer() : interrupts_(0) {
 }
 
 void Timer::init()
@@ -25,11 +27,11 @@ void Timer::init()
 
 void Timer::doInterrupt()
 {
-	_interrupts++;
+	interrupts_++;
 }
 uint32_t Timer::getMiliseconds() const
 {
-	uint32_t retu = _interrupts;
+	uint32_t retu = interrupts_;
 	retu *= INTERRUPT_PERIOD_MICROSECONDS;
 	retu /= 1000;
 

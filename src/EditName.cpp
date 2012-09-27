@@ -1,6 +1,7 @@
 #include "EditName.h"
 #include "LcdPrint.h"
 #include "Hardware.h"
+#include "Buzzer.h"
 
 #include <avr/eeprom.h>
 
@@ -109,5 +110,6 @@ bool EditName::run(){
 
 void EditName::save()
 {
+	buzzer.soundSave();
 	eeprom_update_block(buf, nameE_, size_);
 }

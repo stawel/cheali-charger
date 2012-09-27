@@ -6,12 +6,12 @@
 #define INTERRUPT_PERIOD_MICROSECONDS 512
 
 class Timer {
-	volatile uint32_t _interrupts;
+	volatile uint32_t interrupts_;
 public:
 	Timer();
 	void init();
 	void doInterrupt();
-	uint32_t getInterrupts() const { return _interrupts; }
+	uint32_t getInterrupts() const { return interrupts_; }
 	uint32_t getMiliseconds() const;
 	void delay(uint32_t ms) const;
 };
