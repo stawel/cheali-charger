@@ -34,6 +34,8 @@ struct ProgramData {
 	void changeId(int direction);
 
 	uint16_t getMaxCells() const;
+	uint16_t getMaxIc() const;
+	uint16_t getMaxId() const;
 
 	void check();
 	void loadDefault();

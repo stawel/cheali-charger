@@ -132,11 +132,20 @@ void change(val_t &v, int direction, uint16_t max)
 void changeMax(uint16_t &v, int direction, uint16_t max)
 {
 	int32_t nv = v;
+	uint16_t r;
+	bool inc = direction > 0;
 	int step = 1;
-	if(nv>=100) step = 10;
-	if(nv>=1000) step = 100;
-	if(nv>=10000) step = 1000;
-	nv -= nv%step;
+
+	if((v > 100)   || (inc && v == 100))   step = 10;
+	if((v > 1000)  || (inc && v == 1000))  step = 100;
+	if((v > 10000) || (inc && v == 10000)) step = 1000;
+
+	r = v%step;
+
+	if(r) {
+		if(direction > 0) nv -= r;
+		if(direction < 0) nv += step - r;
+	}
 	nv += direction*step;
 	if(nv < 1) nv = 1;
 	else if(nv > max) nv = max;
@@ -160,15 +169,46 @@ void ProgramData::changeCharge(int direction)
 	changeMax(C, direction, 65000);
 	Ic = C;
 	Id = C;
+	check();
 }
+
+uint16_t ProgramData::getMaxIc() const
+{
+	uint32_t i;
+	uint16_t v;
+	v = getVoltage(VCharge);
+	i = MAX_CHARGE_P;
+	i *= ANALOG_VOLTS(1);
+	i /= v;
+
+	if(i > MAX_CHARGE_I)
+		i = MAX_CHARGE_I;
+	return i;
+}
+
+uint16_t ProgramData::getMaxId() const
+{
+	uint32_t i;
+	uint16_t v;
+	v = getVoltage(VCharge);
+	i = MAX_DISCHARGE_P;
+	i *= ANALOG_VOLTS(1);
+	i /= v;
+
+	if(i > MAX_DISCHARGE_I)
+		i = MAX_DISCHARGE_I;
+	return i;
+
+}
+
 
 void ProgramData::changeIc(int direction)
 {
-	changeMax(Ic, direction, MAX_CHARGE_I);
+	changeMax(Ic, direction, getMaxIc());
 }
 void ProgramData::changeId(int direction)
 {
-	changeMax(Id, direction, MAX_DISCHARGE_I);
+	changeMax(Id, direction, getMaxId());
 }
 
 uint16_t ProgramData::getMaxCells() const
@@ -179,21 +219,14 @@ uint16_t ProgramData::getMaxCells() const
 
 void ProgramData::check()
 {
-	uint16_t v = getMaxCells();
-	uint32_t i2;
+	uint16_t v;
 
+	v = getMaxCells();
 	if(cells > v) cells = v;
-	if(Ic > MAX_CHARGE_I) 		Ic = MAX_CHARGE_I;
-	if(Id > MAX_DISCHARGE_I) 	Id = MAX_DISCHARGE_I;
 
-	v = getVoltage(VCharge);
-	i2 = MAX_CHARGE_P;
-	i2 *= ANALOG_VOLTS(1);
-	i2 /= v;
-	if(Ic > i2) Ic = i2;
+	v = getMaxIc();
+	if(Ic > v) Ic = v;
 
-	i2 = MAX_DISCHARGE_P;
-	i2 *= ANALOG_VOLTS(1);
-	i2 /= v;
-	if(Id > i2) Id = i2;
+	v = getMaxId();
+	if(Id > v) Id = v;
 }

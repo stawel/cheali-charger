@@ -1,7 +1,5 @@
 
 high priority:
- - add Buzzer class (sound)
- - add info sound
  - add other battery types
  - add wrong polarity warning
  - disable not implemented battery types
@@ -11,8 +9,10 @@ low priority:
  - add new "charge complete" msg
  - add calibration done sound
  - disconnected warnings
-
+ - add better buzzer sound
 
 Done:
  - add Rth measurement at the charge end
  - automatically change Icharge when Capacity changed
+ - add Buzzer class (sound)
+ - add info sound
