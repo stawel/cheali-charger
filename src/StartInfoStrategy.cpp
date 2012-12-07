@@ -29,6 +29,11 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 	b = (is_cells == 0);
 	v = (!analogInputs.isConnected(AnalogInputs::Vout));
 
+	if(should_be_cells == 1 && is_cells == 0)  {
+		c = false;
+		b = false;
+	}
+
 	screens.blinkIndex_ = 7;
 	if(c) 	screens.blinkIndex_ -= 4;
 	if(b) 	screens.blinkIndex_ -= 2;
