@@ -52,7 +52,6 @@ uint8_t lcdPrint_E(const char *str, uint8_t n)
 	if(str) {
 		char buffer[LCD_COLUMNS + 1];
 		if (n > LCD_COLUMNS) n = LCD_COLUMNS;
-		buffer[n--]=0;
 		for (uint8_t i = 0; i < n; i++) {
 			buffer[i] = eeprom_read_byte((uint8_t*)str + i);
 			if(!buffer[i])
