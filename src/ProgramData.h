@@ -24,8 +24,8 @@ struct ProgramData {
 	uint16_t getVoltagePerCell(VoltageType type = VIdle) const;
 	uint16_t getVoltage(VoltageType type = VIdle) const;
 
-	bool edit();
-	void createName();
+	bool edit(int index);
+	void createName(int index);
 
 	uint8_t printBatteryString(int n = LCD_COLUMNS) const;
 

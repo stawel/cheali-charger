@@ -14,7 +14,7 @@ void ProgramDataMenu::editName()
 
 void ProgramDataMenu::createName()
 {
-	p_.createName();
+	p_.createName(programIndex_+1);
 	editName();
 }
 

@@ -75,7 +75,7 @@ void doProgram(int index)
 			Program::ProgramType prog = pgm_read(&progmemMainMenu2Type[i]);
 			switch(prog) {
 			case Program::EditBattery:
-				if(ProgramData::currentProgramData.edit()) {
+				if(ProgramData::currentProgramData.edit(index)) {
 					buzzer.soundSave();
 					ProgramData::saveProgramData(index);
 				}

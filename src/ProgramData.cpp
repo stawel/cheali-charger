@@ -42,11 +42,12 @@ const char b5[] PROGMEM = "Lilo";
 const char b6[] PROGMEM = "Lipo";
 const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {b0,b1,b2,b3,b4,b5,b6};
 
-void ProgramData::createName()
+void ProgramData::createName(int index)
 {
-	char buf[LCD_COLUMNS];
-	strcpy_P(buf, (char*)pgm_read_word(&batteryString[battery.type]));
-//	sprintf_P(name, PSTR("%02d:%s %d/%d"), 1, buf, Ic, cells);
+	char buf[PROGRAM_DATA_MAX_NAME+1];
+	char * type = (char*)pgm_read_word(&batteryString[battery.type]);
+	snprintf_P(buf, PROGRAM_DATA_MAX_NAME+1, PSTR("%d:%S %d/%dC"), index, type, battery.Ic, battery.cells);
+	memcpy(name, buf, PROGRAM_DATA_MAX_NAME);
 }
 
 void ProgramData::loadProgramData(int index)
@@ -71,13 +72,8 @@ uint16_t ProgramData::getVoltage(VoltageType type) const
 void ProgramData::restoreDefault()
 {
 	pgm_read(currentProgramData.battery, &defaultProgram[Lipo]);
-	for(int j=0;j<PROGRAM_DATA_MAX_NAME;j++) {
-		currentProgramData.name[j] = ' ';
-	}
 	for(int i=0;i< MAX_PROGRAMS;i++) {
-		currentProgramData.name[0] = ((i+1)/10) + '0';
-		currentProgramData.name[1] = ((i+1)%10) + '0';
-		currentProgramData.name[2] = ':';
+		sprintf_P(currentProgramData.name, PSTR("%d:"),i+1);
 		saveProgramData(i);
 	}
 }
@@ -129,9 +125,9 @@ char * ProgramData::getName_E(int index)
 }
 
 
-bool ProgramData::edit()
+bool ProgramData::edit(int index)
 {
-	ProgramDataMenu menu(*this);
+	ProgramDataMenu menu(*this, index);
 	if(menu.edit()) {
 		*this = menu.p_;
 		return true;

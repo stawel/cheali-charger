@@ -9,8 +9,8 @@
 
 class ProgramDataMenu : public Menu, public Blink {
 public:
-	ProgramDataMenu(const ProgramData &p):
-			Menu(PROGRAM_DATA_MENU_SIZE), p_(p){};
+	ProgramDataMenu(const ProgramData &p, int programIndex):
+			Menu(PROGRAM_DATA_MENU_SIZE), p_(p), programIndex_(programIndex){};
 	virtual uint8_t printItem(int i);
 	void editIndex(int i);
 	bool editItem(int i, uint8_t key);
@@ -20,6 +20,7 @@ public:
 	void createName();
 
 	ProgramData p_;
+	int programIndex_;
 };
 
 #endif /* PROGRAMDATAMENU_H_ */
