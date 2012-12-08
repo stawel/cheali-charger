@@ -1,18 +1,38 @@
 #include "ProgramDataMenu.h"
 #include "LcdPrint.h"
 #include "GTPowerA610.h"
+#include "EditName.h"
+
+
+
+void ProgramDataMenu::editName()
+{
+	EditName editName(p_.name, PROGRAM_DATA_MAX_NAME, PSTR("Edit name:"));
+	editName.run();
+	render();
+}
+
+void ProgramDataMenu::createName()
+{
+	p_.createName();
+	editName();
+}
+
+
 
 uint8_t ProgramDataMenu::printItem(int index)
 {
 	int blink = getBlinkIndex();
 	switch(index) {
-	case 0:	lcdPrint_P(PSTR("Bat:  "));     BLINK_INDEX(p_.printBatteryString()); break;
+	case 0:	lcdPrint_P(PSTR("Bat:  "));     BLINK_INDEX(p_.printBatteryString()); 	break;
 	case 1:	lcdPrint_P(PSTR("V:  ")); 		BLINK_INDEX(p_.printVoltageString());	break;
 	case 2:	lcdPrint_P(PSTR("Ch: ")); 		BLINK_INDEX(p_.printChargeString()); 	break;
-	case 3:	lcdPrint_P(PSTR("Ic: "));	 	BLINK_INDEX(p_.printIcString()); break;
-	case 4:	lcdPrint_P(PSTR("Id: "));	 	BLINK_INDEX(p_.printIdString()); break;
+	case 3:	lcdPrint_P(PSTR("Ic: "));	 	BLINK_INDEX(p_.printIcString()); 		break;
+	case 4:	lcdPrint_P(PSTR("Id: "));	 	BLINK_INDEX(p_.printIdString()); 		break;
+	case 5: lcdPrint_P(PSTR("  create name"));	break;
+	case 6: lcdPrint_P(PSTR("   edit name"));	break;
 	case PROGRAM_DATA_MENU_SIZE-1:
-			lcdPrint_P(PSTR("     save")); 						break;
+			lcdPrint_P(PSTR("     save")); 		break;
 	}
 	return 0;
 }
@@ -66,9 +86,14 @@ bool ProgramDataMenu::edit() {
 		if(key == BUTTON_NONE) release = false;
 
 		if(!release && key == BUTTON_START)  {
-			//"save" selected
-			if(getIndex() == PROGRAM_DATA_MENU_SIZE - 1) return true;
-			editIndex(getIndex());
+			uint8_t index = getIndex();
+			switch(index) {
+			case 5: createName(); 	release = true; 	break;
+			case 6: editName(); 	release = true; 	break;
+			case PROGRAM_DATA_MENU_SIZE - 1: return true; //save
+			default:
+				editIndex(index);
+			}
 		}
 	} while(key != BUTTON_STOP || release);
 	return false;

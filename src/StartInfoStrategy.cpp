@@ -30,6 +30,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 	v = (!analogInputs.isConnected(AnalogInputs::Vout));
 
 	if(should_be_cells == 1 && is_cells == 0)  {
+		//one cell
 		c = false;
 		b = false;
 	}

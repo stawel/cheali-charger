@@ -5,7 +5,7 @@
 
 class Program {
 public:
-	enum ProgramType { Charge, Charge_Balance, Balance, Discharge, FastCharge, Storage, Storage_Balance, EditName, EditBattery , 	LAST_PROGRAM_TYPE};
+	enum ProgramType { Charge, Charge_Balance, Balance, Discharge, FastCharge, Storage, Storage_Balance, EditBattery , 	LAST_PROGRAM_TYPE};
 
 	static void run(ProgramType prog);
 

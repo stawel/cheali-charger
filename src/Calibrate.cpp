@@ -7,8 +7,6 @@
 #include "Screen.h"
 #include "Buzzer.h"
 
-extern MainMenu::MenuData mainMenuData;
-
 const char string_c0[] PROGMEM = "B0-2";
 const char string_c1[] PROGMEM = "B3-5";
 const char string_c2[] PROGMEM = "B0-5 to Vout";
@@ -74,7 +72,7 @@ void setCalibrationPoint(AnalogInputs::Name name, uint8_t i, const AnalogInputs:
 
 void Calibrate::calibrateI(screenType screen, AnalogInputs::Name name1, AnalogInputs::Name name2)
 {
-	MainMenu menu(NULL, calibrateIMenu, sizeOfArray(calibrateIMenu));
+	MainMenu menu(calibrateIMenu, sizeOfArray(calibrateIMenu));
 	AnalogInputs::CalibrationPoint p;
 	int i = 0;
 	do {
@@ -127,7 +125,7 @@ void Calibrate::setBalancer(AnalogInputs::Name firstName)
 
 void Calibrate::run()
 {
-	MainMenu menu(NULL, calibrateMenu, sizeOfArray(calibrateMenu));
+	MainMenu menu(calibrateMenu, sizeOfArray(calibrateMenu));
 	int i;
 	do {
 		i = menu.runSimple();
@@ -147,7 +145,7 @@ void Calibrate::run()
 
 void Calibrate::runInfo()
 {
-	MainMenu menu(NULL, calibrateInfoMenu, sizeOfArray(calibrateInfoMenu));
+	MainMenu menu(calibrateInfoMenu, sizeOfArray(calibrateInfoMenu));
 	int i;
 	do {
 		i = menu.runSimple();

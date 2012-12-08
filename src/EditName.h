@@ -6,10 +6,9 @@
 #define MAX_EDIT_NAME 16
 
 class EditName {
-	char * nameE_;
+	char * name_;
 	uint8_t size_;
 	const char * printStringP_;
-	char buf[MAX_EDIT_NAME];
 	uint8_t cursor_;
 	uint8_t beginSL_;
 	uint8_t cursorSL_;

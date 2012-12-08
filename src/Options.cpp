@@ -6,9 +6,6 @@
 #include "Calibrate.h"
 #include "Screen.h"
 
-extern MainMenu::MenuData mainMenuData;
-
-
 const char string_o1[] PROGMEM = "settings";
 const char string_o2[] PROGMEM = "calibrate";
 const char string_o3[] PROGMEM = "reset default";
@@ -30,11 +27,7 @@ void Options::resetDefault()
 	analogInputs.restoreDefault();
 
 	lcd.setCursor(7,1);
-	lcdPrint_P(PSTR("30%"));
-	mainMenuData.restoreDefault();
-
-	lcd.setCursor(7,1);
-	lcdPrint_P(PSTR("80%"));
+	lcdPrint_P(PSTR("50%"));
 	ProgramData::restoreDefault();
 
 	lcd.setCursor(6,1);
@@ -44,7 +37,7 @@ void Options::resetDefault()
 
 void Options::run()
 {
-	MainMenu optionsMenu(NULL, optionsMainMenu, sizeOfArray(optionsMainMenu));
+	MainMenu optionsMenu(optionsMainMenu, sizeOfArray(optionsMainMenu));
 	Calibrate calibrate;
 	int i;
 

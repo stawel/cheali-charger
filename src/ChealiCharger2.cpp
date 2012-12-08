@@ -10,15 +10,11 @@
 #include "Utils.h"
 #include "Buzzer.h"
 
-MainMenu::MenuData mainMenuData EEMEM;
-
-const char string_2[] PROGMEM = "options";
-
+const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
-{string_2 };
+{string_options };
 
-MainMenu mainMenu(&mainMenuData, progmemMainMenu, 1);
-ProgramData currentProgram;
+MainMenu mainMenu(progmemMainMenu, 1, true);
 
 const char charge_str[] PROGMEM = "charge";
 const char chaBal_str[] PROGMEM = "charge+balance";
@@ -27,7 +23,6 @@ const char discha_str[] PROGMEM = "discharge";
 const char fastCh_str[] PROGMEM = "fast charge";
 const char storag_str[] PROGMEM = "storage";
 const char stoBal_str[] PROGMEM = "storage+balanc";
-const char edName_str[] PROGMEM = "edit name";
 const char edBatt_str[] PROGMEM = "edit battery";
 
 struct programMemuType {
@@ -43,7 +38,6 @@ const char * const progmemMainMenu2[] PROGMEM =
   fastCh_str,
   storag_str,
   stoBal_str,
-  edName_str,
   edBatt_str
 };
 
@@ -55,18 +49,13 @@ const Program::ProgramType progmemMainMenu2Type[] PROGMEM =
   Program::FastCharge,
   Program::Storage,
   Program::Storage_Balance,
-  Program::EditName,
   Program::EditBattery
 };
 
 
 
-MainMenu doMenu(NULL, progmemMainMenu2, sizeOfArray(progmemMainMenu2));
+MainMenu doMenu(progmemMainMenu2, sizeOfArray(progmemMainMenu2));
 
-void editMenuName(int index) {
-	EditName editName((char*)&(mainMenuData.items[index].name), MAINMENU_MAX_ITEM_NAME, PSTR("Edit name:"));
-	editName.run();
-}
 
 void doProgram(int index)
 {
@@ -85,9 +74,6 @@ void doProgram(int index)
 			int i = doMenu.getIndex();
 			Program::ProgramType prog = pgm_read(&progmemMainMenu2Type[i]);
 			switch(prog) {
-			case Program::EditName:
-				editMenuName(index);
-				break;
 			case Program::EditBattery:
 				if(ProgramData::currentProgramData.edit()) {
 					buzzer.soundSave();
@@ -125,14 +111,13 @@ void loop()
 
 void setup()
 {
+	hardware::init();
 
 #ifdef USE_SERIAL
 	Serial.begin(9600);
 	Serial.println("ChealiCharger hello!");
 #endif //USE_SERIAL
-	analogReference(EXTERNAL);
 
-	hardware::init();
 	hardware::setLCDBacklight(backlight_val);
 	lcdPrint_P(PSTR("  ChealiCharger"));
 	lcd.setCursor(0,1);

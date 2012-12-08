@@ -12,7 +12,7 @@ void EditName::mainScreen()
 	lcd.setCursor(0, 0);
 	lcdPrint_P(printStringP_);
 	lcd.setCursor(0, 1);
-	lcdPrint(buf, size_);
+	lcdPrint(name_, size_);
 }
 
 
@@ -61,12 +61,12 @@ void EditName::selectLetter()
 			return;
 	} while(key != BUTTON_START);
 
-	buf[cursor_] = getSL();
+	name_[cursor_] = getSL();
 }
 
 EditName::EditName(char * name, int size, const char *printStringP)
 {
-		nameE_ = name;
+		name_ = name;
 		size_ = size;
 		printStringP_ = printStringP;
 		cursor_ = 0;
@@ -77,7 +77,6 @@ EditName::EditName(char * name, int size, const char *printStringP)
 
 
 bool EditName::run(){
-	eeprom_read_block(buf, nameE_, size_);
 	lcd.blink();
 	uint8_t key;
 	do {
@@ -111,5 +110,4 @@ bool EditName::run(){
 void EditName::save()
 {
 	buzzer.soundSave();
-	eeprom_update_block(buf, nameE_, size_);
 }

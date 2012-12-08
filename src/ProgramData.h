@@ -7,6 +7,8 @@
 
 
 #define MAX_PROGRAMS 32
+#define PROGRAM_DATA_MAX_NAME 14
+
 
 struct ProgramData {
 	enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo, 				LAST_BATTERY_TYPE};
@@ -14,11 +16,13 @@ struct ProgramData {
 
 	uint8_t batteryType;
 	uint16_t C,Ic,Id,cells;
+	char name[PROGRAM_DATA_MAX_NAME];
 
 	uint16_t getVoltagePerCell(VoltageType type = VIdle) const;
 	uint16_t getVoltage(VoltageType type = VIdle) const;
 
 	bool edit();
+	void createName();
 
 	uint8_t printBatteryString(int n = LCD_COLUMNS) const;
 
@@ -44,6 +48,7 @@ struct ProgramData {
 
 	static void loadProgramData(int index);
 	static void saveProgramData(int index);
+	static char * getName_E(int index);
 	static void restoreDefault();
 
 	static ProgramData currentProgramData;

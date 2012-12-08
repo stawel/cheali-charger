@@ -42,6 +42,13 @@ const char b5[] PROGMEM = "Lilo";
 const char b6[] PROGMEM = "Lipo";
 const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {b0,b1,b2,b3,b4,b5,b6};
 
+void ProgramData::createName()
+{
+	char buf[LCD_COLUMNS];
+	strcpy_P(buf, (char*)pgm_read_word(&batteryString[batteryType]));
+//	sprintf_P(name, PSTR("%02d:%s %d/%d"), 1, buf, Ic, cells);
+}
+
 void ProgramData::loadProgramData(int index)
 {
 	eeprom_read<ProgramData>(currentProgramData, &allProgramData[index]);
@@ -64,10 +71,17 @@ uint16_t ProgramData::getVoltage(VoltageType type) const
 void ProgramData::restoreDefault()
 {
 	pgm_read(currentProgramData, &defaultProgram[Lipo]);
-	for(int i=0; i < MAX_PROGRAMS; i++) {
+	for(int j=0;j<PROGRAM_DATA_MAX_NAME;j++) {
+		currentProgramData.name[j] = ' ';
+	}
+	for(int i=0;i< MAX_PROGRAMS;i++) {
+		currentProgramData.name[0] = ((i+1)/10) + '0';
+		currentProgramData.name[1] = ((i+1)%10) + '0';
+		currentProgramData.name[2] = ':';
 		saveProgramData(i);
 	}
 }
+
 void ProgramData::loadDefault()
 {
 	pgm_read(*this, &defaultProgram[batteryType]);
@@ -108,6 +122,11 @@ uint8_t ProgramData::printChargeString() const
 	return 8;
 }
 
+
+char * ProgramData::getName_E(int index)
+{
+	return allProgramData[index].name;
+}
 
 
 bool ProgramData::edit()
