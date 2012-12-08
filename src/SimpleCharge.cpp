@@ -8,7 +8,7 @@
 void SimpleCharge::powerOn()
 {
 	smps.powerOn();
-	smps.setRealValue(ProgramData::currentProgramData.Ic);
+	smps.setRealValue(ProgramData::currentProgramData.battery.Ic);
 }
 
 void SimpleCharge::powerOff()
@@ -18,7 +18,7 @@ void SimpleCharge::powerOff()
 
 Strategy::statusType SimpleCharge::doStrategy()
 {
-	if(smps.getIout() 	>= ProgramData::currentProgramData.Ic) {
+	if(smps.getIout() 	>= ProgramData::currentProgramData.battery.Ic) {
 		smps.setError(PSTR("Error: Maximum"),PSTR("current exceeded"));
 		return ERROR;
 	}
@@ -26,7 +26,7 @@ Strategy::statusType SimpleCharge::doStrategy()
 		smps.powerOff(SMPS::CHARGING_COMPLETE);
 		return COMPLETE;
 	}
-	if(smps.getCharge() > ProgramData::currentProgramData.C) {
+	if(smps.getCharge() > ProgramData::currentProgramData.battery.C) {
 		smps.powerOff(SMPS::CHARGING_COMPLETE);
 		return COMPLETE;
 	}

@@ -110,18 +110,18 @@ void Program::runStorage(bool balance)
 {
 	storage.setDoBalance(balance);
 	storage.setVII(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage),
-			ProgramData::currentProgramData.Ic, ProgramData::currentProgramData.Id);
+			ProgramData::currentProgramData.battery.Ic, ProgramData::currentProgramData.battery.Id);
 	doStrategy(storage, storageScreens, sizeOfArray(storageScreens));
 }
 void Program::runTheveninCharge(int minChargeC)
 {
-	theveninCharge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.Ic);
-	theveninCharge.setMinI(ProgramData::currentProgramData.Ic/minChargeC);
+	theveninCharge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.battery.Ic);
+	theveninCharge.setMinI(ProgramData::currentProgramData.battery.Ic/minChargeC);
 	doStrategy(theveninCharge, theveninScreens, sizeOfArray(theveninScreens));
 }
 void Program::runDischarge()
 {
-	theveninDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.Id);
+	theveninDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
 //	theveninDischarge.setVI(ANALOG_VOLTS(12), ProgramData::currentProgramData.I);
 	doStrategy(theveninDischarge, dischargeScreens, sizeOfArray(dischargeScreens));
 }

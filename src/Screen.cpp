@@ -145,9 +145,9 @@ void Screen::displayScreen1()
 void Screen::displayScreenCIVlimits()
 {
 	lcd.setCursor(0,0);
-	lcdPrintCharge(ProgramData::currentProgramData.C, 8);
+	lcdPrintCharge(ProgramData::currentProgramData.battery.C, 8);
 	lcd.print(' ');
-	lcdPrintCurrent(ProgramData::currentProgramData.Ic, 7);
+	lcdPrintCurrent(ProgramData::currentProgramData.battery.Ic, 7);
 	lcdPrintSpaces();
 
 	lcd.setCursor(0,1);

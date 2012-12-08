@@ -23,7 +23,7 @@ const uint16_t voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VO
 
 };
 
-const ProgramData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
+const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
 {ProgramData::Unknown, 	2200, 2200, 2200, 10000},
 {ProgramData::NiCd, 	2200, 2200, 2200, 1},
 {ProgramData::NiMH, 	2200, 2200, 2200, 1},
@@ -45,7 +45,7 @@ const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {b0,
 void ProgramData::createName()
 {
 	char buf[LCD_COLUMNS];
-	strcpy_P(buf, (char*)pgm_read_word(&batteryString[batteryType]));
+	strcpy_P(buf, (char*)pgm_read_word(&batteryString[battery.type]));
 //	sprintf_P(name, PSTR("%02d:%s %d/%d"), 1, buf, Ic, cells);
 }
 
@@ -61,16 +61,16 @@ void ProgramData::saveProgramData(int index)
 
 uint16_t ProgramData::getVoltagePerCell(VoltageType type) const
 {
-	return pgm_read<uint16_t>(&voltsPerCell[batteryType][type]);
+	return pgm_read<uint16_t>(&voltsPerCell[battery.type][type]);
 }
 uint16_t ProgramData::getVoltage(VoltageType type) const
 {
-	return cells * getVoltagePerCell(type);
+	return battery.cells * getVoltagePerCell(type);
 }
 
 void ProgramData::restoreDefault()
 {
-	pgm_read(currentProgramData, &defaultProgram[Lipo]);
+	pgm_read(currentProgramData.battery, &defaultProgram[Lipo]);
 	for(int j=0;j<PROGRAM_DATA_MAX_NAME;j++) {
 		currentProgramData.name[j] = ' ';
 	}
@@ -84,22 +84,22 @@ void ProgramData::restoreDefault()
 
 void ProgramData::loadDefault()
 {
-	pgm_read(*this, &defaultProgram[batteryType]);
+	pgm_read(battery, &defaultProgram[battery.type]);
 }
 
 
-uint8_t ProgramData::printBatteryString(int n) const { return lcdPrint_P((char*)pgm_read_word(&batteryString[batteryType]), n); }
+uint8_t ProgramData::printBatteryString(int n) const { return lcdPrint_P((char*)pgm_read_word(&batteryString[battery.type]), n); }
 
 uint8_t ProgramData::printVoltageString() const
 {
-	if(batteryType == Unknown) {
+	if(battery.type == Unknown) {
 		lcdPrintVoltage(getVoltage(), 7);
 		return 7;
 	} else {
 		uint8_t r = 5+2;
 		lcdPrintVoltage(getVoltage(), 5);
 		lcd.print('/');
-		r+=lcd.print(cells);
+		r+=lcd.print(battery.cells);
 		lcd.print('C');
 		return r;
 	}
@@ -107,18 +107,18 @@ uint8_t ProgramData::printVoltageString() const
 
 uint8_t ProgramData::printIcString() const
 {
-	lcdPrintCurrent(Ic, 6);
+	lcdPrintCurrent(battery.Ic, 6);
 	return 6;
 }
 uint8_t ProgramData::printIdString() const
 {
-	lcdPrintCurrent(Id, 6);
+	lcdPrintCurrent(battery.Id, 6);
 	return 6;
 }
 
 uint8_t ProgramData::printChargeString() const
 {
-	lcdPrintCharge(C, 7);
+	lcdPrintCharge(battery.C, 7);
 	return 8;
 }
 
@@ -173,21 +173,21 @@ void changeMax(uint16_t &v, int direction, uint16_t max)
 
 void ProgramData::changeBattery(int direction)
 {
-	change(batteryType, direction, LAST_BATTERY_TYPE);
+	change(battery.type, direction, LAST_BATTERY_TYPE);
 	loadDefault();
 }
 
 void ProgramData::changeVoltage(int direction)
 {
 	uint16_t max = getMaxCells();
-	changeMax(cells, direction, max);
+	changeMax(battery.cells, direction, max);
 }
 
 void ProgramData::changeCharge(int direction)
 {
-	changeMax(C, direction, 65000);
-	Ic = C;
-	Id = C;
+	changeMax(battery.C, direction, 65000);
+	battery.Ic = battery.C;
+	battery.Id = battery.C;
 	check();
 }
 
@@ -223,11 +223,11 @@ uint16_t ProgramData::getMaxId() const
 
 void ProgramData::changeIc(int direction)
 {
-	changeMax(Ic, direction, getMaxIc());
+	changeMax(battery.Ic, direction, getMaxIc());
 }
 void ProgramData::changeId(int direction)
 {
-	changeMax(Id, direction, getMaxId());
+	changeMax(battery.Id, direction, getMaxId());
 }
 
 uint16_t ProgramData::getMaxCells() const
@@ -241,11 +241,11 @@ void ProgramData::check()
 	uint16_t v;
 
 	v = getMaxCells();
-	if(cells > v) cells = v;
+	if(battery.cells > v) battery.cells = v;
 
 	v = getMaxIc();
-	if(Ic > v) Ic = v;
+	if(battery.Ic > v) battery.Ic = v;
 
 	v = getMaxId();
-	if(Id > v) Id = v;
+	if(battery.Id > v) battery.Id = v;
 }

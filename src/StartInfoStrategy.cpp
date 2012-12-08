@@ -24,7 +24,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 	bool c,b,v;
 	uint8_t is_cells, should_be_cells;
 	is_cells = analogInputs.getConnectedBalancePorts();
-	should_be_cells = ProgramData::currentProgramData.cells;
+	should_be_cells = ProgramData::currentProgramData.battery.cells;
 	c = (should_be_cells != is_cells);
 	b = (is_cells == 0);
 	v = (!analogInputs.isConnected(AnalogInputs::Vout));
