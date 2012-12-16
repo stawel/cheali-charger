@@ -73,6 +73,9 @@ set(SOURCE_FILES
 
         Buzzer.cpp
         Buzzer.h
+
+        Version.h
+        Version.cpp
 )
 
 include(${CMAKE_SOURCE_DIR}/arduino/arduino.cmake)

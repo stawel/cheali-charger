@@ -5,6 +5,7 @@
 #include "Utils.h"
 #include "Calibrate.h"
 #include "Screen.h"
+#include "Version.h"
 
 const char string_o1[] PROGMEM = "settings";
 const char string_o2[] PROGMEM = "calibrate";
@@ -32,6 +33,7 @@ void Options::resetDefault()
 
 	lcd.setCursor(6,1);
 	lcdPrint_P(PSTR("Done"));
+	Version::restoreDefault();
 	timer.delay(100);
 }
 

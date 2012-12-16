@@ -4,8 +4,6 @@
 class Options {
 public:
 	static void run();
-
-protected:
 	static void resetDefault();
 };
 
