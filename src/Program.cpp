@@ -17,91 +17,91 @@
 
 namespace {
 
-SimpleCharge simple;
+	SimpleCharge simple;
 
-//TODO: program memory
-const Screen::ScreenType theveninScreens[] PROGMEM =
-{ Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
-  Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
-const Screen::ScreenType balanceScreens[] PROGMEM =
-{ Screen::ScreenBalancer0_2, Screen::ScreenBalancer0_2M,
-  Screen::ScreenBalancer3_5, Screen::ScreenBalancer3_5M /*, Screen::ScreenTemperature */};
-const Screen::ScreenType dischargeScreens[] PROGMEM =
-{ Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenTime,
-  Screen::ScreenBalancer0_2,
-  Screen::ScreenBalancer0_2RthV,
-  Screen::ScreenBalancer0_2RthI,
-  Screen::ScreenBalancer0_2Rth,
-  Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
-const Screen::ScreenType storageScreens[] PROGMEM =
-{ Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
-  Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
+	//TODO: program memory
+	const Screen::ScreenType theveninScreens[] PROGMEM =
+	{ Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
+	  Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
+	const Screen::ScreenType balanceScreens[] PROGMEM =
+	{ Screen::ScreenBalancer0_2, Screen::ScreenBalancer0_2M,
+	  Screen::ScreenBalancer3_5, Screen::ScreenBalancer3_5M /*, Screen::ScreenTemperature */};
+	const Screen::ScreenType dischargeScreens[] PROGMEM =
+	{ Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenTime,
+	  Screen::ScreenBalancer0_2,
+	  Screen::ScreenBalancer0_2RthV,
+	  Screen::ScreenBalancer0_2RthI,
+	  Screen::ScreenBalancer0_2Rth,
+	  Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
+	const Screen::ScreenType storageScreens[] PROGMEM =
+	{ Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
+	  Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
 
-const Screen::ScreenType startInfoBalanceScreens[] PROGMEM =
-{ Screen::ScreenStartInfo, Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5};
+	const Screen::ScreenType startInfoBalanceScreens[] PROGMEM =
+	{ Screen::ScreenStartInfo, Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5};
 
-const Screen::ScreenType startInfoScreens[] PROGMEM =
-{ Screen::ScreenStartInfo };
+	const Screen::ScreenType startInfoScreens[] PROGMEM =
+	{ Screen::ScreenStartInfo };
 
-void chargingComplete()
-{
-	lcd.clear();
-	screens.displayChargeEnded();
-	buzzer.soundProgramComplete();
-	do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
-	buzzer.soundOff();
-}
-void chargingMonitorError()
-{
-	lcd.clear();
-	screens.displayChargeEnded();
-	buzzer.soundError();
-	do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
-	buzzer.soundOff();
-}
+	void chargingComplete()
+	{
+		lcd.clear();
+		screens.displayChargeEnded();
+		buzzer.soundProgramComplete();
+		do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
+		buzzer.soundOff();
+	}
+	void chargingMonitorError()
+	{
+		lcd.clear();
+		screens.displayChargeEnded();
+		buzzer.soundError();
+		do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
+		buzzer.soundOff();
+	}
 
-Strategy::statusType doStrategy(Strategy &strategy, const Screen::ScreenType chargeScreens[]
-                                                  , uint8_t screen_limit)
-{
-	uint8_t key;
-	bool run = true;
-	uint16_t newMesurmentData = 0;
-	Strategy::statusType status = Strategy::RUNNING;
-	Monitor::statusType mstatus;
-	strategy.powerOn();
-	lcd.clear();
-	uint8_t screen = 0;
-	do {
-		screens.display(pgm_read<Screen::ScreenType>(&chargeScreens[screen]));
-		key = selectIndexWithKeyboard(screen, screen_limit);
-		if(run) {
-			mstatus = monitor.run();
-			if(mstatus != Monitor::OK) {
-				strategy.powerOff();
-				chargingMonitorError();
-				run = false;
-				status = Strategy::ERROR;
-			}
-			if(newMesurmentData != analogInputs.getCalculationCount()) {
-				newMesurmentData = analogInputs.getCalculationCount();
-				status = strategy.doStrategy();
-				if(status == Strategy::COMPLETE_AND_EXIT) {
+	Strategy::statusType doStrategy(Strategy &strategy, const Screen::ScreenType chargeScreens[]
+													  , uint8_t screen_limit)
+	{
+		uint8_t key;
+		bool run = true;
+		uint16_t newMesurmentData = 0;
+		Strategy::statusType status = Strategy::RUNNING;
+		Monitor::statusType mstatus;
+		strategy.powerOn();
+		lcd.clear();
+		uint8_t screen = 0;
+		do {
+			screens.display(pgm_read<Screen::ScreenType>(&chargeScreens[screen]));
+			key = selectIndexWithKeyboard(screen, screen_limit);
+			if(run) {
+				mstatus = monitor.run();
+				if(mstatus != Monitor::OK) {
 					strategy.powerOff();
-					return status;
-				}
-
-				if(status != Strategy::RUNNING) {
-					strategy.powerOff();
-					chargingComplete();
+					chargingMonitorError();
 					run = false;
+					status = Strategy::ERROR;
+				}
+				if(newMesurmentData != analogInputs.getCalculationCount()) {
+					newMesurmentData = analogInputs.getCalculationCount();
+					status = strategy.doStrategy();
+					if(status == Strategy::COMPLETE_AND_EXIT) {
+						strategy.powerOff();
+						return status;
+					}
+
+					if(status != Strategy::RUNNING) {
+						strategy.powerOff();
+						chargingComplete();
+						run = false;
+					}
 				}
 			}
-		}
-	} while(key != BUTTON_STOP);
+		} while(key != BUTTON_STOP);
 
-	strategy.powerOff();
-	return status;
-}
+		strategy.powerOff();
+		return status;
+	}
 
 } //namespace {
 

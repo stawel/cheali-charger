@@ -12,6 +12,7 @@
 
 #define BUTTON_DELAY_TIMES	250
 #define BUTTON_DELAY	1
+#define BUTTON_CHANGE_DELAY		50
 
 
 class Keyboard {

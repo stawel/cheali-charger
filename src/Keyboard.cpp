@@ -28,7 +28,7 @@ uint8_t Keyboard::keyChanged(uint8_t key)
 
 	key2 = getPressed();
 	while(key2 != key) {
-		hardware::delay(BUTTON_DELAY);
+		hardware::delay(BUTTON_CHANGE_DELAY);
 		key = key2;
 		key2 = getPressed();
 	}
