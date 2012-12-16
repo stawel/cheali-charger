@@ -247,7 +247,11 @@ void Calibrate::printCalibrateB0_2()
 void Calibrate::printCalibrateB0_2_Blink()
 {
 	lcd.setCursor(0,0);
-	lcdPrintSpaces(7);
+	if(!analogInputs.isConnected(AnalogInputs::Vout)) {
+		lcdPrint_P(PSTR("ERROR! "));
+	} else {
+		lcdPrintSpaces(7);
+	}
 	uint8_t dig = 7;
 	if(dispVal_ != 0) dig = 6;
 
@@ -269,7 +273,11 @@ void Calibrate::printCalibrateB0_2_Blink()
 void Calibrate::printCalibrateB3_5_Blink()
 {
 	lcd.setCursor(0,0);
-	lcdPrintSpaces(7);
+	if(!analogInputs.isConnected(AnalogInputs::Vout)) {
+		lcdPrint_P(PSTR("ERROR! "));
+	} else {
+		lcdPrintSpaces(7);
+	}
 	uint8_t dig = 7;
 	if(dispVal_ != 0) dig = 6;
 
@@ -489,9 +497,11 @@ void Calibrate::infoTimeM()
 		lcd.setCursor(0,0);
 		lcdPrint_P(PSTR(" time: "));
 		lcd.print(t0);
+		lcdPrintSpaces();
 		lcd.setCursor(0,1);
 		lcdPrint_P(PSTR("100ms: "));
 		lcd.print(t1-t0);
+		lcdPrintSpaces();
 
 	} while(key != BUTTON_STOP);
 }
