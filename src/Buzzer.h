@@ -14,14 +14,14 @@ public:
 	SoundType sound_;
 
 
-	void soundKeyboard() 		{sound_ = Keyboard; begin(); }
-	void soundInfo()			{sound_ = Info; begin(); }
-	void soundSave()			{sound_ = Save; begin(); }
-	void soundSelect()			{sound_ = Select; begin(); }
-	void soundProgramComplete() {sound_ = ProgramComplete; begin(); }
-	void soundStartProgram() 	{sound_ = StartProgram; begin(); }
-	void soundError() 			{sound_ = Error; begin(); }
-	void soundOff()				{sound_ = Off; }
+	void soundKeyboard() 					{sound_ = Keyboard; 		begin(); }
+	void soundInfo(bool doBegin)			{sound_ = Info; 			if(doBegin) begin(); }
+	void soundSave()						{sound_ = Save; 			begin(); }
+	void soundSelect()					{sound_ = Select; 			begin(); }
+	void soundProgramComplete() 			{sound_ = ProgramComplete; 	begin(); }
+	void soundStartProgram() 				{sound_ = StartProgram; 	begin(); }
+	void soundError() 						{sound_ = Error; 			begin(); }
+	void soundOff()						{sound_ = Off; }
 
 	void begin();
 

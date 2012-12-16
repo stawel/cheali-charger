@@ -6,6 +6,7 @@
 
 class StartInfoStrategy : public Strategy {
 public:
+	uint8_t ok;
 	StartInfoStrategy(){};
 	virtual void powerOn();
 	virtual statusType doStrategy();

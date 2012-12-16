@@ -86,7 +86,7 @@ uint16_t Buzzer::getSelect(uint16_t time)
 
 uint16_t Buzzer::getInfo(uint16_t time)
 {
-	uint16_t v = time%4000;
+	uint16_t v = time%2000;
 	return wave(v, 10);
 }
 

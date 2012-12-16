@@ -27,6 +27,9 @@ public:
 	bool isLongPressTime() const { return speed_ > 1; }
 
 	uint16_t getSpeedFactor() const;
+
+private:
+	uint8_t keyChanged(uint8_t key);
 };
 
 

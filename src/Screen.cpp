@@ -227,6 +227,7 @@ void Screen::notImplemented()
 {
 	lcd.clear();
 	screens.displayStrings(PSTR("Function not"), PSTR("implemented yet"));
+	do { } while(keyboard.getPressedWithSpeed() != BUTTON_NONE);
 	do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
 }
 

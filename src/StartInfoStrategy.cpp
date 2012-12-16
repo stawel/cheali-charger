@@ -11,12 +11,15 @@ void StartInfoStrategy::powerOn()
 {
 	hardware::setBatteryOutput(true);
 	screens.startBlinkOn(7);
+	buzzer.begin();
+	ok = 3;
 }
 
 void StartInfoStrategy::powerOff()
 {
 	hardware::setBatteryOutput(false);
 	screens.stopBlink();
+	buzzer.soundOff();
 }
 
 Strategy::statusType StartInfoStrategy::doStrategy()
@@ -41,12 +44,17 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 	if(v) 	screens.blinkIndex_ -= 1;
 
 	if(c || b || v) {
-		buzzer.soundInfo();
+		buzzer.soundInfo(false);
 	} else {
 		buzzer.soundOff();
 	}
 
+	if(keyboard.getPressed() == BUTTON_NONE)
+		ok = 0;
 	if(!c && !b && !v && keyboard.getPressed() == BUTTON_START) {
+		ok++;
+	}
+	if(ok == 2) {
 		buzzer.soundStartProgram();
 		return Strategy::COMPLETE_AND_EXIT;
 	}
