@@ -48,6 +48,7 @@ struct ProgramData {
 	void loadDefault();
 
 	bool isLiXX() const { return battery.type == Life || battery.type == Lilo || battery.type == Lipo;};
+	bool isNiXX() const { return battery.type == NiCd || battery.type == NiMH; };
 
 	static void loadProgramData(int index);
 	static void saveProgramData(int index);

@@ -232,27 +232,28 @@ void Screen::notImplemented()
 }
 
 namespace {
-const char programString[] PROGMEM = "ChCBBlDiFCStSBENEB";
-void printProgram2chars(Program::ProgramType prog)
-{
-	//TODO: ??
-	lcdPrint_P(programString+prog*2, 2);
-}
 
-uint8_t getChargeProcent(){
-	uint16_t v1,v2, v;
-	v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
-	v1 = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
-	v = analogInputs.getRealValue(AnalogInputs::VoutBalancer);
+	const char programString[] PROGMEM = "ChCBBlDiFCStSBChDiCyChDiEBLP";
+	void printProgram2chars(Program::ProgramType prog)
+	{
+		//TODO: ??
+		lcdPrint_P(programString+prog*2, 2);
+	}
 
-	if(v >= v2) return 99;
-	if(v <= v1) return 0;
-	v-=v1;
-	v2-=v1;
-	v2/=100;
-	v=  v/v2;
-	return v;
-}
+	uint8_t getChargeProcent(){
+		uint16_t v1,v2, v;
+		v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
+		v1 = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
+		v = analogInputs.getRealValue(AnalogInputs::VoutBalancer);
+
+		if(v >= v2) return 99;
+		if(v <= v1) return 0;
+		v-=v1;
+		v2-=v1;
+		v2/=100;
+		v=  v/v2;
+		return v;
+	}
 }
 
 void Screen::displayStartInfo()
@@ -276,11 +277,16 @@ void Screen::displayStartInfo()
 	else lcdPrintSpaces(5);
 
 	lcd.print(' ');
+	if(ProgramData::currentProgramData.isLiXX()) {
+		//display balance port
+		if(bindex & 2) analogInputs.printRealValue(AnalogInputs::Vbalacer, 5);
+		else lcdPrintSpaces(5);
 
-	if(bindex & 2) analogInputs.printRealValue(AnalogInputs::Vbalacer, 5);
-	else lcdPrintSpaces(5);
+		if(bindex & 4) lcd.print(analogInputs.getConnectedBalancePorts());
+		else lcd.print(' ');
+	} else {
+		lcdPrintSpaces(8);
+	}
 
-	if(bindex & 4) lcd.print(analogInputs.getConnectedBalancePorts());
-	else lcd.print(' ');
 
 }

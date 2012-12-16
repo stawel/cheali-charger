@@ -12,7 +12,7 @@ void StartInfoStrategy::powerOn()
 	hardware::setBatteryOutput(true);
 	screens.startBlinkOn(7);
 	buzzer.begin();
-	ok = 3;
+	ok_ = 3;
 }
 
 void StartInfoStrategy::powerOff()
@@ -25,17 +25,22 @@ void StartInfoStrategy::powerOff()
 Strategy::statusType StartInfoStrategy::doStrategy()
 {
 	bool c,b,v;
-	uint8_t is_cells, should_be_cells;
-	is_cells = analogInputs.getConnectedBalancePorts();
-	should_be_cells = ProgramData::currentProgramData.battery.cells;
-	c = (should_be_cells != is_cells);
-	b = (is_cells == 0);
+
+	c = b = false;
 	v = (!analogInputs.isConnected(AnalogInputs::Vout));
 
-	if(should_be_cells == 1 && is_cells == 0)  {
-		//one cell
-		c = false;
-		b = false;
+	if(balancePort_) {
+		uint8_t is_cells, should_be_cells;
+		is_cells = analogInputs.getConnectedBalancePorts();
+		should_be_cells = ProgramData::currentProgramData.battery.cells;
+		c = (should_be_cells != is_cells);
+		b = (is_cells == 0);
+
+		if(should_be_cells == 1 && is_cells == 0)  {
+			//one cell
+			c = false;
+			b = false;
+		}
 	}
 
 	screens.blinkIndex_ = 7;
@@ -50,11 +55,11 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 	}
 
 	if(keyboard.getPressed() == BUTTON_NONE)
-		ok = 0;
+		ok_ = 0;
 	if(!c && !b && !v && keyboard.getPressed() == BUTTON_START) {
-		ok++;
+		ok_++;
 	}
-	if(ok == 2) {
+	if(ok_ == 2) {
 		buzzer.soundStartProgram();
 		return Strategy::COMPLETE_AND_EXIT;
 	}

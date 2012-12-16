@@ -5,9 +5,15 @@
 
 class Program {
 public:
-	enum ProgramType { Charge, Charge_Balance, Balance, Discharge, FastCharge, Storage, Storage_Balance, EditBattery , 	LAST_PROGRAM_TYPE};
+	enum ProgramType {
+		ChargeLiXX, ChargeLiXX_Balance, Balance, DischargeLiXX, FastChargeLiXX, StorageLiXX, StorageLiXX_Balance,
+		ChargeNiXX, DischargeNiXX, CycleNiXX,
+		ChargePb, DischargePb,
+		EditBattery, LAST_PROGRAM_TYPE};
 
+	static void selectProgram(int index);
 	static void run(ProgramType prog);
+
 
 	static void printStartInfo(ProgramType prog);
 	static bool startInfo(ProgramType prog);

@@ -12,6 +12,8 @@
 #include "memory.h"
 #include "StartInfoStrategy.h"
 #include "Buzzer.h"
+#include "MainMenu.h"
+
 
 namespace {
 
@@ -35,8 +37,11 @@ const Screen::ScreenType storageScreens[] PROGMEM =
 { Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
   Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
 
-const Screen::ScreenType startInfoScreens[] PROGMEM =
+const Screen::ScreenType startInfoBalanceScreens[] PROGMEM =
 { Screen::ScreenStartInfo, Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5};
+
+const Screen::ScreenType startInfoScreens[] PROGMEM =
+{ Screen::ScreenStartInfo };
 
 void chargingComplete()
 {
@@ -103,7 +108,14 @@ Strategy::statusType doStrategy(Strategy &strategy, const Screen::ScreenType cha
 bool Program::startInfo(ProgramType prog)
 {
 	screens.programType_ = prog;
-	return doStrategy(startInfoStrategy, startInfoScreens, sizeOfArray(startInfoScreens)) == Strategy::COMPLETE_AND_EXIT;
+	if(ProgramData::currentProgramData.isLiXX()) {
+		//usues balance port
+		startInfoStrategy.setBalancePort(true);
+		return doStrategy(startInfoStrategy, startInfoBalanceScreens, sizeOfArray(startInfoBalanceScreens)) == Strategy::COMPLETE_AND_EXIT;
+	} else {
+		startInfoStrategy.setBalancePort(false);
+		return doStrategy(startInfoStrategy, startInfoScreens, sizeOfArray(startInfoScreens)) == Strategy::COMPLETE_AND_EXIT;
+	}
 }
 
 void Program::runStorage(bool balance)
@@ -122,7 +134,6 @@ void Program::runTheveninCharge(int minChargeC)
 void Program::runDischarge()
 {
 	theveninDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-//	theveninDischarge.setVI(ANALOG_VOLTS(12), ProgramData::currentProgramData.I);
 	doStrategy(theveninDischarge, dischargeScreens, sizeOfArray(dischargeScreens));
 }
 
@@ -135,21 +146,21 @@ void Program::run(ProgramType prog)
 {
 	if(startInfo(prog)) {
 		switch(prog) {
-		case Program::Charge:
+		case Program::ChargeLiXX:
 			runTheveninCharge(10);
 			break;
 		case Program::Balance:
 			runBalance();
 			break;
-		case Program::Discharge:
+		case Program::DischargeLiXX:
 			runDischarge();
 			break;
-		case Program::FastCharge:
+		case Program::FastChargeLiXX:
 			runTheveninCharge(5);
 			break;
-		case Program::Storage:
+		case Program::StorageLiXX:
 			runStorage(false);
-		case Program::Storage_Balance:
+		case Program::StorageLiXX_Balance:
 			runStorage(true);
 			break;
 		default:
@@ -159,3 +170,129 @@ void Program::run(ProgramType prog)
 		}
 	}
 }
+
+
+
+// Program selection depending on the battery type
+
+namespace {
+
+	const char charge_str[] PROGMEM = "charge";
+	const char chaBal_str[] PROGMEM = "charge+balance";
+	const char balanc_str[] PROGMEM = "balance";
+	const char discha_str[] PROGMEM = "discharge";
+	const char fastCh_str[] PROGMEM = "fast charge";
+	const char storag_str[] PROGMEM = "storage";
+	const char stoBal_str[] PROGMEM = "storage+balanc";
+	const char cycle__str[] PROGMEM = "cycle";
+	const char edBatt_str[] PROGMEM = "edit battery";
+
+	const char * const programLiXXMenu[] PROGMEM =
+	{ charge_str,
+	  chaBal_str,
+	  balanc_str,
+	  discha_str,
+	  fastCh_str,
+	  storag_str,
+	  stoBal_str,
+	  edBatt_str
+	};
+
+	const Program::ProgramType programLiXXMenuType[] PROGMEM =
+	{ Program::ChargeLiXX,
+	  Program::ChargeLiXX_Balance,
+	  Program::Balance,
+	  Program::DischargeLiXX,
+	  Program::FastChargeLiXX,
+	  Program::StorageLiXX,
+	  Program::StorageLiXX_Balance,
+	  Program::EditBattery
+	};
+
+	const char * const programNiXXMenu[] PROGMEM =
+	{ charge_str,
+	  discha_str,
+	  cycle__str,
+	  edBatt_str
+	};
+
+	const Program::ProgramType programNiXXMenuType[] PROGMEM =
+	{ Program::ChargeNiXX,
+	  Program::DischargeNiXX,
+	  Program::CycleNiXX,
+	  Program::EditBattery
+	};
+
+	const char * const programPbMenu[] PROGMEM =
+	{ charge_str,
+	  discha_str,
+	  edBatt_str
+	};
+
+	const Program::ProgramType programPbMenuType[] PROGMEM =
+	{ Program::ChargePb,
+	  Program::DischargePb,
+	  Program::EditBattery
+	};
+
+
+	MainMenu selectLiXXMenu(programLiXXMenu, sizeOfArray(programLiXXMenu));
+	MainMenu selectNiXXMenu(programNiXXMenu, sizeOfArray(programNiXXMenu));
+	MainMenu selectPbMenu(programPbMenu, sizeOfArray(programPbMenu));
+
+	MainMenu * getSelectProgramMenu() {
+		if(ProgramData::currentProgramData.isLiXX())
+			return &selectLiXXMenu;
+		else if(ProgramData::currentProgramData.isNiXX())
+			return &selectNiXXMenu;
+		else return &selectPbMenu;
+	}
+	Program::ProgramType getSelectProgramType(int index) {
+		const Program::ProgramType * address;
+		if(ProgramData::currentProgramData.isLiXX())
+			address = &programLiXXMenuType[index];
+		else if(ProgramData::currentProgramData.isNiXX())
+			address = &programNiXXMenuType[index];
+		else address = &programPbMenuType[index];
+		return pgm_read(address);
+	}
+}
+
+void Program::selectProgram(int index)
+{
+	uint8_t key;
+	bool release = true;
+	ProgramData::loadProgramData(index);
+	MainMenu * selectPrograms = getSelectProgramMenu();
+	selectPrograms->render();
+
+	do {
+		key = selectPrograms->run();
+
+		if(key == BUTTON_NONE)
+			release = false;
+
+		if(!release && key == BUTTON_START)  {
+			int i = selectPrograms->getIndex();
+			Program::ProgramType prog = getSelectProgramType(i);
+			switch(prog) {
+			case Program::EditBattery:
+				if(ProgramData::currentProgramData.edit(index)) {
+					buzzer.soundSave();
+					ProgramData::saveProgramData(index);
+					selectPrograms = getSelectProgramMenu();
+				}
+				break;
+			default:
+				Program::run(prog);
+				break;
+			}
+			selectPrograms->render();
+			release = true;
+		}
+	} while(key != BUTTON_STOP || release);
+}
+
+
+
+
