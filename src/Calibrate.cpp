@@ -382,7 +382,6 @@ bool Calibrate::calibrateBlink(screenType p, int8_t maxBlink)
 
 bool Calibrate::setValue(uint8_t x, uint8_t y, AnalogInputs::ValueType &v, AnalogInputs::Type type, uint8_t dig)
 {
-	bool retu = false;
 	bool released = false;
 	uint8_t key;
 	int dir;
@@ -396,16 +395,15 @@ bool Calibrate::setValue(uint8_t x, uint8_t y, AnalogInputs::ValueType &v, Analo
 		key = keyboard.getPressedWithSpeed();
 		if(key == BUTTON_INC) {  dir  = 1; blinkOn_ = true; }
 		if(key == BUTTON_DEC) {  dir = -1; blinkOn_ = true; }
-		if(key == BUTTON_START && keyboard.getSpeed() == ACCEPT_DELAY && released) {
-			retu = true;
-			break;
+		if(key == BUTTON_START && released) {
+			return true;
 		}
 		if(key == BUTTON_NONE) released = true;
 
 		dir *= keyboard.getSpeedFactor();
 		v+=dir;
 	} while(key != BUTTON_STOP);
-	return retu;
+	return false;
 }
 
 
