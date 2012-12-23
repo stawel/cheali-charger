@@ -24,8 +24,10 @@ const char string_ci2[] PROGMEM = "B0-2";
 const char string_ci3[] PROGMEM = "B3-5";
 const char string_ci4[] PROGMEM = "Temp";
 const char string_ci5[] PROGMEM = "Vin";
-const char string_ci6[] PROGMEM = "Idischarge";
-const char string_ci7[] PROGMEM = "time";
+const char string_ci6[] PROGMEM = "Vreversed";
+const char string_ci7[] PROGMEM = "Vunknown";
+const char string_ci8[] PROGMEM = "Idischarge";
+const char string_ci9[] PROGMEM = "time";
 
 
 const char * const calibrateMenu[] PROGMEM =
@@ -49,6 +51,8 @@ const char * const calibrateInfoMenu[] PROGMEM =
   string_ci5,
   string_ci6,
   string_ci7,
+  string_ci8,
+  string_ci9,
 };
 
 
@@ -80,10 +84,10 @@ void Calibrate::calibrateI(screenType screen, AnalogInputs::Name name1, AnalogIn
 		if(i < 0) return;
 		if(calibrate(screen)) {
 			if(i == 0) {
-				p.y = ANALOG_AMPS(0.05);
+				p.y = ANALOG_AMP(0.05);
 			} else {
 				i = 1;
-				p.y = ANALOG_AMPS(1);
+				p.y = ANALOG_AMP(1);
 			}
 			p.x = analogInputs.getValue(name1);
 			setCalibrationPoint(name1, i, p);
@@ -138,7 +142,7 @@ void Calibrate::run()
 		case 4: calibrateI(SCREEN_IDISCHARGE, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue); break;
 		case 8: runInfo(); break;
 		default:
-				Screen::notImplemented(); break;
+				Screen::runNotImplemented(); break;
 		}
 	} while(i >= 0);
 }
@@ -149,12 +153,12 @@ void Calibrate::runInfo()
 	int i;
 	do {
 		i = menu.runSimple();
-		if(i >= 0 && i<=5)
+		if(i >= 0 && i<=7)
 			info(screenType(i));
 
 		switch(i) {
-		case 6: infoDis(); break;
-		case 7: infoTimeM(); break;
+		case 8: infoDis(); break;
+		case 9: infoTimeM(); break;
 		}
 	} while(i>=0);
 }
@@ -225,6 +229,24 @@ void Calibrate::printCalibrateVout()
 	print_v();
 	print_m_2(PSTR(" Vo:"), AnalogInputs::Vout);
 	print_m_3(PSTR("VoutMux:"), AnalogInputs::VoutMux);
+}
+
+void Calibrate::printCalibrateVreverse()
+{
+	print_v();
+	print_m_2(PSTR(" Vo:"), AnalogInputs::Vout);
+	print_m_3(PSTR("Vrev:"), AnalogInputs::VreversePolarity);
+}
+
+void Calibrate::printCalibrateVunknown()
+{
+#ifdef ANALOG_INPUTS_V_UNKNOWN
+	print_v();
+	print_m_2(PSTR(" V0:"), AnalogInputs::Vunknown0);
+	print_m_3(PSTR("V1:"), AnalogInputs::Vunknown1);
+#else
+	screens.displayNotImplemented();
+#endif
 }
 
 void Calibrate::printCalibrateVoutVbal()
@@ -326,8 +348,11 @@ void Calibrate::printCalibrate(screenType p) {
 	case SCREEN_VOUT:		printCalibrateVout(); 	break;
 	case SCREEN_B0_2:		printCalibrateB0_2(); 	break;
 	case SCREEN_B3_5: 		printCalibrateB3_5(); 	break;
-	case 4: 				printCalibrateT(); 		break;
-	case 5: 				printCalibrateVin(); 	break;
+	case SCREEN_T: 			printCalibrateT(); 		break;
+	case SCREEN_VIN: 		printCalibrateVin(); 	break;
+	case SCREEN_VREVERSE: 	printCalibrateVreverse(); 	break;
+	case SCREEN_VUNKNOWN: 	printCalibrateVunknown(); 	break;
+
 	case SCREEN_VOUT_VBAL: 	printCalibrateVoutVbal(); 	break;
 	case SCREEN_B0_2_BLINK:	printCalibrateB0_2_Blink(); break;
 	case SCREEN_B3_5_BLINK:	printCalibrateB3_5_Blink(); break;
@@ -363,8 +388,8 @@ bool Calibrate::calibrateBlink(screenType p, int8_t maxBlink)
 
 		blinkOn_ = (blinkCount%6) != 0;
 		blinkCount++;
-		if(key == BUTTON_INC && blink_ < maxBlink - 1)  blink_++;
-		if(key == BUTTON_DEC && blink_ > 0)  			blink_--;
+		if(key == BUTTON_INC && blink_ < maxBlink - 1)	blink_++;
+		if(key == BUTTON_DEC && blink_ > 0)				blink_--;
 
 		if(key == BUTTON_START && released) {
 			buzzer.soundSelect();
@@ -417,7 +442,7 @@ bool Calibrate::calibrate(screenType p)
 	value_ = 0;
 	dispVal_ = 1;
 	//turn on output
-	smps.powerOn();
+	//smps.powerOn();
 	uint8_t key, last_key;
 	do {
 		printCalibrate(p);

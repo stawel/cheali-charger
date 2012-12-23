@@ -10,6 +10,12 @@ Menu::Menu(uint8_t size):
 
 uint8_t Menu::run() {
 	uint8_t button = keyboard.getPressedWithSpeed();
+
+	if(runReversedPolarityInfo()) {
+		render_ = true;
+		return REVERSED_POLARITY;
+	}
+
 	uint8_t index = getIndex();
 	switch (button) {
 	case BUTTON_INC:
@@ -39,7 +45,7 @@ int Menu::runSimple() {
 			return getIndex();
 		}
 	} while(key != BUTTON_STOP || waitRelease_);
-	return -1;
+	return MENU_EXIT;
 }
 
 

@@ -60,7 +60,7 @@
 //pin 35 - ??
 #define SMPS_CURRENT_PIN		A2
 //pin 36
-#define UNKNOWN2_PIN			A1
+#define REVERSE_POLARITY_PIN	A1
 //pin 37
 #define OUTPUT_VOLATAGE_PIN		A0
 
@@ -98,7 +98,8 @@
 #define MADDR_V_UNKNOWN0 	(6 + MUXINPUT1)
 #define MADDR_V_UNKNOWN1   	(7 + MUXINPUT1)
 
-
+//use unknown mux values
+//#define ANALOG_INPUTS_V_UNKNOWN
 
 
 #include "LiquidCrystal.h"

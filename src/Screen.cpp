@@ -223,13 +223,29 @@ void Screen::displayRthVth()
 	lcdPrintSpaces();
 }
 
-void Screen::notImplemented()
+void Screen::displayNotImplemented()
 {
 	lcd.clear();
 	screens.displayStrings(PSTR("Function not"), PSTR("implemented yet"));
+}
+
+void Screen::runNotImplemented()
+{
+	displayNotImplemented();
 	do { } while(keyboard.getPressedWithSpeed() != BUTTON_NONE);
 	do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
 }
+
+void Screen::reversedPolarity()
+{
+	lcd.clear();
+	lcd.setCursor(0,0); lcdPrint_P(PSTR("REVERSE POLARITY"));
+	lcd.setCursor(0,1);
+	lcdPrint_P(PSTR("Vrev:"));
+
+	lcdPrintUnsigned(analogInputs.getValue(AnalogInputs::VreversePolarity), 8);
+}
+
 
 namespace {
 

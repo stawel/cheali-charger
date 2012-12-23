@@ -2,9 +2,12 @@
 #define MENU_H_
 
 #include <inttypes.h>
+#include "PolarityCheck.h"
 
-class Menu {
+class Menu : public PolarityCheck {
 public:
+	static const int MENU_EXIT = -1;
+
 	uint8_t pos_;
 	uint8_t begin_;
 	uint8_t size_;

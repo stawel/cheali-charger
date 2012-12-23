@@ -46,7 +46,7 @@ void Options::run()
 	do {
 		i = optionsMenu.runSimple();
 		switch(i) {
-		case 0: Screen::notImplemented(); break;
+		case 0: Screen::runNotImplemented(); break;
 		case 1: calibrate.run(); break;
 		case 2: resetDefault(); break;
 		}

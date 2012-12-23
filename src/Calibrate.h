@@ -13,6 +13,7 @@ public:
 	bool blinkOn_;
 
 	enum screenType { SCREEN_IOUT = 0, SCREEN_VOUT = 1, SCREEN_B0_2 = 2, SCREEN_B3_5 = 3,
+			SCREEN_T = 4, SCREEN_VIN = 5, SCREEN_VREVERSE = 6, SCREEN_VUNKNOWN = 7,
 			SCREEN_VOUT_VBAL = 99, SCREEN_IDISCHARGE = 100,
 			SCREEN_B0_2_BLINK = 101, SCREEN_B3_5_BLINK = 102};
 
@@ -32,6 +33,8 @@ public:
 	void printCalibrateB3_5();
 	void printCalibrateT();
 	void printCalibrateVin();
+	void printCalibrateVreverse();
+	void printCalibrateVunknown();
 
 	void printCalibrateB0_2_Blink();
 	void printCalibrateB3_5_Blink();

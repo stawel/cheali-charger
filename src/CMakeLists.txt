@@ -71,6 +71,9 @@ set(SOURCE_FILES
         Options.cpp
         Options.h
 
+        PolarityCheck.cpp
+        PolarityCheck.h
+
         Buzzer.cpp
         Buzzer.h
 

@@ -34,6 +34,7 @@ uint16_t Buzzer::getSound(uint16_t time)
 	case Select: 			return getSelect(time);
 	case ProgramComplete: 	return getProgramComplete(time);
 	case StartProgram: 		return getStartProgram(time);
+	case ReversedPolarity: 	return getReversedPolarity(time);
 	case Error: 			return getError(time);
 	case Off:
 	default:
@@ -113,6 +114,16 @@ uint16_t Buzzer::getProgramComplete(uint16_t time)
 	uint16_t t = val/40;
 
 	if(t > 10)
+		return setOff();
+	return wave(v, 20);
+}
+
+uint16_t Buzzer::getReversedPolarity(uint16_t time)
+{
+	uint16_t val = time/10;
+	uint16_t v = val%40;
+
+	if(val > 80)
 		return setOff();
 	return wave(v, 20);
 }

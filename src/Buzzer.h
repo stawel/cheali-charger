@@ -5,7 +5,7 @@
 
 class Buzzer {
 public:
-	enum SoundType { Keyboard, Info, Save, Select, StartProgram, ProgramComplete, Error, Off };
+	enum SoundType { Keyboard, Info, Save, Select, StartProgram, ProgramComplete, Error, ReversedPolarity, Off };
 	Buzzer():volume_(BUZZER_MAX_VOLUME), sound_(Off){}
 	uint8_t volume_;
 	uint16_t begin_time_;
@@ -15,14 +15,14 @@ public:
 
 
 	void soundKeyboard() 					{sound_ = Keyboard; 		begin(); }
-	void soundInfo(bool doBegin)			{sound_ = Info; 			if(doBegin) begin(); }
+	void soundInfo()						{if(sound_ != Info)			{sound_ = Info; 	 begin(); }}
 	void soundSave()						{sound_ = Save; 			begin(); }
 	void soundSelect()					{sound_ = Select; 			begin(); }
 	void soundProgramComplete() 			{sound_ = ProgramComplete; 	begin(); }
 	void soundStartProgram() 				{sound_ = StartProgram; 	begin(); }
-	void soundError() 						{sound_ = Error; 			begin(); }
+	void soundReversedPolarity()			{if(sound_ != ReversedPolarity)		{sound_ = ReversedPolarity; 	begin(); }}
+	void soundError() 						{if(sound_ != Error)		{sound_ = Error; 	begin(); }}
 	void soundOff()						{sound_ = Off; }
-
 	void begin();
 
 	void doInterrupt();
@@ -33,6 +33,7 @@ private:
 	uint16_t getSelect(uint16_t time);
 	uint16_t getStartProgram(uint16_t time);
 	uint16_t getProgramComplete(uint16_t time);
+	uint16_t getReversedPolarity(uint16_t time);
 	uint16_t getError(uint16_t time);
 	uint16_t getOff(uint16_t time);
 

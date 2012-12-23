@@ -71,9 +71,9 @@ bool AnalogInputs::isConnected(Name name) const
 	AnalogInputs::ValueType x = getRealValue(name);
 	switch(getType(name)) {
 	case Current:
-		return x > ANALOG_AMPS(0.050);
+		return x > ANALOG_AMP(0.050);
 	case Voltage:
-		return x > ANALOG_VOLTS(1);
+		return x > ANALOG_VOLT(1);
 	default:
 		return true;
 	}
@@ -84,7 +84,7 @@ bool AnalogInputs::isConnected(Name name) const
 void AnalogInputs::doVirtualCalculations()
 {
 	int ports = getConnectedBalancePorts();
-	AnalogInputs::ValueType oneVolt = ANALOG_VOLTS(1);
+	AnalogInputs::ValueType oneVolt = ANALOG_VOLT(1);
 	AnalogInputs::ValueType balancer = 0;
 	AnalogInputs::ValueType out = real_[Vout];
 

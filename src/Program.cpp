@@ -72,7 +72,9 @@ namespace {
 		lcd.clear();
 		uint8_t screen = 0;
 		do {
-			screens.display(pgm_read<Screen::ScreenType>(&chargeScreens[screen]));
+			if(!PolarityCheck::runReversedPolarityInfo())
+				screens.display(pgm_read<Screen::ScreenType>(&chargeScreens[screen]));
+
 			key = selectIndexWithKeyboard(screen, screen_limit);
 			if(run) {
 				mstatus = monitor.run();
@@ -165,7 +167,7 @@ void Program::run(ProgramType prog)
 			break;
 		default:
 			//TODO:
-			Screen::notImplemented();
+			Screen::runNotImplemented();
 			break;
 		}
 	}

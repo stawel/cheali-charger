@@ -13,8 +13,8 @@
 #define FOR_ALL_INPUTS(iterator)     for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::ALL_INPUTS;      iterator = AnalogInputs::Name(iterator + 1) )
 
 #define ANALOG_CELCIUS(x) ((AnalogInputs::ValueType)((x)*100))
-#define ANALOG_VOLTS(x) ((AnalogInputs::ValueType)((x)*1000))
-#define ANALOG_AMPS(x) ((AnalogInputs::ValueType)((x)*1000))
+#define ANALOG_VOLT(x) ((AnalogInputs::ValueType)((x)*1000))
+#define ANALOG_AMP(x) ((AnalogInputs::ValueType)((x)*1000))
 
 class AnalogInputs {
 public:
@@ -44,6 +44,7 @@ public:
 	};
 	enum Name {
 		Vout,
+		VreversePolarity,
 		Ismps,
 		Idischarge,
 
@@ -62,6 +63,11 @@ public:
 		IsmpsValue,
 		IdischargeValue,
 
+#ifdef ANALOG_INPUTS_V_UNKNOWN
+		Vunknown0,
+		Vunknown1,
+#endif
+
 		VirtualInputs,
 		Vbalacer,
 		VoutBalancer,
@@ -69,12 +75,12 @@ public:
 		VbalanceInfo,
 		LastInput
 	};
-	static const uint8_t PHYSICAL_INPUTS = VirtualInputs - Vout;
-	static const uint8_t ALL_INPUTS = LastInput - Vout;
-	static const uint16_t AVR_MAX_COUNT = 100;
-	static const ValueType STABLE_VALUE_ERROR = 2;
-	static const uint16_t STABLE_MIN_VALUE = 3;
-
+	static const uint8_t	PHYSICAL_INPUTS = VirtualInputs - Vout;
+	static const uint8_t	ALL_INPUTS = LastInput - Vout;
+	static const uint16_t	AVR_MAX_COUNT = 100;
+	static const ValueType	STABLE_VALUE_ERROR = 2;
+	static const uint16_t	STABLE_MIN_VALUE = 3;
+	static const ValueType	REVERSE_POLARITY_MIN_VALUE = 1000;
 
 	AnalogInputs(const DefaultValues * inputs_P);
 
@@ -115,6 +121,7 @@ public:
 	uint16_t getStableCount(Name name) const { return stableCount_[name]; };
 	bool isStable(Name name) const { return stableCount_[name] >= STABLE_MIN_VALUE; };
 	void resetStable();
+	bool isReversePolarity() const { return getMeasuredValue(VreversePolarity) > REVERSE_POLARITY_MIN_VALUE; }
 
 protected:
 	void setReal(Name name, ValueType real);

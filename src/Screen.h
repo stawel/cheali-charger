@@ -46,8 +46,10 @@ public:
 
 	void displayStrings(const char *s1, const char *s2) const;
 
-	static void notImplemented();
+	static void displayNotImplemented();
 
+	static void runNotImplemented();
+	static void reversedPolarity();
 };
 
 extern Screen screens;

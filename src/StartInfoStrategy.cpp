@@ -49,7 +49,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 	if(v) 	screens.blinkIndex_ -= 1;
 
 	if(c || b || v) {
-		buzzer.soundInfo(false);
+		buzzer.soundInfo();
 	} else {
 		buzzer.soundOff();
 	}
