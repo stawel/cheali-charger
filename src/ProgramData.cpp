@@ -13,24 +13,24 @@ const uint16_t voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VO
 {
 	//  {Idle, Charge, Discharge, Storage};
 		{   	1,     1,      1,	1}, // Unknown
-		{	1200, 	 1200,	 850,	0}, //	NiCd //??
-		{	1200,	 1200,	1000,	0}, //	NiMH //??
-		{	2000,	 2460,	1500,	0}, //Pb
+		{ ANALOG_VOLT(1.200), ANALOG_VOLT(1.200), ANALOG_VOLT(0.850),	0}, //	NiCd //??
+		{ ANALOG_VOLT(1.200), ANALOG_VOLT(1.200), ANALOG_VOLT(1.000),	0}, //	NiMH //??
+		{ ANALOG_VOLT(2.000), ANALOG_VOLT(2.460), ANALOG_VOLT(1.500),	0}, //Pb
 //LiXX
-		{	3300,	 3600,	2000,	3300 /*??*/}, //Life
-		{	3600,	 4100,	2500,	3750 /*??*/}, //Lilo
-		{	3700,	 4200,	3000,	3850 /*??*/}, //LiPo
+		{ ANALOG_VOLT(3.300), ANALOG_VOLT(3.600), ANALOG_VOLT(2.000), ANALOG_VOLT(3.300) /*??*/}, //Life
+		{ ANALOG_VOLT(3.600), ANALOG_VOLT(4.100), ANALOG_VOLT(2.500), ANALOG_VOLT(3.750) /*??*/}, //Lilo
+		{ ANALOG_VOLT(3.700), ANALOG_VOLT(4.200), ANALOG_VOLT(3.000), ANALOG_VOLT(3.850) /*??*/}, //LiPo
 
 };
 
 const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
-{ProgramData::Unknown, 	2200, 2200, 2200, 10000},
-{ProgramData::NiCd, 	2200, 2200, 2200, 1},
-{ProgramData::NiMH, 	2200, 2200, 2200, 1},
-{ProgramData::Pb, 		2200, 2200, 2200, 6},
-{ProgramData::Life, 	2200, 2200, 2200, 3},
-{ProgramData::Lilo, 	2200, 2200, 2200, 3},
-{ProgramData::Lipo, 	2200, 2200, 2200, 3}
+		{ProgramData::Unknown, 	ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 10000},
+		{ProgramData::NiCd, 	ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 1},
+		{ProgramData::NiMH, 	ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 1},
+		{ProgramData::Pb, 		ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 6},
+		{ProgramData::Life, 	ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 3},
+		{ProgramData::Lilo, 	ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 3},
+		{ProgramData::Lipo, 	ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 3}
 };
 
 const char b0[] PROGMEM = "Unknown";
@@ -181,7 +181,7 @@ void ProgramData::changeVoltage(int direction)
 
 void ProgramData::changeCharge(int direction)
 {
-	changeMax(battery.C, direction, 65000);
+	changeMax(battery.C, direction, ANALOG_CHARGE(65.000));
 	battery.Ic = battery.C;
 	battery.Id = battery.C;
 	check();

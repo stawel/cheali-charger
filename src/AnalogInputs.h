@@ -13,6 +13,7 @@
 #define FOR_ALL_INPUTS(iterator)     for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::ALL_INPUTS;      iterator = AnalogInputs::Name(iterator + 1) )
 
 #define ANALOG_CELCIUS(x) ((AnalogInputs::ValueType)((x)*100))
+#define ANALOG_CHARGE(x) ((AnalogInputs::ValueType)((x)*1000))
 #define ANALOG_VOLT(x) ((AnalogInputs::ValueType)((x)*1000))
 #define ANALOG_AMP(x) ((AnalogInputs::ValueType)((x)*1000))
 
