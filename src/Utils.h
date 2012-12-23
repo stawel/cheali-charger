@@ -23,7 +23,6 @@ uint8_t setNumberWithKeyboard(digit_type &x, const digit_type x_min,
 	return key;
 }
 
-uint8_t setTypedValueWithKeyboard(double &x, uint8_t type);
 uint8_t selectIndexWithKeyboard(uint8_t &x, const uint8_t tab_size, bool exactly = true);
 
 #define UNKNOWN_VALUE_TYPE	0
