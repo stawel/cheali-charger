@@ -39,7 +39,7 @@ public:
 	const char * getError2() { return error2_; }
 
 	uint32_t getOnTimeSec() const;
-	double getCharge() const;
+	uint16_t getCharge() const;
 
 protected:
 
@@ -47,7 +47,7 @@ protected:
 	uint16_t value_;
 	const char *error1_, *error2_;
 	uint16_t startTime_;
-	double charge_;
+	uint32_t charge_;
 };
 
 

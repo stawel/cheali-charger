@@ -32,7 +32,7 @@ public:
 	void doInterrupt();
 
 	uint32_t getOnTimeSec() const;
-	double getDischarge() const;
+	uint16_t getDischarge() const;
 
 	uint16_t correctValueTintern(uint16_t v);
 
@@ -42,7 +42,7 @@ protected:
 	uint16_t value_,valueSet_;
 	uint16_t startTime_;
 	bool tempcutoff_;
-	double discharge_;
+	uint32_t discharge_;
 };
 
 

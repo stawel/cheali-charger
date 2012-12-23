@@ -93,11 +93,17 @@ uint32_t Discharger::getOnTimeSec() const
 	return (timer.getMiliseconds() - startTime_ ) / 1000;
 }
 
-double Discharger::getDischarge() const
+uint16_t Discharger::getDischarge() const
 {
-	double retu = discharge_;
+	uint32_t retu = discharge_;
+#if INTERRUPT_PERIOD_MICROSECONDS == 512
+//	retu *= INTERRUPT_PERIOD_MICROSECONDS;
+	retu /= (1000000/64)*(3600/8);
+#else
+#warning "INTERRUPT_PERIOD_MICROSECONDS != 512"
 	retu *= INTERRUPT_PERIOD_MICROSECONDS;
 	retu /= 1000000;
 	retu /= 3600;
+#endif
 	return retu;
 }

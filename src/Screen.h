@@ -11,7 +11,7 @@ public:
 	int16_t Rth_I_;
 	AnalogInputs::ValueType Vth_;
 	AnalogInputs::ValueType valueTh_;
-	double charge_;
+	uint16_t charge_;
 	Program::ProgramType programType_;
 
 	Screen() {};
