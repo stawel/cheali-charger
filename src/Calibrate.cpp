@@ -442,7 +442,7 @@ bool Calibrate::calibrate(screenType p)
 	value_ = 0;
 	dispVal_ = 1;
 	//turn on output
-	//smps.powerOn();
+	smps.powerOn();
 	uint8_t key, last_key;
 	do {
 		printCalibrate(p);
