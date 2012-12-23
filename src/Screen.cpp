@@ -246,7 +246,7 @@ namespace {
 		v1 = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
 		v = analogInputs.getRealValue(AnalogInputs::VoutBalancer);
 
-		if(v >= v2) return 99;
+		if(v >= v2) return 100;
 		if(v <= v1) return 0;
 		v-=v1;
 		v2-=v1;
@@ -267,10 +267,17 @@ void Screen::displayStartInfo()
 
 	lcd.setCursor(0,1);
 	uint16_t procent = getChargeProcent();
-	if(procent < 10)
-		lcd.print(' ');
-	lcd.print(procent);
-	lcdPrint_P(PSTR("% "));
+	if(procent == 100) {
+		if(getBlink())
+			lcdPrintSpaces(4);
+		else
+			lcdPrint_P(PSTR("FUL "));
+	} else {
+		if(procent < 10)
+			lcd.print(' ');
+		lcd.print(procent);
+		lcdPrint_P(PSTR("% "));
+	}
 
 	int bindex = getBlinkIndex();
 	if(bindex & 1) analogInputs.printRealValue(AnalogInputs::Vout, 5);
