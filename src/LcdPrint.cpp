@@ -16,6 +16,64 @@ uint8_t lcdPrintSpaces(uint8_t n)
 	return n;
 }
 
+void printChar(char * &buf, uint8_t &maxSize, char chr)
+{
+	if(maxSize>0) {
+		*buf = chr; buf++; maxSize--;
+		if(maxSize>0)
+			*buf = 0;
+	}
+}
+
+
+void print_P(char * &buf, uint8_t &maxSize, const char *str)
+{
+	if(str) {
+		uint8_t s = strlen_P(str);
+		if(s>maxSize) s = maxSize;
+		strncpy_P(buf, str, s);
+		buf+=s;
+		maxSize-=s;
+		if(maxSize>0)
+			*buf = 0;
+	}
+}
+
+void print(char * &buf, uint8_t &maxSize, const char *str)
+{
+	if(str) {
+		uint8_t s = strlen(str);
+		if(s>maxSize) s = maxSize;
+		strncpy(buf, str, s);
+		buf+=s;
+		maxSize-=s;
+		if(maxSize>0)
+			*buf = 0;
+	}
+}
+
+
+void printInt (char * &buf, uint8_t &maxSize, uint16_t value)
+{
+	uint8_t dig = digits(value);
+	if(dig > maxSize) {
+		printChar(buf, maxSize,'?');
+	} else {
+		buf+=dig;
+		char * str = buf;
+		maxSize-=dig;
+		if(maxSize > 0)
+			*buf = 0;
+		while(dig) {
+			uint16_t m = value;
+			value /= 10;
+			char c = m - 10 * value;
+			*--str = c + '0';
+			dig--;
+		}
+	}
+}
+
 
 uint8_t lcdPrint(const char *str, uint8_t n)
 {

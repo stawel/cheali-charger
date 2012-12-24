@@ -5,6 +5,13 @@
 #include "Hardware.h"
 #include "AnalogInputs.h"
 
+uint8_t digits(uint16_t x);
+
+void print_P(char * &buf, uint8_t &maxSize, const char *str);
+void print(char * &buf, uint8_t &maxSize, const char *str);
+void printChar(char * &buf, uint8_t &maxSize, char chr);
+void printInt (char * &buf, uint8_t &maxSize, uint16_t value);
+
 uint8_t lcdPrint_P(const char *str);
 uint8_t lcdPrint_P(const char *str, uint8_t n);
 uint8_t lcdPrint_E(const char *str, uint8_t n);

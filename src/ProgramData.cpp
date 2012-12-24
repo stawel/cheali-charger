@@ -33,21 +33,40 @@ const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PR
 		{ProgramData::Lipo, 	ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 3}
 };
 
-const char b0[] PROGMEM = "Unknown";
-const char b1[] PROGMEM = "NiCd";
-const char b2[] PROGMEM = "NiMH";
-const char b3[] PROGMEM = "Pb";
-const char b4[] PROGMEM = "Life";
-const char b5[] PROGMEM = "Lilo";
-const char b6[] PROGMEM = "Lipo";
-const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {b0,b1,b2,b3,b4,b5,b6};
+const char batteryString_Unknown[]	PROGMEM = "Unknown";
+const char batteryString_NiCd[]	PROGMEM = "NiCd";
+const char batteryString_NiMH[]	PROGMEM = "NiMH";
+const char batteryString_Pb[]		PROGMEM = "Pb";
+const char batteryString_Life[]	PROGMEM = "Life";
+const char batteryString_Lilo[]	PROGMEM = "Lilo";
+const char batteryString_Lipo[]	PROGMEM = "Lipo";
+const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
+		batteryString_Unknown,
+		batteryString_NiCd,
+		batteryString_NiMH,
+		batteryString_Pb,
+		batteryString_Life,
+		batteryString_Lilo,
+		batteryString_Lipo
+};
+
+void ProgramData::printIndex(char *&buf, uint8_t &maxSize, uint8_t index)
+{
+	printInt (buf, maxSize, index);
+	printChar(buf, maxSize, ':');
+}
 
 void ProgramData::createName(int index)
 {
-	char buf[PROGRAM_DATA_MAX_NAME+1];
+	char *buf = name;
+	uint8_t maxSize = PROGRAM_DATA_MAX_NAME;
 	char * type = (char*)pgm_read_word(&batteryString[battery.type]);
-	snprintf_P(buf, PROGRAM_DATA_MAX_NAME+1, PSTR("%d:%S %d/%dC"), index, type, battery.Ic, battery.cells);
-	memcpy(name, buf, PROGRAM_DATA_MAX_NAME);
+	printIndex(buf,maxSize, index);
+	print_P	 (buf, maxSize, type);
+	printChar(buf, maxSize, ' ');
+	printInt (buf, maxSize, battery.Ic);
+	printChar(buf, maxSize, '/');
+	printInt (buf, maxSize, battery.cells);
 }
 
 void ProgramData::loadProgramData(int index)
@@ -73,7 +92,9 @@ void ProgramData::restoreDefault()
 {
 	pgm_read(currentProgramData.battery, &defaultProgram[Lipo]);
 	for(int i=0;i< MAX_PROGRAMS;i++) {
-		sprintf_P(currentProgramData.name, PSTR("%d:"),i+1);
+		uint8_t maxSize = PROGRAM_DATA_MAX_NAME;
+		char *buf = currentProgramData.name;
+		printIndex(buf, maxSize, i+1);
 		saveProgramData(i);
 	}
 }

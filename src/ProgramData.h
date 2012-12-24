@@ -56,6 +56,9 @@ struct ProgramData {
 	static void restoreDefault();
 
 	static ProgramData currentProgramData;
+
+private:
+	static void printIndex(char * &buf, uint8_t &maxSize, uint8_t index);
 };
 
 #endif /* PROGRAMDATA_H_ */
