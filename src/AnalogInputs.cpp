@@ -13,9 +13,9 @@ void AnalogInputs::restoreDefault()
 {
 	CalibrationPoint p;
 	FOR_ALL_PHY_INPUTS(name) {
-		p = pgm_read<CalibrationPoint>(&inputsP_[name].p0);
+		p = pgm::read<CalibrationPoint>(&inputsP_[name].p0);
 		setCalibrationPoint(name, 0, p);
-		p = pgm_read<CalibrationPoint>(&inputsP_[name].p1);
+		p = pgm::read<CalibrationPoint>(&inputsP_[name].p1);
 		setCalibrationPoint(name, 1, p);
 	}
 }
@@ -39,7 +39,7 @@ void AnalogInputs::measureValue(Name name)
 {
 	if(name >=  PHYSICAL_INPUTS)
 		return;
-	MeasureFunction f = pgm_read<MeasureFunction>(&(inputsP_[name].f));
+	MeasureFunction f = pgm::read<MeasureFunction>(&(inputsP_[name].f));
 	measured_[name] = f();
 }
 

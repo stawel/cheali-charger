@@ -1,8 +1,8 @@
 #include <Arduino.h>
-#include <avr/pgmspace.h>
 #include "Hardware.h"
 #include "Keyboard.h"
 #include "Buzzer.h"
+#include "memory.h"
 
 Keyboard::Keyboard(): last_key_(BUTTON_NONE), speed_(0), this_speed_(0)
 {}
@@ -19,7 +19,7 @@ static const uint16_t speedFactor[] PROGMEM = {1, 1, 1,  1,  1,   1,    4};//,  
 
 uint16_t Keyboard::getSpeedFactor() const
 {
-	return pgm_read_word(&speedFactor[speed_]);
+	return pgm::read(&speedFactor[speed_]);
 }
 
 uint8_t Keyboard::keyChanged(uint8_t key)
@@ -46,7 +46,7 @@ uint8_t Keyboard::keyChanged(uint8_t key)
 uint8_t Keyboard::getPressedWithSpeed()
 {
 	uint8_t key = BUTTON_NONE;
-	for(uint16_t i = 0; i < (BUTTON_DELAY_TIMES / pgm_read_word(&speedTable[speed_])) + 1; i++) {
+	for(uint16_t i = 0; i < (BUTTON_DELAY_TIMES / pgm::read(&speedTable[speed_])) + 1; i++) {
 		key = getPressed();
 		hardware::delay(BUTTON_DELAY);
 		if(key == last_key_)
@@ -57,7 +57,7 @@ uint8_t Keyboard::getPressedWithSpeed()
 
 	if(key != BUTTON_NONE) {
 		this_speed_++;
-		if(this_speed_ >= pgm_read_word(&thisSpeedT[speed_])) {
+		if(this_speed_ >= pgm::read(&thisSpeedT[speed_])) {
 			if(speed_ < sizeof(speedTable) / sizeof(speedTable[0]) - 1)
 				speed_ ++;
 			this_speed_ = 0;

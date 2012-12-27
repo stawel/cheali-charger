@@ -1,5 +1,3 @@
-#include <avr/pgmspace.h>
-
 #include "ProgramData.h"
 #include "memory.h"
 #include "LcdPrint.h"
@@ -60,7 +58,7 @@ void ProgramData::createName(int index)
 {
 	char *buf = name;
 	uint8_t maxSize = PROGRAM_DATA_MAX_NAME;
-	char * type = (char*)pgm_read_word(&batteryString[battery.type]);
+	const char * type = pgm::read(&batteryString[battery.type]);
 	printIndex(buf,maxSize, index);
 	print_P	 (buf, maxSize, type);
 	printChar(buf, maxSize, ' ');
@@ -81,7 +79,7 @@ void ProgramData::saveProgramData(int index)
 
 uint16_t ProgramData::getVoltagePerCell(VoltageType type) const
 {
-	return pgm_read<uint16_t>(&voltsPerCell[battery.type][type]);
+	return pgm::read(&voltsPerCell[battery.type][type]);
 }
 uint16_t ProgramData::getVoltage(VoltageType type) const
 {
@@ -90,7 +88,7 @@ uint16_t ProgramData::getVoltage(VoltageType type) const
 
 void ProgramData::restoreDefault()
 {
-	pgm_read(currentProgramData.battery, &defaultProgram[Lipo]);
+	pgm::read(currentProgramData.battery, &defaultProgram[Lipo]);
 	for(int i=0;i< MAX_PROGRAMS;i++) {
 		uint8_t maxSize = PROGRAM_DATA_MAX_NAME;
 		char *buf = currentProgramData.name;
@@ -101,11 +99,11 @@ void ProgramData::restoreDefault()
 
 void ProgramData::loadDefault()
 {
-	pgm_read(battery, &defaultProgram[battery.type]);
+	pgm::read(battery, &defaultProgram[battery.type]);
 }
 
 
-uint8_t ProgramData::printBatteryString(int n) const { return lcdPrint_P((char*)pgm_read_word(&batteryString[battery.type]), n); }
+uint8_t ProgramData::printBatteryString(int n) const { return lcdPrint_P(pgm::read(&batteryString[battery.type]), n); }
 
 uint8_t ProgramData::printVoltageString() const
 {

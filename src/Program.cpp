@@ -73,7 +73,7 @@ namespace {
 		uint8_t screen = 0;
 		do {
 			if(!PolarityCheck::runReversedPolarityInfo())
-				screens.display(pgm_read<Screen::ScreenType>(&chargeScreens[screen]));
+				screens.display(pgm::read<Screen::ScreenType>(&chargeScreens[screen]));
 
 			key = selectIndexWithKeyboard(screen, screen_limit);
 			if(run) {
@@ -256,7 +256,7 @@ namespace {
 		else if(ProgramData::currentProgramData.isNiXX())
 			address = &programNiXXMenuType[index];
 		else address = &programPbMenuType[index];
-		return pgm_read(address);
+		return pgm::read(address);
 	}
 }
 

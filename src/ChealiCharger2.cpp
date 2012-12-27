@@ -1,5 +1,3 @@
-#include <avr/eeprom.h>
-#include <avr/pgmspace.h>
 #include "ChealiCharger2.h"
 #include "MainMenu.h"
 #include "ProgramData.h"

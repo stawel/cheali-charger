@@ -22,7 +22,7 @@ public:
 
 	virtual uint8_t printItem(int i) {
 		if(i < progmemMenuItems_) {
-			return lcdPrint_P((char*)pgm_read_word(&progmemMenu_[i]), PROGRAM_DATA_MAX_NAME);
+			return lcdPrint_P(pgm::read(&progmemMenu_[i]), PROGRAM_DATA_MAX_NAME);
 		} else {
 			return lcdPrint_E(ProgramData::getName_E(i - progmemMenuItems_), PROGRAM_DATA_MAX_NAME);
 		}
