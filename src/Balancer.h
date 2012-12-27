@@ -41,7 +41,8 @@ public:
 	static AnalogInputs::ValueType getV(uint8_t cell);
 	AnalogInputs::ValueType getPresumedV(uint8_t cell) const;
 	AnalogInputs::ValueType getRealV(uint8_t cell) const { return getPresumedV(cell); }
-	bool isPowerOn() const;
+	bool isPowerOn() const { return on_; }
+
 	bool isMaxVout(AnalogInputs::ValueType maxV) const;
 	bool isMinVout(AnalogInputs::ValueType minV) const;
 	bool isStable() const;

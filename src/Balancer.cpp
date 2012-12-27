@@ -175,11 +175,6 @@ Strategy::statusType Balancer::doStrategy()
 	return RUNNING;
 }
 
-bool Balancer::isPowerOn() const
-{
-	return on_;
-}
-
 
 bool Balancer::isMaxVout(AnalogInputs::ValueType maxV) const
 {
