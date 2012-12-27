@@ -123,7 +123,7 @@ extern Balancer balancer;
 namespace hardware {
 	void init();
 	uint8_t getKeyPressed();
-	void delay(uint32_t t);
+	void delay(uint16_t t);
 	void setLCDBacklight(uint16_t val);
 	void setBuzzer(uint16_t val);
 	void setBatteryOutput(bool enable);

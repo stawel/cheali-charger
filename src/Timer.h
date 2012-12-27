@@ -13,7 +13,7 @@ public:
 	void doInterrupt();
 	uint32_t getInterrupts() const { return interrupts_; }
 	uint32_t getMiliseconds() const;
-	void delay(uint32_t ms) const;
+	void delay(uint16_t ms) const;
 };
 
 extern Timer timer;

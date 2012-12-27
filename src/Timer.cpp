@@ -38,7 +38,7 @@ uint32_t Timer::getMiliseconds() const
 	return retu;
 }
 
-void Timer::delay(uint32_t ms) const
+void Timer::delay(uint16_t ms) const
 {
 	uint32_t end;
 	end = getMiliseconds() + ms;
