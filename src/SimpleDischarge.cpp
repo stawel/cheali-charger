@@ -7,6 +7,7 @@ SimpleDischarge simpleDischarge;
 
 void SimpleDischarge::powerOff()
 {
+	balancer.powerOff();
 	discharger.powerOff();
 }
 

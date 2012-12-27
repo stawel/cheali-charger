@@ -62,6 +62,7 @@ Balancer::Balancer()
 	pinMode(BALANCER3_LOAD_PIN, OUTPUT);
 	pinMode(BALANCER4_LOAD_PIN, OUTPUT);
 	pinMode(BALANCER5_LOAD_PIN, OUTPUT);
+	powerOff();
 }
 
 void Balancer::setBalance(uint8_t port, bool v)

@@ -29,25 +29,26 @@ namespace {
 	void displayBalanceInfo(uint8_t from, uint8_t mesured, AnalogInputs::Type type)
 	{
 		lcd.setCursor(0,0);
-		if(balancer.isPowerOn()) {
-			char c;
-			if(!mesured) {
-				if(balancer.balance_ == 0) {
-					if(!balancer.isStable())
-						c = 'm';
-					else
-						c = ' ';
-				} else {
-					if(balancer.savedVon_)
-						c = 'B';
-					else
-						c = 'b';
-				}
-			} else {
-				c='M';
-			}
-			lcd.print(c);
 
+		char c;
+		if(!mesured) {
+			if(balancer.balance_ == 0) {
+				if(!balancer.isStable())
+					c = 'm';
+				else
+					c = ' ';
+			} else {
+				if(balancer.savedVon_)
+					c = 'B';
+				else
+					c = 'b';
+			}
+		} else {
+			c='M';
+		}
+		lcd.print(c);
+
+		if(balancer.balance_ != 0) {
 			uint8_t  j = 1;
 			for(uint8_t i = 0; i < 6; i++) {
 				if(i == balancer.minCell_) {
@@ -60,7 +61,7 @@ namespace {
 				j<<=1;
 			}
 			lcd.print(' ');
-		} else lcdPrintSpaces(8);
+		} else lcdPrintSpaces(7);
 
 		char nr = '0' + from;
 		lcd.print(nr++);
