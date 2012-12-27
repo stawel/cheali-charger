@@ -10,7 +10,7 @@ public:
 	//TODO: "error" should be changeable
 	const static AnalogInputs::ValueType error = 3;
 	const static AnalogInputs::ValueType Ibalance = 200; //200mA
-	const static uint32_t maxBalanceTime = 30000; //60s
+	const static uint16_t maxBalanceTime = 30; //30s
 	uint8_t cells_;
 	uint8_t minCell_;
 	uint16_t balance_;
@@ -31,7 +31,7 @@ public:
 	virtual statusType doStrategy();
 	void startBalacing();
 	void trySaveVon();
-	uint32_t balanceTime() const;
+	uint16_t getBalanceTime() const;
 
 	uint16_t calculateBalance();
 	void setBalance(uint16_t v);

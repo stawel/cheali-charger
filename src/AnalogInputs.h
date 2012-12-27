@@ -93,7 +93,7 @@ public:
 	ValueType reverseCalibrateValue(Name name, ValueType y) const;
 
 	void measureValue(Name name);
-	void doMeasurement(uint32_t count = PHYSICAL_INPUTS);
+	void doMeasurement(uint16_t count = PHYSICAL_INPUTS);
 	void doFullMeasurement();
 	void doVirtualCalculations();
 	void doCalculations();

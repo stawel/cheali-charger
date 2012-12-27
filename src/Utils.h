@@ -38,6 +38,9 @@ uint8_t selectIndexWithKeyboard(uint8_t &x, const uint8_t tab_size, bool exactly
 #define sign(x) ((x)>0?1:-1)
 
 bool testTinern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on);
+uint16_t pow10(uint8_t n);
 
+#define ADD_MAX(x,v,max) (x) = (x)<(max)-(v)? (x)+(v) : (max)
+#define SUB_MIN(x,v,min) (x) = (x)>(min)+(v)? (x)-(v) : (min)
 
 #endif /* UTILS_H_ */

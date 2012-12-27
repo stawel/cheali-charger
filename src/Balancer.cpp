@@ -151,9 +151,9 @@ void Balancer::trySaveVon() {
 	}
 }
 
-uint32_t Balancer::balanceTime() const
+uint16_t Balancer::getBalanceTime() const
 {
-	return timer.getMiliseconds() - startBalanceTime_;
+	return (timer.getMiliseconds() - startBalanceTime_) / 1000;
 }
 
 
@@ -167,7 +167,7 @@ Strategy::statusType Balancer::doStrategy()
 		} else {
 			trySaveVon();
 			uint16_t balance = calculateBalance();
-			if(balance_ != balance || balanceTime() > maxBalanceTime) {
+			if(balance_ != balance || getBalanceTime() > maxBalanceTime) {
 				setBalance(0);
 			}
 		}

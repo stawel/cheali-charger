@@ -2,6 +2,7 @@
 #include "memory.h"
 #include "LcdPrint.h"
 #include "ProgramDataMenu.h"
+#include "Utils.h"
 
 ProgramData allProgramData[MAX_PROGRAMS] EEMEM;
 ProgramData ProgramData::currentProgramData;
@@ -163,27 +164,23 @@ void change(val_t &v, int direction, uint16_t max)
 	v%=max;
 }
 
-void changeMax(uint16_t &v, int direction, uint16_t max)
+void changeMax(uint16_t &v, int direc, uint16_t max)
 {
-	int32_t nv = v;
 	uint16_t r;
-	bool inc = direction > 0;
 	int step = 1;
+	bool direction = direc > 0;
 
-	if((v > 100)   || (inc && v == 100))   step = 10;
-	if((v > 1000)  || (inc && v == 1000))  step = 100;
-	if((v > 10000) || (inc && v == 10000)) step = 1000;
+	uint8_t dv = digits(v);
+	if(dv>1) step = pow10(dv-2);
 
 	r = v%step;
 
 	if(r) {
-		if(direction > 0) nv -= r;
-		if(direction < 0) nv += step - r;
+		if(direction) step -=r;
+		else step = r;
 	}
-	nv += direction*step;
-	if(nv < 1) nv = 1;
-	else if(nv > max) nv = max;
-	v = nv;
+	if(direction) ADD_MAX(v, step, max);
+	else SUB_MIN(v, step ,1);
 }
 
 void ProgramData::changeBattery(int direction)

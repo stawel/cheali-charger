@@ -20,3 +20,12 @@ bool testTinern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType
 	}
 	return retu;
 }
+
+uint16_t pow10(uint8_t n)
+{
+	uint16_t retu = 1;
+	while(n--) {
+		retu*=10;
+	}
+	return retu;
+}

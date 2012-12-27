@@ -140,7 +140,7 @@ void AnalogInputs::reset()
 
 
 
-void AnalogInputs::doMeasurement(uint32_t count)
+void AnalogInputs::doMeasurement(uint16_t count)
 {
 	while (count) {
 		count--;
