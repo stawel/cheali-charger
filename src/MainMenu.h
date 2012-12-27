@@ -1,7 +1,6 @@
 #ifndef MAINMENU_H_
 #define MAINMENU_H_
 
-#include <avr/eeprom.h>
 #include "Hardware.h"
 #include "LcdPrint.h"
 #include "memory.h"

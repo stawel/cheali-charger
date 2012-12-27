@@ -69,12 +69,12 @@ void ProgramData::createName(int index)
 
 void ProgramData::loadProgramData(int index)
 {
-	eeprom_read<ProgramData>(currentProgramData, &allProgramData[index]);
+	eeprom::read<ProgramData>(currentProgramData, &allProgramData[index]);
 }
 
 void ProgramData::saveProgramData(int index)
 {
-	eeprom_write<ProgramData>(&allProgramData[index], currentProgramData);
+	eeprom::write<ProgramData>(&allProgramData[index], currentProgramData);
 }
 
 uint16_t ProgramData::getVoltagePerCell(VoltageType type) const

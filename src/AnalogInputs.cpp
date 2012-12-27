@@ -1,5 +1,3 @@
-#include <avr/pgmspace.h>
-#include <avr/eeprom.h>
 #include "Hardware.h"
 #include "AnalogInputs.h"
 #include "memory.h"
@@ -26,12 +24,12 @@ void AnalogInputs::getCalibrationPoint(CalibrationPoint &x, Name name, uint8_t i
 		x.x = x.y = 1;
 		return;
 	}
-	eeprom_read<CalibrationPoint>(x,&calibration[name].p[i]);
+	eeprom::read<CalibrationPoint>(x,&calibration[name].p[i]);
 }
 void AnalogInputs::setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &x)
 {
 	if(name >= PHYSICAL_INPUTS || i >= MAX_CALIBRATION_POINTS) return;
-	eeprom_write<CalibrationPoint>(&calibration[name].p[i], x);
+	eeprom::write<CalibrationPoint>(&calibration[name].p[i], x);
 }
 
 

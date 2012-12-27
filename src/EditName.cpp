@@ -3,9 +3,6 @@
 #include "Hardware.h"
 #include "Buzzer.h"
 
-#include <avr/eeprom.h>
-
-
 
 void EditName::mainScreen()
 {

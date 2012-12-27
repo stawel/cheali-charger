@@ -6,10 +6,10 @@ int EEPROMVersion EEMEM;
 
 int Version::getCurrentEEPROMVersion()
 {
-	return eeprom_read(&EEPROMVersion);
+	return eeprom::read(&EEPROMVersion);
 }
 
 void Version::restoreDefault()
 {
-	eeprom_write(&EEPROMVersion, CHEALI_CHARGER_EEPROM_VERSION);
+	eeprom::write(&EEPROMVersion, CHEALI_CHARGER_EEPROM_VERSION);
 }

@@ -1,7 +1,6 @@
-#include <avr/eeprom.h>
-
 #include "LcdPrint.h"
 #include "Hardware.h"
+#include "memory.h"
 
 
 uint8_t lcdPrintSpaces()
@@ -111,7 +110,7 @@ uint8_t lcdPrint_E(const char *str, uint8_t n)
 		char buffer[LCD_COLUMNS + 1];
 		if (n > LCD_COLUMNS) n = LCD_COLUMNS;
 		for (uint8_t i = 0; i < n; i++) {
-			buffer[i] = eeprom_read_byte((uint8_t*)str + i);
+			buffer[i] = eeprom::read((uint8_t*)str + i);
 			if(!buffer[i])
 				break;
 		}
