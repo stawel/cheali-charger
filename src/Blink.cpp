@@ -21,20 +21,12 @@ uint16_t Blink::getBlinkTime() const
 }
 
 
-int Blink::getBlinkIndex()
-{
-	if(getBlink()) {
-		return blinkIndex_;
-	}
-	return -1;
-}
-
-void Blink::startBlinkOn(int index)
+void Blink::startBlinkOn(int8_t index)
 {
 	blinkIndex_ = index;
 	blinkStartTime_ = timer.getMiliseconds() - getBlinkTime();
 }
-void Blink::startBlinkOff(int index)
+void Blink::startBlinkOff(int8_t index)
 {
 	blinkIndex_ = index;
 	blinkStartTime_ = timer.getMiliseconds();

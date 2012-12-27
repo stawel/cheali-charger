@@ -17,13 +17,20 @@ public:
 	Blink():blinkIndex_(-1){}
 
 	bool getBlink() const;
-	int getBlinkIndex();
-	void startBlinkOn(int index);
-	void startBlinkOff(int index);
+	int8_t getBlinkIndex() const	{
+		if(getBlink()) {
+			return blinkIndex_;
+		}
+		return -1;
+	}
+
+
+	void startBlinkOn(int8_t index);
+	void startBlinkOff(int8_t index);
 	void stopBlink();
 	uint16_t getBlinkTime() const;
 
-	int blinkIndex_;
+	int8_t blinkIndex_;
 	uint16_t blinkStartTime_;
 };
 

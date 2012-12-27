@@ -20,9 +20,9 @@ void ProgramDataMenu::createName()
 
 
 
-uint8_t ProgramDataMenu::printItem(int index)
+uint8_t ProgramDataMenu::printItem(uint8_t index)
 {
-	int blink = getBlinkIndex();
+	int8_t blink = getBlinkIndex();
 	switch(index) {
 	case 0:	lcdPrint_P(PSTR("Bat:  "));     BLINK_INDEX(p_.printBatteryString()); 	break;
 	case 1:	lcdPrint_P(PSTR("V:  ")); 		BLINK_INDEX(p_.printVoltageString());	break;
@@ -37,7 +37,7 @@ uint8_t ProgramDataMenu::printItem(int index)
 	return 0;
 }
 
-bool ProgramDataMenu::editItem(int index, uint8_t key)
+bool ProgramDataMenu::editItem(uint8_t index, uint8_t key)
 {
 	int dir = -1;
 	if(key == BUTTON_INC) dir = 1;
@@ -55,7 +55,7 @@ bool ProgramDataMenu::editItem(int index, uint8_t key)
 	return true;
 }
 
-void ProgramDataMenu::editIndex(int index)
+void ProgramDataMenu::editIndex(uint8_t index)
 {
 	startBlinkOff(index);
 	ProgramData undo(p_);

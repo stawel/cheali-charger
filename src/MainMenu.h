@@ -19,7 +19,7 @@ public:
 			progmemMenu_(progmemMenu), progmemMenuItems_(progmemMenuItems){}
 
 
-	virtual uint8_t printItem(int i) {
+	virtual uint8_t printItem(uint8_t i) {
 		if(i < progmemMenuItems_) {
 			return lcdPrint_P(pgm::read(&progmemMenu_[i]), PROGRAM_DATA_MAX_NAME);
 		} else {

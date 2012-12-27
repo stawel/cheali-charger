@@ -11,9 +11,9 @@ class ProgramDataMenu : public Menu, public Blink {
 public:
 	ProgramDataMenu(const ProgramData &p, int programIndex):
 			Menu(PROGRAM_DATA_MENU_SIZE), p_(p), programIndex_(programIndex){};
-	virtual uint8_t printItem(int i);
-	void editIndex(int i);
-	bool editItem(int i, uint8_t key);
+	virtual uint8_t printItem(uint8_t i);
+	void editIndex(uint8_t i);
+	bool editItem(uint8_t i, uint8_t key);
 
 	bool edit();
 	void editName();
