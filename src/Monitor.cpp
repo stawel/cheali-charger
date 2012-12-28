@@ -3,7 +3,7 @@
 
 #include "Monitor.h"
 #include "Utils.h"
-
+#include "Settings.h"
 
 Monitor monitor;
 
@@ -11,8 +11,7 @@ Monitor monitor;
 void Monitor::doInterrupt()
 {
 	bool on;
-	//TODO: make configurable
-	if(testTinern(on, ANALOG_CELCIUS(40), ANALOG_CELCIUS(50)))
+	if(testTinern(on, settings.fanTempOff_, settings.fanTempOn_))
 		hardware::setFan(on);
 }
 

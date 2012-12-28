@@ -2,6 +2,7 @@
 #include "Hardware.h"
 #include "TimerOne.h"
 #include "Utils.h"
+#include "Settings.h"
 
 Discharger::Discharger():
 startTime_(0), discharge_(0)
@@ -33,7 +34,7 @@ void Discharger::setValue(uint16_t value)
 
 uint16_t Discharger::correctValueTintern(uint16_t v)
 {
-	testTinern(tempcutoff_, DISCHARGER_TEMPERATURE_ENABLE, DISCHARGER_TEMPERATURE_DISABLE);
+	testTinern(tempcutoff_, settings.dischargeTempOff_, settings.dischargeTempOn_);
 
 	if(tempcutoff_)
 		v = 0;
