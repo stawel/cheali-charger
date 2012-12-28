@@ -14,20 +14,8 @@ public:
 
 	Settings p_;
 private:
-	void printBacklightString() const;
-	void printFanTempOnString() const;
-	void printFanTempOffString() const;
-	void printDischargeTempOnString() const;
-	void printDischargeTempOffString() const;
-	void printInputVoltageLowString() const;
-	void printViewTypeString() const;
 
 	void changeBacklight(int dir);
-	void changeFanTempOn(int dir);
-	void changeFanTempOff(int dir);
-	void changeDischargeTempOn(int dir);
-	void changeDischargeTempOff(int dir);
-	void changeInputVoltageLow(int dir);
 	void changeViewType(int dir);
 
 	static void printTemp(AnalogInputs::ValueType t);

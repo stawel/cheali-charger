@@ -35,16 +35,14 @@ uint8_t SettingsMenu::printItem(uint8_t index)
 	StaticMenu::printItem(index);
 	if(getBlinkIndex() != index) {
 		switch (index) {
-			case 0:	printBacklightString();			break;
-			case 1:	printFanTempOnString();			break;
-			case 2:	printFanTempOffString();		break;
-			case 3:	printDischargeTempOnString();	break;
-			case 4:	printDischargeTempOffString();	break;
-			case 5:	printInputVoltageLowString();	break;
-//			case 6:	printViewTypeString();			break;
+			case 0:	lcdPrintUnsigned(p_.backlight_, 3); 	break;
+			case 1:	printTemp(p_.fanTempOn_);				break;
+			case 2:	printTemp(p_.fanTempOff_);				break;
+			case 3:	printTemp(p_.dischargeTempOn_);			break;
+			case 4:printTemp(p_.dischargeTempOff_);			break;
+			case 5:	printVolt(p_.inputVoltageLow_);			break;
 		}
 	}
-	return 0;
 }
 
 void SettingsMenu::editItem(uint8_t index, uint8_t key)
@@ -54,13 +52,12 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
 //	dir *= keyboard.getSpeedFactor();
 
 	switch(index) {
-		case 0:	changeBacklight(dir);			break;
-		case 1:	changeFanTempOn(dir);			break;
-		case 2:	changeFanTempOff(dir);			break;
-		case 3:	changeDischargeTempOn(dir);		break;
-		case 4:	changeDischargeTempOff(dir);	break;
-		case 5:	changeInputVoltageLow(dir);		break;
-//		case 6:	changeViewType(dir);			break;
+		case 0:	changeBacklight(dir);					break;
+		case 1:	changeTemp(p_.fanTempOn_, dir);			break;
+		case 2:	changeTemp(p_.fanTempOff_,dir);			break;
+		case 3:	changeTemp(p_.dischargeTempOn_, dir);	break;
+		case 4:	changeTemp(p_.dischargeTempOff_, dir);	break;
+		case 5:	changeVolt(p_.inputVoltageLow_, dir);	break;
 	}
 }
 
@@ -84,13 +81,6 @@ bool SettingsMenu::run() {
 }
 
 
-void SettingsMenu::printBacklightString() const			{ lcdPrintUnsigned(p_.backlight_, 3); }
-void SettingsMenu::printFanTempOnString() const 			{ printTemp(p_.fanTempOn_); }
-void SettingsMenu::printFanTempOffString() const			{ printTemp(p_.fanTempOff_); }
-void SettingsMenu::printDischargeTempOnString() const 	{ printTemp(p_.dischargeTempOn_);}
-void SettingsMenu::printDischargeTempOffString() const	{ printTemp(p_.dischargeTempOff_);}
-void SettingsMenu::printInputVoltageLowString() const 	{ printVolt(p_.inputVoltageLow_); }
-void SettingsMenu::printViewTypeString() const 			{ lcdPrintUnsigned(p_.view_, 4);}
 void SettingsMenu::printTemp(AnalogInputs::ValueType t) {
 	lcdPrintUnsigned(t/100, 3);
 	lcd.print('C');
@@ -102,14 +92,10 @@ void SettingsMenu::printVolt(AnalogInputs::ValueType v) {
 
 
 void SettingsMenu::changeBacklight(int dir) {
-	changeMax(p_.backlight_, dir, 100);
+	changeMax(p_.backlight_, dir, 99);
 	p_.apply();
 }
-void SettingsMenu::changeFanTempOn(int dir)			{	changeTemp(p_.fanTempOn_, dir);}
-void SettingsMenu::changeFanTempOff(int dir)		{	changeTemp(p_.fanTempOff_,dir);}
-void SettingsMenu::changeDischargeTempOn(int dir)	{	changeTemp(p_.dischargeTempOn_, dir);}
-void SettingsMenu::changeDischargeTempOff(int dir)	{	changeTemp(p_.dischargeTempOff_, dir);}
-void SettingsMenu::changeInputVoltageLow(int dir)	{	changeVolt(p_.inputVoltageLow_, dir);}
+
 void SettingsMenu::changeViewType(int dir)
 {
 	uint16_t v = p_.view_;
@@ -132,6 +118,3 @@ void SettingsMenu::changeVolt(AnalogInputs::ValueType &v, int step) {
 	if(v < min) v = min;
 	if(v > max) v = max;
 }
-
-
-

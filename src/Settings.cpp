@@ -7,7 +7,7 @@ Settings settings;
 
 Settings savedSetting EEMEM;
 const Settings defaultSettings PROGMEM = {
-		50,
+		70,
 		ANALOG_CELCIUS(50), ANALOG_CELCIUS(40),
 		ANALOG_CELCIUS(60), ANALOG_CELCIUS(65),
 		ANALOG_VOLT(7),
