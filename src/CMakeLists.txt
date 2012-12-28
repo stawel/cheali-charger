@@ -73,6 +73,10 @@ set(SOURCE_FILES
         Calibrate.h
         Options.cpp
         Options.h
+        Settings.cpp
+        Settings.h
+        SettingsMenu.cpp
+        SettingsMenu.h
 
         PolarityCheck.cpp
         PolarityCheck.h

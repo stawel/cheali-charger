@@ -3,6 +3,9 @@
 
 #define LCD_LINES 2
 #define LCD_COLUMNS 16
+#define LCD_BACKLIGHT_MIN 100
+#define LCD_BACKLIGHT_MAX 3000
+
 
 #define MAX_CHARGE_V  	25300  //25.3V
 #define MAX_CHARGE_I  	10000  //10A
@@ -124,7 +127,7 @@ namespace hardware {
 	void init();
 	uint8_t getKeyPressed();
 	void delay(uint16_t t);
-	void setLCDBacklight(uint16_t val);
+	void setLCDBacklight(uint8_t val);
 	void setBuzzer(uint16_t val);
 	void setBatteryOutput(bool enable);
 	void setFan(bool enable);

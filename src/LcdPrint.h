@@ -4,8 +4,7 @@
 #include <stddef.h>
 #include "Hardware.h"
 #include "AnalogInputs.h"
-
-uint8_t digits(uint16_t x);
+#include "Utils.h"
 
 void print_P(char * &buf, uint8_t &maxSize, const char *str);
 void print(char * &buf, uint8_t &maxSize, const char *str);
@@ -22,6 +21,7 @@ uint8_t lcdPrintSpaces(uint8_t n);
 void lcdPrintUnsigned(uint16_t x, int8_t dig = 5);
 void lcdPrintSigned(int16_t x, int8_t dig = 5);
 
+void lcdPrintTemperature(AnalogInputs::ValueType c, int8_t dig);
 void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig);
 void lcdPrintCurrent(AnalogInputs::ValueType i, int8_t dig);
 void lcdPrintVoltage(AnalogInputs::ValueType v, int8_t dig);

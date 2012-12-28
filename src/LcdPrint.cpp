@@ -120,17 +120,6 @@ uint8_t lcdPrint_E(const char *str, uint8_t n)
 	return 0;
 }
 
-
-uint8_t digits(uint16_t x)
-{
-	uint8_t retu = 0;
-	if(x == 0)
-		x=1;
-	for(;x!=0; x/=10)
-		retu++;
-	return retu;
-}
-
 namespace {
 
 
@@ -242,6 +231,10 @@ void lcdPrintResistance(AnalogInputs::ValueType r, int8_t dig)
 	lcdPrintAnalog(r, AnalogInputs::Resistance, dig);
 }
 
+void lcdPrintTemperature(AnalogInputs::ValueType t, int8_t dig)
+{
+	lcdPrintAnalog(t, AnalogInputs::Temperature, dig);
+}
 
 
 void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t dig)

@@ -8,6 +8,7 @@
 #include "Utils.h"
 #include "Buzzer.h"
 #include "Version.h"
+#include "Settings.h"
 
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
@@ -42,7 +43,7 @@ void setup()
 	Serial.println("ChealiCharger hello!");
 #endif //USE_SERIAL
 
-	hardware::setLCDBacklight(backlight_val);
+	Settings::load();
 	lcdPrint_P(PSTR("  ChealiCharger"));
 	lcd.setCursor(0,1);
 	lcdPrint_P(PSTR("    ver: "  CHEALI_CHARGER_VERSION_STRING));

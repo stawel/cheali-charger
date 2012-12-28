@@ -159,34 +159,13 @@ bool ProgramData::edit(int index)
 template<class val_t>
 void change(val_t &v, int direction, uint16_t max)
 {
-	v+=direction;
-	if(v>max)
-		v = max-1;
-	v%=max;
-}
-
-void changeMax(uint16_t &v, int direc, uint16_t max)
-{
-	uint16_t r;
-	int step = 1;
-	bool direction = direc > 0;
-
-	uint8_t dv = digits(v);
-	if(dv>1) step = pow10(dv-2);
-
-	r = v%step;
-
-	if(r) {
-		if(direction) step -=r;
-		else step = r;
-	}
-	if(direction) ADD_MAX(v, step, max);
-	else SUB_MIN(v, step ,1);
 }
 
 void ProgramData::changeBattery(int direction)
 {
-	change(battery.type, direction, LAST_BATTERY_TYPE);
+	battery.type+=direction;
+	if(battery.type>=LAST_BATTERY_TYPE)
+		battery.type=Unknown;
 	loadDefault();
 }
 

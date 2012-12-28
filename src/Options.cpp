@@ -6,6 +6,7 @@
 #include "Calibrate.h"
 #include "Screen.h"
 #include "Version.h"
+#include "Settings.h"
 
 const char string_o1[] PROGMEM = "settings";
 const char string_o2[] PROGMEM = "calibrate";
@@ -30,6 +31,8 @@ void Options::resetDefault()
 	lcd.setCursor(7,1);
 	lcdPrint_P(PSTR("50%"));
 	ProgramData::restoreDefault();
+	Settings::restoreDefault();
+
 
 	lcd.setCursor(6,1);
 	lcdPrint_P(PSTR("Done"));
@@ -46,7 +49,7 @@ void Options::run()
 	do {
 		i = optionsMenu.runSimple();
 		switch(i) {
-		case 0: Screen::runNotImplemented(); break;
+		case 0: settings.edit();; break;
 		case 1: calibrate.run(); break;
 		case 2: resetDefault(); break;
 		}

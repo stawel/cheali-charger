@@ -15,7 +15,7 @@ public:
 	Program::ProgramType programType_;
 
 	Screen() {};
-	enum VariableType { Voltage, Current, Charge, Temperature, Unknown };
+	enum ScreenViewType { Simple, Expert, Debug};
 	enum ScreenType { Screen1, ScreenCIVlimits, ScreenTime, ScreenTemperature,
 		ScreenBalancer0_2, ScreenBalancer3_5,
 		ScreenBalancer0_2M, ScreenBalancer3_5M,

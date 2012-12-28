@@ -74,9 +74,16 @@ void hardware::init()
 	timer.init();
 }
 
-void hardware::setLCDBacklight(uint16_t val)
+void hardware::setLCDBacklight(uint8_t val)
 {
-	Timer1.pwm(BACKLIGHT_PIN, val);
+	uint32_t v1,v2;
+	v1  = LCD_BACKLIGHT_MAX;
+	v1 *= val;
+	v2  = LCD_BACKLIGHT_MIN;
+	v2 *= 100 - val;
+	v1+=v2;
+	v1/=100;
+	Timer1.pwm(BACKLIGHT_PIN, v1);
 }
 
 void hardware::setBatteryOutput(bool enable)
