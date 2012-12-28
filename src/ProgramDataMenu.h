@@ -1,16 +1,15 @@
 #ifndef PROGRAMDATAMENU_H_
 #define PROGRAMDATAMENU_H_
 
-#include "Menu.h"
+#include "StaticMenu.h"
 #include "ProgramData.h"
 #include "Blink.h"
 
 #define PROGRAM_DATA_MENU_SIZE 8
 
-class ProgramDataMenu : public Menu, public Blink {
+class ProgramDataMenu : public StaticMenu, public Blink {
 public:
-	ProgramDataMenu(const ProgramData &p, int programIndex):
-			Menu(PROGRAM_DATA_MENU_SIZE), p_(p), programIndex_(programIndex){};
+	ProgramDataMenu(const ProgramData &p, int programIndex);
 	virtual uint8_t printItem(uint8_t i);
 	void editIndex(uint8_t i);
 	bool editItem(uint8_t i, uint8_t key);

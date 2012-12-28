@@ -1,6 +1,6 @@
 #include "Options.h"
 #include "LcdPrint.h"
-#include "MainMenu.h"
+#include "StaticMenu.h"
 #include "SMPS.h"
 #include "Calibrate.h"
 #include "Utils.h"
@@ -76,9 +76,9 @@ void setCalibrationPoint(AnalogInputs::Name name, uint8_t i, const AnalogInputs:
 
 void Calibrate::calibrateI(screenType screen, AnalogInputs::Name name1, AnalogInputs::Name name2)
 {
-	MainMenu menu(calibrateIMenu, sizeOfArray(calibrateIMenu));
+	StaticMenu menu(calibrateIMenu, sizeOfArray(calibrateIMenu));
 	AnalogInputs::CalibrationPoint p;
-	int i = 0;
+	int8_t i = 0;
 	do {
 		i = menu.runSimple();
 		if(i < 0) return;
@@ -129,8 +129,8 @@ void Calibrate::setBalancer(AnalogInputs::Name firstName)
 
 void Calibrate::run()
 {
-	MainMenu menu(calibrateMenu, sizeOfArray(calibrateMenu));
-	int i;
+	StaticMenu menu(calibrateMenu, sizeOfArray(calibrateMenu));
+	int8_t i;
 	do {
 		i = menu.runSimple();
 		if(i<0) break;
@@ -149,8 +149,8 @@ void Calibrate::run()
 
 void Calibrate::runInfo()
 {
-	MainMenu menu(calibrateInfoMenu, sizeOfArray(calibrateInfoMenu));
-	int i;
+	StaticMenu menu(calibrateInfoMenu, sizeOfArray(calibrateInfoMenu));
+	int8_t i;
 	do {
 		i = menu.runSimple();
 		if(i >= 0 && i<=7)

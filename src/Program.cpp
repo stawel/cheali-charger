@@ -12,7 +12,7 @@
 #include "memory.h"
 #include "StartInfoStrategy.h"
 #include "Buzzer.h"
-#include "MainMenu.h"
+#include "StaticMenu.h"
 
 
 namespace {
@@ -238,11 +238,11 @@ namespace {
 	};
 
 
-	MainMenu selectLiXXMenu(programLiXXMenu, sizeOfArray(programLiXXMenu));
-	MainMenu selectNiXXMenu(programNiXXMenu, sizeOfArray(programNiXXMenu));
-	MainMenu selectPbMenu(programPbMenu, sizeOfArray(programPbMenu));
+	StaticMenu selectLiXXMenu(programLiXXMenu, sizeOfArray(programLiXXMenu));
+	StaticMenu selectNiXXMenu(programNiXXMenu, sizeOfArray(programNiXXMenu));
+	StaticMenu selectPbMenu(programPbMenu, sizeOfArray(programPbMenu));
 
-	MainMenu * getSelectProgramMenu() {
+	StaticMenu * getSelectProgramMenu() {
 		if(ProgramData::currentProgramData.isLiXX())
 			return &selectLiXXMenu;
 		else if(ProgramData::currentProgramData.isNiXX())
@@ -265,7 +265,7 @@ void Program::selectProgram(int index)
 	uint8_t key;
 	bool release = true;
 	ProgramData::loadProgramData(index);
-	MainMenu * selectPrograms = getSelectProgramMenu();
+	StaticMenu * selectPrograms = getSelectProgramMenu();
 	selectPrograms->render();
 
 	do {

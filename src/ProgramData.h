@@ -27,7 +27,8 @@ struct ProgramData {
 	bool edit(int index);
 	void createName(int index);
 
-	uint8_t printBatteryString(int n = LCD_COLUMNS) const;
+	uint8_t printBatteryString(int n) const;
+	uint8_t printBatteryString() const;
 
 	uint8_t printVoltageString() const;
 	uint8_t printIcString() const;

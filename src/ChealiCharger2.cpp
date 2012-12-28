@@ -13,14 +13,14 @@ const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
 {string_options };
 
-MainMenu mainMenu(progmemMainMenu, 1, true);
+MainMenu mainMenu(progmemMainMenu, 1);
 
 
 int backlight_val = 1200;
 
 void loop()
 {
-	int index = mainMenu.runSimple();
+	int8_t index = mainMenu.runSimple();
 	if(index >= 0)  {
 		switch(index) {
 		case 0:

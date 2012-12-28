@@ -105,6 +105,7 @@ void ProgramData::loadDefault()
 
 
 uint8_t ProgramData::printBatteryString(int n) const { return lcdPrint_P(pgm::read(&batteryString[battery.type]), n); }
+uint8_t ProgramData::printBatteryString() const { return printBatteryString(LCD_COLUMNS); }
 
 uint8_t ProgramData::printVoltageString() const
 {

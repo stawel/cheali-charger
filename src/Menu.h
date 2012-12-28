@@ -6,7 +6,7 @@
 
 class Menu : public PolarityCheck {
 public:
-	static const int MENU_EXIT = -1;
+	static const int8_t MENU_EXIT = -1;
 
 	uint8_t pos_;
 	uint8_t begin_;
@@ -18,7 +18,7 @@ public:
 	void render() { render_ = true; }
 
 	uint8_t run();
-	int runSimple();
+	int8_t runSimple();
 
 	void incIndex();
 	void decIndex();

@@ -33,7 +33,7 @@ uint8_t Menu::run() {
 
 	return button;
 }
-int Menu::runSimple() {
+int8_t Menu::runSimple() {
 	uint8_t key;
 	render();
 	do {

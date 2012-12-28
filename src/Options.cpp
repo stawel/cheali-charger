@@ -1,6 +1,6 @@
 #include "Options.h"
 #include "LcdPrint.h"
-#include "MainMenu.h"
+#include "StaticMenu.h"
 #include "SMPS.h"
 #include "Utils.h"
 #include "Calibrate.h"
@@ -11,7 +11,7 @@ const char string_o1[] PROGMEM = "settings";
 const char string_o2[] PROGMEM = "calibrate";
 const char string_o3[] PROGMEM = "reset default";
 
-const char * const optionsMainMenu[] PROGMEM =
+const char * const optionsStaticMenu[] PROGMEM =
 { string_o1,
   string_o2,
   string_o3,
@@ -39,9 +39,9 @@ void Options::resetDefault()
 
 void Options::run()
 {
-	MainMenu optionsMenu(optionsMainMenu, sizeOfArray(optionsMainMenu));
+	StaticMenu optionsMenu(optionsStaticMenu, sizeOfArray(optionsStaticMenu));
 	Calibrate calibrate;
-	int i;
+	int8_t i;
 
 	do {
 		i = optionsMenu.runSimple();
