@@ -22,6 +22,8 @@ set(SOURCE_FILES
         LiquidCrystal.h
         MainMenu.h
         StaticMenu.h
+        EditMenu.h
+        EditMenu.cpp
         Menu.h
         Menu.cpp
         memory.h

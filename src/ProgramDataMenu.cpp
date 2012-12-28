@@ -30,7 +30,7 @@ const char * const ProgramDataStaticMenu[] PROGMEM =
 
 
 ProgramDataMenu::ProgramDataMenu(const ProgramData &p, int programIndex):
-		StaticMenu(ProgramDataStaticMenu, sizeOfArray(ProgramDataStaticMenu)), p_(p), programIndex_(programIndex){};
+		EditMenu(ProgramDataStaticMenu, sizeOfArray(ProgramDataStaticMenu)), p_(p), programIndex_(programIndex){};
 
 
 void ProgramDataMenu::editName()
@@ -62,7 +62,7 @@ uint8_t ProgramDataMenu::printItem(uint8_t index)
 	return 0;
 }
 
-bool ProgramDataMenu::editItem(uint8_t index, uint8_t key)
+void ProgramDataMenu::editItem(uint8_t index, uint8_t key)
 {
 	int dir = -1;
 	if(key == BUTTON_INC) dir = 1;
@@ -74,35 +74,10 @@ bool ProgramDataMenu::editItem(uint8_t index, uint8_t key)
 	case 2: p_.changeCharge(dir); 	break;
 	case 3: p_.changeIc(dir); 		break;
 	case 4: p_.changeId(dir); 		break;
-	default:
-		return false;
 	}
-	return true;
 }
 
-void ProgramDataMenu::editIndex(uint8_t index)
-{
-	startBlinkOff(index);
-	ProgramData undo(p_);
-	uint8_t key;
-	do {
-		key =  keyboard.getPressedWithSpeed();
-		if(key == BUTTON_DEC || key == BUTTON_INC) {
-			editItem(index, key);
-			startBlinkOn(index);
-			display();
-		}
-	display();
-	} while(key != BUTTON_STOP && key != BUTTON_START);
-
-	stopBlink();
-	if(key == BUTTON_STOP)
-		p_ = undo;
-	p_.check();
-	display();
-}
-
-bool ProgramDataMenu::edit() {
+bool ProgramDataMenu::run() {
 	int8_t index;
 	do {
 		index = runSimple();
@@ -113,7 +88,11 @@ bool ProgramDataMenu::edit() {
 		case 6: editName(); break;
 		case PROGRAM_DATA_MENU_SIZE - 1: return true; //save
 		default:
-			editIndex(index);
+			ProgramData undo(p_);
+			if(!runEdit(index))
+				p_ = undo;
+			p_.check();
+			break;
 		}
 	} while(true);
 }

@@ -149,7 +149,7 @@ char * ProgramData::getName_E(int index)
 bool ProgramData::edit(int index)
 {
 	ProgramDataMenu menu(*this, index);
-	if(menu.edit()) {
+	if(menu.run()) {
 		*this = menu.p_;
 		return true;
 	}
