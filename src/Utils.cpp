@@ -1,9 +1,30 @@
 
 #include "Utils.h"
 
-uint8_t selectIndexWithKeyboard(uint8_t &x, const uint8_t tab_size,  bool exactly)
+
+template<class digit_type>
+uint8_t setNumberWithKeyboard(digit_type &x, const digit_type x_min,
+		const digit_type x_max, const digit_type x_step = 1, bool exactly = true)
 {
-	return setNumberWithKeyboard<uint8_t>(x, 0, tab_size - 1, 1, exactly);
+	uint8_t key =  keyboard.getPressedWithSpeed();
+	if(exactly) {
+		if(key == BUTTON_INC && x < x_max) x+=x_step;
+		if(key == BUTTON_DEC && x > x_min) x-=x_step;
+	} else {
+		if(key & BUTTON_INC && x < x_max) x+=x_step;
+		if(key & BUTTON_DEC && x > x_min) x-=x_step;
+	}
+	if(x > x_max) {
+		x = x_max;
+	} else if( x < x_min) {
+		x = x_min;
+	}
+	return key;
+}
+
+uint8_t selectIndexWithKeyboard(uint8_t &x, const uint8_t tab_size)
+{
+	return setNumberWithKeyboard<uint8_t>(x, 0, tab_size - 1, 1);
 }
 
 
@@ -28,6 +49,12 @@ uint16_t pow10(uint8_t n)
 		retu*=10;
 	}
 	return retu;
+}
+
+int8_t sign(int16_t x)
+{
+	if(x>=0) return 1;
+	return -1;
 }
 
 uint8_t digits(uint16_t x)
