@@ -65,7 +65,7 @@ void SMPS::powerOff(STATE reason)
 void SMPS::doInterrupt()
 {
        if(isPowerOn()) {
-               charge_+=getIout();
+               charge_+=getIcharge();
        }
 }
 
@@ -94,7 +94,7 @@ AnalogInputs::ValueType SMPS::getVout() const
 	return analogInputs.getRealValue(VName);
 }
 
-AnalogInputs::ValueType SMPS::getIout() const
+AnalogInputs::ValueType SMPS::getIcharge() const
 {
 	return analogInputs.getRealValue(IName);
 }

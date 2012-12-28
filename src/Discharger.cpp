@@ -19,7 +19,7 @@ AnalogInputs::ValueType Discharger::getVout()
 {
 	return analogInputs.getRealValue(VName);
 }
-AnalogInputs::ValueType Discharger::getIout()
+AnalogInputs::ValueType Discharger::getIdischarge()
 {
 	return analogInputs.getRealValue(IName);
 }
@@ -84,7 +84,7 @@ void Discharger::powerOff(STATE reason)
 void Discharger::doInterrupt()
 {
     if(isPowerOn()) {
-            discharge_+=getIout();
+            discharge_+=getIdischarge();
             finalizeValueTintern(false);
     }
 }

@@ -20,7 +20,7 @@ public:
 	SMPS();
 
 	AnalogInputs::ValueType getVout() const;
-	AnalogInputs::ValueType getIout() const;
+	AnalogInputs::ValueType getIcharge() const;
 
 	STATE getState() const { return state_; }
 	bool isPowerOn() const { return getState() == CHARGING; }

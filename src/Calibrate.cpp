@@ -10,7 +10,7 @@
 const char string_c0[] PROGMEM = "B0-2";
 const char string_c1[] PROGMEM = "B3-5";
 const char string_c2[] PROGMEM = "B0-5 to Vout";
-const char string_c3[] PROGMEM = "Iout";
+const char string_c3[] PROGMEM = "Icharge";
 const char string_c4[] PROGMEM = "Idischarge";
 const char string_c5[] PROGMEM = "Vin";
 const char string_c6[] PROGMEM = "Tintern";
@@ -18,7 +18,7 @@ const char string_c7[] PROGMEM = "Textern";
 const char string_c8[] PROGMEM = "Info";
 
 
-const char string_ci0[] PROGMEM = "Iout";
+const char string_ci0[] PROGMEM = "Icharge";
 const char string_ci1[] PROGMEM = "Vout";
 const char string_ci2[] PROGMEM = "B0-2";
 const char string_ci3[] PROGMEM = "B3-5";
@@ -138,7 +138,7 @@ void Calibrate::run()
 		case 0: calibrateBlink(SCREEN_B0_2_BLINK, 3); break;
 		case 1: calibrateBlink(SCREEN_B3_5_BLINK, 3); break;
 		case 2: copyVbalVout(); break;
-		case 3: calibrateI(SCREEN_IOUT, AnalogInputs::Ismps, AnalogInputs::IsmpsValue); break;
+		case 3: calibrateI(SCREEN_ICHARGE, AnalogInputs::Ismps, AnalogInputs::IsmpsValue); break;
 		case 4: calibrateI(SCREEN_IDISCHARGE, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue); break;
 		case 8: runInfo(); break;
 		default:
@@ -210,17 +210,17 @@ void Calibrate::print_m_3(const char *str, AnalogInputs::Name name, int dig)
 }
 
 
-void Calibrate::printCalibrateI()
+void Calibrate::printCalibrateIcharge()
 {
 	print_v();
 	print_m_2(PSTR(" Is:"), AnalogInputs::Ismps);
 	print_m_3(PSTR("Iv:"),   AnalogInputs::IsmpsValue);
 }
 
-void Calibrate::printCalibrateDis()
+void Calibrate::printCalibrateIdischarge()
 {
 	print_v();
-	print_m_2(PSTR(" Io:"), AnalogInputs::Idischarge);
+	print_m_2(PSTR(" Id:"), AnalogInputs::Idischarge);
 	print_m_3(PSTR("Iv:"),   AnalogInputs::IdischargeValue);
 }
 
@@ -344,7 +344,7 @@ void Calibrate::printCalibrateVin()
 
 void Calibrate::printCalibrate(screenType p) {
 	switch(p) {
-	case SCREEN_IOUT: 		printCalibrateI(); 		break;
+	case SCREEN_ICHARGE: 		printCalibrateIcharge(); 	break;
 	case SCREEN_VOUT:		printCalibrateVout(); 	break;
 	case SCREEN_B0_2:		printCalibrateB0_2(); 	break;
 	case SCREEN_B3_5: 		printCalibrateB3_5(); 	break;
@@ -484,7 +484,7 @@ bool Calibrate::calibrateDischarge()
 	discharger.powerOn();
 	uint8_t key, last_key;
 	do {
-		printCalibrateDis();
+		printCalibrateIdischarge();
 		last_key = key;
 		key = keyboard.getPressedWithSpeed();
 		if(key == BUTTON_INC && value_ < 760*2) {

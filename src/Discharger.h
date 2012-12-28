@@ -15,7 +15,7 @@ public:
 	Discharger();
 
 	static AnalogInputs::ValueType getVout();
-	static AnalogInputs::ValueType getIout();
+	static AnalogInputs::ValueType getIdischarge();
 
 	STATE getState() const { return state_; }
 	bool isPowerOn() const { return getState() == DISCHARGING; }

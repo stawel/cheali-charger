@@ -18,7 +18,7 @@ void SimpleCharge::powerOff()
 
 Strategy::statusType SimpleCharge::doStrategy()
 {
-	if(smps.getIout() 	>= ProgramData::currentProgramData.battery.Ic) {
+	if(smps.getIcharge() 	>= ProgramData::currentProgramData.battery.Ic) {
 		smps.setError(PSTR("Error: Maximum"),PSTR("current exceeded"));
 		return ERROR;
 	}
