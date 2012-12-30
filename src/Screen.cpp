@@ -83,6 +83,7 @@ namespace {
 
 void Screen::display(ScreenType screen)
 {
+	incBlinkTime();
 	switch(screen) {
 	case Screen1: 				return displayScreen1();
 	case ScreenCIVlimits:		return displayScreenCIVlimits();
@@ -284,7 +285,7 @@ void Screen::displayStartInfo()
 	lcd.setCursor(0,1);
 	uint16_t procent = getChargeProcent();
 	if(procent == 100) {
-		if(getBlink())
+		if(getBlinkOff())
 			lcdPrintSpaces(4);
 		else
 			lcdPrint_P(PSTR("FUL "));

@@ -1,40 +1,26 @@
 #include "Timer.h"
 #include "Blink.h"
 
-bool Blink::getBlink() const
+bool Blink::getBlinkOff() const
 {
 	if(blinkIndex_ >= 0) {
-		uint16_t mili = timer.getMiliseconds() - blinkStartTime_;
+		uint8_t mili = blinkTime_;
 		mili/=getBlinkTime();
 		if((mili+1)%2) return true;
 	}
 	return false;
 }
 
-uint16_t Blink::getBlinkTime() const
+bool Blink::getBlinkChanged() const
 {
-	if(blinkIndex_ & BLINK_SPEED2) {
-		return BLINK_SPEED_MS/4;
-	} else {
-		return BLINK_SPEED_MS;
+	if(blinkIndex_ >= 0) {
+		uint8_t mili1 = blinkTime_-1;
+		mili1/=getBlinkTime();
+		uint8_t mili2 = blinkTime_;
+		mili2/=getBlinkTime();
+		return mili1 != mili2;
 	}
-}
-
-
-void Blink::startBlinkOn(int8_t index)
-{
-	blinkIndex_ = index;
-	blinkStartTime_ = timer.getMiliseconds() - getBlinkTime();
-}
-void Blink::startBlinkOff(int8_t index)
-{
-	blinkIndex_ = index;
-	blinkStartTime_ = timer.getMiliseconds();
-}
-
-void Blink::stopBlink()
-{
-	blinkIndex_ = -1;
+	return false;
 }
 
 
