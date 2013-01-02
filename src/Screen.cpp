@@ -108,8 +108,8 @@ void Screen::displayScreen1()
 {
 	char c = 'N';
 	uint16_t value = 0;
-	AnalogInputs::Name I = smps.IName;
 	AnalogInputs::Name V = smps.VName;
+	AnalogInputs::ValueType I = 0;
 
 	lcd.setCursor(0,0);
 
@@ -118,12 +118,13 @@ void Screen::displayScreen1()
 		c = 'C';
 		charge_ = smps.getCharge();
 		value = smps.getValue();
+		I = analogInputs.getRealValue(smps.IName);
 	}
 	if(discharger.isPowerOn()) {
 		c = 'D';
 		charge_ = discharger.getDischarge();
 		value = discharger.getValue();
-		I = discharger.IName;
+		I = analogInputs.getRealValue(discharger.IName);
 		V = discharger.VName;
 
 		if(smps.isPowerOn()) c = 'E';
@@ -131,7 +132,7 @@ void Screen::displayScreen1()
 
 	lcdPrintCharge(charge_, 8);
 	lcd.print(' ');
-	analogInputs.printRealValue(I,  7);
+	lcdPrintCurrent(I,  7);
 	lcdPrintSpaces();
 
 	lcd.setCursor(0,1);

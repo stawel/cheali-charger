@@ -81,11 +81,11 @@ void Discharger::powerOff(STATE reason)
 	state_ = reason;
 }
 
-void Discharger::doInterrupt()
+void Discharger::doSlowInterrupt()
 {
     if(isPowerOn()) {
-            discharge_+=getIdischarge();
-            finalizeValueTintern(false);
+		finalizeValueTintern(false);
+		discharge_+=getIdischarge();
     }
 }
 
@@ -99,12 +99,12 @@ uint16_t Discharger::getDischarge() const
 	uint32_t retu = discharge_;
 #if INTERRUPT_PERIOD_MICROSECONDS == 512
 //	retu *= INTERRUPT_PERIOD_MICROSECONDS;
-	retu /= (1000000/64)*(3600/8);
+	retu /= (1000000/64);//*(3600/8) == TIMER_SLOW_INTERRUPT_INTERVAL;
 #else
 #warning "INTERRUPT_PERIOD_MICROSECONDS != 512"
 	retu *= INTERRUPT_PERIOD_MICROSECONDS;
 	retu /= 1000000;
-	retu /= 3600;
+	retu /= 3600/TIMER_SLOW_INTERRUPT_INTERVAL;
 #endif
 	return retu;
 }

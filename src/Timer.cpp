@@ -5,11 +5,15 @@
 #include "Buzzer.h"
 
 static void callback() {
+	static uint8_t slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
 	timer.doInterrupt();
-	smps.doInterrupt();
-	discharger.doInterrupt();
 	monitor.doInterrupt();
 	buzzer.doInterrupt();
+	if(--slowInterval == 0){
+		slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
+		smps.doSlowInterrupt();
+		discharger.doSlowInterrupt();
+	}
 }
 
 

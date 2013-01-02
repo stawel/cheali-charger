@@ -3,7 +3,8 @@
 
 #include <inttypes.h>
 
-#define INTERRUPT_PERIOD_MICROSECONDS 512
+#define INTERRUPT_PERIOD_MICROSECONDS 	512
+#define TIMER_SLOW_INTERRUPT_INTERVAL	225
 
 class Timer {
 	volatile uint32_t interrupts_;

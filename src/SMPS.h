@@ -32,7 +32,7 @@ public:
 	void powerOn();
 	void powerOff(STATE reason = CHARGING_COMPLETE);
 
-	void doInterrupt();
+	void doSlowInterrupt();
 
 	void setError(const char * error1, const char * error2);
 	const char * getError1() { return error1_; }

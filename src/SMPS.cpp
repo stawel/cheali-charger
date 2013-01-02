@@ -62,11 +62,11 @@ void SMPS::powerOff(STATE reason)
 	setError(PSTR("charging"), PSTR("complete !!"));
 }
 
-void SMPS::doInterrupt()
+void SMPS::doSlowInterrupt()
 {
-       if(isPowerOn()) {
-               charge_+=getIcharge();
-       }
+   if(isPowerOn()) {
+		   charge_ += getIcharge();
+   }
 }
 
 uint32_t SMPS::getOnTimeSec() const
@@ -79,12 +79,12 @@ uint16_t SMPS::getCharge() const
 	uint32_t retu = charge_;
 #if INTERRUPT_PERIOD_MICROSECONDS == 512
 //	retu *= INTERRUPT_PERIOD_MICROSECONDS;
-	retu /= (1000000/64)*(3600/8);
+	retu /= (1000000/32);//*(3600/16) == TIMER_SLOW_INTERRUPT_INTERVAL
 #else
 #warning "INTERRUPT_PERIOD_MICROSECONDS != 512"
 	retu *= INTERRUPT_PERIOD_MICROSECONDS;
 	retu /= 1000000;
-	retu /= 3600;
+	retu /= 3600/TIMER_SLOW_INTERRUPT_INTERVAL;
 #endif
 	return retu;
 }

@@ -27,7 +27,7 @@ public:
 	void powerOn();
 	void powerOff(STATE reason = DISCHARGING_COMPLETE);
 
-	void doInterrupt();
+	void doSlowInterrupt();
 
 	uint32_t getOnTimeSec() const;
 	uint16_t getDischarge() const;
