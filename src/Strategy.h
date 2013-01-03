@@ -5,11 +5,11 @@
 
 class Strategy {
 public:
-	enum statusType {ERROR, COMPLETE, COMPLETE_AND_EXIT, RUNNING };
-	Strategy() {}
-	virtual void powerOn(){};
-	virtual statusType doStrategy(){ return RUNNING;};
-	virtual void powerOff(){};
+    enum statusType {ERROR, COMPLETE, COMPLETE_AND_EXIT, RUNNING };
+    Strategy() {}
+    virtual void powerOn(){};
+    virtual statusType doStrategy(){ return RUNNING;};
+    virtual void powerOff(){};
 };
 
 

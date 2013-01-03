@@ -7,21 +7,21 @@
 
 struct Settings {
 
-	static const AnalogInputs::ValueType minTempDifference = ANALOG_CELCIUS(1);
+    static const AnalogInputs::ValueType minTempDifference = ANALOG_CELCIUS(1);
 
-	uint16_t backlight_;
-	AnalogInputs::ValueType fanTempOn_,fanTempOff_;
-	AnalogInputs::ValueType dischargeTempOn_,dischargeTempOff_;
-	AnalogInputs::ValueType inputVoltageLow_;
-	Screen::ScreenViewType view_;
+    uint16_t backlight_;
+    AnalogInputs::ValueType fanTempOn_,fanTempOff_;
+    AnalogInputs::ValueType dischargeTempOn_,dischargeTempOff_;
+    AnalogInputs::ValueType inputVoltageLow_;
+    Screen::ScreenViewType view_;
 
-	void edit();
-	void check();
-	void apply();
+    void edit();
+    void check();
+    void apply();
 
-	static void load();
-	static void save();
-	static void restoreDefault();
+    static void load();
+    static void save();
+    static void restoreDefault();
 };
 
 extern Settings settings;

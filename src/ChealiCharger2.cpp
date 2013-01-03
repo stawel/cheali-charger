@@ -21,48 +21,48 @@ int backlight_val = 1200;
 
 void loop()
 {
-	int8_t index = mainMenu.runSimple();
-	if(index >= 0)  {
-		switch(index) {
-		case 0:
-			Options::run();
-			break;
-		default:
-			Program::selectProgram(index - 1);
-		}
-	}
+    int8_t index = mainMenu.runSimple();
+    if(index >= 0)  {
+        switch(index) {
+        case 0:
+            Options::run();
+            break;
+        default:
+            Program::selectProgram(index - 1);
+        }
+    }
 }
 
 
 void setup()
 {
-	hardware::init();
+    hardware::init();
 
 #ifdef USE_SERIAL
-	Serial.begin(9600);
-	Serial.println("ChealiCharger hello!");
+    Serial.begin(9600);
+    Serial.println("ChealiCharger hello!");
 #endif //USE_SERIAL
 
-	Settings::load();
-	lcdPrint_P(PSTR("  ChealiCharger"));
-	lcd.setCursor(0,1);
-	lcdPrint_P(PSTR("    ver: "  CHEALI_CHARGER_VERSION_STRING));
-	timer.delay(1000);
-	if(Version::getCurrentEEPROMVersion() != CHEALI_CHARGER_EEPROM_VERSION) {
-		lcd.clear();
-		lcd.setCursor(0,0);
-		lcdPrint_P(PSTR("reseting eeprom"));
-		lcd.setCursor(0,1);
-		lcdPrint_P(PSTR("to ver: " CHEALI_CHARGER_EPPROM_VERSION_STRING));
-		timer.delay(5000);
+    Settings::load();
+    lcdPrint_P(PSTR("  ChealiCharger"));
+    lcd.setCursor(0,1);
+    lcdPrint_P(PSTR("    ver: "  CHEALI_CHARGER_VERSION_STRING));
+    timer.delay(1000);
+    if(Version::getCurrentEEPROMVersion() != CHEALI_CHARGER_EEPROM_VERSION) {
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcdPrint_P(PSTR("reseting eeprom"));
+        lcd.setCursor(0,1);
+        lcdPrint_P(PSTR("to ver: " CHEALI_CHARGER_EPPROM_VERSION_STRING));
+        timer.delay(5000);
 
-		Options::resetDefault();
+        Options::resetDefault();
 
-		lcd.clear();
-		lcd.setCursor(0,0);
-		lcdPrint_P(PSTR("please calibrate"));
-		lcd.setCursor(0,1);
-		lcdPrint_P(PSTR("before use"));
-		timer.delay(5000);
-	}
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcdPrint_P(PSTR("please calibrate"));
+        lcd.setCursor(0,1);
+        lcdPrint_P(PSTR("before use"));
+        timer.delay(5000);
+    }
 }

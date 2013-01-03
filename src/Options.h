@@ -3,8 +3,8 @@
 
 class Options {
 public:
-	static void run();
-	static void resetDefault();
+    static void run();
+    static void resetDefault();
 };
 
 #endif /* OPTIONS_H_ */

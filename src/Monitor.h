@@ -4,15 +4,15 @@
 
 class Monitor {
 public:
-	enum statusType {OK, ERROR};
-	Monitor(){};
-	statusType run();
-	void doInterrupt();
+    enum statusType {OK, ERROR};
+    Monitor(){};
+    statusType run();
+    void doInterrupt();
 
 protected:
-	statusType monitorInternalTemperature();
-//	statusType monitorInputVoltage();
-//	statusType monitorOutputPolarity();
+    statusType monitorInternalTemperature();
+//    statusType monitorInputVoltage();
+//    statusType monitorOutputPolarity();
 
 };
 

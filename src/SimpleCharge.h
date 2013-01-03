@@ -6,11 +6,11 @@
 
 class SimpleCharge : public Strategy {
 public:
-	SimpleCharge(){};
-	virtual void powerOn();
-	virtual statusType doStrategy();
-	virtual void powerOff();
-	bool isStable() const;
+    SimpleCharge(){};
+    virtual void powerOn();
+    virtual statusType doStrategy();
+    virtual void powerOff();
+    bool isStable() const;
 };
 
 

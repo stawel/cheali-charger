@@ -3,19 +3,19 @@
 
 class Multiplexer {
 public:
-	static void init();
-	static uint8_t digitalRead(uint8_t address);
-	static uint16_t analogRead(uint8_t address);
+    static void init();
+    static uint8_t digitalRead(uint8_t address);
+    static uint16_t analogRead(uint8_t address);
 
 
-	template<uint8_t address>
-	static uint16_t analogRead() {
-		return analogRead(address);
-	}
-	template<uint8_t address>
-	static uint8_t digitalRead() {
-		return digitalRead(address);
-	}
+    template<uint8_t address>
+    static uint16_t analogRead() {
+        return analogRead(address);
+    }
+    template<uint8_t address>
+    static uint8_t digitalRead() {
+        return digitalRead(address);
+    }
 };
 
 

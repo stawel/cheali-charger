@@ -8,39 +8,39 @@
 
 class Discharger {
 public:
-	enum STATE { DISCHARGING, DISCHARGING_COMPLETE, ERROR};
-	static const AnalogInputs::Name VName = AnalogInputs::VoutBalancer;
-	static const AnalogInputs::Name IName = AnalogInputs::Idischarge;
+    enum STATE { DISCHARGING, DISCHARGING_COMPLETE, ERROR};
+    static const AnalogInputs::Name VName = AnalogInputs::VoutBalancer;
+    static const AnalogInputs::Name IName = AnalogInputs::Idischarge;
 
-	Discharger();
+    Discharger();
 
-	static AnalogInputs::ValueType getVout();
-	static AnalogInputs::ValueType getIdischarge();
+    static AnalogInputs::ValueType getVout();
+    static AnalogInputs::ValueType getIdischarge();
 
-	STATE getState() const { return state_; }
-	bool isPowerOn() const { return getState() == DISCHARGING; }
+    STATE getState() const { return state_; }
+    bool isPowerOn() const { return getState() == DISCHARGING; }
 
-	uint16_t getValue() const { return value_; }
-	void setValue(uint16_t value);
-	void setRealValue(uint16_t I);
+    uint16_t getValue() const { return value_; }
+    void setValue(uint16_t value);
+    void setRealValue(uint16_t I);
 
-	void powerOn();
-	void powerOff(STATE reason = DISCHARGING_COMPLETE);
+    void powerOn();
+    void powerOff(STATE reason = DISCHARGING_COMPLETE);
 
-	void doSlowInterrupt();
+    void doSlowInterrupt();
 
-	uint32_t getOnTimeSec() const;
-	uint16_t getDischarge() const;
+    uint32_t getOnTimeSec() const;
+    uint16_t getDischarge() const;
 
-	uint16_t correctValueTintern(uint16_t v);
+    uint16_t correctValueTintern(uint16_t v);
 
 protected:
-	void finalizeValueTintern(bool force);
-	STATE state_;
-	uint16_t value_,valueSet_;
-	uint16_t startTime_;
-	bool tempcutoff_;
-	uint32_t discharge_;
+    void finalizeValueTintern(bool force);
+    STATE state_;
+    uint16_t value_,valueSet_;
+    uint16_t startTime_;
+    bool tempcutoff_;
+    uint32_t discharge_;
 };
 
 

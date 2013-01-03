@@ -10,25 +10,25 @@ Monitor monitor;
 
 void Monitor::doInterrupt()
 {
-	bool on;
-	if(testTinern(on, settings.fanTempOff_, settings.fanTempOn_))
-		hardware::setFan(on);
+    bool on;
+    if(testTinern(on, settings.fanTempOff_, settings.fanTempOn_))
+        hardware::setFan(on);
 }
 
 Monitor::statusType Monitor::run()
 {
 
-	return monitorInternalTemperature();
+    return monitorInternalTemperature();
 }
 
 Monitor::statusType Monitor::monitorInternalTemperature()
 {
-	AnalogInputs::ValueType t = analogInputs.getRealValue(AnalogInputs::Tintern);
+    AnalogInputs::ValueType t = analogInputs.getRealValue(AnalogInputs::Tintern);
 
-	//TODO: make configurable
-	if(t > ANALOG_CELCIUS(65))
-		return ERROR;
+    //TODO: make configurable
+    if(t > ANALOG_CELCIUS(65))
+        return ERROR;
 
-	return OK;
+    return OK;
 }
 

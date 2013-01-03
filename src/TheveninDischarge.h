@@ -6,13 +6,13 @@
 
 class TheveninDischarge : public SimpleDischarge {
 public:
-	TheveninDischarge(){}
-	virtual void powerOn();
-	virtual statusType doStrategy();
-	virtual void powerOff();
+    TheveninDischarge(){}
+    virtual void powerOn();
+    virtual statusType doStrategy();
+    virtual void powerOff();
 
-	void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
-	void setMinI(AnalogInputs::ValueType i);
+    void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
+    void setMinI(AnalogInputs::ValueType i);
 
 };
 

@@ -8,13 +8,13 @@ bool PolarityCheck::isReversedPolarity_ = false;
 
 bool PolarityCheck::runReversedPolarityInfo()
 {
-	bool reversed = analogInputs.isReversePolarity();
-	if(reversed) {
-		if(!isReversedPolarity_)
-			Screen::reversedPolarity();
+    bool reversed = analogInputs.isReversePolarity();
+    if(reversed) {
+        if(!isReversedPolarity_)
+            Screen::reversedPolarity();
 
-		buzzer.soundReversedPolarity();
-	}
-	isReversedPolarity_ = reversed;
-	return reversed;
+        buzzer.soundReversedPolarity();
+    }
+    isReversedPolarity_ = reversed;
+    return reversed;
 }

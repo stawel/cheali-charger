@@ -7,19 +7,19 @@
 class SimpleDischarge : public Strategy {
 public:
 
-	AnalogInputs::ValueType I_;
-	AnalogInputs::ValueType V_;
+    AnalogInputs::ValueType I_;
+    AnalogInputs::ValueType V_;
 
-	SimpleDischarge(){}
-	virtual void powerOn();
-	virtual statusType doStrategy();
-	virtual void powerOff();
+    SimpleDischarge(){}
+    virtual void powerOn();
+    virtual statusType doStrategy();
+    virtual void powerOff();
 
-	bool isMinVout() const;
-	bool isStable() const;
+    bool isMinVout() const;
+    bool isStable() const;
 
 
-	void setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I) { I_ = I; V_ = V; };
+    void setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I) { I_ = I; V_ = V; };
 };
 
 extern SimpleDischarge simpleDischarge;

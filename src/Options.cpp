@@ -20,38 +20,38 @@ const char * const optionsStaticMenu[] PROGMEM =
 
 void Options::resetDefault()
 {
-	lcd.clear();
-	lcd.setCursor(0,0);
-	lcdPrint_P(PSTR("Reseting: "));
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcdPrint_P(PSTR("Reseting: "));
 
-	lcd.setCursor(7,1);
-	lcdPrint_P(PSTR(" 0%"));
-	analogInputs.restoreDefault();
+    lcd.setCursor(7,1);
+    lcdPrint_P(PSTR(" 0%"));
+    analogInputs.restoreDefault();
 
-	lcd.setCursor(7,1);
-	lcdPrint_P(PSTR("50%"));
-	ProgramData::restoreDefault();
-	Settings::restoreDefault();
+    lcd.setCursor(7,1);
+    lcdPrint_P(PSTR("50%"));
+    ProgramData::restoreDefault();
+    Settings::restoreDefault();
 
 
-	lcd.setCursor(6,1);
-	lcdPrint_P(PSTR("Done"));
-	Version::restoreDefault();
-	timer.delay(100);
+    lcd.setCursor(6,1);
+    lcdPrint_P(PSTR("Done"));
+    Version::restoreDefault();
+    timer.delay(100);
 }
 
 void Options::run()
 {
-	StaticMenu optionsMenu(optionsStaticMenu, sizeOfArray(optionsStaticMenu));
-	Calibrate calibrate;
-	int8_t i;
+    StaticMenu optionsMenu(optionsStaticMenu, sizeOfArray(optionsStaticMenu));
+    Calibrate calibrate;
+    int8_t i;
 
-	do {
-		i = optionsMenu.runSimple();
-		switch(i) {
-		case 0: settings.edit();; break;
-		case 1: calibrate.run(); break;
-		case 2: resetDefault(); break;
-		}
-	} while(i>=0);
+    do {
+        i = optionsMenu.runSimple();
+        switch(i) {
+        case 0: settings.edit();; break;
+        case 1: calibrate.run(); break;
+        case 2: resetDefault(); break;
+        }
+    } while(i>=0);
 }

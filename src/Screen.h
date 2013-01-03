@@ -7,49 +7,49 @@
 
 class Screen : public Blink {
 public:
-	int16_t Rth_V_;
-	int16_t Rth_I_;
-	AnalogInputs::ValueType Vth_;
-	AnalogInputs::ValueType valueTh_;
-	uint16_t charge_;
-	Program::ProgramType programType_;
+    int16_t Rth_V_;
+    int16_t Rth_I_;
+    AnalogInputs::ValueType Vth_;
+    AnalogInputs::ValueType valueTh_;
+    uint16_t charge_;
+    Program::ProgramType programType_;
 
-	Screen() {};
-	enum ScreenViewType { Simple, Expert, Debug};
-	enum ScreenType { ScreenFirst, ScreenCIVlimits, ScreenTime, ScreenTemperature,
-	    ScreenBalancer0_2, ScreenBalancer3_5,
-		ScreenBalancer0_2M, ScreenBalancer3_5M,
-		ScreenBalancer0_2RthV, ScreenBalancer3_5RthV,
-		ScreenBalancer0_2RthI, ScreenBalancer3_5RthI,
-		ScreenBalancer0_2Rth, ScreenBalancer3_5Rth,
+    Screen() {};
+    enum ScreenViewType { Simple, Expert, Debug};
+    enum ScreenType { ScreenFirst, ScreenCIVlimits, ScreenTime, ScreenTemperature,
+        ScreenBalancer0_2, ScreenBalancer3_5,
+        ScreenBalancer0_2M, ScreenBalancer3_5M,
+        ScreenBalancer0_2RthV, ScreenBalancer3_5RthV,
+        ScreenBalancer0_2RthI, ScreenBalancer3_5RthI,
+        ScreenBalancer0_2Rth, ScreenBalancer3_5Rth,
 
-		ScreenRthVth,
-		ScreenStartInfo};
+        ScreenRthVth,
+        ScreenStartInfo};
 
-	void display(ScreenType screen);
+    void display(ScreenType screen);
 
-	void displayScreenFirst();
-	void displayScreenCIVlimits();
-	void displayScreenBalancer0_2();
-	void displayScreenBalancer3_5();
-	void displayScreenBalancer0_2R();
-	void displayScreenBalancer3_5R();
-	void displayScreenTime();
-	void displayScreenTemperature();
+    void displayScreenFirst();
+    void displayScreenCIVlimits();
+    void displayScreenBalancer0_2();
+    void displayScreenBalancer3_5();
+    void displayScreenBalancer0_2R();
+    void displayScreenBalancer3_5R();
+    void displayScreenTime();
+    void displayScreenTemperature();
 
-	void displayChargeEnded();
-	void displayRthVth();
+    void displayChargeEnded();
+    void displayRthVth();
 
-	void displayMonitorError();
-	void displayStartInfo();
+    void displayMonitorError();
+    void displayStartInfo();
 
 
-	static void displayStrings(const char *s1, const char *s2);
+    static void displayStrings(const char *s1, const char *s2);
 
-	static void displayNotImplemented();
+    static void displayNotImplemented();
 
-	static void runNotImplemented();
-	static void reversedPolarity();
+    static void runNotImplemented();
+    static void reversedPolarity();
 };
 
 extern Screen screen;

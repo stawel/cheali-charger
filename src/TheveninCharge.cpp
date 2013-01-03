@@ -9,16 +9,16 @@ TheveninCharge theveninCharge;
 
 void TheveninCharge::powerOff()
 {
-	smps.powerOff();
+    smps.powerOff();
 }
 
 
 void TheveninCharge::powerOn()
 {
-	smps.powerOn();
-	balancer.powerOn();
-	analogInputs.resetStable();
-	theveninMethod.init();
+    smps.powerOn();
+    balancer.powerOn();
+    analogInputs.resetStable();
+    theveninMethod.init();
 }
 
 void TheveninCharge::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
@@ -33,32 +33,32 @@ void TheveninCharge::setMinI(AnalogInputs::ValueType i)
 
 Strategy::statusType TheveninCharge::doStrategy()
 {
-	bool stable;
-	bool isendVout = isEndVout();
-	uint16_t oldValue = smps.getValue();
+    bool stable;
+    bool isendVout = isEndVout();
+    uint16_t oldValue = smps.getValue();
 
-	stable = isStable() || isendVout;
-	//test for charge complete
-	if(theveninMethod.isComlete(isendVout, oldValue)) {
-		smps.powerOff(SMPS::CHARGING_COMPLETE);
-		return COMPLETE;
-	}
+    stable = isStable() || isendVout;
+    //test for charge complete
+    if(theveninMethod.isComlete(isendVout, oldValue)) {
+        smps.powerOff(SMPS::CHARGING_COMPLETE);
+        return COMPLETE;
+    }
 
-	if(stable) {
-		uint16_t value = theveninMethod.calculateNewValue(isendVout, oldValue);
-		if(value != oldValue)
-			smps.setValue(value);
-	}
-	return RUNNING;
+    if(stable) {
+        uint16_t value = theveninMethod.calculateNewValue(isendVout, oldValue);
+        if(value != oldValue)
+            smps.setValue(value);
+    }
+    return RUNNING;
 }
 
 
 bool TheveninCharge::isEndVout() const
 {
-	AnalogInputs::ValueType Vc = theveninMethod.Vend_;
-	AnalogInputs::ValueType Vc_per_cell = balancer.calculatePerCell(Vc);
+    AnalogInputs::ValueType Vc = theveninMethod.Vend_;
+    AnalogInputs::ValueType Vc_per_cell = balancer.calculatePerCell(Vc);
 
-	return Vc <= smps.getVout() || balancer.isMaxVout(Vc_per_cell);
+    return Vc <= smps.getVout() || balancer.isMaxVout(Vc_per_cell);
 }
 
 
