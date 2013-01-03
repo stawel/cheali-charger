@@ -4,7 +4,7 @@
 #include "ProgramData.h"
 #include "TheveninMethod.h"
 
-Screen screens;
+Screen screen;
 
 namespace {
 	AnalogInputs::ValueType getBalanceValue(uint8_t cell, uint8_t mesured)
@@ -85,7 +85,7 @@ void Screen::display(ScreenType screen)
 {
 	incBlinkTime();
 	switch(screen) {
-	case Screen1: 				return displayScreen1();
+	case ScreenFirst: 				return displayScreenFirst();
 	case ScreenCIVlimits:		return displayScreenCIVlimits();
 	case ScreenTime:			return displayScreenTime();
 	case ScreenTemperature:		return displayScreenTemperature();
@@ -104,7 +104,7 @@ void Screen::display(ScreenType screen)
 	}
 }
 
-void Screen::displayScreen1()
+void Screen::displayScreenFirst()
 {
 	char c = 'N';
 	uint16_t value = 0;
@@ -184,7 +184,7 @@ void Screen::displayScreenTemperature()
 	lcdPrintSpaces();
 }
 
-void Screen::displayStrings(const char *s1, const char *s2) const
+void Screen::displayStrings(const char *s1, const char *s2)
 {
 	lcd.setCursor(0,0); lcdPrint_P(s1);
 	lcd.setCursor(0,1); lcdPrint_P(s2);
@@ -228,7 +228,7 @@ void Screen::displayRthVth()
 void Screen::displayNotImplemented()
 {
 	lcd.clear();
-	screens.displayStrings(PSTR("Function not"), PSTR("implemented yet"));
+	screen.displayStrings(PSTR("Function not"), PSTR("implemented yet"));
 }
 
 void Screen::runNotImplemented()

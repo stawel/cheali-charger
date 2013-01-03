@@ -20,41 +20,44 @@ namespace {
 	SimpleCharge simple;
 
 	//TODO: program memory
-	const Screen::ScreenType theveninScreens[] PROGMEM =
-	{ Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
-	  Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
-	const Screen::ScreenType balanceScreens[] PROGMEM =
-	{ Screen::ScreenBalancer0_2, Screen::ScreenBalancer0_2M,
-	  Screen::ScreenBalancer3_5, Screen::ScreenBalancer3_5M /*, Screen::ScreenTemperature */};
-	const Screen::ScreenType dischargeScreens[] PROGMEM =
-	{ Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenTime,
+	const Screen::ScreenType theveninScreens[] PROGMEM = {
+	  Screen::ScreenFirst, Screen::ScreenRthVth, Screen::ScreenTime,
+	  Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5,
+	  Screen::ScreenTemperature,
+	  Screen::ScreenCIVlimits };
+	const Screen::ScreenType balanceScreens[] PROGMEM = {
+	  Screen::ScreenBalancer0_2, Screen::ScreenBalancer0_2M,
+	  Screen::ScreenBalancer3_5, Screen::ScreenBalancer3_5M,
+	  Screen::ScreenBalancer0_2Rth, Screen::ScreenBalancer3_5Rth,
+	  Screen::ScreenTemperature };
+	const Screen::ScreenType dischargeScreens[] PROGMEM = {
+	  Screen::ScreenFirst, Screen::ScreenRthVth, Screen::ScreenTime,
 	  Screen::ScreenBalancer0_2,
 	  Screen::ScreenBalancer0_2RthV,
 	  Screen::ScreenBalancer0_2RthI,
 	  Screen::ScreenBalancer0_2Rth,
 	  Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
-	const Screen::ScreenType storageScreens[] PROGMEM =
-	{ Screen::Screen1, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
+	const Screen::ScreenType storageScreens[] PROGMEM = {
+	  Screen::ScreenFirst, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
 	  Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
 
-	const Screen::ScreenType startInfoBalanceScreens[] PROGMEM =
-	{ Screen::ScreenStartInfo, Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5};
+	const Screen::ScreenType startInfoBalanceScreens[] PROGMEM = {
+	  Screen::ScreenStartInfo, Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5};
 
-	const Screen::ScreenType startInfoScreens[] PROGMEM =
-	{ Screen::ScreenStartInfo };
+	const Screen::ScreenType startInfoScreens[] PROGMEM = {
+	  Screen::ScreenStartInfo };
 
-	void chargingComplete()
-	{
+	void chargingComplete() {
 		lcd.clear();
-		screens.displayChargeEnded();
+		screen.displayChargeEnded();
 		buzzer.soundProgramComplete();
 		do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
 		buzzer.soundOff();
 	}
-	void chargingMonitorError()
-	{
+
+	void chargingMonitorError() {
 		lcd.clear();
-		screens.displayChargeEnded();
+		screen.displayChargeEnded();
 		buzzer.soundError();
 		do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
 		buzzer.soundOff();
@@ -70,12 +73,12 @@ namespace {
 		Monitor::statusType mstatus;
 		strategy.powerOn();
 		lcd.clear();
-		uint8_t screen = 0;
+		uint8_t screen_nr = 0;
 		do {
 			if(!PolarityCheck::runReversedPolarityInfo())
-				screens.display(pgm::read<Screen::ScreenType>(&chargeScreens[screen]));
+				screen.display(pgm::read<Screen::ScreenType>(&chargeScreens[screen_nr]));
 
-			key = selectIndexWithKeyboard(screen, screen_limit);
+			key = selectIndexWithKeyboard(screen_nr, screen_limit);
 			if(run) {
 				mstatus = monitor.run();
 				if(mstatus != Monitor::OK) {
@@ -109,7 +112,7 @@ namespace {
 
 bool Program::startInfo(ProgramType prog)
 {
-	screens.programType_ = prog;
+	screen.programType_ = prog;
 	if(ProgramData::currentProgramData.isLiXX()) {
 		//usues balance port
 		startInfoStrategy.setBalancePort(true);

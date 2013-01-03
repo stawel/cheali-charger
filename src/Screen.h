@@ -16,19 +16,19 @@ public:
 
 	Screen() {};
 	enum ScreenViewType { Simple, Expert, Debug};
-	enum ScreenType { Screen1, ScreenCIVlimits, ScreenTime, ScreenTemperature,
-		ScreenBalancer0_2, ScreenBalancer3_5,
+	enum ScreenType { ScreenFirst, ScreenCIVlimits, ScreenTime, ScreenTemperature,
+	    ScreenBalancer0_2, ScreenBalancer3_5,
 		ScreenBalancer0_2M, ScreenBalancer3_5M,
 		ScreenBalancer0_2RthV, ScreenBalancer3_5RthV,
 		ScreenBalancer0_2RthI, ScreenBalancer3_5RthI,
 		ScreenBalancer0_2Rth, ScreenBalancer3_5Rth,
 
-			ScreenRthVth,
-			ScreenStartInfo};
+		ScreenRthVth,
+		ScreenStartInfo};
 
 	void display(ScreenType screen);
 
-	void displayScreen1();
+	void displayScreenFirst();
 	void displayScreenCIVlimits();
 	void displayScreenBalancer0_2();
 	void displayScreenBalancer3_5();
@@ -44,7 +44,7 @@ public:
 	void displayStartInfo();
 
 
-	void displayStrings(const char *s1, const char *s2) const;
+	static void displayStrings(const char *s1, const char *s2);
 
 	static void displayNotImplemented();
 
@@ -52,6 +52,6 @@ public:
 	static void reversedPolarity();
 };
 
-extern Screen screens;
+extern Screen screen;
 
 #endif /* SCREEN_H_ */

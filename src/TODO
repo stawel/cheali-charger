@@ -6,7 +6,7 @@ low priority:
  - add new "charge complete" msg
  - add calibration done sound
  - add better buzzer sound
- - add input voltage warning
+ - add input voltage drop warning
 
 Done:
  - add Rth measurement at the charge end

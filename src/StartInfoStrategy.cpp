@@ -10,7 +10,7 @@ StartInfoStrategy startInfoStrategy;
 void StartInfoStrategy::powerOn()
 {
 	hardware::setBatteryOutput(true);
-	screens.startBlinkOn(7);
+	screen.startBlinkOn(7);
 	buzzer.begin();
 	ok_ = 3;
 }
@@ -18,7 +18,7 @@ void StartInfoStrategy::powerOn()
 void StartInfoStrategy::powerOff()
 {
 	hardware::setBatteryOutput(false);
-	screens.stopBlink();
+	screen.stopBlink();
 	buzzer.soundOff();
 }
 
@@ -43,10 +43,10 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 		}
 	}
 
-	screens.blinkIndex_ = 7;
-	if(c) 	screens.blinkIndex_ -= 4;
-	if(b) 	screens.blinkIndex_ -= 2;
-	if(v) 	screens.blinkIndex_ -= 1;
+	screen.blinkIndex_ = 7;
+	if(c) 	screen.blinkIndex_ -= 4;
+	if(b) 	screen.blinkIndex_ -= 2;
+	if(v) 	screen.blinkIndex_ -= 1;
 
 	if(c || b || v) {
 		buzzer.soundInfo();
