@@ -10,35 +10,35 @@ ProgramData ProgramData::currentProgramData;
 
 const uint16_t voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
 {
-    //  {Idle, Charge, Discharge, Storage};
-        {       1,     1,      1,    1}, // Unknown
-        { ANALOG_VOLT(1.200), ANALOG_VOLT(1.200), ANALOG_VOLT(0.850),    0}, //    NiCd //??
-        { ANALOG_VOLT(1.200), ANALOG_VOLT(1.200), ANALOG_VOLT(1.000),    0}, //    NiMH //??
-        { ANALOG_VOLT(2.000), ANALOG_VOLT(2.460), ANALOG_VOLT(1.500),    0}, //Pb
+    //  { Idle,               Charge,             Discharge,            Storage};
+        { 1,                  1,                  1,                    1}, // Unknown
+        { ANALOG_VOLT(1.200), ANALOG_VOLT(1.200), ANALOG_VOLT(0.850),   0}, //    NiCd //??
+        { ANALOG_VOLT(1.200), ANALOG_VOLT(1.200), ANALOG_VOLT(1.000),   0}, //    NiMH //??
+        { ANALOG_VOLT(2.000), ANALOG_VOLT(2.460), ANALOG_VOLT(1.500),   0}, //Pb
 //LiXX
-        { ANALOG_VOLT(3.300), ANALOG_VOLT(3.600), ANALOG_VOLT(2.000), ANALOG_VOLT(3.300) /*??*/}, //Life
-        { ANALOG_VOLT(3.600), ANALOG_VOLT(4.100), ANALOG_VOLT(2.500), ANALOG_VOLT(3.750) /*??*/}, //Lilo
-        { ANALOG_VOLT(3.700), ANALOG_VOLT(4.200), ANALOG_VOLT(3.000), ANALOG_VOLT(3.850) /*??*/}, //LiPo
+        { ANALOG_VOLT(3.300), ANALOG_VOLT(3.600), ANALOG_VOLT(2.000),   ANALOG_VOLT(3.300) /*??*/}, //Life
+        { ANALOG_VOLT(3.600), ANALOG_VOLT(4.100), ANALOG_VOLT(2.500),   ANALOG_VOLT(3.750) /*??*/}, //Lilo
+        { ANALOG_VOLT(3.700), ANALOG_VOLT(4.200), ANALOG_VOLT(3.000),   ANALOG_VOLT(3.850) /*??*/}, //LiPo
 
 };
 
 const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
-        {ProgramData::Unknown,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 10000},
-        {ProgramData::NiCd,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 1},
-        {ProgramData::NiMH,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 1},
-        {ProgramData::Pb,         ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 6},
-        {ProgramData::Life,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 3},
-        {ProgramData::Lilo,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 3},
-        {ProgramData::Lipo,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(2.200), 3}
+        {ProgramData::Unknown,  ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 10000},
+        {ProgramData::NiCd,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 1},
+        {ProgramData::NiMH,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 1},
+        {ProgramData::Pb,       ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 6},
+        {ProgramData::Life,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 3},
+        {ProgramData::Lilo,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 3},
+        {ProgramData::Lipo,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 3}
 };
 
-const char batteryString_Unknown[]    PROGMEM = "Unknown";
-const char batteryString_NiCd[]    PROGMEM = "NiCd";
-const char batteryString_NiMH[]    PROGMEM = "NiMH";
-const char batteryString_Pb[]        PROGMEM = "Pb";
-const char batteryString_Life[]    PROGMEM = "Life";
-const char batteryString_Lilo[]    PROGMEM = "Lilo";
-const char batteryString_Lipo[]    PROGMEM = "Lipo";
+const char batteryString_Unknown[]  PROGMEM = "Unknown";
+const char batteryString_NiCd[]     PROGMEM = "NiCd";
+const char batteryString_NiMH[]     PROGMEM = "NiMH";
+const char batteryString_Pb[]       PROGMEM = "Pb";
+const char batteryString_Life[]     PROGMEM = "Life";
+const char batteryString_Lilo[]     PROGMEM = "Lilo";
+const char batteryString_Lipo[]     PROGMEM = "Lipo";
 const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
         batteryString_Unknown,
         batteryString_NiCd,
