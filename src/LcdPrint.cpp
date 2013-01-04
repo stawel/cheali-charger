@@ -3,6 +3,26 @@
 #include "memory.h"
 
 
+
+void lcdSetCursor(uint8_t x, uint8_t y)
+{
+    lcd.setCursor(x, y);
+}
+void lcdSetCursor0_0()
+{
+    lcdSetCursor(0,0);
+}
+void lcdSetCursor0_1()
+{
+    lcdSetCursor(0,1);
+}
+
+void lcdClear()
+{
+    lcd.clear();
+}
+
+
 uint8_t lcdPrintSpaces()
 {
     return lcdPrintSpaces(16);
@@ -52,7 +72,7 @@ void print(char * &buf, uint8_t &maxSize, const char *str)
 }
 
 
-void printInt (char * &buf, uint8_t &maxSize, uint16_t value)
+void printUInt (char * &buf, uint8_t &maxSize, uint16_t value)
 {
     uint8_t dig = digits(value);
     if(dig > maxSize) {
@@ -71,6 +91,15 @@ void printInt (char * &buf, uint8_t &maxSize, uint16_t value)
             dig--;
         }
     }
+}
+
+void lcdPrintUInt(uint16_t x)
+{
+    char buf[8];
+    char *str = buf;
+    uint8_t maxSize = 7;
+    printUInt(str, maxSize, x);
+    lcd.print(buf);
 }
 
 
@@ -151,20 +180,20 @@ void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
         dig--; //m
         for(;xdig<dig;dig--)
             lcdPrintChar(prefix);
-        lcd.print(x);
+        lcdPrintUInt(x);
         lcdPrintChar('m');
     } else if(dig < xdig - 4) {
         lcdPrintInf(dig);
     } else {
-        lcd.print(x/1000);
+        lcdPrintUInt(x/1000);
         x%=1000;
         dig -= xdig - 4;
         if(dig-- >0) lcdPrintChar('.');
-        if(dig-- >0) lcd.print(x/100);
+        if(dig-- >0) lcdPrintDigit(x/100);
         x%=100;
-        if(dig-- >0) lcd.print(x/10);
+        if(dig-- >0) lcdPrintDigit(x/10);
         x%=10;
-        if(dig-- >0) lcd.print(x);
+        if(dig-- >0) lcdPrintDigit(x);
     }
 }
 }
@@ -188,6 +217,11 @@ void lcdPrintChar(char c)
 }
 
 
+void lcdPrintDigit(uint8_t d)
+{
+    lcdPrintChar('0'+ d);
+}
+
 void lcdPrintUnsigned(uint16_t x, int8_t dig, const char prefix)
 {
     if(dig<=0)
@@ -199,7 +233,7 @@ void lcdPrintUnsigned(uint16_t x, int8_t dig, const char prefix)
     } else {
         for(;xdig<dig;dig--)
             lcdPrintChar(prefix);
-        lcd.print(x);
+        lcdPrintUInt(x);
     }
 }
 
@@ -209,23 +243,13 @@ void lcdPrintSigned(int16_t x, int8_t dig)
     if(dig<=0)
         return;
 
-    int16_t y = x;
     uint8_t xdig = digits(abs(x));
-    if(y<0) {
-        xdig++;
+    if(x<0) {
+        dig--;
+        lcdPrintChar('-');
+        x=-x;
     }
-
-    if(dig < xdig) {
-        if(y<0) {
-            lcdPrintChar('-');
-            dig--;
-        }
-        lcdPrintInf(dig);
-    } else {
-        for(;xdig<dig;dig--)
-            lcdPrintChar(prefix);
-        lcd.print(y);
-    }
+    lcdPrintUnsigned(x,dig);
 }
 
 

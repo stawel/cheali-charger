@@ -62,14 +62,14 @@ void Menu::decIndex() {
 void Menu::display() {
     uint8_t lines = LCD_LINES;
     for(uint8_t i = 0; i < lines; i++) {
-        lcd.setCursor(0, i);
+        lcdSetCursor(0, i);
         lcdPrintChar(' ');
         printItem(i+begin_);
         lcdPrintSpaces();
     }
-    lcd.setCursor(0,pos_);
+    lcdSetCursor(0,pos_);
     lcdPrintChar('>');
-    lcd.setCursor(LCD_COLUMNS - 1,pos_);
+    lcdSetCursor(LCD_COLUMNS - 1,pos_);
     lcdPrintChar('<');
     render_ = false;
 }

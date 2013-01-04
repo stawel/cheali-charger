@@ -6,9 +6,9 @@
 
 void EditName::mainScreen()
 {
-    lcd.setCursor(0, 0);
+    lcdSetCursor0_0();
     lcdPrint_P(printStringP_);
-    lcd.setCursor(0, 1);
+    lcdSetCursor0_1();
     lcdPrint(name_, size_);
 }
 
@@ -32,7 +32,7 @@ void EditName::selectLetterScreen()
 {
     uint8_t begin = beginSL_;
     for(uint8_t j=0;j<LCD_LINES;j++) {
-        lcd.setCursor(0,j);
+        lcdSetCursor(0,j);
         for(uint8_t i=0;i<LCD_COLUMNS;i++)
             lcdPrintChar((char)begin++);
     }
@@ -47,7 +47,7 @@ void EditName::selectLetter()
             selectLetterScreen();
             begin = beginSL_;
         }
-        lcd.setCursor(cursorSL_&(LCD_COLUMNS-1), cursorSL_ >> 4);
+        lcdSetCursor(cursorSL_&(LCD_COLUMNS-1), cursorSL_ >> 4);
         key = keyboard.getPressedWithSpeed();
         switch(key) {
         case BUTTON_STOP: return;
@@ -77,10 +77,10 @@ bool EditName::run(){
     lcd.blink();
     uint8_t key;
     do {
-        lcd.clear();
+        lcdClear();
         mainScreen();
         do {
-            lcd.setCursor(cursor_, 1);
+            lcdSetCursor(cursor_, 1);
             key = keyboard.getPressedWithSpeed();
             switch(key) {
             case BUTTON_STOP:

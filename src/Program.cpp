@@ -76,7 +76,7 @@ namespace {
       Screen::ScreenTemperature };
 
     void chargingComplete() {
-        lcd.clear();
+        lcdClear();
         screen.displayScreenProgramCompleted();
         buzzer.soundProgramComplete();
         waitButtonPressed();
@@ -84,7 +84,7 @@ namespace {
     }
 
     void chargingMonitorError() {
-        lcd.clear();
+        lcdClear();
         screen.displayScreenProgramCompleted();
         buzzer.soundError();
         waitButtonPressed();
@@ -101,7 +101,7 @@ namespace {
         Monitor::statusType mstatus;
         strategy.powerOn();
         screen.powerOn();
-        lcd.clear();
+        lcdClear();
         uint8_t screen_nr = 0;
         screen_limit--;
         do {

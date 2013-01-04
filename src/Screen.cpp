@@ -64,7 +64,7 @@ namespace {
 
     void displayBalanceInfo(uint8_t from, uint8_t mesured, AnalogInputs::Type type)
     {
-        lcd.setCursor(0,0);
+        lcdSetCursor0_0();
 
         char c = ' ';
         if(mesured == 0) {
@@ -100,19 +100,18 @@ namespace {
             lcdPrintChar(' ');
         } else lcdPrintSpaces(7);
 
-        char nr = '0' + from;
-        lcd.print(nr++);
+        lcdPrintDigit(from);
         lcdPrintChar(':');
-        printBalancer(from+0, mesured, type);
+        printBalancer(from++, mesured, type);
         lcdPrintSpaces();
 
-        lcd.setCursor(0,1);
-        lcd.print(nr++);
+        lcdSetCursor0_1();
+        lcdPrintDigit(from);
         lcdPrintChar(':');
-        printBalancer(from+1, mesured, type);
-        lcd.print(nr++);
+        printBalancer(from++, mesured, type);
+        lcdPrintDigit(from);
         lcdPrintChar(':');
-        printBalancer(from+2, mesured, type);
+        printBalancer(from, mesured, type);
         lcdPrintSpaces();
     }
 
@@ -124,7 +123,7 @@ void Screen::displayScreenFirst()
     AnalogInputs::Name V = smps.VName;
     AnalogInputs::ValueType I = 0;
 
-    lcd.setCursor(0,0);
+    lcdSetCursor0_0();
 
     c= 'N';
     if(smps.isPowerOn()) {
@@ -146,7 +145,7 @@ void Screen::displayScreenFirst()
     lcdPrintCurrent(I,  7);
     lcdPrintSpaces();
 
-    lcd.setCursor(0,1);
+    lcdSetCursor0_1();
     lcdPrintChar(c);
     lcdPrintChar(' ');
     lcdPrintTime(getTimeSec());
@@ -157,13 +156,13 @@ void Screen::displayScreenFirst()
 
 void Screen::displayScreenCIVlimits()
 {
-    lcd.setCursor(0,0);
+    lcdSetCursor0_0();
     lcdPrintCharge(ProgramData::currentProgramData.battery.C, 8);
     lcdPrintChar(' ');
     lcdPrintCurrent(ProgramData::currentProgramData.battery.Ic, 7);
     lcdPrintSpaces();
 
-    lcd.setCursor(0,1);
+    lcdSetCursor0_1();
     lcdPrint_P(PSTR("Limits: "));
     lcdPrintVoltage(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), 7);
     lcdPrintSpaces();
@@ -202,9 +201,9 @@ void Screen::doSlowInterrupt()
 
 void Screen::displayScreenTime()
 {
-    lcd.setCursor(0,0);
+    lcdSetCursor0_0();
     lcdPrint_P(PSTR("time:     ")); lcdPrintTime(getTimeSec());
-    lcd.setCursor(0,1);
+    lcdSetCursor0_1();
     lcdPrint_P(PSTR("b "));
     lcdPrintTime(totalBalanceTime_/1000);
     lcdPrint_P(PSTR("  "));
@@ -213,11 +212,11 @@ void Screen::displayScreenTime()
 
 void Screen::displayScreenR()
 {
-    lcd.setCursor(0,0);
+    lcdSetCursor0_0();
     lcdPrint_P(PSTR("batt. R="));
     lcdPrintResistance(calculateRth(theveninMethod.tVout_.Rth_V_, theveninMethod.tVout_.Rth_I_),8);
     lcdPrintSpaces();
-    lcd.setCursor(0,1);
+    lcdSetCursor0_1();
     lcdPrint_P(PSTR("wires R="));
     int16_t Vwires =  analogInputs.getRealValue(AnalogInputs::Vout);
     Vwires -= analogInputs.getRealValue(AnalogInputs::Vbalacer);
@@ -227,11 +226,11 @@ void Screen::displayScreenR()
 
 void Screen::displayScreenVinput()
 {
-    lcd.setCursor(0,0);
+    lcdSetCursor0_0();
     lcdPrint_P(PSTR("Vinput="));
     analogInputs.printRealValue(AnalogInputs::Vin, 7);
     lcdPrintSpaces();
-    lcd.setCursor(0,1);
+    lcdSetCursor0_1();
     lcdPrint_P(PSTR(" limit="));
     lcdPrintAnalog(settings.inputVoltageLow_, AnalogInputs::Voltage, 7);
     lcdPrintSpaces();
@@ -239,11 +238,11 @@ void Screen::displayScreenVinput()
 
 void Screen::displayScreenVout()
 {
-    lcd.setCursor(0,0);
+    lcdSetCursor0_0();
     lcdPrint_P(PSTR("Vout ="));
     analogInputs.printRealValue(AnalogInputs::Vout, 7);
     lcdPrintSpaces();
-    lcd.setCursor(0,1);
+    lcdSetCursor0_1();
     lcdPrint_P(PSTR("Vbal.="));
     analogInputs.printRealValue(AnalogInputs::Vbalacer, 7);
     lcdPrintSpaces();
@@ -260,11 +259,11 @@ void Screen::displayDebugI()
         Iset = AnalogInputs::IdischargeValue;
         Iget = AnalogInputs::Idischarge;
     }
-    lcd.setCursor(0,0);
+    lcdSetCursor0_0();
     lcdPrint_P(PSTR("Iset="));
     analogInputs.printRealValue(Iset, 7);
     lcdPrintSpaces();
-    lcd.setCursor(0,1);
+    lcdSetCursor0_1();
     lcdPrint_P(PSTR("Iget="));
     analogInputs.printRealValue(Iget, 7);
     lcdPrintSpaces();
@@ -273,12 +272,12 @@ void Screen::displayDebugI()
 
 void Screen::displayScreenTemperature()
 {
-    lcd.setCursor(0,0);
+    lcdSetCursor0_0();
     lcdPrint_P(PSTR("Text="));
     analogInputs.printRealValue(AnalogInputs::Textern,    5);
     lcdPrintSpaces();
 
-    lcd.setCursor(0,1);
+    lcdSetCursor0_1();
     lcdPrint_P(PSTR("Tint="));
     analogInputs.printRealValue(AnalogInputs::Tintern,    5);
     lcdPrintSpaces();
@@ -286,8 +285,8 @@ void Screen::displayScreenTemperature()
 
 void Screen::displayStrings(const char *s1, const char *s2)
 {
-    lcd.setCursor(0,0); lcdPrint_P(s1);
-    lcd.setCursor(0,1); lcdPrint_P(s2);
+    lcdSetCursor0_0(); lcdPrint_P(s1);
+    lcdSetCursor0_1(); lcdPrint_P(s2);
 }
 
 void Screen::displayScreenProgramCompleted()
@@ -303,31 +302,31 @@ void Screen::displayMonitorError()
 
 void Screen::displayDebugRthVth()
 {
-    lcd.setCursor(0,0);
+    lcdSetCursor0_0();
 
     lcdPrint_P(PSTR("V="));
     //lcdPrintResistance(Rth_, 8);
-    lcd.print(Rth_V_);
+    lcdPrintSigned(Rth_V_);
     lcdPrint_P(PSTR(" I="));
     //lcdPrintResistance(Rth_, 8);
-    lcd.print(Rth_I_);
+    lcdPrintSigned(Rth_I_);
     lcdPrintSpaces();
 
-    lcd.setCursor(0,1);
-    lcd.print(Vth_);
+    lcdSetCursor0_1();
+    lcdPrintSigned(Vth_);
     lcdPrintChar(' ');
-    lcd.print(valueTh_);
+    lcdPrintSigned(valueTh_, 4);
     lcdPrintChar(' ');
     uint16_t v;
     if(smps.isPowerOn())    v = smps.getValue();
     else                    v = discharger.getValue();
-    lcd.print(v);
+    lcdPrintSigned(v,4);
     lcdPrintSpaces();
 }
 
 void Screen::displayNotImplemented()
 {
-    lcd.clear();
+    lcdClear();
     screen.displayStrings(PSTR("Function not"), PSTR("implemented yet"));
 }
 
@@ -339,12 +338,12 @@ void Screen::runNotImplemented()
 
 void Screen::displayScreenReversedPolarity()
 {
-    lcd.clear();
-    lcd.setCursor(0,0);
+    lcdClear();
+    lcdSetCursor0_0();
     lcdPrint_P(PSTR("REVERSE POLARITY"));
 
     if(settings.isDebug()) {
-        lcd.setCursor(0,1);
+        lcdSetCursor0_1();
         lcdPrint_P(PSTR("Vrev:"));
         lcdPrintUnsigned(analogInputs.getValue(AnalogInputs::VreversePolarity), 8);
     }
@@ -352,14 +351,14 @@ void Screen::displayScreenReversedPolarity()
 
 void Screen::displayStartInfo()
 {
-    lcd.setCursor(0,0);
+    lcdSetCursor0_0();
     ProgramData::currentProgramData.printBatteryString(4);
     lcdPrintChar(' ');
     ProgramData::currentProgramData.printVoltageString();
     lcdPrintChar(' ');
     printProgram2chars(programType_);
 
-    lcd.setCursor(0,1);
+    lcdSetCursor0_1();
     uint16_t procent = getChargeProcent();
     if(procent == 100) {
         if(getBlinkOff())
@@ -369,7 +368,7 @@ void Screen::displayStartInfo()
     } else {
         if(procent < 10)
             lcdPrintChar(' ');
-        lcd.print(procent);
+        lcdPrintUnsigned(procent, 2);
         lcdPrint_P(PSTR("% "));
     }
 
@@ -383,7 +382,7 @@ void Screen::displayStartInfo()
         if(bindex & 2) analogInputs.printRealValue(AnalogInputs::Vbalacer, 5);
         else lcdPrintSpaces(5);
 
-        if(bindex & 4) lcd.print(analogInputs.getConnectedBalancePorts());
+        if(bindex & 4) lcdPrintDigit(analogInputs.getConnectedBalancePorts());
         else lcdPrintChar(' ');
     } else {
         lcdPrintSpaces(8);

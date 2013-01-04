@@ -166,7 +166,7 @@ void Calibrate::runInfo()
 
 
 void Calibrate::print_v(uint8_t dig){
-    lcd.setCursor(0,0);
+    lcdSetCursor0_0();
     switch(dispVal_) {
     case 0:    lcdPrint_P(PSTR("v:")); break;
     case 1: lcdPrint_P(PSTR("r:")); break;
@@ -200,7 +200,7 @@ void Calibrate::print_m_2(const char *str, AnalogInputs::Name name, int dig)
 }
 void Calibrate::print_m_1(const char *str, AnalogInputs::Name name, int dig)
 {
-    lcd.setCursor(0,1);
+    lcdSetCursor0_1();
     print_m(str, name, dig);
 }
 void Calibrate::print_m_3(const char *str, AnalogInputs::Name name, int dig)
@@ -268,7 +268,7 @@ void Calibrate::printCalibrateB0_2()
 }
 void Calibrate::printCalibrateB0_2_Blink()
 {
-    lcd.setCursor(0,0);
+    lcdSetCursor0_0();
     if(!analogInputs.isConnected(AnalogInputs::Vout)) {
         lcdPrint_P(PSTR("ERROR! "));
     } else {
@@ -281,7 +281,7 @@ void Calibrate::printCalibrateB0_2_Blink()
     if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb0, dig);
     else lcdPrintSpaces(dig);
 
-    lcd.setCursor(0,1);
+    lcdSetCursor0_1();
     lcdPrint_P(PSTR("1:"));
     if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb1, dig);
     else lcdPrintSpaces(dig);
@@ -294,7 +294,7 @@ void Calibrate::printCalibrateB0_2_Blink()
 
 void Calibrate::printCalibrateB3_5_Blink()
 {
-    lcd.setCursor(0,0);
+    lcdSetCursor0_0();
     if(!analogInputs.isConnected(AnalogInputs::Vout)) {
         lcdPrint_P(PSTR("ERROR! "));
     } else {
@@ -307,7 +307,7 @@ void Calibrate::printCalibrateB3_5_Blink()
     if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb3, dig);
     else lcdPrintSpaces(dig);
 
-    lcd.setCursor(0,1);
+    lcdSetCursor0_1();
     lcdPrint_P(PSTR("4:"));
     if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb4, dig);
     else lcdPrintSpaces(dig);
@@ -412,7 +412,7 @@ bool Calibrate::setValue(uint8_t x, uint8_t y, AnalogInputs::ValueType &v, Analo
     int dir;
     do {
         dir = 0;
-        lcd.setCursor(x,y);
+        lcdSetCursor(x,y);
         if(blinkOn_)    lcdPrintAnalog(v, type, dig);
         else             lcdPrintSpaces(dig);
         blinkOn_ = !blinkOn_;
@@ -510,7 +510,7 @@ bool Calibrate::calibrateDischarge()
 
 void Calibrate::infoTimeM()
 {
-    lcd.clear();
+    lcdClear();
     uint8_t key;
     do {
         key = keyboard.getPressedWithSpeed();
@@ -518,13 +518,14 @@ void Calibrate::infoTimeM()
         t0 = timer.getMiliseconds();
         hardware::delay(100);
         t1 = timer.getMiliseconds();
-        lcd.setCursor(0,0);
+        lcdSetCursor0_0();
         lcdPrint_P(PSTR(" time: "));
-        lcd.print(t0);
+        lcdPrintUnsigned(t0);
         lcdPrintSpaces();
-        lcd.setCursor(0,1);
+        lcdSetCursor0_1();
         lcdPrint_P(PSTR("100ms: "));
-        lcd.print(t1-t0);
+        t1-=t0;
+        lcdPrintUnsigned(t1);
         lcdPrintSpaces();
 
     } while(key != BUTTON_STOP);

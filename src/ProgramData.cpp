@@ -51,7 +51,7 @@ const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
 
 void ProgramData::printIndex(char *&buf, uint8_t &maxSize, uint8_t index)
 {
-    printInt (buf, maxSize, index);
+    printUInt(buf, maxSize, index);
     printChar(buf, maxSize, ':');
 }
 
@@ -61,11 +61,11 @@ void ProgramData::createName(int index)
     uint8_t maxSize = PROGRAM_DATA_MAX_NAME;
     const char * type = pgm::read(&batteryString[battery.type]);
     printIndex(buf,maxSize, index);
-    print_P     (buf, maxSize, type);
+    print_P  (buf, maxSize, type);
     printChar(buf, maxSize, ' ');
-    printInt (buf, maxSize, battery.Ic);
+    printUInt(buf, maxSize, battery.Ic);
     printChar(buf, maxSize, '/');
-    printInt (buf, maxSize, battery.cells);
+    printUInt(buf, maxSize, battery.cells);
 }
 
 void ProgramData::loadProgramData(int index)
@@ -113,10 +113,10 @@ uint8_t ProgramData::printVoltageString() const
         lcdPrintVoltage(getVoltage(), 7);
         return 7;
     } else {
-        uint8_t r = 5+2;
+        uint8_t r = 5+2+1;
         lcdPrintVoltage(getVoltage(), 5);
         lcdPrintChar('/');
-        r+=lcd.print(battery.cells);
+        lcdPrintDigit(battery.cells);
         lcdPrintChar('C');
         return r;
     }

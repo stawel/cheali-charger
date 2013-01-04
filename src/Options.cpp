@@ -20,21 +20,21 @@ const char * const optionsStaticMenu[] PROGMEM =
 
 void Options::resetDefault()
 {
-    lcd.clear();
-    lcd.setCursor(0,0);
+    lcdClear();
+    lcdSetCursor0_0();
     lcdPrint_P(PSTR("Reseting: "));
 
-    lcd.setCursor(7,1);
+    lcdSetCursor(7,1);
     lcdPrint_P(PSTR(" 0%"));
     analogInputs.restoreDefault();
 
-    lcd.setCursor(7,1);
+    lcdSetCursor(7,1);
     lcdPrint_P(PSTR("50%"));
     ProgramData::restoreDefault();
     Settings::restoreDefault();
 
 
-    lcd.setCursor(6,1);
+    lcdSetCursor(6,1);
     lcdPrint_P(PSTR("Done"));
     Version::restoreDefault();
     timer.delay(100);

@@ -45,23 +45,23 @@ void setup()
 
     Settings::load();
     lcdPrint_P(PSTR("  ChealiCharger"));
-    lcd.setCursor(0,1);
+    lcdSetCursor0_1();
     lcdPrint_P(PSTR("    ver: "  CHEALI_CHARGER_VERSION_STRING));
     timer.delay(1000);
     if(Version::getCurrentEEPROMVersion() != CHEALI_CHARGER_EEPROM_VERSION) {
-        lcd.clear();
-        lcd.setCursor(0,0);
+        lcdClear();
+        lcdSetCursor0_0();
         lcdPrint_P(PSTR("reseting eeprom"));
-        lcd.setCursor(0,1);
+        lcdSetCursor0_1();
         lcdPrint_P(PSTR("to ver: " CHEALI_CHARGER_EPPROM_VERSION_STRING));
         timer.delay(5000);
 
         Options::resetDefault();
 
-        lcd.clear();
-        lcd.setCursor(0,0);
+        lcdClear();
+        lcdSetCursor0_0();
         lcdPrint_P(PSTR("please calibrate"));
-        lcd.setCursor(0,1);
+        lcdSetCursor0_1();
         lcdPrint_P(PSTR("before use"));
         timer.delay(5000);
     }
