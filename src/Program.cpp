@@ -13,53 +13,81 @@
 #include "StartInfoStrategy.h"
 #include "Buzzer.h"
 #include "StaticMenu.h"
-
+#include "Settings.h"
 
 namespace {
 
     SimpleCharge simple;
-
-    //TODO: program memory
     const Screen::ScreenType theveninScreens[] PROGMEM = {
-      Screen::ScreenFirst, Screen::ScreenRthVth, Screen::ScreenTime,
-      Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5,
-      Screen::ScreenTemperature,
-      Screen::ScreenCIVlimits };
+      Screen::ScreenFirst,
+      Screen::ScreenDebugRthVth,
+      Screen::ScreenBalancer0_2,            Screen::ScreenBalancer3_5,
+      Screen::ScreenBalancer0_2Rth,         Screen::ScreenBalancer3_5Rth,
+      Screen::ScreenDebugBalancer0_2RthV,   Screen::ScreenDebugBalancer3_5RthV,
+      Screen::ScreenDebugBalancer0_2RthI,   Screen::ScreenDebugBalancer3_5RthI,
+      Screen::ScreenCIVlimits,
+      Screen::ScreenR,
+      Screen::ScreenVout,
+      Screen::ScreenVinput,
+      Screen::ScreenDebugI,
+      Screen::ScreenTime,
+      Screen::ScreenTemperature };
     const Screen::ScreenType balanceScreens[] PROGMEM = {
-      Screen::ScreenBalancer0_2, Screen::ScreenBalancer0_2M,
-      Screen::ScreenBalancer3_5, Screen::ScreenBalancer3_5M,
-      Screen::ScreenBalancer0_2Rth, Screen::ScreenBalancer3_5Rth,
+      Screen::ScreenBalancer0_2,            Screen::ScreenBalancer3_5,
+//      Thevenin values are not evaluated when balancing
+//      Screen::ScreenBalancer0_2Rth,         Screen::ScreenBalancer3_5Rth,
+//      Screen::ScreenDebugBalancer0_2M,      Screen::ScreenDebugBalancer3_5M,
+      Screen::ScreenTime,
       Screen::ScreenTemperature };
     const Screen::ScreenType dischargeScreens[] PROGMEM = {
-      Screen::ScreenFirst, Screen::ScreenRthVth, Screen::ScreenTime,
-      Screen::ScreenBalancer0_2,
-      Screen::ScreenBalancer0_2RthV,
-      Screen::ScreenBalancer0_2RthI,
-      Screen::ScreenBalancer0_2Rth,
-      Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
+      Screen::ScreenFirst,
+      Screen::ScreenDebugRthVth,
+      Screen::ScreenBalancer0_2,            Screen::ScreenBalancer3_5,
+      Screen::ScreenBalancer0_2Rth,         Screen::ScreenBalancer3_5Rth,
+      Screen::ScreenDebugBalancer0_2RthV,   Screen::ScreenDebugBalancer3_5RthV,
+      Screen::ScreenDebugBalancer0_2RthI,   Screen::ScreenDebugBalancer3_5RthI,
+      Screen::ScreenR,
+      Screen::ScreenVout,
+      Screen::ScreenVinput,
+      Screen::ScreenDebugI,
+      Screen::ScreenTime,
+      Screen::ScreenTemperature };
     const Screen::ScreenType storageScreens[] PROGMEM = {
-      Screen::ScreenFirst, Screen::ScreenRthVth, Screen::ScreenCIVlimits, Screen::ScreenTime,
-      Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5, Screen::ScreenTemperature };
+      Screen::ScreenFirst,
+      Screen::ScreenDebugRthVth,
+      Screen::ScreenBalancer0_2,            Screen::ScreenBalancer3_5,
+      Screen::ScreenBalancer0_2Rth,         Screen::ScreenBalancer3_5Rth,
+      Screen::ScreenDebugBalancer0_2RthV,   Screen::ScreenDebugBalancer3_5RthV,
+      Screen::ScreenDebugBalancer0_2RthI,   Screen::ScreenDebugBalancer3_5RthI,
+      Screen::ScreenR,
+      Screen::ScreenVout,
+      Screen::ScreenVinput,
+      Screen::ScreenDebugI,
+      Screen::ScreenTime,
+      Screen::ScreenTemperature };
 
     const Screen::ScreenType startInfoBalanceScreens[] PROGMEM = {
-      Screen::ScreenStartInfo, Screen::ScreenBalancer0_2, Screen::ScreenBalancer3_5};
+      Screen::ScreenStartInfo,
+      Screen::ScreenBalancer0_2,            Screen::ScreenBalancer3_5,
+      Screen::ScreenTemperature };
 
     const Screen::ScreenType startInfoScreens[] PROGMEM = {
-      Screen::ScreenStartInfo };
+      Screen::ScreenStartInfo,
+      Screen::ScreenTemperature };
 
     void chargingComplete() {
         lcd.clear();
-        screen.displayChargeEnded();
+        screen.displayScreenProgramCompleted();
         buzzer.soundProgramComplete();
-        do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
+        waitButtonPressed();
         buzzer.soundOff();
     }
 
     void chargingMonitorError() {
         lcd.clear();
-        screen.displayChargeEnded();
+        screen.displayScreenProgramCompleted();
         buzzer.soundError();
-        do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
+        waitButtonPressed();
         buzzer.soundOff();
     }
 
@@ -72,16 +100,28 @@ namespace {
         Strategy::statusType status = Strategy::RUNNING;
         Monitor::statusType mstatus;
         strategy.powerOn();
+        screen.powerOn();
         lcd.clear();
         uint8_t screen_nr = 0;
+        screen_limit--;
         do {
             if(!PolarityCheck::runReversedPolarityInfo())
-                screen.display(pgm::read<Screen::ScreenType>(&chargeScreens[screen_nr]));
+                screen.display(pgm::read(&chargeScreens[screen_nr]));
 
-            key = selectIndexWithKeyboard(screen_nr, screen_limit);
+            {
+                //change displayed screen
+                key =  keyboard.getPressedWithSpeed();
+                int8_t step = 0;
+                if(key == BUTTON_INC && screen_nr < screen_limit)   step++;
+                if(key == BUTTON_DEC && screen_nr > 0)              step--;
+                do{
+                    screen_nr+=step;
+                } while(!settings.isDebug() && pgm::read(&chargeScreens[screen_nr]) & Screen::Debug);
+            }
             if(run) {
                 mstatus = monitor.run();
                 if(mstatus != Monitor::OK) {
+                    screen.powerOff();
                     strategy.powerOff();
                     chargingMonitorError();
                     run = false;
@@ -91,11 +131,13 @@ namespace {
                     newMesurmentData = analogInputs.getCalculationCount();
                     status = strategy.doStrategy();
                     if(status == Strategy::COMPLETE_AND_EXIT) {
+                        screen.powerOff();
                         strategy.powerOff();
                         return status;
                     }
 
                     if(status != Strategy::RUNNING) {
+                        screen.powerOff();
                         strategy.powerOff();
                         chargingComplete();
                         run = false;
@@ -104,6 +146,7 @@ namespace {
             }
         } while(key != BUTTON_STOP);
 
+        screen.powerOff();
         strategy.powerOff();
         return status;
     }

@@ -3,6 +3,7 @@
 #include "Hardware.h"
 #include "Monitor.h"
 #include "Buzzer.h"
+#include "Screen.h"
 
 static void callback() {
     static uint8_t slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
@@ -13,6 +14,7 @@ static void callback() {
         slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
         smps.doSlowInterrupt();
         discharger.doSlowInterrupt();
+        screen.doSlowInterrupt();
     }
 }
 

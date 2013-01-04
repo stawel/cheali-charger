@@ -13,43 +13,58 @@ public:
     AnalogInputs::ValueType valueTh_;
     uint16_t charge_;
     Program::ProgramType programType_;
+    uint32_t startTime_totalTime_;
+    uint32_t totalBalanceTime_;
+    uint32_t totalChargDischargeTime_;
+    AnalogInputs::Name iName_;
+    bool on_;
 
+    uint16_t getTimeSec() const;
+    void doSlowInterrupt();
+
+    void powerOn();
+    void powerOff();
     Screen() {};
-    enum ScreenViewType { Simple, Expert, Debug};
-    enum ScreenType { ScreenFirst, ScreenCIVlimits, ScreenTime, ScreenTemperature,
-        ScreenBalancer0_2, ScreenBalancer3_5,
-        ScreenBalancer0_2M, ScreenBalancer3_5M,
-        ScreenBalancer0_2RthV, ScreenBalancer3_5RthV,
-        ScreenBalancer0_2RthI, ScreenBalancer3_5RthI,
-        ScreenBalancer0_2Rth, ScreenBalancer3_5Rth,
+    enum ScreenViewType { Normal, Debug=0x80};
+    enum ScreenType {
+        ScreenStartInfo,
+        ScreenFirst, ScreenCIVlimits, ScreenTime, ScreenTemperature,
+        ScreenBalancer0_2,      ScreenBalancer3_5,
+        ScreenBalancer0_2Rth,   ScreenBalancer3_5Rth,
+        ScreenR,
+        ScreenVout,
+        ScreenVinput,
 
-        ScreenRthVth,
-        ScreenStartInfo};
+        //Debug screens
+        ScreenDebugRthVth = Debug,
+        ScreenDebugI,
+        ScreenDebugBalancer0_2M,    ScreenDebugBalancer3_5M,
+        ScreenDebugBalancer0_2RthV, ScreenDebugBalancer3_5RthV,
+        ScreenDebugBalancer0_2RthI, ScreenDebugBalancer3_5RthI,
+        };
 
     void display(ScreenType screen);
 
     void displayScreenFirst();
     void displayScreenCIVlimits();
-    void displayScreenBalancer0_2();
-    void displayScreenBalancer3_5();
-    void displayScreenBalancer0_2R();
-    void displayScreenBalancer3_5R();
     void displayScreenTime();
     void displayScreenTemperature();
+    void displayScreenR();
+    void displayScreenVout();
+    void displayScreenVinput();
 
-    void displayChargeEnded();
-    void displayRthVth();
+    void displayScreenProgramCompleted();
+    void displayDebugRthVth();
+    void displayDebugI();
 
     void displayMonitorError();
     void displayStartInfo();
 
-
     static void displayStrings(const char *s1, const char *s2);
-
     static void displayNotImplemented();
+    static void displayScreenReversedPolarity();
 
     static void runNotImplemented();
-    static void reversedPolarity();
 };
 
 extern Screen screen;

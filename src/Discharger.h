@@ -19,6 +19,8 @@ public:
 
     STATE getState() const { return state_; }
     bool isPowerOn() const { return getState() == DISCHARGING; }
+    bool isWorking() const { return value_ != 0; }
+
 
     uint16_t getValue() const { return value_; }
     void setValue(uint16_t value);
@@ -29,16 +31,13 @@ public:
 
     void doSlowInterrupt();
 
-    uint32_t getOnTimeSec() const;
     uint16_t getDischarge() const;
-
     uint16_t correctValueTintern(uint16_t v);
 
 protected:
     void finalizeValueTintern(bool force);
     STATE state_;
     uint16_t value_,valueSet_;
-    uint16_t startTime_;
     bool tempcutoff_;
     uint32_t discharge_;
 };

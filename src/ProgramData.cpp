@@ -115,9 +115,9 @@ uint8_t ProgramData::printVoltageString() const
     } else {
         uint8_t r = 5+2;
         lcdPrintVoltage(getVoltage(), 5);
-        lcd.print('/');
+        lcdPrintChar('/');
         r+=lcd.print(battery.cells);
-        lcd.print('C');
+        lcdPrintChar('C');
         return r;
     }
 }

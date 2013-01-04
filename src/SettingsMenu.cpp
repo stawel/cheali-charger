@@ -11,7 +11,6 @@ const char string_SETM5[] PROGMEM = "input low:";
 const char string_SETM6[] PROGMEM = "view: ";
 const char string_SETM7[] PROGMEM = "     save";
 
-
 const char * const SettingsStaticMenu[] PROGMEM =
 {
         string_SETM0,
@@ -20,8 +19,7 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_SETM3,
         string_SETM4,
         string_SETM5,
-        //TODO: implement view type
-//        string_SETM6,
+        string_SETM6,
         string_SETM7,
 };
 
@@ -35,12 +33,13 @@ uint8_t SettingsMenu::printItem(uint8_t index)
     StaticMenu::printItem(index);
     if(getBlinkIndex() != index) {
         switch (index) {
-            case 0:    lcdPrintUnsigned(p_.backlight_, 3);     break;
-            case 1:    printTemp(p_.fanTempOn_);                break;
-            case 2:    printTemp(p_.fanTempOff_);                break;
-            case 3:    printTemp(p_.dischargeTempOn_);            break;
-            case 4:printTemp(p_.dischargeTempOff_);            break;
-            case 5:    printVolt(p_.inputVoltageLow_);            break;
+            case 0:     lcdPrintUnsigned(p_.backlight_, 3);         break;
+            case 1:     printTemp(p_.fanTempOn_);                   break;
+            case 2:     printTemp(p_.fanTempOff_);                  break;
+            case 3:     printTemp(p_.dischargeTempOn_);             break;
+            case 4:     printTemp(p_.dischargeTempOff_);            break;
+            case 5:     printVolt(p_.inputVoltageLow_);             break;
+            case 6:     printViewType();                            break;
         }
     }
 }
@@ -52,12 +51,13 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
 //    dir *= keyboard.getSpeedFactor();
 
     switch(index) {
-        case 0:    changeBacklight(dir);                    break;
-        case 1:    changeTemp(p_.fanTempOn_, dir);            break;
-        case 2:    changeTemp(p_.fanTempOff_,dir);            break;
-        case 3:    changeTemp(p_.dischargeTempOn_, dir);    break;
-        case 4:    changeTemp(p_.dischargeTempOff_, dir);    break;
-        case 5:    changeVolt(p_.inputVoltageLow_, dir);    break;
+        case 0:     changeBacklight(dir);                       break;
+        case 1:     changeTemp(p_.fanTempOn_, dir);             break;
+        case 2:     changeTemp(p_.fanTempOff_,dir);             break;
+        case 3:     changeTemp(p_.dischargeTempOn_, dir);       break;
+        case 4:     changeTemp(p_.dischargeTempOff_, dir);      break;
+        case 5:     changeVolt(p_.inputVoltageLow_, dir);       break;
+        case 6:     changeViewType(dir);                        break;
     }
 }
 
@@ -83,11 +83,11 @@ bool SettingsMenu::run() {
 
 void SettingsMenu::printTemp(AnalogInputs::ValueType t) {
     lcdPrintUnsigned(t/100, 3);
-    lcd.print('C');
+    lcdPrintChar('C');
 }
 void SettingsMenu::printVolt(AnalogInputs::ValueType v) {
     lcdPrintUnsigned(v/1000, 3);
-    lcd.print('V');
+    lcdPrintChar('V');
 }
 
 
@@ -99,9 +99,18 @@ void SettingsMenu::changeBacklight(int dir) {
 void SettingsMenu::changeViewType(int dir)
 {
     uint16_t v = p_.view_;
-    changeMax(v, dir, 3);
-    p_.view_ = Screen::ScreenViewType(v);
+    if(dir < 0) p_.view_ = Screen::Normal;
+    if(dir > 0) p_.view_ = Screen::Debug;
 }
+
+void SettingsMenu::printViewType() const
+{
+    if(p_.view_ == Screen::Normal)
+        lcdPrint_P(PSTR("normal"));
+    else
+        lcdPrint_P(PSTR("debug"));
+}
+
 void SettingsMenu::changeTemp(AnalogInputs::ValueType &v, int step) {
     const AnalogInputs::ValueType min = ANALOG_CELCIUS(1);
     const AnalogInputs::ValueType max = ANALOG_CELCIUS(99);

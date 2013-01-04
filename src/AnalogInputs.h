@@ -85,8 +85,11 @@ public:
 
     AnalogInputs(const DefaultValues * inputs_P);
 
+    //get the average (measured) value
     ValueType getValue(Name name) const;
+    //get real value (usable) - average, after calibration
     ValueType getRealValue(Name name) const;
+    //get the measured value - in this particular moment
     ValueType getMeasuredValue(Name name) const;
 
     ValueType calibrateValue(Name name, ValueType x) const;

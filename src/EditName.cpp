@@ -34,7 +34,7 @@ void EditName::selectLetterScreen()
     for(uint8_t j=0;j<LCD_LINES;j++) {
         lcd.setCursor(0,j);
         for(uint8_t i=0;i<LCD_COLUMNS;i++)
-            lcd.print((char)begin++);
+            lcdPrintChar((char)begin++);
     }
 }
 

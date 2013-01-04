@@ -63,14 +63,14 @@ void Menu::display() {
     uint8_t lines = LCD_LINES;
     for(uint8_t i = 0; i < lines; i++) {
         lcd.setCursor(0, i);
-        lcd.print(' ');
+        lcdPrintChar(' ');
         printItem(i+begin_);
         lcdPrintSpaces();
     }
     lcd.setCursor(0,pos_);
-    lcd.print('>');
+    lcdPrintChar('>');
     lcd.setCursor(LCD_COLUMNS - 1,pos_);
-    lcd.print('<');
+    lcdPrintChar('<');
     render_ = false;
 }
 

@@ -15,6 +15,7 @@ public:
     Settings p_;
 private:
 
+    void printViewType() const;
     void changeBacklight(int dir);
     void changeViewType(int dir);
 

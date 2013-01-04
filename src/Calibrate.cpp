@@ -263,7 +263,7 @@ void Calibrate::printCalibrateB0_2()
     if(dispVal_ != 0) dig = 6;
     print_m_2(PSTR(" 0:"), AnalogInputs::Vb0, dig);
     print_m_1(PSTR("1:"),  AnalogInputs::Vb1, dig);
-    if(dispVal_ == 0) lcd.print(' ');
+    if(dispVal_ == 0) lcdPrintChar(' ');
     print_m_2(PSTR("2:"), AnalogInputs::Vb2, dig);
 }
 void Calibrate::printCalibrateB0_2_Blink()
@@ -286,7 +286,7 @@ void Calibrate::printCalibrateB0_2_Blink()
     if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb1, dig);
     else lcdPrintSpaces(dig);
 
-    if(dispVal_ == 0) lcd.print(' ');
+    if(dispVal_ == 0) lcdPrintChar(' ');
     lcdPrint_P(PSTR("2:"));
     if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb2, dig);
     else lcdPrintSpaces(dig);
@@ -312,7 +312,7 @@ void Calibrate::printCalibrateB3_5_Blink()
     if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb4, dig);
     else lcdPrintSpaces(dig);
 
-    if(dispVal_ == 0) lcd.print(' ');
+    if(dispVal_ == 0) lcdPrintChar(' ');
     lcdPrint_P(PSTR("5:"));
     if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb5, dig);
     else lcdPrintSpaces(dig);
@@ -325,7 +325,7 @@ void Calibrate::printCalibrateB3_5()
     if(dispVal_ != 0) dig = 6;
     print_m_2(PSTR(" 3:"), AnalogInputs::Vb3, dig);
     print_m_1(PSTR("4:"), AnalogInputs::Vb4, dig);
-    if(dispVal_ == 0) lcd.print(' ');
+    if(dispVal_ == 0) lcdPrintChar(' ');
     print_m_2(PSTR("5:"), AnalogInputs::Vb5, dig);
 }
 

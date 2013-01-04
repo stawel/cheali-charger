@@ -1,33 +1,6 @@
 
 #include "Utils.h"
 
-
-template<class digit_type>
-uint8_t setNumberWithKeyboard(digit_type &x, const digit_type x_min,
-        const digit_type x_max, const digit_type x_step = 1, bool exactly = true)
-{
-    uint8_t key =  keyboard.getPressedWithSpeed();
-    if(exactly) {
-        if(key == BUTTON_INC && x < x_max) x+=x_step;
-        if(key == BUTTON_DEC && x > x_min) x-=x_step;
-    } else {
-        if(key & BUTTON_INC && x < x_max) x+=x_step;
-        if(key & BUTTON_DEC && x > x_min) x-=x_step;
-    }
-    if(x > x_max) {
-        x = x_max;
-    } else if( x < x_min) {
-        x = x_min;
-    }
-    return key;
-}
-
-uint8_t selectIndexWithKeyboard(uint8_t &x, const uint8_t tab_size)
-{
-    return setNumberWithKeyboard<uint8_t>(x, 0, tab_size - 1, 1);
-}
-
-
 bool testTinern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on)
 {
     AnalogInputs::ValueType t = analogInputs.getRealValue(AnalogInputs::Tintern);
@@ -87,3 +60,8 @@ void changeMax(uint16_t &v, int direc, uint16_t max)
     else SUB_MIN(v, step ,1);
 }
 
+void waitButtonPressed()
+{
+    do { } while(keyboard.getPressedWithSpeed() != BUTTON_NONE);
+    do { } while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
+}

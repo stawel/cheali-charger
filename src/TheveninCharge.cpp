@@ -19,6 +19,7 @@ void TheveninCharge::powerOn()
     balancer.powerOn();
     analogInputs.resetStable();
     theveninMethod.init();
+    screen.iName_ = AnalogInputs::IsmpsValue;
 }
 
 void TheveninCharge::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)

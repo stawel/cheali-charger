@@ -2,6 +2,7 @@
 #include "memory.h"
 #include "SettingsMenu.h"
 #include "Hardware.h"
+#include "Buzzer.h"
 
 Settings settings;
 
@@ -11,7 +12,7 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_CELCIUS(50), ANALOG_CELCIUS(40),
         ANALOG_CELCIUS(55), ANALOG_CELCIUS(60),
         ANALOG_VOLT(7),
-        Screen::Simple
+        Screen::Normal
 };
 
 
@@ -49,6 +50,7 @@ void Settings::edit()
     SettingsMenu menu(*this);
     if(menu.run()) {
         //save settings
+        buzzer.soundSave();
         *this = menu.p_;
         save();
     }

@@ -12,14 +12,6 @@ SMPS::SMPS()
 }
 
 
-void SMPS::setError(const char * error1,const char * error2)
-{
-    powerOff(ERROR);
-    error1_ = error1;
-    error2_ = error2;
-    return;
-}
-
 void SMPS::setValue(uint16_t value)
 {
     if(value > SMPS_UPPERBOUND_VALUE)
@@ -44,7 +36,6 @@ void SMPS::powerOn()
     digitalWrite(SMPS_DISABLE_PIN, false);
     analogInputs.doFullMeasurement();
     state_ = CHARGING;
-    startTime_ = timer.getMiliseconds();
     charge_ = 0;
 }
 
@@ -56,10 +47,10 @@ void SMPS::powerOff(STATE reason)
     if(!isPowerOn() || reason == CHARGING)
         return;
 
+    setValue(0);
     digitalWrite(SMPS_DISABLE_PIN, true);
     hardware::setBatteryOutput(false);
     state_ = reason;
-    setError(PSTR("charging"), PSTR("complete !!"));
 }
 
 void SMPS::doSlowInterrupt()
@@ -67,11 +58,6 @@ void SMPS::doSlowInterrupt()
    if(isPowerOn()) {
            charge_ += getIcharge();
    }
-}
-
-uint32_t SMPS::getOnTimeSec() const
-{
-    return (timer.getMiliseconds() - startTime_ ) / 1000;
 }
 
 uint16_t SMPS::getCharge() const

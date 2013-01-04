@@ -5,7 +5,7 @@
 #include "Settings.h"
 
 Discharger::Discharger():
-startTime_(0), discharge_(0)
+discharge_(0)
 {
     pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
     pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
@@ -67,7 +67,6 @@ void Discharger::powerOn()
     digitalWrite(DISCHARGE_DISABLE_PIN, false);
     analogInputs.doFullMeasurement();
     state_ = DISCHARGING;
-    startTime_ = timer.getMiliseconds();
     discharge_ = 0;
 }
 
@@ -76,6 +75,7 @@ void Discharger::powerOff(STATE reason)
     if(!isPowerOn() || reason == DISCHARGING)
         return;
 
+    setValue(0);
     digitalWrite(DISCHARGE_DISABLE_PIN, true);
     hardware::setBatteryOutput(false);
     state_ = reason;
@@ -89,17 +89,13 @@ void Discharger::doSlowInterrupt()
     }
 }
 
-uint32_t Discharger::getOnTimeSec() const
-{
-    return (timer.getMiliseconds() - startTime_ ) / 1000;
-}
-
 uint16_t Discharger::getDischarge() const
 {
     uint32_t retu = discharge_;
 #if INTERRUPT_PERIOD_MICROSECONDS == 512
 //    retu *= INTERRUPT_PERIOD_MICROSECONDS;
-    retu /= (1000000/64);//*(3600/8) == TIMER_SLOW_INTERRUPT_INTERVAL;
+    retu /= (1000000/32);//*(3600/16) == TIMER_SLOW_INTERRUPT_INTERVAL
+
 #else
 #warning "INTERRUPT_PERIOD_MICROSECONDS != 512"
     retu *= INTERRUPT_PERIOD_MICROSECONDS;

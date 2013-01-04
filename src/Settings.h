@@ -18,6 +18,7 @@ struct Settings {
     void edit();
     void check();
     void apply();
+    bool isDebug() { return view_ == Screen::Debug; }
 
     static void load();
     static void save();

@@ -11,7 +11,7 @@ bool PolarityCheck::runReversedPolarityInfo()
     bool reversed = analogInputs.isReversePolarity();
     if(reversed) {
         if(!isReversedPolarity_)
-            Screen::reversedPolarity();
+            Screen::displayScreenReversedPolarity();
 
         buzzer.soundReversedPolarity();
     }

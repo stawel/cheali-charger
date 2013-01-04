@@ -24,6 +24,8 @@ public:
 
     STATE getState() const { return state_; }
     bool isPowerOn() const { return getState() == CHARGING; }
+    bool isWorking() const { return value_ != 0; }
+
 
     uint16_t getValue() const { return value_; }
     void setValue(uint16_t value);
@@ -34,19 +36,12 @@ public:
 
     void doSlowInterrupt();
 
-    void setError(const char * error1, const char * error2);
-    const char * getError1() { return error1_; }
-    const char * getError2() { return error2_; }
-
-    uint32_t getOnTimeSec() const;
     uint16_t getCharge() const;
 
 protected:
 
     STATE state_;
     uint16_t value_;
-    const char *error1_, *error2_;
-    uint16_t startTime_;
     uint32_t charge_;
 };
 

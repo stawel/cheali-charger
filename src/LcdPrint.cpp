@@ -11,7 +11,7 @@ uint8_t lcdPrintSpaces()
 uint8_t lcdPrintSpaces(uint8_t n)
 {
     for(uint8_t i=0;i<n;i++)
-        lcd.print(' ');
+        lcdPrintChar(' ');
     return n;
 }
 
@@ -126,7 +126,7 @@ namespace {
 void lcdPrintInf(int8_t dig)
 {
     for(; dig > 3; dig--)
-        lcd.print(' ');
+        lcdPrintChar(' ');
 
     lcdPrint_P(PSTR("Inf"), dig);
 }
@@ -144,22 +144,22 @@ void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
     xdig+=1+3; // m or .
 
     for(;xdig<dig;dig--)
-        lcd.print(prefix);
+        lcdPrintChar(prefix);
 
     if(dig >= xdig && !dot) {
         xdig = digits(x);
         dig--; //m
         for(;xdig<dig;dig--)
-            lcd.print(prefix);
+            lcdPrintChar(prefix);
         lcd.print(x);
-        lcd.print('m');
+        lcdPrintChar('m');
     } else if(dig < xdig - 4) {
         lcdPrintInf(dig);
     } else {
         lcd.print(x/1000);
         x%=1000;
         dig -= xdig - 4;
-        if(dig-- >0) lcd.print('.');
+        if(dig-- >0) lcdPrintChar('.');
         if(dig-- >0) lcd.print(x/100);
         x%=100;
         if(dig-- >0) lcd.print(x/10);
@@ -169,9 +169,27 @@ void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
 }
 }
 
+void lcdPrintTime(uint16_t timeSec)
+{
+    lcdPrintUnsigned(timeSec/60, 3, '0');
+    lcdPrintChar(':');
+    lcdPrintUnsigned(timeSec%60, 2, '0');
+}
+
+
 void lcdPrintUnsigned(uint16_t x, int8_t dig)
 {
-    const char prefix = ' ';
+    lcdPrintUnsigned(x,dig, ' ');
+}
+
+void lcdPrintChar(char c)
+{
+    lcd.print(c);
+}
+
+
+void lcdPrintUnsigned(uint16_t x, int8_t dig, const char prefix)
+{
     if(dig<=0)
         return;
     uint8_t xdig = digits(x);
@@ -180,7 +198,7 @@ void lcdPrintUnsigned(uint16_t x, int8_t dig)
         lcdPrintInf(dig);
     } else {
         for(;xdig<dig;dig--)
-            lcd.print(prefix);
+            lcdPrintChar(prefix);
         lcd.print(x);
     }
 }
@@ -199,13 +217,13 @@ void lcdPrintSigned(int16_t x, int8_t dig)
 
     if(dig < xdig) {
         if(y<0) {
-            lcd.print('-');
+            lcdPrintChar('-');
             dig--;
         }
         lcdPrintInf(dig);
     } else {
         for(;xdig<dig;dig--)
-            lcd.print(prefix);
+            lcdPrintChar(prefix);
         lcd.print(y);
     }
 }
@@ -258,12 +276,12 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
         break;
     case AnalogInputs::Resistance:
         dot = false;
-        //TODO: ??
-        unit ='W';
+        //TODO: ??Ohm
+        unit ='!'-45;
         break;
     case AnalogInputs::Unknown:
         lcdPrintSigned(x, dig);
-        lcd.print(unit);
+        lcdPrintChar(unit);
         return;
     case AnalogInputs::Charge:
         dot = false;
@@ -272,9 +290,9 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
         break;
     }
     lcdPrintEValue(x, (int8_t) dig, dot);
-    lcd.print(unit);
+    lcdPrintChar(unit);
 
-    if(type == AnalogInputs::Charge)     lcd.print('A');
+    if(type == AnalogInputs::Charge)     lcdPrintChar('A');
 }
 
 
