@@ -7,6 +7,7 @@
 #include "SimpleCharge.h"
 #include "TheveninCharge.h"
 #include "TheveninDischarge.h"
+#include "DeltaChargeStrategy.h"
 #include "Monitor.h"
 #include "Storage.h"
 #include "memory.h"
@@ -17,7 +18,31 @@
 
 namespace {
 
-    SimpleCharge simple;
+    const Screen::ScreenType deltaChargeScreens[] PROGMEM = {
+      Screen::ScreenFirst,
+      Screen::ScreenDeltaVout,
+      Screen::ScreenDeltaTextern,
+      Screen::ScreenDebugDelta,
+      Screen::ScreenCIVlimits,
+      Screen::ScreenR,
+      Screen::ScreenVout,
+      Screen::ScreenVinput,
+      Screen::ScreenDebugI,
+      Screen::ScreenTime,
+      Screen::ScreenTemperature };
+
+    const Screen::ScreenType NiXXDischargeScreens[] PROGMEM = {
+      Screen::ScreenFirst,
+      Screen::ScreenDeltaTextern,
+      Screen::ScreenDebugDelta,
+      Screen::ScreenCIVlimits,
+      Screen::ScreenR,
+      Screen::ScreenVout,
+      Screen::ScreenVinput,
+      Screen::ScreenDebugI,
+      Screen::ScreenTime,
+      Screen::ScreenTemperature };
+
     const Screen::ScreenType theveninScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenDebugRthVth,
@@ -85,7 +110,7 @@ namespace {
 
     void chargingMonitorError() {
         lcdClear();
-        screen.displayScreenProgramCompleted();
+        screen.displayMonitorError();
         buzzer.soundError();
         waitButtonPressed();
         buzzer.soundOff();
@@ -179,10 +204,23 @@ void Program::runTheveninCharge(int minChargeC)
     theveninCharge.setMinI(ProgramData::currentProgramData.battery.Ic/minChargeC);
     doStrategy(theveninCharge, theveninScreens, sizeOfArray(theveninScreens));
 }
+
+void Program::runDeltaCharge()
+{
+    deltaChargeStrategy.setTestTV(true, true);
+    doStrategy(deltaChargeStrategy, deltaChargeScreens, sizeOfArray(deltaChargeScreens));
+}
+
 void Program::runDischarge()
 {
     theveninDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
     doStrategy(theveninDischarge, dischargeScreens, sizeOfArray(dischargeScreens));
+}
+
+void Program::runNiXXDischarge()
+{
+    theveninDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+    doStrategy(theveninDischarge, NiXXDischargeScreens, sizeOfArray(NiXXDischargeScreens));
 }
 
 void Program::runBalance()
@@ -210,6 +248,12 @@ void Program::run(ProgramType prog)
             runStorage(false);
         case Program::StorageLiXX_Balance:
             runStorage(true);
+            break;
+        case Program::ChargeNiXX:
+            runDeltaCharge();
+            break;
+        case Program::DischargeNiXX:
+            runNiXXDischarge();
             break;
         default:
             //TODO:

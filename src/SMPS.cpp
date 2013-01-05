@@ -18,7 +18,7 @@ void SMPS::setValue(uint16_t value)
         value = SMPS_UPPERBOUND_VALUE;
     value_ = value;
     Timer1.pwm(SMPS_VALUE_PIN, value_);
-    analogInputs.reset();
+    analogInputs.resetMeasurement();
 }
 void SMPS::setRealValue(uint16_t I)
 {
@@ -34,6 +34,7 @@ void SMPS::powerOn()
     hardware::setBatteryOutput(true);
     setValue(0);
     digitalWrite(SMPS_DISABLE_PIN, false);
+    analogInputs.reset();
     analogInputs.doFullMeasurement();
     state_ = CHARGING;
     charge_ = 0;

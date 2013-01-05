@@ -12,6 +12,8 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_CELCIUS(50), ANALOG_CELCIUS(40),
         ANALOG_CELCIUS(55), ANALOG_CELCIUS(60),
         ANALOG_VOLT(7),
+        ANALOG_VOLT(0.007), ANALOG_VOLT(0.012),
+        ANALOG_CELCIUS(1),
         Screen::Normal
 };
 

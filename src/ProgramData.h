@@ -23,6 +23,8 @@ struct ProgramData {
 
     uint16_t getVoltagePerCell(VoltageType type = VIdle) const;
     uint16_t getVoltage(VoltageType type = VIdle) const;
+    int16_t getDeltaVLimit() const;
+    int16_t getDeltaTLimit() const;
 
     bool edit(int index);
     void createName(int index);

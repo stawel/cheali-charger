@@ -13,6 +13,9 @@ struct Settings {
     AnalogInputs::ValueType fanTempOn_,fanTempOff_;
     AnalogInputs::ValueType dischargeTempOn_,dischargeTempOff_;
     AnalogInputs::ValueType inputVoltageLow_;
+    AnalogInputs::ValueType deltaV_NiCd_, deltaV_NiMH_;
+    AnalogInputs::ValueType deltaT_;
+
     Screen::ScreenViewType view_;
 
     void edit();

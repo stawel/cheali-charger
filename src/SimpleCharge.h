@@ -6,6 +6,7 @@
 
 class SimpleCharge : public Strategy {
 public:
+    bool testVout_;
     SimpleCharge(){};
     virtual void powerOn();
     virtual statusType doStrategy();
@@ -13,6 +14,7 @@ public:
     bool isStable() const;
 };
 
+extern SimpleCharge simpleCharge;
 
 #endif /* SIMPLECHARGE_H_ */
 

@@ -31,6 +31,8 @@ void lcdPrintChar(char c);
 void lcdPrintDigit(uint8_t d);
 void lcdPrintUInt(uint16_t x);
 
+void lcdPrintEValue(uint16_t x, int8_t dig, bool dot);
+
 void lcdPrintTemperature(AnalogInputs::ValueType c, int8_t dig);
 void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig);
 void lcdPrintCurrent(AnalogInputs::ValueType i, int8_t dig);

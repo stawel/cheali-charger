@@ -150,8 +150,6 @@ uint8_t lcdPrint_E(const char *str, uint8_t n)
 }
 
 namespace {
-
-
 void lcdPrintInf(int8_t dig)
 {
     for(; dig > 3; dig--)
@@ -159,13 +157,11 @@ void lcdPrintInf(int8_t dig)
 
     lcdPrint_P(PSTR("Inf"), dig);
 }
+}
 
 void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
 {
     const char prefix = ' ';
-    if(dig<=0)
-        return;
-
     if(dig<=0)
         return;
 
@@ -196,6 +192,30 @@ void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
         if(dig-- >0) lcdPrintDigit(x);
     }
 }
+
+void lcdPrintTemperature_(AnalogInputs::ValueType x, int8_t dig)
+{
+    const char prefix = ' ';
+    if(dig<=0)
+        return;
+
+    int8_t xdig = digits(x/100);
+    xdig+=1+2; // .
+
+    for(;xdig<dig;dig--)
+        lcdPrintChar(prefix);
+
+    if(dig < xdig - 3) {
+        lcdPrintInf(dig);
+    } else {
+        lcdPrintUInt(x/100);
+        x%=100;
+        dig -= xdig - 3;
+        if(dig-- >0) lcdPrintChar('.');
+        if(dig-- >0) lcdPrintDigit(x/10);
+        x%=10;
+        if(dig-- >0) lcdPrintDigit(x);
+    }
 }
 
 void lcdPrintTime(uint16_t timeSec)
@@ -222,36 +242,38 @@ void lcdPrintDigit(uint8_t d)
     lcdPrintChar('0'+ d);
 }
 
-void lcdPrintUnsigned(uint16_t x, int8_t dig, const char prefix)
+void lcdPrintUnsigned_sign(uint16_t x, int8_t dig, const char prefix, bool minus)
 {
     if(dig<=0)
         return;
+
+    if(minus)
+        dig--;
+
     uint8_t xdig = digits(x);
 
+    for(;xdig<dig;dig--)
+        lcdPrintChar(prefix);
+
+    if(minus) lcdPrintChar('-');
     if(dig < xdig) {
         lcdPrintInf(dig);
     } else {
-        for(;xdig<dig;dig--)
-            lcdPrintChar(prefix);
         lcdPrintUInt(x);
     }
 }
 
-void lcdPrintSigned(int16_t x, int8_t dig)
+void lcdPrintUnsigned(uint16_t x, int8_t dig, const char prefix)
 {
-    const char prefix = ' ';
-    if(dig<=0)
-        return;
-
-    uint8_t xdig = digits(abs(x));
-    if(x<0) {
-        dig--;
-        lcdPrintChar('-');
-        x=-x;
-    }
-    lcdPrintUnsigned(x,dig);
+    lcdPrintUnsigned_sign(x,dig,prefix, false);
 }
 
+void lcdPrintSigned(int16_t x, int8_t dig)
+{
+    bool minus = x < 0;
+    if(minus) x=-x;
+    lcdPrintUnsigned_sign(x,dig, ' ', minus);
+}
 
 
 void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig)
@@ -275,9 +297,11 @@ void lcdPrintResistance(AnalogInputs::ValueType r, int8_t dig)
 
 void lcdPrintTemperature(AnalogInputs::ValueType t, int8_t dig)
 {
-    lcdPrintAnalog(t, AnalogInputs::Temperature, dig);
+    if(dig > 0) {
+        lcdPrintTemperature_(t,--dig);
+        lcdPrintChar('C');
+    }
 }
-
 
 void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t dig)
 {
@@ -295,9 +319,7 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
         unit ='V';
         break;
     case AnalogInputs::Temperature:
-        unit ='C';
-        x*=10;
-        break;
+        return lcdPrintTemperature(x, dig+1);
     case AnalogInputs::Resistance:
         dot = false;
         //TODO: ??Ohm

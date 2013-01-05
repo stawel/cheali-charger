@@ -34,10 +34,14 @@ public:
         ScreenR,
         ScreenVout,
         ScreenVinput,
+        ScreenDeltaVout,
+        ScreenDeltaTextern,
+
 
         //Debug screens
         ScreenDebugRthVth = Debug,
         ScreenDebugI,
+        ScreenDebugDelta,
         ScreenDebugBalancer0_2M,    ScreenDebugBalancer3_5M,
         ScreenDebugBalancer0_2RthV, ScreenDebugBalancer3_5RthV,
         ScreenDebugBalancer0_2RthI, ScreenDebugBalancer3_5RthI,
@@ -52,10 +56,14 @@ public:
     void displayScreenR();
     void displayScreenVout();
     void displayScreenVinput();
+    void displayDeltaVout();
+    void displayDeltaTextern();
+    void displayDelta();
 
     void displayScreenProgramCompleted();
     void displayDebugRthVth();
     void displayDebugI();
+    void displayDebugDelta();
 
     void displayMonitorError();
     void displayStartInfo();

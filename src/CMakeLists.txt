@@ -37,6 +37,8 @@ set(SOURCE_FILES
         Screen.h
         SimpleCharge.cpp
         SimpleCharge.h
+        DeltaChargeStrategy.cpp
+        DeltaChargeStrategy.h
         SimpleDischarge.cpp
         SimpleDischarge.h
         TheveninDischarge.cpp

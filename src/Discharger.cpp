@@ -47,7 +47,7 @@ void Discharger::finalizeValueTintern(bool force)
     if(v != value_ || force) {
         value_ = v;
         Timer1.pwm(DISCHARGE_VALUE_PIN, value_);
-        analogInputs.reset();
+        analogInputs.resetMeasurement();
     }
 }
 
@@ -65,6 +65,7 @@ void Discharger::powerOn()
     hardware::setBatteryOutput(true);
     setValue(0);
     digitalWrite(DISCHARGE_DISABLE_PIN, false);
+    analogInputs.reset();
     analogInputs.doFullMeasurement();
     state_ = DISCHARGING;
     discharge_ = 0;

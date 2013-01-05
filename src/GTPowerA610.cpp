@@ -31,7 +31,7 @@ const AnalogInputs::DefaultValues inputs_P[AnalogInputs::PHYSICAL_INPUTS] PROGME
     {mux.analogRead<MADDR_V_OUTMUX>,    {0, 0},                     {24832, ANALOG_VOLT(12.552)}},  //VoutMux
     {mux.analogRead<MADDR_T_INTERN>,    {21500, ANALOG_CELCIUS(52)},{41023, ANALOG_CELCIUS(29)}},   //Tintern
     {mux.analogRead<MADDR_V_IN>,        {0, 0},                     {48000, ANALOG_VOLT(13.930)}},  //Vin
-    {mux.analogRead<MADDR_T_EXTERN>,    {0, 0},                     {1, 1}},                        //Textern
+    {mux.analogRead<MADDR_T_EXTERN>,    {6272,  ANALOG_CELCIUS(24)},{14300, ANALOG_CELCIUS(60)}},   //Textern
 
     {mux.analogRead<MADDR_V_BALANSER0>, {0, 0},                     {54592, ANALOG_VOLT(4.169)}},   //Vb0
     {mux.analogRead<MADDR_V_BALANSER1>, {0, 0},                     {54592, ANALOG_VOLT(4.178)}},   //Vb1

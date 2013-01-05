@@ -3,6 +3,7 @@
 #include "LcdPrint.h"
 #include "ProgramDataMenu.h"
 #include "Utils.h"
+#include "Settings.h"
 
 ProgramData allProgramData[MAX_PROGRAMS] EEMEM;
 ProgramData ProgramData::currentProgramData;
@@ -10,10 +11,12 @@ ProgramData ProgramData::currentProgramData;
 
 const uint16_t voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
 {
-    //  { Idle,               Charge,             Discharge,            Storage};
+//      { VIdle,              VCharge,            VDischarge,           VStorage};
         { 1,                  1,                  1,                    1}, // Unknown
-        { ANALOG_VOLT(1.200), ANALOG_VOLT(1.200), ANALOG_VOLT(0.850),   0}, //    NiCd //??
-        { ANALOG_VOLT(1.200), ANALOG_VOLT(1.200), ANALOG_VOLT(1.000),   0}, //    NiMH //??
+//                               ???
+        { ANALOG_VOLT(1.200), ANALOG_VOLT(1.820), ANALOG_VOLT(0.850),   0}, //    NiCd //??
+//                              wikipedia
+        { ANALOG_VOLT(1.200), ANALOG_VOLT(1.600), ANALOG_VOLT(1.000),   0}, //    NiMH //??
         { ANALOG_VOLT(2.000), ANALOG_VOLT(2.460), ANALOG_VOLT(1.500),   0}, //Pb
 //LiXX
         { ANALOG_VOLT(3.300), ANALOG_VOLT(3.600), ANALOG_VOLT(2.000),   ANALOG_VOLT(3.300) /*??*/}, //Life
@@ -86,6 +89,19 @@ uint16_t ProgramData::getVoltage(VoltageType type) const
 {
     return battery.cells * getVoltagePerCell(type);
 }
+
+int16_t ProgramData::getDeltaVLimit() const
+{
+    int16_t v = 0;
+    if(battery.type == NiCd) v = settings.deltaV_NiCd_;
+    if(battery.type == NiMH) v = settings.deltaV_NiMH_;
+    return battery.cells * v;
+}
+int16_t ProgramData::getDeltaTLimit() const
+{
+    return settings.deltaT_;
+}
+
 
 void ProgramData::restoreDefault()
 {

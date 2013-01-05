@@ -77,7 +77,62 @@ bool AnalogInputs::isConnected(Name name) const
     }
 }
 
+void AnalogInputs::resetDelta()
+{
+    deltaAvrCount_ = 0;
+    deltaAvrSumVout_ = 0;
+    deltaAvrSumTextern_ = 0;
+    deltaCount_ = 0;
+    deltaLastT_ = 0;
+    deltaStartTime_ = timer.getMiliseconds();
+}
 
+
+void AnalogInputs::doDeltaCalculations()
+{
+    deltaAvrSumVout_ += measured_[Vout];
+    deltaAvrSumTextern_ += measured_[Textern];
+    deltaAvrCount_++;
+    if(timer.getMiliseconds() - deltaStartTime_ > DELTA_TIME_MILISECONDS) {
+        deltaCount_++;
+
+        uint16_t x;
+        ValueType real, old;
+
+        //calculate deltaVout
+        deltaAvrSumVout_ /= deltaAvrCount_;
+        x = deltaAvrSumVout_;
+        deltaAvrSumVout_ = 0;
+        real = calibrateValue(Vout, x);
+        old = getRealValue(deltaVoutMax);
+        if(real >= old)
+            setReal(deltaVoutMax, real);
+        setReal(deltaVout, real - old);
+
+        //calculate deltaTextern
+        uint16_t dc = deltaAvrCount_;
+#if DELTA_TIME_MILISECONDS != 60000
+#warning "DELTA_TIME_MILISECONDS != 60000"
+        uint32_t dx2;
+        dx2 = dc;
+        dx2 /= 60000;
+        dx2 *= DELTA_TIME_MILISECONDS;
+        dc = dx2;
+#endif
+        deltaAvrSumTextern_ /= dc;
+        x = deltaAvrSumTextern_;
+        deltaAvrSumTextern_ = 0;
+        real = calibrateValue(Textern, x);
+        old = deltaLastT_;
+        deltaLastT_ = real;
+        real -= old;
+        setReal(deltaTextern, real);
+
+        setReal(deltaLastCount, deltaAvrCount_);
+        deltaAvrCount_ = 0;
+        deltaStartTime_ = timer.getMiliseconds();
+    }
+}
 
 void AnalogInputs::doVirtualCalculations()
 {
@@ -101,6 +156,7 @@ void AnalogInputs::doVirtualCalculations()
         setReal(VobInfo, Vbalacer);
         setReal(VbalanceInfo, ports);
     }
+    doDeltaCalculations();
 }
 
 void AnalogInputs::doCalculations()
@@ -131,10 +187,20 @@ void AnalogInputs::resetStable()
     }
 }
 
-void AnalogInputs::reset()
+
+void AnalogInputs::resetMeasurement()
 {
     clearAvr();
     resetStable();
+}
+
+void AnalogInputs::reset()
+{
+    FOR_ALL_INPUTS(name) {
+        setReal(name, 0);
+    }
+    resetMeasurement();
+    resetDelta();
 }
 
 
@@ -150,6 +216,7 @@ void AnalogInputs::doMeasurement(uint16_t count)
         if(currentInput_ == VirtualInputs) {
             currentInput_ = Name(0);
             avrCount_++;
+            doDeltaCalculations();
             if(avrCount_ == AVR_MAX_COUNT) {
                 doCalculations();
             }

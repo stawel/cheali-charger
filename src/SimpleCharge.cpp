@@ -4,6 +4,8 @@
 #include "Hardware.h"
 
 
+SimpleCharge simpleCharge;
+
 
 void SimpleCharge::powerOn()
 {
@@ -18,18 +20,21 @@ void SimpleCharge::powerOff()
 
 Strategy::statusType SimpleCharge::doStrategy()
 {
-    if(smps.getIcharge()     >= ProgramData::currentProgramData.battery.Ic) {
+    if(smps.getIcharge() >= ProgramData::currentProgramData.battery.Ic) {
         smps.powerOff(SMPS::ERROR);
         return ERROR;
     }
-    if(smps.getVout()     >= ProgramData::currentProgramData.getVoltage(ProgramData::VCharge)) {
+
+    if(testVout_ && smps.getVout() >= ProgramData::currentProgramData.getVoltage(ProgramData::VCharge)) {
         smps.powerOff(SMPS::CHARGING_COMPLETE);
         return COMPLETE;
     }
+
     if(smps.getCharge() > ProgramData::currentProgramData.battery.C) {
         smps.powerOff(SMPS::CHARGING_COMPLETE);
         return COMPLETE;
     }
+    return RUNNING;
 }
 
 

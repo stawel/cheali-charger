@@ -38,8 +38,14 @@ void Timer::doInterrupt()
 uint32_t Timer::getMiliseconds() const
 {
     uint32_t retu = interrupts_;
+#if INTERRUPT_PERIOD_MICROSECONDS == 512
+    retu *= (INTERRUPT_PERIOD_MICROSECONDS/8);
+    retu /= (1000/8);
+#else
+#warning "INTERRUPT_PERIOD_MICROSECONDS != 512"
     retu *= INTERRUPT_PERIOD_MICROSECONDS;
     retu /= 1000;
+#endif
 
     return retu;
 }

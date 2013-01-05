@@ -21,7 +21,10 @@ public:
     static void runStorage(bool balance);
     static void runTheveninCharge(int minChargeC);
     static void runDischarge();
+    static void runNiXXDischarge();
+
     static void runBalance();
+    static void runDeltaCharge();
 };
 
 

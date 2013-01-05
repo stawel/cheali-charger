@@ -4,6 +4,8 @@
 #include <Arduino.h>
 
 #define MAX_CALIBRATION_POINTS 2
+#define DELTA_TIME_MILISECONDS 60000
+
 
 #define ANALOG_INPUTS_RESOLUTION         16  // bits
 #define STD_ANALOG_INPUTS_RESOLUTION     10  // bits
@@ -74,14 +76,19 @@ public:
         VoutBalancer,
         VobInfo,
         VbalanceInfo,
-        LastInput
+        deltaVout,
+        deltaVoutMax,
+        deltaTextern,
+        deltaLastCount,
+
+        LastInput,
     };
-    static const uint8_t    PHYSICAL_INPUTS = VirtualInputs - Vout;
-    static const uint8_t    ALL_INPUTS = LastInput - Vout;
-    static const uint16_t    AVR_MAX_COUNT = 100;
-    static const ValueType    STABLE_VALUE_ERROR = 2;
-    static const uint16_t    STABLE_MIN_VALUE = 3;
-    static const ValueType    REVERSE_POLARITY_MIN_VALUE = 1000;
+    static const uint8_t    PHYSICAL_INPUTS     = VirtualInputs - Vout;
+    static const uint8_t    ALL_INPUTS          = LastInput - Vout;
+    static const uint16_t   AVR_MAX_COUNT       = 100;
+    static const ValueType  STABLE_VALUE_ERROR  = 2;
+    static const uint16_t   STABLE_MIN_VALUE    = 3;
+    static const ValueType  REVERSE_POLARITY_MIN_VALUE = 1000;
 
     AnalogInputs(const DefaultValues * inputs_P);
 
@@ -100,8 +107,12 @@ public:
     void doFullMeasurement();
     void doVirtualCalculations();
     void doCalculations();
+    void doDeltaCalculations();
+
     void clearAvr();
     void reset();
+    void resetMeasurement();
+    void resetDelta();
 
     void restoreDefault();
     static void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);
@@ -127,7 +138,7 @@ public:
     void resetStable();
     bool isReversePolarity() const { return getMeasuredValue(VreversePolarity) > REVERSE_POLARITY_MIN_VALUE; }
 
-protected:
+//protected:
     void setReal(Name name, ValueType real);
     const DefaultValues * inputsP_;
     uint16_t avrCount_;
@@ -139,6 +150,13 @@ protected:
     uint16_t stableCount_[ALL_INPUTS];
 
     uint16_t calculationCount_;
+
+    uint16_t    deltaCount_;
+    uint16_t    deltaAvrCount_;
+    uint32_t    deltaAvrSumVout_;
+    uint32_t    deltaAvrSumTextern_;
+    ValueType   deltaLastT_;
+    uint32_t    deltaStartTime_;
 };
 
 template<class T>
