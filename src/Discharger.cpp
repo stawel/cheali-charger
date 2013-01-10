@@ -65,7 +65,7 @@ void Discharger::powerOn()
     hardware::setBatteryOutput(true);
     setValue(0);
     digitalWrite(DISCHARGE_DISABLE_PIN, false);
-    analogInputs.reset();
+    analogInputs.powerOn();
     analogInputs.doFullMeasurement();
     state_ = DISCHARGING;
     discharge_ = 0;
@@ -76,6 +76,7 @@ void Discharger::powerOff(STATE reason)
     if(!isPowerOn() || reason == DISCHARGING)
         return;
 
+    analogInputs.powerOff();
     setValue(0);
     digitalWrite(DISCHARGE_DISABLE_PIN, true);
     hardware::setBatteryOutput(false);

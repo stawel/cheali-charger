@@ -49,9 +49,6 @@ bool TheveninMethod::isComlete(bool isEndVout, AnalogInputs::ValueType value)
 AnalogInputs::ValueType TheveninMethod::calculateNewValue(bool isEndVout, AnalogInputs::ValueType oldValue)
 {
     AnalogInputs::ValueType i;
-    screen.Rth_V_ = tVout_.Rth_V_;
-    screen.Rth_I_ = tVout_.Rth_I_;
-    screen.Vth_ = tVout_.Vth_;
 
     //test for maximum output voltage reached
     if(isEndVout) {

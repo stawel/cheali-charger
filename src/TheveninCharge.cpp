@@ -17,7 +17,6 @@ void TheveninCharge::powerOn()
 {
     smps.powerOn();
     balancer.powerOn();
-    analogInputs.resetStable();
     theveninMethod.init();
     screen.iName_ = AnalogInputs::IsmpsValue;
 }
@@ -25,7 +24,6 @@ void TheveninCharge::powerOn()
 void TheveninCharge::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
        theveninMethod.setVI(v, analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue, i));
-       setMinI(i/10);
 }
 void TheveninCharge::setMinI(AnalogInputs::ValueType i)
 {

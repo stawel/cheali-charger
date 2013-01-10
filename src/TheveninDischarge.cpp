@@ -16,7 +16,6 @@ void TheveninDischarge::powerOn()
 {
     discharger.powerOn();
     balancer.powerOn();
-    analogInputs.resetStable();
     theveninMethod.init();
     screen.iName_ = AnalogInputs::IdischargeValue;
 }

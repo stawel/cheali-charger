@@ -10,6 +10,7 @@ StartInfoStrategy startInfoStrategy;
 void StartInfoStrategy::powerOn()
 {
     hardware::setBatteryOutput(true);
+    analogInputs.powerOn();
     screen.startBlinkOn(7);
     buzzer.begin();
     ok_ = 3;
@@ -17,6 +18,7 @@ void StartInfoStrategy::powerOn()
 
 void StartInfoStrategy::powerOff()
 {
+    analogInputs.powerOff();
     hardware::setBatteryOutput(false);
     screen.stopBlink();
     buzzer.soundOff();

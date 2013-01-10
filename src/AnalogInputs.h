@@ -113,6 +113,9 @@ public:
     void reset();
     void resetMeasurement();
     void resetDelta();
+    void powerOn();
+    void powerOff() { on_ = false; }
+
 
     void restoreDefault();
     static void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);
@@ -140,6 +143,7 @@ public:
 
 //protected:
     void setReal(Name name, ValueType real);
+    bool on_;
     const DefaultValues * inputsP_;
     uint16_t avrCount_;
     uint32_t avrSum_[PHYSICAL_INPUTS];

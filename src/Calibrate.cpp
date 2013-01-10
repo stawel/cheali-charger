@@ -511,6 +511,7 @@ bool Calibrate::calibrateDischarge()
 void Calibrate::infoTimeM()
 {
     lcdClear();
+    analogInputs.powerOn();
     uint8_t key;
     do {
         key = keyboard.getPressedWithSpeed();
@@ -529,6 +530,7 @@ void Calibrate::infoTimeM()
         lcdPrintSpaces();
 
     } while(key != BUTTON_STOP);
+    analogInputs.powerOff();
 }
 
 

@@ -31,17 +31,21 @@ namespace {
         return v;
     }
 
-    AnalogInputs::ValueType calculateRth(int16_t V, int16_t I) {
-        AnalogInputs::Name iName = screen.iName_;
-        AnalogInputs::ValueType  I2 = analogInputs.calibrateValue(iName, abs(I));
+    AnalogInputs::ValueType calculateRth2(int16_t V, uint16_t I) {
         uint32_t R = abs(V);
         R*=1000;
-        R/=I2;
+        R/=I;
         return R;
+    }
+
+    AnalogInputs::ValueType calculateRth_calibrated(int16_t V, int16_t I) {
+        AnalogInputs::Name iName = screen.iName_;
+        AnalogInputs::ValueType  I2 = analogInputs.calibrateValue(iName, abs(I));
+        return calculateRth2(V,I2);
     }
     AnalogInputs::ValueType calculateRthCell(uint8_t cell)
     {
-        return calculateRth(theveninMethod.tBal_[cell].Rth_V_, theveninMethod.tBal_[cell].Rth_I_);
+        return calculateRth_calibrated(theveninMethod.tBal_[cell].Rth_V_, theveninMethod.tBal_[cell].Rth_I_);
     }
     AnalogInputs::ValueType getBalanceValue(uint8_t cell, uint8_t mesured)
     {
@@ -117,6 +121,15 @@ namespace {
 
 } // namespace {
 
+AnalogInputs::ValueType Screen::getI()
+{
+    if(smps.isPowerOn())
+        return  analogInputs.getRealValue(smps.IName);
+    if(discharger.isPowerOn())
+        return  analogInputs.getRealValue(discharger.IName);
+    return 0;
+}
+
 void Screen::displayScreenFirst()
 {
     char c = 'N';
@@ -126,17 +139,16 @@ void Screen::displayScreenFirst()
     lcdSetCursor0_0();
 
     c= 'N';
+    I = getI();
     if(smps.isPowerOn()) {
         c = 'C';
         charge_ = smps.getCharge();
-        I = analogInputs.getRealValue(smps.IName);
     }
     if(discharger.isPowerOn()) {
         c = 'D';
         charge_ = discharger.getDischarge();
-        I = analogInputs.getRealValue(discharger.IName);
-        V = discharger.VName;
 
+        V = discharger.VName;
         if(smps.isPowerOn()) c = 'E';
     }
 
@@ -182,6 +194,7 @@ void Screen::powerOn()
     totalBalanceTime_ = 0;
     totalChargDischargeTime_ = 0;
     on_ = true;
+    reason_ = ' ';
 }
 
 void Screen::powerOff()
@@ -215,14 +228,14 @@ void Screen::displayScreenR()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("batt. R="));
-    lcdPrintResistance(calculateRth(theveninMethod.tVout_.Rth_V_, theveninMethod.tVout_.Rth_I_),8);
+    lcdPrintResistance(calculateRth_calibrated(theveninMethod.tVout_.Rth_V_, theveninMethod.tVout_.Rth_I_),8);
     lcdPrintSpaces();
     lcdSetCursor0_1();
     if(analogInputs.isConnected(AnalogInputs::Vbalacer)) {
         lcdPrint_P(PSTR("wires R="));
         int16_t Vwires =  analogInputs.getRealValue(AnalogInputs::Vout);
         Vwires -= analogInputs.getRealValue(AnalogInputs::Vbalacer);
-        lcdPrintResistance(calculateRth(Vwires, theveninMethod.tVout_.Rth_I_),8);
+        lcdPrintResistance(calculateRth2(Vwires, getI()+1),8);
     }
     lcdPrintSpaces();
 }
@@ -295,6 +308,10 @@ void Screen::displayStrings(const char *s1, const char *s2)
 void Screen::displayScreenProgramCompleted()
 {
     displayStrings(PSTR("program"), PSTR("completed"));
+    if(settings.isDebug()) {
+        lcdPrintChar(' ');
+        lcdPrintChar(reason_);
+    }
 }
 
 void Screen::displayMonitorError()
@@ -381,14 +398,14 @@ void Screen::displayDebugRthVth()
 
     lcdPrint_P(PSTR("V="));
     //lcdPrintResistance(Rth_, 8);
-    lcdPrintSigned(Rth_V_);
+    lcdPrintSigned(theveninMethod.tVout_.Rth_V_);
     lcdPrint_P(PSTR(" I="));
     //lcdPrintResistance(Rth_, 8);
-    lcdPrintSigned(Rth_I_);
+    lcdPrintSigned(theveninMethod.tVout_.Rth_I_);
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
-    lcdPrintSigned(Vth_);
+    lcdPrintSigned(theveninMethod.tVout_.Vth_);
     lcdPrintChar(' ');
     lcdPrintSigned(valueTh_, 4);
     lcdPrintChar(' ');
@@ -420,7 +437,7 @@ void Screen::displayScreenReversedPolarity()
     if(settings.isDebug()) {
         lcdSetCursor0_1();
         lcdPrint_P(PSTR("Vrev:"));
-        lcdPrintUnsigned(analogInputs.getValue(AnalogInputs::VreversePolarity), 8);
+        lcdPrintUnsigned(analogInputs.getRealValue(AnalogInputs::VreversePolarity), 8);
     }
 }
 
@@ -452,7 +469,7 @@ void Screen::displayStartInfo()
     else lcdPrintSpaces(5);
 
     lcdPrintChar(' ');
-    if(ProgramData::currentProgramData.isLiXX()) {
+    if(analogInputs.isConnected(AnalogInputs::Vbalacer)) {
         //display balance port
         if(bindex & 2) analogInputs.printRealValue(AnalogInputs::Vbalacer, 5);
         else lcdPrintSpaces(5);

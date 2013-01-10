@@ -12,6 +12,7 @@ public:
     virtual statusType doStrategy();
     virtual void powerOff();
     bool isStable() const;
+    void calculateThevenin() const;
 };
 
 extern SimpleCharge simpleCharge;

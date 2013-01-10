@@ -2,6 +2,7 @@
 #include "ProgramData.h"
 #include "Screen.h"
 #include "Hardware.h"
+#include "TheveninMethod.h"
 
 
 SimpleCharge simpleCharge;
@@ -10,7 +11,13 @@ SimpleCharge simpleCharge;
 void SimpleCharge::powerOn()
 {
     smps.powerOn();
-    smps.setRealValue(ProgramData::currentProgramData.battery.Ic);
+    AnalogInputs::ValueType I = ProgramData::currentProgramData.battery.Ic;
+    AnalogInputs::ValueType V = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
+    uint16_t value = analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue, I);
+    theveninMethod.setVI(V, value);
+    theveninMethod.init();
+    smps.setValue(value);
+    screen.iName_ = AnalogInputs::IsmpsValue;
 }
 
 void SimpleCharge::powerOff()
@@ -18,8 +25,14 @@ void SimpleCharge::powerOff()
     smps.powerOff();
 }
 
+void SimpleCharge::calculateThevenin() const
+{
+    if(isStable()) theveninMethod.calculateRthVth(smps.getValue());
+}
+
 Strategy::statusType SimpleCharge::doStrategy()
 {
+    calculateThevenin();
     if(smps.getIcharge() >= ProgramData::currentProgramData.battery.Ic) {
         smps.powerOff(SMPS::ERROR);
         return ERROR;

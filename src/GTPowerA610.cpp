@@ -99,8 +99,10 @@ void hardware::setFan(bool enable)
 
 void hardware::delay(uint16_t t)
 {
-//    timer.delay(t);
-    analogInputs.doMeasurement((AnalogInputs::PHYSICAL_INPUTS*t)/4);
+    if(analogInputs.on_)
+        analogInputs.doMeasurement((AnalogInputs::PHYSICAL_INPUTS*t)/4);
+    else
+        timer.delay(t);
 }
 
 void hardware::setBuzzer(uint16_t val)

@@ -48,15 +48,6 @@ void AnalogInputs::doFullMeasurement()
         doMeasurement();
 }
 
-void AnalogInputs::clearAvr()
-{
-    avrCount_ = 0;
-    currentInput_ = Name(0);
-    FOR_ALL_PHY_INPUTS(name) {
-        avrSum_[name] = 0;
-    }
-}
-
 int AnalogInputs::getConnectedBalancePorts() const
 {
     for(int i=0; i < 6; i++){
@@ -77,20 +68,16 @@ bool AnalogInputs::isConnected(Name name) const
     }
 }
 
-void AnalogInputs::resetDelta()
-{
-    deltaAvrCount_ = 0;
-    deltaAvrSumVout_ = 0;
-    deltaAvrSumTextern_ = 0;
-    deltaCount_ = 0;
-    deltaLastT_ = 0;
-    deltaStartTime_ = timer.getMiliseconds();
-}
-
-
 void AnalogInputs::doDeltaCalculations()
 {
-    deltaAvrSumVout_ += measured_[Vout];
+    bool useVBalancer = real_[VobInfo] == Vbalacer;
+    if(useVBalancer) {
+        //when the balancer is connected use
+        //its "real" voltage to calculate deltaVout
+        deltaAvrSumVout_ += real_[VoutBalancer];
+    } else {
+        deltaAvrSumVout_ += measured_[Vout];
+    }
     deltaAvrSumTextern_ += measured_[Textern];
     deltaAvrCount_++;
     if(timer.getMiliseconds() - deltaStartTime_ > DELTA_TIME_MILISECONDS) {
@@ -103,7 +90,12 @@ void AnalogInputs::doDeltaCalculations()
         deltaAvrSumVout_ /= deltaAvrCount_;
         x = deltaAvrSumVout_;
         deltaAvrSumVout_ = 0;
-        real = calibrateValue(Vout, x);
+        if(useVBalancer) {
+            //we don't need to calibrate a "real" value
+            real = x;
+        } else {
+            real = calibrateValue(Vout, x);
+        }
         old = getRealValue(deltaVoutMax);
         if(real >= old)
             setReal(deltaVoutMax, real);
@@ -180,6 +172,27 @@ void AnalogInputs::setReal(Name name, ValueType real)
 
     real_[name] = real;
 }
+
+void AnalogInputs::clearAvr()
+{
+    avrCount_ = 0;
+    currentInput_ = Name(0);
+    FOR_ALL_PHY_INPUTS(name) {
+        avrSum_[name] = 0;
+    }
+}
+
+void AnalogInputs::resetDelta()
+{
+    deltaAvrCount_ = 0;
+    deltaAvrSumVout_ = 0;
+    deltaAvrSumTextern_ = 0;
+    deltaCount_ = 0;
+    deltaLastT_ = 0;
+    deltaStartTime_ = timer.getMiliseconds();
+}
+
+
 void AnalogInputs::resetStable()
 {
     FOR_ALL_INPUTS(name) {
@@ -192,10 +205,23 @@ void AnalogInputs::resetMeasurement()
 {
     clearAvr();
     resetStable();
+
+    FOR_ALL_PHY_INPUTS(name) {
+        measured_[name] = 0;
+        avrSum_[name] = 0;
+    }
 }
 
 void AnalogInputs::reset()
 {
+
+    calculationCount_ = 0;
+    clearAvr();
+
+    FOR_ALL_PHY_INPUTS(name) {
+        x_[name] = 0;
+    }
+
     FOR_ALL_INPUTS(name) {
         setReal(name, 0);
     }
@@ -203,6 +229,11 @@ void AnalogInputs::reset()
     resetDelta();
 }
 
+void AnalogInputs::powerOn()
+{
+    reset();
+    on_ = true;
+}
 
 
 
@@ -280,17 +311,9 @@ AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType
 
 
 
-AnalogInputs::AnalogInputs(const DefaultValues * inputs_P): inputsP_(inputs_P), avrCount_(0)
+AnalogInputs::AnalogInputs(const DefaultValues * inputs_P): inputsP_(inputs_P)
 {
-    calculationCount_ = 0;
-    FOR_ALL_PHY_INPUTS(name) {
-        measured_[name] = 0;
-        avrSum_[name] = 0;
-        x_[name] = 0;
-        real_[name] = 0;
-        stableCount_[name] = 0;
-    }
-    clearAvr();
+    reset();
 }
 
 AnalogInputs::Type AnalogInputs::getType(Name name)

@@ -7,9 +7,6 @@
 
 class Screen : public Blink {
 public:
-    int16_t Rth_V_;
-    int16_t Rth_I_;
-    AnalogInputs::ValueType Vth_;
     AnalogInputs::ValueType valueTh_;
     uint16_t charge_;
     Program::ProgramType programType_;
@@ -18,9 +15,12 @@ public:
     uint32_t totalChargDischargeTime_;
     AnalogInputs::Name iName_;
     bool on_;
+    char reason_;
 
     uint16_t getTimeSec() const;
     void doSlowInterrupt();
+
+    static AnalogInputs::ValueType getI();
 
     void powerOn();
     void powerOff();

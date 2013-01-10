@@ -34,7 +34,7 @@ void SMPS::powerOn()
     hardware::setBatteryOutput(true);
     setValue(0);
     digitalWrite(SMPS_DISABLE_PIN, false);
-    analogInputs.reset();
+    analogInputs.powerOn();
     analogInputs.doFullMeasurement();
     state_ = CHARGING;
     charge_ = 0;
@@ -48,6 +48,8 @@ void SMPS::powerOff(STATE reason)
     if(!isPowerOn() || reason == CHARGING)
         return;
 
+
+    analogInputs.powerOff();
     setValue(0);
     digitalWrite(SMPS_DISABLE_PIN, true);
     hardware::setBatteryOutput(false);

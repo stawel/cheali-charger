@@ -20,6 +20,7 @@ namespace {
 
     const Screen::ScreenType deltaChargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
+      Screen::ScreenDebugRthVth,
       Screen::ScreenDeltaVout,
       Screen::ScreenDeltaTextern,
       Screen::ScreenDebugDelta,
@@ -33,6 +34,7 @@ namespace {
 
     const Screen::ScreenType NiXXDischargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
+      Screen::ScreenDebugRthVth,
       Screen::ScreenDeltaTextern,
       Screen::ScreenDebugDelta,
       Screen::ScreenCIVlimits,
