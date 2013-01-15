@@ -469,7 +469,7 @@ void Screen::displayStartInfo()
     else lcdPrintSpaces(5);
 
     lcdPrintChar(' ');
-    if(analogInputs.isConnected(AnalogInputs::Vbalacer)) {
+    if(ProgramData::currentProgramData.isLiXX()) {
         //display balance port
         if(bindex & 2) analogInputs.printRealValue(AnalogInputs::Vbalacer, 5);
         else lcdPrintSpaces(5);
