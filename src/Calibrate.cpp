@@ -388,8 +388,8 @@ bool Calibrate::calibrateBlink(screenType p, int8_t maxBlink)
 
         blinkOn_ = (blinkCount%6) != 0;
         blinkCount++;
-        if(key == BUTTON_INC && blink_ < maxBlink - 1)    blink_++;
-        if(key == BUTTON_DEC && blink_ > 0)                blink_--;
+        if(key == BUTTON_INC && blink_ < maxBlink - 1)      blink_++;
+        if(key == BUTTON_DEC && blink_ > 0)                 blink_--;
 
         if(key == BUTTON_START && released) {
             buzzer.soundSelect();

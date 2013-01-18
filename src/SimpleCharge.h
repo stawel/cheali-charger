@@ -9,7 +9,7 @@ public:
     bool testVout_;
     SimpleCharge(){};
     virtual void powerOn();
-    virtual statusType doStrategy();
+//    virtual statusType doStrategy();
     virtual void powerOff();
     bool isStable() const;
     void calculateThevenin() const;

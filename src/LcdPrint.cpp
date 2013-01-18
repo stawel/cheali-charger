@@ -226,6 +226,14 @@ void lcdPrintTime(uint16_t timeSec)
 }
 
 
+void lcdPrintYesNo(uint8_t yes)
+{
+    if(yes)
+        lcdPrint_P(PSTR("yes"));
+    else
+        lcdPrint_P(PSTR(" no"));
+}
+
 void lcdPrintUnsigned(uint16_t x, int8_t dig)
 {
     lcdPrintUnsigned(x,dig, ' ');
@@ -239,6 +247,7 @@ void lcdPrintChar(char c)
 
 void lcdPrintDigit(uint8_t d)
 {
+    d%=10;
     lcdPrintChar('0'+ d);
 }
 
@@ -300,6 +309,20 @@ void lcdPrintTemperature(AnalogInputs::ValueType t, int8_t dig)
     if(dig > 0) {
         lcdPrintTemperature_(t,--dig);
         lcdPrintChar('C');
+    }
+}
+void lcdPrintPercentage(AnalogInputs::ValueType p, int8_t dig)
+{
+    if(dig > 0) {
+        lcdPrintUnsigned(p,--dig);
+        lcdPrintChar('%');
+    }
+}
+void lcdPrintDeltaV(AnalogInputs::ValueType p, int8_t dig)
+{
+    if(dig > 2) {
+        lcdPrintUnsigned(p,dig-2);
+        lcdPrint_P(PSTR("mV"));
     }
 }
 

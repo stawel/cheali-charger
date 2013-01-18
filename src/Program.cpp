@@ -20,6 +20,7 @@ namespace {
 
     const Screen::ScreenType deltaChargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
+      Screen::ScreenDeltaFirst,
       Screen::ScreenDebugRthVth,
       Screen::ScreenDeltaVout,
       Screen::ScreenDeltaTextern,

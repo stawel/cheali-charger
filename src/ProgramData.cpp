@@ -9,19 +9,22 @@ ProgramData allProgramData[MAX_PROGRAMS] EEMEM;
 ProgramData ProgramData::currentProgramData;
 
 
-const uint16_t voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
+const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
 {
-//      { VIdle,              VCharge,            VDischarge,           VStorage};
-        { 1,                  1,                  1,                    1}, // Unknown
+//      { VIdle,              VCharge,            VDischarge,           VStorage, VUpperLimit};
+/*Unknown*/{ 1,               1,                  1,                    1,  0},
 //                               ???
-        { ANALOG_VOLT(1.200), ANALOG_VOLT(1.820), ANALOG_VOLT(0.850),   0}, //    NiCd //??
-//                              wikipedia
-        { ANALOG_VOLT(1.200), ANALOG_VOLT(1.600), ANALOG_VOLT(1.000),   0}, //    NiMH //??
-        { ANALOG_VOLT(2.000), ANALOG_VOLT(2.460), ANALOG_VOLT(1.500),   0}, //Pb
+/*NiCd*/{ ANALOG_VOLT(1.200), ANALOG_VOLT(1.820), ANALOG_VOLT(0.850),   0,  ANALOG_VOLT(1.800)},
+//http://en.wikipedia.org/wiki/Nickel%E2%80%93metal_hydride_battery
+//http://industrial.panasonic.com/eu/i/21291/Handbook2011/Handbook2011.pdf
+//http://www6.zetatalk.com/docs/Batteries/Chemistry/Duracell_Ni-MH_Rechargeable_Batteries_2007.pdf
+/*NiMH*/{ ANALOG_VOLT(1.200), ANALOG_VOLT(1.600), ANALOG_VOLT(1.000),   0,  ANALOG_VOLT(1.800)},
+
+/*Pb*/  { ANALOG_VOLT(2.000), ANALOG_VOLT(2.460), ANALOG_VOLT(1.500),   0,  0 /*??*/},
 //LiXX
-        { ANALOG_VOLT(3.300), ANALOG_VOLT(3.600), ANALOG_VOLT(2.000),   ANALOG_VOLT(3.300) /*??*/}, //Life
-        { ANALOG_VOLT(3.600), ANALOG_VOLT(4.100), ANALOG_VOLT(2.500),   ANALOG_VOLT(3.750) /*??*/}, //Lilo
-        { ANALOG_VOLT(3.700), ANALOG_VOLT(4.200), ANALOG_VOLT(3.000),   ANALOG_VOLT(3.850) /*??*/}, //LiPo
+/*Life*/{ ANALOG_VOLT(3.300), ANALOG_VOLT(3.600), ANALOG_VOLT(2.000),   ANALOG_VOLT(3.300) /*??*/, 0},
+/*Lilo*/{ ANALOG_VOLT(3.600), ANALOG_VOLT(4.100), ANALOG_VOLT(2.500),   ANALOG_VOLT(3.750) /*??*/, 0},
+/*LiPo*/{ ANALOG_VOLT(3.700), ANALOG_VOLT(4.200), ANALOG_VOLT(3.000),   ANALOG_VOLT(3.850) /*??*/, 0},
 
 };
 
@@ -132,7 +135,7 @@ uint8_t ProgramData::printVoltageString() const
         uint8_t r = 5+2+1;
         lcdPrintVoltage(getVoltage(), 5);
         lcdPrintChar('/');
-        lcdPrintDigit(battery.cells);
+        lcdPrintUInt(battery.cells);
         lcdPrintChar('C');
         return r;
     }
@@ -188,12 +191,12 @@ void ProgramData::changeBattery(int direction)
 void ProgramData::changeVoltage(int direction)
 {
     uint16_t max = getMaxCells();
-    changeMax(battery.cells, direction, max);
+    changeMaxSmart(battery.cells, direction, max);
 }
 
 void ProgramData::changeCharge(int direction)
 {
-    changeMax(battery.C, direction, ANALOG_CHARGE(65.000));
+    changeMaxSmart(battery.C, direction, ANALOG_CHARGE(65.000));
     battery.Ic = battery.C;
     battery.Id = battery.C;
     check();
@@ -231,11 +234,11 @@ uint16_t ProgramData::getMaxId() const
 
 void ProgramData::changeIc(int direction)
 {
-    changeMax(battery.Ic, direction, getMaxIc());
+    changeMaxSmart(battery.Ic, direction, getMaxIc());
 }
 void ProgramData::changeId(int direction)
 {
-    changeMax(battery.Id, direction, getMaxId());
+    changeMaxSmart(battery.Id, direction, getMaxId());
 }
 
 uint16_t ProgramData::getMaxCells() const

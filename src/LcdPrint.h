@@ -30,6 +30,7 @@ void lcdPrintSigned(int16_t x, int8_t dig = 5);
 void lcdPrintChar(char c);
 void lcdPrintDigit(uint8_t d);
 void lcdPrintUInt(uint16_t x);
+void lcdPrintYesNo(uint8_t yes);
 
 void lcdPrintEValue(uint16_t x, int8_t dig, bool dot);
 
@@ -38,7 +39,10 @@ void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig);
 void lcdPrintCurrent(AnalogInputs::ValueType i, int8_t dig);
 void lcdPrintVoltage(AnalogInputs::ValueType v, int8_t dig);
 void lcdPrintResistance(AnalogInputs::ValueType r, int8_t dig);
+void lcdPrintPercentage(AnalogInputs::ValueType p, int8_t dig);
+void lcdPrintDeltaV(AnalogInputs::ValueType p, int8_t dig);
 void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t dig);
+
 
 void lcdPrintTime(uint16_t timeSec);
 

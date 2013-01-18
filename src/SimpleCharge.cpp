@@ -12,9 +12,10 @@ void SimpleCharge::powerOn()
 {
     smps.powerOn();
     AnalogInputs::ValueType I = ProgramData::currentProgramData.battery.Ic;
-    AnalogInputs::ValueType V = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
+    AnalogInputs::ValueType Vc = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
+    I/=5; //start charging with 0.2CmAh
     uint16_t value = analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue, I);
-    theveninMethod.setVI(V, value);
+    theveninMethod.setVI(Vc, value);
     theveninMethod.init();
     smps.setValue(value);
     screen.iName_ = AnalogInputs::IsmpsValue;
@@ -30,9 +31,11 @@ void SimpleCharge::calculateThevenin() const
     if(isStable()) theveninMethod.calculateRthVth(smps.getValue());
 }
 
+/*
 Strategy::statusType SimpleCharge::doStrategy()
 {
     calculateThevenin();
+    smps.setRealValue(ProgramData::currentProgramData.battery.Ic);
     if(smps.getIcharge() >= ProgramData::currentProgramData.battery.Ic) {
         smps.powerOff(SMPS::ERROR);
         return ERROR;
@@ -49,7 +52,7 @@ Strategy::statusType SimpleCharge::doStrategy()
     }
     return RUNNING;
 }
-
+*/
 
 bool SimpleCharge::isStable() const
 {

@@ -11,7 +11,7 @@ Monitor monitor;
 void Monitor::doInterrupt()
 {
     bool on;
-    if(testTinern(on, settings.fanTempOff_, settings.fanTempOn_))
+    if(testTintern(on, settings.fanTempOn_ - Settings::TempDifference, settings.fanTempOn_))
         hardware::setFan(on);
 }
 

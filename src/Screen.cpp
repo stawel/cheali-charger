@@ -130,39 +130,41 @@ AnalogInputs::ValueType Screen::getI()
     return 0;
 }
 
-void Screen::displayScreenFirst()
-{
+void Screen::printCharge() {
+    if(smps.isPowerOn()) {
+        charge_ = smps.getCharge();
+    } else  if(discharger.isPowerOn()) {
+        charge_ = discharger.getDischarge();
+    }
+    lcdPrintCharge(charge_, 8);
+    lcdPrintChar(' ');
+}
+
+void Screen::printChar_Time() {
     char c = 'N';
-    AnalogInputs::Name V = smps.VName;
-    AnalogInputs::ValueType I = 0;
-
-    lcdSetCursor0_0();
-
-    c= 'N';
-    I = getI();
     if(smps.isPowerOn()) {
         c = 'C';
-        charge_ = smps.getCharge();
-    }
-    if(discharger.isPowerOn()) {
+    } else if(discharger.isPowerOn()) {
         c = 'D';
-        charge_ = discharger.getDischarge();
-
-        V = discharger.VName;
         if(smps.isPowerOn()) c = 'E';
     }
 
-    lcdPrintCharge(charge_, 8);
-    lcdPrintChar(' ');
-    lcdPrintCurrent(I,  7);
-    lcdPrintSpaces();
-
-    lcdSetCursor0_1();
     lcdPrintChar(c);
     lcdPrintChar(' ');
     lcdPrintTime(getTimeSec());
     lcdPrintChar(' ');
-    analogInputs.printRealValue(V,     7);
+}
+
+void Screen::displayScreenFirst()
+{
+    lcdSetCursor0_0();
+    printCharge();
+    lcdPrintCurrent(getI(),  7);
+    lcdPrintSpaces();
+
+    lcdSetCursor0_1();
+    printChar_Time();
+    analogInputs.printRealValue(AnalogInputs::VoutBalancer,     7);
     lcdPrintSpaces();
 }
 
@@ -321,31 +323,31 @@ void Screen::displayMonitorError()
 
 namespace {
     void deltaV() {
-        lcdPrint_P(PSTR("delta V="));
         int x = analogInputs.getRealValue(AnalogInputs::deltaVout);
-        lcdPrintSigned(x, 6);
+        lcdPrintSigned(x, 5);
         lcdPrintChar('m');
         lcdPrintChar('V');
         lcdPrintSpaces();
 
     }
     void deltaT() {
-        lcdPrint_P(PSTR("delta T="));
         int x = analogInputs.getRealValue(AnalogInputs::deltaTextern);
-        lcdPrintSigned(x*10, 6);
+        lcdPrintSigned(x*10, 5);
         lcdPrintChar('m');
         lcdPrintChar('C');
         lcdPrintSpaces();
     }
 }
 
-void Screen::displayDelta()
+void Screen::displayDeltaFirst()
 {
-    lcdSetCursor0_1();
-    deltaV();
-    lcdSetCursor0_1();
+    lcdSetCursor0_0();
+    printCharge();
     deltaT();
 
+    lcdSetCursor0_1();
+    printChar_Time();
+    deltaV();
 }
 
 
@@ -357,6 +359,7 @@ void Screen::displayDeltaVout()
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
+    lcdPrint_P(PSTR("delta V= "));
     deltaV();
 }
 
@@ -368,6 +371,7 @@ void Screen::displayDeltaTextern()
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
+    lcdPrint_P(PSTR("delta T= "));
     deltaT();
 }
 
@@ -512,5 +516,6 @@ void Screen::display(ScreenType screen)
     case ScreenDebugDelta:              return displayDebugDelta();
     case ScreenDeltaVout:               return displayDeltaVout();
     case ScreenDeltaTextern:            return displayDeltaTextern();
+    case ScreenDeltaFirst:              return displayDeltaFirst();
     }
 }

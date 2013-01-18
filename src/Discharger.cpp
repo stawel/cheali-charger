@@ -34,7 +34,7 @@ void Discharger::setValue(uint16_t value)
 
 uint16_t Discharger::correctValueTintern(uint16_t v)
 {
-    testTinern(tempcutoff_, settings.dischargeTempOff_, settings.dischargeTempOn_);
+    testTintern(tempcutoff_, settings.dischargeTempOff_ - Settings::TempDifference, settings.dischargeTempOff_);
 
     if(tempcutoff_)
         v = 0;

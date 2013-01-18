@@ -7,20 +7,24 @@
 
 struct Settings {
 
-    static const AnalogInputs::ValueType minTempDifference = ANALOG_CELCIUS(1);
+    static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5);
 
     uint16_t backlight_;
-    AnalogInputs::ValueType fanTempOn_,fanTempOff_;
-    AnalogInputs::ValueType dischargeTempOn_,dischargeTempOff_;
-    AnalogInputs::ValueType inputVoltageLow_;
-    AnalogInputs::ValueType deltaV_NiCd_, deltaV_NiMH_;
+    AnalogInputs::ValueType fanTempOn_;
+    AnalogInputs::ValueType dischargeTempOff_;
+    uint16_t externT_;
+    AnalogInputs::ValueType externTCO_;
     AnalogInputs::ValueType deltaT_;
-
+    AnalogInputs::ValueType deltaV_NiMH_, deltaV_NiCd_;
+    uint16_t CDcycles_;
+    uint16_t capCutoff_;
+    AnalogInputs::ValueType inputVoltageLow_;
     Screen::ScreenViewType view_;
 
     void edit();
     void check();
     void apply();
+    void setDefault();
     bool isDebug() { return view_ == Screen::Debug; }
 
     static void load();

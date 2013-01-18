@@ -6,9 +6,16 @@
 
 class DeltaChargeStrategy : public SimpleCharge {
 public:
+    enum StateType {PreCharge, RapidCharge};
+
     bool testDeltaT_;
     bool testDeltaV_;
+
+    StateType state_;
+
     DeltaChargeStrategy(){};
+
+    virtual void powerOn();
     virtual statusType doStrategy();
     void setTestTV(bool t, bool v) {
         testDeltaT_ = t;

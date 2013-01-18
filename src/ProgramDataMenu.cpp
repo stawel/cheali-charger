@@ -52,11 +52,11 @@ uint8_t ProgramDataMenu::printItem(uint8_t index)
     StaticMenu::printItem(index);
     if(getBlinkIndex() != index) {
         switch (index) {
-            case 0:    p_.printBatteryString();    break;
-            case 1:    p_.printVoltageString();    break;
-            case 2:    p_.printChargeString();        break;
-            case 3:    p_.printIcString();            break;
-            case 4:    p_.printIdString();            break;
+            case 0:    p_.printBatteryString(); break;
+            case 1:    p_.printVoltageString(); break;
+            case 2:    p_.printChargeString();  break;
+            case 3:    p_.printIcString();      break;
+            case 4:    p_.printIdString();      break;
         }
     }
     return 0;

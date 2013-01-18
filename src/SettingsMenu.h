@@ -20,8 +20,10 @@ private:
     void changeViewType(int dir);
 
     static void printTemp(AnalogInputs::ValueType t);
+    static void printDeltaT(AnalogInputs::ValueType dt);
     static void printVolt(AnalogInputs::ValueType v);
     static void changeTemp(AnalogInputs::ValueType &v, int dir);
+    static void changeDeltaTemp(AnalogInputs::ValueType &v, int dir);
     static void changeVolt(AnalogInputs::ValueType &v, int dir);
 };
 

@@ -1,7 +1,7 @@
 
 #include "Utils.h"
 
-bool testTinern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on)
+bool testTintern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on)
 {
     AnalogInputs::ValueType t = analogInputs.getRealValue(AnalogInputs::Tintern);
     bool retu = false;
@@ -40,8 +40,22 @@ uint8_t digits(uint16_t x)
     return retu;
 }
 
+void changeMax(uint16_t &v, int dir, uint8_t max)
+{
+    if( ((int)v) + dir< 0) v = 0;
+    else if(((int)v)+dir > max) v = max;
+    else v+=dir;
+}
 
-void changeMax(uint16_t &v, int direc, uint16_t max)
+void change1Max(uint16_t &v, int dir, uint8_t max)
+{
+    if( ((int)v) + dir< 1) v = 1;
+    else if(((int)v)+dir > max) v = max;
+    else v+=dir;
+}
+
+
+void changeMaxSmart(uint16_t &v, int direc, uint16_t max)
 {
     uint16_t r;
     int step = 1;

@@ -31,6 +31,7 @@ public:
         ScreenFirst, ScreenCIVlimits, ScreenTime, ScreenTemperature,
         ScreenBalancer0_2,      ScreenBalancer3_5,
         ScreenBalancer0_2Rth,   ScreenBalancer3_5Rth,
+        ScreenDeltaFirst,
         ScreenR,
         ScreenVout,
         ScreenVinput,
@@ -58,7 +59,7 @@ public:
     void displayScreenVinput();
     void displayDeltaVout();
     void displayDeltaTextern();
-    void displayDelta();
+    void displayDeltaFirst();
 
     void displayScreenProgramCompleted();
     void displayDebugRthVth();
@@ -67,6 +68,9 @@ public:
 
     void displayMonitorError();
     void displayStartInfo();
+
+    void printCharge();
+    void printChar_Time();
 
     static void displayStrings(const char *s1, const char *s2);
     static void displayNotImplemented();
