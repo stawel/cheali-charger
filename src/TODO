@@ -1,6 +1,9 @@
 
 high priority:
  - add other battery types
+ - Rapid charge start voltage: Approx. 0.8V/cell rapid charge, transition voltage restoration current: 0.2 ~ 0.3CmA
+ - Upper battery voltage limit control: Approx. 1.8V/cell.
+ - Intermittent timer charge ??
 
 low priority:
  - add new "charge complete" msg
