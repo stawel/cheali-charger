@@ -3,7 +3,7 @@
 #include "GTPowerA610.h"
 #include "EditName.h"
 #include "Utils.h"
-
+#include "Buzzer.h"
 
 const char string_PDMM0[] PROGMEM = "Bat:  ";
 const char string_PDMM1[] PROGMEM = "V:  ";
@@ -43,7 +43,14 @@ void ProgramDataMenu::editName()
 void ProgramDataMenu::createName()
 {
     p_.createName(programIndex_+1);
-    editName();
+
+    lcdClear();
+    lcdSetCursor0_0();
+    lcdPrint_P(PSTR("Name:"));
+    lcdSetCursor0_1();
+    lcdPrint(p_.name, PROGRAM_DATA_MAX_NAME);
+    waitButtonPressed();
+    buzzer.soundSelect();
 }
 
 

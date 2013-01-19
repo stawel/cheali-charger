@@ -52,7 +52,7 @@ uint8_t Keyboard::getPressedWithSpeed()
         if(key == last_key_)
             continue;
 
-        return     keyChanged(key);
+        return keyChanged(key);
     }
 
     if(key != BUTTON_NONE) {

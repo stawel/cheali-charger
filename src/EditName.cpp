@@ -84,6 +84,7 @@ bool EditName::run(){
             key = keyboard.getPressedWithSpeed();
             switch(key) {
             case BUTTON_STOP:
+                lcd.noBlink();
                 return false;
             case BUTTON_INC:
                 if(cursor_ < size_ - 1) cursor_++;
@@ -96,6 +97,7 @@ bool EditName::run(){
 
         if(keyboard.getPressTime()>1) {
             save();
+            lcd.noBlink();
             return true;
         }
 
@@ -106,5 +108,5 @@ bool EditName::run(){
 
 void EditName::save()
 {
-    buzzer.soundSave();
+    buzzer.soundSelect();
 }
