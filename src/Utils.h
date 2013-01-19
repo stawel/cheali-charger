@@ -18,5 +18,6 @@ void changeMax(uint16_t &v, int direc, uint8_t max);
 void change1Max(uint16_t &v, int direc, uint8_t max);
 
 void waitButtonPressed();
+bool getCharge(uint16_t &c);
 
 #endif /* UTILS_H_ */

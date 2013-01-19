@@ -39,7 +39,7 @@ namespace {
     }
 
     AnalogInputs::ValueType calculateRth_calibrated(int16_t V, int16_t I) {
-        AnalogInputs::Name iName = screen.iName_;
+        AnalogInputs::Name iName = Program::iName_;
         AnalogInputs::ValueType  I2 = analogInputs.calibrateValue(iName, abs(I));
         return calculateRth2(V,I2);
     }
@@ -131,11 +131,7 @@ AnalogInputs::ValueType Screen::getI()
 }
 
 void Screen::printCharge() {
-    if(smps.isPowerOn()) {
-        charge_ = smps.getCharge();
-    } else  if(discharger.isPowerOn()) {
-        charge_ = discharger.getDischarge();
-    }
+    getCharge(charge_);
     lcdPrintCharge(charge_, 8);
     lcdPrintChar(' ');
 }
@@ -171,7 +167,7 @@ void Screen::displayScreenFirst()
 void Screen::displayScreenCIVlimits()
 {
     lcdSetCursor0_0();
-    lcdPrintCharge(ProgramData::currentProgramData.battery.C, 8);
+    lcdPrintCharge(ProgramData::currentProgramData.getCapacityLimit(), 8);
     lcdPrintChar(' ');
     lcdPrintCurrent(ProgramData::currentProgramData.battery.Ic, 7);
     lcdPrintSpaces();
@@ -196,7 +192,6 @@ void Screen::powerOn()
     totalBalanceTime_ = 0;
     totalChargDischargeTime_ = 0;
     on_ = true;
-    reason_ = ' ';
 }
 
 void Screen::powerOff()
@@ -292,7 +287,10 @@ void Screen::displayScreenTemperature()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("Text="));
-    analogInputs.printRealValue(AnalogInputs::Textern,    5);
+    if(settings.externT_ || settings.isDebug())
+        analogInputs.printRealValue(AnalogInputs::Textern,    5);
+    else
+        lcdPrint_P(PSTR("not used"));
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
@@ -307,18 +305,27 @@ void Screen::displayStrings(const char *s1, const char *s2)
     lcdSetCursor0_1(); lcdPrint_P(s2);
 }
 
+namespace {
+    void screenEnd(const char * firstLine) {
+        lcdSetCursor0_0();
+        lcdPrint_P(firstLine);
+        lcdSetCursor0_1();
+        if(strlen_P(Program::stopReason_)>0) {
+            lcdPrint_P(PSTR("reason: "));
+            lcdPrint_P(Program::stopReason_);
+        }
+        lcdPrintSpaces();
+    }
+}
+
 void Screen::displayScreenProgramCompleted()
 {
-    displayStrings(PSTR("program"), PSTR("completed"));
-    if(settings.isDebug()) {
-        lcdPrintChar(' ');
-        lcdPrintChar(reason_);
-    }
+    screenEnd(PSTR("program complete"));
 }
 
 void Screen::displayMonitorError()
 {
-    displayStrings(PSTR("monitor"), PSTR("error"));
+    screenEnd(PSTR("monitor error"));
 }
 
 namespace {
@@ -331,10 +338,14 @@ namespace {
 
     }
     void deltaT() {
-        int x = analogInputs.getRealValue(AnalogInputs::deltaTextern);
-        lcdPrintSigned(x*10, 5);
-        lcdPrintChar('m');
-        lcdPrintChar('C');
+        if(settings.externT_) {
+            int x = analogInputs.getRealValue(AnalogInputs::deltaTextern);
+            lcdPrintSigned(x*10, 5);
+            lcdPrintChar('m');
+            lcdPrintChar('C');
+        } else {
+            lcdPrint_P(PSTR("not used"));
+        }
         lcdPrintSpaces();
     }
 }
@@ -367,7 +378,11 @@ void Screen::displayDeltaTextern()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("Text="));
-    lcdPrintTemperature(analogInputs.deltaLastT_, 9);
+    if(settings.externT_ || settings.isDebug()) {
+        lcdPrintTemperature(analogInputs.deltaLastT_, 9);
+    } else {
+        lcdPrint_P(PSTR("not used"));
+    }
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
@@ -411,7 +426,7 @@ void Screen::displayDebugRthVth()
     lcdSetCursor0_1();
     lcdPrintSigned(theveninMethod.tVout_.Vth_);
     lcdPrintChar(' ');
-    lcdPrintSigned(valueTh_, 4);
+    lcdPrintSigned(theveninMethod.valueTh_, 4);
     lcdPrintChar(' ');
     uint16_t v;
     if(smps.isPowerOn())    v = smps.getValue();
@@ -452,7 +467,7 @@ void Screen::displayStartInfo()
     lcdPrintChar(' ');
     ProgramData::currentProgramData.printVoltageString();
     lcdPrintChar(' ');
-    printProgram2chars(programType_);
+    printProgram2chars(Program::programType_);
 
     lcdSetCursor0_1();
     uint16_t procent = getChargeProcent();

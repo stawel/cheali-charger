@@ -26,7 +26,7 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
     }
 
     if(isStable() && Vout > ProgramData::currentProgramData.getVoltage(ProgramData::VUpperLimit)) {
-        screen.reason_ = 'L';
+        Program::stopReason_ = PSTR("V limit");
         return COMPLETE;
     }
 
@@ -37,14 +37,14 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
         int x = analogInputs.getRealValue(AnalogInputs::deltaVout);
         x=-x;
         if(x > ProgramData::currentProgramData.getDeltaVLimit()) {
-            screen.reason_ = 'V';
+            Program::stopReason_ = PSTR("-dV");
             return COMPLETE;
         }
     }
     if(testDeltaT_) {
         int x = analogInputs.getRealValue(AnalogInputs::deltaTextern);
         if(x > ProgramData::currentProgramData.getDeltaTLimit()) {
-            screen.reason_ = 'T';
+            Program::stopReason_ = PSTR("dT/dt");
             return COMPLETE;
         }
     }

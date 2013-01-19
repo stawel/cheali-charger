@@ -7,15 +7,11 @@
 
 class Screen : public Blink {
 public:
-    AnalogInputs::ValueType valueTh_;
     uint16_t charge_;
-    Program::ProgramType programType_;
     uint32_t startTime_totalTime_;
     uint32_t totalBalanceTime_;
     uint32_t totalChargDischargeTime_;
-    AnalogInputs::Name iName_;
     bool on_;
-    char reason_;
 
     uint16_t getTimeSec() const;
     void doSlowInterrupt();

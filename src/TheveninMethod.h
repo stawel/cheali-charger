@@ -11,6 +11,7 @@ public:
     uint16_t minValue_;
     uint16_t maxValue_;
     AnalogInputs::ValueType Vend_;
+    AnalogInputs::ValueType valueTh_;
 
     Thevenin tVout_;
     Thevenin tBal_[MAX_BANANCE_CELLS];

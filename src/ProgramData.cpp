@@ -93,6 +93,14 @@ uint16_t ProgramData::getVoltage(VoltageType type) const
     return battery.cells * getVoltagePerCell(type);
 }
 
+uint16_t ProgramData::getCapacityLimit() const
+{
+    uint32_t cap = battery.C;
+    cap *= settings.capCutoff_;
+    cap/=100;
+    return cap;
+}
+
 int16_t ProgramData::getDeltaVLimit() const
 {
     int16_t v = 0;

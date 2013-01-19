@@ -16,8 +16,13 @@
 #include "StaticMenu.h"
 #include "Settings.h"
 
-namespace {
 
+
+AnalogInputs::Name Program::iName_;
+Program::ProgramType Program::programType_;
+const char * Program::stopReason_;
+
+namespace {
     const Screen::ScreenType deltaChargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenDeltaFirst,
@@ -31,8 +36,9 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenDebugI,
       Screen::ScreenTime,
-      Screen::ScreenTemperature };
-
+      Screen::ScreenTemperature,
+      Screen::ScreenCIVlimits
+    };
     const Screen::ScreenType NiXXDischargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenDebugRthVth,
@@ -44,7 +50,9 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenDebugI,
       Screen::ScreenTime,
-      Screen::ScreenTemperature };
+      Screen::ScreenTemperature,
+      Screen::ScreenCIVlimits
+    };
 
     const Screen::ScreenType theveninScreens[] PROGMEM = {
       Screen::ScreenFirst,
@@ -59,7 +67,9 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenDebugI,
       Screen::ScreenTime,
-      Screen::ScreenTemperature };
+      Screen::ScreenTemperature,
+      Screen::ScreenCIVlimits
+    };
     const Screen::ScreenType balanceScreens[] PROGMEM = {
       Screen::ScreenBalancer0_2,            Screen::ScreenBalancer3_5,
 //      Thevenin values are not evaluated when balancing
@@ -79,7 +89,9 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenDebugI,
       Screen::ScreenTime,
-      Screen::ScreenTemperature };
+      Screen::ScreenTemperature,
+      Screen::ScreenCIVlimits
+    };
     const Screen::ScreenType storageScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenDebugRthVth,
@@ -92,7 +104,9 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenDebugI,
       Screen::ScreenTime,
-      Screen::ScreenTemperature };
+      Screen::ScreenTemperature,
+      Screen::ScreenCIVlimits
+    };
 
     const Screen::ScreenType startInfoBalanceScreens[] PROGMEM = {
       Screen::ScreenStartInfo,
@@ -119,16 +133,35 @@ namespace {
         buzzer.soundOff();
     }
 
+    bool analizeStrategyStatus(Strategy &strategy,  Strategy::statusType status, bool exitImmediately) {
+        bool run = true;
+        if(status == Strategy::ERROR) {
+            screen.powerOff();
+            strategy.powerOff();
+            chargingMonitorError();
+            run = false;
+        }
+
+        if(status == Strategy::COMPLETE) {
+            screen.powerOff();
+            strategy.powerOff();
+            if(!exitImmediately)
+                chargingComplete();
+            run = false;
+        }
+        return run;
+    }
+
     Strategy::statusType doStrategy(Strategy &strategy, const Screen::ScreenType chargeScreens[]
-                                                      , uint8_t screen_limit)
+                                                      , uint8_t screen_limit, bool exitImmediately = false)
     {
         uint8_t key;
         bool run = true;
         uint16_t newMesurmentData = 0;
         Strategy::statusType status = Strategy::RUNNING;
-        Monitor::statusType mstatus;
         strategy.powerOn();
         screen.powerOn();
+        monitor.powerOn();
         lcdClear();
         uint8_t screen_nr = 0;
         screen_limit--;
@@ -147,31 +180,17 @@ namespace {
                 } while(!settings.isDebug() && pgm::read(&chargeScreens[screen_nr]) & Screen::Debug);
             }
             if(run) {
-                mstatus = monitor.run();
-                if(mstatus != Monitor::OK) {
-                    screen.powerOff();
-                    strategy.powerOff();
-                    chargingMonitorError();
-                    run = false;
-                    status = Strategy::ERROR;
-                }
-                if(newMesurmentData != analogInputs.getCalculationCount()) {
+                status = monitor.run();
+                run = analizeStrategyStatus(strategy, status, exitImmediately);
+
+                if(run && newMesurmentData != analogInputs.getCalculationCount()) {
                     newMesurmentData = analogInputs.getCalculationCount();
                     status = strategy.doStrategy();
-                    if(status == Strategy::COMPLETE_AND_EXIT) {
-                        screen.powerOff();
-                        strategy.powerOff();
-                        return status;
-                    }
-
-                    if(status != Strategy::RUNNING) {
-                        screen.powerOff();
-                        strategy.powerOff();
-                        chargingComplete();
-                        run = false;
-                    }
+                    run = analizeStrategyStatus(strategy, status, exitImmediately);
                 }
             }
+            if(!run && exitImmediately)
+                return status;
         } while(key != BUTTON_STOP);
 
         screen.powerOff();
@@ -181,16 +200,15 @@ namespace {
 
 } //namespace {
 
-bool Program::startInfo(ProgramType prog)
+bool Program::startInfo()
 {
-    screen.programType_ = prog;
     if(ProgramData::currentProgramData.isLiXX()) {
         //usues balance port
         startInfoStrategy.setBalancePort(true);
-        return doStrategy(startInfoStrategy, startInfoBalanceScreens, sizeOfArray(startInfoBalanceScreens)) == Strategy::COMPLETE_AND_EXIT;
+        return doStrategy(startInfoStrategy, startInfoBalanceScreens, sizeOfArray(startInfoBalanceScreens), true) == Strategy::COMPLETE;
     } else {
         startInfoStrategy.setBalancePort(false);
-        return doStrategy(startInfoStrategy, startInfoScreens, sizeOfArray(startInfoScreens)) == Strategy::COMPLETE_AND_EXIT;
+        return doStrategy(startInfoStrategy, startInfoScreens, sizeOfArray(startInfoScreens), true) == Strategy::COMPLETE;
     }
 }
 
@@ -210,7 +228,7 @@ void Program::runTheveninCharge(int minChargeC)
 
 void Program::runDeltaCharge()
 {
-    deltaChargeStrategy.setTestTV(true, true);
+    deltaChargeStrategy.setTestTV(settings.externT_, true);
     doStrategy(deltaChargeStrategy, deltaChargeScreens, sizeOfArray(deltaChargeScreens));
 }
 
@@ -233,7 +251,10 @@ void Program::runBalance()
 
 void Program::run(ProgramType prog)
 {
-    if(startInfo(prog)) {
+    programType_ = prog;
+    stopReason_ = PSTR("");
+
+    if(startInfo()) {
         switch(prog) {
         case Program::ChargeLiXX:
             runTheveninCharge(10);
@@ -279,7 +300,8 @@ namespace {
     const char fastCh_str[] PROGMEM = "fast charge";
     const char storag_str[] PROGMEM = "storage";
     const char stoBal_str[] PROGMEM = "storage+balanc";
-    const char cycle__str[] PROGMEM = "cycle";
+    const char CDcycl_str[] PROGMEM = "c>d cycle";
+    const char DCcycl_str[] PROGMEM = "d>c cycle";
     const char edBatt_str[] PROGMEM = "edit battery";
 
     const char * const programLiXXMenu[] PROGMEM =
@@ -307,14 +329,16 @@ namespace {
     const char * const programNiXXMenu[] PROGMEM =
     { charge_str,
       discha_str,
-      cycle__str,
+      CDcycl_str,
+      DCcycl_str,
       edBatt_str
     };
 
     const Program::ProgramType programNiXXMenuType[] PROGMEM =
     { Program::ChargeNiXX,
       Program::DischargeNiXX,
-      Program::CycleNiXX,
+      Program::CDcycleNiXX,
+      Program::DCcycleNiXX,
       Program::EditBattery
     };
 

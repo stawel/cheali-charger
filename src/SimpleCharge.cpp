@@ -18,7 +18,7 @@ void SimpleCharge::powerOn()
     theveninMethod.setVI(Vc, value);
     theveninMethod.init();
     smps.setValue(value);
-    screen.iName_ = AnalogInputs::IsmpsValue;
+    Program::iName_ = AnalogInputs::IsmpsValue;
 }
 
 void SimpleCharge::powerOff()

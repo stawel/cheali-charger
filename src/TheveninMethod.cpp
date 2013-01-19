@@ -91,7 +91,7 @@ AnalogInputs::ValueType TheveninMethod::calculateI()
 
 AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value, AnalogInputs::ValueType oldValue)
 {
-    screen.valueTh_ = value;
+    valueTh_ = value;
     if(value > maxValue_) {
         value = maxValue_;
     }

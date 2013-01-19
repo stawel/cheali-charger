@@ -63,7 +63,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
     }
     if(ok_ == 2) {
         buzzer.soundStartProgram();
-        return Strategy::COMPLETE_AND_EXIT;
+        return Strategy::COMPLETE;
     }
     return Strategy::RUNNING;
 }

@@ -4,16 +4,11 @@
 
 class Monitor {
 public:
-    enum statusType {OK, ERROR};
+    uint16_t VoutMaxMesured_;
     Monitor(){};
-    statusType run();
+    Strategy::statusType run();
     void doInterrupt();
-
-protected:
-    statusType monitorInternalTemperature();
-//    statusType monitorInputVoltage();
-//    statusType monitorOutputPolarity();
-
+    void powerOn();
 };
 
 extern Monitor monitor;
