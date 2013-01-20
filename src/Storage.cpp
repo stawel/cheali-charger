@@ -64,6 +64,8 @@ Strategy::statusType Storage::doStrategy()
     if(status == COMPLETE && doBalance_) {
         status = RUNNING;
         state = Balance;
+        //turn one measurement
+        balancer.powerOn();
     }
 
     return status;

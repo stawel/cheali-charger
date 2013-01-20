@@ -110,11 +110,11 @@ public:
     AnalogInputs(const DefaultValues * inputs_P);
 
     //get the average (measured) value
-    ValueType getValue(Name name) const;
+    ValueType getValue(Name name) const             { return avrValue_[name]; }
     //get real value (usable) - average, after calibration
-    ValueType getRealValue(Name name) const;
+    ValueType getRealValue(Name name) const        { return real_[name]; }
     //get the measured value - in this particular moment
-    ValueType getMeasuredValue(Name name) const;
+    ValueType getMeasuredValue(Name name) const    { return measured_[name]; }
 
     ValueType calibrateValue(Name name, ValueType x) const;
     ValueType reverseCalibrateValue(Name name, ValueType y) const;
@@ -157,7 +157,7 @@ public:
     uint16_t getStableCount(Name name) const { return stableCount_[name]; };
     bool isStable(Name name) const { return stableCount_[name] >= STABLE_MIN_VALUE; };
     void resetStable();
-    bool isReversePolarity() const { return getMeasuredValue(VreversePolarity) > REVERSE_POLARITY_MIN_VALUE; }
+    bool isReversePolarity();
 
 //protected:
     void setReal(Name name, ValueType real);
@@ -166,7 +166,7 @@ public:
     uint16_t avrCount_;
     uint32_t avrSum_[PHYSICAL_INPUTS];
     Name currentInput_;
-    ValueType x_[PHYSICAL_INPUTS];
+    ValueType avrValue_[PHYSICAL_INPUTS];
     ValueType measured_[PHYSICAL_INPUTS];
     ValueType real_[ALL_INPUTS];
     uint16_t stableCount_[ALL_INPUTS];

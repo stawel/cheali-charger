@@ -160,6 +160,8 @@ void Screen::printChar_Time() {
     } else if(discharger.isPowerOn()) {
         c = 'D';
         if(smps.isPowerOn()) c = 'E';
+    } else if(balancer.isWorking()) {
+        c = 'B';
     }
 
     lcdPrintChar(c);

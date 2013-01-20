@@ -172,8 +172,8 @@ void AnalogInputs::doCalculations()
 {
     calculationCount_++;
     FOR_ALL_PHY_INPUTS(name) {
-        x_[name] = avrSum_[name] / avrCount_;
-        ValueType real = calibrateValue(name, x_[name]);
+        avrValue_[name] = avrSum_[name] / avrCount_;
+        ValueType real = calibrateValue(name, avrValue_[name]);
         setReal(name, real);
     }
     doVirtualCalculations();
@@ -235,13 +235,14 @@ void AnalogInputs::reset()
     calculationCount_ = 0;
     clearAvr();
 
+    /* TODO: think this over
     FOR_ALL_PHY_INPUTS(name) {
         x_[name] = 0;
     }
 
     FOR_ALL_INPUTS(name) {
         setReal(name, 0);
-    }
+    }*/
     resetMeasurement();
     resetDelta();
 }
@@ -252,6 +253,12 @@ void AnalogInputs::powerOn()
         reset();
         on_ = true;
     }
+}
+bool AnalogInputs::isReversePolarity()
+{
+    // TODO: extra measurement
+    measureValue(VreversePolarity);
+    return getMeasuredValue(VreversePolarity) > REVERSE_POLARITY_MIN_VALUE;
 }
 
 
@@ -274,22 +281,8 @@ void AnalogInputs::doMeasurement(uint16_t count)
     }
 }
 
-AnalogInputs::ValueType AnalogInputs::getValue(Name name) const
-{
-    if(name >=  PHYSICAL_INPUTS)
-        return 0;
-    return x_[name];
-}
-AnalogInputs::ValueType AnalogInputs::getRealValue(Name name) const
-{
-    return real_[name];
-}
-AnalogInputs::ValueType AnalogInputs::getMeasuredValue(Name name) const
-{
-    if(name >=  PHYSICAL_INPUTS)
-        return 0;
-    return measured_[name];
-}
+//AnalogInputs::ValueType AnalogInputs::getValue(Name name) const
+//AnalogInputs::ValueType AnalogInputs::getMeasuredValue(Name name) const
 
 
 AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x) const
