@@ -31,6 +31,7 @@ void Storage::powerOff()
 
 void Storage::powerOn()
 {
+    balancer.powerOn();
     if(balancer.isMinVout(balancer.calculatePerCell(V_))) {
         theveninCharge.powerOn();
         state = Charge;
@@ -38,7 +39,6 @@ void Storage::powerOn()
         theveninDischarge.powerOn();
         state = Discharge;
     }
-    balancer.powerOn();
 }
 
 
