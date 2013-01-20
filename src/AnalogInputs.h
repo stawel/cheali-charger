@@ -72,7 +72,7 @@ public:
 #endif
 
         VirtualInputs,
-        Vbalacer,
+        Vbalancer,
         VoutBalancer,
         VobInfo,
         VbalanceInfo,

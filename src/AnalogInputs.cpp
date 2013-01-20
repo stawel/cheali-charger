@@ -70,7 +70,7 @@ bool AnalogInputs::isConnected(Name name) const
 
 void AnalogInputs::doDeltaCalculations()
 {
-    bool useVBalancer = real_[VobInfo] == Vbalacer;
+    bool useVBalancer = real_[VobInfo] == Vbalancer;
     if(useVBalancer) {
         //when the balancer is connected use
         //its "real" voltage to calculate deltaVout
@@ -137,7 +137,7 @@ void AnalogInputs::doVirtualCalculations()
         balancer += real_[Name(Vb0+i)];
     }
 
-    setReal(Vbalacer, balancer);
+    setReal(Vbalancer, balancer);
     if(balancer == 0 || (out > balancer && out - balancer > oneVolt)) {
         //balancer not connected or big error in calibration
         setReal(VoutBalancer, out);
@@ -145,7 +145,7 @@ void AnalogInputs::doVirtualCalculations()
         setReal(VbalanceInfo, 0);
     } else {
         setReal(VoutBalancer, balancer);
-        setReal(VobInfo, Vbalacer);
+        setReal(VobInfo, Vbalancer);
         setReal(VbalanceInfo, ports);
     }
     doDeltaCalculations();

@@ -9,8 +9,7 @@ StartInfoStrategy startInfoStrategy;
 
 void StartInfoStrategy::powerOn()
 {
-    hardware::setBatteryOutput(true);
-    analogInputs.powerOn();
+    discharger.powerOn();
     screen.startBlinkOn(7);
     buzzer.begin();
     ok_ = 3;
@@ -18,8 +17,7 @@ void StartInfoStrategy::powerOn()
 
 void StartInfoStrategy::powerOff()
 {
-    analogInputs.powerOff();
-    hardware::setBatteryOutput(false);
+    discharger.powerOff();
     screen.stopBlink();
     buzzer.soundOff();
 }
@@ -44,6 +42,9 @@ Strategy::statusType StartInfoStrategy::doStrategy()
             b = false;
         }
     }
+    if(analogInputs.isConnected(AnalogInputs::Vbalancer) &&
+            absDiff(analogInputs.getRealValue(AnalogInputs::Vout),
+               analogInputs.getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)) v = true;
 
     screen.blinkIndex_ = 7;
     if(c)     screen.blinkIndex_ -= 4;

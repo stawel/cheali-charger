@@ -102,7 +102,7 @@ void Calibrate::copyVbalVout()
     AnalogInputs::CalibrationPoint p;
     if(calibrate(SCREEN_VOUT_VBAL)) {
         p.x = analogInputs.getValue(AnalogInputs::Vout);
-        p.y = analogInputs.getRealValue(AnalogInputs::Vbalacer);
+        p.y = analogInputs.getRealValue(AnalogInputs::Vbalancer);
         setCalibrationPoint(AnalogInputs::Vout, 1, p);
 
         p.x = analogInputs.getValue(AnalogInputs::VoutMux);
@@ -253,7 +253,7 @@ void Calibrate::printCalibrateVoutVbal()
 {
     print_v();
     print_m_2(PSTR(" Vo:"), AnalogInputs::Vout);
-    print_m_3(PSTR("Vbal:"), AnalogInputs::Vbalacer);
+    print_m_3(PSTR("Vbal:"), AnalogInputs::Vbalancer);
 }
 
 void Calibrate::printCalibrateB0_2()

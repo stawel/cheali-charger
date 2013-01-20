@@ -228,10 +228,10 @@ void Screen::displayScreenR()
     lcdPrintResistance(calculateRth_calibrated(theveninMethod.tVout_.Rth_V_, theveninMethod.tVout_.Rth_I_),8);
     lcdPrintSpaces();
     lcdSetCursor0_1();
-    if(analogInputs.isConnected(AnalogInputs::Vbalacer)) {
+    if(analogInputs.isConnected(AnalogInputs::Vbalancer)) {
         lcdPrint_P(PSTR("wires R="));
         int16_t Vwires =  analogInputs.getRealValue(AnalogInputs::Vout);
-        Vwires -= analogInputs.getRealValue(AnalogInputs::Vbalacer);
+        Vwires -= analogInputs.getRealValue(AnalogInputs::Vbalancer);
         lcdPrintResistance(calculateRth2(Vwires, getI()+1),8);
     }
     lcdPrintSpaces();
@@ -257,7 +257,7 @@ void Screen::displayScreenVout()
     lcdPrintSpaces();
     lcdSetCursor0_1();
     lcdPrint_P(PSTR("Vbal.="));
-    analogInputs.printRealValue(AnalogInputs::Vbalacer, 7);
+    analogInputs.printRealValue(AnalogInputs::Vbalancer, 7);
     lcdPrintSpaces();
 }
 
@@ -490,7 +490,7 @@ void Screen::displayStartInfo()
     lcdPrintChar(' ');
     if(ProgramData::currentProgramData.isLiXX()) {
         //display balance port
-        if(bindex & 2) analogInputs.printRealValue(AnalogInputs::Vbalacer, 5);
+        if(bindex & 2) analogInputs.printRealValue(AnalogInputs::Vbalancer, 5);
         else lcdPrintSpaces(5);
 
         if(bindex & 4) lcdPrintDigit(analogInputs.getConnectedBalancePorts());
