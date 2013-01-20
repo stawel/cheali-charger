@@ -34,7 +34,7 @@ void Monitor::doInterrupt()
 }
 
 void Monitor::powerOn() {
-    VoutMaxMesured_ = analogInputs.reverseCalibrateValue(AnalogInputs::Vout, MAX_CHARGE_V);
+    VoutMaxMesured_ = analogInputs.reverseCalibrateValue(AnalogInputs::Vout, MAX_CHARGE_V+ANALOG_VOLT(3.000));
 }
 
 
