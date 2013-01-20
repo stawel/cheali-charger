@@ -117,15 +117,22 @@ void Balancer::setBalance(uint16_t v)
 
 void Balancer::startBalacing()
 {
-    minCell_ = getCellMinV();
+    //test if battery has recovered after last balancing
+    if(!isStable(balancerStartStableCount))
+        return;
 
+    minCell_ = getCellMinV();
     AnalogInputs::ValueType vmin = getV(minCell_);
 
     bool off = true;
-    for(int i = 0; i < cells_; i++) {
-        Von_[i] = Voff_[i] = getV(i);
-        if(Von_[i] - vmin > error)
-            off = false;
+
+    if(vmin >= ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VDischarge))
+    {
+        for(int i = 0; i < cells_; i++) {
+            Von_[i] = Voff_[i] = getV(i);
+            if(Von_[i] - vmin > error)
+                off = false;
+        }
     }
 
     savedVon_ = false;
@@ -157,10 +164,10 @@ uint16_t Balancer::calculateBalance()
     return retu;
 }
 
-bool Balancer::isStable() const
+bool Balancer::isStable(const uint16_t stableCount) const
 {
     for(uint8_t c = 0; c < cells_; c++) {
-        if(!analogInputs.isStable(AnalogInputs::Name(AnalogInputs::Vb0+c)))
+        if(analogInputs.stableCount_[AnalogInputs::Vb0+c] < stableCount)
             return false;
     }
     return true;

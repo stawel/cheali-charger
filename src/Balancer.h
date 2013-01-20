@@ -28,6 +28,7 @@ public:
     const static AnalogInputs::ValueType error = 3;
     const static AnalogInputs::ValueType Ibalance = 200; //200mA
     const static uint16_t maxBalanceTime = 30; //30s
+    const static uint16_t balancerStartStableCount = 10; //30s
     uint8_t cells_;
     uint8_t minCell_;
     uint16_t balance_;
@@ -62,7 +63,7 @@ public:
 
     bool isMaxVout(AnalogInputs::ValueType maxV) const;
     bool isMinVout(AnalogInputs::ValueType minV) const;
-    bool isStable() const;
+    bool isStable(const uint16_t stableCount = AnalogInputs::STABLE_MIN_VALUE) const;
     void endBalancing();
 
     AnalogInputs::ValueType calculatePerCell(AnalogInputs::ValueType v) const;
