@@ -231,8 +231,10 @@ void AnalogInputs::reset()
 
 void AnalogInputs::powerOn()
 {
-    reset();
-    on_ = true;
+    if(!on_) {
+        reset();
+        on_ = true;
+    }
 }
 
 

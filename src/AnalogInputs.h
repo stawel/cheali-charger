@@ -115,6 +115,7 @@ public:
     void resetDelta();
     void powerOn();
     void powerOff() { on_ = false; }
+    bool isPowerOn() { return on_; }
 
 
     void restoreDefault();

@@ -5,15 +5,20 @@
 
 void Balancer::powerOn()
 {
+    if(!analogInputs.isPowerOn()) {
+        analogInputs.powerOn();
+        analogInputs.doFullMeasurement();
+    }
+
     cells_ = analogInputs.getRealValue(AnalogInputs::VbalanceInfo);
     for(int i = 0; i < cells_; i++) {
         AnalogInputs::ValueType vi = getV(i);
         Voff_[i] = Von_[i] = vi;
     }
     balance_ = 0;
-    on_ = true;
+    done_ = false;
     setBalance(0);
-    startSwitchTime_ = startSwitchTime_ = 0;
+    startSwitchTime_ = 0;
 }
 
 uint8_t Balancer::getCellMinV() const
@@ -47,11 +52,17 @@ AnalogInputs::ValueType Balancer::getPresumedV(uint8_t cell) const
         return Voff_[cell];
 }
 
+void Balancer::endBalancing()
+{
+    setBalance(0);
+    done_ = true;
+}
+
 
 void Balancer::powerOff()
 {
-    setBalance(0);
-    on_ = false;
+    endBalancing();
+    analogInputs.powerOff();
 }
 
 Balancer::Balancer()
@@ -67,7 +78,7 @@ Balancer::Balancer()
 
 void Balancer::setBalance(uint8_t port, bool v)
 {
-    if(on_)
+    if(!done_)
         digitalWrite(port, v);
 }
 
@@ -89,10 +100,6 @@ void Balancer::setBalance(uint16_t v)
 
 void Balancer::startBalacing()
 {
-    //TODO: should be an assert
-    if(balance_ != 0 || !on_)
-        return;
-
     minCell_ = getCellMinV();
 
     AnalogInputs::ValueType vmin = getV(minCell_);
@@ -107,7 +114,7 @@ void Balancer::startBalacing()
     savedVon_ = false;
     startBalanceTime_ = timer.getMiliseconds();
     if(off) {
-        powerOff();
+        endBalancing();
     } else {
         setBalance(calculateBalance());
     }
@@ -160,7 +167,7 @@ uint16_t Balancer::getBalanceTime() const
 
 Strategy::statusType Balancer::doStrategy()
 {
-    if(!on_)
+    if(done_)
         return COMPLETE;
     if(isStable()) {
         if(balance_ == 0) {

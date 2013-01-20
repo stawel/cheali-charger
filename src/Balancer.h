@@ -14,7 +14,7 @@ public:
     uint8_t cells_;
     uint8_t minCell_;
     uint16_t balance_;
-    bool on_;
+    bool done_;
     int16_t Von_[MAX_BANANCE_CELLS], Voff_[MAX_BANANCE_CELLS];
     bool savedVon_;
     uint32_t startBalanceTime_;
@@ -41,12 +41,12 @@ public:
     static AnalogInputs::ValueType getV(uint8_t cell);
     AnalogInputs::ValueType getPresumedV(uint8_t cell) const;
     AnalogInputs::ValueType getRealV(uint8_t cell) const { return getPresumedV(cell); }
-    bool isPowerOn() const { return on_; }
     bool isWorking() const { return balance_ != 0; }
 
     bool isMaxVout(AnalogInputs::ValueType maxV) const;
     bool isMinVout(AnalogInputs::ValueType minV) const;
     bool isStable() const;
+    void endBalancing();
 
     AnalogInputs::ValueType calculatePerCell(AnalogInputs::ValueType v) const;
 };
