@@ -39,9 +39,9 @@ Features
 
 WARNING
 -------
-Please CALIBRATE the charger before use!  
+Please CALIBRATE the charger before use!
 Always use the external temperature probe!  
-(if You like your house ;) )  
+(if You like your house ;) )
 
 
 Hardware
