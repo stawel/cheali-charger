@@ -84,19 +84,7 @@ void Balancer::powerOff()
 
 Balancer::Balancer()
 {
-    pinMode(BALANCER0_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER1_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER2_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER3_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER4_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER5_LOAD_PIN, OUTPUT);
     powerOff();
-}
-
-void Balancer::setBalance(uint8_t port, bool v)
-{
-    if(!done_)
-        digitalWrite(port, v);
 }
 
 void Balancer::setBalance(uint16_t v)
@@ -106,13 +94,8 @@ void Balancer::setBalance(uint16_t v)
     balance_ = v;
     startSwitchTime_ = timer.getMiliseconds();
     analogInputs.resetStable();
-
-    setBalance(BALANCER0_LOAD_PIN, v&1);
-    setBalance(BALANCER1_LOAD_PIN, v&2);
-    setBalance(BALANCER2_LOAD_PIN, v&4);
-    setBalance(BALANCER3_LOAD_PIN, v&8);
-    setBalance(BALANCER4_LOAD_PIN, v&16);
-    setBalance(BALANCER5_LOAD_PIN, v&32);
+    if(!done_)
+        hardware::setBalancer(v);
 }
 
 void Balancer::startBalacing()

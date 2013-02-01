@@ -21,9 +21,6 @@
 
 SMPS::SMPS()
 {
-    pinMode(SMPS_VALUE_PIN, OUTPUT);
-    pinMode(SMPS_DISABLE_PIN, OUTPUT);
-
     setValue(0);
     powerOff(CHARGING_COMPLETE);
 }
@@ -34,7 +31,7 @@ void SMPS::setValue(uint16_t value)
     if(value > SMPS_UPPERBOUND_VALUE)
         value = SMPS_UPPERBOUND_VALUE;
     value_ = value;
-    Timer1.pwm(SMPS_VALUE_PIN, value_);
+    hardware::setChargerValue(value_);
     analogInputs.resetMeasurement();
 }
 void SMPS::setRealValue(uint16_t I)
@@ -50,7 +47,7 @@ void SMPS::powerOn()
 
     hardware::setBatteryOutput(true);
     setValue(0);
-    digitalWrite(SMPS_DISABLE_PIN, false);
+    hardware::setChargerOutput(true);
     analogInputs.powerOn();
     analogInputs.doFullMeasurement();
     state_ = CHARGING;
@@ -66,7 +63,7 @@ void SMPS::powerOff(STATE reason)
 
     analogInputs.powerOff();
     setValue(0);
-    digitalWrite(SMPS_DISABLE_PIN, true);
+    hardware::setChargerOutput(false);
     hardware::setBatteryOutput(false);
     state_ = reason;
 }

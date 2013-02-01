@@ -496,8 +496,6 @@ void Screen::displayStartInfo()
         else
             lcdPrint_P(PSTR("FUL "));
     } else {
-        if(procent < 10)
-            lcdPrintChar(' ');
         lcdPrintUnsigned(procent, 2);
         lcdPrint_P(PSTR("% "));
     }

@@ -53,7 +53,6 @@ public:
 
     uint16_t calculateBalance();
     void setBalance(uint16_t v);
-    void setBalance(uint8_t port, bool v);
     uint8_t getCellMinV() const;
     uint8_t getCells() const { return cells_; }
     static AnalogInputs::ValueType getV(uint8_t cell);

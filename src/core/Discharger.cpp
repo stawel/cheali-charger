@@ -24,9 +24,6 @@
 Discharger::Discharger():
 discharge_(0)
 {
-    pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
-    pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
-
     setValue(0);
     powerOff(DISCHARGING_COMPLETE);
 }
@@ -63,7 +60,7 @@ void Discharger::finalizeValueTintern(bool force)
     uint16_t  v = correctValueTintern(valueSet_);
     if(v != value_ || force) {
         value_ = v;
-        Timer1.pwm(DISCHARGE_VALUE_PIN, value_);
+        hardware::setDischargerValue(value_);
         analogInputs.resetMeasurement();
     }
 }
@@ -81,7 +78,7 @@ void Discharger::powerOn()
 
     hardware::setBatteryOutput(true);
     setValue(0);
-    digitalWrite(DISCHARGE_DISABLE_PIN, false);
+    hardware::setDischargerOutput(true);
     analogInputs.powerOn();
     analogInputs.doFullMeasurement();
     state_ = DISCHARGING;
@@ -95,7 +92,7 @@ void Discharger::powerOff(STATE reason)
 
     analogInputs.powerOff();
     setValue(0);
-    digitalWrite(DISCHARGE_DISABLE_PIN, true);
+    hardware::setDischargerOutput(false);
     hardware::setBatteryOutput(false);
     state_ = reason;
 }

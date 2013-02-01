@@ -17,7 +17,13 @@
 */
 #include "GTPowerA6-10.h"
 #include "TimerOne.h"
+#include "GTPowerA6-10-pins.h"
 
+
+Multiplexer<MUX_ADR0_PIN, MUX_ADR1_PIN, MUX_ADR2_PIN,
+          MUX0_Z_D_PIN, MUX1_Z_D_PIN,
+          MUX0_Z_A_PIN, MUX1_Z_A_PIN>
+ mux;
 
 uint16_t smpsValue()
 {
@@ -83,12 +89,29 @@ void hardware::init()
     pinMode(FAN_PIN, OUTPUT);
     pinMode(BUZZER_PIN, OUTPUT);
 
+    pinMode(SMPS_VALUE_PIN, OUTPUT);
+    pinMode(SMPS_DISABLE_PIN, OUTPUT);
+    pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
+    pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
+
+    pinMode(BALANCER0_LOAD_PIN, OUTPUT);
+    pinMode(BALANCER1_LOAD_PIN, OUTPUT);
+    pinMode(BALANCER2_LOAD_PIN, OUTPUT);
+    pinMode(BALANCER3_LOAD_PIN, OUTPUT);
+    pinMode(BALANCER4_LOAD_PIN, OUTPUT);
+    pinMode(BALANCER5_LOAD_PIN, OUTPUT);
+
+    pinMode(MUX_ADR0_PIN, OUTPUT);
+    pinMode(MUX_ADR1_PIN, OUTPUT);
+    pinMode(MUX_ADR2_PIN, OUTPUT);
+    pinMode(MUX0_Z_D_PIN, INPUT);
+    pinMode(MUX1_Z_D_PIN, INPUT);
+
     setBatteryOutput(false);
     setFan(false);
     hardware::setBuzzer(0);
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
-    mux.init();
     timer.init();
 }
 
@@ -104,15 +127,47 @@ void hardware::setLCDBacklight(uint8_t val)
     Timer1.pwm(BACKLIGHT_PIN, v1);
 }
 
-void hardware::setBatteryOutput(bool enable)
-{
-    digitalWrite(OUTPUT_DISABLE_PIN, !enable);
-}
-
 void hardware::setFan(bool enable)
 {
     digitalWrite(FAN_PIN, enable);
 }
+void hardware::setBuzzer(uint16_t val)
+{
+    analogWrite(BUZZER_PIN, val);
+}
+
+void hardware::setBatteryOutput(bool enable)
+{
+    digitalWrite(OUTPUT_DISABLE_PIN, !enable);
+}
+void hardware::setChargerOutput(bool enable)
+{
+    digitalWrite(SMPS_DISABLE_PIN, !enable);
+}
+void hardware::setDischargerOutput(bool enable)
+{
+    digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
+}
+
+void hardware::setChargerValue(uint16_t value)
+{
+    Timer1.pwm(SMPS_VALUE_PIN, value);
+}
+void hardware::setDischargerValue(uint16_t value)
+{
+    Timer1.pwm(DISCHARGE_VALUE_PIN, value);
+}
+
+void hardware::setBalancer(uint16_t v)
+{
+    digitalWrite(BALANCER0_LOAD_PIN, v&1);
+    digitalWrite(BALANCER1_LOAD_PIN, v&2);
+    digitalWrite(BALANCER2_LOAD_PIN, v&4);
+    digitalWrite(BALANCER3_LOAD_PIN, v&8);
+    digitalWrite(BALANCER4_LOAD_PIN, v&16);
+    digitalWrite(BALANCER5_LOAD_PIN, v&32);
+}
+
 
 
 void hardware::delay(uint16_t t)
@@ -123,16 +178,7 @@ void hardware::delay(uint16_t t)
         timer.delay(t);
 }
 
-void hardware::setBuzzer(uint16_t val)
-{
-    analogWrite(BUZZER_PIN, val);
-}
 
-
-
-
-
-Multiplexer mux;
 Keyboard keyboard;
 SMPS smps;
 Discharger discharger;
@@ -141,3 +187,4 @@ AnalogInputs analogInputs(inputs_P);
 
 LiquidCrystal lcd(LCD_ENABLE_RS, LCD_ENABLE_PIN,
         LCD_D0_PIN, LCD_D1_PIN, LCD_D2_PIN, LCD_D3_PIN);
+
