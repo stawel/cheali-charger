@@ -5,4 +5,5 @@ Project(cheali-charger)
 add_subdirectory(arduino)
 add_subdirectory(src/core)
 add_subdirectory(src/hardware/GTPowerA6-10)
+add_subdirectory(src/hardware/imaxB6)
 

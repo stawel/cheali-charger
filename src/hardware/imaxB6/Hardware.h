@@ -15,7 +15,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <Arduino.h>
-#include <avr/pgmspace.h>
-#include "Multiplexer.h"
-#include "AnalogInputs.h"
+#ifndef HARDWARE_H_
+#define HARDWARE_H_
+
+#include "imaxB6.h"
+
+#endif /* HARDWARE_H_ */
