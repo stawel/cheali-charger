@@ -17,7 +17,6 @@
 */
 #include "ProgramDataMenu.h"
 #include "LcdPrint.h"
-#include "GTPowerA610.h"
 #include "EditName.h"
 #include "Utils.h"
 #include "Buzzer.h"

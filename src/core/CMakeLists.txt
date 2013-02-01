@@ -1,4 +1,4 @@
-set(SOURCE_FILES
+set(CORE_SOURCE
         AnalogInputs.cpp
         AnalogInputs.h
         Balancer.cpp
@@ -11,9 +11,6 @@ set(SOURCE_FILES
         DummyLiquidCrystal.h
         EditName.cpp
         EditName.h
-        GTPowerA610.cpp
-        GTPowerA610.h
-        Hardware.h
         Keyboard.cpp
         Keyboard.h
         LcdPrint.cpp
@@ -90,33 +87,12 @@ set(SOURCE_FILES
         Version.cpp
 )
 
-include(${CMAKE_SOURCE_DIR}/arduino/arduino.cmake)
+set (CORE_SOURCE_FILES "")
+foreach (SOURCE ${CORE_SOURCE})
+    set(THIS_FILE THIS_FILE-NOTFOUND)
+    find_file(THIS_FILE ${SOURCE} PATHS ${CMAKE_SOURCE_DIR}/src/core NO_DEFAULT_PATH)
+#    message("append ${THIS_FILE}, ${SOURCE}")
+    unset(SFILE)
+    list (APPEND CORE_SOURCE_FILES ${THIS_FILE})
+endforeach()
 
-include_directories(${CMAKE_SOURCE_DIR}/arduino/cores/arduino ${CMAKE_SOURCE_DIR}/arduino/variants/atmega32)
-include_directories(/usr/lib/avr/include/)
-
-link_libraries(arduino)
-link_libraries(m)
-
-add_executable(cheali-charger ${SOURCE_FILES})
-
-
-add_custom_command(
-    TARGET cheali-charger
-    POST_BUILD
-    COMMAND avr-objcopy -R .eeprom -O ihex $<TARGET_FILE:cheali-charger> $<TARGET_FILE:cheali-charger>.hex)
-
-add_custom_command(
-    TARGET cheali-charger
-    POST_BUILD
-    COMMAND avr-objcopy -R .eeprom -O binary $<TARGET_FILE:cheali-charger> $<TARGET_FILE:cheali-charger>.bin)
-
-add_custom_command(
-    TARGET cheali-charger
-    POST_BUILD
-    COMMAND avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex $<TARGET_FILE:cheali-charger> $<TARGET_FILE:cheali-charger>.eep)
-
-
-add_custom_target(cheali-charger.size ALL
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/avr-size.sh $<TARGET_FILE:cheali-charger> $<TARGET_FILE:cheali-charger>.size 
-    DEPENDS cheali-charger)

@@ -18,6 +18,6 @@
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
-#include "GTPowerA610.h"
+#include "GTPowerA6-10.h"
 
 #endif /* HARDWARE_H_ */

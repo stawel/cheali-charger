@@ -57,8 +57,6 @@ void SMPS::powerOn()
     charge_ = 0;
 }
 
-#include "GTPowerA610.h"
-
 
 void SMPS::powerOff(STATE reason)
 {
