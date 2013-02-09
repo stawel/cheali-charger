@@ -88,13 +88,14 @@ uint8_t hardware::getKeyPressed()
 void hardware::init()
 {
     analogReference(EXTERNAL);
-//    pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
+    pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
+    pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
+    pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
+
 //    pinMode(BUZZER_PIN, OUTPUT);
 
 //    pinMode(SMPS_VALUE_PIN, OUTPUT);
 //    pinMode(SMPS_DISABLE_PIN, OUTPUT);
-//    pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
-//    pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
     pinMode(BALANCER1_LOAD_PIN, OUTPUT);
     pinMode(BALANCER2_LOAD_PIN, OUTPUT);
@@ -130,7 +131,7 @@ void hardware::setBuzzer(uint16_t val)
 
 void hardware::setBatteryOutput(bool enable)
 {
-//    digitalWrite(OUTPUT_DISABLE_PIN, !enable);
+    digitalWrite(OUTPUT_DISABLE_PIN, !enable);
 }
 void hardware::setChargerOutput(bool enable)
 {
@@ -138,7 +139,7 @@ void hardware::setChargerOutput(bool enable)
 }
 void hardware::setDischargerOutput(bool enable)
 {
-//    digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
+    digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
 }
 
 void hardware::setChargerValue(uint16_t value)
@@ -147,7 +148,7 @@ void hardware::setChargerValue(uint16_t value)
 }
 void hardware::setDischargerValue(uint16_t value)
 {
-//    Timer1.pwm(DISCHARGE_VALUE_PIN, value);
+    Timer1.pwm(DISCHARGE_VALUE_PIN, value);
 }
 
 void hardware::setBalancer(uint16_t v)

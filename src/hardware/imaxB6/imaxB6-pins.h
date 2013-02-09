@@ -19,9 +19,9 @@
 #define IMAXB6_PINS_H_
 
 // pin configuration
-#define MUX_ADR2_PIN            1
+#define MUX_ADR0_PIN            1
 #define MUX_ADR1_PIN            2
-#define MUX_ADR0_PIN            3
+#define MUX_ADR2_PIN            3
 
 #define MUX0_Z_A_PIN            A6
 #define MUX0_Z_D_PIN            31
@@ -35,12 +35,12 @@
 
 
 #define MADDR_V_BALANSER_BATT_MINUS     0
-#define MADDR_V_BALANSER1               4
+#define MADDR_V_BALANSER1               1
 #define MADDR_V_BALANSER2               2
-#define MADDR_V_BALANSER3               6
-#define MADDR_V_BALANSER4               1
+#define MADDR_V_BALANSER3               3
+#define MADDR_V_BALANSER4               4
 #define MADDR_V_BALANSER5               5
-#define MADDR_V_BALANSER6               3
+#define MADDR_V_BALANSER6               6
 #define MADDR_T_EXTERN                  7
 
 #define BUTTON_DEC_PIN          41
@@ -70,17 +70,22 @@
 #define REVERSE_POLARITY_PIN    A1
 
 
+
+
+#define OUTPUT_DISABLE_PIN      12
+
+#define DISCHARGE_DISABLE_PIN   30
+
+#define DISCHARGE_VALUE_PIN     14
+
 /*
 //pin 4 - 8 - reset, Vcc, GND, XTAL2, XTAL1
 
-#define FAN_PIN                 9
+//#define FAN_PIN                 9
 //pin 10 - rs232 TX
 
-#define DISCHARGE_DISABLE_PIN   11
-#define OUTPUT_DISABLE_PIN      12
 #define BACKLIGHT_PIN           13
 // pin 14 - the same pin for discharger and smps
-#define DISCHARGE_VALUE_PIN     14
 #define SMPS_VALUE_PIN          14
 #define SMPS_DISABLE_PIN        15
 #define BUZZER_PIN              16
