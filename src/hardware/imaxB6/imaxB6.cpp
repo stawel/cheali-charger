@@ -93,7 +93,7 @@ void hardware::init()
     pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
     pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
-//    pinMode(BUZZER_PIN, OUTPUT);
+    pinMode(BUZZER_PIN, OUTPUT);
 
 //    pinMode(SMPS_VALUE_PIN, OUTPUT);
 //    pinMode(SMPS_DISABLE_PIN, OUTPUT);
@@ -129,7 +129,7 @@ void hardware::setFan(bool enable)
 }
 void hardware::setBuzzer(uint16_t val)
 {
-//    analogWrite(BUZZER_PIN, val);
+    digitalWrite(BUZZER_PIN, val>0);
 }
 
 void hardware::setBatteryOutput(bool enable)

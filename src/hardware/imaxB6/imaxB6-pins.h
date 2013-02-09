@@ -70,6 +70,7 @@
 #define REVERSE_POLARITY_PIN    A1
 
 
+#define BUZZER_PIN              44
 
 
 #define OUTPUT_DISABLE_PIN      12
@@ -88,7 +89,6 @@
 // pin 14 - the same pin for discharger and smps
 #define SMPS_VALUE_PIN          14
 #define SMPS_DISABLE_PIN        15
-#define BUZZER_PIN              16
 
 // pin 17,18 - VCC, GND
 
