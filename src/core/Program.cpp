@@ -72,10 +72,10 @@ namespace {
     const Screen::ScreenType theveninScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenDebugRthVth,
-      Screen::ScreenBalancer0_2,            Screen::ScreenBalancer3_5,
-      Screen::ScreenBalancer0_2Rth,         Screen::ScreenBalancer3_5Rth,
-      Screen::ScreenDebugBalancer0_2RthV,   Screen::ScreenDebugBalancer3_5RthV,
-      Screen::ScreenDebugBalancer0_2RthI,   Screen::ScreenDebugBalancer3_5RthI,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
+      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
+      Screen::ScreenDebugBalancer1_3RthV,   Screen::ScreenDebugBalancer4_6RthV,
+      Screen::ScreenDebugBalancer1_3RthI,   Screen::ScreenDebugBalancer4_6RthI,
       Screen::ScreenR,
       Screen::ScreenVout,
       Screen::ScreenVinput,
@@ -85,19 +85,19 @@ namespace {
       Screen::ScreenCIVlimits
     };
     const Screen::ScreenType balanceScreens[] PROGMEM = {
-      Screen::ScreenBalancer0_2,            Screen::ScreenBalancer3_5,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
 //      Thevenin values are not evaluated when balancing
-//      Screen::ScreenBalancer0_2Rth,         Screen::ScreenBalancer3_5Rth,
-//      Screen::ScreenDebugBalancer0_2M,      Screen::ScreenDebugBalancer3_5M,
+//      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
+//      Screen::ScreenDebugBalancer1_3M,      Screen::ScreenDebugBalancer4_6M,
       Screen::ScreenTime,
       Screen::ScreenTemperature };
     const Screen::ScreenType dischargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenDebugRthVth,
-      Screen::ScreenBalancer0_2,            Screen::ScreenBalancer3_5,
-      Screen::ScreenBalancer0_2Rth,         Screen::ScreenBalancer3_5Rth,
-      Screen::ScreenDebugBalancer0_2RthV,   Screen::ScreenDebugBalancer3_5RthV,
-      Screen::ScreenDebugBalancer0_2RthI,   Screen::ScreenDebugBalancer3_5RthI,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
+      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
+      Screen::ScreenDebugBalancer1_3RthV,   Screen::ScreenDebugBalancer4_6RthV,
+      Screen::ScreenDebugBalancer1_3RthI,   Screen::ScreenDebugBalancer4_6RthI,
       Screen::ScreenR,
       Screen::ScreenVout,
       Screen::ScreenVinput,
@@ -109,10 +109,10 @@ namespace {
     const Screen::ScreenType storageScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenDebugRthVth,
-      Screen::ScreenBalancer0_2,            Screen::ScreenBalancer3_5,
-      Screen::ScreenBalancer0_2Rth,         Screen::ScreenBalancer3_5Rth,
-      Screen::ScreenDebugBalancer0_2RthV,   Screen::ScreenDebugBalancer3_5RthV,
-      Screen::ScreenDebugBalancer0_2RthI,   Screen::ScreenDebugBalancer3_5RthI,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
+      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
+      Screen::ScreenDebugBalancer1_3RthV,   Screen::ScreenDebugBalancer4_6RthV,
+      Screen::ScreenDebugBalancer1_3RthI,   Screen::ScreenDebugBalancer4_6RthI,
       Screen::ScreenR,
       Screen::ScreenVout,
       Screen::ScreenVinput,
@@ -124,7 +124,7 @@ namespace {
 
     const Screen::ScreenType startInfoBalanceScreens[] PROGMEM = {
       Screen::ScreenStartInfo,
-      Screen::ScreenBalancer0_2,            Screen::ScreenBalancer3_5,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
       Screen::ScreenTemperature };
 
     const Screen::ScreenType startInfoScreens[] PROGMEM = {

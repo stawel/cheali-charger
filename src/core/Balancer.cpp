@@ -55,7 +55,7 @@ uint8_t Balancer::getCellMinV() const
 
 AnalogInputs::ValueType Balancer::getV(uint8_t cell)
 {
-    return analogInputs.getRealValue(AnalogInputs::Name(AnalogInputs::Vb0+cell));
+    return analogInputs.getRealValue(AnalogInputs::Name(AnalogInputs::Vb1+cell));
 }
 
 AnalogInputs::ValueType Balancer::getPresumedV(uint8_t cell) const
@@ -150,7 +150,7 @@ uint16_t Balancer::calculateBalance()
 bool Balancer::isStable(const uint16_t stableCount) const
 {
     for(uint8_t c = 0; c < cells_; c++) {
-        if(analogInputs.stableCount_[AnalogInputs::Vb0+c] < stableCount)
+        if(analogInputs.stableCount_[AnalogInputs::Vb1+c] < stableCount)
             return false;
     }
     return true;

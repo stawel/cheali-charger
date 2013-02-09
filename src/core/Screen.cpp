@@ -76,7 +76,7 @@ namespace {
     }
 
     void printBalancer(uint8_t cell, uint8_t mesured, AnalogInputs::Type type) {
-        if(analogInputs.isConnected(AnalogInputs::Name(AnalogInputs::Vb0+cell))) {
+        if(analogInputs.isConnected(AnalogInputs::Name(AnalogInputs::Vb1+cell))) {
             lcdPrintAnalog(getBalanceValue(cell, mesured), type, 6);
         } else {
             lcdPrint_P(PSTR("  --  "));
@@ -121,16 +121,16 @@ namespace {
             lcdPrintChar(' ');
         } else lcdPrintSpaces(7);
 
-        lcdPrintDigit(from);
+        lcdPrintDigit(from+1);
         lcdPrintChar(':');
         printBalancer(from++, mesured, type);
         lcdPrintSpaces();
 
         lcdSetCursor0_1();
-        lcdPrintDigit(from);
+        lcdPrintDigit(from+1);
         lcdPrintChar(':');
         printBalancer(from++, mesured, type);
-        lcdPrintDigit(from);
+        lcdPrintDigit(from+1);
         lcdPrintChar(':');
         printBalancer(from, mesured, type);
         lcdPrintSpaces();
@@ -529,16 +529,16 @@ void Screen::display(ScreenType screen)
     case ScreenCIVlimits:               return displayScreenCIVlimits();
     case ScreenTime:                    return displayScreenTime();
     case ScreenTemperature:             return displayScreenTemperature();
-    case ScreenBalancer0_2:             return displayBalanceInfo(0, 0, AnalogInputs::Voltage);
-    case ScreenBalancer3_5:             return displayBalanceInfo(3, 0, AnalogInputs::Voltage);
-    case ScreenDebugBalancer0_2M:       return displayBalanceInfo(0, 1, AnalogInputs::Voltage);
-    case ScreenDebugBalancer3_5M:       return displayBalanceInfo(3, 1, AnalogInputs::Voltage);
-    case ScreenDebugBalancer0_2RthV:    return displayBalanceInfo(0, 2, AnalogInputs::Unknown);
-    case ScreenDebugBalancer3_5RthV:    return displayBalanceInfo(3, 2, AnalogInputs::Unknown);
-    case ScreenDebugBalancer0_2RthI:    return displayBalanceInfo(0, 3, AnalogInputs::Unknown);
-    case ScreenDebugBalancer3_5RthI:    return displayBalanceInfo(3, 3, AnalogInputs::Unknown);
-    case ScreenBalancer0_2Rth:          return displayBalanceInfo(0, 4, AnalogInputs::Resistance);
-    case ScreenBalancer3_5Rth:          return displayBalanceInfo(3, 4, AnalogInputs::Resistance);
+    case ScreenBalancer1_3:             return displayBalanceInfo(0, 0, AnalogInputs::Voltage);
+    case ScreenBalancer4_6:             return displayBalanceInfo(3, 0, AnalogInputs::Voltage);
+    case ScreenDebugBalancer1_3M:       return displayBalanceInfo(0, 1, AnalogInputs::Voltage);
+    case ScreenDebugBalancer4_6M:       return displayBalanceInfo(3, 1, AnalogInputs::Voltage);
+    case ScreenDebugBalancer1_3RthV:    return displayBalanceInfo(0, 2, AnalogInputs::Unknown);
+    case ScreenDebugBalancer4_6RthV:    return displayBalanceInfo(3, 2, AnalogInputs::Unknown);
+    case ScreenDebugBalancer1_3RthI:    return displayBalanceInfo(0, 3, AnalogInputs::Unknown);
+    case ScreenDebugBalancer4_6RthI:    return displayBalanceInfo(3, 3, AnalogInputs::Unknown);
+    case ScreenBalancer1_3Rth:          return displayBalanceInfo(0, 4, AnalogInputs::Resistance);
+    case ScreenBalancer4_6Rth:          return displayBalanceInfo(3, 4, AnalogInputs::Resistance);
     case ScreenDebugRthVth:             return displayDebugRthVth();
     case ScreenStartInfo:               return displayStartInfo();
     case ScreenR:                       return displayScreenR();

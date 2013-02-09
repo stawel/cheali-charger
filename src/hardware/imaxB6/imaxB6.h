@@ -15,28 +15,22 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef GTPOWERA610_H_
-#define GTPOWERA610_H_
+#ifndef IMAXB6_H_
+#define IMAXB6_H_
 
 #include "AnalogInputs.h"
 
 #define LCD_LINES               2
 #define LCD_COLUMNS             16
-#define LCD_BACKLIGHT_MIN       100
-#define LCD_BACKLIGHT_MAX       3000
-
 
 #define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(10.000)  //10A
-#define MAX_CHARGE_P            200000              //200W
+#define MAX_CHARGE_I            ANALOG_AMP(5.000)   //5A
+#define MAX_CHARGE_P            50000               //50W
 
-#define MAX_DISCHARGE_P         25000               //25W
-#define MAX_DISCHARGE_I         ANALOG_AMP(5.000)   //5A
+#define MAX_DISCHARGE_P         5000                //5W
+#define MAX_DISCHARGE_I         ANALOG_AMP(1.000)   //5A
 
 #define MAX_BANANCE_CELLS       6
-
-//use unknown mux values
-//#define ANALOG_INPUTS_V_UNKNOWN
 
 
 #include "LiquidCrystal.h"
@@ -71,4 +65,4 @@ namespace hardware {
 }
 
 
-#endif /* GTPOWERA610_H_ */
+#endif /* IMAXB6_H_ */

@@ -24,9 +24,9 @@
 #include "Screen.h"
 #include "Buzzer.h"
 
-const char string_c0[] PROGMEM = "B0-2";
-const char string_c1[] PROGMEM = "B3-5";
-const char string_c2[] PROGMEM = "B0-5 to Vout";
+const char string_c0[] PROGMEM = "B1-3";
+const char string_c1[] PROGMEM = "B4-6";
+const char string_c2[] PROGMEM = "B1-6 to Vout";
 const char string_c3[] PROGMEM = "Icharge";
 const char string_c4[] PROGMEM = "Idischarge";
 const char string_c5[] PROGMEM = "Vin";
@@ -37,8 +37,8 @@ const char string_c8[] PROGMEM = "Info";
 
 const char string_ci0[] PROGMEM = "Icharge";
 const char string_ci1[] PROGMEM = "Vout";
-const char string_ci2[] PROGMEM = "B0-2";
-const char string_ci3[] PROGMEM = "B3-5";
+const char string_ci2[] PROGMEM = "B1-3";
+const char string_ci3[] PROGMEM = "B4-6";
 const char string_ci4[] PROGMEM = "Temp";
 const char string_ci5[] PROGMEM = "Vin";
 const char string_ci6[] PROGMEM = "Vreversed";
@@ -152,8 +152,8 @@ void Calibrate::run()
         i = menu.runSimple();
         if(i<0) break;
         switch(i) {
-        case 0: calibrateBlink(SCREEN_B0_2_BLINK, 3); break;
-        case 1: calibrateBlink(SCREEN_B3_5_BLINK, 3); break;
+        case 0: calibrateBlink(SCREEN_B1_3_BLINK, 3); break;
+        case 1: calibrateBlink(SCREEN_B4_6_BLINK, 3); break;
         case 2: copyVbalVout(); break;
         case 3: calibrateI(SCREEN_ICHARGE, AnalogInputs::Ismps, AnalogInputs::IsmpsValue); break;
         case 4: calibrateI(SCREEN_IDISCHARGE, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue); break;
@@ -273,17 +273,17 @@ void Calibrate::printCalibrateVoutVbal()
     print_m_3(PSTR("Vbal:"), AnalogInputs::Vbalancer);
 }
 
-void Calibrate::printCalibrateB0_2()
+void Calibrate::printCalibrateB1_3()
 {
     print_v(5);
     uint8_t dig = 7;
     if(dispVal_ != 0) dig = 6;
-    print_m_2(PSTR(" 0:"), AnalogInputs::Vb0, dig);
-    print_m_1(PSTR("1:"),  AnalogInputs::Vb1, dig);
+    print_m_2(PSTR(" 1:"), AnalogInputs::Vb1, dig);
+    print_m_1(PSTR("2:"),  AnalogInputs::Vb2, dig);
     if(dispVal_ == 0) lcdPrintChar(' ');
-    print_m_2(PSTR("2:"), AnalogInputs::Vb2, dig);
+    print_m_2(PSTR("3:"), AnalogInputs::Vb3, dig);
 }
-void Calibrate::printCalibrateB0_2_Blink()
+void Calibrate::printCalibrateB1_3_Blink()
 {
     lcdSetCursor0_0();
     if(!analogInputs.isConnected(AnalogInputs::Vout)) {
@@ -294,22 +294,22 @@ void Calibrate::printCalibrateB0_2_Blink()
     uint8_t dig = 7;
     if(dispVal_ != 0) dig = 6;
 
-    lcdPrint_P(PSTR(" 0:"));
-    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb0, dig);
+    lcdPrint_P(PSTR(" 1:"));
+    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb1, dig);
     else lcdPrintSpaces(dig);
 
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR("1:"));
-    if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb1, dig);
-    else lcdPrintSpaces(dig);
-
-    if(dispVal_ == 0) lcdPrintChar(' ');
     lcdPrint_P(PSTR("2:"));
-    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb2, dig);
+    if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb2, dig);
+    else lcdPrintSpaces(dig);
+
+    if(dispVal_ == 0) lcdPrintChar(' ');
+    lcdPrint_P(PSTR("3:"));
+    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb3, dig);
     else lcdPrintSpaces(dig);
 }
 
-void Calibrate::printCalibrateB3_5_Blink()
+void Calibrate::printCalibrateB4_6_Blink()
 {
     lcdSetCursor0_0();
     if(!analogInputs.isConnected(AnalogInputs::Vout)) {
@@ -320,30 +320,30 @@ void Calibrate::printCalibrateB3_5_Blink()
     uint8_t dig = 7;
     if(dispVal_ != 0) dig = 6;
 
-    lcdPrint_P(PSTR(" 3:"));
-    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb3, dig);
+    lcdPrint_P(PSTR(" 4:"));
+    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb4, dig);
     else lcdPrintSpaces(dig);
 
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR("4:"));
-    if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb4, dig);
+    lcdPrint_P(PSTR("5:"));
+    if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb5, dig);
     else lcdPrintSpaces(dig);
 
     if(dispVal_ == 0) lcdPrintChar(' ');
-    lcdPrint_P(PSTR("5:"));
-    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb5, dig);
+    lcdPrint_P(PSTR("6:"));
+    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb6, dig);
     else lcdPrintSpaces(dig);
 }
 
-void Calibrate::printCalibrateB3_5()
+void Calibrate::printCalibrateB4_6()
 {
     print_v(5);
     uint8_t dig = 7;
     if(dispVal_ != 0) dig = 6;
-    print_m_2(PSTR(" 3:"), AnalogInputs::Vb3, dig);
-    print_m_1(PSTR("4:"), AnalogInputs::Vb4, dig);
+    print_m_2(PSTR(" 4:"), AnalogInputs::Vb4, dig);
+    print_m_1(PSTR("5:"), AnalogInputs::Vb5, dig);
     if(dispVal_ == 0) lcdPrintChar(' ');
-    print_m_2(PSTR("5:"), AnalogInputs::Vb5, dig);
+    print_m_2(PSTR("6:"), AnalogInputs::Vb6, dig);
 }
 
 void Calibrate::printCalibrateT()
@@ -363,16 +363,16 @@ void Calibrate::printCalibrate(screenType p) {
     switch(p) {
     case SCREEN_ICHARGE:         printCalibrateIcharge();     break;
     case SCREEN_VOUT:        printCalibrateVout();     break;
-    case SCREEN_B0_2:        printCalibrateB0_2();     break;
-    case SCREEN_B3_5:         printCalibrateB3_5();     break;
+    case SCREEN_B1_3:        printCalibrateB1_3();     break;
+    case SCREEN_B4_6:         printCalibrateB4_6();     break;
     case SCREEN_T:             printCalibrateT();         break;
     case SCREEN_VIN:         printCalibrateVin();     break;
     case SCREEN_VREVERSE:     printCalibrateVreverse();     break;
     case SCREEN_VUNKNOWN:     printCalibrateVunknown();     break;
 
     case SCREEN_VOUT_VBAL:     printCalibrateVoutVbal();     break;
-    case SCREEN_B0_2_BLINK:    printCalibrateB0_2_Blink(); break;
-    case SCREEN_B3_5_BLINK:    printCalibrateB3_5_Blink(); break;
+    case SCREEN_B1_3_BLINK:    printCalibrateB1_3_Blink(); break;
+    case SCREEN_B4_6_BLINK:    printCalibrateB4_6_Blink(); break;
     }
 }
 
@@ -384,8 +384,8 @@ void Calibrate::info(screenType p)
 void Calibrate::setBlink(screenType screen)
 {
     switch (screen) {
-        case SCREEN_B0_2_BLINK:        setBalancer(AnalogInputs::Vb0); break;
-        case SCREEN_B3_5_BLINK:        setBalancer(AnalogInputs::Vb3); break;
+        case SCREEN_B1_3_BLINK:        setBalancer(AnalogInputs::Vb1); break;
+        case SCREEN_B4_6_BLINK:        setBalancer(AnalogInputs::Vb4); break;
     }
 }
 

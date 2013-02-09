@@ -42,8 +42,8 @@ public:
     enum ScreenType {
         ScreenStartInfo,
         ScreenFirst, ScreenCIVlimits, ScreenTime, ScreenTemperature,
-        ScreenBalancer0_2,      ScreenBalancer3_5,
-        ScreenBalancer0_2Rth,   ScreenBalancer3_5Rth,
+        ScreenBalancer1_3,      ScreenBalancer4_6,
+        ScreenBalancer1_3Rth,   ScreenBalancer4_6Rth,
         ScreenDeltaFirst,
         ScreenR,
         ScreenVout,
@@ -56,9 +56,9 @@ public:
         ScreenDebugRthVth = Debug,
         ScreenDebugI,
         ScreenDebugDelta,
-        ScreenDebugBalancer0_2M,    ScreenDebugBalancer3_5M,
-        ScreenDebugBalancer0_2RthV, ScreenDebugBalancer3_5RthV,
-        ScreenDebugBalancer0_2RthI, ScreenDebugBalancer3_5RthI,
+        ScreenDebugBalancer1_3M,    ScreenDebugBalancer4_6M,
+        ScreenDebugBalancer1_3RthV, ScreenDebugBalancer4_6RthV,
+        ScreenDebugBalancer1_3RthI, ScreenDebugBalancer4_6RthI,
         };
 
     void display(ScreenType screen);

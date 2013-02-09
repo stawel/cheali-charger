@@ -51,8 +51,8 @@
 
 // pin 27 - 29 - AVcc, GND, AREF
 
-#define BALANCER5_LOAD_PIN      30
-#define BALANCER4_LOAD_PIN      31
+#define BALANCER6_LOAD_PIN      30
+#define BALANCER5_LOAD_PIN      31
 //pin 32
 #define MUX0_Z_A_PIN            A5
 #define MUX0_Z_D_PIN            32
@@ -70,10 +70,10 @@
 
 // pin 38,39 - Vcc, GND
 
-#define BALANCER0_LOAD_PIN      40
-#define BALANCER1_LOAD_PIN      41
-#define BALANCER2_LOAD_PIN      42
-#define BALANCER3_LOAD_PIN      43
+#define BALANCER1_LOAD_PIN      40
+#define BALANCER2_LOAD_PIN      41
+#define BALANCER3_LOAD_PIN      42
+#define BALANCER4_LOAD_PIN      43
 
 #define UNKNOWN3_PIN            44
 
@@ -88,12 +88,12 @@
 #define MADDR_BUTTON_STOP       (6 + MUXINPUT0)
 #define MADDR_BUTTON_START      (7 + MUXINPUT0)
 
-#define MADDR_V_BALANSER0       (0 + MUXINPUT1)
-#define MADDR_V_BALANSER1       (1 + MUXINPUT1)
-#define MADDR_V_BALANSER2       (2 + MUXINPUT1)
-#define MADDR_V_BALANSER3       (3 + MUXINPUT1)
-#define MADDR_V_BALANSER4       (4 + MUXINPUT1)
-#define MADDR_V_BALANSER5       (5 + MUXINPUT1)
+#define MADDR_V_BALANSER1       (0 + MUXINPUT1)
+#define MADDR_V_BALANSER2       (1 + MUXINPUT1)
+#define MADDR_V_BALANSER3       (2 + MUXINPUT1)
+#define MADDR_V_BALANSER4       (3 + MUXINPUT1)
+#define MADDR_V_BALANSER5       (4 + MUXINPUT1)
+#define MADDR_V_BALANSER6       (5 + MUXINPUT1)
 #define MADDR_V_UNKNOWN0        (6 + MUXINPUT1)
 #define MADDR_V_UNKNOWN1        (7 + MUXINPUT1)
 

@@ -68,7 +68,7 @@ void AnalogInputs::doFullMeasurement()
 int AnalogInputs::getConnectedBalancePorts() const
 {
     for(int i=0; i < 6; i++){
-        if(!isConnected(Name(Vb0+i))) return i;
+        if(!isConnected(Name(Vb1+i))) return i;
     }
     return 6;
 }
@@ -151,7 +151,7 @@ void AnalogInputs::doVirtualCalculations()
     AnalogInputs::ValueType out = real_[Vout];
 
     for(int i=0; i < ports; i++) {
-        balancer += real_[Name(Vb0+i)];
+        balancer += real_[Name(Vb1+i)];
     }
 
     setReal(Vbalancer, balancer);

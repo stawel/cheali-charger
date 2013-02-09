@@ -73,12 +73,12 @@ public:
         Vin,
         Textern,
 
-        Vb0,
         Vb1,
         Vb2,
         Vb3,
         Vb4,
         Vb5,
+        Vb6,
 
         IsmpsValue,
         IdischargeValue,

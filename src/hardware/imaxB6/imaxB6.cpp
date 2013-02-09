@@ -21,8 +21,8 @@
 
 
 Multiplexer<MUX_ADR0_PIN, MUX_ADR1_PIN, MUX_ADR2_PIN,
-          MUX0_Z_D_PIN, MUX1_Z_D_PIN,
-          MUX0_Z_A_PIN, MUX1_Z_A_PIN>
+          MUX0_Z_D_PIN, MUX0_Z_D_PIN,
+          MUX0_Z_A_PIN, MUX0_Z_A_PIN>
  mux;
 
 uint16_t smpsValue()
@@ -39,30 +39,34 @@ uint16_t dischargerValue()
 uint16_t reversePolarityValue()
 {
     uint16_t vr = AnalogInputs::analogValue<REVERSE_POLARITY_PIN>();
-//    return vr;
     uint16_t vo = AnalogInputs::analogValue<OUTPUT_VOLATAGE_PIN>();
     if(vr > vo) return vr - vo;
     return 0;
 }
 
+uint16_t empty()
+{
+    return 0;
+}
+
 const AnalogInputs::DefaultValues inputs_P[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
-    {AnalogInputs::analogValue<OUTPUT_VOLATAGE_PIN>,    {0,0},      {50816, ANALOG_VOLT(23.118)}},  //Vout
-    {reversePolarityValue,                              {0,0},      {27516, ANALOG_VOLT(12.552)}},  //VreversePolarity
+    {AnalogInputs::analogValue<OUTPUT_VOLATAGE_PIN>,    {0,0},      {24643, ANALOG_VOLT(11.829)}},  //Vout
+    {reversePolarityValue,                              {0,0},      {38000, ANALOG_VOLT(11.829)}},  //VreversePolarity
     {AnalogInputs::analogValue<SMPS_CURRENT_PIN>,       {256,   ANALOG_AMP(0.051)}, {10240, ANALOG_AMP(2.000)}},    //Ismps
     {AnalogInputs::analogValue<DISCHARGE_CURRENT_PIN>,  {384,   ANALOG_AMP(0.051)}, { 9024, ANALOG_AMP(1.000)}},    //Idischarge
 
-    {mux.analogRead<MADDR_V_OUTMUX>,    {0, 0},                     {44736, ANALOG_VOLT(23.118)}},  //VoutMux
-    {mux.analogRead<MADDR_T_INTERN>,    {21500, ANALOG_CELCIUS(52)},{41023, ANALOG_CELCIUS(29)}},   //Tintern
-    {mux.analogRead<MADDR_V_IN>,        {0, 0},                     {47872, ANALOG_VOLT(14.020)}},  //Vin
-    {mux.analogRead<MADDR_T_EXTERN>,    {6272,  ANALOG_CELCIUS(24)},{14300, ANALOG_CELCIUS(60)}},   //Textern
+    {empty,    {0, 0},                      {0, ANALOG_VOLT(0)}},  //VoutMux
+    {empty,    {0, 0},                      {0, ANALOG_CELCIUS(0)}},   //Tintern
+    {AnalogInputs::analogValue<V_IN_PIN>,        {0, 0},            {48063, ANALOG_VOLT(14.044)}},  //Vin
+    {mux.analogRead<MADDR_T_EXTERN>,    {5765,  ANALOG_CELCIUS(23.2)},{14300, ANALOG_CELCIUS(60)}},   //Textern
 
-    {mux.analogRead<MADDR_V_BALANSER0>, {0, 0},                     {50244, ANALOG_VOLT(3.834)}},   //Vb0
-    {mux.analogRead<MADDR_V_BALANSER1>, {0, 0},                     {50176, ANALOG_VOLT(3.835)}},   //Vb1
-    {mux.analogRead<MADDR_V_BALANSER2>, {0, 0},                     {50280, ANALOG_VOLT(3.837)}},   //Vb2
+    {mux.analogRead<MADDR_V_BALANSER1>, {0, 0},                     {45560, ANALOG_VOLT(3.947)}},   //Vb0
+    {mux.analogRead<MADDR_V_BALANSER2>, {0, 0},                     {49320, ANALOG_VOLT(3.945)}},   //Vb1
+    {mux.analogRead<MADDR_V_BALANSER3>, {0, 0},                     {52094, ANALOG_VOLT(3.935)}},   //Vb2
 
-    {mux.analogRead<MADDR_V_BALANSER3>, {0, 0},                     {50602, ANALOG_VOLT(3.862)}},   //Vb3
-    {mux.analogRead<MADDR_V_BALANSER4>, {0, 0},                     {50752, ANALOG_VOLT(3.865)}},   //Vb4
-    {mux.analogRead<MADDR_V_BALANSER5>, {0, 0},                     {51008, ANALOG_VOLT(3.885)}},   //Vb5
+    {mux.analogRead<MADDR_V_BALANSER4>, {0, 0},                     {51180, ANALOG_VOLT(3.867)}},   //Vb3
+    {mux.analogRead<MADDR_V_BALANSER5>, {0, 0},                     {51130, ANALOG_VOLT(3.866)}},   //Vb4
+    {mux.analogRead<MADDR_V_BALANSER6>, {0, 0},                     {49348, ANALOG_VOLT(3.876)}},   //Vb5
 
     {smpsValue,                         {22, ANALOG_AMP(0.051)},    {744, ANALOG_AMP(2.000)}},      //IsmpsValue
     {dischargerValue,                   {32, ANALOG_AMP(0.051)},    {657, ANALOG_AMP(1.000)}},      //IdischargeValue
@@ -75,41 +79,38 @@ const AnalogInputs::DefaultValues inputs_P[AnalogInputs::PHYSICAL_INPUTS] PROGME
 
 uint8_t hardware::getKeyPressed()
 {
-    return   (mux.digitalRead(MADDR_BUTTON_STOP) ? 0 : BUTTON_STOP)
-            | (mux.digitalRead(MADDR_BUTTON_DEC)  ? 0 : BUTTON_DEC)
-            | (mux.digitalRead(MADDR_BUTTON_INC)  ? 0 : BUTTON_INC)
-            | (mux.digitalRead(MADDR_BUTTON_START)? 0 : BUTTON_START);
+    return   (digitalRead(BUTTON_STOP_PIN) ? 0 : BUTTON_STOP)
+            | (digitalRead(BUTTON_DEC_PIN)  ? 0 : BUTTON_DEC)
+            | (digitalRead(BUTTON_INC_PIN)  ? 0 : BUTTON_INC)
+            | (digitalRead(BUTTON_START_PIN)? 0 : BUTTON_START);
 }
 
 void hardware::init()
 {
     analogReference(EXTERNAL);
-    pinMode(BACKLIGHT_PIN, OUTPUT);
-    pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
-    pinMode(FAN_PIN, OUTPUT);
-    pinMode(BUZZER_PIN, OUTPUT);
+//    pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
+//    pinMode(BUZZER_PIN, OUTPUT);
 
-    pinMode(SMPS_VALUE_PIN, OUTPUT);
-    pinMode(SMPS_DISABLE_PIN, OUTPUT);
-    pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
-    pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
+//    pinMode(SMPS_VALUE_PIN, OUTPUT);
+//    pinMode(SMPS_DISABLE_PIN, OUTPUT);
+//    pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
+//    pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
-    pinMode(BALANCER0_LOAD_PIN, OUTPUT);
     pinMode(BALANCER1_LOAD_PIN, OUTPUT);
     pinMode(BALANCER2_LOAD_PIN, OUTPUT);
     pinMode(BALANCER3_LOAD_PIN, OUTPUT);
     pinMode(BALANCER4_LOAD_PIN, OUTPUT);
     pinMode(BALANCER5_LOAD_PIN, OUTPUT);
+    pinMode(BALANCER6_LOAD_PIN, OUTPUT);
 
     pinMode(MUX_ADR0_PIN, OUTPUT);
     pinMode(MUX_ADR1_PIN, OUTPUT);
     pinMode(MUX_ADR2_PIN, OUTPUT);
     pinMode(MUX0_Z_D_PIN, INPUT);
-    pinMode(MUX1_Z_D_PIN, INPUT);
 
     setBatteryOutput(false);
     setFan(false);
-    hardware::setBuzzer(0);
+    setBuzzer(0);
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
     timer.init();
@@ -117,55 +118,46 @@ void hardware::init()
 
 void hardware::setLCDBacklight(uint8_t val)
 {
-    uint32_t v1,v2;
-    v1  = LCD_BACKLIGHT_MAX;
-    v1 *= val;
-    v2  = LCD_BACKLIGHT_MIN;
-    v2 *= 100 - val;
-    v1+=v2;
-    v1/=100;
-    Timer1.pwm(BACKLIGHT_PIN, v1);
 }
 
 void hardware::setFan(bool enable)
 {
-    digitalWrite(FAN_PIN, enable);
 }
 void hardware::setBuzzer(uint16_t val)
 {
-    analogWrite(BUZZER_PIN, val);
+//    analogWrite(BUZZER_PIN, val);
 }
 
 void hardware::setBatteryOutput(bool enable)
 {
-    digitalWrite(OUTPUT_DISABLE_PIN, !enable);
+//    digitalWrite(OUTPUT_DISABLE_PIN, !enable);
 }
 void hardware::setChargerOutput(bool enable)
 {
-    digitalWrite(SMPS_DISABLE_PIN, !enable);
+//    digitalWrite(SMPS_DISABLE_PIN, !enable);
 }
 void hardware::setDischargerOutput(bool enable)
 {
-    digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
+//    digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
 }
 
 void hardware::setChargerValue(uint16_t value)
 {
-    Timer1.pwm(SMPS_VALUE_PIN, value);
+//    Timer1.pwm(SMPS_VALUE_PIN, value);
 }
 void hardware::setDischargerValue(uint16_t value)
 {
-    Timer1.pwm(DISCHARGE_VALUE_PIN, value);
+//    Timer1.pwm(DISCHARGE_VALUE_PIN, value);
 }
 
 void hardware::setBalancer(uint16_t v)
 {
-    digitalWrite(BALANCER0_LOAD_PIN, v&1);
-    digitalWrite(BALANCER1_LOAD_PIN, v&2);
-    digitalWrite(BALANCER2_LOAD_PIN, v&4);
-    digitalWrite(BALANCER3_LOAD_PIN, v&8);
-    digitalWrite(BALANCER4_LOAD_PIN, v&16);
-    digitalWrite(BALANCER5_LOAD_PIN, v&32);
+    digitalWrite(BALANCER1_LOAD_PIN, v&1);
+    digitalWrite(BALANCER2_LOAD_PIN, v&2);
+    digitalWrite(BALANCER3_LOAD_PIN, v&4);
+    digitalWrite(BALANCER4_LOAD_PIN, v&8);
+    digitalWrite(BALANCER5_LOAD_PIN, v&16);
+    digitalWrite(BALANCER6_LOAD_PIN, v&32);
 }
 
 

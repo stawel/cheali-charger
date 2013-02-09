@@ -56,13 +56,13 @@ const AnalogInputs::DefaultValues inputs_P[AnalogInputs::PHYSICAL_INPUTS] PROGME
     {mux.analogRead<MADDR_V_IN>,        {0, 0},                     {47872, ANALOG_VOLT(14.020)}},  //Vin
     {mux.analogRead<MADDR_T_EXTERN>,    {6272,  ANALOG_CELCIUS(24)},{14300, ANALOG_CELCIUS(60)}},   //Textern
 
-    {mux.analogRead<MADDR_V_BALANSER0>, {0, 0},                     {50244, ANALOG_VOLT(3.834)}},   //Vb0
-    {mux.analogRead<MADDR_V_BALANSER1>, {0, 0},                     {50176, ANALOG_VOLT(3.835)}},   //Vb1
-    {mux.analogRead<MADDR_V_BALANSER2>, {0, 0},                     {50280, ANALOG_VOLT(3.837)}},   //Vb2
+    {mux.analogRead<MADDR_V_BALANSER1>, {0, 0},                     {50244, ANALOG_VOLT(3.834)}},   //Vb0
+    {mux.analogRead<MADDR_V_BALANSER2>, {0, 0},                     {50176, ANALOG_VOLT(3.835)}},   //Vb1
+    {mux.analogRead<MADDR_V_BALANSER3>, {0, 0},                     {50280, ANALOG_VOLT(3.837)}},   //Vb2
 
-    {mux.analogRead<MADDR_V_BALANSER3>, {0, 0},                     {50602, ANALOG_VOLT(3.862)}},   //Vb3
-    {mux.analogRead<MADDR_V_BALANSER4>, {0, 0},                     {50752, ANALOG_VOLT(3.865)}},   //Vb4
-    {mux.analogRead<MADDR_V_BALANSER5>, {0, 0},                     {51008, ANALOG_VOLT(3.885)}},   //Vb5
+    {mux.analogRead<MADDR_V_BALANSER4>, {0, 0},                     {50602, ANALOG_VOLT(3.862)}},   //Vb3
+    {mux.analogRead<MADDR_V_BALANSER5>, {0, 0},                     {50752, ANALOG_VOLT(3.865)}},   //Vb4
+    {mux.analogRead<MADDR_V_BALANSER6>, {0, 0},                     {51008, ANALOG_VOLT(3.885)}},   //Vb5
 
     {smpsValue,                         {22, ANALOG_AMP(0.051)},    {744, ANALOG_AMP(2.000)}},      //IsmpsValue
     {dischargerValue,                   {32, ANALOG_AMP(0.051)},    {657, ANALOG_AMP(1.000)}},      //IdischargeValue
@@ -94,12 +94,12 @@ void hardware::init()
     pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
     pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
-    pinMode(BALANCER0_LOAD_PIN, OUTPUT);
     pinMode(BALANCER1_LOAD_PIN, OUTPUT);
     pinMode(BALANCER2_LOAD_PIN, OUTPUT);
     pinMode(BALANCER3_LOAD_PIN, OUTPUT);
     pinMode(BALANCER4_LOAD_PIN, OUTPUT);
     pinMode(BALANCER5_LOAD_PIN, OUTPUT);
+    pinMode(BALANCER6_LOAD_PIN, OUTPUT);
 
     pinMode(MUX_ADR0_PIN, OUTPUT);
     pinMode(MUX_ADR1_PIN, OUTPUT);
@@ -160,12 +160,12 @@ void hardware::setDischargerValue(uint16_t value)
 
 void hardware::setBalancer(uint16_t v)
 {
-    digitalWrite(BALANCER0_LOAD_PIN, v&1);
-    digitalWrite(BALANCER1_LOAD_PIN, v&2);
-    digitalWrite(BALANCER2_LOAD_PIN, v&4);
-    digitalWrite(BALANCER3_LOAD_PIN, v&8);
-    digitalWrite(BALANCER4_LOAD_PIN, v&16);
-    digitalWrite(BALANCER5_LOAD_PIN, v&32);
+    digitalWrite(BALANCER1_LOAD_PIN, v&1);
+    digitalWrite(BALANCER2_LOAD_PIN, v&2);
+    digitalWrite(BALANCER3_LOAD_PIN, v&4);
+    digitalWrite(BALANCER4_LOAD_PIN, v&8);
+    digitalWrite(BALANCER5_LOAD_PIN, v&16);
+    digitalWrite(BALANCER6_LOAD_PIN, v&32);
 }
 
 
