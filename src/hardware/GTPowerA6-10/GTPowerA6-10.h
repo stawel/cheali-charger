@@ -38,14 +38,17 @@
 //use unknown mux values
 //#define ANALOG_INPUTS_V_UNKNOWN
 
-
 #include "LiquidCrystal.h"
-#include "Multiplexer.h"
 #include "Keyboard.h"
 #include "Timer.h"
 #include "SMPS.h"
 #include "Discharger.h"
 #include "Balancer.h"
+#include "TimerOne.h"
+
+class Timer;
+class Discharger;
+class SMPS;
 
 extern LiquidCrystal lcd;
 extern Keyboard keyboard;

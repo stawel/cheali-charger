@@ -23,7 +23,7 @@
 #include "AnalogInputs.h"
 #include "Timer.h"
 
-#define SMPS_MAX_VALUE             ((F_CPU / 2000000) * INTERRUPT_PERIOD_MICROSECONDS)
+#define SMPS_MAX_VALUE             ((F_CPU / 2000000) * TIMER_INTERRUPT_PERIOD_MICROSECONDS)
 #define SMPS_UPPERBOUND_VALUE     (SMPS_MAX_VALUE/4)
 
 class Strategy;

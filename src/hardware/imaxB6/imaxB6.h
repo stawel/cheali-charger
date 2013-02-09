@@ -32,7 +32,6 @@
 
 #define MAX_BANANCE_CELLS       6
 
-
 #include "LiquidCrystal.h"
 #include "Multiplexer.h"
 #include "Keyboard.h"
@@ -40,6 +39,10 @@
 #include "SMPS.h"
 #include "Discharger.h"
 #include "Balancer.h"
+
+class Timer;
+class Discharger;
+class SMPS;
 
 extern LiquidCrystal lcd;
 extern Keyboard keyboard;

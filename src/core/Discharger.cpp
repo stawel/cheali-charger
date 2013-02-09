@@ -16,8 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "Discharger.h"
-#include "Hardware.h"
-#include "TimerOne.h"
 #include "Utils.h"
 #include "Settings.h"
 
@@ -108,14 +106,13 @@ void Discharger::doSlowInterrupt()
 uint16_t Discharger::getDischarge() const
 {
     uint32_t retu = discharge_;
-#if INTERRUPT_PERIOD_MICROSECONDS == 512
-//    retu *= INTERRUPT_PERIOD_MICROSECONDS;
+#if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 512
+//    retu *= TIMER_INTERRUPT_PERIOD_MICROSECONDS;
     retu /= (1000000/32);//*(3600/16) == TIMER_SLOW_INTERRUPT_INTERVAL
 
 #else
-#warning "INTERRUPT_PERIOD_MICROSECONDS != 512"
-    retu *= INTERRUPT_PERIOD_MICROSECONDS;
-    retu /= 1000000;
+#warning "TIMER_INTERRUPT_PERIOD_MICROSECONDS != 512"
+    retu /= 1000000/TIMER_INTERRUPT_PERIOD_MICROSECONDS;
     retu /= 3600/TIMER_SLOW_INTERRUPT_INTERVAL;
 #endif
     return retu;

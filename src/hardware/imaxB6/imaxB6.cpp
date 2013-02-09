@@ -19,6 +19,7 @@
 #include "TimerOne.h"
 #include "imaxB6-pins.h"
 
+#define TIMER1_PERIOD_MICROSECONDS 32
 
 Multiplexer<MUX_ADR0_PIN, MUX_ADR1_PIN, MUX_ADR2_PIN,
           MUX0_Z_D_PIN, MUX0_Z_D_PIN,
@@ -53,7 +54,7 @@ const AnalogInputs::DefaultValues inputs_P[AnalogInputs::PHYSICAL_INPUTS] PROGME
     {AnalogInputs::analogValue<OUTPUT_VOLATAGE_PIN>,    {0,0},      {24643, ANALOG_VOLT(11.829)}},  //Vout
     {reversePolarityValue,                              {0,0},      {38000, ANALOG_VOLT(11.829)}},  //VreversePolarity
     {AnalogInputs::analogValue<SMPS_CURRENT_PIN>,       {256,   ANALOG_AMP(0.051)}, {10240, ANALOG_AMP(2.000)}},    //Ismps
-    {AnalogInputs::analogValue<DISCHARGE_CURRENT_PIN>,  {384,   ANALOG_AMP(0.051)}, { 9024, ANALOG_AMP(1.000)}},    //Idischarge
+    {AnalogInputs::analogValue<DISCHARGE_CURRENT_PIN>,  {0,0},      {14212, ANALOG_AMP(0.100)}},    //Idischarge
 
     {empty,    {0, 0},                      {0, ANALOG_VOLT(0)}},  //VoutMux
     {empty,    {0, 0},                      {0, ANALOG_CELCIUS(0)}},   //Tintern
@@ -69,7 +70,7 @@ const AnalogInputs::DefaultValues inputs_P[AnalogInputs::PHYSICAL_INPUTS] PROGME
     {mux.analogRead<MADDR_V_BALANSER6>, {0, 0},                     {49348, ANALOG_VOLT(3.876)}},   //Vb5
 
     {smpsValue,                         {22, ANALOG_AMP(0.051)},    {744, ANALOG_AMP(2.000)}},      //IsmpsValue
-    {dischargerValue,                   {32, ANALOG_AMP(0.051)},    {657, ANALOG_AMP(1.000)}},      //IdischargeValue
+    {dischargerValue,                   {0,0},                      {82 , ANALOG_AMP(0.100)}},      //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {mux.analogRead<MADDR_V_UNKNOWN0>,  {0,0},                      {1, 1}},                        //UNKNOWN0
     {mux.analogRead<MADDR_V_UNKNOWN1>,  {0,0},                      {1, 1}},                        //UNKNOWN1
@@ -115,6 +116,8 @@ void hardware::init()
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
     timer.init();
+
+    Timer1.initialize(TIMER1_PERIOD_MICROSECONDS);         // initialize timer1, and set a 1/2 second period
 }
 
 void hardware::setLCDBacklight(uint8_t val)

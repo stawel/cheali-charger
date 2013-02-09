@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "EditMenu.h"
+#include "Keyboard.h"
 
 bool EditMenu::runEdit(uint8_t index)
 {

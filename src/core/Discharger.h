@@ -18,10 +18,9 @@
 #ifndef DISCHARGER_H
 #define DISCHARGER_H
 
-#include "AnalogInputs.h"
-#include "Timer.h"
+#include "Hardware.h"
 
-#define DISCHARGER_UPPERBOUND_VALUE ((F_CPU / 2000000) * INTERRUPT_PERIOD_MICROSECONDS)
+#define DISCHARGER_UPPERBOUND_VALUE ((F_CPU / 2000000) * TIMER_INTERRUPT_PERIOD_MICROSECONDS)
 
 class Discharger {
 public:

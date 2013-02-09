@@ -8,7 +8,6 @@ set(CORE_SOURCE
         ChealiCharger2.cpp
         ChealiCharger2.h
         CMakeLists.txt
-        DummyLiquidCrystal.h
         EditName.cpp
         EditName.h
         Keyboard.cpp

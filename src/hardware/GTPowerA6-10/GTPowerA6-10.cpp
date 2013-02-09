@@ -15,15 +15,16 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "GTPowerA6-10.h"
-#include "TimerOne.h"
-#include "GTPowerA6-10-pins.h"
+#include "Multiplexer.h"
 
+#include "GTPowerA6-10-pins.h"
+#include "GTPowerA6-10.h"
+
+#define TIMER1_PERIOD_MICROSECONDS 512
 
 Multiplexer<MUX_ADR0_PIN, MUX_ADR1_PIN, MUX_ADR2_PIN,
           MUX0_Z_D_PIN, MUX1_Z_D_PIN,
-          MUX0_Z_A_PIN, MUX1_Z_A_PIN>
- mux;
+          MUX0_Z_A_PIN, MUX1_Z_A_PIN> mux;
 
 uint16_t smpsValue()
 {
@@ -113,6 +114,8 @@ void hardware::init()
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
     timer.init();
+
+    Timer1.initialize(TIMER1_PERIOD_MICROSECONDS);         // initialize timer1, and set a 1/2 second period
 }
 
 void hardware::setLCDBacklight(uint8_t val)

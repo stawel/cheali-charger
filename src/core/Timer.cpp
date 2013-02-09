@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "Timer.h"
-#include "TimerOne.h"
 #include "Hardware.h"
 #include "Monitor.h"
 #include "Buzzer.h"
@@ -25,14 +24,19 @@
 static void callback() {
     static uint8_t slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
     timer.doInterrupt();
-    monitor.doInterrupt();
     buzzer.doInterrupt();
+    monitor.doInterrupt();
     if(--slowInterval == 0){
         slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
         smps.doSlowInterrupt();
         discharger.doSlowInterrupt();
         screen.doSlowInterrupt();
     }
+}
+
+ISR(TIMER0_COMP_vect)
+{
+    callback();
 }
 
 
@@ -44,8 +48,19 @@ Timer::Timer() : interrupts_(0) {
 
 void Timer::init()
 {
-    Timer1.initialize(INTERRUPT_PERIOD_MICROSECONDS);         // initialize timer1, and set a 1/2 second period
-    Timer1.attachInterrupt(callback);  // attaches callback() as a timer overflow interrupt
+#if F_CPU != 16000000
+#error "F_CPU != 16000000 - not implemented"
+#endif
+#if TIMER_INTERRUPT_PERIOD_MICROSECONDS != 512
+#error "TIMER_INTERRUPT_PERIOD_MICROSECONDS != 512 - not implemented"
+#endif
+
+    TCNT0=0;
+    OCR0=TIMER_INTERRUPT_PERIOD_MICROSECONDS/4;
+    TCCR0=(1<<WGM01);
+    TCCR0|=(1<<CS00) | (1<<CS01);   //clk/64 (From prescaler)
+    TIMSK|=(1<<OCIE0);
+
 }
 
 void Timer::doInterrupt()
@@ -55,12 +70,12 @@ void Timer::doInterrupt()
 uint32_t Timer::getMiliseconds() const
 {
     uint32_t retu = interrupts_;
-#if INTERRUPT_PERIOD_MICROSECONDS == 512
-    retu *= (INTERRUPT_PERIOD_MICROSECONDS/8);
+#if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 512
+    retu *= (TIMER_INTERRUPT_PERIOD_MICROSECONDS/8);
     retu /= (1000/8);
 #else
-#warning "INTERRUPT_PERIOD_MICROSECONDS != 512"
-    retu *= INTERRUPT_PERIOD_MICROSECONDS;
+#warning "TIMER_INTERRUPT_PERIOD_MICROSECONDS != 512"
+    retu *= TIMER_INTERRUPT_PERIOD_MICROSECONDS;
     retu /= 1000;
 #endif
 

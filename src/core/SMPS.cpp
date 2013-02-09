@@ -15,7 +15,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "TimerOne.h"
 #include "Hardware.h"
 #include "SMPS.h"
 
@@ -78,13 +77,12 @@ void SMPS::doSlowInterrupt()
 uint16_t SMPS::getCharge() const
 {
     uint32_t retu = charge_;
-#if INTERRUPT_PERIOD_MICROSECONDS == 512
-//    retu *= INTERRUPT_PERIOD_MICROSECONDS;
+#if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 512
+//    retu *= TIMER_INTERRUPT_PERIOD_MICROSECONDS;
     retu /= (1000000/32);//*(3600/16) == TIMER_SLOW_INTERRUPT_INTERVAL
 #else
-#warning "INTERRUPT_PERIOD_MICROSECONDS != 512"
-    retu *= INTERRUPT_PERIOD_MICROSECONDS;
-    retu /= 1000000;
+#warning "TIMER_INTERRUPT_PERIOD_MICROSECONDS != 512"
+    retu /= 1000000/TIMER_INTERRUPT_PERIOD_MICROSECONDS;
     retu /= 3600/TIMER_SLOW_INTERRUPT_INTERVAL;
 #endif
     return retu;

@@ -20,7 +20,6 @@
 #include "memory.h"
 
 
-
 void lcdSetCursor(uint8_t x, uint8_t y)
 {
     lcd.setCursor(x, y);
