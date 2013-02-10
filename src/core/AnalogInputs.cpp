@@ -65,9 +65,9 @@ void AnalogInputs::doFullMeasurement()
         doMeasurement();
 }
 
-int AnalogInputs::getConnectedBalancePorts() const
+uint8_t AnalogInputs::getConnectedBalancePorts() const
 {
-    for(int i=0; i < 6; i++){
+    for(uint8_t i=0; i < 6; i++){
         if(!isConnected(Name(Vb1+i))) return i;
     }
     return 6;
@@ -145,12 +145,12 @@ void AnalogInputs::doDeltaCalculations()
 
 void AnalogInputs::doVirtualCalculations()
 {
-    int ports = getConnectedBalancePorts();
+    uint8_t ports = getConnectedBalancePorts();
     AnalogInputs::ValueType oneVolt = ANALOG_VOLT(1);
     AnalogInputs::ValueType balancer = 0;
     AnalogInputs::ValueType out = real_[Vout];
 
-    for(int i=0; i < ports; i++) {
+    for(uint8_t i=0; i < ports; i++) {
         balancer += real_[Name(Vb1+i)];
     }
 

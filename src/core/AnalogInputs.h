@@ -139,7 +139,7 @@ public:
     static void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);
     static void setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &p);
 
-    int getConnectedBalancePorts() const;
+    uint8_t getConnectedBalancePorts() const;
     bool isConnected(Name name) const;
 
     template<uint8_t analogInput>
