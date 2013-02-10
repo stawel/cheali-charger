@@ -51,26 +51,26 @@ uint16_t empty()
 }
 
 const AnalogInputs::DefaultValues inputs_P[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
-    {AnalogInputs::analogValue<OUTPUT_VOLATAGE_PIN>,    {0,0},      {24643, ANALOG_VOLT(11.829)}},  //Vout
+    {AnalogInputs::analogValue<OUTPUT_VOLATAGE_PIN>,    {0,0},      {25920, ANALOG_VOLT(11.945)}},  //Vout
     {reversePolarityValue,                              {0,0},      {38000, ANALOG_VOLT(11.829)}},  //VreversePolarity
-    {AnalogInputs::analogValue<SMPS_CURRENT_PIN>,       {256,   ANALOG_AMP(0.051)}, {10240, ANALOG_AMP(2.000)}},    //Ismps
+    {AnalogInputs::analogValue<SMPS_CURRENT_PIN>,       {0,0},      {10985, ANALOG_AMP(1.013)}},    //Ismps
     {AnalogInputs::analogValue<DISCHARGE_CURRENT_PIN>,  {0,0},      {14212, ANALOG_AMP(0.100)}},    //Idischarge
 
     {empty,    {0, 0},                      {0, ANALOG_VOLT(0)}},  //VoutMux
     {empty,    {0, 0},                      {0, ANALOG_CELCIUS(0)}},   //Tintern
     {AnalogInputs::analogValue<V_IN_PIN>,        {0, 0},            {48063, ANALOG_VOLT(14.044)}},  //Vin
-    {mux.analogRead<MADDR_T_EXTERN>,    {5765,  ANALOG_CELCIUS(23.2)},{14300, ANALOG_CELCIUS(60)}},   //Textern
+    {mux.analogRead<MADDR_T_EXTERN>,    {5765,ANALOG_CELCIUS(23.2)},{14300, ANALOG_CELCIUS(60)}},   //Textern
 
-    {mux.analogRead<MADDR_V_BALANSER1>, {0, 0},                     {45560, ANALOG_VOLT(3.947)}},   //Vb0
-    {mux.analogRead<MADDR_V_BALANSER2>, {0, 0},                     {49320, ANALOG_VOLT(3.945)}},   //Vb1
+    {mux.analogRead<MADDR_V_BALANSER1>, {0, 0},                     {52072, ANALOG_VOLT(3.985)}},   //Vb0
+    {mux.analogRead<MADDR_V_BALANSER2>, {0, 0},                     {52686, ANALOG_VOLT(3.984)}},   //Vb1
     {mux.analogRead<MADDR_V_BALANSER3>, {0, 0},                     {52094, ANALOG_VOLT(3.935)}},   //Vb2
 
     {mux.analogRead<MADDR_V_BALANSER4>, {0, 0},                     {51180, ANALOG_VOLT(3.867)}},   //Vb3
     {mux.analogRead<MADDR_V_BALANSER5>, {0, 0},                     {51130, ANALOG_VOLT(3.866)}},   //Vb4
     {mux.analogRead<MADDR_V_BALANSER6>, {0, 0},                     {49348, ANALOG_VOLT(3.876)}},   //Vb5
 
-    {smpsValue,                         {22, ANALOG_AMP(0.051)},    {744, ANALOG_AMP(2.000)}},      //IsmpsValue
-    {dischargerValue,                   {0,0},                      {82 , ANALOG_AMP(0.100)}},      //IdischargeValue
+    {smpsValue,                         {0, 0},                     {86,    ANALOG_AMP(1.013)}},      //IsmpsValue
+    {dischargerValue,                   {0, 0},                     {82,    ANALOG_AMP(0.100)}},      //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {mux.analogRead<MADDR_V_UNKNOWN0>,  {0,0},                      {1, 1}},                        //UNKNOWN0
     {mux.analogRead<MADDR_V_UNKNOWN1>,  {0,0},                      {1, 1}},                        //UNKNOWN1
@@ -140,10 +140,6 @@ void hardware::setBatteryOutput(bool enable)
 }
 
 namespace {
-    void enableChargerValue0() {
-        Timer1.disablePwm(SMPS_VALUE0_PIN);
-        digitalWrite(SMPS_VALUE0_PIN, 1);
-    }
     void disableChargerValue0() {
         Timer1.disablePwm(SMPS_VALUE0_PIN);
         digitalWrite(SMPS_VALUE0_PIN, 0);
@@ -162,22 +158,14 @@ void hardware::setChargerOutput(bool enable)
 }
 void hardware::setChargerValue(uint16_t value)
 {
-    if(value == 0) {
+    if(value > Timer1.pwmPeriod/2)
+        value = Timer1.pwmPeriod/2;
+    if(value > 0) {
+        Timer1.pwm(SMPS_VALUE0_PIN, value);
+        Timer1.pwm(SMPS_VALUE1_PIN, value+1);
+    } else {
         disableChargerValue0();
         disableChargerValue1();
-    } else if(value < Timer1.pwmPeriod) {
-        disableChargerValue1();
-        Timer1.pwm(SMPS_VALUE0_PIN, value);
-    } else if(Timer1.pwmPeriod == value) {
-        disableChargerValue1();
-        enableChargerValue0();
-    } else {
-        enableChargerValue0();
-        uint16_t v2 = value - Timer1.pwmPeriod;
-        if(v2 < Timer1.pwmPeriod/2)
-            Timer1.pwm(SMPS_VALUE1_PIN, v2);
-        else
-            disableChargerValue1();
     }
 }
 

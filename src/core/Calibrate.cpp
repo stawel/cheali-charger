@@ -174,8 +174,8 @@ void Calibrate::runInfo()
             info(screenType(i));
 
         switch(i) {
-        case 8: infoDis(); break;
-        case 9: infoTimeM(); break;
+        case 8: infoDis();      break;
+        case 9: infoTimeM();    break;
         }
     } while(i>=0);
 }
@@ -185,7 +185,7 @@ void Calibrate::runInfo()
 void Calibrate::print_v(uint8_t dig){
     lcdSetCursor0_0();
     switch(dispVal_) {
-    case 0:    lcdPrint_P(PSTR("v:")); break;
+    case 0: lcdPrint_P(PSTR("v:")); break;
     case 1: lcdPrint_P(PSTR("r:")); break;
     case 2: lcdPrint_P(PSTR("R:")); break;
     }
@@ -361,18 +361,18 @@ void Calibrate::printCalibrateVin()
 
 void Calibrate::printCalibrate(screenType p) {
     switch(p) {
-    case SCREEN_ICHARGE:         printCalibrateIcharge();     break;
-    case SCREEN_VOUT:        printCalibrateVout();     break;
-    case SCREEN_B1_3:        printCalibrateB1_3();     break;
-    case SCREEN_B4_6:         printCalibrateB4_6();     break;
-    case SCREEN_T:             printCalibrateT();         break;
-    case SCREEN_VIN:         printCalibrateVin();     break;
-    case SCREEN_VREVERSE:     printCalibrateVreverse();     break;
-    case SCREEN_VUNKNOWN:     printCalibrateVunknown();     break;
+    case SCREEN_ICHARGE:        printCalibrateIcharge();    break;
+    case SCREEN_VOUT:           printCalibrateVout();       break;
+    case SCREEN_B1_3:           printCalibrateB1_3();       break;
+    case SCREEN_B4_6:           printCalibrateB4_6();       break;
+    case SCREEN_T:              printCalibrateT();          break;
+    case SCREEN_VIN:            printCalibrateVin();        break;
+    case SCREEN_VREVERSE:       printCalibrateVreverse();   break;
+    case SCREEN_VUNKNOWN:       printCalibrateVunknown();   break;
 
-    case SCREEN_VOUT_VBAL:     printCalibrateVoutVbal();     break;
-    case SCREEN_B1_3_BLINK:    printCalibrateB1_3_Blink(); break;
-    case SCREEN_B4_6_BLINK:    printCalibrateB4_6_Blink(); break;
+    case SCREEN_VOUT_VBAL:      printCalibrateVoutVbal();   break;
+    case SCREEN_B1_3_BLINK:     printCalibrateB1_3_Blink(); break;
+    case SCREEN_B4_6_BLINK:     printCalibrateB4_6_Blink(); break;
     }
 }
 

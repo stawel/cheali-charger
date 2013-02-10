@@ -88,7 +88,7 @@ namespace {
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
 //      Thevenin values are not evaluated when balancing
 //      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
-//      Screen::ScreenDebugBalancer1_3M,      Screen::ScreenDebugBalancer4_6M,
+      Screen::ScreenDebugBalancer1_3M,      Screen::ScreenDebugBalancer4_6M,
       Screen::ScreenTime,
       Screen::ScreenTemperature };
     const Screen::ScreenType dischargeScreens[] PROGMEM = {

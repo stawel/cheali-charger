@@ -134,6 +134,7 @@ int16_t ProgramData::getDeltaTLimit() const
 void ProgramData::restoreDefault()
 {
     pgm::read(currentProgramData.battery, &defaultProgram[Lipo]);
+    currentProgramData.check();
     for(int i=0;i< MAX_PROGRAMS;i++) {
         uint8_t maxSize = PROGRAM_DATA_MAX_NAME;
         char *buf = currentProgramData.name;

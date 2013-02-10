@@ -33,7 +33,7 @@ public:
     virtual statusType doStrategy();
     virtual void powerOff();
     void setVII(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic, AnalogInputs::ValueType Id);
-    void setDoBalance(bool v);
+    void setDoBalance(bool v) { doBalance_ = v; }
 };
 
 extern Storage storage;

@@ -22,6 +22,7 @@
 
 void Balancer::powerOn()
 {
+    hardware::setBatteryOutput(true);
     if(!analogInputs.isPowerOn()) {
         analogInputs.powerOn();
         analogInputs.doFullMeasurement();
@@ -80,6 +81,7 @@ void Balancer::powerOff()
 {
     endBalancing();
     analogInputs.powerOff();
+    hardware::setBatteryOutput(false);
 }
 
 Balancer::Balancer()

@@ -77,8 +77,3 @@ void Storage::setVII(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic, Anal
     theveninCharge.setVI(V, Ic);
     theveninDischarge.setVI(V, Id);
 }
-
-void Storage::setDoBalance(bool v)
-{
-    doBalance_ = v;
-}
