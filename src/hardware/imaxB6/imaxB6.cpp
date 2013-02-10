@@ -90,13 +90,15 @@ void hardware::init()
 {
     analogReference(EXTERNAL);
     pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
+
     pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
     pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
-    pinMode(BUZZER_PIN, OUTPUT);
+    pinMode(SMPS_VALUE0_PIN, OUTPUT);
+    pinMode(SMPS_VALUE1_PIN, OUTPUT);
+    pinMode(SMPS_DISABLE_PIN, OUTPUT);
 
-//    pinMode(SMPS_VALUE_PIN, OUTPUT);
-//    pinMode(SMPS_DISABLE_PIN, OUTPUT);
+    pinMode(BUZZER_PIN, OUTPUT);
 
     pinMode(BALANCER1_LOAD_PIN, OUTPUT);
     pinMode(BALANCER2_LOAD_PIN, OUTPUT);
@@ -136,19 +138,54 @@ void hardware::setBatteryOutput(bool enable)
 {
     digitalWrite(OUTPUT_DISABLE_PIN, !enable);
 }
+
+namespace {
+    void enableChargerValue0() {
+        Timer1.disablePwm(SMPS_VALUE0_PIN);
+        digitalWrite(SMPS_VALUE0_PIN, 1);
+    }
+    void disableChargerValue0() {
+        Timer1.disablePwm(SMPS_VALUE0_PIN);
+        digitalWrite(SMPS_VALUE0_PIN, 0);
+    }
+    void disableChargerValue1() {
+        Timer1.disablePwm(SMPS_VALUE1_PIN);
+        digitalWrite(SMPS_VALUE1_PIN, 0);
+    }
+}
+
 void hardware::setChargerOutput(bool enable)
 {
-//    digitalWrite(SMPS_DISABLE_PIN, !enable);
+    disableChargerValue0();
+    disableChargerValue1();
+    digitalWrite(SMPS_DISABLE_PIN, !enable);
 }
+void hardware::setChargerValue(uint16_t value)
+{
+    if(value == 0) {
+        disableChargerValue0();
+        disableChargerValue1();
+    } else if(value < Timer1.pwmPeriod) {
+        disableChargerValue1();
+        Timer1.pwm(SMPS_VALUE0_PIN, value);
+    } else if(Timer1.pwmPeriod == value) {
+        disableChargerValue1();
+        enableChargerValue0();
+    } else {
+        enableChargerValue0();
+        uint16_t v2 = value - Timer1.pwmPeriod;
+        if(v2 < Timer1.pwmPeriod/2)
+            Timer1.pwm(SMPS_VALUE1_PIN, v2);
+        else
+            disableChargerValue1();
+    }
+}
+
 void hardware::setDischargerOutput(bool enable)
 {
     digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
 }
 
-void hardware::setChargerValue(uint16_t value)
-{
-//    Timer1.pwm(SMPS_VALUE_PIN, value);
-}
 void hardware::setDischargerValue(uint16_t value)
 {
     Timer1.pwm(DISCHARGE_VALUE_PIN, value);

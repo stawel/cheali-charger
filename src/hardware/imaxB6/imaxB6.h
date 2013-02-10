@@ -28,7 +28,7 @@
 #define MAX_CHARGE_P            50000               //50W
 
 #define MAX_DISCHARGE_P         5000                //5W
-#define MAX_DISCHARGE_I         ANALOG_AMP(1.000)   //5A
+#define MAX_DISCHARGE_I         ANALOG_AMP(1.000)   //1A
 
 #define MAX_BANANCE_CELLS       6
 

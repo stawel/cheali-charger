@@ -79,6 +79,11 @@
 
 #define DISCHARGE_VALUE_PIN     14
 
+#define SMPS_DISABLE_PIN        15
+
+#define SMPS_VALUE0_PIN         13
+#define SMPS_VALUE1_PIN         14
+
 /*
 //pin 4 - 8 - reset, Vcc, GND, XTAL2, XTAL1
 
@@ -87,8 +92,6 @@
 
 #define BACKLIGHT_PIN           13
 // pin 14 - the same pin for discharger and smps
-#define SMPS_VALUE_PIN          14
-#define SMPS_DISABLE_PIN        15
 
 // pin 17,18 - VCC, GND
 
