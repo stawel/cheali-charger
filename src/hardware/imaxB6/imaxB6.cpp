@@ -140,6 +140,10 @@ void hardware::setBatteryOutput(bool enable)
 }
 
 namespace {
+    void enableChargerValue0() {
+        Timer1.disablePwm(SMPS_VALUE0_PIN);
+        digitalWrite(SMPS_VALUE0_PIN, 1);
+    }
     void disableChargerValue0() {
         Timer1.disablePwm(SMPS_VALUE0_PIN);
         digitalWrite(SMPS_VALUE0_PIN, 0);
@@ -158,14 +162,21 @@ void hardware::setChargerOutput(bool enable)
 }
 void hardware::setChargerValue(uint16_t value)
 {
-    if(value > Timer1.pwmPeriod/2)
-        value = Timer1.pwmPeriod/2;
-    if(value > 0) {
-        Timer1.pwm(SMPS_VALUE0_PIN, value);
-        Timer1.pwm(SMPS_VALUE1_PIN, value+1);
-    } else {
+    if(value == 0) {
         disableChargerValue0();
         disableChargerValue1();
+    } else if(value < Timer1.pwmPeriod) {
+        disableChargerValue1();
+        Timer1.pwm(SMPS_VALUE0_PIN, value);
+    } else if(Timer1.pwmPeriod == value) {
+        disableChargerValue1();
+        enableChargerValue0();
+    } else {
+        enableChargerValue0();
+        uint16_t v2 = value - Timer1.pwmPeriod;
+        if(v2 > Timer1.pwmPeriod/2)
+            v2 = Timer1.pwmPeriod/2;
+        Timer1.pwm(SMPS_VALUE1_PIN, v2);
     }
 }
 
