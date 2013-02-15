@@ -19,8 +19,6 @@
 #include "TimerOne.h"
 #include "imaxB6-pins.h"
 
-#define TIMER1_PERIOD_MICROSECONDS 32
-
 Multiplexer<MUX_ADR0_PIN, MUX_ADR1_PIN, MUX_ADR2_PIN,
           MUX0_Z_D_PIN, MUX0_Z_D_PIN,
           MUX0_Z_A_PIN, MUX0_Z_A_PIN>
@@ -119,7 +117,7 @@ void hardware::init()
     lcd.begin(LCD_COLUMNS, LCD_LINES);
     timer.init();
 
-    Timer1.initialize(TIMER1_PERIOD_MICROSECONDS);         // initialize timer1, and set a 1/2 second period
+    TimerOne::initialize();
 }
 
 void hardware::setLCDBacklight(uint8_t val)
@@ -137,57 +135,6 @@ void hardware::setBuzzer(uint16_t val)
 void hardware::setBatteryOutput(bool enable)
 {
     digitalWrite(OUTPUT_DISABLE_PIN, !enable);
-}
-
-namespace {
-    void enableChargerValue0() {
-        Timer1.disablePwm(SMPS_VALUE0_PIN);
-        digitalWrite(SMPS_VALUE0_PIN, 1);
-    }
-    void disableChargerValue0() {
-        Timer1.disablePwm(SMPS_VALUE0_PIN);
-        digitalWrite(SMPS_VALUE0_PIN, 0);
-    }
-    void disableChargerValue1() {
-        Timer1.disablePwm(SMPS_VALUE1_PIN);
-        digitalWrite(SMPS_VALUE1_PIN, 0);
-    }
-}
-
-void hardware::setChargerOutput(bool enable)
-{
-    disableChargerValue0();
-    disableChargerValue1();
-    digitalWrite(SMPS_DISABLE_PIN, !enable);
-}
-void hardware::setChargerValue(uint16_t value)
-{
-    if(value == 0) {
-        disableChargerValue0();
-        disableChargerValue1();
-    } else if(value < Timer1.pwmPeriod) {
-        disableChargerValue1();
-        Timer1.pwm(SMPS_VALUE0_PIN, value);
-    } else if(Timer1.pwmPeriod == value) {
-        disableChargerValue1();
-        enableChargerValue0();
-    } else {
-        enableChargerValue0();
-        uint16_t v2 = value - Timer1.pwmPeriod;
-        if(v2 > Timer1.pwmPeriod/2)
-            v2 = Timer1.pwmPeriod/2;
-        Timer1.pwm(SMPS_VALUE1_PIN, v2);
-    }
-}
-
-void hardware::setDischargerOutput(bool enable)
-{
-    digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
-}
-
-void hardware::setDischargerValue(uint16_t value)
-{
-    Timer1.pwm(DISCHARGE_VALUE_PIN, value);
 }
 
 void hardware::setBalancer(uint16_t v)

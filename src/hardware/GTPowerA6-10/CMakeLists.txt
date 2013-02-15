@@ -7,6 +7,8 @@ set(execName "cheali-charger-${hardware}")
 set(SOURCE_FILES
     GTPowerA6-10.cpp
     GTPowerA6-10.h
+    TimerOne.cpp
+    TimerOne.h
     Hardware.h
     ${CORE_SOURCE_FILES}
 )

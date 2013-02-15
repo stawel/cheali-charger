@@ -20,7 +20,6 @@
 #include "GTPowerA6-10-pins.h"
 #include "GTPowerA6-10.h"
 
-#define TIMER1_PERIOD_MICROSECONDS 512
 
 Multiplexer<MUX_ADR0_PIN, MUX_ADR1_PIN, MUX_ADR2_PIN,
           MUX0_Z_D_PIN, MUX1_Z_D_PIN,

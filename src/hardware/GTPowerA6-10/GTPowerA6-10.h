@@ -37,6 +37,10 @@
 
 //use unknown mux values
 //#define ANALOG_INPUTS_V_UNKNOWN
+#define TIMER1_PERIOD_MICROSECONDS 512
+#define SMPS_MAX_VALUE             ((F_CPU / 2000000) * TIMER1_PERIOD_MICROSECONDS)
+#define SMPS_UPPERBOUND_VALUE     (SMPS_MAX_VALUE/4)
+
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"

@@ -55,8 +55,6 @@ set(CORE_SOURCE
         TheveninMethod.h
         Timer.cpp
         Timer.h
-        TimerOne.cpp
-        TimerOne.h
         Utils.cpp
         Utils.h
         StartInfoStrategy.cpp

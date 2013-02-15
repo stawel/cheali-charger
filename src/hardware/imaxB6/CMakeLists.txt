@@ -8,6 +8,10 @@ set(SOURCE_FILES
     imaxB6.cpp
     imaxB6.h
     imaxB6-pins.h
+    TimerOne.cpp
+    TimerOne.h
+    SMPS_PID.h
+    SMPS_PID.cpp
     Hardware.h
     ${CORE_SOURCE_FILES}
 )

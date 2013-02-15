@@ -32,6 +32,10 @@
 
 #define MAX_BANANCE_CELLS       6
 
+
+#define SMPS_UPPERBOUND_VALUE     (256<<5)
+
+
 #include "LiquidCrystal.h"
 #include "Multiplexer.h"
 #include "Keyboard.h"
