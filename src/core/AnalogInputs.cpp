@@ -222,27 +222,12 @@ void AnalogInputs::resetMeasurement()
 {
     clearAvr();
     resetStable();
-
-    FOR_ALL_PHY_INPUTS(name) {
-        measured_[name] = 0;
-        avrSum_[name] = 0;
-    }
 }
 
 void AnalogInputs::reset()
 {
 
     calculationCount_ = 0;
-    clearAvr();
-
-    /* TODO: think this over
-    FOR_ALL_PHY_INPUTS(name) {
-        x_[name] = 0;
-    }
-
-    FOR_ALL_INPUTS(name) {
-        setReal(name, 0);
-    }*/
     resetMeasurement();
     resetDelta();
 }

@@ -69,6 +69,7 @@ namespace hardware {
     void setDischargerValue(uint16_t value);
     void setFan(bool enable);
     void setBalancer(uint16_t balance);
+    void doInterrupt();
 }
 
 

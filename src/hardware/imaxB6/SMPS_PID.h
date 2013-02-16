@@ -3,9 +3,10 @@
 
 namespace SMPS_PID
 {
-    void initialize();
-    void disable();
-    void setValue(uint16_t value);
+    void init();
+    void setPID_MV(uint16_t value);
+    void powerOn();
+    void powerOff();
 };
 
 #endif //SMPS_PID_H_

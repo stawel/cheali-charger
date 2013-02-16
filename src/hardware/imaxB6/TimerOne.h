@@ -2,6 +2,9 @@
 #define TIMERONE_H_
 
 #define TIMERONE_PERIOD 256
+#define TIMERONE_PRECISION 6
+#define TIMERONE_PRECISION_PERIOD (TIMERONE_PERIOD<<TIMERONE_PRECISION)
+
 namespace TimerOne
 {
     void initialize();

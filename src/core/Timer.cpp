@@ -26,6 +26,7 @@ static void callback() {
     timer.doInterrupt();
     buzzer.doInterrupt();
     monitor.doInterrupt();
+    hardware::doInterrupt();
     if(--slowInterval == 0){
         slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
         smps.doSlowInterrupt();

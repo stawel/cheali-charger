@@ -67,7 +67,9 @@ const AnalogInputs::DefaultValues inputs_P[AnalogInputs::PHYSICAL_INPUTS] PROGME
     {mux.analogRead<MADDR_V_BALANSER5>, {0, 0},                     {51130, ANALOG_VOLT(3.866)}},   //Vb4
     {mux.analogRead<MADDR_V_BALANSER6>, {0, 0},                     {49348, ANALOG_VOLT(3.876)}},   //Vb5
 
-    {smpsValue,                         {0, 0},                     {86,    ANALOG_AMP(1.013)}},      //IsmpsValue
+//    {smpsValue,                         {0, 0},                     {86,    ANALOG_AMP(1.013)}},      //IsmpsValue
+    //Ismps - copy
+    {smpsValue,       {0,0},      {1, 1}},
     {dischargerValue,                   {0, 0},                     {82,    ANALOG_AMP(0.100)}},      //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {mux.analogRead<MADDR_V_UNKNOWN0>,  {0,0},                      {1, 1}},                        //UNKNOWN0

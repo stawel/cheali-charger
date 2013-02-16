@@ -12,8 +12,8 @@ namespace {
         uint8_t oldSREG;
         uint16_t v;
         sumValue+=value;
-        v=(sumValue>>2);
-        sumValue-=(v<<2);
+        v=(sumValue>>TIMERONE_PRECISION);
+        sumValue-=v<<TIMERONE_PRECISION;
 
         oldSREG = SREG;
         cli();
