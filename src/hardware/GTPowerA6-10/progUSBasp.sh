@@ -2,8 +2,10 @@
 
 set -x
 
-HEX=`ls cheali-charger*.hex`
+#maybe you should change this:
 TTY=/dev/ttyUSB0
+
+HEX=`ls cheali-charger*.hex`
 
 echo "HEX=$HEX"
 echo "TTY=$TTY"

@@ -63,13 +63,22 @@ user@~/cheali-charger$ make
 
 flashing with USBasp:
  
-user@~/cheali-charger$ cd src
-user@~/cheali-charger/src$ ./progUSBasp.sh
+user@~/cheali-charger$ cd src/hardware/GTPowerA6-10
+edit file: progUSBasp.sh, replace "TTY=/dev/ttyUSB0" to match your configuration.
+user@~/cheali-charger/src/hardware/GTPowerA6-10$ ./progUSBasp.sh
 </pre>
  
 Now You should see a "ChealiCharger welcome" screen.
 
 Done.
+
+Flashing: G.T. POWER A6-10 200W
+-------------------------------
+
+- Connect a standard AVR ISP 10-pin cable to the board:
+- set "Device" to: atmega32
+- use the cheali-charger/hex/cheali-charger-0.10.hex file as "Flash"
+
 
 
 Calibration
