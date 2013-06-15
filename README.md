@@ -75,7 +75,7 @@ Done.
 Flashing: G.T. POWER A6-10 200W
 -------------------------------
 
-- Connect a standard AVR ISP 10-pin cable to the board:
+- Connect a standard AVR ISP 10-pin cable to the board: https://github.com/stawel/cheali-charger/blob/master/docs/GTPowerA6-10/front.jpg
 - set "Device" to: atmega32
 - use the cheali-charger/hex/cheali-charger-0.10.hex file as "Flash"
 
