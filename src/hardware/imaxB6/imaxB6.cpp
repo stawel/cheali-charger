@@ -48,35 +48,33 @@ uint16_t empty()
     return 0;
 }
 
-const AnalogInputs::DefaultValues inputs_P[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
-    {AnalogInputs::analogValue<OUTPUT_VOLATAGE_PIN>,    {0,0},      {25920, ANALOG_VOLT(11.945)}},  //Vout
-    {reversePolarityValue,                              {0,0},      {38000, ANALOG_VOLT(11.829)}},  //VreversePolarity
-    {AnalogInputs::analogValue<SMPS_CURRENT_PIN>,       {0,0},      {10985, ANALOG_AMP(1.013)}},    //Ismps
-    {AnalogInputs::analogValue<DISCHARGE_CURRENT_PIN>,  {0,0},      {14212, ANALOG_AMP(0.100)}},    //Idischarge
+const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
+    {{0,0},                         {25920, ANALOG_VOLT(11.945)}},  //Vout
+    {{0,0},                         {38000, ANALOG_VOLT(11.829)}},  //VreversePolarity
+    {{0,0},                         {10985, ANALOG_AMP(1.013)}},    //Ismps
+    {{0,0},                         {14212, ANALOG_AMP(0.100)}},    //Idischarge
 
-    {empty,    {0, 0},                      {0, ANALOG_VOLT(0)}},  //VoutMux
-    {empty,    {0, 0},                      {0, ANALOG_CELCIUS(0)}},   //Tintern
-    {AnalogInputs::analogValue<V_IN_PIN>,        {0, 0},            {48063, ANALOG_VOLT(14.044)}},  //Vin
-    {mux.analogRead<MADDR_T_EXTERN>,    {5765,ANALOG_CELCIUS(23.2)},{14300, ANALOG_CELCIUS(60)}},   //Textern
+    {{0, 0},                        {0, ANALOG_VOLT(0)}},  //VoutMux
+    {{0, 0},                        {0, ANALOG_CELCIUS(0)}},   //Tintern
+    {{0, 0},                        {48063, ANALOG_VOLT(14.044)}},  //Vin
+    {{5765,ANALOG_CELCIUS(23.2)},   {14300, ANALOG_CELCIUS(60)}},   //Textern
 
-    {mux.analogRead<MADDR_V_BALANSER1>, {0, 0},                     {52072, ANALOG_VOLT(3.985)}},   //Vb0
-    {mux.analogRead<MADDR_V_BALANSER2>, {0, 0},                     {52686, ANALOG_VOLT(3.984)}},   //Vb1
-    {mux.analogRead<MADDR_V_BALANSER3>, {0, 0},                     {52094, ANALOG_VOLT(3.935)}},   //Vb2
+    {{0, 0},                        {52072, ANALOG_VOLT(3.985)}},   //Vb0
+    {{0, 0},                        {52686, ANALOG_VOLT(3.984)}},   //Vb1
+    {{0, 0},                        {52094, ANALOG_VOLT(3.935)}},   //Vb2
 
-    {mux.analogRead<MADDR_V_BALANSER4>, {0, 0},                     {51180, ANALOG_VOLT(3.867)}},   //Vb3
-    {mux.analogRead<MADDR_V_BALANSER5>, {0, 0},                     {51130, ANALOG_VOLT(3.866)}},   //Vb4
-    {mux.analogRead<MADDR_V_BALANSER6>, {0, 0},                     {49348, ANALOG_VOLT(3.876)}},   //Vb5
+    {{0, 0},                        {51180, ANALOG_VOLT(3.867)}},   //Vb3
+    {{0, 0},                        {51130, ANALOG_VOLT(3.866)}},   //Vb4
+    {{0, 0},                        {49348, ANALOG_VOLT(3.876)}},   //Vb5
 
-//    {smpsValue,                         {0, 0},                     {86,    ANALOG_AMP(1.013)}},      //IsmpsValue
     //Ismps - copy
-    {smpsValue,       {0,0},      {1, 1}},
-    {dischargerValue,                   {0, 0},                     {82,    ANALOG_AMP(0.100)}},      //IdischargeValue
+    {{0,0},                         {1, 1}},
+    {{0, 0},                        {82,    ANALOG_AMP(0.100)}},      //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
-    {mux.analogRead<MADDR_V_UNKNOWN0>,  {0,0},                      {1, 1}},                        //UNKNOWN0
-    {mux.analogRead<MADDR_V_UNKNOWN1>,  {0,0},                      {1, 1}},                        //UNKNOWN1
+    {{0,0},                         {1, 1}},                        //UNKNOWN0
+    {{0,0},                         {1, 1}},                        //UNKNOWN1
 #endif
 };
-
 
 uint8_t hardware::getKeyPressed()
 {
@@ -150,13 +148,55 @@ void hardware::setBalancer(uint16_t v)
 }
 
 
+void measureValue(AnalogInputs::Name name)
+{
+    AnalogInputs::ValueType v = 0;
+    switch(name) {
+    case AnalogInputs::Vout:            v = AnalogInputs::analogValue<OUTPUT_VOLATAGE_PIN>(); break;
+    case AnalogInputs::VreversePolarity:v = reversePolarityValue(); break;
+    case AnalogInputs::Ismps:           v = AnalogInputs::analogValue<SMPS_CURRENT_PIN>(); break;
+    case AnalogInputs::Idischarge:      v = AnalogInputs::analogValue<DISCHARGE_CURRENT_PIN>(); break;
+
+    case AnalogInputs::Vin:             v = AnalogInputs::analogValue<V_IN_PIN>(); break;
+    case AnalogInputs::Textern:         v = mux.analogRead<MADDR_T_EXTERN>(); break;
+
+    case AnalogInputs::Vb1:             v = mux.analogRead<MADDR_V_BALANSER1>(); break;
+    case AnalogInputs::Vb2:             v = mux.analogRead<MADDR_V_BALANSER2>(); break;
+    case AnalogInputs::Vb3:             v = mux.analogRead<MADDR_V_BALANSER3>(); break;
+    case AnalogInputs::Vb4:             v = mux.analogRead<MADDR_V_BALANSER4>(); break;
+    case AnalogInputs::Vb5:             v = mux.analogRead<MADDR_V_BALANSER5>(); break;
+    case AnalogInputs::Vb6:             v = mux.analogRead<MADDR_V_BALANSER6>(); break;
+
+    case AnalogInputs::IsmpsValue:      v = smpsValue(); break;
+    case AnalogInputs::IdischargeValue: v = dischargerValue(); break;
+
+    default: break;
+    }
+    analogInputs.measured_[name] = v;
+}
+
+// TODO: maybe it should be: hardware::doMeasurement
+void AnalogInputs::doMeasurement(uint16_t count)
+{
+    while (count) {
+        count--;
+        measureValue(currentInput_);
+        avrSum_[currentInput_] += measured_[currentInput_];
+        currentInput_ = Name(currentInput_ + 1);
+        if(currentInput_ == VirtualInputs) {
+            finalizeMeasurement();
+        }
+    }
+}
 
 void hardware::delay(uint16_t t)
 {
     if(analogInputs.on_)
         analogInputs.doMeasurement((AnalogInputs::PHYSICAL_INPUTS*t)/4);
-    else
+    else {
+        measureValue(AnalogInputs::VreversePolarity);
         timer.delay(t);
+    }
 }
 
 
@@ -164,7 +204,7 @@ Keyboard keyboard;
 SMPS smps;
 Discharger discharger;
 Balancer balancer;
-AnalogInputs analogInputs(inputs_P);
+AnalogInputs analogInputs;
 
 LiquidCrystal lcd(LCD_ENABLE_RS, LCD_ENABLE_PIN,
         LCD_D0_PIN, LCD_D1_PIN, LCD_D2_PIN, LCD_D3_PIN);

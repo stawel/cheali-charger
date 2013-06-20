@@ -39,14 +39,12 @@
 class AnalogInputs {
 public:
     typedef uint16_t ValueType;
-    typedef uint16_t (*MeasureFunction)();
 
     struct CalibrationPoint {
         ValueType x;
         ValueType y;
     };
     struct DefaultValues {
-        MeasureFunction f;
         CalibrationPoint p0;
         CalibrationPoint p1;
     };
@@ -107,7 +105,7 @@ public:
     static const uint16_t   STABLE_MIN_VALUE    = 3;
     static const ValueType  REVERSE_POLARITY_MIN_VALUE = 1000;
 
-    AnalogInputs(const DefaultValues * inputs_P);
+    AnalogInputs();
 
     //get the average (measured) value
     ValueType getValue(Name name) const             { return avrValue_[name]; }
@@ -119,8 +117,8 @@ public:
     ValueType calibrateValue(Name name, ValueType x) const;
     ValueType reverseCalibrateValue(Name name, ValueType y) const;
 
-    void measureValue(Name name);
     void doMeasurement(uint16_t count = PHYSICAL_INPUTS);
+    void finalizeMeasurement();
     void doFullMeasurement();
     void doVirtualCalculations();
     void doCalculations();
@@ -162,7 +160,6 @@ public:
 //protected:
     void setReal(Name name, ValueType real);
     bool on_;
-    const DefaultValues * inputsP_;
     uint16_t avrCount_;
     uint32_t avrSum_[PHYSICAL_INPUTS];
     Name currentInput_;
@@ -179,6 +176,8 @@ public:
     uint32_t    deltaAvrSumTextern_;
     ValueType   deltaLastT_;
     uint32_t    deltaStartTime_;
+
+    static const DefaultValues inputsP_[AnalogInputs::PHYSICAL_INPUTS];
 };
 
 template<class T>

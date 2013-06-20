@@ -49,15 +49,6 @@ void AnalogInputs::setCalibrationPoint(Name name, uint8_t i, const CalibrationPo
     eeprom::write<CalibrationPoint>(&calibration[name].p[i], x);
 }
 
-
-void AnalogInputs::measureValue(Name name)
-{
-    if(name >=  PHYSICAL_INPUTS)
-        return;
-    MeasureFunction f = pgm::read<MeasureFunction>(&(inputsP_[name].f));
-    measured_[name] = f();
-}
-
 void AnalogInputs::doFullMeasurement()
 {
     clearAvr();
@@ -242,33 +233,18 @@ void AnalogInputs::powerOn()
 bool AnalogInputs::isReversePolarity()
 {
     // TODO: extra measurement
-    measureValue(VreversePolarity);
     return getMeasuredValue(VreversePolarity) > REVERSE_POLARITY_MIN_VALUE;
 }
 
-
-
-void AnalogInputs::doMeasurement(uint16_t count)
+void AnalogInputs::finalizeMeasurement()
 {
-    while (count) {
-        count--;
-        measureValue(currentInput_);
-        avrSum_[currentInput_] += measured_[currentInput_];
-        currentInput_ = Name(currentInput_ + 1);
-        if(currentInput_ == VirtualInputs) {
-            currentInput_ = Name(0);
-            avrCount_++;
-            doDeltaCalculations();
-            if(avrCount_ == AVR_MAX_COUNT) {
-                doCalculations();
-            }
-        }
+    currentInput_ = Name(0);
+    avrCount_++;
+    doDeltaCalculations();
+    if(avrCount_ == AVR_MAX_COUNT) {
+        doCalculations();
     }
 }
-
-//AnalogInputs::ValueType AnalogInputs::getValue(Name name) const
-//AnalogInputs::ValueType AnalogInputs::getMeasuredValue(Name name) const
-
 
 AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x) const
 {
@@ -308,7 +284,7 @@ AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType
 
 
 
-AnalogInputs::AnalogInputs(const DefaultValues * inputs_P): inputsP_(inputs_P)
+AnalogInputs::AnalogInputs()
 {
     reset();
 }
