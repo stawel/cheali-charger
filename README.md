@@ -56,7 +56,10 @@ Building from Source
 dependencies: cmake, avrdude, avr-libc, gcc-avr
 
 <pre>
-user@~/cheali-charger$ sudo apt-get install cmake avrdude avr-libc gcc-avr
+user@~$ sudo apt-get install cmake avrdude avr-libc gcc-avr git
+
+user@~$ git clone https://github.com/stawel/cheali-charger.git
+user@~$ cd cheali-charger
 
 user@~/cheali-charger$ ./bootstrap
 user@~/cheali-charger$ make
