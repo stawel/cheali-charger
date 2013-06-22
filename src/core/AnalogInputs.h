@@ -71,12 +71,13 @@ public:
         Vin,
         Textern,
 
-        Vb1,
-        Vb2,
-        Vb3,
-        Vb4,
-        Vb5,
-        Vb6,
+        Vb0_real,
+        Vb1_real,
+        Vb2_real,
+        Vb3_real,
+        Vb4_real,
+        Vb5_real,
+        Vb6_real,
 
         IsmpsValue,
         IdischargeValue,
@@ -95,6 +96,13 @@ public:
         deltaVoutMax,
         deltaTextern,
         deltaLastCount,
+
+        Vb1,
+        Vb2,
+        Vb3,
+        Vb4,
+        Vb5,
+        Vb6,
 
         LastInput,
     };

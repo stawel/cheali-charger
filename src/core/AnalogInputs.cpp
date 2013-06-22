@@ -141,8 +141,15 @@ void AnalogInputs::doVirtualCalculations()
     AnalogInputs::ValueType balancer = 0;
     AnalogInputs::ValueType out = real_[Vout];
 
+
+    //TODO: calculate Vbi for imaxB6
     for(uint8_t i=0; i < ports; i++) {
-        balancer += real_[Name(Vb1+i)];
+        setReal(Name(Vb1+i), getRealValue(Name(Vb1_real+i)));
+    }
+
+
+    for(uint8_t i=0; i < ports; i++) {
+        balancer += getRealValue(Name(Vb1+i));
     }
 
     setReal(Vbalancer, balancer);

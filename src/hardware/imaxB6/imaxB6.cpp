@@ -60,13 +60,14 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                        {48063, ANALOG_VOLT(14.044)}},  //Vin
     {{5765,ANALOG_CELCIUS(23.2)},   {14300, ANALOG_CELCIUS(60)}},   //Textern
 
-    {{0, 0},                        {52072, ANALOG_VOLT(3.985)}},   //Vb0
-    {{0, 0},                        {52686, ANALOG_VOLT(3.984)}},   //Vb1
-    {{0, 0},                        {52094, ANALOG_VOLT(3.935)}},   //Vb2
+    {{0, 0},                        {52072, ANALOG_VOLT(3.985)}},   //Vb0_real
+    {{0, 0},                        {52072, ANALOG_VOLT(3.985)}},   //Vb1_real
+    {{0, 0},                        {52686, ANALOG_VOLT(3.984)}},   //Vb2_real
+    {{0, 0},                        {52094, ANALOG_VOLT(3.935)}},   //Vb3_real
 
-    {{0, 0},                        {51180, ANALOG_VOLT(3.867)}},   //Vb3
-    {{0, 0},                        {51130, ANALOG_VOLT(3.866)}},   //Vb4
-    {{0, 0},                        {49348, ANALOG_VOLT(3.876)}},   //Vb5
+    {{0, 0},                        {51180, ANALOG_VOLT(3.867)}},   //Vb4_real
+    {{0, 0},                        {51130, ANALOG_VOLT(3.866)}},   //Vb5_real
+    {{0, 0},                        {49348, ANALOG_VOLT(3.876)}},   //Vb6_real
 
     //1-1 correlation
     {{0,0},                         {10000, 10000}},                //IsmpsValue
@@ -161,12 +162,13 @@ void measureValue(AnalogInputs::Name name)
     case AnalogInputs::Vin:             v = AnalogInputs::analogValue<V_IN_PIN>(); break;
     case AnalogInputs::Textern:         v = mux.analogRead<MADDR_T_EXTERN>(); break;
 
-    case AnalogInputs::Vb1:             v = mux.analogRead<MADDR_V_BALANSER1>(); break;
-    case AnalogInputs::Vb2:             v = mux.analogRead<MADDR_V_BALANSER2>(); break;
-    case AnalogInputs::Vb3:             v = mux.analogRead<MADDR_V_BALANSER3>(); break;
-    case AnalogInputs::Vb4:             v = mux.analogRead<MADDR_V_BALANSER4>(); break;
-    case AnalogInputs::Vb5:             v = mux.analogRead<MADDR_V_BALANSER5>(); break;
-    case AnalogInputs::Vb6:             v = mux.analogRead<MADDR_V_BALANSER6>(); break;
+    case AnalogInputs::Vb0_real:        v = mux.analogRead<MADDR_V_BALANSER_BATT_MINUS>(); break;
+    case AnalogInputs::Vb1_real:        v = mux.analogRead<MADDR_V_BALANSER1>(); break;
+    case AnalogInputs::Vb2_real:        v = mux.analogRead<MADDR_V_BALANSER2>(); break;
+    case AnalogInputs::Vb3_real:        v = mux.analogRead<MADDR_V_BALANSER3>(); break;
+    case AnalogInputs::Vb4_real:        v = mux.analogRead<MADDR_V_BALANSER4>(); break;
+    case AnalogInputs::Vb5_real:        v = mux.analogRead<MADDR_V_BALANSER5>(); break;
+    case AnalogInputs::Vb6_real:        v = mux.analogRead<MADDR_V_BALANSER6>(); break;
 
     case AnalogInputs::IsmpsValue:      v = smpsValue(); break;
     case AnalogInputs::IdischargeValue: v = dischargerValue(); break;
