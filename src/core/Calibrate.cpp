@@ -185,10 +185,11 @@ void Calibrate::runInfo()
 void Calibrate::print_v(uint8_t dig){
     lcdSetCursor0_0();
     switch(dispVal_) {
-    case 0: lcdPrint_P(PSTR("v:")); break;
-    case 1: lcdPrint_P(PSTR("r:")); break;
-    case 2: lcdPrint_P(PSTR("R:")); break;
+    case 0: lcdPrint_P(PSTR("v")); break;
+    case 1: lcdPrint_P(PSTR("r")); break;
+    case 2: lcdPrint_P(PSTR("R")); break;
     }
+    dig--;
     lcdPrintUnsigned(value_, dig);
 }
 
@@ -275,7 +276,7 @@ void Calibrate::printCalibrateVoutVbal()
 
 void Calibrate::printCalibrateB1_3()
 {
-    print_v(5);
+    print_v();
     uint8_t dig = 7;
     if(dispVal_ != 0) dig = 6;
     print_m_2(PSTR(" 1:"), AnalogInputs::Vb1, dig);
@@ -337,7 +338,7 @@ void Calibrate::printCalibrateB4_6_Blink()
 
 void Calibrate::printCalibrateB4_6()
 {
-    print_v(5);
+    print_v();
     uint8_t dig = 7;
     if(dispVal_ != 0) dig = 6;
     print_m_2(PSTR(" 4:"), AnalogInputs::Vb4, dig);
@@ -465,7 +466,7 @@ bool Calibrate::calibrate(screenType p)
         printCalibrate(p);
         last_key = key;
         key = keyboard.getPressedWithSpeed();
-        if(key == BUTTON_INC && value_ < 760) {
+        if(key == BUTTON_INC && value_ < MAX_CALIBRATION_SMPS_VALUE) {
             value_++;
             smps.setValue(value_);
         }

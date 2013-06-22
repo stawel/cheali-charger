@@ -18,6 +18,7 @@
 #include "imaxB6.h"
 #include "TimerOne.h"
 #include "imaxB6-pins.h"
+#include "SMPS_PID.h"
 
 Multiplexer<MUX_ADR0_PIN, MUX_ADR1_PIN, MUX_ADR2_PIN,
           MUX0_Z_D_PIN, MUX0_Z_D_PIN,
@@ -51,11 +52,11 @@ uint16_t empty()
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
     {{0,0},                         {25920, ANALOG_VOLT(11.945)}},  //Vout
     {{0,0},                         {38000, ANALOG_VOLT(11.829)}},  //VreversePolarity
-    {{0,0},                         {10985, ANALOG_AMP(1.013)}},    //Ismps
+    {{390,ANALOG_AMP(0.050)},       {10966, ANALOG_AMP(1.000)}},    //Ismps
     {{0,0},                         {14212, ANALOG_AMP(0.100)}},    //Idischarge
 
-    {{0, 0},                        {0, ANALOG_VOLT(0)}},  //VoutMux
-    {{0, 0},                        {0, ANALOG_CELCIUS(0)}},   //Tintern
+    {{0, 0},                        {0, ANALOG_VOLT(0)}},           //VoutMux
+    {{0, 0},                        {0, ANALOG_CELCIUS(0)}},        //Tintern
     {{0, 0},                        {48063, ANALOG_VOLT(14.044)}},  //Vin
     {{5765,ANALOG_CELCIUS(23.2)},   {14300, ANALOG_CELCIUS(60)}},   //Textern
 
@@ -67,9 +68,9 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                        {51130, ANALOG_VOLT(3.866)}},   //Vb4
     {{0, 0},                        {49348, ANALOG_VOLT(3.876)}},   //Vb5
 
-    //Ismps - copy
-    {{0,0},                         {1, 1}},
-    {{0, 0},                        {82,    ANALOG_AMP(0.100)}},      //IdischargeValue
+    //1-1 correlation
+    {{0,0},                         {10000, 10000}},                //IsmpsValue
+    {{0, 0},                        {82,    ANALOG_AMP(0.100)}},    //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {{0,0},                         {1, 1}},                        //UNKNOWN0
     {{0,0},                         {1, 1}},                        //UNKNOWN1
@@ -181,6 +182,9 @@ void AnalogInputs::doMeasurement(uint16_t count)
     while (count) {
         count--;
         measureValue(currentInput_);
+        measureValue(AnalogInputs::AnalogInputs::Ismps);
+        SMPS_PID::newIsmpsMeasurement();
+
         avrSum_[currentInput_] += measured_[currentInput_];
         currentInput_ = Name(currentInput_ + 1);
         if(currentInput_ == VirtualInputs) {
@@ -192,7 +196,7 @@ void AnalogInputs::doMeasurement(uint16_t count)
 void hardware::delay(uint16_t t)
 {
     if(analogInputs.on_)
-        analogInputs.doMeasurement((AnalogInputs::PHYSICAL_INPUTS*t)/4);
+        analogInputs.doMeasurement((AnalogInputs::PHYSICAL_INPUTS*t)/8);
     else {
         measureValue(AnalogInputs::VreversePolarity);
         timer.delay(t);

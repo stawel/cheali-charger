@@ -32,8 +32,9 @@
 
 #define MAX_BANANCE_CELLS       6
 
-
-#define SMPS_UPPERBOUND_VALUE     (256<<5)
+//1-1 correlation
+#define SMPS_UPPERBOUND_VALUE     MAX_CHARGE_I
+#define MAX_CALIBRATION_SMPS_VALUE ANALOG_AMP(1.500)
 
 
 #include "LiquidCrystal.h"

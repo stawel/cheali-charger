@@ -36,7 +36,7 @@ public:
 
     Calibrate(){};
 
-    void print_v(uint8_t dig = 3);
+    void print_v(uint8_t dig = 5);
     void print_d(AnalogInputs::Name name, int dig = 7);
     void print_m(const char *str, AnalogInputs::Name name, int dig = 7);
     void print_m_2(const char *str, AnalogInputs::Name name, int dig = 7);
