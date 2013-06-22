@@ -131,6 +131,7 @@ void Calibrate::calibrateI(screenType screen, AnalogInputs::Name name1, AnalogIn
 void Calibrate::copyVbalVout()
 {
     AnalogInputs::CalibrationPoint p;
+    //TODO: remove the ability to change smps.value
     if(calibrate(SCREEN_VOUT_VBAL)) {
         p.x = analogInputs.getValue(AnalogInputs::Vout);
         p.y = analogInputs.getRealValue(AnalogInputs::Vbalancer);
@@ -363,14 +364,7 @@ void Calibrate::printCalibrateB0_Blink()
     else lcdPrintSpaces(dig);
 
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR("1:"));
-    if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb1_real, dig);
-    else lcdPrintSpaces(dig);
-
-    if(dispVal_ == 0) lcdPrintChar(' ');
-    lcdPrint_P(PSTR("2:"));
-    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb2_real, dig);
-    else lcdPrintSpaces(dig);
+    lcdPrint_P(PSTR("Con: 4V to B-,B0"));
 }
 #endif
 
