@@ -94,11 +94,11 @@ void hardware::init()
     pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
     pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
+    pinMode(BUZZER_PIN, OUTPUT);
+
     pinMode(SMPS_VALUE0_PIN, OUTPUT);
     pinMode(SMPS_VALUE1_PIN, OUTPUT);
     pinMode(SMPS_DISABLE_PIN, OUTPUT);
-
-    pinMode(BUZZER_PIN, OUTPUT);
 
     pinMode(BALANCER1_LOAD_PIN, OUTPUT);
     pinMode(BALANCER2_LOAD_PIN, OUTPUT);
@@ -129,9 +129,31 @@ void hardware::setLCDBacklight(uint8_t val)
 void hardware::setFan(bool enable)
 {
 }
+
+namespace {
+    volatile uint8_t sound = 0;
+}
+void hardware::soundInterrupt()
+{
+    static uint8_t on = 0;
+
+    uint8_t f = 0;
+    if(sound > 0) {
+        on++;
+    } else {
+        on = 0;
+    }
+    if(sound >= 10) f=8;
+    if(sound >= 20) f=4;
+    if(sound >= 30) f=2;
+
+
+    digitalWrite(BUZZER_PIN, on&f);
+}
+
 void hardware::setBuzzer(uint16_t val)
 {
-    digitalWrite(BUZZER_PIN, val>0);
+    sound = val;
 }
 
 void hardware::setBatteryOutput(bool enable)

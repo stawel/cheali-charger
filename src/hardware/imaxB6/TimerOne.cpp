@@ -1,4 +1,5 @@
 #include "TimerOne.h"
+#include "Hardware.h"
 #include <avr/interrupt.h>
 
 namespace {
@@ -26,6 +27,7 @@ namespace {
 ISR(TIMER1_OVF_vect)
 {
     setOCR(); //modulate the PWM
+    hardware::soundInterrupt();
 }
 
 void TimerOne::setPWM(char pin, uint16_t val)  // expects duty cycle to be 10 bit (1024)

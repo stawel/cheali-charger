@@ -72,6 +72,8 @@ namespace hardware {
     void setFan(bool enable);
     void setBalancer(uint16_t balance);
     void doInterrupt();
+
+    void soundInterrupt();
 }
 
 
