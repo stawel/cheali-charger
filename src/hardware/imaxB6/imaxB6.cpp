@@ -63,11 +63,11 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                        {52072, ANALOG_VOLT(3.985)}},   //Vb0_real
     {{0, 0},                        {54079, ANALOG_VOLT(4.138)}},   //Vb1_real
     {{0, 0},                        {54682, ANALOG_VOLT(8.270)}},   //Vb2_real
-    {{0, 0},                        {52094, ANALOG_VOLT(3.935)}},   //Vb3_real
+    {{0, 0},                        {55246, ANALOG_VOLT(4.182)}},   //Vb3_real
 
-    {{0, 0},                        {51180, ANALOG_VOLT(3.867)}},   //Vb4_real
-    {{0, 0},                        {51130, ANALOG_VOLT(3.866)}},   //Vb5_real
-    {{0, 0},                        {49348, ANALOG_VOLT(3.876)}},   //Vb6_real
+    {{0, 0},                        {53726, ANALOG_VOLT(4.065)}},   //Vb4_real
+    {{0, 0},                        {53680, ANALOG_VOLT(4.071)}},   //Vb5_real
+    {{0, 0},                        {51656, ANALOG_VOLT(4.073)}},   //Vb6_real
 
     //1-1 correlation
     {{0,0},                         {10000, 10000}},                //IsmpsValue

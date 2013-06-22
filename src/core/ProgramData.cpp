@@ -86,7 +86,7 @@ void ProgramData::createName(int index)
     printIndex(buf,maxSize, index);
     print_P  (buf, maxSize, type);
     printChar(buf, maxSize, ' ');
-    printUInt(buf, maxSize, battery.Ic);
+    printUInt(buf, maxSize, battery.C);
     printChar(buf, maxSize, '/');
     printUInt(buf, maxSize, battery.cells);
 }
