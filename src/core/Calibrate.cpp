@@ -24,16 +24,26 @@
 #include "Screen.h"
 #include "Buzzer.h"
 
-const char string_c0[] PROGMEM = "B1-3";
-const char string_c1[] PROGMEM = "B4-6";
-const char string_c2[] PROGMEM = "B1-6 to Vout";
-const char string_c3[] PROGMEM = "Icharge";
-const char string_c4[] PROGMEM = "Idischarge";
-const char string_c5[] PROGMEM = "Vin";
-const char string_c6[] PROGMEM = "Tintern";
-const char string_c7[] PROGMEM = "Textern";
-const char string_c8[] PROGMEM = "Info";
 
+#ifdef HAS_SIMPLIFIED_VB0_VB2_CIRCUIT
+#define CALIBRATE_B0
+#define B0_SHIFT 1
+#else
+#define B0_SHIFT 0
+#endif
+
+#ifdef CALIBRATE_B0
+const char string_c0[] PROGMEM = "B0";
+#endif
+const char string_c1[] PROGMEM = "B1-3";
+const char string_c2[] PROGMEM = "B4-6";
+const char string_c3[] PROGMEM = "B1-6 to Vout";
+const char string_c4[] PROGMEM = "Icharge";
+const char string_c5[] PROGMEM = "Idischarge";
+const char string_c6[] PROGMEM = "Vin";
+const char string_c7[] PROGMEM = "Tintern";
+const char string_c8[] PROGMEM = "Textern";
+const char string_c9[] PROGMEM = "Info";
 
 const char string_ci0[] PROGMEM = "Icharge";
 const char string_ci1[] PROGMEM = "Vout";
@@ -48,7 +58,10 @@ const char string_ci9[] PROGMEM = "time";
 
 
 const char * const calibrateMenu[] PROGMEM =
-{ string_c0,
+{
+#ifdef CALIBRATE_B0
+  string_c0,
+#endif
   string_c1,
   string_c2,
   string_c3,
@@ -57,6 +70,7 @@ const char * const calibrateMenu[] PROGMEM =
   string_c6,
   string_c7,
   string_c8,
+  string_c9,
 };
 
 const char * const calibrateInfoMenu[] PROGMEM =
@@ -127,20 +141,61 @@ void Calibrate::copyVbalVout()
     }
 }
 
+#ifdef HAS_SIMPLIFIED_VB0_VB2_CIRCUIT
+void calibrateSimplifiedVb1_real(AnalogInputs::ValueType real_v)
+{
+    AnalogInputs::CalibrationPoint p1,p2;
+    p1.x = analogInputs.getValue(AnalogInputs::Vb1_real);
+    p1.y = real_v + analogInputs.getRealValue(AnalogInputs::Vb0_real);
+    p2.x = analogInputs.getValue(AnalogInputs::Vb2_real);
+    p2.y = p1.y + analogInputs.getRealValue(AnalogInputs::Vb2);
+    setCalibrationPoint(AnalogInputs::Vb1_real, 1, p1);
+    setCalibrationPoint(AnalogInputs::Vb2_real, 1, p2);
+}
+void calibrateSimplifiedVb2_real(AnalogInputs::ValueType real_v)
+{
+    AnalogInputs::CalibrationPoint p2;
+    p2.x = analogInputs.getValue(AnalogInputs::Vb2_real);
+    p2.y = real_v + analogInputs.getRealValue(AnalogInputs::Vb1_real);
+    setCalibrationPoint(AnalogInputs::Vb2_real, 1, p2);
+}
+
+#endif
+
+
 void Calibrate::setBalancer(AnalogInputs::Name firstName)
 {
     AnalogInputs::Name name = AnalogInputs::Name(firstName + blink_);
     uint8_t x,y;
     switch(blink_) {
-    case 0:    x = 10; y = 0; break;
+    case 0: x = 10; y = 0; break;
     case 1: x = 2;  y = 1; break;
     case 2: x = 10; y = 1; break;
     }
     AnalogInputs::CalibrationPoint p;
+
+#ifdef HAS_SIMPLIFIED_VB0_VB2_CIRCUIT
+    AnalogInputs::Name virtual_name = name;
+
+    if(name == AnalogInputs::Vb1_real) virtual_name = AnalogInputs::Vb1;
+    if(name == AnalogInputs::Vb2_real) virtual_name = AnalogInputs::Vb2;
+    p.y = analogInputs.getRealValue(virtual_name);
+#else
     p.y = analogInputs.getRealValue(name);
+#endif
     if(setValue(x, y, p.y, AnalogInputs::Voltage, 6)) {
         p.x = analogInputs.getValue(name);
+
+#ifdef HAS_SIMPLIFIED_VB0_VB2_CIRCUIT
+        if(name == AnalogInputs::Vb1_real)
+            calibrateSimplifiedVb1_real(p.y);
+        else if(name == AnalogInputs::Vb2_real)
+            calibrateSimplifiedVb2_real(p.y);
+        else
+            setCalibrationPoint(name, 1, p);
+#else
         setCalibrationPoint(name, 1, p);
+#endif
     }
 }
 
@@ -152,12 +207,15 @@ void Calibrate::run()
         i = menu.runSimple();
         if(i<0) break;
         switch(i) {
-        case 0: calibrateBlink(SCREEN_B1_3_BLINK, 3); break;
-        case 1: calibrateBlink(SCREEN_B4_6_BLINK, 3); break;
-        case 2: copyVbalVout(); break;
-        case 3: calibrateI(SCREEN_ICHARGE, AnalogInputs::Ismps, AnalogInputs::IsmpsValue); break;
-        case 4: calibrateI(SCREEN_IDISCHARGE, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue); break;
-        case 8: runInfo(); break;
+#ifdef CALIBRATE_B0
+        case 0:          calibrateBlink(SCREEN_B0_BLINK, 1); break;
+#endif
+        case 0+B0_SHIFT: calibrateBlink(SCREEN_B1_3_BLINK, 3); break;
+        case 1+B0_SHIFT: calibrateBlink(SCREEN_B4_6_BLINK, 3); break;
+        case 2+B0_SHIFT: copyVbalVout(); break;
+        case 3+B0_SHIFT: calibrateI(SCREEN_ICHARGE, AnalogInputs::Ismps, AnalogInputs::IsmpsValue); break;
+        case 4+B0_SHIFT: calibrateI(SCREEN_IDISCHARGE, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue); break;
+        case 8+B0_SHIFT: runInfo(); break;
         default:
                 Screen::runNotImplemented(); break;
         }
@@ -195,13 +253,17 @@ void Calibrate::print_v(uint8_t dig){
 
 void Calibrate::print_d(AnalogInputs::Name name, int dig)
 {
-    switch(dispVal_) {
-    case 0:    lcdPrintUnsigned(analogInputs.getValue(name), dig-2);
-            break;
-    case 1: analogInputs.printRealValue(name, dig);
-            break;
-    case 2: analogInputs.printMeasuredValue(name, dig);
-            break;
+    if(dispVal_ == 1) {
+        analogInputs.printRealValue(name, dig);
+    } else {
+        if(name == AnalogInputs::Vb1) name = AnalogInputs::Vb1_real;
+        if(name == AnalogInputs::Vb2) name = AnalogInputs::Vb2_real;
+        switch(dispVal_) {
+        case 0: lcdPrintUnsigned(analogInputs.getValue(name), dig-2);
+                 break;
+        case 2: analogInputs.printMeasuredValue(name, dig);
+                 break;
+        }
     }
 }
 
@@ -276,14 +338,42 @@ void Calibrate::printCalibrateVoutVbal()
 
 void Calibrate::printCalibrateB1_3()
 {
-    print_v();
+    print_v(7);
     uint8_t dig = 7;
     if(dispVal_ != 0) dig = 6;
-    print_m_2(PSTR(" 1:"), AnalogInputs::Vb1, dig);
-    print_m_1(PSTR("2:"),  AnalogInputs::Vb2, dig);
+    print_m_2(PSTR(" 1:"), AnalogInputs::Vb1_real, dig);
+    print_m_1(PSTR("2:"),  AnalogInputs::Vb2_real, dig);
     if(dispVal_ == 0) lcdPrintChar(' ');
-    print_m_2(PSTR("3:"), AnalogInputs::Vb3, dig);
+    print_m_2(PSTR("3:"), AnalogInputs::Vb3_real, dig);
 }
+#ifdef CALIBRATE_B0
+void Calibrate::printCalibrateB0_Blink()
+{
+    lcdSetCursor0_0();
+    if(!analogInputs.isConnected(AnalogInputs::Vout)) {
+        lcdPrint_P(PSTR("ERROR! "));
+    } else {
+        lcdPrintSpaces(7);
+    }
+    uint8_t dig = 7;
+    if(dispVal_ != 0) dig = 6;
+
+    lcdPrint_P(PSTR(" 0:"));
+    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb0_real, dig);
+    else lcdPrintSpaces(dig);
+
+    lcdSetCursor0_1();
+    lcdPrint_P(PSTR("1:"));
+    if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb1_real, dig);
+    else lcdPrintSpaces(dig);
+
+    if(dispVal_ == 0) lcdPrintChar(' ');
+    lcdPrint_P(PSTR("2:"));
+    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb2_real, dig);
+    else lcdPrintSpaces(dig);
+}
+#endif
+
 void Calibrate::printCalibrateB1_3_Blink()
 {
     lcdSetCursor0_0();
@@ -306,9 +396,11 @@ void Calibrate::printCalibrateB1_3_Blink()
 
     if(dispVal_ == 0) lcdPrintChar(' ');
     lcdPrint_P(PSTR("3:"));
-    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb3, dig);
+    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb3_real, dig);
     else lcdPrintSpaces(dig);
 }
+
+
 
 void Calibrate::printCalibrateB4_6_Blink()
 {
@@ -322,29 +414,29 @@ void Calibrate::printCalibrateB4_6_Blink()
     if(dispVal_ != 0) dig = 6;
 
     lcdPrint_P(PSTR(" 4:"));
-    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb4, dig);
+    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb4_real, dig);
     else lcdPrintSpaces(dig);
 
     lcdSetCursor0_1();
     lcdPrint_P(PSTR("5:"));
-    if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb5, dig);
+    if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb5_real, dig);
     else lcdPrintSpaces(dig);
 
     if(dispVal_ == 0) lcdPrintChar(' ');
     lcdPrint_P(PSTR("6:"));
-    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb6, dig);
+    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb6_real, dig);
     else lcdPrintSpaces(dig);
 }
 
 void Calibrate::printCalibrateB4_6()
 {
-    print_v();
+    print_v(7);
     uint8_t dig = 7;
     if(dispVal_ != 0) dig = 6;
-    print_m_2(PSTR(" 4:"), AnalogInputs::Vb4, dig);
-    print_m_1(PSTR("5:"), AnalogInputs::Vb5, dig);
+    print_m_2(PSTR(" 4:"), AnalogInputs::Vb4_real, dig);
+    print_m_1(PSTR("5:"), AnalogInputs::Vb5_real, dig);
     if(dispVal_ == 0) lcdPrintChar(' ');
-    print_m_2(PSTR("6:"), AnalogInputs::Vb6, dig);
+    print_m_2(PSTR("6:"), AnalogInputs::Vb6_real, dig);
 }
 
 void Calibrate::printCalibrateT()
@@ -372,6 +464,9 @@ void Calibrate::printCalibrate(screenType p) {
     case SCREEN_VUNKNOWN:       printCalibrateVunknown();   break;
 
     case SCREEN_VOUT_VBAL:      printCalibrateVoutVbal();   break;
+#ifdef CALIBRATE_B0
+    case SCREEN_B0_BLINK:       printCalibrateB0_Blink();   break;
+#endif
     case SCREEN_B1_3_BLINK:     printCalibrateB1_3_Blink(); break;
     case SCREEN_B4_6_BLINK:     printCalibrateB4_6_Blink(); break;
     }
@@ -385,8 +480,11 @@ void Calibrate::info(screenType p)
 void Calibrate::setBlink(screenType screen)
 {
     switch (screen) {
-        case SCREEN_B1_3_BLINK:        setBalancer(AnalogInputs::Vb1); break;
-        case SCREEN_B4_6_BLINK:        setBalancer(AnalogInputs::Vb4); break;
+#ifdef CALIBRATE_B0
+        case SCREEN_B0_BLINK:          setBalancer(AnalogInputs::Vb0_real); break;
+#endif
+        case SCREEN_B1_3_BLINK:        setBalancer(AnalogInputs::Vb1_real); break;
+        case SCREEN_B4_6_BLINK:        setBalancer(AnalogInputs::Vb4_real); break;
     }
 }
 

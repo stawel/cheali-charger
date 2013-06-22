@@ -36,6 +36,7 @@
 #define SMPS_UPPERBOUND_VALUE     MAX_CHARGE_I
 #define MAX_CALIBRATION_SMPS_VALUE ANALOG_AMP(1.500)
 
+#define HAS_SIMPLIFIED_VB0_VB2_CIRCUIT 1
 
 #include "LiquidCrystal.h"
 #include "Multiplexer.h"

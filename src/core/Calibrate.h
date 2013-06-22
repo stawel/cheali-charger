@@ -22,6 +22,14 @@
 
 #define ACCEPT_DELAY 3
 
+#ifdef HAS_SIMPLIFIED_VB0_VB2_CIRCUIT
+#define CALIBRATE_B0
+#define B0_SHIFT 1
+#else
+#define B0_SHIFT 0
+#endif
+
+
 class Calibrate {
 public:
     uint16_t value_;
@@ -32,7 +40,10 @@ public:
     enum screenType { SCREEN_ICHARGE = 0, SCREEN_VOUT = 1, SCREEN_B1_3 = 2, SCREEN_B4_6 = 3,
             SCREEN_T = 4, SCREEN_VIN = 5, SCREEN_VREVERSE = 6, SCREEN_VUNKNOWN = 7,
             SCREEN_VOUT_VBAL = 99, SCREEN_IDISCHARGE = 100,
-            SCREEN_B1_3_BLINK = 101, SCREEN_B4_6_BLINK = 102};
+#ifdef CALIBRATE_B0
+            SCREEN_B0_BLINK = 200,
+#endif
+            SCREEN_B1_3_BLINK = 201, SCREEN_B4_6_BLINK = 202};
 
     Calibrate(){};
 
@@ -52,7 +63,9 @@ public:
     void printCalibrateVin();
     void printCalibrateVreverse();
     void printCalibrateVunknown();
-
+#ifdef CALIBRATE_B0
+    void printCalibrateB0_Blink();
+#endif
     void printCalibrateB1_3_Blink();
     void printCalibrateB4_6_Blink();
 

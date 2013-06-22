@@ -61,8 +61,8 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{5765,ANALOG_CELCIUS(23.2)},   {14300, ANALOG_CELCIUS(60)}},   //Textern
 
     {{0, 0},                        {52072, ANALOG_VOLT(3.985)}},   //Vb0_real
-    {{0, 0},                        {52072, ANALOG_VOLT(3.985)}},   //Vb1_real
-    {{0, 0},                        {52686, ANALOG_VOLT(3.984)}},   //Vb2_real
+    {{0, 0},                        {54079, ANALOG_VOLT(4.138)}},   //Vb1_real
+    {{0, 0},                        {54682, ANALOG_VOLT(8.270)}},   //Vb2_real
     {{0, 0},                        {52094, ANALOG_VOLT(3.935)}},   //Vb3_real
 
     {{0, 0},                        {51180, ANALOG_VOLT(3.867)}},   //Vb4_real

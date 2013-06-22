@@ -136,17 +136,24 @@ void AnalogInputs::doDeltaCalculations()
 
 void AnalogInputs::doVirtualCalculations()
 {
-    uint8_t ports = getConnectedBalancePorts();
     AnalogInputs::ValueType oneVolt = ANALOG_VOLT(1);
     AnalogInputs::ValueType balancer = 0;
     AnalogInputs::ValueType out = real_[Vout];
 
 
-    //TODO: calculate Vbi for imaxB6
-    for(uint8_t i=0; i < ports; i++) {
+#ifdef HAS_SIMPLIFIED_VB0_VB2_CIRCUIT
+    setReal(Name(Vb1), getRealValue(Name(Vb1_real)) - getRealValue(Name(Vb0_real)));
+    setReal(Name(Vb2), getRealValue(Name(Vb2_real)) - getRealValue(Name(Vb1_real)));
+    for(uint8_t i=2; i < 6; i++) {
         setReal(Name(Vb1+i), getRealValue(Name(Vb1_real+i)));
     }
+#else
+    for(uint8_t i=0; i < 6; i++) {
+        setReal(Name(Vb1+i), getRealValue(Name(Vb1_real+i)));
+    }
+#endif
 
+    uint8_t ports = getConnectedBalancePorts();
 
     for(uint8_t i=0; i < ports; i++) {
         balancer += getRealValue(Name(Vb1+i));
