@@ -191,7 +191,7 @@ namespace {
                 if(key == BUTTON_DEC && screen_nr > 0)              step--;
                 do{
                     screen_nr+=step;
-                } while(!settings.isDebug() && pgm::read(&chargeScreens[screen_nr]) & Screen::Debug);
+                } while(!settings.isDebug() && (pgm::read(&chargeScreens[screen_nr]) & Screen::Debug));
             }
             if(run) {
                 status = monitor.run();
