@@ -42,6 +42,8 @@
 #define SMPS_UPPERBOUND_VALUE     (SMPS_MAX_VALUE/4)
 #define MAX_CALIBRATION_SMPS_VALUE 760
 
+#define HAS_LCD_BACKLIGHT
+#define HAS_FAN
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"

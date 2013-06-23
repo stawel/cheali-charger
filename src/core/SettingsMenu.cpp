@@ -20,8 +20,12 @@
 #include "LcdPrint.h"
 #include "Buzzer.h"
 
+#ifdef HAS_LCD_BACKLIGHT
 const char string_backlight[]   PROGMEM = "backlight:";
+#endif
+#ifdef HAS_FAN
 const char string_fanOn[]       PROGMEM = "fan on:   ";
+#endif
 const char string_dischOff[]    PROGMEM = "disch off:";
 const char string_externT[]     PROGMEM = "extrn T:   ";
 const char string_externTCO[]   PROGMEM = "extrn TCO:";
@@ -39,8 +43,12 @@ const char string_save[]        PROGMEM = "    save"    ;
 
 const char * const SettingsStaticMenu[] PROGMEM =
 {
+#ifdef HAS_LCD_BACKLIGHT
         string_backlight,
+#endif
+#ifdef HAS_FAN
         string_fanOn,
+#endif
         string_dischOff,
         string_externT,
         string_externTCO,
@@ -64,19 +72,24 @@ uint8_t SettingsMenu::printItem(uint8_t index)
 {
     StaticMenu::printItem(index);
     if(getBlinkIndex() != index) {
+        START_CASE_COUNTER;
         switch (index) {
-            case 0:     lcdPrintUnsigned(p_.backlight_, 3);     break;
-            case 1:     printTemp(p_.fanTempOn_);               break;
-            case 2:     printTemp(p_.dischargeTempOff_);        break;
-            case 3:     lcdPrintYesNo(p_.externT_);             break;
-            case 4:     printTemp(p_.externTCO_);               break;
-            case 5:     printDeltaT(p_.deltaT_);                break;
-            case 6:     lcdPrintDeltaV(p_.deltaV_NiMH_, 5);     break;
-            case 7:     lcdPrintDeltaV(p_.deltaV_NiCd_, 5);     break;
-            case 8:     lcdPrintUnsigned(p_.CDcycles_, 3);      break;
-            case 9:     lcdPrintPercentage(p_.capCutoff_, 5);   break;
-            case 10:    printVolt(p_.inputVoltageLow_);         break;
-            case 11:    printViewType();                        break;
+#ifdef HAS_LCD_BACKLIGHT
+            case NEXT_CASE:     lcdPrintUnsigned(p_.backlight_, 3);     break;
+#endif
+#ifdef HAS_FAN
+            case NEXT_CASE:     printTemp(p_.fanTempOn_);               break;
+#endif
+            case NEXT_CASE:     printTemp(p_.dischargeTempOff_);        break;
+            case NEXT_CASE:     lcdPrintYesNo(p_.externT_);             break;
+            case NEXT_CASE:     printTemp(p_.externTCO_);               break;
+            case NEXT_CASE:     printDeltaT(p_.deltaT_);                break;
+            case NEXT_CASE:     lcdPrintDeltaV(p_.deltaV_NiMH_, 5);     break;
+            case NEXT_CASE:     lcdPrintDeltaV(p_.deltaV_NiCd_, 5);     break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.CDcycles_, 3);      break;
+            case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff_, 5);   break;
+            case NEXT_CASE:    printVolt(p_.inputVoltageLow_);         break;
+            case NEXT_CASE:    printViewType();                        break;
         }
     }
 }
@@ -86,20 +99,24 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
     int dir = -1;
     if(key == BUTTON_INC) dir = 1;
 //    dir *= keyboard.getSpeedFactor();
-
+    START_CASE_COUNTER;
     switch(index) {
-        case 0:     changeBacklight(dir);                       break;
-        case 1:     changeTemp(p_.fanTempOn_, dir);             break;
-        case 2:     changeTemp(p_.dischargeTempOff_, dir);      break;
-        case 3:     changeMax(p_.externT_, dir, 1);             break;
-        case 4:     changeTemp(p_.externTCO_,dir);              break;
-        case 5:     changeDeltaTemp(p_.deltaT_,dir);            break;
-        case 6:     changeMax(p_.deltaV_NiMH_, dir, 20);        break;
-        case 7:     changeMax(p_.deltaV_NiCd_, dir, 20);        break;
-        case 8:     change1Max(p_.CDcycles_, dir, 5);           break;
-        case 9:     change1Max(p_.capCutoff_, dir, 250);        break;
-        case 10:    changeVolt(p_.inputVoltageLow_, dir);       break;
-        case 11:    changeViewType(dir);                        break;
+#ifdef HAS_LCD_BACKLIGHT
+        case NEXT_CASE:     changeBacklight(dir);                       break;
+#endif
+#ifdef HAS_FAN
+        case NEXT_CASE:     changeTemp(p_.fanTempOn_, dir);             break;
+#endif
+        case NEXT_CASE:     changeTemp(p_.dischargeTempOff_, dir);      break;
+        case NEXT_CASE:     changeMax(p_.externT_, dir, 1);             break;
+        case NEXT_CASE:     changeTemp(p_.externTCO_,dir);              break;
+        case NEXT_CASE:     changeDeltaTemp(p_.deltaT_,dir);            break;
+        case NEXT_CASE:     changeMax(p_.deltaV_NiMH_, dir, 20);        break;
+        case NEXT_CASE:     changeMax(p_.deltaV_NiCd_, dir, 20);        break;
+        case NEXT_CASE:     change1Max(p_.CDcycles_, dir, 5);           break;
+        case NEXT_CASE:     change1Max(p_.capCutoff_, dir, 250);        break;
+        case NEXT_CASE:    changeVolt(p_.inputVoltageLow_, dir);       break;
+        case NEXT_CASE:    changeViewType(dir);                        break;
     }
 }
 

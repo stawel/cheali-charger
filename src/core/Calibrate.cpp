@@ -27,9 +27,6 @@
 
 #ifdef HAS_SIMPLIFIED_VB0_VB2_CIRCUIT
 #define CALIBRATE_B0
-#define B0_SHIFT 1
-#else
-#define B0_SHIFT 0
 #endif
 
 #ifdef CALIBRATE_B0
@@ -207,16 +204,17 @@ void Calibrate::run()
     do {
         i = menu.runSimple();
         if(i<0) break;
+        START_CASE_COUNTER;
         switch(i) {
 #ifdef CALIBRATE_B0
-        case 0:          calibrateBlink(SCREEN_B0_BLINK, 1); break;
+        case NEXT_CASE: calibrateBlink(SCREEN_B0_BLINK, 1); break;
 #endif
-        case 0+B0_SHIFT: calibrateBlink(SCREEN_B1_3_BLINK, 3); break;
-        case 1+B0_SHIFT: calibrateBlink(SCREEN_B4_6_BLINK, 3); break;
-        case 2+B0_SHIFT: copyVbalVout(); break;
-        case 3+B0_SHIFT: calibrateI(SCREEN_ICHARGE, AnalogInputs::Ismps, AnalogInputs::IsmpsValue); break;
-        case 4+B0_SHIFT: calibrateI(SCREEN_IDISCHARGE, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue); break;
-        case 8+B0_SHIFT: runInfo(); break;
+        case NEXT_CASE: calibrateBlink(SCREEN_B1_3_BLINK, 3); break;
+        case NEXT_CASE: calibrateBlink(SCREEN_B4_6_BLINK, 3); break;
+        case NEXT_CASE: copyVbalVout(); break;
+        case NEXT_CASE: calibrateI(SCREEN_ICHARGE, AnalogInputs::Ismps, AnalogInputs::IsmpsValue); break;
+        case NEXT_CASE: calibrateI(SCREEN_IDISCHARGE, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue); break;
+        case NEXT_CASE: runInfo(); break;
         default:
                 Screen::runNotImplemented(); break;
         }

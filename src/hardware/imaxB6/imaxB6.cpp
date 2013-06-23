@@ -147,7 +147,6 @@ void hardware::soundInterrupt()
     if(sound >= 20) f=4;
     if(sound >= 30) f=2;
 
-
     digitalWrite(BUZZER_PIN, on&f);
 }
 
