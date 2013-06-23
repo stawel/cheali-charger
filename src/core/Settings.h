@@ -25,8 +25,9 @@
 struct Settings {
 
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5);
-
+#ifdef HAS_LCD_BACKLIGHT
     uint16_t backlight_;
+#endif
     AnalogInputs::ValueType fanTempOn_;
     AnalogInputs::ValueType dischargeTempOff_;
     uint16_t externT_;

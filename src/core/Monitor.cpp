@@ -28,9 +28,11 @@ Monitor monitor;
 
 void Monitor::doInterrupt()
 {
+#ifdef HAS_FAN
     bool on;
     if(testTintern(on, settings.fanTempOn_ - Settings::TempDifference, settings.fanTempOn_))
         hardware::setFan(on);
+#endif
 }
 
 void Monitor::powerOn() {

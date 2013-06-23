@@ -163,11 +163,12 @@ void SettingsMenu::printDeltaT(AnalogInputs::ValueType dt)
     lcdPrint_P(PSTR("C/m"));
 }
 
-
+#ifdef HAS_LCD_BACKLIGHT
 void SettingsMenu::changeBacklight(int dir) {
     changeMaxSmart(p_.backlight_, dir, 99);
     p_.apply();
 }
+#endif
 
 void SettingsMenu::changeViewType(int dir)
 {

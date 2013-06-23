@@ -22,23 +22,12 @@
 #include "Buzzer.h"
 
 Settings settings;
-
-uint16_t backlight_;
-AnalogInputs::ValueType fanTempOn_;
-AnalogInputs::ValueType dischargeTempOff_;
-bool externT_;
-AnalogInputs::ValueType externTCO_;
-AnalogInputs::ValueType deltaT_;
-AnalogInputs::ValueType deltaV_NiMH_, deltaV_NiCd_;
-uint8_t CDcycles_;
-uint16_t capCutoff_;
-AnalogInputs::ValueType inputVoltageLow_;
-Screen::ScreenViewType view_;
-
-
 Settings savedSetting EEMEM;
+
 const Settings defaultSettings PROGMEM = {
+#ifdef HAS_LCD_BACKLIGHT
         70,                 //backlight_
+#endif
         ANALOG_CELCIUS(50), //fanTempOn_
         ANALOG_CELCIUS(60), //dischargeTempOff_
         1,                  //externT_
@@ -77,7 +66,9 @@ void Settings::check() {
 }
 
 void Settings::apply() {
+#ifdef HAS_LCD_BACKLIGHT
     hardware::setLCDBacklight(backlight_);
+#endif
 }
 
 

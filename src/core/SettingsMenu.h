@@ -33,7 +33,9 @@ public:
 private:
 
     void printViewType() const;
+#ifdef HAS_LCD_BACKLIGHT
     void changeBacklight(int dir);
+#endif
     void changeViewType(int dir);
 
     static void printTemp(AnalogInputs::ValueType t);

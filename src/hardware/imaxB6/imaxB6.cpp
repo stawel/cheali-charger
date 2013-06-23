@@ -113,7 +113,6 @@ void hardware::init()
     pinMode(MUX0_Z_D_PIN, INPUT);
 
     setBatteryOutput(false);
-    setFan(false);
     setBuzzer(0);
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
@@ -122,13 +121,7 @@ void hardware::init()
     TimerOne::initialize();
 }
 
-void hardware::setLCDBacklight(uint8_t val)
-{
-}
 
-void hardware::setFan(bool enable)
-{
-}
 
 namespace {
     volatile uint8_t sound = 0;

@@ -62,14 +62,12 @@ namespace hardware {
     void init();
     uint8_t getKeyPressed();
     void delay(uint16_t t);
-    void setLCDBacklight(uint8_t val);
     void setBuzzer(uint16_t val);
     void setBatteryOutput(bool enable);
     void setChargerOutput(bool enable);
     void setDischargerOutput(bool enable);
     void setChargerValue(uint16_t value);
     void setDischargerValue(uint16_t value);
-    void setFan(bool enable);
     void setBalancer(uint16_t balance);
     void doInterrupt();
 
