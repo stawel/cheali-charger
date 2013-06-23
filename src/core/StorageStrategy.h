@@ -15,25 +15,28 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef THEVENINDISCHARGESTRATEGY_H_
-#define THEVENINDISCHARGESTRATEGY_H_
+#ifndef STORAGESTRATEGY_H_
+#define STORAGESTRATEGY_H_
 
-#include "SimpleDischarge.h"
-#include "TheveninMethod.h"
+#include "SimpleChargeStrategy.h"
 
-class TheveninDischargeStrategy : public SimpleDischargeStrategy {
+class StorageStrategy : public Strategy {
 public:
-    TheveninDischargeStrategy(){}
+    enum State  {Charge, Discharge, Balance};
+
+    AnalogInputs::ValueType V_;
+    State state;
+    bool doBalance_;
+
+    StorageStrategy(){}
     virtual void powerOn();
     virtual statusType doStrategy();
     virtual void powerOff();
-
-    void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
-    void setMinI(AnalogInputs::ValueType i);
-
+    void setVII(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic, AnalogInputs::ValueType Id);
+    void setDoBalance(bool v) { doBalance_ = v; }
 };
 
-extern TheveninDischargeStrategy theveninDischargeStrategy;
+extern StorageStrategy storageStrategy;
 
 
-#endif /* THEVENINDISCHARGESTRATEGY_H_ */
+#endif /* STORAGESTRATEGY_H_ */

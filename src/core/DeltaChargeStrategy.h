@@ -19,7 +19,7 @@
 #define DELTACHARGESTRATEGY_H_
 
 
-#include "SimpleCharge.h"
+#include "SimpleChargeStrategy.h"
 
 class DeltaChargeStrategy : public SimpleChargeStrategy {
 public:

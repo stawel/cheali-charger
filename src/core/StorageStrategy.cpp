@@ -16,9 +16,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "Hardware.h"
-#include "Storage.h"
-#include "TheveninCharge.h"
-#include "TheveninDischarge.h"
+#include "StorageStrategy.h"
+#include "TheveninChargeStrategy.h"
+#include "TheveninDischargeStrategy.h"
 
 StorageStrategy storageStrategy;
 

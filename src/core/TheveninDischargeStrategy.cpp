@@ -18,7 +18,7 @@
 #include "Hardware.h"
 #include "ProgramData.h"
 #include "Screen.h"
-#include "TheveninDischarge.h"
+#include "TheveninDischargeStrategy.h"
 
 
 TheveninDischargeStrategy theveninDischargeStrategy;

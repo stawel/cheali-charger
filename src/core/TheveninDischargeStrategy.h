@@ -15,27 +15,25 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef THEVENINCHARGESTRATEGY_H_
-#define THEVENINCHARGESTRATEGY_H_
+#ifndef THEVENINDISCHARGESTRATEGY_H_
+#define THEVENINDISCHARGESTRATEGY_H_
 
-#include "SimpleCharge.h"
-#include "Thevenin.h"
+#include "SimpleDischargeStrategy.h"
 #include "TheveninMethod.h"
 
-class TheveninChargeStrategy : public SimpleChargeStrategy {
+class TheveninDischargeStrategy : public SimpleDischargeStrategy {
 public:
-    TheveninChargeStrategy(){}
+    TheveninDischargeStrategy(){}
     virtual void powerOn();
     virtual statusType doStrategy();
     virtual void powerOff();
-    bool isEndVout() const;
 
     void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
     void setMinI(AnalogInputs::ValueType i);
 
 };
 
-extern TheveninChargeStrategy theveninChargeStrategy;
+extern TheveninDischargeStrategy theveninDischargeStrategy;
 
 
-#endif /* THEVENINCHARGESTRATEGY_H_ */
+#endif /* THEVENINDISCHARGESTRATEGY_H_ */

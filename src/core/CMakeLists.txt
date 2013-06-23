@@ -31,24 +31,28 @@ set(CORE_SOURCE
         ProgramDataMenu.h
         Screen.cpp
         Screen.h
-        SimpleCharge.cpp
-        SimpleCharge.h
+
+        SimpleChargeStrategy.cpp
+        SimpleChargeStrategy.h
         DeltaChargeStrategy.cpp
         DeltaChargeStrategy.h
-        SimpleDischarge.cpp
-        SimpleDischarge.h
-        TheveninDischarge.cpp
-        TheveninDischarge.h
+        SimpleDischargeStrategy.cpp
+        SimpleDischargeStrategy.h
+        TheveninDischargeStrategy.cpp
+        TheveninDischargeStrategy.h
+        TheveninChargeStrategy.cpp
+        TheveninChargeStrategy.h
+        StorageStrategy.cpp
+        StorageStrategy.h
+        StartInfoStrategy.cpp
+        StartInfoStrategy.h
+
         SMPS.cpp
         SMPS.h
         Discharger.cpp
         Discharger.h
         Program.cpp
         Program.h
-        TheveninCharge.cpp
-        TheveninCharge.h
-        Storage.cpp
-        Storage.h
         Thevenin.cpp
         Thevenin.h
         TheveninMethod.cpp
@@ -57,8 +61,6 @@ set(CORE_SOURCE
         Timer.h
         Utils.cpp
         Utils.h
-        StartInfoStrategy.cpp
-        StartInfoStrategy.h
         Blink.cpp
         Blink.h
 
