@@ -228,6 +228,7 @@ void hardware::delay(uint16_t t)
         analogInputs.doMeasurement((AnalogInputs::PHYSICAL_INPUTS*t)/4);
     else {
         measureValue(AnalogInputs::VreversePolarity);
+        measureValue(AnalogInputs::Tintern);
         timer.delay(t);
     }
 }
