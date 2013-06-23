@@ -15,19 +15,19 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SIMPLEDISCHARGE_H_
-#define SIMPLEDISCHARGE_H_
+#ifndef SIMPLEDISCHARGESTRATEGY_H_
+#define SIMPLEDISCHARGESTRATEGY_H_
 
 #include "Strategy.h"
 #include "AnalogInputs.h"
 
-class SimpleDischarge : public Strategy {
+class SimpleDischargeStrategy : public Strategy {
 public:
 
     AnalogInputs::ValueType I_;
     AnalogInputs::ValueType V_;
 
-    SimpleDischarge(){}
+    SimpleDischargeStrategy(){}
     virtual void powerOn();
     virtual statusType doStrategy();
     virtual void powerOff();
@@ -39,7 +39,7 @@ public:
     void setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I) { I_ = I; V_ = V; };
 };
 
-extern SimpleDischarge simpleDischarge;
+extern SimpleDischargeStrategy simpleDischargeStrategy;
 
 
-#endif /* SIMPLEDISCHARGE_H_ */
+#endif /* SIMPLEDISCHARGESTRATEGY_H_ */

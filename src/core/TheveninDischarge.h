@@ -15,15 +15,15 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef THEVENINDISCHARGE_H_
-#define THEVENINDISCHARGE_H_
+#ifndef THEVENINDISCHARGESTRATEGY_H_
+#define THEVENINDISCHARGESTRATEGY_H_
 
 #include "SimpleDischarge.h"
 #include "TheveninMethod.h"
 
-class TheveninDischarge : public SimpleDischarge {
+class TheveninDischargeStrategy : public SimpleDischargeStrategy {
 public:
-    TheveninDischarge(){}
+    TheveninDischargeStrategy(){}
     virtual void powerOn();
     virtual statusType doStrategy();
     virtual void powerOff();
@@ -33,7 +33,7 @@ public:
 
 };
 
-extern TheveninDischarge theveninDischarge;
+extern TheveninDischargeStrategy theveninDischargeStrategy;
 
 
-#endif /* THEVENINDISCHARGE_H_ */
+#endif /* THEVENINDISCHARGESTRATEGY_H_ */

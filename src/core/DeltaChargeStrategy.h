@@ -21,7 +21,7 @@
 
 #include "SimpleCharge.h"
 
-class DeltaChargeStrategy : public SimpleCharge {
+class DeltaChargeStrategy : public SimpleChargeStrategy {
 public:
     enum StateType {PreCharge, RapidCharge};
 

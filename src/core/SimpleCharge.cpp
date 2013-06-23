@@ -22,10 +22,10 @@
 #include "TheveninMethod.h"
 
 
-SimpleCharge simpleCharge;
+SimpleChargeStrategy simpleChargeStrategy;
 
 
-void SimpleCharge::powerOn()
+void SimpleChargeStrategy::powerOn()
 {
     smps.powerOn();
     AnalogInputs::ValueType I = ProgramData::currentProgramData.battery.Ic;
@@ -38,12 +38,12 @@ void SimpleCharge::powerOn()
     Program::iName_ = AnalogInputs::IsmpsValue;
 }
 
-void SimpleCharge::powerOff()
+void SimpleChargeStrategy::powerOff()
 {
     smps.powerOff();
 }
 
-void SimpleCharge::calculateThevenin() const
+void SimpleChargeStrategy::calculateThevenin() const
 {
     if(isStable()) theveninMethod.calculateRthVth(smps.getValue());
 }
@@ -71,7 +71,7 @@ Strategy::statusType SimpleCharge::doStrategy()
 }
 */
 
-bool SimpleCharge::isStable() const
+bool SimpleChargeStrategy::isStable() const
 {
     return analogInputs.isStable(smps.VName) && analogInputs.isStable(smps.IName) && balancer.isStable();
 }

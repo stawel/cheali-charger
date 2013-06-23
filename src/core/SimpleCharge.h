@@ -15,16 +15,16 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SIMPLECHARGE_H_
-#define SIMPLECHARGE_H_
+#ifndef SIMPLECHARGESTRATEGY_H_
+#define SIMPLECHARGESTRATEGY_H_
 
 
 #include "Strategy.h"
 
-class SimpleCharge : public Strategy {
+class SimpleChargeStrategy : public Strategy {
 public:
     bool testVout_;
-    SimpleCharge(){};
+    SimpleChargeStrategy(){};
     virtual void powerOn();
 //    virtual statusType doStrategy();
     virtual void powerOff();
@@ -32,7 +32,7 @@ public:
     void calculateThevenin() const;
 };
 
-extern SimpleCharge simpleCharge;
+extern SimpleChargeStrategy simpleChargeStrategy;
 
-#endif /* SIMPLECHARGE_H_ */
+#endif /* SIMPLECHARGESTRATEGY_H_ */
 

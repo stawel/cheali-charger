@@ -15,12 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef STORAGE_H_
-#define STORAGE_H_
+#ifndef STORAGESTRATEGY_H_
+#define STORAGESTRATEGY_H_
 
 #include "SimpleCharge.h"
 
-class Storage : public Strategy {
+class StorageStrategy : public Strategy {
 public:
     enum State  {Charge, Discharge, Balance};
 
@@ -28,7 +28,7 @@ public:
     State state;
     bool doBalance_;
 
-    Storage(){}
+    StorageStrategy(){}
     virtual void powerOn();
     virtual statusType doStrategy();
     virtual void powerOff();
@@ -36,7 +36,7 @@ public:
     void setDoBalance(bool v) { doBalance_ = v; }
 };
 
-extern Storage storage;
+extern StorageStrategy storageStrategy;
 
 
-#endif /* STORAGE_H_ */
+#endif /* STORAGESTRATEGY_H_ */

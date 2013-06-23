@@ -20,37 +20,37 @@
 #include "TheveninCharge.h"
 #include "TheveninDischarge.h"
 
-Storage storage;
+StorageStrategy storageStrategy;
 
-void Storage::powerOff()
+void StorageStrategy::powerOff()
 {
-    theveninCharge.powerOff();
-    theveninDischarge.powerOff();
+    theveninChargeStrategy.powerOff();
+    theveninDischargeStrategy.powerOff();
     balancer.powerOff();
 }
 
-void Storage::powerOn()
+void StorageStrategy::powerOn()
 {
     balancer.powerOn();
     if(balancer.isMinVout(balancer.calculatePerCell(V_))) {
-        theveninCharge.powerOn();
+        theveninChargeStrategy.powerOn();
         state = Charge;
     } else {
-        theveninDischarge.powerOn();
+        theveninDischargeStrategy.powerOn();
         state = Discharge;
     }
 }
 
 
-Strategy::statusType Storage::doStrategy()
+Strategy::statusType StorageStrategy::doStrategy()
 {
     Strategy::statusType status;
     switch(state) {
         case Charge:
-            status = theveninCharge.doStrategy();
+            status = theveninChargeStrategy.doStrategy();
             break;
         case Discharge:
-            status = theveninDischarge.doStrategy();
+            status = theveninDischargeStrategy.doStrategy();
             break;
         case Balance:
             status = balancer.doStrategy();
@@ -71,9 +71,9 @@ Strategy::statusType Storage::doStrategy()
     return status;
 }
 
-void Storage::setVII(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic, AnalogInputs::ValueType Id)
+void StorageStrategy::setVII(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic, AnalogInputs::ValueType Id)
 {
     V_ = V;
-    theveninCharge.setVI(V, Ic);
-    theveninDischarge.setVI(V, Id);
+    theveninChargeStrategy.setVI(V, Ic);
+    theveninDischargeStrategy.setVI(V, Id);
 }

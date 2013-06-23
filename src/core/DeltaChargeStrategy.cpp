@@ -26,7 +26,7 @@ DeltaChargeStrategy deltaChargeStrategy;
 void DeltaChargeStrategy::powerOn()
 {
     state_ = PreCharge;
-    SimpleCharge::powerOn();
+    SimpleChargeStrategy::powerOn();
 }
 
 

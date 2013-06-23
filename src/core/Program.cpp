@@ -228,16 +228,16 @@ bool Program::startInfo()
 
 void Program::runStorage(bool balance)
 {
-    storage.setDoBalance(balance);
-    storage.setVII(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage),
+    storageStrategy.setDoBalance(balance);
+    storageStrategy.setVII(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage),
             ProgramData::currentProgramData.battery.Ic, ProgramData::currentProgramData.battery.Id);
-    doStrategy(storage, storageScreens, sizeOfArray(storageScreens));
+    doStrategy(storageStrategy, storageScreens, sizeOfArray(storageScreens));
 }
 void Program::runTheveninCharge(int minChargeC)
 {
-    theveninCharge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.battery.Ic);
-    theveninCharge.setMinI(ProgramData::currentProgramData.battery.Ic/minChargeC);
-    doStrategy(theveninCharge, theveninScreens, sizeOfArray(theveninScreens));
+    theveninChargeStrategy.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.battery.Ic);
+    theveninChargeStrategy.setMinI(ProgramData::currentProgramData.battery.Ic/minChargeC);
+    doStrategy(theveninChargeStrategy, theveninScreens, sizeOfArray(theveninScreens));
 }
 
 void Program::runDeltaCharge()
@@ -248,14 +248,14 @@ void Program::runDeltaCharge()
 
 void Program::runDischarge()
 {
-    theveninDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-    doStrategy(theveninDischarge, dischargeScreens, sizeOfArray(dischargeScreens));
+    theveninDischargeStrategy.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+    doStrategy(theveninDischargeStrategy, dischargeScreens, sizeOfArray(dischargeScreens));
 }
 
 void Program::runNiXXDischarge()
 {
-    theveninDischarge.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-    doStrategy(theveninDischarge, NiXXDischargeScreens, sizeOfArray(NiXXDischargeScreens));
+    theveninDischargeStrategy.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+    doStrategy(theveninDischargeStrategy, NiXXDischargeScreens, sizeOfArray(NiXXDischargeScreens));
 }
 
 void Program::runBalance()

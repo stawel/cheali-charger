@@ -21,15 +21,15 @@
 #include "TheveninDischarge.h"
 
 
-TheveninDischarge theveninDischarge;
+TheveninDischargeStrategy theveninDischargeStrategy;
 
-void TheveninDischarge::powerOff()
+void TheveninDischargeStrategy::powerOff()
 {
     discharger.powerOff();
 }
 
 
-void TheveninDischarge::powerOn()
+void TheveninDischargeStrategy::powerOn()
 {
     discharger.powerOn();
     balancer.powerOn();
@@ -37,18 +37,18 @@ void TheveninDischarge::powerOn()
     Program::iName_ = AnalogInputs::IdischargeValue;
 }
 
-void TheveninDischarge::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
+void TheveninDischargeStrategy::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
-    SimpleDischarge::setVI(v,i);
+    SimpleDischargeStrategy::setVI(v,i);
     theveninMethod.setVI(v, analogInputs.reverseCalibrateValue(AnalogInputs::IdischargeValue, i));
     setMinI(i/10);
 }
-void TheveninDischarge::setMinI(AnalogInputs::ValueType i)
+void TheveninDischargeStrategy::setMinI(AnalogInputs::ValueType i)
 {
     theveninMethod.setMinI(analogInputs.reverseCalibrateValue(AnalogInputs::IdischargeValue, i));
 }
 
-Strategy::statusType TheveninDischarge::doStrategy()
+Strategy::statusType TheveninDischargeStrategy::doStrategy()
 {
     bool stable;
     bool isEndVout = isMinVout();

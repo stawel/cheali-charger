@@ -15,16 +15,16 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef THEVENINCHARGE_H_
-#define THEVENINCHARGE_H_
+#ifndef THEVENINCHARGESTRATEGY_H_
+#define THEVENINCHARGESTRATEGY_H_
 
 #include "SimpleCharge.h"
 #include "Thevenin.h"
 #include "TheveninMethod.h"
 
-class TheveninCharge : public SimpleCharge {
+class TheveninChargeStrategy : public SimpleChargeStrategy {
 public:
-    TheveninCharge(){}
+    TheveninChargeStrategy(){}
     virtual void powerOn();
     virtual statusType doStrategy();
     virtual void powerOff();
@@ -35,7 +35,7 @@ public:
 
 };
 
-extern TheveninCharge theveninCharge;
+extern TheveninChargeStrategy theveninChargeStrategy;
 
 
-#endif /* THEVENINCHARGE_H_ */
+#endif /* THEVENINCHARGESTRATEGY_H_ */

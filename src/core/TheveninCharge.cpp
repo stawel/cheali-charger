@@ -22,15 +22,15 @@
 #include "Screen.h"
 #include "TheveninMethod.h"
 
-TheveninCharge theveninCharge;
+TheveninChargeStrategy theveninChargeStrategy;
 
-void TheveninCharge::powerOff()
+void TheveninChargeStrategy::powerOff()
 {
     smps.powerOff();
 }
 
 
-void TheveninCharge::powerOn()
+void TheveninChargeStrategy::powerOn()
 {
     smps.powerOn();
     balancer.powerOn();
@@ -38,16 +38,16 @@ void TheveninCharge::powerOn()
     Program::iName_ = AnalogInputs::IsmpsValue;
 }
 
-void TheveninCharge::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
+void TheveninChargeStrategy::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
        theveninMethod.setVI(v, analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue, i));
 }
-void TheveninCharge::setMinI(AnalogInputs::ValueType i)
+void TheveninChargeStrategy::setMinI(AnalogInputs::ValueType i)
 {
        theveninMethod.setMinI(analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue, i));
 }
 
-Strategy::statusType TheveninCharge::doStrategy()
+Strategy::statusType TheveninChargeStrategy::doStrategy()
 {
     bool stable;
     bool isendVout = isEndVout();
@@ -69,7 +69,7 @@ Strategy::statusType TheveninCharge::doStrategy()
 }
 
 
-bool TheveninCharge::isEndVout() const
+bool TheveninChargeStrategy::isEndVout() const
 {
     AnalogInputs::ValueType Vc = theveninMethod.Vend_;
     AnalogInputs::ValueType Vc_per_cell = balancer.calculatePerCell(Vc);

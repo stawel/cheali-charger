@@ -20,15 +20,15 @@
 #include "ProgramData.h"
 
 
-SimpleDischarge simpleDischarge;
+SimpleDischargeStrategy simpleDischargeStrategy;
 
-void SimpleDischarge::powerOff()
+void SimpleDischargeStrategy::powerOff()
 {
     balancer.powerOff();
     discharger.powerOff();
 }
 
-void SimpleDischarge::powerOn()
+void SimpleDischargeStrategy::powerOn()
 {
     discharger.powerOn();
     balancer.powerOn();
@@ -37,7 +37,7 @@ void SimpleDischarge::powerOn()
 }
 
 
-Strategy::statusType SimpleDischarge::doStrategy()
+Strategy::statusType SimpleDischargeStrategy::doStrategy()
 {
     if(isMinVout()) {
         discharger.powerOff(Discharger::DISCHARGING_COMPLETE);
@@ -47,7 +47,7 @@ Strategy::statusType SimpleDischarge::doStrategy()
 }
 
 
-bool SimpleDischarge::isMinVout() const
+bool SimpleDischargeStrategy::isMinVout() const
 {
     AnalogInputs::ValueType Vc = V_;
     AnalogInputs::ValueType Vc_per_cell = balancer.calculatePerCell(Vc);
@@ -56,7 +56,7 @@ bool SimpleDischarge::isMinVout() const
 }
 
 
-bool SimpleDischarge::isStable() const
+bool SimpleDischargeStrategy::isStable() const
 {
     return analogInputs.isStable(discharger.VName) && analogInputs.isStable(discharger.IName) && balancer.isStable();
 }
