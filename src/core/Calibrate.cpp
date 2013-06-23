@@ -214,7 +214,7 @@ void Calibrate::run()
         case NEXT_CASE: copyVbalVout(); break;
         case NEXT_CASE: calibrateI(SCREEN_ICHARGE, AnalogInputs::Ismps, AnalogInputs::IsmpsValue); break;
         case NEXT_CASE: calibrateI(SCREEN_IDISCHARGE, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue); break;
-        case NEXT_CASE: runInfo(); break;
+        case NEXT_CASE+3: runInfo(); break;
         default:
                 Screen::runNotImplemented(); break;
         }
