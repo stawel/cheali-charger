@@ -18,13 +18,10 @@
 #ifndef BUZZER_H_
 #define BUZZER_H_
 
-#define BUZZER_MAX_VOLUME 100
-
 class Buzzer {
 public:
     enum SoundType { Keyboard, Info, Save, Select, StartProgram, ProgramComplete, Error, ReversedPolarity, Off };
-    Buzzer():volume_(BUZZER_MAX_VOLUME), sound_(Off){}
-    uint8_t volume_;
+    Buzzer(): sound_(Off){}
     uint16_t begin_time_;
     uint16_t last_value_;
 

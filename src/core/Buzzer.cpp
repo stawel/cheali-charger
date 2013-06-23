@@ -31,11 +31,7 @@ void Buzzer::begin()
 
 void Buzzer::doInterrupt()
 {
-
-    uint32_t v = getSound(timer.getInterrupts() - begin_time_);
-    v *= volume_;
-    v /= 100;
-    uint16_t v2 = v;
+    uint16_t v2 = getSound(timer.getInterrupts() - begin_time_);
     if(v2 != last_value_) {
         last_value_ = v2;
         hardware::setBuzzer(last_value_);
