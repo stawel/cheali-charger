@@ -81,7 +81,7 @@ uint8_t hardware::getKeyPressed()
             | (mux.digitalRead(MADDR_BUTTON_START)? 0 : BUTTON_START);
 }
 
-void hardware::init()
+void hardware::initialize()
 {
     analogReference(EXTERNAL);
     pinMode(BACKLIGHT_PIN, OUTPUT);

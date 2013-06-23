@@ -23,13 +23,10 @@
 #include "Utils.h"
 #include "Screen.h"
 #include "Buzzer.h"
+#include "StackInfo.h"
 
 
-#ifdef HAS_SIMPLIFIED_VB0_VB2_CIRCUIT
-#define CALIBRATE_B0
-#endif
-
-#ifdef CALIBRATE_B0
+#ifdef ENABLE_B0_CALIBRATION
 const char string_c0[] PROGMEM = "B0";
 #endif
 const char string_c1[] PROGMEM = "B1-3";
@@ -52,11 +49,13 @@ const char string_ci6[] PROGMEM = "Vreversed";
 const char string_ci7[] PROGMEM = "Vunknown";
 const char string_ci8[] PROGMEM = "Idischarge";
 const char string_ci9[] PROGMEM = "time";
-
+#ifdef ENABLE_STACK_INFO
+const char string_cia[] PROGMEM = "stack info";
+#endif
 
 const char * const calibrateMenu[] PROGMEM =
 {
-#ifdef CALIBRATE_B0
+#ifdef ENABLE_B0_CALIBRATION
   string_c0,
 #endif
   string_c1,
@@ -81,6 +80,9 @@ const char * const calibrateInfoMenu[] PROGMEM =
   string_ci7,
   string_ci8,
   string_ci9,
+#ifdef ENABLE_STACK_INFO
+  string_cia,
+#endif
 };
 
 
@@ -206,7 +208,7 @@ void Calibrate::run()
         if(i<0) break;
         START_CASE_COUNTER;
         switch(i) {
-#ifdef CALIBRATE_B0
+#ifdef ENABLE_B0_CALIBRATION
         case NEXT_CASE: calibrateBlink(SCREEN_B0_BLINK, 1); break;
 #endif
         case NEXT_CASE: calibrateBlink(SCREEN_B1_3_BLINK, 3); break;
@@ -231,8 +233,11 @@ void Calibrate::runInfo()
             info(screenType(i));
 
         switch(i) {
-        case 8: infoDis();      break;
-        case 9: infoTimeM();    break;
+        case 8:     infoDis();          break;
+        case 9:     infoTimeM();        break;
+#ifdef ENABLE_STACK_INFO
+        case 10:    infoStackInfo();    break;
+#endif
         }
     } while(i>=0);
 }
@@ -345,7 +350,7 @@ void Calibrate::printCalibrateB1_3()
     if(dispVal_ == 0) lcdPrintChar(' ');
     print_m_2(PSTR("3:"), AnalogInputs::Vb3_real, dig);
 }
-#ifdef CALIBRATE_B0
+#ifdef ENABLE_B0_CALIBRATION
 void Calibrate::printCalibrateB0_Blink()
 {
     lcdSetCursor0_0();
@@ -456,7 +461,7 @@ void Calibrate::printCalibrate(screenType p) {
     case SCREEN_VUNKNOWN:       printCalibrateVunknown();   break;
 
     case SCREEN_VOUT_VBAL:      printCalibrateVoutVbal();   break;
-#ifdef CALIBRATE_B0
+#ifdef ENABLE_B0_CALIBRATION
     case SCREEN_B0_BLINK:       printCalibrateB0_Blink();   break;
 #endif
     case SCREEN_B1_3_BLINK:     printCalibrateB1_3_Blink(); break;
@@ -472,7 +477,7 @@ void Calibrate::info(screenType p)
 void Calibrate::setBlink(screenType screen)
 {
     switch (screen) {
-#ifdef CALIBRATE_B0
+#ifdef ENABLE_B0_CALIBRATION
         case SCREEN_B0_BLINK:          setBalancer(AnalogInputs::Vb0_real); break;
 #endif
         case SCREEN_B1_3_BLINK:        setBalancer(AnalogInputs::Vb1_real); break;
@@ -615,6 +620,24 @@ bool Calibrate::calibrateDischarge()
     return retu;
 }
 
+#ifdef ENABLE_STACK_INFO
+void Calibrate::infoStackInfo()
+{
+    lcdClear();
+    uint8_t key;
+    do {
+        key = keyboard.getPressedWithSpeed();
+        lcdSetCursor0_0();
+        lcdPrint_P(PSTR(" stack: "));
+        lcdPrintUnsigned(StackInfo::getFreeStackSize());
+        lcdPrintSpaces();
+        lcdSetCursor0_1();
+        lcdPrint_P(PSTR("unused: "));
+        lcdPrintUnsigned(StackInfo::getNeverUsedStackSize());
+        lcdPrintSpaces();
+    } while(key != BUTTON_STOP);
+}
+#endif
 
 void Calibrate::infoTimeM()
 {

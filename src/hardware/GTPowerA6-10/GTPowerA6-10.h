@@ -46,6 +46,8 @@
 #define HAS_FAN
 #define HAS_T_INTERNAL
 
+#define ENABLE_STACK_INFO
+
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
 #include "Timer.h"
@@ -67,7 +69,7 @@ extern Discharger discharger;
 extern Balancer balancer;
 
 namespace hardware {
-    void init();
+    void initialize();
     uint8_t getKeyPressed();
     void delay(uint16_t t);
     void setLCDBacklight(uint8_t val);

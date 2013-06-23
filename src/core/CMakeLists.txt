@@ -84,6 +84,9 @@ set(CORE_SOURCE
 
         Version.h
         Version.cpp
+
+        StackInfo.cpp
+        StackInfo.h
 )
 
 set (CORE_SOURCE_FILES "")

@@ -86,7 +86,7 @@ uint8_t hardware::getKeyPressed()
             | (digitalRead(BUTTON_START_PIN)? 0 : BUTTON_START);
 }
 
-void hardware::init()
+void hardware::initialize()
 {
     analogReference(EXTERNAL);
     pinMode(OUTPUT_DISABLE_PIN, OUTPUT);

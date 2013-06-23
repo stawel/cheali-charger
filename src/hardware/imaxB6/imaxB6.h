@@ -38,6 +38,8 @@
 
 #define HAS_SIMPLIFIED_VB0_VB2_CIRCUIT
 
+#define ENABLE_STACK_INFO
+
 #include "LiquidCrystal.h"
 #include "Multiplexer.h"
 #include "Keyboard.h"
@@ -59,7 +61,7 @@ extern Discharger discharger;
 extern Balancer balancer;
 
 namespace hardware {
-    void init();
+    void initialize();
     uint8_t getKeyPressed();
     void delay(uint16_t t);
     void setBuzzer(uint16_t val);

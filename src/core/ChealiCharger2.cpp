@@ -26,6 +26,7 @@
 #include "Buzzer.h"
 #include "Version.h"
 #include "Settings.h"
+#include "StackInfo.h"
 
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
@@ -53,7 +54,10 @@ void loop()
 
 void setup()
 {
-    hardware::init();
+    hardware::initialize();
+#ifdef ENABLE_STACK_INFO
+    StackInfo::initialize();
+#endif
 
 #ifdef USE_SERIAL
     Serial.begin(9600);
