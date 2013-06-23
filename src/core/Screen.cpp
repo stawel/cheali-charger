@@ -313,8 +313,10 @@ void Screen::displayScreenTemperature()
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
+#ifdef HAS_T_INTERNAL
     lcdPrint_P(PSTR("Tint="));
     analogInputs.printRealValue(AnalogInputs::Tintern,    5);
+#endif
     lcdPrintSpaces();
 }
 

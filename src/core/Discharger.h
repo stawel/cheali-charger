@@ -48,13 +48,17 @@ public:
     void doSlowInterrupt();
 
     uint16_t getDischarge() const;
-    uint16_t correctValueTintern(uint16_t v);
 
 protected:
+
+#ifdef HAS_T_INTERNAL
+    uint16_t correctValueTintern(uint16_t v);
     void finalizeValueTintern(bool force);
+    bool tempcutoff_;
+#endif
+
     STATE state_;
     uint16_t value_,valueSet_;
-    bool tempcutoff_;
     uint32_t discharge_;
 };
 

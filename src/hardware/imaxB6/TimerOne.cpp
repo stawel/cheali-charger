@@ -55,6 +55,8 @@ void TimerOne::initialize()
 
     TCCR1B &= ~(_BV(CS10) | _BV(CS11) | _BV(CS12));
     TCCR1B |= _BV(CS10);
+
+    TIMSK |= _BV(TOIE1);
 }
 
 void TimerOne::disablePWM(char pin)

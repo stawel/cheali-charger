@@ -26,7 +26,9 @@ const char string_backlight[]   PROGMEM = "backlight:";
 #ifdef HAS_FAN
 const char string_fanOn[]       PROGMEM = "fan on:   ";
 #endif
+#ifdef HAS_T_INTERNAL
 const char string_dischOff[]    PROGMEM = "disch off:";
+#endif
 const char string_externT[]     PROGMEM = "extrn T:   ";
 const char string_externTCO[]   PROGMEM = "extrn TCO:";
 const char string_dTdt[]        PROGMEM = "dT/dt:";
@@ -49,7 +51,9 @@ const char * const SettingsStaticMenu[] PROGMEM =
 #ifdef HAS_FAN
         string_fanOn,
 #endif
+#ifdef HAS_T_INTERNAL
         string_dischOff,
+#endif
         string_externT,
         string_externTCO,
         string_dTdt,
@@ -80,7 +84,9 @@ uint8_t SettingsMenu::printItem(uint8_t index)
 #ifdef HAS_FAN
             case NEXT_CASE:     printTemp(p_.fanTempOn_);               break;
 #endif
+#ifdef HAS_T_INTERNAL
             case NEXT_CASE:     printTemp(p_.dischargeTempOff_);        break;
+#endif
             case NEXT_CASE:     lcdPrintYesNo(p_.externT_);             break;
             case NEXT_CASE:     printTemp(p_.externTCO_);               break;
             case NEXT_CASE:     printDeltaT(p_.deltaT_);                break;
@@ -107,7 +113,9 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
 #ifdef HAS_FAN
         case NEXT_CASE:     changeTemp(p_.fanTempOn_, dir);             break;
 #endif
+#ifdef HAS_T_INTERNAL
         case NEXT_CASE:     changeTemp(p_.dischargeTempOff_, dir);      break;
+#endif
         case NEXT_CASE:     changeMax(p_.externT_, dir, 1);             break;
         case NEXT_CASE:     changeTemp(p_.externTCO_,dir);              break;
         case NEXT_CASE:     changeDeltaTemp(p_.deltaT_,dir);            break;

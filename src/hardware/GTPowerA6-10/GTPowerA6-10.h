@@ -44,6 +44,7 @@
 
 #define HAS_LCD_BACKLIGHT
 #define HAS_FAN
+#define HAS_T_INTERNAL
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"

@@ -41,9 +41,14 @@ void Discharger::setValue(uint16_t value)
     if(value > DISCHARGER_UPPERBOUND_VALUE)
         value = DISCHARGER_UPPERBOUND_VALUE;
     valueSet_ = value;
+
+#ifdef HAS_T_INTERNAL
     finalizeValueTintern(true);
+#endif
+
 }
 
+#ifdef HAS_T_INTERNAL
 uint16_t Discharger::correctValueTintern(uint16_t v)
 {
     testTintern(tempcutoff_, settings.dischargeTempOff_ - Settings::TempDifference, settings.dischargeTempOff_);
@@ -62,6 +67,7 @@ void Discharger::finalizeValueTintern(bool force)
         analogInputs.resetMeasurement();
     }
 }
+#endif
 
 void Discharger::setRealValue(uint16_t I)
 {
@@ -98,7 +104,9 @@ void Discharger::powerOff(STATE reason)
 void Discharger::doSlowInterrupt()
 {
     if(isPowerOn()) {
+#ifdef HAS_T_INTERNAL
         finalizeValueTintern(false);
+#endif
         discharge_+=getIdischarge();
     }
 }

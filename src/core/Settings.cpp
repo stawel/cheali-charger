@@ -28,8 +28,12 @@ const Settings defaultSettings PROGMEM = {
 #ifdef HAS_LCD_BACKLIGHT
         70,                 //backlight_
 #endif
+#ifdef HAS_FAN
         ANALOG_CELCIUS(50), //fanTempOn_
+#endif
+#ifdef HAS_T_INTERNAL
         ANALOG_CELCIUS(60), //dischargeTempOff_
+#endif
         1,                  //externT_
         ANALOG_CELCIUS(60), //externTCO_
         ANALOG_CELCIUS(1),  //deltaT_

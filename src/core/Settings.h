@@ -28,8 +28,12 @@ struct Settings {
 #ifdef HAS_LCD_BACKLIGHT
     uint16_t backlight_;
 #endif
+#ifdef HAS_FAN
     AnalogInputs::ValueType fanTempOn_;
+#endif
+#ifdef HAS_T_INTERNAL
     AnalogInputs::ValueType dischargeTempOff_;
+#endif
     uint16_t externT_;
     AnalogInputs::ValueType externTCO_;
     AnalogInputs::ValueType deltaT_;
