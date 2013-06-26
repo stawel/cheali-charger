@@ -49,13 +49,6 @@ void AnalogInputs::setCalibrationPoint(Name name, uint8_t i, const CalibrationPo
     eeprom::write<CalibrationPoint>(&calibration[name].p[i], x);
 }
 
-void AnalogInputs::doFullMeasurement()
-{
-    clearAvr();
-    for(uint16_t i=0; i < AVR_MAX_COUNT; i++)
-        doMeasurement();
-}
-
 uint8_t AnalogInputs::getConnectedBalancePorts() const
 {
     for(uint8_t i=0; i < 6; i++){
@@ -197,8 +190,8 @@ void AnalogInputs::setReal(Name name, ValueType real)
 
 void AnalogInputs::clearAvr()
 {
+    resetADC();
     avrCount_ = 0;
-    currentInput_ = Name(0);
     FOR_ALL_PHY_INPUTS(name) {
         avrSum_[name] = 0;
     }
@@ -252,7 +245,9 @@ bool AnalogInputs::isReversePolarity()
 
 void AnalogInputs::finalizeMeasurement()
 {
-    currentInput_ = Name(0);
+    FOR_ALL_PHY_INPUTS(name) {
+        avrSum_[name] += measured_[name];
+    }
     avrCount_++;
     doDeltaCalculations();
     if(avrCount_ == AVR_MAX_COUNT) {

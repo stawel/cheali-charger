@@ -13,7 +13,7 @@ namespace SMPS_PID
     void setPID_MV(uint16_t value);
     void powerOn();
     void powerOff();
-    void newIsmpsMeasurement();
+    void update();
 };
 
 #endif //SMPS_PID_H_

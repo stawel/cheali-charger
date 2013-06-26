@@ -125,7 +125,6 @@ public:
     ValueType calibrateValue(Name name, ValueType x) const;
     ValueType reverseCalibrateValue(Name name, ValueType y) const;
 
-    void doMeasurement(uint16_t count = PHYSICAL_INPUTS);
     void finalizeMeasurement();
     void doFullMeasurement();
     void doVirtualCalculations();
@@ -133,6 +132,7 @@ public:
     void doDeltaCalculations();
 
     void clearAvr();
+    void resetADC();
     void reset();
     void resetMeasurement();
     void resetDelta();
@@ -170,7 +170,6 @@ public:
     bool on_;
     uint16_t avrCount_;
     uint32_t avrSum_[PHYSICAL_INPUTS];
-    Name currentInput_;
     ValueType avrValue_[PHYSICAL_INPUTS];
     ValueType measured_[PHYSICAL_INPUTS];
     ValueType real_[ALL_INPUTS];

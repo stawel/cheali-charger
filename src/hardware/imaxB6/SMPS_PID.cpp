@@ -9,20 +9,17 @@ namespace {
     volatile uint16_t PID_CutOff;
     volatile long PID_MV;
     volatile bool PID_enable;
-    volatile bool PID_newMeasurement;
 }
 
 #define A 1024
 
-void hardware::doInterrupt()
+void SMPS_PID::update()
 {
     if(!PID_enable) return;
-    if(!PID_newMeasurement) return;
-    PID_newMeasurement = false;
 
     //test Vout and cut-off if too high
     if(analogInputs.getMeasuredValue(AnalogInputs::Vout) > PID_CutOff) {
-        setChargerOutput(false);
+        hardware::setChargerOutput(false);
         return;
     }
 
@@ -36,13 +33,6 @@ void hardware::doInterrupt()
     if(PID_MV<0) PID_MV = 0;
     SMPS_PID::setPID_MV(PID_MV>>16);
 }
-
-
-void SMPS_PID::newIsmpsMeasurement()
-{
-    PID_newMeasurement = true;
-}
-
 
 void SMPS_PID::init()
 {

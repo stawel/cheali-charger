@@ -647,15 +647,15 @@ void Calibrate::infoTimeM()
     do {
         key = keyboard.getPressedWithSpeed();
         uint32_t t1,t0;
-        t0 = timer.getMiliseconds();
-        hardware::delay(100);
-        t1 = timer.getMiliseconds();
+        t0 = analogInputs.calculationCount_;
+        hardware::delay(10000);
+        t1 = analogInputs.calculationCount_;
         lcdSetCursor0_0();
-        lcdPrint_P(PSTR(" time: "));
+        lcdPrint_P(PSTR("measu: "));
         lcdPrintUnsigned(t0);
         lcdPrintSpaces();
         lcdSetCursor0_1();
-        lcdPrint_P(PSTR("100ms: "));
+        lcdPrint_P(PSTR("  10s: "));
         t1-=t0;
         lcdPrintUnsigned(t1);
         lcdPrintSpaces();

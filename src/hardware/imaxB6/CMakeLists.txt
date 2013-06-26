@@ -12,6 +12,8 @@ set(SOURCE_FILES
     TimerOne.h
     SMPS_PID.h
     SMPS_PID.cpp
+    adc.cpp
+    adc.h
     Hardware.h
     ${CORE_SOURCE_FILES}
 )
