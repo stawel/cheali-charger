@@ -133,10 +133,9 @@ void AnalogInputs::doVirtualCalculations()
     AnalogInputs::ValueType balancer = 0;
     AnalogInputs::ValueType out = real_[Vout];
 
-
 #ifdef HAS_SIMPLIFIED_VB0_VB2_CIRCUIT
-    setReal(Name(Vb1), getRealValue(Name(Vb1_real)) - getRealValue(Name(Vb0_real)));
-    setReal(Name(Vb2), getRealValue(Name(Vb2_real)) - getRealValue(Name(Vb1_real)));
+    setReal(Vb1, getRealValue(Vb1_real) - getRealValue(Vb0_real));
+    setReal(Vb2, getRealValue(Vb2_real) - getRealValue(Vb1_real));
     for(uint8_t i=2; i < 6; i++) {
         setReal(Name(Vb1+i), getRealValue(Name(Vb1_real+i)));
     }
@@ -239,8 +238,12 @@ void AnalogInputs::powerOn()
 }
 bool AnalogInputs::isReversePolarity()
 {
-    // TODO: extra measurement
-    return getMeasuredValue(VreversePolarity) > REVERSE_POLARITY_MIN_VALUE;
+    AnalogInputs::ValueType vr = getMeasuredValue(VreversePolarity);
+    AnalogInputs::ValueType vo = getMeasuredValue(Vout);
+    if(vr > vo) vr -=  vo;
+    else vr = 0;
+
+    return vr > REVERSE_POLARITY_MIN_VALUE;
 }
 
 void AnalogInputs::finalizeMeasurement()

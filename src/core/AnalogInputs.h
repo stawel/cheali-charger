@@ -92,6 +92,7 @@ public:
         VoutBalancer,
         VobInfo,
         VbalanceInfo,
+
         deltaVout,
         deltaVoutMax,
         deltaTextern,
@@ -111,7 +112,7 @@ public:
     static const uint16_t   AVR_MAX_COUNT       = 100;
     static const ValueType  STABLE_VALUE_ERROR  = 2;
     static const uint16_t   STABLE_MIN_VALUE    = 3;
-    static const ValueType  REVERSE_POLARITY_MIN_VALUE = 1000;
+    static const ValueType  REVERSE_POLARITY_MIN_VALUE = ANALOG_VOLT(1.000);
 
     AnalogInputs();
 
