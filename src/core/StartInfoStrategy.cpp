@@ -80,7 +80,6 @@ Strategy::statusType StartInfoStrategy::doStrategy()
         ok_++;
     }
     if(ok_ == 2) {
-        buzzer.soundStartProgram();
         return Strategy::COMPLETE;
     }
     return Strategy::RUNNING;

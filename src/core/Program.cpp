@@ -274,6 +274,8 @@ void Program::run(ProgramType prog)
     stopReason_ = PSTR("");
 
     if(startInfo()) {
+        buzzer.soundStartProgram();
+
         switch(prog) {
         case Program::ChargeLiXX:
             runTheveninCharge(10);
