@@ -51,7 +51,7 @@ public:
 
 protected:
 
-#ifdef HAS_T_INTERNAL
+#ifdef ENABLE_T_INTERNAL
     uint16_t correctValueTintern(uint16_t v);
     bool tempcutoff_;
 #endif

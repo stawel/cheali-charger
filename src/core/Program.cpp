@@ -76,6 +76,7 @@ namespace {
       Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
       Screen::ScreenDebugBalancer1_3RthV,   Screen::ScreenDebugBalancer4_6RthV,
       Screen::ScreenDebugBalancer1_3RthI,   Screen::ScreenDebugBalancer4_6RthI,
+      Screen::ScreenDebugBalancerReal0_2,
       Screen::ScreenR,
       Screen::ScreenVout,
       Screen::ScreenVinput,
@@ -89,6 +90,7 @@ namespace {
 //      Thevenin values are not evaluated when balancing
 //      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
       Screen::ScreenDebugBalancer1_3M,      Screen::ScreenDebugBalancer4_6M,
+      Screen::ScreenDebugBalancerReal0_2,
       Screen::ScreenTime,
       Screen::ScreenTemperature };
     const Screen::ScreenType dischargeScreens[] PROGMEM = {
@@ -98,6 +100,8 @@ namespace {
       Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
       Screen::ScreenDebugBalancer1_3RthV,   Screen::ScreenDebugBalancer4_6RthV,
       Screen::ScreenDebugBalancer1_3RthI,   Screen::ScreenDebugBalancer4_6RthI,
+      Screen::ScreenDebugBalancerReal0_2,
+      Screen::ScreenDebugReversedPolarity,
       Screen::ScreenR,
       Screen::ScreenVout,
       Screen::ScreenVinput,
@@ -113,6 +117,7 @@ namespace {
       Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
       Screen::ScreenDebugBalancer1_3RthV,   Screen::ScreenDebugBalancer4_6RthV,
       Screen::ScreenDebugBalancer1_3RthI,   Screen::ScreenDebugBalancer4_6RthI,
+      Screen::ScreenDebugBalancerReal0_2,
       Screen::ScreenR,
       Screen::ScreenVout,
       Screen::ScreenVinput,

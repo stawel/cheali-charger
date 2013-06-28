@@ -55,7 +55,9 @@ public:
         //Debug screens
         ScreenDebugRthVth = Debug,
         ScreenDebugI,
+        ScreenDebugReversedPolarity,
         ScreenDebugDelta,
+        ScreenDebugBalancerReal0_2,
         ScreenDebugBalancer1_3M,    ScreenDebugBalancer4_6M,
         ScreenDebugBalancer1_3RthV, ScreenDebugBalancer4_6RthV,
         ScreenDebugBalancer1_3RthI, ScreenDebugBalancer4_6RthI,
@@ -75,6 +77,7 @@ public:
     void displayDeltaFirst();
 
     void displayScreenProgramCompleted();
+    void displayDebugBalancerReal0_2();
     void displayDebugRthVth();
     void displayDebugI();
     void displayDebugDelta();

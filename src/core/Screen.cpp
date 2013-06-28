@@ -313,7 +313,7 @@ void Screen::displayScreenTemperature()
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
-#ifdef HAS_T_INTERNAL
+#ifdef ENABLE_T_INTERNAL
     lcdPrint_P(PSTR("Tint="));
     analogInputs.printRealValue(AnalogInputs::Tintern,    5);
 #endif
@@ -431,6 +431,21 @@ void Screen::displayDebugDelta()
     lcdPrintSpaces();
 }
 
+void Screen::displayDebugBalancerReal0_2()
+{
+    lcdSetCursor0_0();
+    lcdPrint_P(PSTR("0:"));
+    analogInputs.printRealValue(AnalogInputs::Vb0_real, 6);
+    lcdPrint_P(PSTR("1:"));
+    analogInputs.printRealValue(AnalogInputs::Vb1_real, 6);
+    lcdPrintSpaces();
+
+    lcdSetCursor0_1();
+    lcdPrint_P(PSTR("2:"));
+    analogInputs.printRealValue(AnalogInputs::Vb2_real, 6);
+    lcdPrint_P(PSTR(" real"));
+    lcdPrintSpaces();
+}
 
 void Screen::displayDebugRthVth()
 {
@@ -458,7 +473,6 @@ void Screen::displayDebugRthVth()
 
 void Screen::displayNotImplemented()
 {
-    lcdClear();
     screen.displayStrings(PSTR("Function not"), PSTR("implemented yet"));
 }
 
@@ -470,7 +484,6 @@ void Screen::runNotImplemented()
 
 void Screen::displayScreenReversedPolarity()
 {
-    lcdClear();
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("REVERSE POLARITY"));
 
@@ -531,6 +544,7 @@ void Screen::display(ScreenType screen)
     case ScreenCIVlimits:               return displayScreenCIVlimits();
     case ScreenTime:                    return displayScreenTime();
     case ScreenTemperature:             return displayScreenTemperature();
+    case ScreenDebugBalancerReal0_2:    return displayDebugBalancerReal0_2();
     case ScreenBalancer1_3:             return displayBalanceInfo(0, 0, AnalogInputs::Voltage);
     case ScreenBalancer4_6:             return displayBalanceInfo(3, 0, AnalogInputs::Voltage);
     case ScreenDebugBalancer1_3M:       return displayBalanceInfo(0, 1, AnalogInputs::Voltage);
@@ -546,6 +560,7 @@ void Screen::display(ScreenType screen)
     case ScreenR:                       return displayScreenR();
     case ScreenVout:                    return displayScreenVout();
     case ScreenVinput:                  return displayScreenVinput();
+    case ScreenDebugReversedPolarity:   return displayScreenReversedPolarity();
     case ScreenDebugI:                  return displayDebugI();
     case ScreenDebugDelta:              return displayDebugDelta();
     case ScreenDeltaVout:               return displayDeltaVout();

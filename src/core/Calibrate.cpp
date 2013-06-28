@@ -141,7 +141,7 @@ void Calibrate::copyVbalVout()
     }
 }
 
-#ifdef HAS_SIMPLIFIED_VB0_VB2_CIRCUIT
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
 void calibrateSimplifiedVb1_real(AnalogInputs::ValueType real_v)
 {
     AnalogInputs::CalibrationPoint p1,p2;
@@ -174,7 +174,7 @@ void Calibrate::setBalancer(AnalogInputs::Name firstName)
     }
     AnalogInputs::CalibrationPoint p;
 
-#ifdef HAS_SIMPLIFIED_VB0_VB2_CIRCUIT
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
     AnalogInputs::Name virtual_name = name;
 
     if(name == AnalogInputs::Vb1_real) virtual_name = AnalogInputs::Vb1;
@@ -186,7 +186,7 @@ void Calibrate::setBalancer(AnalogInputs::Name firstName)
     if(setValue(x, y, p.y, AnalogInputs::Voltage, 6)) {
         p.x = analogInputs.getValue(name);
 
-#ifdef HAS_SIMPLIFIED_VB0_VB2_CIRCUIT
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
         if(name == AnalogInputs::Vb1_real)
             calibrateSimplifiedVb1_real(p.y);
         else if(name == AnalogInputs::Vb2_real)

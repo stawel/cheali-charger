@@ -25,13 +25,13 @@ Settings settings;
 Settings savedSetting EEMEM;
 
 const Settings defaultSettings PROGMEM = {
-#ifdef HAS_LCD_BACKLIGHT
+#ifdef ENABLE_LCD_BACKLIGHT
         70,                 //backlight_
 #endif
-#ifdef HAS_FAN
+#ifdef ENABLE_FAN
         ANALOG_CELCIUS(50), //fanTempOn_
 #endif
-#ifdef HAS_T_INTERNAL
+#ifdef ENABLE_T_INTERNAL
         ANALOG_CELCIUS(60), //dischargeTempOff_
 #endif
         1,                  //externT_
@@ -70,7 +70,7 @@ void Settings::check() {
 }
 
 void Settings::apply() {
-#ifdef HAS_LCD_BACKLIGHT
+#ifdef ENABLE_LCD_BACKLIGHT
     hardware::setLCDBacklight(backlight_);
 #endif
 }

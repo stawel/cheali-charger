@@ -33,7 +33,7 @@ public:
 private:
 
     void printViewType() const;
-#ifdef HAS_LCD_BACKLIGHT
+#ifdef ENABLE_LCD_BACKLIGHT
     void changeBacklight(int dir);
 #endif
     void changeViewType(int dir);

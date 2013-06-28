@@ -133,7 +133,7 @@ void AnalogInputs::doVirtualCalculations()
     AnalogInputs::ValueType balancer = 0;
     AnalogInputs::ValueType out = real_[Vout];
 
-#ifdef HAS_SIMPLIFIED_VB0_VB2_CIRCUIT
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
     setReal(Vb1, getRealValue(Vb1_real) - getRealValue(Vb0_real));
     setReal(Vb2, getRealValue(Vb2_real) - getRealValue(Vb1_real));
     for(uint8_t i=2; i < 6; i++) {

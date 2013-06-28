@@ -28,8 +28,8 @@ Monitor monitor;
 
 void Monitor::doInterrupt()
 {
-#ifdef HAS_FAN
-#ifdef HAS_T_INTERNAL
+#ifdef ENABLE_FAN
+#ifdef ENABLE_T_INTERNAL
     bool on;
     if(testTintern(on, settings.fanTempOn_ - Settings::TempDifference, settings.fanTempOn_))
         hardware::setFan(on);
@@ -44,7 +44,7 @@ void Monitor::powerOn() {
 
 Strategy::statusType Monitor::run()
 {
-#ifdef HAS_T_INTERNAL
+#ifdef ENABLE_T_INTERNAL
     AnalogInputs::ValueType t = analogInputs.getRealValue(AnalogInputs::Tintern);
 
     if(t > settings.dischargeTempOff_+Settings::TempDifference) {

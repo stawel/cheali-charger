@@ -20,13 +20,13 @@
 #include "LcdPrint.h"
 #include "Buzzer.h"
 
-#ifdef HAS_LCD_BACKLIGHT
+#ifdef ENABLE_LCD_BACKLIGHT
 const char string_backlight[]   PROGMEM = "backlight:";
 #endif
-#ifdef HAS_FAN
+#ifdef ENABLE_FAN
 const char string_fanOn[]       PROGMEM = "fan on:   ";
 #endif
-#ifdef HAS_T_INTERNAL
+#ifdef ENABLE_T_INTERNAL
 const char string_dischOff[]    PROGMEM = "disch off:";
 #endif
 const char string_externT[]     PROGMEM = "extrn T:   ";
@@ -45,13 +45,13 @@ const char string_save[]        PROGMEM = "    save"    ;
 
 const char * const SettingsStaticMenu[] PROGMEM =
 {
-#ifdef HAS_LCD_BACKLIGHT
+#ifdef ENABLE_LCD_BACKLIGHT
         string_backlight,
 #endif
-#ifdef HAS_FAN
+#ifdef ENABLE_FAN
         string_fanOn,
 #endif
-#ifdef HAS_T_INTERNAL
+#ifdef ENABLE_T_INTERNAL
         string_dischOff,
 #endif
         string_externT,
@@ -78,13 +78,13 @@ uint8_t SettingsMenu::printItem(uint8_t index)
     if(getBlinkIndex() != index) {
         START_CASE_COUNTER;
         switch (index) {
-#ifdef HAS_LCD_BACKLIGHT
+#ifdef ENABLE_LCD_BACKLIGHT
             case NEXT_CASE:     lcdPrintUnsigned(p_.backlight_, 3);     break;
 #endif
-#ifdef HAS_FAN
+#ifdef ENABLE_FAN
             case NEXT_CASE:     printTemp(p_.fanTempOn_);               break;
 #endif
-#ifdef HAS_T_INTERNAL
+#ifdef ENABLE_T_INTERNAL
             case NEXT_CASE:     printTemp(p_.dischargeTempOff_);        break;
 #endif
             case NEXT_CASE:     lcdPrintYesNo(p_.externT_);             break;
@@ -107,13 +107,13 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
 //    dir *= keyboard.getSpeedFactor();
     START_CASE_COUNTER;
     switch(index) {
-#ifdef HAS_LCD_BACKLIGHT
+#ifdef ENABLE_LCD_BACKLIGHT
         case NEXT_CASE:     changeBacklight(dir);                       break;
 #endif
-#ifdef HAS_FAN
+#ifdef ENABLE_FAN
         case NEXT_CASE:     changeTemp(p_.fanTempOn_, dir);             break;
 #endif
-#ifdef HAS_T_INTERNAL
+#ifdef ENABLE_T_INTERNAL
         case NEXT_CASE:     changeTemp(p_.dischargeTempOff_, dir);      break;
 #endif
         case NEXT_CASE:     changeMax(p_.externT_, dir, 1);             break;
@@ -171,7 +171,7 @@ void SettingsMenu::printDeltaT(AnalogInputs::ValueType dt)
     lcdPrint_P(PSTR("C/m"));
 }
 
-#ifdef HAS_LCD_BACKLIGHT
+#ifdef ENABLE_LCD_BACKLIGHT
 void SettingsMenu::changeBacklight(int dir) {
     changeMaxSmart(p_.backlight_, dir, 99);
     p_.apply();

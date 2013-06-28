@@ -45,7 +45,7 @@ void Discharger::setValue(uint16_t value)
     finalizeValueTintern(true);
 }
 
-#ifdef HAS_T_INTERNAL
+#ifdef ENABLE_T_INTERNAL
 uint16_t Discharger::correctValueTintern(uint16_t v)
 {
     testTintern(tempcutoff_, settings.dischargeTempOff_ - Settings::TempDifference, settings.dischargeTempOff_);
@@ -58,7 +58,7 @@ uint16_t Discharger::correctValueTintern(uint16_t v)
 
 void Discharger::finalizeValueTintern(bool force)
 {
-#ifdef HAS_T_INTERNAL
+#ifdef ENABLE_T_INTERNAL
     uint16_t  v = correctValueTintern(valueSet_);
 #else
     uint16_t  v = valueSet_;
@@ -106,7 +106,7 @@ void Discharger::powerOff(STATE reason)
 void Discharger::doSlowInterrupt()
 {
     if(isPowerOn()) {
-#ifdef HAS_T_INTERNAL
+#ifdef ENABLE_T_INTERNAL
         finalizeValueTintern(false);
 #endif
         discharge_+=getIdischarge();
