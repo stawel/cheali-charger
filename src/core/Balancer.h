@@ -31,9 +31,9 @@ public:
     const static uint16_t balancerStartStableCount = 10; //30s
     uint8_t cells_;
     uint8_t minCell_;
-    uint16_t balance_;
+    uint8_t balance_;
     bool done_;
-    int16_t Von_[MAX_BANANCE_CELLS], Voff_[MAX_BANANCE_CELLS];
+    AnalogInputs::ValueType Von_[MAX_BANANCE_CELLS], Voff_[MAX_BANANCE_CELLS];
     bool savedVon_;
     uint32_t startBalanceTime_;
     uint32_t startSwitchTime_;
@@ -51,8 +51,8 @@ public:
     void trySaveVon();
     uint16_t getBalanceTime() const;
 
-    uint16_t calculateBalance();
-    void setBalance(uint16_t v);
+    uint8_t calculateBalance();
+    void setBalance(uint8_t v);
     uint8_t getCellMinV() const;
     uint8_t getCells() const { return cells_; }
     static AnalogInputs::ValueType getV(uint8_t cell);

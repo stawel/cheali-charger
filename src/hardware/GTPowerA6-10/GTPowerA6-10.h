@@ -80,7 +80,7 @@ namespace hardware {
     void setChargerValue(uint16_t value);
     void setDischargerValue(uint16_t value);
     void setFan(bool enable);
-    void setBalancer(uint16_t balance);
+    void setBalancer(uint8_t balance);
     inline void doInterrupt(){}
 }
 

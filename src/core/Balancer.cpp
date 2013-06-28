@@ -89,10 +89,8 @@ Balancer::Balancer()
     powerOff();
 }
 
-void Balancer::setBalance(uint16_t v)
+void Balancer::setBalance(uint8_t v)
 {
-//    if(timer.getMiliseconds() % 1024 > 900)
-    //    v = 0;
     balance_ = v;
     startSwitchTime_ = timer.getMiliseconds();
     analogInputs.resetStable();
@@ -109,11 +107,11 @@ void Balancer::startBalacing()
     minCell_ = getCellMinV();
     AnalogInputs::ValueType vmin = getV(minCell_);
 
+    //test if we can still discharge
     bool off = true;
-
-    if(vmin >= ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VDischarge))
-    {
+    if(vmin >= ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VDischarge)) {
         for(int i = 0; i < cells_; i++) {
+            //save voltage values
             Von_[i] = Voff_[i] = getV(i);
             if(Von_[i] - vmin > error)
                 off = false;
@@ -129,12 +127,12 @@ void Balancer::startBalacing()
     }
 }
 
-uint16_t Balancer::calculateBalance()
+uint8_t Balancer::calculateBalance()
 {
-    int16_t vmin = getPresumedV(minCell_);
-    uint16_t retu = 0, b = 1;
+    AnalogInputs::ValueType vmin = getPresumedV(minCell_);
+    uint8_t retu = 0, b = 1;
     for(uint8_t c = 0; c < cells_; c++) {
-        int16_t v = getPresumedV(c);
+        AnalogInputs::ValueType v = getPresumedV(c);
         if(b & balance_) {
             // if ON
             if(v > vmin)
@@ -183,8 +181,8 @@ Strategy::statusType Balancer::doStrategy()
             startBalacing();
         } else {
             trySaveVon();
-            uint16_t balance = calculateBalance();
-            if(balance_ != balance || getBalanceTime() > maxBalanceTime) {
+            uint8_t balance = calculateBalance();
+            if((balance_ & (~balance)) || getBalanceTime() > maxBalanceTime) {
                 setBalance(0);
             }
         }

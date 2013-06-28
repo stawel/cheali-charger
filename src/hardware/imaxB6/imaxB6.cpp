@@ -103,7 +103,7 @@ void hardware::setBatteryOutput(bool enable)
     digitalWrite(OUTPUT_DISABLE_PIN, !enable);
 }
 
-void hardware::setBalancer(uint16_t v)
+void hardware::setBalancer(uint8_t v)
 {
     digitalWrite(BALANCER1_LOAD_PIN, v&1);
     digitalWrite(BALANCER2_LOAD_PIN, v&2);

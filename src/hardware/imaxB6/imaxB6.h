@@ -70,7 +70,7 @@ namespace hardware {
     void setDischargerOutput(bool enable);
     void setChargerValue(uint16_t value);
     void setDischargerValue(uint16_t value);
-    void setBalancer(uint16_t balance);
+    void setBalancer(uint8_t balance);
     void doInterrupt();
 
     void soundInterrupt();
