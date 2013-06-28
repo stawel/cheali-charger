@@ -123,7 +123,15 @@ namespace {
 
         lcdPrintDigit(from+1);
         lcdPrintChar(':');
+#ifdef ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
+        if(from == 0 && !settings.isDebug() && discharger.isPowerOn()) {
+            lcdPrint_P(PSTR("Unknown"));
+        } else {
+            printBalancer(from++, mesured, type);
+        }
+#else
         printBalancer(from++, mesured, type);
+#endif
         lcdPrintSpaces();
 
         lcdSetCursor0_1();
