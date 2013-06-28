@@ -42,10 +42,7 @@ void Discharger::setValue(uint16_t value)
         value = DISCHARGER_UPPERBOUND_VALUE;
     valueSet_ = value;
 
-#ifdef HAS_T_INTERNAL
     finalizeValueTintern(true);
-#endif
-
 }
 
 #ifdef HAS_T_INTERNAL
@@ -57,17 +54,22 @@ uint16_t Discharger::correctValueTintern(uint16_t v)
         v = 0;
     return v;
 }
+#endif
 
 void Discharger::finalizeValueTintern(bool force)
 {
+#ifdef HAS_T_INTERNAL
     uint16_t  v = correctValueTintern(valueSet_);
+#else
+    uint16_t  v = valueSet_;
+#endif
+
     if(v != value_ || force) {
         value_ = v;
         hardware::setDischargerValue(value_);
         analogInputs.resetMeasurement();
     }
 }
-#endif
 
 void Discharger::setRealValue(uint16_t I)
 {

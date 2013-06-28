@@ -78,6 +78,7 @@ void hardware::setChargerValue(uint16_t value)
 
 void hardware::setChargerOutput(bool enable)
 {
+    if(enable) setDischargerOutput(false);
     disableChargerValue0();
     disableChargerValue1();
     SMPS_PID::init();
@@ -88,6 +89,7 @@ void hardware::setChargerOutput(bool enable)
 
 void hardware::setDischargerOutput(bool enable)
 {
+    if(enable) setChargerOutput(false);
     digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
 }
 

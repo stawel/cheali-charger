@@ -53,9 +53,9 @@ protected:
 
 #ifdef HAS_T_INTERNAL
     uint16_t correctValueTintern(uint16_t v);
-    void finalizeValueTintern(bool force);
     bool tempcutoff_;
 #endif
+    void finalizeValueTintern(bool force);
 
     STATE state_;
     uint16_t value_,valueSet_;
