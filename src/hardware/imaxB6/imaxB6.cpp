@@ -40,8 +40,8 @@ void hardware::initialize()
 
     pinMode(BUZZER_PIN, OUTPUT);
 
-    pinMode(SMPS_VALUE0_PIN, OUTPUT);
-    pinMode(SMPS_VALUE1_PIN, OUTPUT);
+    pinMode(SMPS_VALUE_BUCK_PIN, OUTPUT);
+    pinMode(SMPS_VALUE_BOOST_PIN, OUTPUT);
     pinMode(SMPS_DISABLE_PIN, OUTPUT);
 
     pinMode(BALANCER1_LOAD_PIN, OUTPUT);

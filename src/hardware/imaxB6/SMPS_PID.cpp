@@ -42,17 +42,17 @@ void SMPS_PID::init()
 }
 
 namespace {
-    void enableChargerValue0() {
-        TimerOne::disablePWM(SMPS_VALUE0_PIN);
-        digitalWrite(SMPS_VALUE0_PIN, 1);
+    void enableChargerBuck() {
+        TimerOne::disablePWM(SMPS_VALUE_BUCK_PIN);
+        digitalWrite(SMPS_VALUE_BUCK_PIN, 1);
     }
-    void disableChargerValue0() {
-        TimerOne::disablePWM(SMPS_VALUE0_PIN);
-        digitalWrite(SMPS_VALUE0_PIN, 0);
+    void disableChargerBuck() {
+        TimerOne::disablePWM(SMPS_VALUE_BUCK_PIN);
+        digitalWrite(SMPS_VALUE_BUCK_PIN, 0);
     }
-    void disableChargerValue1() {
-        TimerOne::disablePWM(SMPS_VALUE1_PIN);
-        digitalWrite(SMPS_VALUE1_PIN, 0);
+    void disableChargerBoost() {
+        TimerOne::disablePWM(SMPS_VALUE_BOOST_PIN);
+        digitalWrite(SMPS_VALUE_BOOST_PIN, 0);
     }
 }
 
@@ -61,12 +61,12 @@ void SMPS_PID::setPID_MV(uint16_t value) {
         value = MAX_PID_MV;
 
     if(value <= TIMERONE_PRECISION_PERIOD) {
-        disableChargerValue1();
-        TimerOne::setPWM(SMPS_VALUE0_PIN, value);
+        disableChargerBoost();
+        TimerOne::setPWM(SMPS_VALUE_BUCK_PIN, value);
     } else {
-        enableChargerValue0();
+        enableChargerBuck();
         uint16_t v2 = value - TIMERONE_PRECISION_PERIOD;
-        TimerOne::setPWM(SMPS_VALUE1_PIN, v2);
+        TimerOne::setPWM(SMPS_VALUE_BOOST_PIN, v2);
     }
 }
 
@@ -79,8 +79,8 @@ void hardware::setChargerValue(uint16_t value)
 void hardware::setChargerOutput(bool enable)
 {
     if(enable) setDischargerOutput(false);
-    disableChargerValue0();
-    disableChargerValue1();
+    disableChargerBuck();
+    disableChargerBoost();
     SMPS_PID::init();
     PID_enable = enable;
     digitalWrite(SMPS_DISABLE_PIN, !enable);

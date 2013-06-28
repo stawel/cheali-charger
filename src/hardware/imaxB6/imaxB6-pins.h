@@ -81,8 +81,8 @@
 
 #define SMPS_DISABLE_PIN        15
 
-#define SMPS_VALUE0_PIN         13
-#define SMPS_VALUE1_PIN         14
+#define SMPS_VALUE_BUCK_PIN     13
+#define SMPS_VALUE_BOOST_PIN    14
 
 /*
 //pin 4 - 8 - reset, Vcc, GND, XTAL2, XTAL1
