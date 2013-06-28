@@ -161,17 +161,18 @@ int8_t getMUX(uint8_t input)
 void adc::processConversion(bool finalize)
 {
     uint8_t low, high;
-
+    bool trigger_PID;
     low  = ADCL;
     high = ADCH;
 
     analogInputs.measured_[getAIName(current_input)] = (high << 8) | low;
+    trigger_PID = getTriggerPID(current_input);
 
     current_input = nextInput(current_input);
     setADC(getADC(current_input));
     setMuxAddress(getMUX(current_input));
 
-    if(getTriggerPID(current_input))
+    if(trigger_PID)
         SMPS_PID::update();
 
     if(finalize && current_input == 0)
