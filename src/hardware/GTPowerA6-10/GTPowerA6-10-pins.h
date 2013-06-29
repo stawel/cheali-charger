@@ -25,13 +25,14 @@
 
 //pin 4 - 8 - reset, Vcc, GND, XTAL2, XTAL1
 
+//pin 9 - rs232 RX
 #define FAN_PIN                 9
 //pin 10 - rs232 TX
 
 #define DISCHARGE_DISABLE_PIN   11
 #define OUTPUT_DISABLE_PIN      12
 #define BACKLIGHT_PIN           13
-// pin 14 - the same pin for discharger and smps
+// pin 14 - the same pin for charge and discharge
 #define DISCHARGE_VALUE_PIN     14
 #define SMPS_VALUE_PIN          14
 #define SMPS_DISABLE_PIN        15
