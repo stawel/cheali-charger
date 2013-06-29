@@ -84,6 +84,10 @@
 #define SMPS_VALUE_BUCK_PIN     13
 #define SMPS_VALUE_BOOST_PIN    14
 
+//?? not present
+#define FAN_PIN                 9
+
+
 /*
 //pin 4 - 8 - reset, Vcc, GND, XTAL2, XTAL1
 
