@@ -37,7 +37,7 @@ const char string_c5[] PROGMEM = "Idischarge";
 const char string_c6[] PROGMEM = "Vin";
 const char string_c7[] PROGMEM = "Tintern";
 const char string_c8[] PROGMEM = "Textern";
-const char string_c9[] PROGMEM = "Info";
+const char string_c9[] PROGMEM = "Info-debug";
 
 const char string_ci0[] PROGMEM = "Icharge";
 const char string_ci1[] PROGMEM = "Vout";
@@ -89,11 +89,18 @@ const char * const calibrateInfoMenu[] PROGMEM =
 const char string_cI0[] PROGMEM = "50mA";
 const char string_cI1[] PROGMEM = "1000mA";
 
+const char string_cID1[] PROGMEM = "300mA";
 
-const char * const calibrateIMenu[] PROGMEM =
+const char * const calibrateICMenu[] PROGMEM =
 {
     string_cI0,
     string_cI1,
+};
+
+const char * const calibrateIDMenu[] PROGMEM =
+{
+    string_cI0,
+    string_cID1,
 };
 
 namespace {
@@ -104,9 +111,16 @@ void setCalibrationPoint(AnalogInputs::Name name, uint8_t i, const AnalogInputs:
 }
 }
 
+
 void Calibrate::calibrateI(screenType screen, AnalogInputs::Name name1, AnalogInputs::Name name2)
 {
-    StaticMenu menu(calibrateIMenu, sizeOfArray(calibrateIMenu));
+    AnalogInputs::ValueType value1 = ANALOG_AMP(0.3);
+    const char * const *menu_str = calibrateIDMenu;
+    if(name1==AnalogInputs::Ismps) {
+        menu_str = calibrateICMenu;
+        value1 = ANALOG_AMP(1);
+    }
+    StaticMenu menu(menu_str, sizeOfArray(calibrateICMenu));
     AnalogInputs::CalibrationPoint p;
     int8_t i = 0;
     do {
@@ -117,7 +131,7 @@ void Calibrate::calibrateI(screenType screen, AnalogInputs::Name name1, AnalogIn
                 p.y = ANALOG_AMP(0.05);
             } else {
                 i = 1;
-                p.y = ANALOG_AMP(1);
+                p.y = value1;
             }
             p.x = analogInputs.getValue(name1);
             setCalibrationPoint(name1, i, p);

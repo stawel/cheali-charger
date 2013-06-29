@@ -126,6 +126,7 @@ namespace {
 #ifdef ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
         if(from == 0 && !settings.isDebug() && discharger.isPowerOn()) {
             lcdPrint_P(PSTR("unknown"));
+            from++;
         } else {
             printBalancer(from++, mesured, type);
         }
