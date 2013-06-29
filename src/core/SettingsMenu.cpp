@@ -36,9 +36,8 @@ const char string_NiMHdV[]      PROGMEM = "NiMH -dV:";
 const char string_NiCddV[]      PROGMEM = "NiCd -dV:";
 const char string_CDcycles[]    PROGMEM = "C/D cycles:";
 const char string_capCoff[]     PROGMEM = "cap COff:";
-
-
 const char string_inputLow[]    PROGMEM = "input low:";
+const char string_balancErr[]   PROGMEM = "bal. err:";
 const char string_view[]        PROGMEM = "view: ";
 const char string_reset[]       PROGMEM = "   reset";
 const char string_save[]        PROGMEM = "    save"    ;
@@ -62,6 +61,7 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_CDcycles,
         string_capCoff,
         string_inputLow,
+        string_balancErr,
         string_view,
         string_reset,
         string_save
@@ -90,12 +90,13 @@ uint8_t SettingsMenu::printItem(uint8_t index)
             case NEXT_CASE:     lcdPrintYesNo(p_.externT_);             break;
             case NEXT_CASE:     printTemp(p_.externTCO_);               break;
             case NEXT_CASE:     printDeltaT(p_.deltaT_);                break;
-            case NEXT_CASE:     lcdPrintDeltaV(p_.deltaV_NiMH_, 5);     break;
-            case NEXT_CASE:     lcdPrintDeltaV(p_.deltaV_NiCd_, 5);     break;
+            case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiMH_, 5);        break;
+            case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiCd_, 5);        break;
             case NEXT_CASE:     lcdPrintUnsigned(p_.CDcycles_, 3);      break;
             case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff_, 5);   break;
-            case NEXT_CASE:    printVolt(p_.inputVoltageLow_);         break;
-            case NEXT_CASE:    printViewType();                        break;
+            case NEXT_CASE:     printVolt(p_.inputVoltageLow_);         break;
+            case NEXT_CASE:     lcdPrint_mV(p_.balancerError_, 5);      break;
+            case NEXT_CASE:     printViewType();                        break;
         }
     }
 }
@@ -123,8 +124,9 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     changeMax(p_.deltaV_NiCd_, dir, 20);        break;
         case NEXT_CASE:     change1Max(p_.CDcycles_, dir, 5);           break;
         case NEXT_CASE:     change1Max(p_.capCutoff_, dir, 250);        break;
-        case NEXT_CASE:    changeVolt(p_.inputVoltageLow_, dir);       break;
-        case NEXT_CASE:    changeViewType(dir);                        break;
+        case NEXT_CASE:     changeVolt(p_.inputVoltageLow_, dir);       break;
+        case NEXT_CASE:     changeBalanceError(p_.balancerError_, dir); break;
+        case NEXT_CASE:     changeViewType(dir);                        break;
     }
 }
 
@@ -218,3 +220,12 @@ void SettingsMenu::changeVolt(AnalogInputs::ValueType &v, int step) {
     if(v < min) v = min;
     if(v > max) v = max;
 }
+
+void SettingsMenu::changeBalanceError(AnalogInputs::ValueType &v, int step) {
+    const AnalogInputs::ValueType min = ANALOG_VOLT(0.003);
+    const AnalogInputs::ValueType max = ANALOG_VOLT(0.200);
+    v+=step;
+    if(v < min) v = min;
+    if(v > max) v = max;
+}
+

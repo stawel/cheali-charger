@@ -42,6 +42,7 @@ const Settings defaultSettings PROGMEM = {
         5,                  //CDcycles_
         120,                //"%" capCutoff_
         ANALOG_VOLT(7),     //inputVoltageLow_
+        ANALOG_VOLT(0.003), //balancerError_
         Screen::Normal      //view_
 };
 

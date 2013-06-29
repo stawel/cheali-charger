@@ -41,6 +41,7 @@ struct Settings {
     uint16_t CDcycles_;
     uint16_t capCutoff_;
     AnalogInputs::ValueType inputVoltageLow_;
+    AnalogInputs::ValueType balancerError_;
     Screen::ScreenViewType view_;
 
     void edit();

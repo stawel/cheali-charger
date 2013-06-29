@@ -57,7 +57,7 @@ void lcdPrintCurrent(AnalogInputs::ValueType i, int8_t dig);
 void lcdPrintVoltage(AnalogInputs::ValueType v, int8_t dig);
 void lcdPrintResistance(AnalogInputs::ValueType r, int8_t dig);
 void lcdPrintPercentage(AnalogInputs::ValueType p, int8_t dig);
-void lcdPrintDeltaV(AnalogInputs::ValueType p, int8_t dig);
+void lcdPrint_mV(AnalogInputs::ValueType p, int8_t dig);
 void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t dig);
 
 

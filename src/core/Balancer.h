@@ -24,8 +24,6 @@
 
 class Balancer : public Strategy {
 public:
-    //TODO: "error" should be changeable
-    const static AnalogInputs::ValueType error = 3;
     const static AnalogInputs::ValueType Ibalance = 200; //200mA
     const static uint16_t maxBalanceTime = 30; //30s
     const static uint16_t balancerStartStableCount = 10; //30s

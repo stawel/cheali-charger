@@ -19,6 +19,7 @@
 #include "ProgramData.h"
 #include "Balancer.h"
 #include "Screen.h"
+#include "Settings.h"
 
 void Balancer::powerOn()
 {
@@ -113,7 +114,7 @@ void Balancer::startBalacing()
         for(int i = 0; i < cells_; i++) {
             //save voltage values
             Von_[i] = Voff_[i] = getV(i);
-            if(Von_[i] - vmin > error)
+            if(Von_[i] - vmin > settings.balancerError_)
                 off = false;
         }
     }
@@ -139,7 +140,7 @@ uint8_t Balancer::calculateBalance()
                 retu |=b;
         } else {
             // if OFF
-            if(v > vmin + (error+1)/2)
+            if(v > vmin + (settings.balancerError_+1)/2)
                 retu |=b;
         }
         b<<=1;
