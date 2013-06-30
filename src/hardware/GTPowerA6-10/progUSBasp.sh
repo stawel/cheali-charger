@@ -19,7 +19,7 @@ if [ "$1" != "--no-backup" ]; then
     echo "creating buckup: $DIR"
     mkdir -p $DIR
     cd $DIR
-    avrdude -p$PARTNO -c$PROGRAMMER -P$TTY -Uflash:r:flash.hex:i -Ulfuse:r:lfuse.hex:i -Uhfuse:r:hfuse.hex:i -Ueeprom:r:eeprom.hex:i
+    avrdude -p$PARTNO -c$PROGRAMMER -P$TTY -Uflash:r:flash.hex:r -Ulfuse:r:lfuse.hex:r -Uhfuse:r:hfuse.hex:r -Ueeprom:r:eeprom.hex:r
     cd -
 fi
 

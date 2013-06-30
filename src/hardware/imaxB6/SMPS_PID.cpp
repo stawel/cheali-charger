@@ -16,15 +16,15 @@ namespace {
 void SMPS_PID::update()
 {
     if(!PID_enable) return;
-
-    //test Vout and cut-off if too high
+    //if Vout is too high disable PID
     if(analogInputs.getMeasuredValue(AnalogInputs::Vout) > PID_CutOff) {
         hardware::setChargerOutput(false);
+        PID_enable = false;
         return;
     }
 
-    //TODO: PID
-    //this is the PID - actually it is an I
+    //TODO: rewrite PID
+    //this is the PID - actually it is an I (Integral part) - should be rewritten
     uint16_t PV = analogInputs.getMeasuredValue(AnalogInputs::Ismps);
     long error = PID_setpoint;
     error -= PV;
@@ -57,7 +57,7 @@ namespace {
 }
 
 void SMPS_PID::setPID_MV(uint16_t value) {
-    if(value > MAX_PID_MV) //TODO:remove
+    if(value > MAX_PID_MV)
         value = MAX_PID_MV;
 
     if(value <= TIMERONE_PRECISION_PERIOD) {
@@ -72,6 +72,7 @@ void SMPS_PID::setPID_MV(uint16_t value) {
 
 void hardware::setChargerValue(uint16_t value)
 {
+
     PID_setpoint = analogInputs.reverseCalibrateValue(AnalogInputs::Ismps, value);
     PID_CutOff = analogInputs.reverseCalibrateValue(AnalogInputs::Vout, MAX_CHARGE_V);
 }
