@@ -23,6 +23,7 @@
 
 void Balancer::powerOn()
 {
+    hardware::setBalancerOutput(true);
     hardware::setBatteryOutput(true);
     if(!analogInputs.isPowerOn()) {
         analogInputs.powerOn();
@@ -83,6 +84,7 @@ void Balancer::powerOff()
     endBalancing();
     analogInputs.powerOff();
     hardware::setBatteryOutput(false);
+    hardware::setBalancerOutput(false);
 }
 
 Balancer::Balancer()

@@ -96,6 +96,6 @@ void hardware::setDischargerOutput(bool enable)
 
 void hardware::setDischargerValue(uint16_t value)
 {
-    TimerOne::setPWM(DISCHARGE_VALUE_PIN, value<<(TIMERONE_PRECISION));
+    TimerOne::setPWM(DISCHARGE_VALUE_PIN, value<<3);
 }
 

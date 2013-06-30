@@ -30,6 +30,22 @@ uint8_t hardware::getKeyPressed()
             | (digitalRead(BUTTON_START_PIN)? 0 : BUTTON_START);
 }
 
+
+void hardware::setBalancerOutput(bool enable)
+{
+    uint8_t mode = INPUT;
+    if(enable)
+        mode = OUTPUT;
+    pinMode(BALANCER1_LOAD_PIN, mode);
+    pinMode(BALANCER2_LOAD_PIN, mode);
+    pinMode(BALANCER3_LOAD_PIN, mode);
+    pinMode(BALANCER4_LOAD_PIN, mode);
+    pinMode(BALANCER5_LOAD_PIN, mode);
+    pinMode(BALANCER6_LOAD_PIN, mode);
+
+}
+
+
 void hardware::initialize()
 {
     analogReference(EXTERNAL);
@@ -43,13 +59,6 @@ void hardware::initialize()
     pinMode(SMPS_VALUE_BUCK_PIN, OUTPUT);
     pinMode(SMPS_VALUE_BOOST_PIN, OUTPUT);
     pinMode(SMPS_DISABLE_PIN, OUTPUT);
-
-    pinMode(BALANCER1_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER2_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER3_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER4_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER5_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER6_LOAD_PIN, OUTPUT);
 
     pinMode(MUX_ADR0_PIN, OUTPUT);
     pinMode(MUX_ADR1_PIN, OUTPUT);
