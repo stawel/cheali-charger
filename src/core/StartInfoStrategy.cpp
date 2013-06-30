@@ -41,34 +41,34 @@ void StartInfoStrategy::powerOff()
 
 Strategy::statusType StartInfoStrategy::doStrategy()
 {
-    bool c,b,v;
+    bool cell_nr, v_balance, v_out;
 
-    c = b = false;
-    v = (!analogInputs.isConnected(AnalogInputs::Vout));
+    cell_nr = v_balance = false;
+    v_out = (!analogInputs.isConnected(AnalogInputs::Vout));
 
     if(balancePort_) {
         uint8_t is_cells, should_be_cells;
         is_cells = analogInputs.getConnectedBalancePorts();
         should_be_cells = ProgramData::currentProgramData.battery.cells;
-        c = (should_be_cells != is_cells);
-        b = (is_cells == 0);
+        cell_nr = (should_be_cells != is_cells);
+        v_balance = (is_cells == 0);
 
         if(should_be_cells == 1 && is_cells == 0)  {
             //one cell
-            c = false;
-            b = false;
+            cell_nr =   false;
+            v_balance = false;
         }
     }
     if(analogInputs.isConnected(AnalogInputs::Vbalancer) &&
             absDiff(analogInputs.getRealValue(AnalogInputs::Vout),
-               analogInputs.getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)) v = true;
+               analogInputs.getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)) v_out = true;
 
     screen.blinkIndex_ = 7;
-    if(c)     screen.blinkIndex_ -= 4;
-    if(b)     screen.blinkIndex_ -= 2;
-    if(v)     screen.blinkIndex_ -= 1;
+    if(cell_nr)     screen.blinkIndex_ -= 4;
+    if(v_balance)   screen.blinkIndex_ -= 2;
+    if(v_out)       screen.blinkIndex_ -= 1;
 
-    if(c || b || v) {
+    if(cell_nr || v_balance || v_out) {
         buzzer.soundInfo();
     } else {
         buzzer.soundOff();
@@ -76,7 +76,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 
     if(keyboard.getPressed() == BUTTON_NONE)
         ok_ = 0;
-    if(!c && !b && !v && keyboard.getPressed() == BUTTON_START) {
+    if(!cell_nr && !v_balance && !v_out && keyboard.getPressed() == BUTTON_START) {
         ok_++;
     }
     if(ok_ == 2) {

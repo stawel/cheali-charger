@@ -134,8 +134,11 @@ void AnalogInputs::doVirtualCalculations()
     AnalogInputs::ValueType out = real_[Vout];
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-    setReal(Vb1, getRealValue(Vb1_real) - getRealValue(Vb0_real));
-    setReal(Vb2, getRealValue(Vb2_real) - getRealValue(Vb1_real));
+    //when balanse port is not connected then
+    //it may happen that Vb0_real > Vb1_real or Vb1_real > Vb2_real
+    //that's why we use "absDiff"
+    setReal(Vb1, absDiff(getRealValue(Vb1_real), getRealValue(Vb0_real)));
+    setReal(Vb2, absDiff(getRealValue(Vb2_real), getRealValue(Vb1_real)));
     for(uint8_t i=2; i < 6; i++) {
         setReal(Name(Vb1+i), getRealValue(Name(Vb1_real+i)));
     }
