@@ -26,9 +26,6 @@
 #include "StackInfo.h"
 
 
-#ifdef ENABLE_B0_CALIBRATION
-const char string_c0[] PROGMEM = "B0";
-#endif
 const char string_c1[] PROGMEM = "B1-3";
 const char string_c2[] PROGMEM = "B4-6";
 const char string_c3[] PROGMEM = "B1-6 to Vout";
@@ -37,6 +34,9 @@ const char string_c5[] PROGMEM = "Idischarge";
 const char string_c6[] PROGMEM = "Vin";
 const char string_c7[] PROGMEM = "Tintern";
 const char string_c8[] PROGMEM = "Textern";
+#ifdef ENABLE_B0_CALIBRATION
+const char string_c0[] PROGMEM = "B0-dangerous";
+#endif
 const char string_c9[] PROGMEM = "Info-debug";
 
 const char string_ci0[] PROGMEM = "Icharge";
@@ -55,9 +55,6 @@ const char string_cia[] PROGMEM = "stack info";
 
 const char * const calibrateMenu[] PROGMEM =
 {
-#ifdef ENABLE_B0_CALIBRATION
-  string_c0,
-#endif
   string_c1,
   string_c2,
   string_c3,
@@ -66,6 +63,9 @@ const char * const calibrateMenu[] PROGMEM =
   string_c6,
   string_c7,
   string_c8,
+#ifdef ENABLE_B0_CALIBRATION
+  string_c0,
+#endif
   string_c9,
 };
 
@@ -222,14 +222,14 @@ void Calibrate::run()
         if(i<0) break;
         START_CASE_COUNTER;
         switch(i) {
-#ifdef ENABLE_B0_CALIBRATION
-        case NEXT_CASE: calibrateBlink(SCREEN_B0_BLINK, 1); break;
-#endif
         case NEXT_CASE: calibrateBlink(SCREEN_B1_3_BLINK, 3); break;
         case NEXT_CASE: calibrateBlink(SCREEN_B4_6_BLINK, 3); break;
         case NEXT_CASE: copyVbalVout(); break;
         case NEXT_CASE: calibrateI(SCREEN_ICHARGE, AnalogInputs::Ismps, AnalogInputs::IsmpsValue); break;
         case NEXT_CASE: calibrateI(SCREEN_IDISCHARGE, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue); break;
+#ifdef ENABLE_B0_CALIBRATION
+        case NEXT_CASE+3: calibrateBlink(SCREEN_B0_BLINK, 1); break;
+#endif
         case NEXT_CASE+3: runInfo(); break;
         default:
                 Screen::runNotImplemented(); break;
