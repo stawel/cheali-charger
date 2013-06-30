@@ -230,6 +230,9 @@ void AnalogInputs::reset()
     calculationCount_ = 0;
     resetMeasurement();
     resetDelta();
+    FOR_ALL_INPUTS(name){
+        real_[name] = 0;
+    }
 }
 
 void AnalogInputs::powerOn()
