@@ -368,20 +368,13 @@ void Calibrate::printCalibrateB1_3()
 void Calibrate::printCalibrateB0_Blink()
 {
     lcdSetCursor0_0();
-    if(!analogInputs.isConnected(AnalogInputs::Vout)) {
-        lcdPrint_P(PSTR("ERROR! "));
-    } else {
-        lcdPrintSpaces(7);
-    }
-    uint8_t dig = 7;
-    if(dispVal_ != 0) dig = 6;
-
+    lcdPrintUnsigned(analogInputs.getValue(AnalogInputs::Vb0_real), 7);
     lcdPrint_P(PSTR(" 0:"));
-    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb0_real, dig);
-    else lcdPrintSpaces(dig);
+    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb0_real, 6);
+    else lcdPrintSpaces();
 
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR("Con: 4V to B-,B0"));
+    lcdPrint_P(PSTR("Con:4V to GND,B0"));
 }
 #endif
 
@@ -508,6 +501,11 @@ bool Calibrate::calibrateBlink(screenType p, int8_t maxBlink)
     blinkOn_ = true;
     uint8_t blinkCount = 0;
     smps.powerOn();
+#ifdef ENABLE_B0_CALIBRATION
+    if(p == SCREEN_B0_BLINK)
+        hardware::setBatteryOutput(false);
+#endif
+
     uint8_t key, last_key;
     do {
         printCalibrate(p);

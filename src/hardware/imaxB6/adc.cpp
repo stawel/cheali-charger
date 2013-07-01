@@ -29,28 +29,28 @@
 #define ADC_DELAY_MS 30
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
-    {{0,0},                         {25920, ANALOG_VOLT(11.945)}},  //Vout
-    {{0,0},                         {38000, ANALOG_VOLT(11.829)}},  //VreversePolarity
-    {{390,ANALOG_AMP(0.050)},       {10966, ANALOG_AMP(1.000)}},    //Ismps
-    {{0,0},                         {14212, ANALOG_AMP(0.100)}},    //Idischarge
+    {{0,0},                         {27328, ANALOG_VOLT(12.518)}},  //Vout
+    {{0,0},                         {26613, ANALOG_VOLT(12.518)}},  //VreversePolarity
+    {{778,ANALOG_AMP(0.050)},       {11121, ANALOG_AMP(1.000)}},    //Ismps
+    {{0,0},                         {11992, ANALOG_AMP(0.300)}},    //Idischarge
 
     {{0, 0},                        {0, ANALOG_VOLT(0)}},           //VoutMux
     {{0, 0},                        {0, ANALOG_CELCIUS(0)}},        //Tintern
-    {{0, 0},                        {48063, ANALOG_VOLT(14.044)}},  //Vin
+    {{0, 0},                        {47828, ANALOG_VOLT(14.042)}},  //Vin
     {{19842,ANALOG_CELCIUS(25.0)},  {18750, ANALOG_CELCIUS(60)}},   //Textern
 
-    {{0, 0},                        {52072, ANALOG_VOLT(3.985)}},   //Vb0_real
-    {{0, 0},                        {54079, ANALOG_VOLT(4.138)}},   //Vb1_real
-    {{0, 0},                        {54682, ANALOG_VOLT(8.270)}},   //Vb2_real
-    {{0, 0},                        {55246, ANALOG_VOLT(4.182)}},   //Vb3_real
+    {{0, 0},                        {48963, ANALOG_VOLT(3.752)}},   //Vb0_real
+    {{0, 0},                        {50752, ANALOG_VOLT(3.862)}},   //Vb1_real
+    {{0, 0},                        {51805, ANALOG_VOLT(7.728)}},   //Vb2_real
+    {{0, 0},                        {51628, ANALOG_VOLT(3.863)}},   //Vb3_real
 
-    {{0, 0},                        {53726, ANALOG_VOLT(4.065)}},   //Vb4_real
-    {{0, 0},                        {53680, ANALOG_VOLT(4.071)}},   //Vb5_real
-    {{0, 0},                        {51656, ANALOG_VOLT(4.073)}},   //Vb6_real
+    {{0, 0},                        {50432, ANALOG_VOLT(3.861)}},   //Vb4_real
+    {{0, 0},                        {50624, ANALOG_VOLT(3.860)}},   //Vb5_real
+    {{0, 0},                        {51316, ANALOG_VOLT(3.857)}},   //Vb6_real
 
     //1-1 correlation
     {{0,0},                         {10000, 10000}},                //IsmpsValue
-    {{0, 0},                        {82,    ANALOG_AMP(0.100)}},    //IdischargeValue
+    {{0, 0},                        {551,    ANALOG_AMP(0.300)}},    //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {{0,0},                         {1, 1}},                        //UNKNOWN0
     {{0,0},                         {1, 1}},                        //UNKNOWN1

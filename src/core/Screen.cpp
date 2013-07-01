@@ -124,7 +124,7 @@ namespace {
         lcdPrintDigit(from+1);
         lcdPrintChar(':');
 #ifdef ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
-        if(from == 0 && !settings.isDebug() && discharger.isPowerOn()) {
+        if(from == 0 && !settings.isDebug() && discharger.isPowerOn() && discharger.getValue()>0) {
             lcdPrint_P(PSTR("unknown"));
             from++;
         } else {
