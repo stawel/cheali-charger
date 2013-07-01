@@ -11,7 +11,7 @@ namespace {
     volatile bool PID_enable;
 }
 
-#define A 1024
+#define A 4
 
 void SMPS_PID::update()
 {
@@ -28,10 +28,13 @@ void SMPS_PID::update()
     uint16_t PV = analogInputs.getMeasuredValue(AnalogInputs::Ismps);
     long error = PID_setpoint;
     error -= PV;
-    PID_MV += A*error;
+    PID_MV += error*A;
 
     if(PID_MV<0) PID_MV = 0;
-    SMPS_PID::setPID_MV(PID_MV>>16);
+    if(PID_MV > MAX_PID_MV_PRECISION) {
+        PID_MV = MAX_PID_MV_PRECISION;
+    }
+    SMPS_PID::setPID_MV(PID_MV>>PID_MV_PRECISION);
 }
 
 void SMPS_PID::init()
@@ -74,7 +77,7 @@ void hardware::setChargerValue(uint16_t value)
 {
 
     PID_setpoint = analogInputs.reverseCalibrateValue(AnalogInputs::Ismps, value);
-    PID_CutOff = analogInputs.reverseCalibrateValue(AnalogInputs::Vout, MAX_CHARGE_V);
+    PID_CutOff = analogInputs.reverseCalibrateValue(AnalogInputs::Vout, PID_CUTOFF_VOLTAGE);
 }
 
 void hardware::setChargerOutput(bool enable)

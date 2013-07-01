@@ -3,8 +3,8 @@
 #include <avr/interrupt.h>
 
 namespace {
-    volatile unsigned int value=0;
-    volatile unsigned int sumValue=0;
+    volatile unsigned int TimerOne_value=0;
+    volatile unsigned int TimerOne_sumValue=0;
     volatile uint8_t whichPin=0;
 
     void setOCR() {
@@ -12,9 +12,9 @@ namespace {
         //(the PWM frequency stays at about 31kHz)
         uint8_t oldSREG;
         uint16_t v;
-        sumValue+=value;
-        v=(sumValue>>TIMERONE_PRECISION);
-        sumValue-=v<<TIMERONE_PRECISION;
+        TimerOne_sumValue+=TimerOne_value;
+        v=(TimerOne_sumValue>>TIMERONE_PRECISION);
+        TimerOne_sumValue-=v<<TIMERONE_PRECISION;
 
         oldSREG = SREG;
         cli();
@@ -36,7 +36,7 @@ void TimerOne::setPWM(char pin, uint16_t val)  // expects duty cycle to be 10 bi
     oldSREG = SREG;
     cli();
 
-    value = val;
+    TimerOne_value = val;
     whichPin = pin;
 // the OCR1A or OCR1B will be updated at the TIMER1 interrupt
 //  setOCR();
