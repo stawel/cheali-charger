@@ -24,6 +24,7 @@
 #include "SimpleChargeStrategy.h"
 #include "TheveninChargeStrategy.h"
 #include "TheveninDischargeStrategy.h"
+#include "ChargeBalanceStrategy.h"
 #include "DeltaChargeStrategy.h"
 #include "StorageStrategy.h"
 #include "Monitor.h"
@@ -185,8 +186,9 @@ namespace {
         uint8_t screen_nr = 0;
         screen_limit--;
         do {
-            if(!PolarityCheck::runReversedPolarityInfo())
+            if(!PolarityCheck::runReversedPolarityInfo()) {
                 screen.display(pgm::read(&chargeScreens[screen_nr]));
+            }
 
             {
                 //change displayed screen
@@ -198,6 +200,7 @@ namespace {
                     screen_nr+=step;
                 } while(!settings.isDebug() && (pgm::read(&chargeScreens[screen_nr]) & Screen::Debug));
             }
+
             if(run) {
                 status = monitor.run();
                 run = analizeStrategyStatus(strategy, status, exitImmediately);
@@ -231,41 +234,48 @@ bool Program::startInfo()
     }
 }
 
-void Program::runStorage(bool balance)
+Strategy::statusType Program::runStorage(bool balance)
 {
     storageStrategy.setDoBalance(balance);
     storageStrategy.setVII(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage),
             ProgramData::currentProgramData.battery.Ic, ProgramData::currentProgramData.battery.Id);
-    doStrategy(storageStrategy, storageScreens, sizeOfArray(storageScreens));
+    return doStrategy(storageStrategy, storageScreens, sizeOfArray(storageScreens));
 }
-void Program::runTheveninCharge(int minChargeC)
+Strategy::statusType Program::runTheveninCharge(int minChargeC)
 {
     theveninChargeStrategy.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.battery.Ic);
     theveninChargeStrategy.setMinI(ProgramData::currentProgramData.battery.Ic/minChargeC);
-    doStrategy(theveninChargeStrategy, theveninScreens, sizeOfArray(theveninScreens));
+    return doStrategy(theveninChargeStrategy, theveninScreens, sizeOfArray(theveninScreens));
 }
 
-void Program::runDeltaCharge()
+Strategy::statusType Program::runTheveninChargeBalance(int minChargeC)
+{
+    chargeBalanceStrategy.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.battery.Ic);
+    return doStrategy(chargeBalanceStrategy, theveninScreens, sizeOfArray(theveninScreens));
+}
+
+
+Strategy::statusType Program::runDeltaCharge()
 {
     deltaChargeStrategy.setTestTV(settings.externT_, true);
-    doStrategy(deltaChargeStrategy, deltaChargeScreens, sizeOfArray(deltaChargeScreens));
+    return doStrategy(deltaChargeStrategy, deltaChargeScreens, sizeOfArray(deltaChargeScreens));
 }
 
-void Program::runDischarge()
+Strategy::statusType Program::runDischarge()
 {
     theveninDischargeStrategy.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-    doStrategy(theveninDischargeStrategy, dischargeScreens, sizeOfArray(dischargeScreens));
+    return doStrategy(theveninDischargeStrategy, dischargeScreens, sizeOfArray(dischargeScreens));
 }
 
-void Program::runNiXXDischarge()
+Strategy::statusType Program::runNiXXDischarge()
 {
     theveninDischargeStrategy.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-    doStrategy(theveninDischargeStrategy, NiXXDischargeScreens, sizeOfArray(NiXXDischargeScreens));
+    return doStrategy(theveninDischargeStrategy, NiXXDischargeScreens, sizeOfArray(NiXXDischargeScreens));
 }
 
-void Program::runBalance()
+Strategy::statusType Program::runBalance()
 {
-    doStrategy(balancer, balanceScreens, sizeOfArray(balanceScreens));
+    return doStrategy(balancer, balanceScreens, sizeOfArray(balanceScreens));
 }
 
 void Program::run(ProgramType prog)
@@ -299,6 +309,9 @@ void Program::run(ProgramType prog)
             break;
         case Program::DischargeNiXX:
             runNiXXDischarge();
+            break;
+        case Program::ChargeLiXX_Balance:
+            runTheveninChargeBalance(10);
             break;
         default:
             //TODO:

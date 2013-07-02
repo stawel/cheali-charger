@@ -51,12 +51,14 @@ public:
     void doSlowInterrupt();
 
     uint16_t getCharge() const;
+    void setClearCharge(bool v) {clearCharge_ = v;}
 
 protected:
 
     STATE state_;
     uint16_t value_;
     uint32_t charge_;
+    bool clearCharge_;
 };
 
 

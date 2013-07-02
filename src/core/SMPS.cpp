@@ -18,7 +18,7 @@
 #include "Hardware.h"
 #include "SMPS.h"
 
-SMPS::SMPS()
+SMPS::SMPS(): clearCharge_(true)
 {
     setValue(0);
     powerOff(CHARGING_COMPLETE);
@@ -50,7 +50,8 @@ void SMPS::powerOn()
     analogInputs.powerOn();
     analogInputs.doFullMeasurement();
     state_ = CHARGING;
-    charge_ = 0;
+    if(clearCharge_)
+        charge_ = 0;
 }
 
 

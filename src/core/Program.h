@@ -39,13 +39,14 @@ public:
     static void printStartInfo(ProgramType prog);
     static bool startInfo();
 
-    static void runStorage(bool balance);
-    static void runTheveninCharge(int minChargeC);
-    static void runDischarge();
-    static void runNiXXDischarge();
+    static Strategy::statusType runStorage(bool balance);
+    static Strategy::statusType runTheveninCharge(int minChargeC);
+    static Strategy::statusType runDischarge();
+    static Strategy::statusType runNiXXDischarge();
 
-    static void runBalance();
-    static void runDeltaCharge();
+    static Strategy::statusType runTheveninChargeBalance(int minChargeC);
+    static Strategy::statusType runBalance();
+    static Strategy::statusType runDeltaCharge();
 };
 
 
