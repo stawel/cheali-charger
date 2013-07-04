@@ -15,11 +15,11 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Settings.h"
+#include "Hardware.h"
 #include "memory.h"
 #include "SettingsMenu.h"
-#include "Hardware.h"
 #include "Buzzer.h"
+#include "Settings.h"
 
 Settings settings;
 Settings savedSetting EEMEM;
@@ -34,7 +34,7 @@ const Settings defaultSettings PROGMEM = {
 #ifdef ENABLE_T_INTERNAL
         ANALOG_CELCIUS(60), //dischargeTempOff_
 #endif
-        1,                  //externT_
+        DEFAULT_SETTINGS_EXTERNAL_T, //externT_
         ANALOG_CELCIUS(60), //externTCO_
         ANALOG_CELCIUS(1),  //deltaT_
         ANALOG_VOLT(0.007), //deltaV_NiMH_

@@ -22,6 +22,10 @@
 #include "AnalogInputs.h"
 #include "Screen.h"
 
+#ifndef DEFAULT_SETTINGS_EXTERNAL_T
+#define DEFAULT_SETTINGS_EXTERNAL_T 1
+#endif
+
 struct Settings {
 
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5);
