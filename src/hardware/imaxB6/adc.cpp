@@ -37,16 +37,16 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                        {0, ANALOG_VOLT(0)}},           //VoutMux
     {{0, 0},                        {0, ANALOG_CELCIUS(0)}},        //Tintern
     {{0, 0},                        {47828, ANALOG_VOLT(14.042)}},  //Vin
-    {{19842,ANALOG_CELCIUS(25.0)},  {18750, ANALOG_CELCIUS(60)}},   //Textern
+    {{19650,ANALOG_CELCIUS(29.8)},  {18700, ANALOG_CELCIUS(60)}},   //Textern
 
     {{0, 0},                        {48963, ANALOG_VOLT(3.752)}},   //Vb0_real
-    {{0, 0},                        {50752, ANALOG_VOLT(3.862)}},   //Vb1_real
-    {{0, 0},                        {51805, ANALOG_VOLT(7.728)}},   //Vb2_real
-    {{0, 0},                        {51628, ANALOG_VOLT(3.863)}},   //Vb3_real
+    {{0, 0},                        {54848, ANALOG_VOLT(4.179)}},   //Vb1_real
+    {{0, 0},                        {56000, ANALOG_VOLT(8.359)}},   //Vb2_real
+    {{0, 0},                        {55667, ANALOG_VOLT(4.171)}},   //Vb3_real
 
-    {{0, 0},                        {50432, ANALOG_VOLT(3.861)}},   //Vb4_real
-    {{0, 0},                        {50624, ANALOG_VOLT(3.860)}},   //Vb5_real
-    {{0, 0},                        {51316, ANALOG_VOLT(3.857)}},   //Vb6_real
+    {{0, 0},                        {54577, ANALOG_VOLT(4.182)}},   //Vb4_real
+    {{0, 0},                        {54720, ANALOG_VOLT(4.178)}},   //Vb5_real
+    {{0, 0},                        {55300, ANALOG_VOLT(4.165)}},   //Vb6_real
 
     //1-1 correlation
     {{0,0},                         {10000, 10000}},                //IsmpsValue
