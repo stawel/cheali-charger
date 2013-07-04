@@ -9,13 +9,13 @@ AVR Memory Usage
 ----------------
 Device: Unknown
 
-Program:   30456 bytes
+Program:   30676 bytes
 (.text + .data + .bootloader)
 
-Data:        798 bytes
+Data:        817 bytes
 (.data + .bss + .noinit)
 
-EEPROM:      897 bytes
+EEPROM:      899 bytes
 (.eeprom)
 
 

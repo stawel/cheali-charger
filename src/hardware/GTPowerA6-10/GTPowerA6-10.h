@@ -76,6 +76,7 @@ namespace hardware {
     void setBuzzer(uint16_t val);
     void setBatteryOutput(bool enable);
     void setChargerOutput(bool enable);
+    void setBalancerOutput(bool enable);
     void setDischargerOutput(bool enable);
     void setChargerValue(uint16_t value);
     void setDischargerValue(uint16_t value);

@@ -79,7 +79,11 @@
 #define UNKNOWN3_PIN            44
 
 
+
 //Multiplexer addresses
+#define MUXINPUT0     0
+#define MUXINPUT1     0
+
 #define MADDR_V_OUTMUX          (0 + MUXINPUT0)
 #define MADDR_T_INTERN          (1 + MUXINPUT0)
 #define MADDR_V_IN              (2 + MUXINPUT0)

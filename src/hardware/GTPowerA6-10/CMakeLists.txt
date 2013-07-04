@@ -10,6 +10,8 @@ set(SOURCE_FILES
     TimerOne.cpp
     TimerOne.h
     Hardware.h
+    adc.cpp
+    adc.h
     ${CORE_SOURCE_FILES}
 )
 
