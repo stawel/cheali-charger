@@ -20,6 +20,7 @@
 #include "SettingsMenu.h"
 #include "Buzzer.h"
 #include "Settings.h"
+#include "Monitor.h"
 
 Settings settings;
 Settings savedSetting EEMEM;
@@ -74,6 +75,7 @@ void Settings::apply() {
 #ifdef ENABLE_LCD_BACKLIGHT
     hardware::setLCDBacklight(backlight_);
 #endif
+    Monitor::update();
 }
 
 

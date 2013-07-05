@@ -26,6 +26,7 @@ public:
     Strategy::statusType run();
     void doInterrupt();
     void powerOn();
+    static void update();
 };
 
 extern Monitor monitor;

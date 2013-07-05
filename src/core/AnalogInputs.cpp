@@ -134,7 +134,7 @@ void AnalogInputs::doVirtualCalculations()
     AnalogInputs::ValueType out = real_[Vout];
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-    //when balanse port is not connected then
+    //when balance port is not connected then
     //it may happen that Vb0_real > Vb1_real or Vb1_real > Vb2_real
     //that's why we use "absDiff"
     setReal(Vb1, absDiff(getRealValue(Vb1_real), getRealValue(Vb0_real)));
@@ -192,7 +192,6 @@ void AnalogInputs::setReal(Name name, ValueType real)
 
 void AnalogInputs::clearAvr()
 {
-    resetADC();
     avrCount_ = 0;
     FOR_ALL_PHY_INPUTS(name) {
         avrSum_[name] = 0;
@@ -228,6 +227,7 @@ void AnalogInputs::reset()
 {
 
     calculationCount_ = 0;
+    resetADC();
     resetMeasurement();
     resetDelta();
     FOR_ALL_INPUTS(name){

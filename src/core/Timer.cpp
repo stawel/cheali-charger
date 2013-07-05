@@ -20,6 +20,7 @@
 #include "Monitor.h"
 #include "Buzzer.h"
 #include "Screen.h"
+#include <util/atomic.h>
 
 static void callback() {
     static uint8_t slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
@@ -70,7 +71,10 @@ void Timer::doInterrupt()
 }
 uint32_t Timer::getMiliseconds() const
 {
-    uint32_t retu = interrupts_;
+    uint32_t retu;
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        retu = interrupts_;
+    }
 #if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 512
     retu *= (TIMER_INTERRUPT_PERIOD_MICROSECONDS/8);
     retu /= (1000/8);

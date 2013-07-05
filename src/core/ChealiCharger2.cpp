@@ -68,7 +68,7 @@ void setup()
     lcdPrint_P(PSTR("  ChealiCharger"));
     lcdSetCursor0_1();
     lcdPrint_P(PSTR("    ver: "  CHEALI_CHARGER_VERSION_STRING));
-    timer.delay(1000);
+    hardware::delay(1000);
     if(Version::getCurrentEEPROMVersion() != CHEALI_CHARGER_EEPROM_VERSION) {
         lcdClear();
         lcdSetCursor0_0();

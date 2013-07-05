@@ -23,6 +23,8 @@
 #include "Utils.h"
 #include "memory.h"
 #include <avr/io.h>
+#include <util/atomic.h>
+
 
 
 #define ADC_DELAY_MS 30
@@ -179,7 +181,9 @@ void adc::processConversion(bool finalize)
 
     AnalogInputs::Name name = getAIName(current_input);
     if(name != AnalogInputs::VirtualInputs) {
-        analogInputs.measured_[name] = (high << 8) | low;
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+            analogInputs.measured_[name] = (high << 8) | low;
+        }
     } else {
         key = getKey(current_input);
         if(high < ADC_KEY_BORDER) {
@@ -189,8 +193,8 @@ void adc::processConversion(bool finalize)
         }
     }
     current_input = nextInput(current_input);
-    setADC(getADC(current_input));
     setMuxAddress(getMUX(current_input));
+    setADC(getADC(current_input));
 
     if(finalize && current_input == 0)
         finalizeMeasurement();

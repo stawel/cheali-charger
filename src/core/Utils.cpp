@@ -34,8 +34,7 @@ bool getCharge(uint16_t &charge)
 
 bool testTintern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on)
 {
-    AnalogInputs::ValueType t = analogInputs.calibrateValue(AnalogInputs::Tintern,
-            analogInputs.getMeasuredValue(AnalogInputs::Tintern));
+    AnalogInputs::ValueType t = analogInputs.getRealValue(AnalogInputs::Tintern);
 
     bool retu = false;
     if(t < off) {

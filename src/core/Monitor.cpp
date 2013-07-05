@@ -25,14 +25,38 @@
 
 Monitor monitor;
 
+#ifdef ENABLE_FAN
+#ifdef ENABLE_T_INTERNAL
+namespace {
+    AnalogInputs::ValueType monitor_on_T;
+    AnalogInputs::ValueType monitor_off_T;
+} // namespace
+#endif
+#endif
 
 void Monitor::doInterrupt()
 {
 #ifdef ENABLE_FAN
 #ifdef ENABLE_T_INTERNAL
-    bool on;
-    if(testTintern(on, settings.fanTempOn_ - Settings::TempDifference, settings.fanTempOn_))
-        hardware::setFan(on);
+
+    AnalogInputs::ValueType t = analogInputs.getMeasuredValue(AnalogInputs::Tintern);
+    bool retu = false;
+    if(t > monitor_off_T) {
+        hardware::setFan(false);
+    } else if(t < monitor_on_T) {
+        hardware::setFan(true);
+    }
+#endif
+#endif
+}
+void Monitor::update()
+{
+#ifdef ENABLE_FAN
+#ifdef ENABLE_T_INTERNAL
+    cli();
+    monitor_off_T = analogInputs.reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_ - Settings::TempDifference);
+    monitor_on_T  = analogInputs.reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_);
+    sei();
 #endif
 #endif
 }

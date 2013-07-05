@@ -22,7 +22,6 @@
 
 void hardware::initialize()
 {
-    analogReference(EXTERNAL);
     pinMode(BACKLIGHT_PIN, OUTPUT);
     pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
     pinMode(FAN_PIN, OUTPUT);

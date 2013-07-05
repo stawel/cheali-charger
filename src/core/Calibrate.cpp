@@ -25,6 +25,7 @@
 #include "Buzzer.h"
 #include "StackInfo.h"
 
+#define MAX_DISP_VAL 4
 
 const char string_c1[] PROGMEM = "B1-3";
 const char string_c2[] PROGMEM = "B4-6";
@@ -264,6 +265,7 @@ void Calibrate::print_v(uint8_t dig){
     case 0: lcdPrint_P(PSTR("v")); break;
     case 1: lcdPrint_P(PSTR("r")); break;
     case 2: lcdPrint_P(PSTR("R")); break;
+    case 3: lcdPrint_P(PSTR("V")); break;
     }
     dig--;
     lcdPrintUnsigned(value_, dig);
@@ -277,9 +279,13 @@ void Calibrate::print_d(AnalogInputs::Name name, int dig)
         if(name == AnalogInputs::Vb1) name = AnalogInputs::Vb1_real;
         if(name == AnalogInputs::Vb2) name = AnalogInputs::Vb2_real;
         switch(dispVal_) {
-        case 0: lcdPrintUnsigned(analogInputs.getValue(name), dig-2);
+        case 0: lcdPrintUnsigned(analogInputs.getValue(name), dig-1);
+                 lcdPrintChar(' ');
                  break;
         case 2: analogInputs.printMeasuredValue(name, dig);
+                 break;
+        case 3: lcdPrintUnsigned(analogInputs.getMeasuredValue(name), dig-1);
+                 lcdPrintChar(' ');
                  break;
         }
     }
@@ -350,19 +356,17 @@ void Calibrate::printCalibrateVunknown()
 void Calibrate::printCalibrateVoutVbal()
 {
     print_v();
-    print_m_2(PSTR(" Vo:"), AnalogInputs::Vout);
-    print_m_3(PSTR("Vbal:"), AnalogInputs::Vbalancer);
+    print_m_2(PSTR(" Vo:"),     AnalogInputs::Vout);
+    print_m_3(PSTR("Vbal:"),    AnalogInputs::Vbalancer);
 }
 
 void Calibrate::printCalibrateB1_3()
 {
     print_v(7);
-    uint8_t dig = 7;
-    if(dispVal_ != 0) dig = 6;
-    print_m_2(PSTR(" 1:"), AnalogInputs::Vb1_real, dig);
-    print_m_1(PSTR("2:"),  AnalogInputs::Vb2_real, dig);
-    if(dispVal_ == 0) lcdPrintChar(' ');
-    print_m_2(PSTR("3:"), AnalogInputs::Vb3_real, dig);
+    uint8_t dig = 6;
+    print_m_2(PSTR(" 1:"),  AnalogInputs::Vb1_real, dig);
+    print_m_1(PSTR("2:"),   AnalogInputs::Vb2_real, dig);
+    print_m_2(PSTR("3:"),   AnalogInputs::Vb3_real, dig);
 }
 #ifdef ENABLE_B0_CALIBRATION
 void Calibrate::printCalibrateB0_Blink()
@@ -386,8 +390,7 @@ void Calibrate::printCalibrateB1_3_Blink()
     } else {
         lcdPrintSpaces(7);
     }
-    uint8_t dig = 7;
-    if(dispVal_ != 0) dig = 6;
+    uint8_t dig = 6;
 
     lcdPrint_P(PSTR(" 1:"));
     if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb1, dig);
@@ -398,7 +401,6 @@ void Calibrate::printCalibrateB1_3_Blink()
     if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb2, dig);
     else lcdPrintSpaces(dig);
 
-    if(dispVal_ == 0) lcdPrintChar(' ');
     lcdPrint_P(PSTR("3:"));
     if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb3_real, dig);
     else lcdPrintSpaces(dig);
@@ -414,8 +416,7 @@ void Calibrate::printCalibrateB4_6_Blink()
     } else {
         lcdPrintSpaces(7);
     }
-    uint8_t dig = 7;
-    if(dispVal_ != 0) dig = 6;
+    uint8_t dig = 6;
 
     lcdPrint_P(PSTR(" 4:"));
     if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb4_real, dig);
@@ -426,7 +427,6 @@ void Calibrate::printCalibrateB4_6_Blink()
     if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb5_real, dig);
     else lcdPrintSpaces(dig);
 
-    if(dispVal_ == 0) lcdPrintChar(' ');
     lcdPrint_P(PSTR("6:"));
     if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb6_real, dig);
     else lcdPrintSpaces(dig);
@@ -435,11 +435,9 @@ void Calibrate::printCalibrateB4_6_Blink()
 void Calibrate::printCalibrateB4_6()
 {
     print_v(7);
-    uint8_t dig = 7;
-    if(dispVal_ != 0) dig = 6;
+    uint8_t dig = 6;
     print_m_2(PSTR(" 4:"), AnalogInputs::Vb4_real, dig);
     print_m_1(PSTR("5:"), AnalogInputs::Vb5_real, dig);
-    if(dispVal_ == 0) lcdPrintChar(' ');
     print_m_2(PSTR("6:"), AnalogInputs::Vb6_real, dig);
 }
 
@@ -586,7 +584,7 @@ bool Calibrate::calibrate(screenType p)
             break;
         }
         if(key == BUTTON_NONE && last_key == BUTTON_START && released) {
-            dispVal_ = (dispVal_+1)%3;
+            dispVal_ = (dispVal_+1)%MAX_DISP_VAL;
         }
         if(key == BUTTON_NONE) released = true;
 
