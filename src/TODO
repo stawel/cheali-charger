@@ -7,7 +7,6 @@ low priority:
  - add Pb batter type
  - add new "charge complete" msg
  - add calibration done sound
- - add better buzzer sound
  - add input voltage drop warning
 
 Done:

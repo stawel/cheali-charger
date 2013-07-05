@@ -1,7 +1,7 @@
 include(${CMAKE_SOURCE_DIR}/src/core/CMakeLists.txt)
 
 set(hardware imaxB6)
-set(execName "cheali-charger-${hardware}")
+set(execName "cheali-charger-${hardware}-${cheali-charger-version}")
 
 
 set(SOURCE_FILES
