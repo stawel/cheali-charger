@@ -23,8 +23,8 @@ set(CORE_SOURCE
         Menu.h
         Menu.cpp
         memory.h
-        Multiplexer.cpp
-        Multiplexer.h
+#        Multiplexer.cpp
+#        Multiplexer.h
         ProgramData.cpp
         ProgramData.h
         ProgramDataMenu.cpp

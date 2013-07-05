@@ -2,6 +2,7 @@ include(${CMAKE_SOURCE_DIR}/src/core/CMakeLists.txt)
 
 set(hardware GTPowerA6-10)
 set(execName "cheali-charger-${hardware}-${cheali-charger-version}")
+set(sizeName "cheali-charger-${hardware}")
 
 
 set(SOURCE_FILES
@@ -43,5 +44,5 @@ add_custom_command(
 
 
 add_custom_target(${execName}.size ALL
-    COMMAND ${CMAKE_SOURCE_DIR}/src/core/avr-size.sh $<TARGET_FILE:${execName}> $<TARGET_FILE:${execName}>.size 
+    COMMAND ${CMAKE_SOURCE_DIR}/src/core/avr-size.sh $<TARGET_FILE:${execName}> ${sizeName}.size 
     DEPENDS ${execName})

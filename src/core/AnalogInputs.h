@@ -149,14 +149,6 @@ public:
     uint8_t getConnectedBalancePorts() const;
     bool isConnected(Name name) const;
 
-    template<uint8_t analogInput>
-    static uint16_t analogValue() {
-        // TODO: think it over
-        ::analogRead(analogInput);
-        delayMicroseconds(30);
-        return MAKE_ANALOG_INPUTS_RESOLUTION(::analogRead(analogInput), STD_ANALOG_INPUTS_RESOLUTION);
-    }
-
     uint16_t getCalculationCount() { return calculationCount_; }
     void printRealValue(Name name, uint8_t dig) const;
     void printMeasuredValue(Name name, uint8_t dig) const;
