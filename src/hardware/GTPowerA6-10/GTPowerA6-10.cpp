@@ -28,6 +28,14 @@ void hardware::initialize()
     pinMode(FAN_PIN, OUTPUT);
     pinMode(BUZZER_PIN, OUTPUT);
 
+    pinMode(BALANCER1_LOAD_PIN, OUTPUT);
+    pinMode(BALANCER2_LOAD_PIN, OUTPUT);
+    pinMode(BALANCER3_LOAD_PIN, OUTPUT);
+    pinMode(BALANCER4_LOAD_PIN, OUTPUT);
+    pinMode(BALANCER5_LOAD_PIN, OUTPUT);
+    pinMode(BALANCER6_LOAD_PIN, OUTPUT);
+
+
     pinMode(SMPS_VALUE_PIN, OUTPUT);
     pinMode(SMPS_DISABLE_PIN, OUTPUT);
     pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
@@ -41,7 +49,8 @@ void hardware::initialize()
 
     setBatteryOutput(false);
     setFan(false);
-    hardware::setBuzzer(0);
+    setBuzzer(0);
+    setBalancer(0);
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
     timer.init();
@@ -105,16 +114,6 @@ void hardware::setBalancer(uint8_t v)
 
 void hardware::setBalancerOutput(bool enable)
 {
-    uint8_t mode = INPUT;
-    if(enable)
-        mode = OUTPUT;
-    pinMode(BALANCER1_LOAD_PIN, mode);
-    pinMode(BALANCER2_LOAD_PIN, mode);
-    pinMode(BALANCER3_LOAD_PIN, mode);
-    pinMode(BALANCER4_LOAD_PIN, mode);
-    pinMode(BALANCER5_LOAD_PIN, mode);
-    pinMode(BALANCER6_LOAD_PIN, mode);
-
 }
 
 

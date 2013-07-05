@@ -111,10 +111,11 @@ void setMuxAddress(uint8_t address)
     static uint8_t last = -1;
     if(address !=last) {
         last = address;
-        digitalWrite(MUX_ADR0_PIN, address&1);
-        digitalWrite(MUX_ADR1_PIN, address&2);
-        digitalWrite(MUX_ADR2_PIN, address&4);
-//        PORTB = (PORTB & 0x1f) | (address & 7) << 5;
+//        digitalWrite(MUX_ADR0_PIN, address&1);
+//        digitalWrite(MUX_ADR1_PIN, address&2);
+//        digitalWrite(MUX_ADR2_PIN, address&4);
+        uint8_t port_adr =  ((address&1) << 2) | (address&2) | ((address&4) >>2);
+        PORTB = (PORTB & 0x1f) | (port_adr) << 5;
     }
 }
 
