@@ -1,6 +1,7 @@
 #include "TimerOne.h"
 #include "Hardware.h"
 #include <avr/interrupt.h>
+#include <util/atomic.h>
 
 namespace {
     volatile unsigned int TimerOne_value=0;
@@ -16,11 +17,10 @@ namespace {
         v=(TimerOne_sumValue>>TIMERONE_PRECISION);
         TimerOne_sumValue-=v<<TIMERONE_PRECISION;
 
-        oldSREG = SREG;
-        cli();
-        if(whichPin == 14) OCR1A = v;
-        if(whichPin == 13) OCR1B = v;
-        SREG = oldSREG;
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+            if(whichPin == 14) OCR1A = v;
+            if(whichPin == 13) OCR1B = v;
+        }
     }
 }
 
@@ -32,21 +32,18 @@ ISR(TIMER1_OVF_vect)
 
 void TimerOne::setPWM(char pin, uint16_t val)  // expects duty cycle to be 10 bit (1024)
 {
-    uint8_t oldSREG;
-    oldSREG = SREG;
-    cli();
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
 
-    TimerOne_value = val;
-    whichPin = pin;
-// the OCR1A or OCR1B will be updated at the TIMER1 interrupt
-//  setOCR();
-    if(pin == 14) {
-        TCCR1A |= _BV(COM1A1);                                 // activates the output pin
-    } else if(pin == 13) {
-        TCCR1A |= _BV(COM1B1);
+        TimerOne_value = val;
+        whichPin = pin;
+//      the OCR1A or OCR1B will be updated at the TIMER1 interrupt
+//      setOCR();
+        if(pin == 14) {
+            TCCR1A |= _BV(COM1A1);                                 // activates the output pin
+        } else if(pin == 13) {
+            TCCR1A |= _BV(COM1B1);
+        }
     }
-
-    SREG = oldSREG;
 }
 
 void TimerOne::initialize()
@@ -54,11 +51,9 @@ void TimerOne::initialize()
     TCCR1A = 0;                 // clear control register A
     TCCR1B = _BV(WGM13);        // set mode 8: phase and frequency correct pwm, stop the timer
 
-    uint8_t oldSREG = SREG;
-    cli();
-    ICR1 = TIMERONE_PERIOD;
-    SREG = oldSREG;
-
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        ICR1 = TIMERONE_PERIOD;
+    }
     TCCR1B &= ~(_BV(CS10) | _BV(CS11) | _BV(CS12));
     TCCR1B |= _BV(CS10);
 

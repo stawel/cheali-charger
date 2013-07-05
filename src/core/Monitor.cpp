@@ -22,6 +22,7 @@
 #include "Utils.h"
 #include "Settings.h"
 #include "ProgramData.h"
+#include <util/atomic.h>
 
 Monitor monitor;
 
@@ -53,10 +54,10 @@ void Monitor::update()
 {
 #ifdef ENABLE_FAN
 #ifdef ENABLE_T_INTERNAL
-    cli();
-    monitor_off_T = analogInputs.reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_ - Settings::TempDifference);
-    monitor_on_T  = analogInputs.reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_);
-    sei();
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        monitor_off_T = analogInputs.reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_ - Settings::TempDifference);
+        monitor_on_T  = analogInputs.reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_);
+    }
 #endif
 #endif
 }

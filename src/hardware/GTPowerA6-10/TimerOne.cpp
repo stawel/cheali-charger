@@ -36,6 +36,7 @@
 #ifndef TIMERONE_cpp
 #define TIMERONE_cpp
 
+#include <util/atomic.h>
 #include "TimerOne.h"
 
 TimerOne Timer1;              // preinstatiate
@@ -65,10 +66,10 @@ void TimerOne::setPeriod(long microseconds)        // AR modified for atomic acc
   else if((cycles >>= 2) < RESOLUTION) clockSelectBits = _BV(CS12) | _BV(CS10);  // prescale by /1024
   else        cycles = RESOLUTION - 1, clockSelectBits = _BV(CS12) | _BV(CS10);  // request was out of bounds, set as maximum
   
-  oldSREG = SREG;                
-  cli();                            // Disable interrupts for 16 bit register access
-  ICR1 = pwmPeriod = cycles;                                          // ICR1 is TOP in p & f correct pwm mode
-  SREG = oldSREG;
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+      // Disable interrupts for 16 bit register access
+      ICR1 = pwmPeriod = cycles;                                          // ICR1 is TOP in p & f correct pwm mode
+  }
   
   TCCR1B &= ~(_BV(CS10) | _BV(CS11) | _BV(CS12));
   TCCR1B |= clockSelectBits;                                          // reset clock select register, and starts the clock
@@ -76,11 +77,10 @@ void TimerOne::setPeriod(long microseconds)        // AR modified for atomic acc
 
 void TimerOne::setPwmDuty(char pin, unsigned int dutyCycle)
 {
-  oldSREG = SREG;
-  cli();
-  if(pin == 1 || pin == 9 || pin == 14)       OCR1A = dutyCycle;
-  else if(pin == 2 || pin == 10 || pin == 13) OCR1B = dutyCycle;
-  SREG = oldSREG;
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+      if(pin == 1 || pin == 9 || pin == 14)       OCR1A = dutyCycle;
+      else if(pin == 2 || pin == 10 || pin == 13) OCR1B = dutyCycle;
+  }
 }
 
 void TimerOne::pwm(char pin, unsigned int duty, long microseconds)  // expects duty cycle to be 10 bit (1024)
@@ -136,16 +136,13 @@ void TimerOne::start()    // AR addition, renamed by Lex to reflect it's actual 
   //TODO: stawel ??
   //  GTCCR |= _BV(PSRSYNC);           // AR added - reset prescaler (NB: shared with all 16 bit timers);
 
-  oldSREG = SREG;                // AR - save status register
-  cli();                        // AR - Disable interrupts
-  TCNT1 = 0;                    
-  SREG = oldSREG;                  // AR - Restore status register
-
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+      TCNT1 = 0;
+  }
   do {    // Nothing -- wait until timer moved on from zero - otherwise get a phantom interrupt
-    oldSREG = SREG;
-    cli();
-    tcnt1 = TCNT1;
-    SREG = oldSREG;
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+          tcnt1 = TCNT1;
+    }
   } while (tcnt1==0); 
  
 //  TIFR1 = 0xff;                      // AR - Clear interrupt flags
@@ -162,10 +159,9 @@ unsigned long TimerOne::read()        //returns the value of the timer in micros
       unsigned long tmp;                // AR amended to hold more than 65536 (could be nearly double this)
       unsigned int tcnt1;                // AR added
 
-    oldSREG= SREG;
-      cli();                            
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
       tmp=TCNT1;                        
-    SREG = oldSREG;
+    }
 
     char scale=0;
     switch (clockSelectBits)
@@ -188,10 +184,9 @@ unsigned long TimerOne::read()        //returns the value of the timer in micros
     }
     
     do {    // Nothing -- max delay here is ~1023 cycles.  AR modified
-        oldSREG = SREG;
-        cli();
-        tcnt1 = TCNT1;
-        SREG = oldSREG;
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+            tcnt1 = TCNT1;
+        }
     } while (tcnt1==tmp); //if the timer has not ticked yet
 
     //if we are counting down add the top value to how far we have counted down

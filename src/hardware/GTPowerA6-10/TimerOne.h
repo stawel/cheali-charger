@@ -48,7 +48,6 @@ class TimerOne
     // properties
     unsigned int pwmPeriod;
     unsigned char clockSelectBits;
-    char oldSREG;                    // To hold Status Register while ints disabled
 
     // methods
     void initialize(long microseconds=1000000);
