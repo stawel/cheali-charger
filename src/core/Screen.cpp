@@ -318,7 +318,7 @@ void Screen::displayScreenTemperature()
     if(settings.externT_ || settings.isDebug())
         analogInputs.printRealValue(AnalogInputs::Textern,    5);
     else
-        lcdPrint_P(PSTR("not used"));
+        lcdPrint_P(PSTR("-"));
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
