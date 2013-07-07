@@ -3,7 +3,7 @@ Welcome to cheali-charger!
 This project is an alternative firmware for the G.T. POWER A6-10 200W Lipo charger.
 
 Don't use it if You don't need to!
-(not everything is implemented yet).  
+(not everything is implemented yet).
 This is a early version so be very careful.
 Use it only if You can not calibrate your
 charger with the original firmware.
@@ -16,7 +16,7 @@ Features
 - Li-ion, LiPo and LiFe:
   - charging
   - fast charging
-  - charging + balancing at the same time (not implemented yet)
+  - charging + balancing at the same time
   - discharging 
   - balancing
   - storage
@@ -47,7 +47,9 @@ Always use the external temperature probe!
 Hardware
 --------
 - G.T. POWER A6-10 200W (http://www.hobbyking.com/hobbyking/store/__7386__GT_A_6_10_200W_Balance_charger_discharger.html)
-- IMAX B6 Charger/Discharger 1-6 Cells (comming soon)
+- IMAX B6 Charger/Discharger 1-6 Cells:
+    - original: http://www.hobbyking.com/hobbyking/store/__5548__IMAX_B6_Charger_Discharger_1_6_Cells_GENUINE_.html
+    - clone:    http://www.hobbyking.com/hobbyking/store/__15379__IMAX_B6_Charger_Discharger_1_6_Cells_COPY_.html
 - .... - any suggestions are very welcome
 
 
@@ -64,13 +66,20 @@ user@~$ cd cheali-charger
 user@~/cheali-charger$ ./bootstrap
 user@~/cheali-charger$ make
 
-flashing with USBasp:
- 
+flashing GTPowerA6-10 with USBasp:
+
 user@~/cheali-charger$ cd src/hardware/GTPowerA6-10
 edit file: progUSBasp.sh, replace "TTY=/dev/ttyUSB0" to match your configuration.
 user@~/cheali-charger/src/hardware/GTPowerA6-10$ ./progUSBasp.sh
+
+flashing imaxB6 with USBasp:
+
+user@~/cheali-charger$ cd src/hardware/imaxB6/
+edit file: progUSBasp.sh, replace "TTY=/dev/ttyUSB0" to match your configuration.
+user@~/cheali-charger/src/hardware/imaxB6$ ./progUSBasp.sh
+
 </pre>
- 
+
 Now You should see a "ChealiCharger welcome" screen.
 
 Done.
@@ -80,40 +89,49 @@ Flashing: G.T. POWER A6-10 200W
 
 - Connect a standard AVR ISP 10-pin cable to the board: https://github.com/stawel/cheali-charger/blob/master/docs/GTPowerA6-10/front.jpg
 - set "Device" to: atmega32
-- use the cheali-charger/hex/cheali-charger-0.10.hex file as "Flash"
+- use the cheali-charger/hex/cheali-charger-GTPowerA6-10-0.20.hex file as "Flash"
 
 
+Flashing: IMAX B6
+-------------------------------
 
-Calibration
+- Connect a AVR ISP to the board, make sure that you have the appropriate connector!
+    - IMAX B6 - original: https://github.com/stawel/cheali-charger/blob/master/docs/imaxB6/imaxB6-original-front.jpg
+    - IMAX B6 - clone: https://github.com/stawel/cheali-charger/blob/master/docs/imaxB6/imaxB6-clone-front.jpg
+- set "Device" to: atmega32
+- use the cheali-charger/hex/cheali-charger-imaxB6-0.20.hex file as "Flash"
+
+
+Calibration (IMAX B6 and G.T. POWER A6-10 200W)
 -----------
 Connect a NOT fully charged LiPo battery to the main leads
 and the balance port.
 
 go to: "options"->"calibrate":
-- balance port calibration: go to "B0-2", "B3-5"  
-   - use a voltmeter to measure the voltage of all cells  
-     and set the values in the appropriate fields.  
-- output voltage calibration: go to "B0-5 to Vout"  
-   - press the "start" button for a few seconds  
+- balance port calibration: go to "B0-2", "B3-5"
+   - use a voltmeter to measure the voltage of all cells
+     and set the values in the appropriate fields.
+- output voltage calibration: go to "B0-5 to Vout"
+   - press the "start" button for a few seconds
      (this will copy the voltage from the balance port)
-- charge current calibration: go to "Icharge"  
-  connect your amperemeter in series with the battery  
-  - go to: "50mA"  
-    press "Inc", "Dec" buttons until the amperemeter shows 50mA  
-    press "start" button for a few seconds  
-  - go to: "1000mA"  
-    press "Inc", "Dec" buttons until the amperemeter shows 1000mA  
-    press "start" button for a few seconds  
-    WARNING: the battery will be charged with high current!  
-- discharge current calibration: go to "Idischarge"  
-    Repeat the same steps as before  
-    WARNING: the battery will be discharged with high current!  
+- charge current calibration: go to "Icharge"
+  connect your amperemeter in series with the battery
+  - go to: "50mA"
+    press "Inc", "Dec" buttons until the amperemeter shows 50mA
+    press "start" button for a few seconds
+  - go to: "1000mA"
+    press "Inc", "Dec" buttons until the amperemeter shows 1000mA
+    press "start" button for a few seconds
+    WARNING: the battery will be charged with high current!
+- discharge current calibration: go to "Idischarge"
+    Repeat the same steps as before
+    WARNING: the battery will be discharged with high current!
 
 Done.
 
 
 
-Have fun! 
+Have fun!
 
 
 
