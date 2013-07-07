@@ -1,6 +1,9 @@
 Welcome to cheali-charger!
 
-This project is an alternative firmware for the G.T. POWER A6-10 200W Lipo charger.
+This project is an alternative firmware for the:
+    - G.T. POWER A6-10 200W
+    - IMAX B6
+Lipo charger.
 
 Don't use it if You don't need to!
 (not everything is implemented yet).
@@ -8,7 +11,7 @@ This is a early version so be very careful.
 Use it only if You can not calibrate your
 charger with the original firmware.
 
-Any feedback is very welcome!  
+Any feedback is very welcome!
 https://github.com/stawel/cheali-charger
 
 Features
@@ -40,7 +43,7 @@ Features
 WARNING
 -------
 Please CALIBRATE the charger before use!
-Always use the external temperature probe!  
+Always use the external temperature probe!
 (if You like your house ;) )
 
 
@@ -49,7 +52,7 @@ Hardware
 - G.T. POWER A6-10 200W (http://www.hobbyking.com/hobbyking/store/__7386__GT_A_6_10_200W_Balance_charger_discharger.html)
 - IMAX B6 Charger/Discharger 1-6 Cells:
     - original: http://www.hobbyking.com/hobbyking/store/__5548__IMAX_B6_Charger_Discharger_1_6_Cells_GENUINE_.html
-    - clone:    http://www.hobbyking.com/hobbyking/store/__15379__IMAX_B6_Charger_Discharger_1_6_Cells_COPY_.html
+    - clone: http://www.hobbyking.com/hobbyking/store/__15379__IMAX_B6_Charger_Discharger_1_6_Cells_COPY_.html
 - .... - any suggestions are very welcome
 
 
@@ -108,10 +111,10 @@ Connect a NOT fully charged LiPo battery to the main leads
 and the balance port.
 
 go to: "options"->"calibrate":
-- balance port calibration: go to "B0-2", "B3-5"
+- balance port calibration: go to "B1-3", "B4-6"
    - use a voltmeter to measure the voltage of all cells
      and set the values in the appropriate fields.
-- output voltage calibration: go to "B0-5 to Vout"
+- output voltage calibration: go to "B1-6 to Vout"
    - press the "start" button for a few seconds
      (this will copy the voltage from the balance port)
 - charge current calibration: go to "Icharge"
