@@ -1,8 +1,8 @@
 Welcome to cheali-charger!
 
-This project is an alternative firmware for the:
-    - G.T. POWER A6-10 200W
-    - IMAX B6
+This project is an alternative firmware for the
+G.T. POWER A6-10 200W
+or IMAX B6
 Lipo charger.
 
 Don't use it if You don't need to!
@@ -20,13 +20,13 @@ Features
   - charging
   - fast charging
   - charging + balancing at the same time
-  - discharging 
+  - discharging
   - balancing
   - storage
   - storage + balancing
 - Ni-Cd and NiMH - not well tested!
   - charging, method: -dV/dT
-  - discharging 
+  - discharging
   - cycling (not implemented yet)
 - Pb (not implemented yet)
 - Internal resistance display
@@ -36,7 +36,7 @@ Features
 - Internal and external temperature monitoring
 - Overcharge and overdischarge monitoring
 - Input voltage monitoring
-- Memory for 32 batteries 
+- Memory for 32 batteries
 - CALIBATION!
 
 
