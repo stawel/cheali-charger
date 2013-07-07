@@ -5,13 +5,13 @@ G.T. POWER A6-10 200W
 or IMAX B6
 Lipo charger.
 
-Don't use it if You don't need to!
-(not everything is implemented yet).
-This is a early version so be very careful.
-Use it only if You can not calibrate your
+Don't use it if You don't need to!  
+(not everything is implemented yet).  
+This is a early version so be very careful.  
+Use it only if You can not calibrate your  
 charger with the original firmware.
 
-Any feedback is very welcome!
+Any feedback is very welcome!  
 https://github.com/stawel/cheali-charger
 
 Features
@@ -42,8 +42,8 @@ Features
 
 WARNING
 -------
-Please CALIBRATE the charger before use!
-Always use the external temperature probe!
+Please CALIBRATE the charger before use!  
+Always use the external temperature probe!  
 (if You like your house ;) )
 
 
@@ -51,8 +51,8 @@ Hardware
 --------
 - G.T. POWER A6-10 200W (http://www.hobbyking.com/hobbyking/store/__7386__GT_A_6_10_200W_Balance_charger_discharger.html)
 - IMAX B6 Charger/Discharger 1-6 Cells:
-    - original: http://www.hobbyking.com/hobbyking/store/__5548__IMAX_B6_Charger_Discharger_1_6_Cells_GENUINE_.html
-    - clone: http://www.hobbyking.com/hobbyking/store/__15379__IMAX_B6_Charger_Discharger_1_6_Cells_COPY_.html
+    - original:http://www.hobbyking.com/hobbyking/store/__5548__IMAX_B6_Charger_Discharger_1_6_Cells_GENUINE_.html
+    - clone:http://www.hobbyking.com/hobbyking/store/__15379__IMAX_B6_Charger_Discharger_1_6_Cells_COPY_.html
 - .... - any suggestions are very welcome
 
 
@@ -112,22 +112,22 @@ and the balance port.
 
 go to: "options"->"calibrate":
 - balance port calibration: go to "B1-3", "B4-6"
-   - use a voltmeter to measure the voltage of all cells
+   - use a voltmeter to measure the voltage of all cells  
      and set the values in the appropriate fields.
 - output voltage calibration: go to "B1-6 to Vout"
-   - press the "start" button for a few seconds
+   - press the "start" button for a few seconds  
      (this will copy the voltage from the balance port)
-- charge current calibration: go to "Icharge"
-  connect your amperemeter in series with the battery
-  - go to: "50mA"
-    press "Inc", "Dec" buttons until the amperemeter shows 50mA
-    press "start" button for a few seconds
-  - go to: "1000mA"
-    press "Inc", "Dec" buttons until the amperemeter shows 1000mA
-    press "start" button for a few seconds
+- charge current calibration: go to "Icharge"  
+  connect your amperemeter in series with the battery  
+  - go to: "50mA"  
+    press "Inc", "Dec" buttons until the amperemeter shows 50mA  
+    press "start" button for a few seconds  
+  - go to: "1000mA"  
+    press "Inc", "Dec" buttons until the amperemeter shows 1000mA  
+    press "start" button for a few seconds  
     WARNING: the battery will be charged with high current!
-- discharge current calibration: go to "Idischarge"
-    Repeat the same steps as before
+- discharge current calibration: go to "Idischarge"  
+    Repeat the same steps as before  
     WARNING: the battery will be discharged with high current!
 
 Done.
