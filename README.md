@@ -118,7 +118,7 @@ go to: "options"->"calibrate":
    - press the "start" button for a few seconds  
      (this will copy the voltage from the balance port)
 - charge current calibration: go to "Icharge"  
-  connect your amperemeter in series with the battery  
+  connect your ampere meter in series with the battery on the red wire! (+)  
   - go to: "50mA"  
     press "Inc", "Dec" buttons until the amperemeter shows 50mA  
     press "start" button for a few seconds  
@@ -132,6 +132,11 @@ go to: "options"->"calibrate":
 
 Done.
 
+Mailing list
+------------
+If you have any questions or suggestions please write to us at: cheali-chargerATgooglegroups.com  
+or visit: http://groups.google.com/group/cheali-charger  
+The mailing list is open for all.
 
 
 Have fun!
