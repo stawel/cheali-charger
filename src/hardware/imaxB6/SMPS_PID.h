@@ -14,7 +14,7 @@
 
 namespace SMPS_PID
 {
-    void init();
+    void init(uint16_t Vin, uint16_t Vout);
     void setPID_MV(uint16_t value);
     void powerOn();
     void powerOff();

@@ -37,11 +37,21 @@ void SMPS_PID::update()
     SMPS_PID::setPID_MV(PID_MV>>PID_MV_PRECISION);
 }
 
-void SMPS_PID::init()
+void SMPS_PID::init(uint16_t Vin, uint16_t Vout)
 {
+
     PID_setpoint = 0;
-    PID_MV = 0;
-    PID_enable = false;
+    // 1V as an error margin
+    Vout -= ANALOG_VOLT(1.000);
+    if(Vout>Vin) {
+        Vout = Vin;
+    }
+
+    PID_MV = TIMERONE_PRECISION_PERIOD;
+    PID_MV *= Vout;
+    PID_MV /= Vin;
+    PID_MV <<= PID_MV_PRECISION;
+    PID_enable = true;
 }
 
 namespace {
@@ -85,9 +95,12 @@ void hardware::setChargerOutput(bool enable)
     if(enable) setDischargerOutput(false);
     disableChargerBuck();
     disableChargerBoost();
-    SMPS_PID::init();
-    PID_enable = enable;
+    PID_enable = false;
     digitalWrite(SMPS_DISABLE_PIN, !enable);
+    if(enable) {
+        analogInputs.doFullMeasurement();
+        SMPS_PID::init(analogInputs.getValue(AnalogInputs::Vin), analogInputs.getValue(AnalogInputs::Vout));
+    }
 }
 
 
