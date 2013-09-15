@@ -371,13 +371,13 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
     case AnalogInputs::Charge:
         dot = false;
         dig--;
-        unit ='h';
+        unit ='A';
         break;
     }
     lcdPrintEValue(x, (int8_t) dig, dot);
     lcdPrintChar(unit);
 
-    if(type == AnalogInputs::Charge)     lcdPrintChar('A');
+    if(type == AnalogInputs::Charge)     lcdPrintChar('h');
 }
 
 
