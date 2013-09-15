@@ -35,7 +35,7 @@
 //     -std=c++0x
 
 class __FlashStringHelper;
-#define F(string_literal) (reinterpret_cast<__FlashStringHelper *>(PSTR(string_literal)))
+#define F(string_literal) (reinterpret_cast<const __FlashStringHelper *>(PSTR(string_literal)))
 
 // An inherited class for holding the result of a concatenation.  These
 // result objects are assumed to be writable by subsequent concatenations.
@@ -147,6 +147,7 @@ public:
 	void getBytes(unsigned char *buf, unsigned int bufsize, unsigned int index=0) const;
 	void toCharArray(char *buf, unsigned int bufsize, unsigned int index=0) const
 		{getBytes((unsigned char *)buf, bufsize, index);}
+	const char * c_str() const { return buffer; }
 
 	// search
 	int indexOf( char ch ) const;

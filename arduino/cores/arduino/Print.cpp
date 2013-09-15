@@ -41,7 +41,7 @@ size_t Print::write(const uint8_t *buffer, size_t size)
 
 size_t Print::print(const __FlashStringHelper *ifsh)
 {
-  const char *p = (const char *)ifsh;
+  const char PROGMEM *p = (const char PROGMEM *)ifsh;
   size_t n = 0;
   while (1) {
     unsigned char c = pgm_read_byte(p++);
@@ -225,6 +225,11 @@ size_t Print::printNumber(unsigned long n, uint8_t base) {
 size_t Print::printFloat(double number, uint8_t digits) 
 { 
   size_t n = 0;
+  
+  if (isnan(number)) return print("nan");
+  if (isinf(number)) return print("inf");
+  if (number > 4294967040.0) return print ("ovf");  // constant determined empirically
+  if (number <-4294967040.0) return print ("ovf");  // constant determined empirically
   
   // Handle negative numbers
   if (number < 0.0)
