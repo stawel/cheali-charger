@@ -27,7 +27,7 @@
 #define PROGRAM_DATA_MAX_NAME 14
 
 struct ProgramData {
-    enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo,                 LAST_BATTERY_TYPE};
+    enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo, NiZn,           LAST_BATTERY_TYPE};
     enum VoltageType {VIdle,VCharge,VDischarge,VStorage, VUpperLimit,            LAST_VOLTAGE_TYPE};
 
     struct BatteryData {
@@ -68,7 +68,7 @@ struct ProgramData {
     void check();
     void loadDefault();
 
-    bool isLiXX() const { return battery.type == Life || battery.type == Lilo || battery.type == Lipo;};
+    bool isLiXX() const { return battery.type == Life || battery.type == Lilo || battery.type == Lipo || battery.type == NiZn; };
     bool isNiXX() const { return battery.type == NiCd || battery.type == NiMH; };
 
     static void loadProgramData(int index);
