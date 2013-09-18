@@ -124,7 +124,7 @@ namespace {
         lcdPrintDigit(from+1);
         lcdPrintChar(':');
 #ifdef ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
-        if(from == 0 && !settings.isDebug() && discharger.isPowerOn() && discharger.getValue()>0) {
+        if(from == 0 && discharger.isPowerOn() && discharger.getValue()>0) {
             lcdPrint_P(PSTR("n.a."));
             from++;
         } else {
@@ -289,33 +289,11 @@ void Screen::displayScreenVout()
     lcdPrintSpaces();
 }
 
-void Screen::displayDebugI()
-{
-    AnalogInputs::Name Iset;
-    AnalogInputs::Name Iget;
-    if(smps.isPowerOn()) {
-        Iset = AnalogInputs::IsmpsValue;
-        Iget = AnalogInputs::Ismps;
-    } else {
-        Iset = AnalogInputs::IdischargeValue;
-        Iget = AnalogInputs::Idischarge;
-    }
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("Iset="));
-    analogInputs.printRealValue(Iset, 7);
-    lcdPrintSpaces();
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("Iget="));
-    analogInputs.printRealValue(Iget, 7);
-    lcdPrintSpaces();
-}
-
-
 void Screen::displayScreenTemperature()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("Text="));
-    if(settings.externT_ || settings.isDebug())
+    if(settings.externT_)
         analogInputs.printRealValue(AnalogInputs::Textern,    5);
     else
         lcdPrint_P(PSTR("-"));
@@ -408,7 +386,7 @@ void Screen::displayDeltaTextern()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("Text="));
-    if(settings.externT_ || settings.isDebug()) {
+    if(settings.externT_) {
         lcdPrintTemperature(analogInputs.deltaLastT_, 9);
     } else {
         lcdPrint_P(PSTR("not used"));
@@ -420,65 +398,6 @@ void Screen::displayDeltaTextern()
     deltaT();
 }
 
-void Screen::displayDebugDelta()
-{
-    lcdSetCursor0_0();
-
-    lcdPrint_P(PSTR("C="));
-    lcdPrintUnsigned(analogInputs.getRealValue(AnalogInputs::deltaLastCount),5);
-    lcdPrint_P(PSTR(" L="));
-    int x = analogInputs.deltaLastT_;
-    lcdPrintSigned(x, 6);
-    lcdPrintSpaces();
-
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("N="));
-    lcdPrintUnsigned(analogInputs.deltaCount_,5);
-    lcdPrint_P(PSTR(" L="));
-    x = ProgramData::currentProgramData.getDeltaVLimit();
-    lcdPrintSigned(x, 6);
-    lcdPrintSpaces();
-}
-
-void Screen::displayDebugBalancerReal0_2()
-{
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("0:"));
-    analogInputs.printRealValue(AnalogInputs::Vb0_real, 6);
-    lcdPrint_P(PSTR("1:"));
-    analogInputs.printRealValue(AnalogInputs::Vb1_real, 6);
-    lcdPrintSpaces();
-
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("2:"));
-    analogInputs.printRealValue(AnalogInputs::Vb2_real, 6);
-    lcdPrint_P(PSTR(" real"));
-    lcdPrintSpaces();
-}
-
-void Screen::displayDebugRthVth()
-{
-    lcdSetCursor0_0();
-
-    lcdPrint_P(PSTR("V="));
-    //lcdPrintResistance(Rth_, 8);
-    lcdPrintSigned(theveninMethod.tVout_.Rth_V_);
-    lcdPrint_P(PSTR(" I="));
-    //lcdPrintResistance(Rth_, 8);
-    lcdPrintSigned(theveninMethod.tVout_.Rth_I_);
-    lcdPrintSpaces();
-
-    lcdSetCursor0_1();
-    lcdPrintSigned(theveninMethod.tVout_.Vth_);
-    lcdPrintChar(' ');
-    lcdPrintSigned(theveninMethod.valueTh_, 4);
-    lcdPrintChar(' ');
-    uint16_t v;
-    if(smps.isPowerOn())    v = smps.getValue();
-    else                    v = discharger.getValue();
-    lcdPrintSigned(v,4);
-    lcdPrintSpaces();
-}
 
 void Screen::displayNotImplemented()
 {
@@ -495,12 +414,6 @@ void Screen::displayScreenReversedPolarity()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("REVERSE POLARITY"));
-
-    if(settings.isDebug()) {
-        lcdSetCursor0_1();
-        lcdPrint_P(PSTR("Vrev:"));
-        lcdPrintUnsigned(analogInputs.getRealValue(AnalogInputs::VreversePolarity), 8);
-    }
 }
 
 void Screen::displayStartInfo()
@@ -553,25 +466,14 @@ void Screen::display(ScreenType screen)
     case ScreenCIVlimits:               return displayScreenCIVlimits();
     case ScreenTime:                    return displayScreenTime();
     case ScreenTemperature:             return displayScreenTemperature();
-    case ScreenDebugBalancerReal0_2:    return displayDebugBalancerReal0_2();
     case ScreenBalancer1_3:             return displayBalanceInfo(0, 0, AnalogInputs::Voltage);
     case ScreenBalancer4_6:             return displayBalanceInfo(3, 0, AnalogInputs::Voltage);
-    case ScreenDebugBalancer1_3M:       return displayBalanceInfo(0, 1, AnalogInputs::Voltage);
-    case ScreenDebugBalancer4_6M:       return displayBalanceInfo(3, 1, AnalogInputs::Voltage);
-    case ScreenDebugBalancer1_3RthV:    return displayBalanceInfo(0, 2, AnalogInputs::Unknown);
-    case ScreenDebugBalancer4_6RthV:    return displayBalanceInfo(3, 2, AnalogInputs::Unknown);
-    case ScreenDebugBalancer1_3RthI:    return displayBalanceInfo(0, 3, AnalogInputs::Unknown);
-    case ScreenDebugBalancer4_6RthI:    return displayBalanceInfo(3, 3, AnalogInputs::Unknown);
     case ScreenBalancer1_3Rth:          return displayBalanceInfo(0, 4, AnalogInputs::Resistance);
     case ScreenBalancer4_6Rth:          return displayBalanceInfo(3, 4, AnalogInputs::Resistance);
-    case ScreenDebugRthVth:             return displayDebugRthVth();
     case ScreenStartInfo:               return displayStartInfo();
     case ScreenR:                       return displayScreenR();
     case ScreenVout:                    return displayScreenVout();
     case ScreenVinput:                  return displayScreenVinput();
-    case ScreenDebugReversedPolarity:   return displayScreenReversedPolarity();
-    case ScreenDebugI:                  return displayDebugI();
-    case ScreenDebugDelta:              return displayDebugDelta();
     case ScreenDeltaVout:               return displayDeltaVout();
     case ScreenDeltaTextern:            return displayDeltaTextern();
     case ScreenDeltaFirst:              return displayDeltaFirst();

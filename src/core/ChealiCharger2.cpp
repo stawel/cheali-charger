@@ -27,6 +27,8 @@
 #include "Version.h"
 #include "Settings.h"
 #include "StackInfo.h"
+#include "Hardware.h"
+#include "SerialLog.h"
 
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
@@ -59,10 +61,7 @@ void setup()
     StackInfo::initialize();
 #endif
 
-#ifdef USE_SERIAL
-    Serial.begin(9600);
-    Serial.println("ChealiCharger hello!");
-#endif //USE_SERIAL
+    SerialLog::initialize();
 
     Settings::load();
     lcdPrint_P(PSTR("  ChealiCharger"));

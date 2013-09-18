@@ -28,8 +28,14 @@ public:
         ChargePb, DischargePb,
         EditBattery, LAST_PROGRAM_TYPE};
 
+    enum ProgramState {
+        None, Info, Done, Error,
+        Charging, ChargingBalancing, Discharging, Balancing, Storage
+    };
+
     static AnalogInputs::Name iName_;
     static ProgramType programType_;
+    static ProgramState programState_;
     static const char * stopReason_;
 
     static void selectProgram(int index);

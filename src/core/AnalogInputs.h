@@ -93,6 +93,11 @@ public:
         VobInfo,
         VbalanceInfo,
 
+        Iout,
+        Pout,
+        Cout,
+        Eout,
+
         deltaVout,
         deltaVoutMax,
         deltaTextern,
@@ -126,11 +131,12 @@ public:
     ValueType calibrateValue(Name name, ValueType x) const;
     ValueType reverseCalibrateValue(Name name, ValueType y) const;
 
-    void finalizeMeasurement();
     void doFullMeasurement();
-    void doVirtualCalculations();
-    void doCalculations();
-    void doDeltaCalculations();
+
+    void finalizeMeasurement();
+    void finalizeDeltaMeasurement();
+    void finalizeFullMeasurement();
+    void finalizeFullVirtualMeasurement();
 
     void clearAvr();
     void resetADC();
@@ -138,7 +144,7 @@ public:
     void resetMeasurement();
     void resetDelta();
     void powerOn();
-    void powerOff() { on_ = false; }
+    void powerOff();
     bool isPowerOn() { return on_; }
 
 

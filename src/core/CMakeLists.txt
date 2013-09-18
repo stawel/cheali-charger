@@ -89,6 +89,9 @@ set(CORE_SOURCE
 
         StackInfo.cpp
         StackInfo.h
+
+        SerialLog.h
+        SerialLog.cpp
 )
 
 set (CORE_SOURCE_FILES "")

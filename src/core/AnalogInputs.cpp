@@ -19,6 +19,7 @@
 #include "AnalogInputs.h"
 #include "memory.h"
 #include "LcdPrint.h"
+#include "SerialLog.h"
 
 
 AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS] EEMEM;
@@ -69,7 +70,7 @@ bool AnalogInputs::isConnected(Name name) const
     }
 }
 
-void AnalogInputs::doDeltaCalculations()
+void AnalogInputs::finalizeDeltaMeasurement()
 {
     bool useVBalancer = real_[VobInfo] == Vbalancer;
     if(useVBalancer) {
@@ -127,7 +128,7 @@ void AnalogInputs::doDeltaCalculations()
     }
 }
 
-void AnalogInputs::doVirtualCalculations()
+void AnalogInputs::finalizeFullVirtualMeasurement()
 {
     AnalogInputs::ValueType oneVolt = ANALOG_VOLT(1);
     AnalogInputs::ValueType balancer = 0;
@@ -155,20 +156,45 @@ void AnalogInputs::doVirtualCalculations()
     }
 
     setReal(Vbalancer, balancer);
+    AnalogInputs::Name obInfo;
     if(balancer == 0 || (out > balancer && out - balancer > oneVolt)) {
         //balancer not connected or big error in calibration
-        setReal(VoutBalancer, out);
-        setReal(VobInfo, Vout);
-        setReal(VbalanceInfo, 0);
+        obInfo = Vout;
+        ports = 0;
     } else {
-        setReal(VoutBalancer, balancer);
-        setReal(VobInfo, Vbalancer);
-        setReal(VbalanceInfo, ports);
+        out = balancer;
+        obInfo = Vbalancer;
     }
-    doDeltaCalculations();
+    setReal(VoutBalancer, out);
+    setReal(VbalanceInfo, ports);
+    setReal(VobInfo, obInfo);
+
+    AnalogInputs::ValueType IoutValue = 0;
+    AnalogInputs::ValueType CoutValue = 0;
+    if(discharger.isPowerOn()) {
+        IoutValue = getRealValue(Idischarge);
+        CoutValue = discharger.getDischarge();
+    } else if (discharger.isPowerOn()) {
+        IoutValue = getRealValue(Ismps);
+        CoutValue = smps.getCharge();
+    }
+
+    setReal(Iout, IoutValue);
+    setReal(Cout, CoutValue);
+
+    uint32_t P = IoutValue;
+    P *= out;
+    P /= 10000;
+    setReal(Pout, P);
+
+    //TODO: rewrite
+    uint32_t E = CoutValue;
+    E *= out;
+    E /= 10000;
+    setReal(Eout, E);
 }
 
-void AnalogInputs::doCalculations()
+void AnalogInputs::finalizeFullMeasurement()
 {
     calculationCount_++;
     FOR_ALL_PHY_INPUTS(name) {
@@ -176,7 +202,10 @@ void AnalogInputs::doCalculations()
         ValueType real = calibrateValue(name, avrValue_[name]);
         setReal(name, real);
     }
-    doVirtualCalculations();
+    finalizeFullVirtualMeasurement();
+#ifdef ENABLE_SERIAL_LOG
+    SerialLog::send();
+#endif //ENABLE_SERIAL_LOG
     clearAvr();
 }
 
@@ -240,8 +269,16 @@ void AnalogInputs::powerOn()
     if(!on_) {
         reset();
         on_ = true;
+        SerialLog::powerOn();
     }
 }
+
+void AnalogInputs::powerOff()
+{
+    on_ = false;
+    SerialLog::powerOff();
+}
+
 bool AnalogInputs::isReversePolarity()
 {
     AnalogInputs::ValueType vr = getMeasuredValue(VreversePolarity);
@@ -258,9 +295,9 @@ void AnalogInputs::finalizeMeasurement()
         avrSum_[name] += measured_[name];
     }
     avrCount_++;
-    doDeltaCalculations();
+    finalizeDeltaMeasurement();
     if(avrCount_ == AVR_MAX_COUNT) {
-        doCalculations();
+        finalizeFullMeasurement();
     }
 }
 

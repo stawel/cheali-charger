@@ -60,7 +60,6 @@ void SMPS::powerOff(STATE reason)
     if(!isPowerOn() || reason == CHARGING)
         return;
 
-
     analogInputs.powerOff();
     setValue(0);
     hardware::setChargerOutput(false);

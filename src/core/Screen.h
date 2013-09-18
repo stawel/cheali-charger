@@ -50,17 +50,6 @@ public:
         ScreenVinput,
         ScreenDeltaVout,
         ScreenDeltaTextern,
-
-
-        //Debug screens
-        ScreenDebugRthVth = Debug,
-        ScreenDebugI,
-        ScreenDebugReversedPolarity,
-        ScreenDebugDelta,
-        ScreenDebugBalancerReal0_2,
-        ScreenDebugBalancer1_3M,    ScreenDebugBalancer4_6M,
-        ScreenDebugBalancer1_3RthV, ScreenDebugBalancer4_6RthV,
-        ScreenDebugBalancer1_3RthI, ScreenDebugBalancer4_6RthI,
         };
 
     void display(ScreenType screen);
@@ -77,10 +66,6 @@ public:
     void displayDeltaFirst();
 
     void displayScreenProgramCompleted();
-    void displayDebugBalancerReal0_2();
-    void displayDebugRthVth();
-    void displayDebugI();
-    void displayDebugDelta();
 
     void displayMonitorError();
     void displayStartInfo();
