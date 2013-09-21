@@ -38,8 +38,8 @@
 
 #define ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
 //TODO: should be implemented!
-//when the imaxB6 discharges, the voltage on Vb0_real
-//(Vb0_real = VBATT- on the balance port)
+//when the imaxB6 discharges, the voltage on Vb0_pin
+//(Vb0_pin = VBATT- on the balance port)
 //drops below 0V so the ADC doesn't see it.
 //This is why we see a greater Vb1 resistance.
 #define ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION

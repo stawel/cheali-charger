@@ -157,22 +157,22 @@ void Calibrate::copyVbalVout()
 }
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-void calibrateSimplifiedVb1_real(AnalogInputs::ValueType real_v)
+void calibrateSimplifiedVb1_pin(AnalogInputs::ValueType real_v)
 {
     AnalogInputs::CalibrationPoint p1,p2;
-    p1.x = AnalogInputs::getValue(AnalogInputs::Vb1_real);
-    p1.y = real_v + AnalogInputs::getRealValue(AnalogInputs::Vb0_real);
-    p2.x = AnalogInputs::getValue(AnalogInputs::Vb2_real);
+    p1.x = AnalogInputs::getValue(AnalogInputs::Vb1_pin);
+    p1.y = real_v + AnalogInputs::getRealValue(AnalogInputs::Vb0_pin);
+    p2.x = AnalogInputs::getValue(AnalogInputs::Vb2_pin);
     p2.y = p1.y + AnalogInputs::getRealValue(AnalogInputs::Vb2);
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb1_real, 1, p1);
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_real, 1, p2);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb1_pin, 1, p1);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, 1, p2);
 }
-void calibrateSimplifiedVb2_real(AnalogInputs::ValueType real_v)
+void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
 {
     AnalogInputs::CalibrationPoint p2;
-    p2.x = AnalogInputs::getValue(AnalogInputs::Vb2_real);
-    p2.y = real_v + AnalogInputs::getRealValue(AnalogInputs::Vb1_real);
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_real, 1, p2);
+    p2.x = AnalogInputs::getValue(AnalogInputs::Vb2_pin);
+    p2.y = real_v + AnalogInputs::getRealValue(AnalogInputs::Vb1_pin);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, 1, p2);
 }
 
 #endif
@@ -192,8 +192,8 @@ void Calibrate::setBalancer(AnalogInputs::Name firstName)
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
     AnalogInputs::Name virtual_name = name;
 
-    if(name == AnalogInputs::Vb1_real) virtual_name = AnalogInputs::Vb1;
-    if(name == AnalogInputs::Vb2_real) virtual_name = AnalogInputs::Vb2;
+    if(name == AnalogInputs::Vb1_pin) virtual_name = AnalogInputs::Vb1;
+    if(name == AnalogInputs::Vb2_pin) virtual_name = AnalogInputs::Vb2;
     p.y = AnalogInputs::getRealValue(virtual_name);
 #else
     p.y = AnalogInputs::getRealValue(name);
@@ -202,10 +202,10 @@ void Calibrate::setBalancer(AnalogInputs::Name firstName)
         p.x = AnalogInputs::getValue(name);
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-        if(name == AnalogInputs::Vb1_real)
-            calibrateSimplifiedVb1_real(p.y);
-        else if(name == AnalogInputs::Vb2_real)
-            calibrateSimplifiedVb2_real(p.y);
+        if(name == AnalogInputs::Vb1_pin)
+            calibrateSimplifiedVb1_pin(p.y);
+        else if(name == AnalogInputs::Vb2_pin)
+            calibrateSimplifiedVb2_pin(p.y);
         else
             AnalogInputs::setCalibrationPoint(name, 1, p);
 #else
@@ -276,8 +276,8 @@ void Calibrate::print_d(AnalogInputs::Name name, int dig)
     if(dispVal_ == 1) {
         AnalogInputs::printRealValue(name, dig);
     } else {
-        if(name == AnalogInputs::Vb1) name = AnalogInputs::Vb1_real;
-        if(name == AnalogInputs::Vb2) name = AnalogInputs::Vb2_real;
+        if(name == AnalogInputs::Vb1) name = AnalogInputs::Vb1_pin;
+        if(name == AnalogInputs::Vb2) name = AnalogInputs::Vb2_pin;
         switch(dispVal_) {
         case 0: lcdPrintUnsigned(AnalogInputs::getValue(name), dig-1);
                  lcdPrintChar(' ');
@@ -364,17 +364,17 @@ void Calibrate::printCalibrateB1_3()
 {
     print_v(7);
     uint8_t dig = 6;
-    print_m_2(PSTR(" 1:"),  AnalogInputs::Vb1_real, dig);
-    print_m_1(PSTR("2:"),   AnalogInputs::Vb2_real, dig);
-    print_m_2(PSTR("3:"),   AnalogInputs::Vb3_real, dig);
+    print_m_2(PSTR(" 1:"),  AnalogInputs::Vb1_pin, dig);
+    print_m_1(PSTR("2:"),   AnalogInputs::Vb2_pin, dig);
+    print_m_2(PSTR("3:"),   AnalogInputs::Vb3_pin, dig);
 }
 #ifdef ENABLE_B0_CALIBRATION
 void Calibrate::printCalibrateB0_Blink()
 {
     lcdSetCursor0_0();
-    lcdPrintUnsigned(AnalogInputs::getValue(AnalogInputs::Vb0_real), 7);
+    lcdPrintUnsigned(AnalogInputs::getValue(AnalogInputs::Vb0_pin), 7);
     lcdPrint_P(PSTR(" 0:"));
-    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb0_real, 6);
+    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb0_pin, 6);
     else lcdPrintSpaces();
 
     lcdSetCursor0_1();
@@ -402,7 +402,7 @@ void Calibrate::printCalibrateB1_3_Blink()
     else lcdPrintSpaces(dig);
 
     lcdPrint_P(PSTR("3:"));
-    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb3_real, dig);
+    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb3_pin, dig);
     else lcdPrintSpaces(dig);
 }
 
@@ -419,16 +419,16 @@ void Calibrate::printCalibrateB4_6_Blink()
     uint8_t dig = 6;
 
     lcdPrint_P(PSTR(" 4:"));
-    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb4_real, dig);
+    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb4_pin, dig);
     else lcdPrintSpaces(dig);
 
     lcdSetCursor0_1();
     lcdPrint_P(PSTR("5:"));
-    if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb5_real, dig);
+    if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb5_pin, dig);
     else lcdPrintSpaces(dig);
 
     lcdPrint_P(PSTR("6:"));
-    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb6_real, dig);
+    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb6_pin, dig);
     else lcdPrintSpaces(dig);
 }
 
@@ -436,9 +436,9 @@ void Calibrate::printCalibrateB4_6()
 {
     print_v(7);
     uint8_t dig = 6;
-    print_m_2(PSTR(" 4:"), AnalogInputs::Vb4_real, dig);
-    print_m_1(PSTR("5:"), AnalogInputs::Vb5_real, dig);
-    print_m_2(PSTR("6:"), AnalogInputs::Vb6_real, dig);
+    print_m_2(PSTR(" 4:"), AnalogInputs::Vb4_pin, dig);
+    print_m_1(PSTR("5:"), AnalogInputs::Vb5_pin, dig);
+    print_m_2(PSTR("6:"), AnalogInputs::Vb6_pin, dig);
 }
 
 void Calibrate::printCalibrateT()
@@ -483,10 +483,10 @@ void Calibrate::setBlink(screenType screen)
 {
     switch (screen) {
 #ifdef ENABLE_B0_CALIBRATION
-        case SCREEN_B0_BLINK:          setBalancer(AnalogInputs::Vb0_real); break;
+        case SCREEN_B0_BLINK:          setBalancer(AnalogInputs::Vb0_pin); break;
 #endif
-        case SCREEN_B1_3_BLINK:        setBalancer(AnalogInputs::Vb1_real); break;
-        case SCREEN_B4_6_BLINK:        setBalancer(AnalogInputs::Vb4_real); break;
+        case SCREEN_B1_3_BLINK:        setBalancer(AnalogInputs::Vb1_pin); break;
+        case SCREEN_B4_6_BLINK:        setBalancer(AnalogInputs::Vb4_pin); break;
     }
 }
 

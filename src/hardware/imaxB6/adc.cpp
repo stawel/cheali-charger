@@ -39,14 +39,14 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                        {47828, ANALOG_VOLT(14.042)}},  //Vin
     {{19650,ANALOG_CELCIUS(29.8)},  {18700, ANALOG_CELCIUS(60)}},   //Textern
 
-    {{0, 0},                        {48963, ANALOG_VOLT(3.752)}},   //Vb0_real
-    {{0, 0},                        {54848, ANALOG_VOLT(4.179)}},   //Vb1_real
-    {{0, 0},                        {56000, ANALOG_VOLT(8.359)}},   //Vb2_real
-    {{0, 0},                        {55667, ANALOG_VOLT(4.171)}},   //Vb3_real
+    {{0, 0},                        {48963, ANALOG_VOLT(3.752)}},   //Vb0_pin
+    {{0, 0},                        {54848, ANALOG_VOLT(4.179)}},   //Vb1_pin
+    {{0, 0},                        {56000, ANALOG_VOLT(8.359)}},   //Vb2_pin
+    {{0, 0},                        {55667, ANALOG_VOLT(4.171)}},   //Vb3_pin
 
-    {{0, 0},                        {54577, ANALOG_VOLT(4.182)}},   //Vb4_real
-    {{0, 0},                        {54720, ANALOG_VOLT(4.178)}},   //Vb5_real
-    {{0, 0},                        {55300, ANALOG_VOLT(4.165)}},   //Vb6_real
+    {{0, 0},                        {54577, ANALOG_VOLT(4.182)}},   //Vb4_pin
+    {{0, 0},                        {54720, ANALOG_VOLT(4.178)}},   //Vb5_pin
+    {{0, 0},                        {55300, ANALOG_VOLT(4.165)}},   //Vb6_pin
 
     //1-1 correlation
     {{0,0},                         {10000, 10000}},                //IsmpsValue
@@ -69,19 +69,19 @@ struct adc_correlation {
 const adc_correlation order_analogInputs_on[] PROGMEM = {
     {MADDR_T_EXTERN,                MUX0_Z_A_PIN,           AnalogInputs::Textern,          false},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            true},
-    {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_A_PIN,           AnalogInputs::Vb0_real,         false},
+    {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_A_PIN,           AnalogInputs::Vb0_pin,         false},
     {-1,                            REVERSE_POLARITY_PIN,   AnalogInputs::VreversePolarity, false},
-    {MADDR_V_BALANSER6,             MUX0_Z_A_PIN,           AnalogInputs::Vb6_real,         false},
+    {MADDR_V_BALANSER6,             MUX0_Z_A_PIN,           AnalogInputs::Vb6_pin,         false},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            true},
-    {MADDR_V_BALANSER5,             MUX0_Z_A_PIN,           AnalogInputs::Vb5_real,         false},
+    {MADDR_V_BALANSER5,             MUX0_Z_A_PIN,           AnalogInputs::Vb5_pin,         false},
     {-1,                            DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       false},
-    {MADDR_V_BALANSER4,             MUX0_Z_A_PIN,           AnalogInputs::Vb4_real,         false},
+    {MADDR_V_BALANSER4,             MUX0_Z_A_PIN,           AnalogInputs::Vb4_pin,         false},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            true},
-    {MADDR_V_BALANSER3,             MUX0_Z_A_PIN,           AnalogInputs::Vb3_real,         false},
+    {MADDR_V_BALANSER3,             MUX0_Z_A_PIN,           AnalogInputs::Vb3_pin,         false},
     {-1,                            V_IN_PIN,               AnalogInputs::Vin,              false},
-    {MADDR_V_BALANSER1,             MUX0_Z_A_PIN,           AnalogInputs::Vb1_real,         false},
+    {MADDR_V_BALANSER1,             MUX0_Z_A_PIN,           AnalogInputs::Vb1_pin,         false},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            true},
-    {MADDR_V_BALANSER2,             MUX0_Z_A_PIN,           AnalogInputs::Vb2_real,         false},
+    {MADDR_V_BALANSER2,             MUX0_Z_A_PIN,           AnalogInputs::Vb2_pin,         false},
     {-1,                            OUTPUT_VOLATAGE_PIN,    AnalogInputs::Vout ,            false},
 };
 
