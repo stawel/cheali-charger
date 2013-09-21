@@ -24,8 +24,9 @@
 #include "Program.h"
 
 namespace SerialLog {
+    enum State { On, Off, Starting };
     uint32_t startTime;
-    bool isOn;
+    State state;
     uint8_t CRC;
     AnalogInputs::Name logging[] = {
             AnalogInputs::VoutBalancer,
@@ -51,32 +52,38 @@ void SerialLog::initialize()
 #ifdef ENABLE_SERIAL_LOG
     Serial.begin(SERIAL_SPEED);
 //    Serial.println("ChealiCharger hello!");
-    isOn = false;
+    state = Off;
 #endif //ENABLE_SERIAL_LOG
 }
 
 void SerialLog::powerOn()
 {
 #ifdef ENABLE_SERIAL_LOG
-    if(isOn)
+    if(state != Off)
         return;
-    isOn = true;
-
-    startTime = Timer::getMiliseconds();
-    sendTime(startTime);
+    state = Starting;
 #endif //ENABLE_SERIAL_LOG
 }
 
 void SerialLog::powerOff()
 {
 #ifdef ENABLE_SERIAL_LOG
-    isOn = false;
+    state = Off;
 #endif //ENABLE_SERIAL_LOG
 }
 
 void SerialLog::send()
 {
 #ifdef ENABLE_SERIAL_LOG
+
+    if(state == Off)
+        return;
+
+    if(state == Starting) {
+        startTime = Timer::getMiliseconds();
+        state = On;
+    }
+
     uint32_t t = Timer::getMiliseconds();
     sendTime(t);
 #endif //ENABLE_SERIAL_LOG
@@ -113,7 +120,7 @@ void SerialLog::printUInt(uint16_t x)
 
 void SerialLog::sendTime(uint32_t t)
 {
-    if(!isOn)
+    if(state != On)
         return;
 
     CRC = 0;
