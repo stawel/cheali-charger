@@ -71,6 +71,7 @@ void hardware::initialize()
     lcd.begin(LCD_COLUMNS, LCD_LINES);
     Timer::initialize();
     SMPS::initialize();
+    Discharger::initialize();
 
     TimerOne::initialize();
     adc::initialize();
@@ -123,7 +124,6 @@ void hardware::setBalancer(uint8_t v)
     digitalWrite(BALANCER6_LOAD_PIN, v&32);
 }
 
-Discharger discharger;
 Balancer balancer;
 AnalogInputs analogInputs;
 

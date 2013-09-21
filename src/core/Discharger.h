@@ -22,23 +22,18 @@
 
 #define DISCHARGER_UPPERBOUND_VALUE ((F_CPU / 2000000) * TIMER_INTERRUPT_PERIOD_MICROSECONDS)
 
-class Discharger {
-public:
+namespace Discharger {
     enum STATE { DISCHARGING, DISCHARGING_COMPLETE, ERROR};
-    static const AnalogInputs::Name VName = AnalogInputs::VoutBalancer;
-    static const AnalogInputs::Name IName = AnalogInputs::Idischarge;
-
-    Discharger();
-
-    static AnalogInputs::ValueType getVout();
-    static AnalogInputs::ValueType getIdischarge();
-
-    STATE getState() const { return state_; }
-    bool isPowerOn() const { return getState() == DISCHARGING; }
-    bool isWorking() const { return value_ != 0; }
 
 
-    uint16_t getValue() const { return value_; }
+    void initialize();
+
+    STATE getState();
+    bool isPowerOn();
+    bool isWorking();
+
+
+    uint16_t getValue();
     void setValue(uint16_t value);
     void setRealValue(uint16_t I);
 
@@ -47,19 +42,7 @@ public:
 
     void doSlowInterrupt();
 
-    uint16_t getDischarge() const;
-
-protected:
-
-#ifdef ENABLE_T_INTERNAL
-    uint16_t correctValueTintern(uint16_t v);
-    bool tempcutoff_;
-#endif
-    void finalizeValueTintern(bool force);
-
-    STATE state_;
-    uint16_t value_,valueSet_;
-    uint32_t discharge_;
+    uint16_t getDischarge();
 };
 
 

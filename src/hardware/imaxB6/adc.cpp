@@ -199,7 +199,7 @@ void adc::startConversion() {
 void adc::finalizeMeasurement()
 {
     analogInputs.measured_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
-    analogInputs.measured_[AnalogInputs::IdischargeValue]   = discharger.getValue();
+    analogInputs.measured_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
     analogInputs.finalizeMeasurement();
 }
 

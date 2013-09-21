@@ -19,21 +19,29 @@
 #include "Utils.h"
 #include "Settings.h"
 
-Discharger::Discharger():
-discharge_(0)
+
+namespace Discharger {
+#ifdef ENABLE_T_INTERNAL
+    uint16_t correctValueTintern(uint16_t v);
+    bool tempcutoff_;
+#endif
+    void finalizeValueTintern(bool force);
+
+    STATE state_;
+    uint16_t value_,valueSet_;
+    uint32_t discharge_;
+
+    STATE getState()    { return state_; }
+    bool isPowerOn()    { return getState() == DISCHARGING; }
+    bool isWorking()    { return value_ != 0; }
+    uint16_t getValue() { return value_; }
+
+}
+
+void Discharger::initialize()
 {
     setValue(0);
     powerOff(DISCHARGING_COMPLETE);
-}
-
-
-AnalogInputs::ValueType Discharger::getVout()
-{
-    return analogInputs.getRealValue(VName);
-}
-AnalogInputs::ValueType Discharger::getIdischarge()
-{
-    return analogInputs.getRealValue(IName);
 }
 
 void Discharger::setValue(uint16_t value)
@@ -109,11 +117,11 @@ void Discharger::doSlowInterrupt()
 #ifdef ENABLE_T_INTERNAL
         finalizeValueTintern(false);
 #endif
-        discharge_+=getIdischarge();
+        discharge_+=analogInputs.getIout();
     }
 }
 
-uint16_t Discharger::getDischarge() const
+uint16_t Discharger::getDischarge()
 {
     uint32_t retu = discharge_;
 #if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 512

@@ -57,11 +57,9 @@
 #include "Discharger.h"
 #include "Balancer.h"
 
-class Discharger;
 
 extern LiquidCrystal lcd;
 extern AnalogInputs analogInputs;
-extern Discharger discharger;
 extern Balancer balancer;
 
 namespace hardware {

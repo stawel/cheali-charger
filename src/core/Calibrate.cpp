@@ -604,7 +604,7 @@ bool Calibrate::calibrateDischarge()
     bool released = false;
     value_ = 0;
     dispVal_ = 1;
-    discharger.powerOn();
+    Discharger::powerOn();
     uint8_t key, last_key;
     do {
         printCalibrateIdischarge();
@@ -612,11 +612,11 @@ bool Calibrate::calibrateDischarge()
         key = Keyboard::getPressedWithSpeed();
         if(key == BUTTON_INC && value_ < 760*2) {
             value_++;
-            discharger.setValue(value_);
+            Discharger::setValue(value_);
         }
         if(key == BUTTON_DEC && value_ > 0) {
             value_--;
-            discharger.setValue(value_);
+            Discharger::setValue(value_);
         }
         if(key == BUTTON_START && Keyboard::getSpeed() == ACCEPT_DELAY && released) {
             retu = true;
@@ -626,7 +626,7 @@ bool Calibrate::calibrateDischarge()
         }
         if(key == BUTTON_NONE) released = true;
     } while(key != BUTTON_STOP);
-    discharger.powerOff();
+    Discharger::powerOff();
     return retu;
 }
 

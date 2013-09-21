@@ -171,9 +171,9 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
 
     AnalogInputs::ValueType IoutValue = 0;
     AnalogInputs::ValueType CoutValue = getRealValue(Cout);
-    if(discharger.isPowerOn()) {
+    if(Discharger::isPowerOn()) {
         IoutValue = getRealValue(Idischarge);
-        CoutValue = discharger.getDischarge();
+        CoutValue = Discharger::getDischarge();
     } else if (SMPS::isPowerOn()) {
         IoutValue = getRealValue(Ismps);
         CoutValue = SMPS::getCharge();

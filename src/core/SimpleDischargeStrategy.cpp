@@ -25,22 +25,22 @@ SimpleDischargeStrategy simpleDischargeStrategy;
 void SimpleDischargeStrategy::powerOff()
 {
     balancer.powerOff();
-    discharger.powerOff();
+    Discharger::powerOff();
 }
 
 void SimpleDischargeStrategy::powerOn()
 {
-    discharger.powerOn();
+    Discharger::powerOn();
     balancer.powerOn();
 
-    discharger.setRealValue(I_);
+    Discharger::setRealValue(I_);
 }
 
 
 Strategy::statusType SimpleDischargeStrategy::doStrategy()
 {
     if(isMinVout()) {
-        discharger.powerOff(Discharger::DISCHARGING_COMPLETE);
+        Discharger::powerOff(Discharger::DISCHARGING_COMPLETE);
         return COMPLETE;
     }
     return RUNNING;
@@ -52,11 +52,11 @@ bool SimpleDischargeStrategy::isMinVout() const
     AnalogInputs::ValueType Vc = V_;
     AnalogInputs::ValueType Vc_per_cell = balancer.calculatePerCell(Vc);
 
-    return Vc >= discharger.getVout() || balancer.isMinVout(Vc_per_cell);
+    return Vc >= analogInputs.getVout() || balancer.isMinVout(Vc_per_cell);
 }
 
 
 bool SimpleDischargeStrategy::isStable() const
 {
-    return analogInputs.isStable(discharger.VName) && analogInputs.isStable(discharger.IName) && balancer.isStable();
+    return analogInputs.isStable(AnalogInputs::VoutBalancer) && analogInputs.isStable(AnalogInputs::Iout) && balancer.isStable();
 }

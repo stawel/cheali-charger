@@ -25,13 +25,13 @@ TheveninDischargeStrategy theveninDischargeStrategy;
 
 void TheveninDischargeStrategy::powerOff()
 {
-    discharger.powerOff();
+    Discharger::powerOff();
 }
 
 
 void TheveninDischargeStrategy::powerOn()
 {
-    discharger.powerOn();
+    Discharger::powerOn();
     balancer.powerOn();
     theveninMethod.init();
     Program::iName_ = AnalogInputs::IdischargeValue;
@@ -52,7 +52,7 @@ Strategy::statusType TheveninDischargeStrategy::doStrategy()
 {
     bool stable;
     bool isEndVout = isMinVout();
-    uint16_t oldValue = discharger.getValue();
+    uint16_t oldValue = Discharger::getValue();
 
     //when discharging near the end, the battery voltage is very unstable
     //but we need new discharge values at that point
@@ -60,14 +60,14 @@ Strategy::statusType TheveninDischargeStrategy::doStrategy()
 
     //test for charge complete
     if(theveninMethod.isComlete(isEndVout, oldValue)) {
-        discharger.powerOff(Discharger::DISCHARGING_COMPLETE);
+        Discharger::powerOff(Discharger::DISCHARGING_COMPLETE);
         return COMPLETE;
     }
 
     if(stable) {
         uint16_t value = theveninMethod.calculateNewValue(isEndVout, oldValue);
         if(value != oldValue) {
-            discharger.setValue(value);
+            Discharger::setValue(value);
         }
     }
     return RUNNING;

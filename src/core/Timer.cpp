@@ -39,7 +39,7 @@ namespace Timer {
         if(--slowInterval == 0){
             slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
             SMPS::doSlowInterrupt();
-            discharger.doSlowInterrupt();
+            Discharger::doSlowInterrupt();
             Screen::doSlowInterrupt();
         }
     }

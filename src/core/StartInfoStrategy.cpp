@@ -26,7 +26,7 @@ StartInfoStrategy startInfoStrategy;
 
 void StartInfoStrategy::powerOn()
 {
-    discharger.powerOn();
+    Discharger::powerOn();
     Screen::blink.startBlinkOn(7);
     Buzzer::begin();
     ok_ = 3;
@@ -34,7 +34,7 @@ void StartInfoStrategy::powerOn()
 
 void StartInfoStrategy::powerOff()
 {
-    discharger.powerOff();
+    Discharger::powerOff();
     Screen::blink.stopBlink();
     Buzzer::soundOff();
 }

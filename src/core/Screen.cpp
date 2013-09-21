@@ -119,7 +119,7 @@ namespace Screen{
         lcdPrintDigit(from+1);
         lcdPrintChar(':');
 #ifdef ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
-        if(from == 0 && discharger.isPowerOn() && discharger.getValue()>0) {
+        if(from == 0 && Discharger::isPowerOn() && Discharger::getValue()>0) {
             lcdPrint_P(PSTR("n.a."));
             from++;
         } else {
@@ -151,7 +151,7 @@ void Screen::printChar_Time() {
     char c = 'N';
     if(SMPS::isPowerOn()) {
         c = 'C';
-    } else if(discharger.isPowerOn()) {
+    } else if(Discharger::isPowerOn()) {
         c = 'D';
         if(SMPS::isPowerOn()) c = 'E';
     } else if(balancer.isWorking()) {
@@ -215,7 +215,7 @@ void Screen::powerOff()
 
 void Screen::doSlowInterrupt()
 {
-   if(SMPS::isWorking() || discharger.isWorking())
+   if(SMPS::isWorking() || Discharger::isWorking())
        totalChargDischargeTime_ += SLOW_INTERRUPT_PERIOD_MILISECONDS;
 
    if(balancer.isWorking())
