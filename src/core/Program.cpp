@@ -159,7 +159,7 @@ namespace {
         Strategy::statusType status = Strategy::RUNNING;
         strategy.powerOn();
         screen.powerOn();
-        monitor.powerOn();
+        Monitor::powerOn();
         lcdClear();
         uint8_t screen_nr = 0;
         screen_limit--;
@@ -176,7 +176,7 @@ namespace {
             }
 
             if(run) {
-                status = monitor.run();
+                status = Monitor::run();
                 run = analizeStrategyStatus(strategy, status, exitImmediately);
 
                 if(run && newMesurmentData != analogInputs.getCalculationCount()) {

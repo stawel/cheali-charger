@@ -19,17 +19,13 @@
 #define MONITOR_H_
 
 
-class Monitor {
-public:
-    uint16_t VoutMaxMesured_;
-    Monitor(){};
+namespace Monitor {
     Strategy::statusType run();
     void doInterrupt();
     void powerOn();
-    static void update();
+    void update();
 };
 
-extern Monitor monitor;
 
 #endif /* MONITOR_H_ */
 

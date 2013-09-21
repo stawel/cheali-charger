@@ -24,16 +24,20 @@
 #include "ProgramData.h"
 #include <util/atomic.h>
 
-Monitor monitor;
+
+namespace Monitor {
+
+uint16_t VoutMaxMesured_;
 
 #ifdef ENABLE_FAN
 #ifdef ENABLE_T_INTERNAL
-namespace {
     AnalogInputs::ValueType monitor_on_T;
     AnalogInputs::ValueType monitor_off_T;
-} // namespace
 #endif
 #endif
+} // namespace Monitor
+
+
 
 void Monitor::doInterrupt()
 {

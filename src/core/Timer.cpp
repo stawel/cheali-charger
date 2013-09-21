@@ -26,7 +26,7 @@ static void callback() {
     static uint8_t slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
     timer.doInterrupt();
     Buzzer::doInterrupt();
-    monitor.doInterrupt();
+    Monitor::doInterrupt();
     hardware::doInterrupt();
     if(--slowInterval == 0){
         slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
