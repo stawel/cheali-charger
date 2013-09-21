@@ -149,6 +149,8 @@ namespace AnalogInputs {
     bool isPowerOn();
 
     void initialize();
+    void doSlowInterrupt();
+    uint16_t getCharge();
 
     void restoreDefault();
     void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);

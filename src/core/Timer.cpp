@@ -38,8 +38,8 @@ namespace Timer {
         hardware::doInterrupt();
         if(--slowInterval == 0){
             slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
-            SMPS::doSlowInterrupt();
             Discharger::doSlowInterrupt();
+            AnalogInputs::doSlowInterrupt();
             Screen::doSlowInterrupt();
         }
     }

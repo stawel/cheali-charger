@@ -33,14 +33,12 @@ void ChargeBalanceStrategy::powerOff()
 {
     theveninChargeStrategy.powerOff();
     balancer.powerOff();
-    SMPS::setClearCharge(true);
 }
 
 void ChargeBalanceStrategy::powerOn()
 {
     theveninChargeStrategy.powerOn();
     state_ = Charge;
-    SMPS::setClearCharge(false);
     count_ = CHARGE_BALANCE_COUNT;
 }
 

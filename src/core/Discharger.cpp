@@ -29,7 +29,6 @@ namespace Discharger {
 
     STATE state_;
     uint16_t value_,valueSet_;
-    uint32_t discharge_;
 
     STATE getState()    { return state_; }
     bool isPowerOn()    { return getState() == DISCHARGING; }
@@ -96,7 +95,6 @@ void Discharger::powerOn()
     AnalogInputs::powerOn();
     AnalogInputs::doFullMeasurement();
     state_ = DISCHARGING;
-    discharge_ = 0;
 }
 
 void Discharger::powerOff(STATE reason)
@@ -117,21 +115,5 @@ void Discharger::doSlowInterrupt()
 #ifdef ENABLE_T_INTERNAL
         finalizeValueTintern(false);
 #endif
-        discharge_+=AnalogInputs::getIout();
     }
-}
-
-uint16_t Discharger::getDischarge()
-{
-    uint32_t retu = discharge_;
-#if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 512
-//    retu *= TIMER_INTERRUPT_PERIOD_MICROSECONDS;
-    retu /= (1000000/32);//*(3600/16) == TIMER_SLOW_INTERRUPT_INTERVAL
-
-#else
-#warning "TIMER_INTERRUPT_PERIOD_MICROSECONDS != 512"
-    retu /= 1000000/TIMER_INTERRUPT_PERIOD_MICROSECONDS;
-    retu /= 3600/TIMER_SLOW_INTERRUPT_INTERVAL;
-#endif
-    return retu;
 }

@@ -41,8 +41,6 @@ namespace Discharger {
     void powerOff(STATE reason = DISCHARGING_COMPLETE);
 
     void doSlowInterrupt();
-
-    uint16_t getDischarge();
 };
 
 

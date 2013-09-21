@@ -41,6 +41,8 @@ namespace AnalogInputs {
     ValueType   deltaLastT_;
     uint32_t    deltaStartTime_;
 
+    uint32_t    charge_;
+
     ValueType getValue(Name name)                { return avrValue_[name]; }
     ValueType getRealValue(Name name)           { return real_[name]; }
     ValueType getMeasuredValue(Name name)       { return measured_[name]; }
@@ -202,13 +204,11 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
     setReal(VobInfo, obInfo);
 
     AnalogInputs::ValueType IoutValue = 0;
-    AnalogInputs::ValueType CoutValue = getRealValue(Cout);
+    AnalogInputs::ValueType CoutValue = getCharge();
     if(Discharger::isPowerOn()) {
         IoutValue = getRealValue(Idischarge);
-        CoutValue = Discharger::getDischarge();
     } else if (SMPS::isPowerOn()) {
         IoutValue = getRealValue(Ismps);
-        CoutValue = SMPS::getCharge();
     }
 
     setReal(Iout, IoutValue);
@@ -224,6 +224,25 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
     E *= out;
     E /= 10000;
     setReal(Eout, E);
+}
+
+void AnalogInputs::doSlowInterrupt()
+{
+    charge_ += getIout();
+}
+
+uint16_t AnalogInputs::getCharge()
+{
+    uint32_t retu = charge_;
+#if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 512
+//    retu *= TIMER_INTERRUPT_PERIOD_MICROSECONDS;
+    retu /= (1000000/32);//*(3600/16) == TIMER_SLOW_INTERRUPT_INTERVAL
+#else
+#warning "TIMER_INTERRUPT_PERIOD_MICROSECONDS != 512"
+    retu /= 1000000/TIMER_INTERRUPT_PERIOD_MICROSECONDS;
+    retu /= 3600/TIMER_SLOW_INTERRUPT_INTERVAL;
+#endif
+    return retu;
 }
 
 
@@ -305,6 +324,7 @@ void AnalogInputs::reset()
 {
 
     calculationCount_ = 0;
+    charge_ = 0;
     resetADC();
     resetMeasurement();
     resetDelta();

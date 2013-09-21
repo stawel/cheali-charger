@@ -20,8 +20,6 @@
 
 namespace SMPS {
     STATE state_;
-    uint32_t charge_;
-    bool clearCharge_;
     uint16_t value_;
 
     STATE getState()    { return state_; }
@@ -30,7 +28,6 @@ namespace SMPS {
 
 
     uint16_t getValue() { return value_; }
-    void setClearCharge(bool v) {clearCharge_ = v;}
 
 }
 
@@ -67,8 +64,6 @@ void SMPS::powerOn()
     AnalogInputs::powerOn();
     AnalogInputs::doFullMeasurement();
     state_ = CHARGING;
-    if(clearCharge_)
-        charge_ = 0;
 }
 
 
@@ -83,26 +78,3 @@ void SMPS::powerOff(STATE reason)
     hardware::setBatteryOutput(false);
     state_ = reason;
 }
-
-void SMPS::doSlowInterrupt()
-{
-   if(isPowerOn()) {
-           charge_ += AnalogInputs::getIout();
-   }
-}
-
-uint16_t SMPS::getCharge()
-{
-    uint32_t retu = charge_;
-#if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 512
-//    retu *= TIMER_INTERRUPT_PERIOD_MICROSECONDS;
-    retu /= (1000000/32);//*(3600/16) == TIMER_SLOW_INTERRUPT_INTERVAL
-#else
-#warning "TIMER_INTERRUPT_PERIOD_MICROSECONDS != 512"
-    retu /= 1000000/TIMER_INTERRUPT_PERIOD_MICROSECONDS;
-    retu /= 3600/TIMER_SLOW_INTERRUPT_INTERVAL;
-#endif
-    return retu;
-}
-
-

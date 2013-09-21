@@ -39,11 +39,6 @@ namespace SMPS {
     void powerOn();
     void powerOff(STATE reason = CHARGING_COMPLETE);
 
-    void doSlowInterrupt();
-
-    uint16_t getCharge();
-    void setClearCharge(bool v);
-
 };
 
 
