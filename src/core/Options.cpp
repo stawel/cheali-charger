@@ -54,7 +54,7 @@ void Options::resetDefault()
     lcdSetCursor(6,1);
     lcdPrint_P(PSTR("Done"));
     Version::restoreDefault();
-    timer.delay(100);
+    Timer::delay(100);
 }
 
 void Options::run()

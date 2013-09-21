@@ -24,17 +24,13 @@
 #define TIMER_SLOW_INTERRUPT_INTERVAL           225
 #define SLOW_INTERRUPT_PERIOD_MILISECONDS ((long)TIMER_INTERRUPT_PERIOD_MICROSECONDS*TIMER_SLOW_INTERRUPT_INTERVAL/1000)
 
-class Timer {
-    volatile uint32_t interrupts_;
-public:
-    Timer();
-    void init();
+namespace Timer {
+    uint32_t getInterrupts();
+    void initialize();
     void doInterrupt();
-    uint32_t getInterrupts() const { return interrupts_; }
-    uint32_t getMiliseconds() const;
-    void delay(uint16_t ms) const;
+    uint32_t getMiliseconds();
+    void delay(uint16_t ms);
 };
 
-extern Timer timer;
 
 #endif /* TIMER_H_ */

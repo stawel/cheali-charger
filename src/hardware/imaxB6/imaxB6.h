@@ -57,13 +57,11 @@
 #include "Discharger.h"
 #include "Balancer.h"
 
-class Timer;
 class Discharger;
 class SMPS;
 
 extern LiquidCrystal lcd;
 extern AnalogInputs analogInputs;
-extern Timer timer;
 extern SMPS smps;
 extern Discharger discharger;
 extern Balancer balancer;

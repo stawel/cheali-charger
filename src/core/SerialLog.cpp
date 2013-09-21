@@ -62,7 +62,7 @@ void SerialLog::powerOn()
         return;
     isOn = true;
 
-    startTime = timer.getMiliseconds();
+    startTime = Timer::getMiliseconds();
     sendTime(startTime);
 #endif //ENABLE_SERIAL_LOG
 }
@@ -77,7 +77,7 @@ void SerialLog::powerOff()
 void SerialLog::send()
 {
 #ifdef ENABLE_SERIAL_LOG
-    uint32_t t = timer.getMiliseconds();
+    uint32_t t = Timer::getMiliseconds();
     sendTime(t);
 #endif //ENABLE_SERIAL_LOG
 }

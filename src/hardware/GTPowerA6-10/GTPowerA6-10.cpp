@@ -52,7 +52,7 @@ void hardware::initialize()
     setBalancer(0);
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
-    timer.init();
+    Timer::initialize();
 
     Timer1.initialize(TIMER1_PERIOD_MICROSECONDS);         // initialize timer1, and set a 1/2 second period
     adc::initialize();

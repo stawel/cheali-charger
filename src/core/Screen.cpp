@@ -194,14 +194,14 @@ void Screen::displayScreenCIVlimits()
 uint16_t Screen::getTimeSec()
 {
     uint32_t t = startTime_totalTime_;
-    if(on_) t = timer.getMiliseconds() - startTime_totalTime_;
+    if(on_) t = Timer::getMiliseconds() - startTime_totalTime_;
     t/=1000;
     return t;
 }
 
 void Screen::powerOn()
 {
-    startTime_totalTime_ = timer.getMiliseconds();
+    startTime_totalTime_ = Timer::getMiliseconds();
     totalBalanceTime_ = 0;
     totalChargDischargeTime_ = 0;
     on_ = true;
@@ -209,7 +209,7 @@ void Screen::powerOn()
 
 void Screen::powerOff()
 {
-    startTime_totalTime_ = timer.getMiliseconds() - startTime_totalTime_;
+    startTime_totalTime_ = Timer::getMiliseconds() - startTime_totalTime_;
     on_ = false;
 }
 

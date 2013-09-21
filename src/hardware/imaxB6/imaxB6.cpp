@@ -69,7 +69,7 @@ void hardware::initialize()
     setBuzzer(0);
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
-    timer.init();
+    Timer::initialize();
 
     TimerOne::initialize();
     adc::initialize();

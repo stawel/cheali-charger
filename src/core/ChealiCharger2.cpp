@@ -74,7 +74,7 @@ void setup()
         lcdPrint_P(PSTR("reseting eeprom"));
         lcdSetCursor0_1();
         lcdPrint_P(PSTR("to ver: " CHEALI_CHARGER_EPPROM_VERSION_STRING));
-        timer.delay(5000);
+        Timer::delay(5000);
 
         Options::resetDefault();
 
@@ -83,6 +83,6 @@ void setup()
         lcdPrint_P(PSTR("please calibrate"));
         lcdSetCursor0_1();
         lcdPrint_P(PSTR("before use"));
-        timer.delay(5000);
+        Timer::delay(5000);
     }
 }

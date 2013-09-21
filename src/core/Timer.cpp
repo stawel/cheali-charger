@@ -22,33 +22,36 @@
 #include "Screen.h"
 #include <util/atomic.h>
 
-static void callback() {
-    static uint8_t slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
-    timer.doInterrupt();
-    Buzzer::doInterrupt();
-    Monitor::doInterrupt();
-    hardware::doInterrupt();
-    if(--slowInterval == 0){
-        slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
-        smps.doSlowInterrupt();
-        discharger.doSlowInterrupt();
-        Screen::doSlowInterrupt();
+
+namespace Timer {
+    volatile uint32_t interrupts_ = 0;
+
+    uint32_t getInterrupts() {
+        return interrupts_;
+    }
+
+    void callback() {
+        static uint8_t slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
+        Timer::doInterrupt();
+        Buzzer::doInterrupt();
+        Monitor::doInterrupt();
+        hardware::doInterrupt();
+        if(--slowInterval == 0){
+            slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
+            smps.doSlowInterrupt();
+            discharger.doSlowInterrupt();
+            Screen::doSlowInterrupt();
+        }
     }
 }
 
 ISR(TIMER0_COMP_vect)
 {
-    callback();
+    Timer::callback();
 }
 
 
-Timer timer;
-
-
-Timer::Timer() : interrupts_(0) {
-}
-
-void Timer::init()
+void Timer::initialize()
 {
 #if F_CPU != 16000000
 #error "F_CPU != 16000000 - not implemented"
@@ -69,7 +72,7 @@ void Timer::doInterrupt()
 {
     interrupts_++;
 }
-uint32_t Timer::getMiliseconds() const
+uint32_t Timer::getMiliseconds()
 {
     uint32_t retu;
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
@@ -87,7 +90,7 @@ uint32_t Timer::getMiliseconds() const
     return retu;
 }
 
-void Timer::delay(uint16_t ms) const
+void Timer::delay(uint16_t ms)
 {
     uint32_t end;
     end = getMiliseconds() + ms;

@@ -95,7 +95,7 @@ Balancer::Balancer()
 void Balancer::setBalance(uint8_t v)
 {
     balance_ = v;
-    startSwitchTime_ = timer.getMiliseconds();
+    startSwitchTime_ = Timer::getMiliseconds();
     analogInputs.resetStable();
     if(!done_)
         hardware::setBalancer(v);
@@ -122,7 +122,7 @@ void Balancer::startBalacing()
     }
 
     savedVon_ = false;
-    startBalanceTime_ = timer.getMiliseconds();
+    startBalanceTime_ = Timer::getMiliseconds();
     if(off) {
         endBalancing();
     } else {
@@ -171,7 +171,7 @@ void Balancer::trySaveVon() {
 
 uint16_t Balancer::getBalanceTime() const
 {
-    return (timer.getMiliseconds() - startBalanceTime_) / 1000;
+    return (Timer::getMiliseconds() - startBalanceTime_) / 1000;
 }
 
 

@@ -54,13 +54,13 @@ void Buzzer::sound(Buzzer::SoundType s)
 
 void Buzzer::begin()
 {
-    begin_time_ = timer.getInterrupts();
+    begin_time_ = Timer::getInterrupts();
 }
 
 
 void Buzzer::doInterrupt()
 {
-    uint16_t v2 = getSound(timer.getInterrupts() - begin_time_);
+    uint16_t v2 = getSound(Timer::getInterrupts() - begin_time_);
     if(v2 != last_value_) {
         last_value_ = v2;
         hardware::setBuzzer(last_value_);

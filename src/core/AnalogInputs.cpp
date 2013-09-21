@@ -82,7 +82,7 @@ void AnalogInputs::finalizeDeltaMeasurement()
     }
     deltaAvrSumTextern_ += measured_[Textern];
     deltaAvrCount_++;
-    if(timer.getMiliseconds() - deltaStartTime_ > DELTA_TIME_MILISECONDS) {
+    if(Timer::getMiliseconds() - deltaStartTime_ > DELTA_TIME_MILISECONDS) {
         deltaCount_++;
 
         uint16_t x;
@@ -124,7 +124,7 @@ void AnalogInputs::finalizeDeltaMeasurement()
 
         setReal(deltaLastCount, deltaAvrCount_);
         deltaAvrCount_ = 0;
-        deltaStartTime_ = timer.getMiliseconds();
+        deltaStartTime_ = Timer::getMiliseconds();
     }
 }
 
@@ -234,7 +234,7 @@ void AnalogInputs::resetDelta()
     deltaAvrSumTextern_ = 0;
     deltaCount_ = 0;
     deltaLastT_ = 0;
-    deltaStartTime_ = timer.getMiliseconds();
+    deltaStartTime_ = Timer::getMiliseconds();
 }
 
 

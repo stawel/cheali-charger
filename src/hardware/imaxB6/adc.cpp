@@ -246,9 +246,9 @@ void AnalogInputs::doFullMeasurement()
 //this method depends on the ADC implementation
 void hardware::delay(uint16_t t)
 {
-    uint32_t end = timer.getMiliseconds() + t;
+    uint32_t end = Timer::getMiliseconds() + t;
     do {
         adc::doMeasurement();
-    } while(timer.getMiliseconds() < end);
+    } while(Timer::getMiliseconds() < end);
 }
 
