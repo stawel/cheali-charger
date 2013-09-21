@@ -115,17 +115,17 @@ namespace {
     void chargingComplete() {
         lcdClear();
         screen.displayScreenProgramCompleted();
-        buzzer.soundProgramComplete();
+        Buzzer::soundProgramComplete();
         waitButtonPressed();
-        buzzer.soundOff();
+        Buzzer::soundOff();
     }
 
     void chargingMonitorError() {
         lcdClear();
         screen.displayMonitorError();
-        buzzer.soundError();
+        Buzzer::soundError();
         waitButtonPressed();
-        buzzer.soundOff();
+        Buzzer::soundOff();
     }
 
     bool analizeStrategyStatus(Strategy &strategy,  Strategy::statusType status, bool exitImmediately) {
@@ -259,7 +259,7 @@ void Program::run(ProgramType prog)
     stopReason_ = PSTR("");
 
     if(startInfo()) {
-        buzzer.soundStartProgram();
+        Buzzer::soundStartProgram();
 
         switch(prog) {
         case Program::ChargeLiXX:
@@ -406,7 +406,7 @@ void Program::selectProgram(int index)
             switch(prog) {
             case Program::EditBattery:
                 if(ProgramData::currentProgramData.edit(index)) {
-                    buzzer.soundSave();
+                    Buzzer::soundSave();
                     ProgramData::saveProgramData(index);
                     selectPrograms = getSelectProgramMenu();
                 }

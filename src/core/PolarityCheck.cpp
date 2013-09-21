@@ -30,7 +30,7 @@ bool PolarityCheck::runReversedPolarityInfo()
         if(!isReversedPolarity_)
             Screen::displayScreenReversedPolarity();
 
-        buzzer.soundReversedPolarity();
+        Buzzer::soundReversedPolarity();
     }
     isReversedPolarity_ = reversed;
     return reversed;

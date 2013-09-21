@@ -66,7 +66,7 @@ void ProgramDataMenu::createName()
     lcdSetCursor0_1();
     lcdPrint(p_.name, PROGRAM_DATA_MAX_NAME);
     waitButtonPressed();
-    buzzer.soundSelect();
+    Buzzer::soundSelect();
 }
 
 

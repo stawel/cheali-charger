@@ -125,5 +125,5 @@ bool EditName::run(){
 
 void EditName::save()
 {
-    buzzer.soundSelect();
+    Buzzer::soundSelect();
 }

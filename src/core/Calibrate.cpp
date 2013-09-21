@@ -107,7 +107,7 @@ const char * const calibrateIDMenu[] PROGMEM =
 namespace {
 void setCalibrationPoint(AnalogInputs::Name name, uint8_t i, const AnalogInputs::CalibrationPoint &x)
 {
-    buzzer.soundSave();
+    Buzzer::soundSave();
     analogInputs.setCalibrationPoint(name, i, x);
 }
 }
@@ -515,7 +515,7 @@ bool Calibrate::calibrateBlink(screenType p, int8_t maxBlink)
         if(key == BUTTON_DEC && blink_ > 0)                 blink_--;
 
         if(key == BUTTON_START && released) {
-            buzzer.soundSelect();
+            Buzzer::soundSelect();
             setBlink(p);
             released = false;
         }

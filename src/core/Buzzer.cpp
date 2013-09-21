@@ -20,7 +20,36 @@
 
 
 
-Buzzer buzzer;
+namespace Buzzer {
+    uint16_t begin_time_;
+    uint16_t last_value_;
+    SoundType sound_;
+
+
+    uint16_t getKeyboard(uint16_t time);
+    uint16_t getInfo(uint16_t time);
+    uint16_t getSave(uint16_t time);
+    uint16_t getSelect(uint16_t time);
+    uint16_t getStartProgram(uint16_t time);
+    uint16_t getProgramComplete(uint16_t time);
+    uint16_t getReversedPolarity(uint16_t time);
+    uint16_t getError(uint16_t time);
+    uint16_t getOff(uint16_t time);
+
+    uint16_t getSound(uint16_t time);
+    uint16_t setOff();
+
+
+} // namespace Buzzer
+
+
+void Buzzer::sound(Buzzer::SoundType s)
+{
+      if(sound_ == s)
+          return;
+      sound_ = s;
+      begin();
+}
 
 
 void Buzzer::begin()

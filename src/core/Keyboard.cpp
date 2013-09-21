@@ -55,7 +55,7 @@ uint8_t Keyboard::keyChanged(uint8_t key)
     last_key_ = key;
 
     if(key != BUTTON_NONE)
-        buzzer.soundKeyboard();
+        Buzzer::soundKeyboard();
 
     return last_key_;
 }

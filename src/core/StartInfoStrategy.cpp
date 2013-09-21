@@ -28,7 +28,7 @@ void StartInfoStrategy::powerOn()
 {
     discharger.powerOn();
     screen.startBlinkOn(7);
-    buzzer.begin();
+    Buzzer::begin();
     ok_ = 3;
 }
 
@@ -36,7 +36,7 @@ void StartInfoStrategy::powerOff()
 {
     discharger.powerOff();
     screen.stopBlink();
-    buzzer.soundOff();
+    Buzzer::soundOff();
 }
 
 Strategy::statusType StartInfoStrategy::doStrategy()
@@ -69,9 +69,9 @@ Strategy::statusType StartInfoStrategy::doStrategy()
     if(v_out)       screen.blinkIndex_ -= 1;
 
     if(cell_nr || v_balance || v_out) {
-        buzzer.soundInfo();
+        Buzzer::soundInfo();
     } else {
-        buzzer.soundOff();
+        Buzzer::soundOff();
     }
 
     if(keyboard.getPressed() == BUTTON_NONE)

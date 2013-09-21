@@ -85,7 +85,7 @@ void Settings::edit()
     SettingsMenu menu(*this);
     if(menu.run()) {
         //save settings
-        buzzer.soundSave();
+        Buzzer::soundSave();
         *this = menu.p_;
         save();
     }

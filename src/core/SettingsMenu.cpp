@@ -139,7 +139,7 @@ bool SettingsMenu::run() {
         switch(index) {
         case sizeOfArray(SettingsStaticMenu) - 2:  //reset
             p_.setDefault();
-            buzzer.soundSelect();
+            Buzzer::soundSelect();
             break;
         case sizeOfArray(SettingsStaticMenu) - 1:  //save
             return true;
