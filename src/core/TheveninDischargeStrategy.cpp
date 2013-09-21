@@ -40,12 +40,12 @@ void TheveninDischargeStrategy::powerOn()
 void TheveninDischargeStrategy::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
     SimpleDischargeStrategy::setVI(v,i);
-    theveninMethod.setVI(v, analogInputs.reverseCalibrateValue(AnalogInputs::IdischargeValue, i));
+    theveninMethod.setVI(v, AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, i));
     setMinI(i/10);
 }
 void TheveninDischargeStrategy::setMinI(AnalogInputs::ValueType i)
 {
-    theveninMethod.setMinI(analogInputs.reverseCalibrateValue(AnalogInputs::IdischargeValue, i));
+    theveninMethod.setMinI(AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, i));
 }
 
 Strategy::statusType TheveninDischargeStrategy::doStrategy()
@@ -56,7 +56,7 @@ Strategy::statusType TheveninDischargeStrategy::doStrategy()
 
     //when discharging near the end, the battery voltage is very unstable
     //but we need new discharge values at that point
-    stable = isStable() || isEndVout;
+    stable = AnalogInputs::isOutStable() || isEndVout;
 
     //test for charge complete
     if(theveninMethod.isComlete(isEndVout, oldValue)) {

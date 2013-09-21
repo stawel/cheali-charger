@@ -44,11 +44,11 @@ Strategy::statusType StartInfoStrategy::doStrategy()
     bool cell_nr, v_balance, v_out;
 
     cell_nr = v_balance = false;
-    v_out = (!analogInputs.isConnected(AnalogInputs::Vout));
+    v_out = (!AnalogInputs::isConnected(AnalogInputs::Vout));
 
     if(balancePort_) {
         uint8_t is_cells, should_be_cells;
-        is_cells = analogInputs.getConnectedBalancePorts();
+        is_cells = AnalogInputs::getConnectedBalancePorts();
         should_be_cells = ProgramData::currentProgramData.battery.cells;
         cell_nr = (should_be_cells != is_cells);
         v_balance = (is_cells == 0);
@@ -59,9 +59,9 @@ Strategy::statusType StartInfoStrategy::doStrategy()
             v_balance = false;
         }
     }
-    if(analogInputs.isConnected(AnalogInputs::Vbalancer) &&
-            absDiff(analogInputs.getRealValue(AnalogInputs::Vout),
-               analogInputs.getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)) v_out = true;
+    if(AnalogInputs::isConnected(AnalogInputs::Vbalancer) &&
+            absDiff(AnalogInputs::getRealValue(AnalogInputs::Vout),
+               AnalogInputs::getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)) v_out = true;
 
     Screen::blink.blinkIndex_ = 7;
     if(cell_nr)     Screen::blink.blinkIndex_ -= 4;

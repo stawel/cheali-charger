@@ -47,12 +47,12 @@ void SMPS::setValue(uint16_t value)
         value = SMPS_UPPERBOUND_VALUE;
     value_ = value;
     hardware::setChargerValue(value_);
-    analogInputs.resetMeasurement();
+    AnalogInputs::resetMeasurement();
 }
 
 void SMPS::setRealValue(uint16_t I)
 {
-    uint16_t value = analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue, I);
+    uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, I);
     setValue(value);
 }
 
@@ -64,8 +64,8 @@ void SMPS::powerOn()
     hardware::setBatteryOutput(true);
     setValue(0);
     hardware::setChargerOutput(true);
-    analogInputs.powerOn();
-    analogInputs.doFullMeasurement();
+    AnalogInputs::powerOn();
+    AnalogInputs::doFullMeasurement();
     state_ = CHARGING;
     if(clearCharge_)
         charge_ = 0;
@@ -77,7 +77,7 @@ void SMPS::powerOff(STATE reason)
     if(!isPowerOn() || reason == CHARGING)
         return;
 
-    analogInputs.powerOff();
+    AnalogInputs::powerOff();
     setValue(0);
     hardware::setChargerOutput(false);
     hardware::setBatteryOutput(false);
@@ -87,7 +87,7 @@ void SMPS::powerOff(STATE reason)
 void SMPS::doSlowInterrupt()
 {
    if(isPowerOn()) {
-           charge_ += analogInputs.getIout();
+           charge_ += AnalogInputs::getIout();
    }
 }
 

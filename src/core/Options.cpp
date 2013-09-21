@@ -43,7 +43,7 @@ void Options::resetDefault()
 
     lcdSetCursor(7,1);
     lcdPrint_P(PSTR(" 0%"));
-    analogInputs.restoreDefault();
+    AnalogInputs::restoreDefault();
 
     lcdSetCursor(7,1);
     lcdPrint_P(PSTR("50%"));

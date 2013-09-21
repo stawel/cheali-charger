@@ -75,13 +75,13 @@ void Discharger::finalizeValueTintern(bool force)
     if(v != value_ || force) {
         value_ = v;
         hardware::setDischargerValue(value_);
-        analogInputs.resetMeasurement();
+        AnalogInputs::resetMeasurement();
     }
 }
 
 void Discharger::setRealValue(uint16_t I)
 {
-    uint16_t value = analogInputs.reverseCalibrateValue(AnalogInputs::IdischargeValue, I);
+    uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, I);
     setValue(value);
 }
 
@@ -93,8 +93,8 @@ void Discharger::powerOn()
     hardware::setBatteryOutput(true);
     setValue(0);
     hardware::setDischargerOutput(true);
-    analogInputs.powerOn();
-    analogInputs.doFullMeasurement();
+    AnalogInputs::powerOn();
+    AnalogInputs::doFullMeasurement();
     state_ = DISCHARGING;
     discharge_ = 0;
 }
@@ -104,7 +104,7 @@ void Discharger::powerOff(STATE reason)
     if(!isPowerOn() || reason == DISCHARGING)
         return;
 
-    analogInputs.powerOff();
+    AnalogInputs::powerOff();
     setValue(0);
     hardware::setDischargerOutput(false);
     hardware::setBatteryOutput(false);
@@ -117,7 +117,7 @@ void Discharger::doSlowInterrupt()
 #ifdef ENABLE_T_INTERNAL
         finalizeValueTintern(false);
 #endif
-        discharge_+=analogInputs.getIout();
+        discharge_+=AnalogInputs::getIout();
     }
 }
 

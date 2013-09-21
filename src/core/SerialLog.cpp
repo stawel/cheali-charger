@@ -131,7 +131,7 @@ void SerialLog::sendTime(uint32_t t)
 
     //analog inputs
     for(int8_t i=0;i < sizeOfArray(logging);i++) {
-        printUInt(analogInputs.getRealValue(logging[i]));
+        printUInt(AnalogInputs::getRealValue(logging[i]));
         printD();
     }
     //checksum

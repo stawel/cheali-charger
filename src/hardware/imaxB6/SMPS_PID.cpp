@@ -17,7 +17,7 @@ void SMPS_PID::update()
 {
     if(!PID_enable) return;
     //if Vout is too high disable PID
-    if(analogInputs.getMeasuredValue(AnalogInputs::Vout) > PID_CutOff) {
+    if(AnalogInputs::getMeasuredValue(AnalogInputs::Vout) > PID_CutOff) {
         hardware::setChargerOutput(false);
         PID_enable = false;
         return;
@@ -25,7 +25,7 @@ void SMPS_PID::update()
 
     //TODO: rewrite PID
     //this is the PID - actually it is an I (Integral part) - should be rewritten
-    uint16_t PV = analogInputs.getMeasuredValue(AnalogInputs::Ismps);
+    uint16_t PV = AnalogInputs::getMeasuredValue(AnalogInputs::Ismps);
     long error = PID_setpoint;
     error -= PV;
     PID_MV += error*A;
@@ -86,8 +86,8 @@ void SMPS_PID::setPID_MV(uint16_t value) {
 void hardware::setChargerValue(uint16_t value)
 {
 
-    PID_setpoint = analogInputs.reverseCalibrateValue(AnalogInputs::Ismps, value);
-    PID_CutOff = analogInputs.reverseCalibrateValue(AnalogInputs::Vout, PID_CUTOFF_VOLTAGE);
+    PID_setpoint = AnalogInputs::reverseCalibrateValue(AnalogInputs::Ismps, value);
+    PID_CutOff = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout, PID_CUTOFF_VOLTAGE);
 }
 
 void hardware::setChargerOutput(bool enable)
@@ -98,8 +98,8 @@ void hardware::setChargerOutput(bool enable)
     PID_enable = false;
     digitalWrite(SMPS_DISABLE_PIN, !enable);
     if(enable) {
-        analogInputs.doFullMeasurement();
-        SMPS_PID::init(analogInputs.getValue(AnalogInputs::Vin), analogInputs.getValue(AnalogInputs::Vout));
+        AnalogInputs::doFullMeasurement();
+        SMPS_PID::init(AnalogInputs::getRealValue(AnalogInputs::Vin), AnalogInputs::getRealValue(AnalogInputs::Vout));
     }
 }
 

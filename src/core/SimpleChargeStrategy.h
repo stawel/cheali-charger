@@ -28,8 +28,8 @@ public:
     virtual void powerOn();
 //    virtual statusType doStrategy();
     virtual void powerOff();
-    bool isStable() const;
     void calculateThevenin() const;
+    static bool isLCDRunning();
 };
 
 extern SimpleChargeStrategy simpleChargeStrategy;

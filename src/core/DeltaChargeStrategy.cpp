@@ -33,7 +33,7 @@ void DeltaChargeStrategy::powerOn()
 Strategy::statusType DeltaChargeStrategy::doStrategy()
 {
     calculateThevenin();
-    AnalogInputs::ValueType Vout = analogInputs.getVout();
+    AnalogInputs::ValueType Vout = AnalogInputs::getVout();
 
     if(state_ == PreCharge) {
         if(Vout > ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge)) {
@@ -42,16 +42,16 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
         }
     }
 
-    if(isStable() && Vout > ProgramData::currentProgramData.getVoltage(ProgramData::VUpperLimit)) {
+    if(AnalogInputs::isOutStable() && Vout > ProgramData::currentProgramData.getVoltage(ProgramData::VUpperLimit)) {
         Program::stopReason_ = PSTR("V limit");
         return COMPLETE;
     }
 
-    if(analogInputs.deltaCount_ <= 1)
+    if(AnalogInputs::deltaCount_ <= 1)
         return RUNNING;
 
     if(testDeltaV_) {
-        int x = analogInputs.getRealValue(AnalogInputs::deltaVout);
+        int x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
         x=-x;
         if(x > ProgramData::currentProgramData.getDeltaVLimit()) {
             Program::stopReason_ = PSTR("-dV");
@@ -59,7 +59,7 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
         }
     }
     if(testDeltaT_) {
-        int x = analogInputs.getRealValue(AnalogInputs::deltaTextern);
+        int x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
         if(x > ProgramData::currentProgramData.getDeltaTLimit()) {
             Program::stopReason_ = PSTR("dT/dt");
             return COMPLETE;

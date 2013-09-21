@@ -182,7 +182,7 @@ void adc::processConversion(bool finalize)
     AnalogInputs::Name name = getAIName(current_input);
     if(name != AnalogInputs::VirtualInputs) {
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-            analogInputs.measured_[name] = (high << 8) | low;
+            AnalogInputs::measured_[name] = (high << 8) | low;
         }
     } else {
         key = getKey(current_input);
@@ -219,9 +219,9 @@ void adc::startConversion() {
 
 void adc::finalizeMeasurement()
 {
-    analogInputs.measured_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
-    analogInputs.measured_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
-    analogInputs.finalizeMeasurement();
+    AnalogInputs::measured_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
+    AnalogInputs::measured_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
+    AnalogInputs::finalizeMeasurement();
 }
 
 void adc::initialize()
@@ -244,7 +244,7 @@ void adc::doMeasurement()
     startConversion();
     //TODO: go into Idle mode
     while (bit_is_set(ADCSRA, ADSC));
-    processConversion(analogInputs.on_);
+    processConversion(AnalogInputs::isPowerOn());
 }
 
 

@@ -25,12 +25,12 @@ void Balancer::powerOn()
 {
     hardware::setBalancerOutput(true);
     hardware::setBatteryOutput(true);
-    if(!analogInputs.isPowerOn()) {
-        analogInputs.powerOn();
-        analogInputs.doFullMeasurement();
+    if(!AnalogInputs::isPowerOn()) {
+        AnalogInputs::powerOn();
+        AnalogInputs::doFullMeasurement();
     }
 
-    cells_ = analogInputs.getRealValue(AnalogInputs::VbalanceInfo);
+    cells_ = AnalogInputs::getRealValue(AnalogInputs::VbalanceInfo);
     for(int i = 0; i < cells_; i++) {
         AnalogInputs::ValueType vi = getV(i);
         Voff_[i] = Von_[i] = vi;
@@ -58,7 +58,7 @@ uint8_t Balancer::getCellMinV() const
 
 AnalogInputs::ValueType Balancer::getV(uint8_t cell)
 {
-    return analogInputs.getRealValue(AnalogInputs::Name(AnalogInputs::Vb1+cell));
+    return AnalogInputs::getRealValue(AnalogInputs::Name(AnalogInputs::Vb1+cell));
 }
 
 AnalogInputs::ValueType Balancer::getPresumedV(uint8_t cell) const
@@ -82,7 +82,7 @@ void Balancer::endBalancing()
 void Balancer::powerOff()
 {
     endBalancing();
-    analogInputs.powerOff();
+    AnalogInputs::powerOff();
     hardware::setBatteryOutput(false);
     hardware::setBalancerOutput(false);
 }
@@ -96,7 +96,7 @@ void Balancer::setBalance(uint8_t v)
 {
     balance_ = v;
     startSwitchTime_ = Timer::getMiliseconds();
-    analogInputs.resetStable();
+    AnalogInputs::resetStable();
     if(!done_)
         hardware::setBalancer(v);
 }
@@ -153,7 +153,7 @@ uint8_t Balancer::calculateBalance()
 bool Balancer::isStable(const uint16_t stableCount) const
 {
     for(uint8_t c = 0; c < cells_; c++) {
-        if(analogInputs.stableCount_[AnalogInputs::Vb1+c] < stableCount)
+        if(AnalogInputs::getStableCount(AnalogInputs::Name(AnalogInputs::Vb1+c)) < stableCount)
             return false;
     }
     return true;

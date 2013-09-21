@@ -22,6 +22,38 @@
 #include "SerialLog.h"
 
 
+namespace AnalogInputs {
+
+    bool on_;
+    uint16_t avrCount_;
+    uint32_t avrSum_[PHYSICAL_INPUTS];
+    ValueType avrValue_[PHYSICAL_INPUTS];
+    ValueType measured_[PHYSICAL_INPUTS];
+    ValueType real_[ALL_INPUTS];
+    uint16_t stableCount_[ALL_INPUTS];
+
+    uint16_t calculationCount_;
+
+    uint16_t    deltaCount_;
+    uint16_t    deltaAvrCount_;
+    uint32_t    deltaAvrSumVout_;
+    uint32_t    deltaAvrSumTextern_;
+    ValueType   deltaLastT_;
+    uint32_t    deltaStartTime_;
+
+    ValueType getValue(Name name)                { return avrValue_[name]; }
+    ValueType getRealValue(Name name)           { return real_[name]; }
+    ValueType getMeasuredValue(Name name)       { return measured_[name]; }
+    bool isPowerOn() { return on_; }
+    uint16_t getCalculationCount() { return calculationCount_; }
+    uint16_t getStableCount(Name name)   { return stableCount_[name]; };
+    bool isStable(Name name)     { return stableCount_[name] >= STABLE_MIN_VALUE; };
+    void setReal(Name name, ValueType real);
+
+
+} // namespace AnalogInputs
+
+
 AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS] EEMEM;
 
 
@@ -50,14 +82,14 @@ void AnalogInputs::setCalibrationPoint(Name name, uint8_t i, const CalibrationPo
     eeprom::write<CalibrationPoint>(&calibration[name].p[i], x);
 }
 
-uint8_t AnalogInputs::getConnectedBalancePorts() const
+uint8_t AnalogInputs::getConnectedBalancePorts()
 {
     for(uint8_t i=0; i < 6; i++){
         if(!isConnected(Name(Vb1+i))) return i;
     }
     return 6;
 }
-bool AnalogInputs::isConnected(Name name) const
+bool AnalogInputs::isConnected(Name name)
 {
     AnalogInputs::ValueType x = getRealValue(name);
     switch(getType(name)) {
@@ -195,14 +227,19 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
 }
 
 
-AnalogInputs::ValueType AnalogInputs::getVout() const
+AnalogInputs::ValueType AnalogInputs::getVout()
 {
     return getRealValue(VoutBalancer);
 }
 
-AnalogInputs::ValueType AnalogInputs::getIout() const
+AnalogInputs::ValueType AnalogInputs::getIout()
 {
     return getRealValue(Iout);
+}
+
+bool AnalogInputs::isOutStable()
+{
+    return isStable(AnalogInputs::VoutBalancer) && isStable(AnalogInputs::Iout) && balancer.isStable();
 }
 
 
@@ -313,7 +350,7 @@ void AnalogInputs::finalizeMeasurement()
     }
 }
 
-AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x) const
+AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
 {
     //TODO: do it with more points
     CalibrationPoint p0, p1;
@@ -330,7 +367,7 @@ AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x) con
     if(y < 0) y = 0;
     return y;
 }
-AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType y) const
+AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType y)
 {
     //TODO: do it with more points
     CalibrationPoint p0, p1;
@@ -351,7 +388,7 @@ AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType
 
 
 
-AnalogInputs::AnalogInputs()
+void AnalogInputs::initialize()
 {
     reset();
 }
@@ -375,15 +412,15 @@ AnalogInputs::Type AnalogInputs::getType(Name name)
     }
 }
 
-void AnalogInputs::printRealValue(Name name, uint8_t dig) const
+void AnalogInputs::printRealValue(Name name, uint8_t dig)
 {
-    ValueType x = analogInputs.getRealValue(name);
+    ValueType x = getRealValue(name);
     Type t = getType(name);
     lcdPrintAnalog(x, t, dig);
 }
-void AnalogInputs::printMeasuredValue(Name name, uint8_t dig) const
+void AnalogInputs::printMeasuredValue(Name name, uint8_t dig)
 {
-    ValueType x = calibrateValue(name, analogInputs.getMeasuredValue(name));
+    ValueType x = calibrateValue(name, getMeasuredValue(name));
     Type t = getType(name);
     lcdPrintAnalog(x, t, dig);
 }

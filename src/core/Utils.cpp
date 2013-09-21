@@ -22,7 +22,7 @@
 
 bool testTintern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on)
 {
-    AnalogInputs::ValueType t = analogInputs.getRealValue(AnalogInputs::Tintern);
+    AnalogInputs::ValueType t = AnalogInputs::getRealValue(AnalogInputs::Tintern);
 
     bool retu = false;
     if(t < off) {

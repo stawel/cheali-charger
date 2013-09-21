@@ -34,7 +34,7 @@ void TheveninMethod::setVI(AnalogInputs::ValueType Vend, AnalogInputs::ValueType
 
 void TheveninMethod::init()
 {
-    AnalogInputs::ValueType Vout = getVout();
+    AnalogInputs::ValueType Vout = AnalogInputs::getVout();
     tVout_.init(Vout, Vend_, minValue_);
 
     cells_ = balancer.getCells();
@@ -89,7 +89,7 @@ AnalogInputs::ValueType TheveninMethod::calculateNewValue(bool isEndVout, Analog
 
 void TheveninMethod::calculateRthVth(AnalogInputs::ValueType oldValue)
 {
-    tVout_.calculateRthVth(getVout(),oldValue);
+    tVout_.calculateRthVth(AnalogInputs::getVout(),oldValue);
 
     for(uint8_t c = 0; c < cells_; c++) {
         tBal_[c].calculateRthVth(balancer.getPresumedV(c),oldValue);
@@ -127,7 +127,7 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value
 
 AnalogInputs::ValueType TheveninMethod::storeOldValue(AnalogInputs::ValueType oldValue)
 {
-    tVout_.storeLast(getVout(), oldValue);
+    tVout_.storeLast(AnalogInputs::getVout(), oldValue);
 
     for(uint8_t i = 0; i < cells_; i++) {
         AnalogInputs::ValueType vi = balancer.getPresumedV(i);

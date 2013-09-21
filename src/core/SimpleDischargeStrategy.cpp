@@ -52,11 +52,7 @@ bool SimpleDischargeStrategy::isMinVout() const
     AnalogInputs::ValueType Vc = V_;
     AnalogInputs::ValueType Vc_per_cell = balancer.calculatePerCell(Vc);
 
-    return Vc >= analogInputs.getVout() || balancer.isMinVout(Vc_per_cell);
+    return Vc >= AnalogInputs::getVout() || balancer.isMinVout(Vc_per_cell);
 }
 
 
-bool SimpleDischargeStrategy::isStable() const
-{
-    return analogInputs.isStable(AnalogInputs::VoutBalancer) && analogInputs.isStable(AnalogInputs::Iout) && balancer.isStable();
-}

@@ -44,7 +44,7 @@ void Monitor::doInterrupt()
 #ifdef ENABLE_FAN
 #ifdef ENABLE_T_INTERNAL
 
-    AnalogInputs::ValueType t = analogInputs.getMeasuredValue(AnalogInputs::Tintern);
+    AnalogInputs::ValueType t = AnalogInputs::getMeasuredValue(AnalogInputs::Tintern);
     bool retu = false;
     if(t > monitor_off_T) {
         hardware::setFan(false);
@@ -59,22 +59,22 @@ void Monitor::update()
 #ifdef ENABLE_FAN
 #ifdef ENABLE_T_INTERNAL
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        monitor_off_T = analogInputs.reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_ - Settings::TempDifference);
-        monitor_on_T  = analogInputs.reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_);
+        monitor_off_T = AnalogInputs::reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_ - Settings::TempDifference);
+        monitor_on_T  = AnalogInputs::reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_);
     }
 #endif
 #endif
 }
 
 void Monitor::powerOn() {
-    VoutMaxMesured_ = analogInputs.reverseCalibrateValue(AnalogInputs::Vout, MAX_CHARGE_V+ANALOG_VOLT(3.000));
+    VoutMaxMesured_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout, MAX_CHARGE_V+ANALOG_VOLT(3.000));
 }
 
 
 Strategy::statusType Monitor::run()
 {
 #ifdef ENABLE_T_INTERNAL
-    AnalogInputs::ValueType t = analogInputs.getRealValue(AnalogInputs::Tintern);
+    AnalogInputs::ValueType t = AnalogInputs::getRealValue(AnalogInputs::Tintern);
 
     if(t > settings.dischargeTempOff_+Settings::TempDifference) {
         Program::stopReason_ = PSTR("intern T");
@@ -82,25 +82,25 @@ Strategy::statusType Monitor::run()
     }
 #endif
 
-    AnalogInputs::ValueType VMout = analogInputs.getMeasuredValue(AnalogInputs::Vout);
+    AnalogInputs::ValueType VMout = AnalogInputs::getMeasuredValue(AnalogInputs::Vout);
     if(VMout > VoutMaxMesured_) {
         Program::stopReason_ = PSTR("bat disc");
         return Strategy::ERROR;
     }
 
-    AnalogInputs::ValueType Vin = analogInputs.getRealValue(AnalogInputs::Vin);
-    if(analogInputs.isConnected(AnalogInputs::Vin) && Vin < settings.inputVoltageLow_) {
+    AnalogInputs::ValueType Vin = AnalogInputs::getRealValue(AnalogInputs::Vin);
+    if(AnalogInputs::isConnected(AnalogInputs::Vin) && Vin < settings.inputVoltageLow_) {
         Program::stopReason_ = PSTR("input V");
         return Strategy::ERROR;
     }
 
-    AnalogInputs::ValueType c = analogInputs.getRealValue(AnalogInputs::Cout);
+    AnalogInputs::ValueType c = AnalogInputs::getRealValue(AnalogInputs::Cout);
     if(c > ProgramData::currentProgramData.getCapacityLimit()) {
         Program::stopReason_ = PSTR("cap COFF");
         return Strategy::COMPLETE;
     }
     if(settings.externT_) {
-        AnalogInputs::ValueType Textern = analogInputs.getRealValue(AnalogInputs::Textern);
+        AnalogInputs::ValueType Textern = AnalogInputs::getRealValue(AnalogInputs::Textern);
         if(Textern > settings.externTCO_) {
             Program::stopReason_ = PSTR("ext TCOF");
             return Strategy::COMPLETE;

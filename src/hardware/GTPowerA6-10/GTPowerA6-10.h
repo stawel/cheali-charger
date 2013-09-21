@@ -58,7 +58,6 @@
 
 
 extern LiquidCrystal lcd;
-extern AnalogInputs analogInputs;
 extern Balancer balancer;
 
 namespace hardware {

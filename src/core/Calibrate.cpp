@@ -108,7 +108,7 @@ namespace {
 void setCalibrationPoint(AnalogInputs::Name name, uint8_t i, const AnalogInputs::CalibrationPoint &x)
 {
     Buzzer::soundSave();
-    analogInputs.setCalibrationPoint(name, i, x);
+    AnalogInputs::setCalibrationPoint(name, i, x);
 }
 }
 
@@ -134,10 +134,10 @@ void Calibrate::calibrateI(screenType screen, AnalogInputs::Name name1, AnalogIn
                 i = 1;
                 p.y = value1;
             }
-            p.x = analogInputs.getValue(name1);
-            setCalibrationPoint(name1, i, p);
-            p.x = analogInputs.getValue(name2);
-            setCalibrationPoint(name2, i, p);
+            p.x = AnalogInputs::getValue(name1);
+            AnalogInputs::setCalibrationPoint(name1, i, p);
+            p.x = AnalogInputs::getValue(name2);
+            AnalogInputs::setCalibrationPoint(name2, i, p);
         }
     } while(i >= 0);
 }
@@ -147,12 +147,12 @@ void Calibrate::copyVbalVout()
     AnalogInputs::CalibrationPoint p;
     //TODO: remove the ability to change smps.value
     if(calibrate(SCREEN_VOUT_VBAL)) {
-        p.x = analogInputs.getValue(AnalogInputs::Vout);
-        p.y = analogInputs.getRealValue(AnalogInputs::Vbalancer);
-        setCalibrationPoint(AnalogInputs::Vout, 1, p);
+        p.x = AnalogInputs::getValue(AnalogInputs::Vout);
+        p.y = AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
+        AnalogInputs::setCalibrationPoint(AnalogInputs::Vout, 1, p);
 
-        p.x = analogInputs.getValue(AnalogInputs::VoutMux);
-        setCalibrationPoint(AnalogInputs::VoutMux, 1, p);
+        p.x = AnalogInputs::getValue(AnalogInputs::VoutMux);
+        AnalogInputs::setCalibrationPoint(AnalogInputs::VoutMux, 1, p);
     }
 }
 
@@ -160,19 +160,19 @@ void Calibrate::copyVbalVout()
 void calibrateSimplifiedVb1_real(AnalogInputs::ValueType real_v)
 {
     AnalogInputs::CalibrationPoint p1,p2;
-    p1.x = analogInputs.getValue(AnalogInputs::Vb1_real);
-    p1.y = real_v + analogInputs.getRealValue(AnalogInputs::Vb0_real);
-    p2.x = analogInputs.getValue(AnalogInputs::Vb2_real);
-    p2.y = p1.y + analogInputs.getRealValue(AnalogInputs::Vb2);
-    setCalibrationPoint(AnalogInputs::Vb1_real, 1, p1);
-    setCalibrationPoint(AnalogInputs::Vb2_real, 1, p2);
+    p1.x = AnalogInputs::getValue(AnalogInputs::Vb1_real);
+    p1.y = real_v + AnalogInputs::getRealValue(AnalogInputs::Vb0_real);
+    p2.x = AnalogInputs::getValue(AnalogInputs::Vb2_real);
+    p2.y = p1.y + AnalogInputs::getRealValue(AnalogInputs::Vb2);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb1_real, 1, p1);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_real, 1, p2);
 }
 void calibrateSimplifiedVb2_real(AnalogInputs::ValueType real_v)
 {
     AnalogInputs::CalibrationPoint p2;
-    p2.x = analogInputs.getValue(AnalogInputs::Vb2_real);
-    p2.y = real_v + analogInputs.getRealValue(AnalogInputs::Vb1_real);
-    setCalibrationPoint(AnalogInputs::Vb2_real, 1, p2);
+    p2.x = AnalogInputs::getValue(AnalogInputs::Vb2_real);
+    p2.y = real_v + AnalogInputs::getRealValue(AnalogInputs::Vb1_real);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_real, 1, p2);
 }
 
 #endif
@@ -194,12 +194,12 @@ void Calibrate::setBalancer(AnalogInputs::Name firstName)
 
     if(name == AnalogInputs::Vb1_real) virtual_name = AnalogInputs::Vb1;
     if(name == AnalogInputs::Vb2_real) virtual_name = AnalogInputs::Vb2;
-    p.y = analogInputs.getRealValue(virtual_name);
+    p.y = AnalogInputs::getRealValue(virtual_name);
 #else
-    p.y = analogInputs.getRealValue(name);
+    p.y = AnalogInputs::getRealValue(name);
 #endif
     if(setValue(x, y, p.y, AnalogInputs::Voltage, 6)) {
-        p.x = analogInputs.getValue(name);
+        p.x = AnalogInputs::getValue(name);
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
         if(name == AnalogInputs::Vb1_real)
@@ -207,9 +207,9 @@ void Calibrate::setBalancer(AnalogInputs::Name firstName)
         else if(name == AnalogInputs::Vb2_real)
             calibrateSimplifiedVb2_real(p.y);
         else
-            setCalibrationPoint(name, 1, p);
+            AnalogInputs::setCalibrationPoint(name, 1, p);
 #else
-        setCalibrationPoint(name, 1, p);
+        AnalogInputs::setCalibrationPoint(name, 1, p);
 #endif
     }
 }
@@ -274,17 +274,17 @@ void Calibrate::print_v(uint8_t dig){
 void Calibrate::print_d(AnalogInputs::Name name, int dig)
 {
     if(dispVal_ == 1) {
-        analogInputs.printRealValue(name, dig);
+        AnalogInputs::printRealValue(name, dig);
     } else {
         if(name == AnalogInputs::Vb1) name = AnalogInputs::Vb1_real;
         if(name == AnalogInputs::Vb2) name = AnalogInputs::Vb2_real;
         switch(dispVal_) {
-        case 0: lcdPrintUnsigned(analogInputs.getValue(name), dig-1);
+        case 0: lcdPrintUnsigned(AnalogInputs::getValue(name), dig-1);
                  lcdPrintChar(' ');
                  break;
-        case 2: analogInputs.printMeasuredValue(name, dig);
+        case 2: AnalogInputs::printMeasuredValue(name, dig);
                  break;
-        case 3: lcdPrintUnsigned(analogInputs.getMeasuredValue(name), dig-1);
+        case 3: lcdPrintUnsigned(AnalogInputs::getMeasuredValue(name), dig-1);
                  lcdPrintChar(' ');
                  break;
         }
@@ -372,7 +372,7 @@ void Calibrate::printCalibrateB1_3()
 void Calibrate::printCalibrateB0_Blink()
 {
     lcdSetCursor0_0();
-    lcdPrintUnsigned(analogInputs.getValue(AnalogInputs::Vb0_real), 7);
+    lcdPrintUnsigned(AnalogInputs::getValue(AnalogInputs::Vb0_real), 7);
     lcdPrint_P(PSTR(" 0:"));
     if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb0_real, 6);
     else lcdPrintSpaces();
@@ -385,7 +385,7 @@ void Calibrate::printCalibrateB0_Blink()
 void Calibrate::printCalibrateB1_3_Blink()
 {
     lcdSetCursor0_0();
-    if(!analogInputs.isConnected(AnalogInputs::Vout)) {
+    if(!AnalogInputs::isConnected(AnalogInputs::Vout)) {
         lcdPrint_P(PSTR("ERROR! "));
     } else {
         lcdPrintSpaces(7);
@@ -411,7 +411,7 @@ void Calibrate::printCalibrateB1_3_Blink()
 void Calibrate::printCalibrateB4_6_Blink()
 {
     lcdSetCursor0_0();
-    if(!analogInputs.isConnected(AnalogInputs::Vout)) {
+    if(!AnalogInputs::isConnected(AnalogInputs::Vout)) {
         lcdPrint_P(PSTR("ERROR! "));
     } else {
         lcdPrintSpaces(7);
@@ -652,14 +652,14 @@ void Calibrate::infoStackInfo()
 void Calibrate::infoTimeM()
 {
     lcdClear();
-    analogInputs.powerOn();
+    AnalogInputs::powerOn();
     uint8_t key;
     do {
         key = Keyboard::getPressedWithSpeed();
         uint32_t t1,t0;
-        t0 = analogInputs.calculationCount_;
+        t0 = AnalogInputs::calculationCount_;
         hardware::delay(10000);
-        t1 = analogInputs.calculationCount_;
+        t1 = AnalogInputs::calculationCount_;
         lcdSetCursor0_0();
         lcdPrint_P(PSTR("measu: "));
         lcdPrintUnsigned(t0);
@@ -671,7 +671,7 @@ void Calibrate::infoTimeM()
         lcdPrintSpaces();
 
     } while(key != BUTTON_STOP);
-    analogInputs.powerOff();
+    AnalogInputs::powerOff();
 }
 
 

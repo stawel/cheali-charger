@@ -36,8 +36,7 @@
 #define ANALOG_VOLT(x) ((AnalogInputs::ValueType)((x)*1000))
 #define ANALOG_AMP(x) ((AnalogInputs::ValueType)((x)*1000))
 
-class AnalogInputs {
-public:
+namespace AnalogInputs {
     typedef uint16_t ValueType;
 
     struct CalibrationPoint {
@@ -119,20 +118,19 @@ public:
     static const uint16_t   STABLE_MIN_VALUE    = 3;
     static const ValueType  REVERSE_POLARITY_MIN_VALUE = ANALOG_VOLT(1.000);
 
-    AnalogInputs();
-
     //get the average (measured) value
-    ValueType getValue(Name name) const             { return avrValue_[name]; }
+    ValueType getValue(Name name);
     //get real value (usable) - average, after calibration
-    ValueType getRealValue(Name name) const        { return real_[name]; }
+    ValueType getRealValue(Name name);
     //get the measured value - in this particular moment
-    ValueType getMeasuredValue(Name name) const    { return measured_[name]; }
+    ValueType getMeasuredValue(Name name);
 
-    ValueType calibrateValue(Name name, ValueType x) const;
-    ValueType reverseCalibrateValue(Name name, ValueType y) const;
+    ValueType calibrateValue(Name name, ValueType x);
+    ValueType reverseCalibrateValue(Name name, ValueType y);
 
-    ValueType getVout() const;
-    ValueType getIout() const;
+    ValueType getVout();
+    ValueType getIout();
+    bool isOutStable();
 
     void doFullMeasurement();
 
@@ -148,45 +146,34 @@ public:
     void resetDelta();
     void powerOn();
     void powerOff();
-    bool isPowerOn() { return on_; }
+    bool isPowerOn();
 
+    void initialize();
 
     void restoreDefault();
-    static void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);
-    static void setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &p);
+    void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);
+    void setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &p);
 
-    uint8_t getConnectedBalancePorts() const;
-    bool isConnected(Name name) const;
+    uint8_t getConnectedBalancePorts();
+    bool isConnected(Name name);
 
-    uint16_t getCalculationCount() { return calculationCount_; }
-    void printRealValue(Name name, uint8_t dig) const;
-    void printMeasuredValue(Name name, uint8_t dig) const;
+    uint16_t getCalculationCount();
+    void printRealValue(Name name, uint8_t dig);
+    void printMeasuredValue(Name name, uint8_t dig);
     static Type getType(Name name);
-    uint16_t getStableCount(Name name) const { return stableCount_[name]; };
-    bool isStable(Name name) const { return stableCount_[name] >= STABLE_MIN_VALUE; };
+    uint16_t getStableCount(Name name);
+    bool isStable(Name name);
     void resetStable();
     bool isReversePolarity();
 
-//protected:
-    void setReal(Name name, ValueType real);
-    bool on_;
-    uint16_t avrCount_;
-    uint32_t avrSum_[PHYSICAL_INPUTS];
-    ValueType avrValue_[PHYSICAL_INPUTS];
-    ValueType measured_[PHYSICAL_INPUTS];
-    ValueType real_[ALL_INPUTS];
-    uint16_t stableCount_[ALL_INPUTS];
 
-    uint16_t calculationCount_;
+    extern const DefaultValues inputsP_[AnalogInputs::PHYSICAL_INPUTS];
+    extern ValueType measured_[PHYSICAL_INPUTS];
+//    extern bool on_;
+    extern uint16_t calculationCount_;
+    extern ValueType   deltaLastT_;
+    extern uint16_t    deltaCount_;
 
-    uint16_t    deltaCount_;
-    uint16_t    deltaAvrCount_;
-    uint32_t    deltaAvrSumVout_;
-    uint32_t    deltaAvrSumTextern_;
-    ValueType   deltaLastT_;
-    uint32_t    deltaStartTime_;
-
-    static const DefaultValues inputsP_[AnalogInputs::PHYSICAL_INPUTS];
 };
 
 template<class T>

@@ -58,6 +58,7 @@ void hardware::initialize()
 
     Timer1.initialize(TIMER1_PERIOD_MICROSECONDS);         // initialize timer1, and set a 1/2 second period
     adc::initialize();
+    AnalogInputs::initialize();
 }
 
 void hardware::setLCDBacklight(uint8_t val)
@@ -118,7 +119,6 @@ void hardware::setBalancerOutput(bool enable)
 }
 
 Balancer balancer;
-AnalogInputs analogInputs;
 
 LiquidCrystal lcd(LCD_ENABLE_RS, LCD_ENABLE_PIN,
         LCD_D0_PIN, LCD_D1_PIN, LCD_D2_PIN, LCD_D3_PIN);

@@ -23,7 +23,6 @@
 
 class TheveninMethod {
 public:
-    static const AnalogInputs::Name VName = AnalogInputs::VoutBalancer;
     enum FallingState {NotFalling, LastRthMesurment, Falling};
     uint16_t minValue_;
     uint16_t maxValue_;
@@ -45,8 +44,6 @@ public:
     AnalogInputs::ValueType calculateI();
     AnalogInputs::ValueType normalizeI(AnalogInputs::ValueType value, AnalogInputs::ValueType oldValue);
     AnalogInputs::ValueType storeOldValue(AnalogInputs::ValueType oldValue);
-
-    static AnalogInputs::ValueType getVout() { return analogInputs.getRealValue(VName); }
 
     void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
     void setMinI(AnalogInputs::ValueType i) {    minValue_ = i; };

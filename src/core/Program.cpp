@@ -179,8 +179,8 @@ namespace {
                 status = Monitor::run();
                 run = analizeStrategyStatus(strategy, status, exitImmediately);
 
-                if(run && newMesurmentData != analogInputs.getCalculationCount()) {
-                    newMesurmentData = analogInputs.getCalculationCount();
+                if(run && newMesurmentData != AnalogInputs::getCalculationCount()) {
+                    newMesurmentData = AnalogInputs::getCalculationCount();
                     status = strategy.doStrategy();
                     run = analizeStrategyStatus(strategy, status, exitImmediately);
                 }
