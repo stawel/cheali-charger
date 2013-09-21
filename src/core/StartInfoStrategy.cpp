@@ -27,7 +27,7 @@ StartInfoStrategy startInfoStrategy;
 void StartInfoStrategy::powerOn()
 {
     discharger.powerOn();
-    screen.startBlinkOn(7);
+    Screen::blink.startBlinkOn(7);
     Buzzer::begin();
     ok_ = 3;
 }
@@ -35,7 +35,7 @@ void StartInfoStrategy::powerOn()
 void StartInfoStrategy::powerOff()
 {
     discharger.powerOff();
-    screen.stopBlink();
+    Screen::blink.stopBlink();
     Buzzer::soundOff();
 }
 
@@ -63,10 +63,10 @@ Strategy::statusType StartInfoStrategy::doStrategy()
             absDiff(analogInputs.getRealValue(AnalogInputs::Vout),
                analogInputs.getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)) v_out = true;
 
-    screen.blinkIndex_ = 7;
-    if(cell_nr)     screen.blinkIndex_ -= 4;
-    if(v_balance)   screen.blinkIndex_ -= 2;
-    if(v_out)       screen.blinkIndex_ -= 1;
+    Screen::blink.blinkIndex_ = 7;
+    if(cell_nr)     Screen::blink.blinkIndex_ -= 4;
+    if(v_balance)   Screen::blink.blinkIndex_ -= 2;
+    if(v_out)       Screen::blink.blinkIndex_ -= 1;
 
     if(cell_nr || v_balance || v_out) {
         Buzzer::soundInfo();

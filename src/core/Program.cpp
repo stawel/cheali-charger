@@ -114,7 +114,7 @@ namespace {
 
     void chargingComplete() {
         lcdClear();
-        screen.displayScreenProgramCompleted();
+        Screen::displayScreenProgramCompleted();
         Buzzer::soundProgramComplete();
         waitButtonPressed();
         Buzzer::soundOff();
@@ -122,7 +122,7 @@ namespace {
 
     void chargingMonitorError() {
         lcdClear();
-        screen.displayMonitorError();
+        Screen::displayMonitorError();
         Buzzer::soundError();
         waitButtonPressed();
         Buzzer::soundOff();
@@ -132,7 +132,7 @@ namespace {
         bool run = true;
         if(status == Strategy::ERROR) {
             Program::programState_ = Program::Error;
-            screen.powerOff();
+            Screen::powerOff();
             strategy.powerOff();
             chargingMonitorError();
             run = false;
@@ -140,7 +140,7 @@ namespace {
 
         if(status == Strategy::COMPLETE) {
             Program::programState_ = Program::Done;
-            screen.powerOff();
+            Screen::powerOff();
             strategy.powerOff();
             if(!exitImmediately)
                 chargingComplete();
@@ -158,14 +158,14 @@ namespace {
         uint16_t newMesurmentData = 0;
         Strategy::statusType status = Strategy::RUNNING;
         strategy.powerOn();
-        screen.powerOn();
+        Screen::powerOn();
         Monitor::powerOn();
         lcdClear();
         uint8_t screen_nr = 0;
         screen_limit--;
         do {
             if(!PolarityCheck::runReversedPolarityInfo()) {
-                screen.display(pgm::read(&chargeScreens[screen_nr]));
+                Screen::display(pgm::read(&chargeScreens[screen_nr]));
             }
 
             {
@@ -189,7 +189,7 @@ namespace {
                 return status;
         } while(key != BUTTON_STOP);
 
-        screen.powerOff();
+        Screen::powerOff();
         strategy.powerOff();
         Program::programState_ = Program::None;
         return status;

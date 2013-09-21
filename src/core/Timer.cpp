@@ -32,7 +32,7 @@ static void callback() {
         slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
         smps.doSlowInterrupt();
         discharger.doSlowInterrupt();
-        screen.doSlowInterrupt();
+        Screen::doSlowInterrupt();
     }
 }
 

@@ -46,13 +46,13 @@ struct Settings {
     uint16_t capCutoff_;
     AnalogInputs::ValueType inputVoltageLow_;
     AnalogInputs::ValueType balancerError_;
-    Screen::ScreenViewType view_;
+    uint16_t view_;
 
     void edit();
     void check();
     void apply();
     void setDefault();
-    bool isDebug() { return view_ == Screen::Debug; }
+    bool isDebug() { return view_ == 1; /*TODO: */  }
 
     static void load();
     static void save();

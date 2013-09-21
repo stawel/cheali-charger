@@ -94,9 +94,8 @@ Strategy::statusType Monitor::run()
         return Strategy::ERROR;
     }
 
-    uint16_t c=0;
-    getCharge(c);
-    if(c> ProgramData::currentProgramData.getCapacityLimit()) {
+    AnalogInputs::ValueType c = analogInputs.getRealValue(AnalogInputs::Cout);
+    if(c > ProgramData::currentProgramData.getCapacityLimit()) {
         Program::stopReason_ = PSTR("cap COFF");
         return Strategy::COMPLETE;
     }

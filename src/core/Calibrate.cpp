@@ -349,7 +349,7 @@ void Calibrate::printCalibrateVunknown()
     print_m_2(PSTR(" V0:"), AnalogInputs::Vunknown0);
     print_m_3(PSTR("V1:"), AnalogInputs::Vunknown1);
 #else
-    screen.displayNotImplemented();
+    Screen::displayNotImplemented();
 #endif
 }
 

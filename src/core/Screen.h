@@ -22,23 +22,7 @@
 #include "Program.h"
 #include "Blink.h"
 
-class Screen : public Blink {
-public:
-    uint16_t charge_;
-    uint32_t startTime_totalTime_;
-    uint32_t totalBalanceTime_;
-    uint32_t totalChargDischargeTime_;
-    bool on_;
-
-    uint16_t getTimeSec() const;
-    void doSlowInterrupt();
-
-    static AnalogInputs::ValueType getI();
-
-    void powerOn();
-    void powerOff();
-    Screen() {};
-    enum ScreenViewType { Normal, Debug=0x80};
+namespace Screen {
     enum ScreenType {
         ScreenStartInfo,
         ScreenFirst, ScreenCIVlimits, ScreenTime, ScreenTemperature,
@@ -51,6 +35,15 @@ public:
         ScreenDeltaVout,
         ScreenDeltaTextern,
         };
+
+    extern Blink blink;
+
+    uint16_t getTimeSec();
+    void doSlowInterrupt();
+
+    void powerOn();
+    void powerOff();
+
 
     void display(ScreenType screen);
 
@@ -73,13 +66,11 @@ public:
     void printCharge();
     void printChar_Time();
 
-    static void displayStrings(const char *s1, const char *s2);
-    static void displayNotImplemented();
-    static void displayScreenReversedPolarity();
+    void displayStrings(const char *s1, const char *s2);
+    void displayNotImplemented();
+    void displayScreenReversedPolarity();
 
-    static void runNotImplemented();
+    void runNotImplemented();
 };
-
-extern Screen screen;
 
 #endif /* SCREEN_H_ */

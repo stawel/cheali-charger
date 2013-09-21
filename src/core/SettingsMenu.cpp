@@ -183,13 +183,13 @@ void SettingsMenu::changeBacklight(int dir) {
 void SettingsMenu::changeViewType(int dir)
 {
     uint16_t v = p_.view_;
-    if(dir < 0) p_.view_ = Screen::Normal;
-    if(dir > 0) p_.view_ = Screen::Debug;
+    if(dir < 0) p_.view_ = 0;
+    if(dir > 0) p_.view_ = 1;
 }
 
 void SettingsMenu::printViewType() const
 {
-    if(p_.view_ == Screen::Normal)
+    if(p_.view_ == 0)
         lcdPrint_P(PSTR("normal"));
     else
         lcdPrint_P(PSTR("debug"));

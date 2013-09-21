@@ -19,18 +19,6 @@
 #include "Utils.h"
 
 
-bool getCharge(uint16_t &charge)
-{
-    if(smps.isPowerOn()) {
-        charge = smps.getCharge();
-        return true;
-    } else  if(discharger.isPowerOn()) {
-        charge = discharger.getDischarge();
-        return true;
-    }
-    return false;
-
-}
 
 bool testTintern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on)
 {

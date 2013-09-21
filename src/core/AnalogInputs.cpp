@@ -170,11 +170,11 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
     setReal(VobInfo, obInfo);
 
     AnalogInputs::ValueType IoutValue = 0;
-    AnalogInputs::ValueType CoutValue = 0;
+    AnalogInputs::ValueType CoutValue = getRealValue(Cout);
     if(discharger.isPowerOn()) {
         IoutValue = getRealValue(Idischarge);
         CoutValue = discharger.getDischarge();
-    } else if (discharger.isPowerOn()) {
+    } else if (smps.isPowerOn()) {
         IoutValue = getRealValue(Ismps);
         CoutValue = smps.getCharge();
     }
@@ -349,6 +349,7 @@ AnalogInputs::Type AnalogInputs::getType(Name name)
     switch(name){
     case VirtualInputs:
         return Unknown;
+    case Iout:
     case Ismps:
     case IsmpsValue:
     case Idischarge:

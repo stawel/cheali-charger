@@ -22,9 +22,14 @@
 #include "TheveninMethod.h"
 #include "Settings.h"
 
-Screen screen;
 
-namespace {
+namespace Screen{
+
+    uint32_t startTime_totalTime_;
+    uint32_t totalBalanceTime_;
+    uint32_t totalChargDischargeTime_;
+    Blink blink;
+    bool on_;
 
     const char programString[] PROGMEM = "ChCBBlDiFCStSBChDiCyChDiEBLP";
     void printProgram2chars(Program::ProgramType prog)
@@ -64,45 +69,35 @@ namespace {
     {
         return calculateRth_calibrated(theveninMethod.tBal_[cell].Rth_V_, theveninMethod.tBal_[cell].Rth_I_);
     }
-    AnalogInputs::ValueType getBalanceValue(uint8_t cell, uint8_t mesured)
+    AnalogInputs::ValueType getBalanceValue(uint8_t cell, AnalogInputs::Type type)
     {
-        switch(mesured) {
-        case 0: return balancer.getPresumedV(cell);
-        case 1: return balancer.getV(cell);
-        case 2: return theveninMethod.tBal_[cell].Rth_V_;
-        case 3: return theveninMethod.tBal_[cell].Rth_I_;
-        case 4: return calculateRthCell(cell);
-        }
+        if(type == AnalogInputs::Voltage)
+            return balancer.getPresumedV(cell);
+        return calculateRthCell(cell);
     }
 
-    void printBalancer(uint8_t cell, uint8_t mesured, AnalogInputs::Type type) {
+    void printBalancer(uint8_t cell, AnalogInputs::Type type) {
         if(analogInputs.isConnected(AnalogInputs::Name(AnalogInputs::Vb1+cell))) {
-            lcdPrintAnalog(getBalanceValue(cell, mesured), type, 6);
+            lcdPrintAnalog(getBalanceValue(cell, type), type, 6);
         } else {
             lcdPrint_P(PSTR("  --  "));
         }
     }
 
-    void displayBalanceInfo(uint8_t from, uint8_t mesured, AnalogInputs::Type type)
+    void displayBalanceInfo(uint8_t from, AnalogInputs::Type type)
     {
         lcdSetCursor0_0();
 
         char c = ' ';
-        if(mesured == 0) {
-            if(!balancer.isWorking()) {
-                if(!balancer.isStable())
-                    c = 'm';
-            } else {
-                if(balancer.savedVon_)
-                    c = 'B';
-                else
-                    c = 'b';
-            }
+        if(!balancer.isWorking()) {
+            if(!balancer.isStable())
+                c = 'm';
+        } else {
+            if(balancer.savedVon_)
+                c = 'B';
+            else
+                c = 'b';
         }
-        if(mesured == 1) c = 'M';
-        if(mesured == 2) c = 'V';
-        if(mesured == 3) c = 'I';
-        if(mesured == 4) c = 'R';
 
         lcdPrintChar(c);
 
@@ -128,37 +123,27 @@ namespace {
             lcdPrint_P(PSTR("n.a."));
             from++;
         } else {
-            printBalancer(from++, mesured, type);
+            printBalancer(from++, type);
         }
 #else
-        printBalancer(from++, mesured, type);
+        printBalancer(from++, type);
 #endif
         lcdPrintSpaces();
 
         lcdSetCursor0_1();
         lcdPrintDigit(from+1);
         lcdPrintChar(':');
-        printBalancer(from++, mesured, type);
+        printBalancer(from++, type);
         lcdPrintDigit(from+1);
         lcdPrintChar(':');
-        printBalancer(from, mesured, type);
+        printBalancer(from, type);
         lcdPrintSpaces();
     }
 
-} // namespace {
-
-AnalogInputs::ValueType Screen::getI()
-{
-    if(smps.isPowerOn())
-        return  analogInputs.getRealValue(smps.IName);
-    if(discharger.isPowerOn())
-        return  analogInputs.getRealValue(discharger.IName);
-    return 0;
-}
+} // namespace Screen
 
 void Screen::printCharge() {
-    getCharge(charge_);
-    lcdPrintCharge(charge_, 8);
+    lcdPrintCharge(analogInputs.getRealValue(AnalogInputs::Cout), 8);
     lcdPrintChar(' ');
 }
 
@@ -183,7 +168,7 @@ void Screen::displayScreenFirst()
 {
     lcdSetCursor0_0();
     printCharge();
-    lcdPrintCurrent(getI(),  7);
+    analogInputs.printRealValue(AnalogInputs::Iout,     7);
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
@@ -206,7 +191,7 @@ void Screen::displayScreenCIVlimits()
     lcdPrintSpaces();
 }
 
-uint16_t Screen::getTimeSec() const
+uint16_t Screen::getTimeSec()
 {
     uint32_t t = startTime_totalTime_;
     if(on_) t = timer.getMiliseconds() - startTime_totalTime_;
@@ -260,7 +245,7 @@ void Screen::displayScreenR()
         lcdPrint_P(PSTR("wires R="));
         int16_t Vwires =  analogInputs.getRealValue(AnalogInputs::Vout);
         Vwires -= analogInputs.getRealValue(AnalogInputs::Vbalancer);
-        lcdPrintResistance(calculateRth2(Vwires, getI()+1),8);
+        lcdPrintResistance(calculateRth2(Vwires, analogInputs.getRealValue(AnalogInputs::Iout)+1),8);
     }
     lcdPrintSpaces();
 }
@@ -401,7 +386,7 @@ void Screen::displayDeltaTextern()
 
 void Screen::displayNotImplemented()
 {
-    screen.displayStrings(PSTR("Function not"), PSTR("implemented yet"));
+    displayStrings(PSTR("Function not"), PSTR("implemented yet"));
 }
 
 void Screen::runNotImplemented()
@@ -428,7 +413,7 @@ void Screen::displayStartInfo()
     lcdSetCursor0_1();
     uint16_t procent = getChargeProcent();
     if(procent == 100) {
-        if(getBlinkOff())
+        if(blink.getBlinkOff())
             lcdPrintSpaces(4);
         else
             lcdPrint_P(PSTR("FUL "));
@@ -437,7 +422,7 @@ void Screen::displayStartInfo()
         lcdPrint_P(PSTR("% "));
     }
 
-    int bindex = getBlinkIndex();
+    int bindex = blink.getBlinkIndex();
     if(bindex & 1) analogInputs.printRealValue(AnalogInputs::Vout, 5);
     else lcdPrintSpaces(5);
 
@@ -460,16 +445,16 @@ void Screen::displayStartInfo()
 
 void Screen::display(ScreenType screen)
 {
-    incBlinkTime();
+    blink.incBlinkTime();
     switch(screen) {
     case ScreenFirst:                   return displayScreenFirst();
     case ScreenCIVlimits:               return displayScreenCIVlimits();
     case ScreenTime:                    return displayScreenTime();
     case ScreenTemperature:             return displayScreenTemperature();
-    case ScreenBalancer1_3:             return displayBalanceInfo(0, 0, AnalogInputs::Voltage);
-    case ScreenBalancer4_6:             return displayBalanceInfo(3, 0, AnalogInputs::Voltage);
-    case ScreenBalancer1_3Rth:          return displayBalanceInfo(0, 4, AnalogInputs::Resistance);
-    case ScreenBalancer4_6Rth:          return displayBalanceInfo(3, 4, AnalogInputs::Resistance);
+    case ScreenBalancer1_3:             return displayBalanceInfo(0, AnalogInputs::Voltage);
+    case ScreenBalancer4_6:             return displayBalanceInfo(3, AnalogInputs::Voltage);
+    case ScreenBalancer1_3Rth:          return displayBalanceInfo(0, AnalogInputs::Resistance);
+    case ScreenBalancer4_6Rth:          return displayBalanceInfo(3, AnalogInputs::Resistance);
     case ScreenStartInfo:               return displayStartInfo();
     case ScreenR:                       return displayScreenR();
     case ScreenVout:                    return displayScreenVout();
