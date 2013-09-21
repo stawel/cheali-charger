@@ -33,12 +33,12 @@ void DeltaChargeStrategy::powerOn()
 Strategy::statusType DeltaChargeStrategy::doStrategy()
 {
     calculateThevenin();
-    AnalogInputs::ValueType Vout = smps.getVout();
+    AnalogInputs::ValueType Vout = analogInputs.getVout();
 
     if(state_ == PreCharge) {
         if(Vout > ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge)) {
             state_ = RapidCharge;
-            smps.setRealValue(ProgramData::currentProgramData.battery.Ic);
+            SMPS::setRealValue(ProgramData::currentProgramData.battery.Ic);
         }
     }
 

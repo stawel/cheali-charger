@@ -498,7 +498,7 @@ bool Calibrate::calibrateBlink(screenType p, int8_t maxBlink)
     blink_ = 0;
     blinkOn_ = true;
     uint8_t blinkCount = 0;
-    smps.powerOn();
+    SMPS::powerOn();
 #ifdef ENABLE_B0_CALIBRATION
     if(p == SCREEN_B0_BLINK)
         hardware::setBatteryOutput(false);
@@ -523,7 +523,7 @@ bool Calibrate::calibrateBlink(screenType p, int8_t maxBlink)
         else blinkCount = 0;
 
     } while(key != BUTTON_STOP || !released);
-    smps.powerOff();
+    SMPS::powerOff();
     return retu;
 }
 
@@ -565,7 +565,7 @@ bool Calibrate::calibrate(screenType p)
     value_ = 0;
     dispVal_ = 1;
     //turn on output
-    smps.powerOn();
+    SMPS::powerOn();
     uint8_t key, last_key;
     do {
         printCalibrate(p);
@@ -573,11 +573,11 @@ bool Calibrate::calibrate(screenType p)
         key = Keyboard::getPressedWithSpeed();
         if(key == BUTTON_INC && value_ < MAX_CALIBRATION_SMPS_VALUE) {
             value_++;
-            smps.setValue(value_);
+            SMPS::setValue(value_);
         }
         if(key == BUTTON_DEC && value_ > 0) {
             value_--;
-            smps.setValue(value_);
+            SMPS::setValue(value_);
         }
         if(key == BUTTON_START && Keyboard::getSpeed() == ACCEPT_DELAY && released) {
             retu = true;
@@ -589,7 +589,7 @@ bool Calibrate::calibrate(screenType p)
         if(key == BUTTON_NONE) released = true;
 
     } while(key != BUTTON_STOP);
-    smps.powerOff();
+    SMPS::powerOff();
     return retu;
 }
 

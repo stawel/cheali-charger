@@ -58,11 +58,9 @@
 #include "Balancer.h"
 
 class Discharger;
-class SMPS;
 
 extern LiquidCrystal lcd;
 extern AnalogInputs analogInputs;
-extern SMPS smps;
 extern Discharger discharger;
 extern Balancer balancer;
 

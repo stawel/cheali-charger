@@ -18,7 +18,23 @@
 #include "Hardware.h"
 #include "SMPS.h"
 
-SMPS::SMPS(): clearCharge_(true)
+namespace SMPS {
+    STATE state_;
+    uint32_t charge_;
+    bool clearCharge_;
+    uint16_t value_;
+
+    STATE getState()    { return state_; }
+    bool isPowerOn()    { return getState() == CHARGING; }
+    bool isWorking()    { return value_ != 0; }
+
+
+    uint16_t getValue() { return value_; }
+    void setClearCharge(bool v) {clearCharge_ = v;}
+
+}
+
+void SMPS::initialize()
 {
     setValue(0);
     powerOff(CHARGING_COMPLETE);
@@ -33,6 +49,7 @@ void SMPS::setValue(uint16_t value)
     hardware::setChargerValue(value_);
     analogInputs.resetMeasurement();
 }
+
 void SMPS::setRealValue(uint16_t I)
 {
     uint16_t value = analogInputs.reverseCalibrateValue(AnalogInputs::IsmpsValue, I);
@@ -70,11 +87,11 @@ void SMPS::powerOff(STATE reason)
 void SMPS::doSlowInterrupt()
 {
    if(isPowerOn()) {
-           charge_ += getIcharge();
+           charge_ += analogInputs.getIout();
    }
 }
 
-uint16_t SMPS::getCharge() const
+uint16_t SMPS::getCharge()
 {
     uint32_t retu = charge_;
 #if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 512
@@ -86,16 +103,6 @@ uint16_t SMPS::getCharge() const
     retu /= 3600/TIMER_SLOW_INTERRUPT_INTERVAL;
 #endif
     return retu;
-}
-
-AnalogInputs::ValueType SMPS::getVout() const
-{
-    return analogInputs.getRealValue(VName);
-}
-
-AnalogInputs::ValueType SMPS::getIcharge() const
-{
-    return analogInputs.getRealValue(IName);
 }
 
 

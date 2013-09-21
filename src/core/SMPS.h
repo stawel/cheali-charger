@@ -23,25 +23,16 @@
 #include "AnalogInputs.h"
 #include "Timer.h"
 
-class Strategy;
-
-class SMPS {
-public:
+namespace SMPS {
     enum STATE { CHARGING, CHARGING_COMPLETE, ERROR, STOP};
-    static const AnalogInputs::Name VName = AnalogInputs::VoutBalancer;
-    static const AnalogInputs::Name IName = AnalogInputs::Ismps;
 
-    SMPS();
+    void initialize();
 
-    AnalogInputs::ValueType getVout() const;
-    AnalogInputs::ValueType getIcharge() const;
+    STATE getState();
+    bool isPowerOn();
+    bool isWorking();
 
-    STATE getState() const { return state_; }
-    bool isPowerOn() const { return getState() == CHARGING; }
-    bool isWorking() const { return value_ != 0; }
-
-
-    uint16_t getValue() const { return value_; }
+    uint16_t getValue();
     void setValue(uint16_t value);
     void setRealValue(uint16_t I);
 
@@ -50,15 +41,9 @@ public:
 
     void doSlowInterrupt();
 
-    uint16_t getCharge() const;
-    void setClearCharge(bool v) {clearCharge_ = v;}
+    uint16_t getCharge();
+    void setClearCharge(bool v);
 
-protected:
-
-    STATE state_;
-    uint16_t value_;
-    uint32_t charge_;
-    bool clearCharge_;
 };
 
 

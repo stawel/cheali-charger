@@ -149,11 +149,11 @@ void Screen::printCharge() {
 
 void Screen::printChar_Time() {
     char c = 'N';
-    if(smps.isPowerOn()) {
+    if(SMPS::isPowerOn()) {
         c = 'C';
     } else if(discharger.isPowerOn()) {
         c = 'D';
-        if(smps.isPowerOn()) c = 'E';
+        if(SMPS::isPowerOn()) c = 'E';
     } else if(balancer.isWorking()) {
         c = 'B';
     }
@@ -215,7 +215,7 @@ void Screen::powerOff()
 
 void Screen::doSlowInterrupt()
 {
-   if(smps.isWorking() || discharger.isWorking())
+   if(SMPS::isWorking() || discharger.isWorking())
        totalChargDischargeTime_ += SLOW_INTERRUPT_PERIOD_MILISECONDS;
 
    if(balancer.isWorking())

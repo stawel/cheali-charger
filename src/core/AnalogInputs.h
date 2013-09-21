@@ -131,6 +131,9 @@ public:
     ValueType calibrateValue(Name name, ValueType x) const;
     ValueType reverseCalibrateValue(Name name, ValueType y) const;
 
+    ValueType getVout() const;
+    ValueType getIout() const;
+
     void doFullMeasurement();
 
     void finalizeMeasurement();

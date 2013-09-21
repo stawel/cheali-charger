@@ -174,9 +174,9 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
     if(discharger.isPowerOn()) {
         IoutValue = getRealValue(Idischarge);
         CoutValue = discharger.getDischarge();
-    } else if (smps.isPowerOn()) {
+    } else if (SMPS::isPowerOn()) {
         IoutValue = getRealValue(Ismps);
-        CoutValue = smps.getCharge();
+        CoutValue = SMPS::getCharge();
     }
 
     setReal(Iout, IoutValue);
@@ -193,6 +193,18 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
     E /= 10000;
     setReal(Eout, E);
 }
+
+
+AnalogInputs::ValueType AnalogInputs::getVout() const
+{
+    return getRealValue(VoutBalancer);
+}
+
+AnalogInputs::ValueType AnalogInputs::getIout() const
+{
+    return getRealValue(Iout);
+}
+
 
 void AnalogInputs::finalizeFullMeasurement()
 {

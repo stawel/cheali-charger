@@ -53,6 +53,7 @@ void hardware::initialize()
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
     Timer::initialize();
+    SMPS::initialize();
 
     Timer1.initialize(TIMER1_PERIOD_MICROSECONDS);         // initialize timer1, and set a 1/2 second period
     adc::initialize();
@@ -116,7 +117,6 @@ void hardware::setBalancerOutput(bool enable)
 }
 
 
-SMPS smps;
 Discharger discharger;
 Balancer balancer;
 AnalogInputs analogInputs;
