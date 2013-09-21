@@ -32,22 +32,15 @@
 #define BUTTON_CHANGE_DELAY        50
 
 
-class Keyboard {
-    uint8_t last_key_;
-    uint8_t speed_;
-    uint8_t this_speed_;
-public:
-    Keyboard();
-    uint8_t getPressed() const;
+namespace Keyboard {
+    uint8_t getPressed();
     uint8_t getPressedWithSpeed();
-    uint8_t getSpeed() {return speed_; };
+    uint8_t getSpeed();
     uint8_t getPressTime(uint8_t limit = 2);
-    bool isLongPressTime() const { return speed_ > 1; }
+    bool isLongPressTime();
 
-    uint16_t getSpeedFactor() const;
+    uint16_t getSpeedFactor();
 
-private:
-    uint8_t keyChanged(uint8_t key);
 };
 
 

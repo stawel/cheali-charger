@@ -170,7 +170,7 @@ namespace {
 
             {
                 //change displayed screen
-                key =  keyboard.getPressedWithSpeed();
+                key =  Keyboard::getPressedWithSpeed();
                 if(key == BUTTON_INC && screen_nr < screen_limit)   screen_nr++;
                 if(key == BUTTON_DEC && screen_nr > 0)              screen_nr--;
             }

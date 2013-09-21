@@ -74,9 +74,9 @@ Strategy::statusType StartInfoStrategy::doStrategy()
         Buzzer::soundOff();
     }
 
-    if(keyboard.getPressed() == BUTTON_NONE)
+    if(Keyboard::getPressed() == BUTTON_NONE)
         ok_ = 0;
-    if(!cell_nr && !v_balance && !v_out && keyboard.getPressed() == BUTTON_START) {
+    if(!cell_nr && !v_balance && !v_out && Keyboard::getPressed() == BUTTON_START) {
         ok_++;
     }
     if(ok_ == 2) {

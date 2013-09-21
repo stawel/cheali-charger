@@ -24,7 +24,7 @@ bool EditMenu::runEdit(uint8_t index)
     uint8_t key;
     render_ = true;
     do {
-        key =  keyboard.getPressedWithSpeed();
+        key =  Keyboard::getPressedWithSpeed();
         if(key == BUTTON_DEC || key == BUTTON_INC) {
             editItem(index, key);
             startBlinkOn(index);

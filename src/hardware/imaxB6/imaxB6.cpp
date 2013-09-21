@@ -123,7 +123,6 @@ void hardware::setBalancer(uint8_t v)
 }
 
 
-Keyboard keyboard;
 SMPS smps;
 Discharger discharger;
 Balancer balancer;

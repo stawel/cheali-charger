@@ -116,7 +116,6 @@ void hardware::setBalancerOutput(bool enable)
 }
 
 
-Keyboard keyboard;
 SMPS smps;
 Discharger discharger;
 Balancer balancer;

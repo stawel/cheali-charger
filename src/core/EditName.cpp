@@ -65,7 +65,7 @@ void EditName::selectLetter()
             begin = beginSL_;
         }
         lcdSetCursor(cursorSL_&(LCD_COLUMNS-1), cursorSL_ >> 4);
-        key = keyboard.getPressedWithSpeed();
+        key = Keyboard::getPressedWithSpeed();
         switch(key) {
         case BUTTON_STOP: return;
         case BUTTON_INC: incSL(); break;
@@ -98,7 +98,7 @@ bool EditName::run(){
         mainScreen();
         do {
             lcdSetCursor(cursor_, 1);
-            key = keyboard.getPressedWithSpeed();
+            key = Keyboard::getPressedWithSpeed();
             switch(key) {
             case BUTTON_STOP:
                 lcd.noBlink();
@@ -112,7 +112,7 @@ bool EditName::run(){
             }
         } while(key != BUTTON_START);
 
-        if(keyboard.getPressTime()>1) {
+        if(Keyboard::getPressTime()>1) {
             save();
             lcd.noBlink();
             return true;

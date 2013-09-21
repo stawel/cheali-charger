@@ -62,7 +62,6 @@ class Discharger;
 class SMPS;
 
 extern LiquidCrystal lcd;
-extern Keyboard keyboard;
 extern AnalogInputs analogInputs;
 extern Timer timer;
 extern SMPS smps;

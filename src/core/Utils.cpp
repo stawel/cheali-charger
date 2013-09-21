@@ -108,6 +108,6 @@ void changeMaxSmart(uint16_t &v, int direc, uint16_t max)
 
 void waitButtonPressed()
 {
-    while(keyboard.getPressedWithSpeed() != BUTTON_NONE);
-    while(keyboard.getPressedWithSpeed() == BUTTON_NONE);
+    while(Keyboard::getPressedWithSpeed() != BUTTON_NONE);
+    while(Keyboard::getPressedWithSpeed() == BUTTON_NONE);
 }

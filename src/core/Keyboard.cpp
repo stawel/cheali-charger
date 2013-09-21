@@ -21,11 +21,25 @@
 #include "Buzzer.h"
 #include "memory.h"
 
-Keyboard::Keyboard(): last_key_(BUTTON_NONE), speed_(0), this_speed_(0)
-{}
+
+namespace Keyboard {
+    uint8_t last_key_ = BUTTON_NONE;
+    uint8_t speed_ = 0;
+    uint8_t this_speed_ = 0;
+
+    uint8_t keyChanged(uint8_t key);
+
+    uint8_t getSpeed()  {
+        return speed_;
+    };
+    bool isLongPressTime() {
+        return speed_ > 1;
+    }
+}
 
 
-uint8_t Keyboard::getPressed() const
+
+uint8_t Keyboard::getPressed()
 {
     return hardware::getKeyPressed();
 }
@@ -34,7 +48,7 @@ static const uint16_t speedTable[]  PROGMEM = {1, 2, 4, 16, 64, 256, 1024};//, 4
 static const uint16_t thisSpeedT[]  PROGMEM = {1, 3, 8,  7,  7,   7,    7};//,    7,     7,     7};
 static const uint16_t speedFactor[] PROGMEM = {1, 1, 1,  1,  1,   1,    4};//,   16,    64,   256};
 
-uint16_t Keyboard::getSpeedFactor() const
+uint16_t Keyboard::getSpeedFactor()
 {
     return pgm::read(&speedFactor[speed_]);
 }

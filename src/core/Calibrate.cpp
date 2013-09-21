@@ -507,7 +507,7 @@ bool Calibrate::calibrateBlink(screenType p, int8_t maxBlink)
     uint8_t key, last_key;
     do {
         printCalibrate(p);
-        key = keyboard.getPressedWithSpeed();
+        key = Keyboard::getPressedWithSpeed();
 
         blinkOn_ = (blinkCount%6) != 0;
         blinkCount++;
@@ -540,7 +540,7 @@ bool Calibrate::setValue(uint8_t x, uint8_t y, AnalogInputs::ValueType &v, Analo
         else             lcdPrintSpaces(dig);
         blinkOn_ = !blinkOn_;
 
-        key = keyboard.getPressedWithSpeed();
+        key = Keyboard::getPressedWithSpeed();
         if(key == BUTTON_INC) {  dir  = 1; blinkOn_ = true; }
         if(key == BUTTON_DEC) {  dir = -1; blinkOn_ = true; }
         if(key == BUTTON_START && released) {
@@ -548,7 +548,7 @@ bool Calibrate::setValue(uint8_t x, uint8_t y, AnalogInputs::ValueType &v, Analo
         }
         if(key == BUTTON_NONE) released = true;
 
-        dir *= keyboard.getSpeedFactor();
+        dir *= Keyboard::getSpeedFactor();
         v+=dir;
     } while(key != BUTTON_STOP);
     return false;
@@ -570,7 +570,7 @@ bool Calibrate::calibrate(screenType p)
     do {
         printCalibrate(p);
         last_key = key;
-        key = keyboard.getPressedWithSpeed();
+        key = Keyboard::getPressedWithSpeed();
         if(key == BUTTON_INC && value_ < MAX_CALIBRATION_SMPS_VALUE) {
             value_++;
             smps.setValue(value_);
@@ -579,7 +579,7 @@ bool Calibrate::calibrate(screenType p)
             value_--;
             smps.setValue(value_);
         }
-        if(key == BUTTON_START && keyboard.getSpeed() == ACCEPT_DELAY && released) {
+        if(key == BUTTON_START && Keyboard::getSpeed() == ACCEPT_DELAY && released) {
             retu = true;
             break;
         }
@@ -609,7 +609,7 @@ bool Calibrate::calibrateDischarge()
     do {
         printCalibrateIdischarge();
         last_key = key;
-        key = keyboard.getPressedWithSpeed();
+        key = Keyboard::getPressedWithSpeed();
         if(key == BUTTON_INC && value_ < 760*2) {
             value_++;
             discharger.setValue(value_);
@@ -618,7 +618,7 @@ bool Calibrate::calibrateDischarge()
             value_--;
             discharger.setValue(value_);
         }
-        if(key == BUTTON_START && keyboard.getSpeed() == ACCEPT_DELAY && released) {
+        if(key == BUTTON_START && Keyboard::getSpeed() == ACCEPT_DELAY && released) {
             retu = true;
             break;
         } if(key == BUTTON_NONE && last_key == BUTTON_START  && released) {
@@ -636,7 +636,7 @@ void Calibrate::infoStackInfo()
     lcdClear();
     uint8_t key;
     do {
-        key = keyboard.getPressedWithSpeed();
+        key = Keyboard::getPressedWithSpeed();
         lcdSetCursor0_0();
         lcdPrint_P(PSTR(" stack: "));
         lcdPrintUnsigned(StackInfo::getFreeStackSize());
@@ -655,7 +655,7 @@ void Calibrate::infoTimeM()
     analogInputs.powerOn();
     uint8_t key;
     do {
-        key = keyboard.getPressedWithSpeed();
+        key = Keyboard::getPressedWithSpeed();
         uint32_t t1,t0;
         t0 = analogInputs.calculationCount_;
         hardware::delay(10000);
