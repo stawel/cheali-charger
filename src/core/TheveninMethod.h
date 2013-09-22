@@ -34,7 +34,7 @@ namespace TheveninMethod {
     AnalogInputs::ValueType calculateNewValue(bool isEndVout, AnalogInputs::ValueType oldValue);
     AnalogInputs::ValueType calculateI();
     AnalogInputs::ValueType normalizeI(AnalogInputs::ValueType value, AnalogInputs::ValueType oldValue);
-    AnalogInputs::ValueType storeOldValue(AnalogInputs::ValueType oldValue);
+    void storeOldValue(AnalogInputs::ValueType oldValue);
 
     void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
     void setMinI(AnalogInputs::ValueType i);

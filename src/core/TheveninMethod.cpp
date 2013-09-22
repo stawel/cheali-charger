@@ -139,7 +139,7 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value
     return oldValue;
 }
 
-AnalogInputs::ValueType TheveninMethod::storeOldValue(AnalogInputs::ValueType oldValue)
+void TheveninMethod::storeOldValue(AnalogInputs::ValueType oldValue)
 {
     tVout_.storeLast(AnalogInputs::getVout(), oldValue);
 
