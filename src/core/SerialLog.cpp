@@ -50,8 +50,9 @@ namespace SerialLog {
 void SerialLog::initialize()
 {
 #ifdef ENABLE_SERIAL_LOG
+#ifndef ENABLE_SERIAL_LOG_WAIT
     Serial.begin(SERIAL_SPEED);
-//    Serial.println("ChealiCharger hello!");
+#endif
     state = Off;
 #endif //ENABLE_SERIAL_LOG
 }
@@ -79,6 +80,10 @@ void SerialLog::send()
     if(state == Off)
         return;
 
+#ifdef ENABLE_SERIAL_LOG_WAIT
+    Serial.begin(SERIAL_SPEED);
+#endif
+
     if(state == Starting) {
         startTime = Timer::getMiliseconds();
         state = On;
@@ -86,6 +91,12 @@ void SerialLog::send()
 
     uint32_t t = Timer::getMiliseconds();
     sendTime(t);
+
+#ifdef ENABLE_SERIAL_LOG_WAIT
+    Serial.flush();
+    Serial.end();
+    pinMode(10, INPUT);
+#endif
 #endif //ENABLE_SERIAL_LOG
 }
 

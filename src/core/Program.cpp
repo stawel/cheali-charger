@@ -38,7 +38,7 @@
 
 AnalogInputs::Name Program::iName_;
 Program::ProgramType Program::programType_;
-Program::ProgramState Program::programState_ = Program::None;
+Program::ProgramState Program::programState_ = Program::Done;
 const char * Program::stopReason_;
 
 namespace {

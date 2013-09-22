@@ -60,14 +60,13 @@ void Options::resetDefault()
 void Options::run()
 {
     StaticMenu optionsMenu(optionsStaticMenu, sizeOfArray(optionsStaticMenu));
-    Calibrate calibrate;
     int8_t i;
 
     do {
         i = optionsMenu.runSimple();
         switch(i) {
         case 0: settings.edit(); break;
-        case 1: calibrate.run(); break;
+        case 1: Calibrate::run(); break;
         case 2: resetDefault(); break;
         }
     } while(i>=0);

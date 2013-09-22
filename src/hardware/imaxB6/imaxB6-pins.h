@@ -28,6 +28,7 @@
 //pin 9 - rs232 RX
 #define BALANCER4_LOAD_PIN      9
 //pin 10 - rs232 TX
+#define UART_TX                 10
 
 #define BALANCER5_LOAD_PIN      11
 //?? fan not present - not tested

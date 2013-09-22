@@ -26,9 +26,12 @@
 #define ENABLE_B0_CALIBRATION
 #endif
 
-class Calibrate {
-public:
-    uint16_t value_;
+namespace Calibrate {
+
+    void run();
+    void calibrateVoltage();
+
+/*    uint16_t value_;
     uint8_t dispVal_;
     int8_t blink_;
     bool blinkOn_;
@@ -74,7 +77,6 @@ public:
     void infoStackInfo();
 #endif
 
-    void run();
     void runInfo();
     bool calibrate(screenType screen);
     bool calibrateBlink(screenType screen, int8_t maxBlink);
@@ -85,7 +87,7 @@ public:
     void calibrateI(screenType screen, AnalogInputs::Name name1, AnalogInputs::Name name2);
     void setBalancer(AnalogInputs::Name firstName);
     bool setValue(uint8_t x, uint8_t y, AnalogInputs::ValueType &v, AnalogInputs::Type, uint8_t dig);
-
+*/
 };
 
 #endif /* CALIBRATE_H_ */

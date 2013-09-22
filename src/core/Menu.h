@@ -35,7 +35,7 @@ public:
     void render() { render_ = true; }
 
     uint8_t run();
-    int8_t runSimple();
+    int8_t runSimple(bool animate = false);
 
     void incIndex();
     void decIndex();

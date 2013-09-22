@@ -44,8 +44,10 @@
 //This is why we see a greater Vb1 resistance.
 #define ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
 #define ENABLE_STACK_INFO
-
 #define ENABLE_SERIAL_LOG
+//wait for the transition end and disable UART,
+//the UART interfere with Vb0_pin measurement
+#define ENABLE_SERIAL_LOG_WAIT
 
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
 

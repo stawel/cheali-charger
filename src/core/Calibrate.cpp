@@ -24,136 +24,110 @@
 #include "Screen.h"
 #include "Buzzer.h"
 #include "StackInfo.h"
+#include "EditMenu.h"
 
-#define MAX_DISP_VAL 4
+namespace Calibrate {
 
-const char string_c1[] PROGMEM = "B1-3";
-const char string_c2[] PROGMEM = "B4-6";
-const char string_c3[] PROGMEM = "B1-6 to Vout";
-const char string_c4[] PROGMEM = "Icharge";
-const char string_c5[] PROGMEM = "Idischarge";
-const char string_c6[] PROGMEM = "Vin";
-const char string_c7[] PROGMEM = "Tintern";
-const char string_c8[] PROGMEM = "Textern";
+const char c1[] PROGMEM = "voltage";
+const char c2[] PROGMEM = "I charge";
+const char c3[] PROGMEM = "I discharge";
+const char c4[] PROGMEM = "temp extern";
+#ifdef ENABLE_T_INTERNAL
+const char c5[] PROGMEM = "temp intern";
+#endif
+const char * const calibrateMenu[] PROGMEM = {c1,c2,c3,c4
+#ifdef ENABLE_T_INTERNAL
+  ,c5
+#endif
+};
+
+const char cv1[] PROGMEM = "Vin: ";
+const char cv2[] PROGMEM = "Vb1: ";
+const char cv3[] PROGMEM = "Vb2: ";
+const char cv4[] PROGMEM = "Vb3: ";
+const char cv5[] PROGMEM = "Vb4: ";
+const char cv6[] PROGMEM = "Vb5: ";
+const char cv7[] PROGMEM = "Vb6: ";
+const char cv8[] PROGMEM = "V1-6:";
+const char cv9[] PROGMEM = "Vout:";
+
+
+/* TODO: implement?
 #ifdef ENABLE_B0_CALIBRATION
-const char string_c0[] PROGMEM = "B0-dangerous";
+const char string_cv9[] PROGMEM = "B0-dangerous";
 #endif
-const char string_c9[] PROGMEM = "Info-debug";
+const char string_cv10[] PROGMEM = "Vreversed";
+const char string_cv11[] PROGMEM = "Vunknown";
+*/
 
-const char string_ci0[] PROGMEM = "Icharge";
-const char string_ci1[] PROGMEM = "Vout";
-const char string_ci2[] PROGMEM = "B1-3";
-const char string_ci3[] PROGMEM = "B4-6";
-const char string_ci4[] PROGMEM = "Temp";
-const char string_ci5[] PROGMEM = "Vin";
-const char string_ci6[] PROGMEM = "Vreversed";
-const char string_ci7[] PROGMEM = "Vunknown";
-const char string_ci8[] PROGMEM = "Idischarge";
-const char string_ci9[] PROGMEM = "time";
-#ifdef ENABLE_STACK_INFO
-const char string_cia[] PROGMEM = "stack info";
-#endif
-
-const char * const calibrateMenu[] PROGMEM =
-{
-  string_c1,
-  string_c2,
-  string_c3,
-  string_c4,
-  string_c5,
-  string_c6,
-  string_c7,
-  string_c8,
-#ifdef ENABLE_B0_CALIBRATION
-  string_c0,
-#endif
-  string_c9,
+const AnalogInputs::Name voltageName[] PROGMEM = {
+       AnalogInputs::Vin,
+       AnalogInputs::Vb1,
+       AnalogInputs::Vb2,
+       AnalogInputs::Vb3,
+       AnalogInputs::Vb4,
+       AnalogInputs::Vb5,
+       AnalogInputs::Vb6,
+       AnalogInputs::Vbalancer,
+       AnalogInputs::Vout,
 };
-
-const char * const calibrateInfoMenu[] PROGMEM =
-{ string_ci0,
-  string_ci1,
-  string_ci2,
-  string_ci3,
-  string_ci4,
-  string_ci5,
-  string_ci6,
-  string_ci7,
-  string_ci8,
-  string_ci9,
-#ifdef ENABLE_STACK_INFO
-  string_cia,
-#endif
+const AnalogInputs::Name voltageName2[] PROGMEM = {
+       AnalogInputs::Vin,
+       AnalogInputs::Vb1_pin,
+       AnalogInputs::Vb2_pin,
+       AnalogInputs::Vb3_pin,
+       AnalogInputs::Vb4_pin,
+       AnalogInputs::Vb5_pin,
+       AnalogInputs::Vb6_pin,
 };
 
 
-const char string_cI0[] PROGMEM = "50mA";
-const char string_cI1[] PROGMEM = "1000mA";
+const char * const voltageMenu[] PROGMEM = {cv1, cv2,cv3,cv4,cv5,cv6,cv7,cv8, cv9};
 
-const char string_cID1[] PROGMEM = "300mA";
+const char cI0[] PROGMEM = "50mA";
+const char cI1[] PROGMEM = "1000mA";
+const char cID1[] PROGMEM = "300mA";
 
-const char * const calibrateICMenu[] PROGMEM =
-{
-    string_cI0,
-    string_cI1,
-};
+const char * const chargeIMenu[] PROGMEM = { cI0, cI1};
+const char * const dischargeIMenu[] PROGMEM = { cI0, cID1};
 
-const char * const calibrateIDMenu[] PROGMEM =
-{
-    string_cI0,
-    string_cID1,
-};
+const char cp1[] PROGMEM = "point 1.";
+const char cp2[] PROGMEM = "point 2.";
 
-namespace {
-void setCalibrationPoint(AnalogInputs::Name name, uint8_t i, const AnalogInputs::CalibrationPoint &x)
-{
-    Buzzer::soundSave();
-    AnalogInputs::setCalibrationPoint(name, i, x);
-}
-}
+const char * const pointMenu[] PROGMEM = {cp1,cp2};
+
+const char ct1[] PROGMEM = "temp: ";
+const char ct2[] PROGMEM = "value:";
+
+const char * const tempMenu[] PROGMEM = {ct1,ct2};
 
 
-void Calibrate::calibrateI(screenType screen, AnalogInputs::Name name1, AnalogInputs::Name name2)
-{
-    AnalogInputs::ValueType value1 = ANALOG_AMP(0.3);
-    const char * const *menu_str = calibrateIDMenu;
-    if(name1==AnalogInputs::Ismps) {
-        menu_str = calibrateICMenu;
-        value1 = ANALOG_AMP(1);
-    }
-    StaticMenu menu(menu_str, sizeOfArray(calibrateICMenu));
-    AnalogInputs::CalibrationPoint p;
-    int8_t i = 0;
-    do {
-        i = menu.runSimple();
-        if(i < 0) return;
-        if(calibrate(screen)) {
-            if(i == 0) {
-                p.y = ANALOG_AMP(0.05);
-            } else {
-                i = 1;
-                p.y = value1;
-            }
-            p.x = AnalogInputs::getValue(name1);
-            AnalogInputs::setCalibrationPoint(name1, i, p);
-            p.x = AnalogInputs::getValue(name2);
-            AnalogInputs::setCalibrationPoint(name2, i, p);
+class VoltageMenu: public EditMenu {
+public:
+    VoltageMenu() : EditMenu(voltageMenu, sizeOfArray(voltageMenu)){};
+    virtual uint8_t printItem(uint8_t index) {
+        StaticMenu::printItem(index);
+        if(getBlinkIndex() != index) {
+            AnalogInputs::Name name = pgm::read(&voltageName[index]);
+            AnalogInputs::printRealValue(name, 9);
         }
-    } while(i >= 0);
-}
+    }
+    virtual void editItem(uint8_t index, uint8_t key) {
+        int dir = -1;
+        if(key == BUTTON_INC) dir = 1;
+        dir *= Keyboard::getSpeedFactor();
+        AnalogInputs::Name name = pgm::read(&voltageName[index]);
+        AnalogInputs::real_[name] += dir;
+    }
+};
 
-void Calibrate::copyVbalVout()
+
+void copyVbalVout()
 {
     AnalogInputs::CalibrationPoint p;
-    //TODO: remove the ability to change smps.value
-    if(calibrate(SCREEN_VOUT_VBAL)) {
-        p.x = AnalogInputs::getValue(AnalogInputs::Vout);
-        p.y = AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
-        AnalogInputs::setCalibrationPoint(AnalogInputs::Vout, 1, p);
-
-        p.x = AnalogInputs::getValue(AnalogInputs::VoutMux);
-        AnalogInputs::setCalibrationPoint(AnalogInputs::VoutMux, 1, p);
-    }
+    p.x = AnalogInputs::getValue(AnalogInputs::Vout);
+    p.y = AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout, 1, p);
 }
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
@@ -178,28 +152,12 @@ void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
 #endif
 
 
-void Calibrate::setBalancer(AnalogInputs::Name firstName)
+
+void saveVoltage(AnalogInputs::Name name, AnalogInputs::ValueType adc, AnalogInputs::ValueType newValue)
 {
-    AnalogInputs::Name name = AnalogInputs::Name(firstName + blink_);
-    uint8_t x,y;
-    switch(blink_) {
-    case 0: x = 10; y = 0; break;
-    case 1: x = 2;  y = 1; break;
-    case 2: x = 10; y = 1; break;
-    }
     AnalogInputs::CalibrationPoint p;
-
-#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-    AnalogInputs::Name virtual_name = name;
-
-    if(name == AnalogInputs::Vb1_pin) virtual_name = AnalogInputs::Vb1;
-    if(name == AnalogInputs::Vb2_pin) virtual_name = AnalogInputs::Vb2;
-    p.y = AnalogInputs::getRealValue(virtual_name);
-#else
-    p.y = AnalogInputs::getRealValue(name);
-#endif
-    if(setValue(x, y, p.y, AnalogInputs::Voltage, 6)) {
-        p.x = AnalogInputs::getValue(name);
+    p.x = adc;
+    p.y = newValue;
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
         if(name == AnalogInputs::Vb1_pin)
@@ -211,11 +169,206 @@ void Calibrate::setBalancer(AnalogInputs::Name firstName)
 #else
         AnalogInputs::setCalibrationPoint(name, 1, p);
 #endif
+}
+
+void saveVoltage(int8_t index)
+{
+    AnalogInputs::Name name1 = pgm::read(&voltageName[index]);
+    AnalogInputs::Name name2 = pgm::read(&voltageName2[index]);
+    AnalogInputs::ValueType newValue = AnalogInputs::getRealValue(name1);
+    AnalogInputs::on_ = true;
+    AnalogInputs::doFullMeasurement();
+    saveVoltage(name2, AnalogInputs::getValue(name2), newValue);
+    AnalogInputs::doFullMeasurement();
+    copyVbalVout();
+}
+
+void calibrateVoltage()
+{
+    SMPS::powerOn();
+    VoltageMenu v;
+    int8_t index;
+    do {
+        index = v.runSimple(true);
+        if(index < 0) break;
+        if(index < 7) {
+            AnalogInputs::doFullMeasurement();
+            AnalogInputs::on_ = false;
+            if(v.runEdit(index))
+                saveVoltage(index);
+            AnalogInputs::on_ = true;
+        }
+    } while(true);
+    SMPS::powerOff();
+}
+
+enum calibrateType {CCharger, CDischarger};
+AnalogInputs::ValueType value_;
+
+void printCalibrate()
+{
+    lcdSetCursor0_0();
+    lcdPrint_P(PSTR("value: "));
+    lcdPrintUnsigned(value_, 5);
+    lcdSetCursor0_1();
+    lcdPrint_P(PSTR("Iout:  "));
+    AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+}
+
+bool calibrateI(calibrateType p)
+{
+    bool retu = false;
+    bool released = false;
+    value_ = 0;
+    AnalogInputs::ValueType maxValue;
+
+    if(p == CCharger){
+        maxValue = SMPS_UPPERBOUND_VALUE;
+        SMPS::powerOn();
+    } else {
+        maxValue = DISCHARGER_UPPERBOUND_VALUE;
+        Discharger::powerOn();
+    }
+
+    uint8_t key, val_changed;
+    do {
+        printCalibrate();
+        key = Keyboard::getPressedWithSpeed();
+        val_changed = 0;
+        if(key == BUTTON_INC && value_ < maxValue) {
+            value_++;
+            val_changed++;
+        }
+        if(key == BUTTON_DEC && value_ > 0) {
+            value_--;
+            val_changed++;
+        }
+        if(val_changed) {
+            if(p == CCharger)   SMPS::setValue(value_);
+            else                Discharger::setValue(value_);
+        }
+
+        if(key == BUTTON_START && released) {
+            retu = true;
+            break;
+        }
+
+        if(key == BUTTON_NONE) released = true;
+    } while(key != BUTTON_STOP);
+    if(p == CCharger)   SMPS::powerOff();
+    else                Discharger::powerOff();
+    return retu;
+}
+
+
+void calibrateI(calibrateType t, uint8_t point, AnalogInputs::ValueType current, AnalogInputs::Name name1, AnalogInputs::Name name2)
+{
+    AnalogInputs::CalibrationPoint p;
+    if(calibrateI(t)) {
+        p.y = current;
+        p.x = AnalogInputs::getValue(name1);
+        AnalogInputs::setCalibrationPoint(name1, point, p);
+        p.x = AnalogInputs::getValue(name2);
+        AnalogInputs::setCalibrationPoint(name2, point, p);
     }
 }
 
-void Calibrate::run()
+
+void calibrateIcharge()
 {
+    StaticMenu menu(chargeIMenu, sizeOfArray(chargeIMenu));
+    int8_t i;
+    AnalogInputs::ValueType current;
+    do {
+        i = menu.runSimple();
+        if(i<0) break;
+        if(i==0) current = ANALOG_AMP(0.050);
+        else     current = ANALOG_AMP(1.000);
+        calibrateI(CCharger, i, current, AnalogInputs::Ismps, AnalogInputs::IsmpsValue);
+    } while(true);
+}
+
+void calibrateIdischarge()
+{
+    StaticMenu menu(dischargeIMenu, sizeOfArray(dischargeIMenu));
+    int8_t i;
+    AnalogInputs::ValueType current;
+    do {
+        i = menu.runSimple();
+        if(i<0) break;
+        if(i==0) current = ANALOG_AMP(0.050);
+        else     current = ANALOG_AMP(0.300);
+        calibrateI(CDischarger, i, current, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue);
+    } while(true);
+}
+
+
+class TempMenu: public EditMenu {
+public:
+    AnalogInputs::Name tName_;
+    TempMenu(AnalogInputs::Name name) : EditMenu(tempMenu, sizeOfArray(tempMenu)), tName_(name){};
+    virtual uint8_t printItem(uint8_t index) {
+        StaticMenu::printItem(index);
+        if(getBlinkIndex() != index) {
+            if(index == 0) {
+                AnalogInputs::printRealValue(tName_, 7);
+            } else {
+                lcdPrintUnsigned(AnalogInputs::getValue(tName_), 7);
+            }
+        }
+    }
+    virtual void editItem(uint8_t index, uint8_t key) {
+        int dir = -1;
+        if(key == BUTTON_INC) dir = 1;
+        dir *= Keyboard::getSpeedFactor();
+        AnalogInputs::real_[tName_] += dir;
+    }
+};
+
+
+
+void saveTemp(AnalogInputs::Name name, uint8_t point)
+{
+    AnalogInputs::CalibrationPoint p;
+    p.x = AnalogInputs::getValue(name);
+    p.y = AnalogInputs::getRealValue(name);
+    AnalogInputs::setCalibrationPoint(name, point, p);
+}
+
+
+void calibrateTemp(AnalogInputs::Name name, uint8_t point)
+{
+    AnalogInputs::powerOn();
+    TempMenu v(name);
+    int8_t index;
+    do {
+        index = v.runSimple(true);
+        if(index < 0) break;
+        if(index == 0) {
+            AnalogInputs::on_ = false;
+            if(v.runEdit(index))
+                saveTemp(name, point);
+            AnalogInputs::on_ = true;
+        }
+    } while(true);
+    AnalogInputs::powerOff();
+}
+
+void calibrateTemp(AnalogInputs::Name name)
+{
+    StaticMenu menu(pointMenu, sizeOfArray(pointMenu));
+    int8_t i;
+    do {
+        i = menu.runSimple();
+        if(i<0) break;
+        calibrateTemp(name, i);
+    } while(true);
+}
+
+
+void run()
+{
+    Program::programState_ = Program::Calibration;
     StaticMenu menu(calibrateMenu, sizeOfArray(calibrateMenu));
     int8_t i;
     do {
@@ -223,455 +376,17 @@ void Calibrate::run()
         if(i<0) break;
         START_CASE_COUNTER;
         switch(i) {
-        case NEXT_CASE: calibrateBlink(SCREEN_B1_3_BLINK, 3); break;
-        case NEXT_CASE: calibrateBlink(SCREEN_B4_6_BLINK, 3); break;
-        case NEXT_CASE: copyVbalVout(); break;
-        case NEXT_CASE: calibrateI(SCREEN_ICHARGE, AnalogInputs::Ismps, AnalogInputs::IsmpsValue); break;
-        case NEXT_CASE: calibrateI(SCREEN_IDISCHARGE, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue); break;
-#ifdef ENABLE_B0_CALIBRATION
-        case NEXT_CASE+3: calibrateBlink(SCREEN_B0_BLINK, 1); break;
-#endif
-        case NEXT_CASE+3: runInfo(); break;
-        default:
-                Screen::runNotImplemented(); break;
-        }
-    } while(i >= 0);
-}
-
-void Calibrate::runInfo()
-{
-    StaticMenu menu(calibrateInfoMenu, sizeOfArray(calibrateInfoMenu));
-    int8_t i;
-    do {
-        i = menu.runSimple();
-        if(i >= 0 && i<=7)
-            info(screenType(i));
-
-        switch(i) {
-        case 8:     infoDis();          break;
-        case 9:     infoTimeM();        break;
-#ifdef ENABLE_STACK_INFO
-        case 10:    infoStackInfo();    break;
+        case NEXT_CASE: calibrateVoltage(); break;
+        case NEXT_CASE: calibrateIcharge(); break;
+        case NEXT_CASE: calibrateIdischarge(); break;
+        case NEXT_CASE: calibrateTemp(AnalogInputs::Textern); break;
+#ifdef ENABLE_T_INTERNAL
+        case NEXT_CASE: calibrateTemp(AnalogInputs::Tintern); break;
 #endif
         }
-    } while(i>=0);
+    } while(true);
+    Program::programState_ = Program::Done;
 }
 
-
-
-void Calibrate::print_v(uint8_t dig){
-    lcdSetCursor0_0();
-    switch(dispVal_) {
-    case 0: lcdPrint_P(PSTR("v")); break;
-    case 1: lcdPrint_P(PSTR("r")); break;
-    case 2: lcdPrint_P(PSTR("R")); break;
-    case 3: lcdPrint_P(PSTR("V")); break;
-    }
-    dig--;
-    lcdPrintUnsigned(value_, dig);
-}
-
-void Calibrate::print_d(AnalogInputs::Name name, int dig)
-{
-    if(dispVal_ == 1) {
-        AnalogInputs::printRealValue(name, dig);
-    } else {
-        if(name == AnalogInputs::Vb1) name = AnalogInputs::Vb1_pin;
-        if(name == AnalogInputs::Vb2) name = AnalogInputs::Vb2_pin;
-        switch(dispVal_) {
-        case 0: lcdPrintUnsigned(AnalogInputs::getValue(name), dig-1);
-                 lcdPrintChar(' ');
-                 break;
-        case 2: AnalogInputs::printMeasuredValue(name, dig);
-                 break;
-        case 3: lcdPrintUnsigned(AnalogInputs::getMeasuredValue(name), dig-1);
-                 lcdPrintChar(' ');
-                 break;
-        }
-    }
-}
-
-void Calibrate::print_m(const char *str, AnalogInputs::Name name, int dig)
-{
-    lcdPrint_P(str);
-    print_d(name, dig);
-}
-
-void Calibrate::print_m_2(const char *str, AnalogInputs::Name name, int dig)
-{
-    print_m(str, name, dig);
-    lcdPrintSpaces();
-}
-void Calibrate::print_m_1(const char *str, AnalogInputs::Name name, int dig)
-{
-    lcdSetCursor0_1();
-    print_m(str, name, dig);
-}
-void Calibrate::print_m_3(const char *str, AnalogInputs::Name name, int dig)
-{
-    print_m_1(str, name , dig);
-    lcdPrintSpaces();
-}
-
-
-void Calibrate::printCalibrateIcharge()
-{
-    print_v();
-    print_m_2(PSTR(" Is:"), AnalogInputs::Ismps);
-    print_m_3(PSTR("Iv:"),   AnalogInputs::IsmpsValue);
-}
-
-void Calibrate::printCalibrateIdischarge()
-{
-    print_v();
-    print_m_2(PSTR(" Id:"), AnalogInputs::Idischarge);
-    print_m_3(PSTR("Iv:"),   AnalogInputs::IdischargeValue);
-}
-
-void Calibrate::printCalibrateVout()
-{
-    print_v();
-    print_m_2(PSTR(" Vo:"), AnalogInputs::Vout);
-    print_m_3(PSTR("VoutMux:"), AnalogInputs::VoutMux);
-}
-
-void Calibrate::printCalibrateVreverse()
-{
-    print_v();
-    print_m_2(PSTR(" Vo:"), AnalogInputs::Vout);
-    print_m_3(PSTR("Vrev:"), AnalogInputs::VreversePolarity);
-}
-
-void Calibrate::printCalibrateVunknown()
-{
-#ifdef ANALOG_INPUTS_V_UNKNOWN
-    print_v();
-    print_m_2(PSTR(" V0:"), AnalogInputs::Vunknown0);
-    print_m_3(PSTR("V1:"), AnalogInputs::Vunknown1);
-#else
-    Screen::displayNotImplemented();
-#endif
-}
-
-void Calibrate::printCalibrateVoutVbal()
-{
-    print_v();
-    print_m_2(PSTR(" Vo:"),     AnalogInputs::Vout);
-    print_m_3(PSTR("Vbal:"),    AnalogInputs::Vbalancer);
-}
-
-void Calibrate::printCalibrateB1_3()
-{
-    print_v(7);
-    uint8_t dig = 6;
-    print_m_2(PSTR(" 1:"),  AnalogInputs::Vb1_pin, dig);
-    print_m_1(PSTR("2:"),   AnalogInputs::Vb2_pin, dig);
-    print_m_2(PSTR("3:"),   AnalogInputs::Vb3_pin, dig);
-}
-#ifdef ENABLE_B0_CALIBRATION
-void Calibrate::printCalibrateB0_Blink()
-{
-    lcdSetCursor0_0();
-    lcdPrintUnsigned(AnalogInputs::getValue(AnalogInputs::Vb0_pin), 7);
-    lcdPrint_P(PSTR(" 0:"));
-    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb0_pin, 6);
-    else lcdPrintSpaces();
-
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("Con:4V to GND,B0"));
-}
-#endif
-
-void Calibrate::printCalibrateB1_3_Blink()
-{
-    lcdSetCursor0_0();
-    if(!AnalogInputs::isConnected(AnalogInputs::Vout)) {
-        lcdPrint_P(PSTR("ERROR! "));
-    } else {
-        lcdPrintSpaces(7);
-    }
-    uint8_t dig = 6;
-
-    lcdPrint_P(PSTR(" 1:"));
-    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb1, dig);
-    else lcdPrintSpaces(dig);
-
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("2:"));
-    if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb2, dig);
-    else lcdPrintSpaces(dig);
-
-    lcdPrint_P(PSTR("3:"));
-    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb3_pin, dig);
-    else lcdPrintSpaces(dig);
-}
-
-
-
-void Calibrate::printCalibrateB4_6_Blink()
-{
-    lcdSetCursor0_0();
-    if(!AnalogInputs::isConnected(AnalogInputs::Vout)) {
-        lcdPrint_P(PSTR("ERROR! "));
-    } else {
-        lcdPrintSpaces(7);
-    }
-    uint8_t dig = 6;
-
-    lcdPrint_P(PSTR(" 4:"));
-    if(blink_ != 0 || blinkOn_) print_d(AnalogInputs::Vb4_pin, dig);
-    else lcdPrintSpaces(dig);
-
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("5:"));
-    if(blink_ != 1 || blinkOn_) print_d(AnalogInputs::Vb5_pin, dig);
-    else lcdPrintSpaces(dig);
-
-    lcdPrint_P(PSTR("6:"));
-    if(blink_ != 2 || blinkOn_) print_d(AnalogInputs::Vb6_pin, dig);
-    else lcdPrintSpaces(dig);
-}
-
-void Calibrate::printCalibrateB4_6()
-{
-    print_v(7);
-    uint8_t dig = 6;
-    print_m_2(PSTR(" 4:"), AnalogInputs::Vb4_pin, dig);
-    print_m_1(PSTR("5:"), AnalogInputs::Vb5_pin, dig);
-    print_m_2(PSTR("6:"), AnalogInputs::Vb6_pin, dig);
-}
-
-void Calibrate::printCalibrateT()
-{
-    print_v();
-    print_m_2(PSTR(" Ti:"), AnalogInputs::Tintern);
-    print_m_3(PSTR("Textern:"), AnalogInputs::Textern);
-}
-void Calibrate::printCalibrateVin()
-{
-    print_v();
-    lcdPrintSpaces();
-    print_m_3(PSTR("Vin:"), AnalogInputs::Vin);
-}
-
-void Calibrate::printCalibrate(screenType p) {
-    switch(p) {
-    case SCREEN_ICHARGE:        printCalibrateIcharge();    break;
-    case SCREEN_VOUT:           printCalibrateVout();       break;
-    case SCREEN_B1_3:           printCalibrateB1_3();       break;
-    case SCREEN_B4_6:           printCalibrateB4_6();       break;
-    case SCREEN_T:              printCalibrateT();          break;
-    case SCREEN_VIN:            printCalibrateVin();        break;
-    case SCREEN_VREVERSE:       printCalibrateVreverse();   break;
-    case SCREEN_VUNKNOWN:       printCalibrateVunknown();   break;
-
-    case SCREEN_VOUT_VBAL:      printCalibrateVoutVbal();   break;
-#ifdef ENABLE_B0_CALIBRATION
-    case SCREEN_B0_BLINK:       printCalibrateB0_Blink();   break;
-#endif
-    case SCREEN_B1_3_BLINK:     printCalibrateB1_3_Blink(); break;
-    case SCREEN_B4_6_BLINK:     printCalibrateB4_6_Blink(); break;
-    }
-}
-
-void Calibrate::info(screenType p)
-{
-    calibrate(p);
-}
-
-void Calibrate::setBlink(screenType screen)
-{
-    switch (screen) {
-#ifdef ENABLE_B0_CALIBRATION
-        case SCREEN_B0_BLINK:          setBalancer(AnalogInputs::Vb0_pin); break;
-#endif
-        case SCREEN_B1_3_BLINK:        setBalancer(AnalogInputs::Vb1_pin); break;
-        case SCREEN_B4_6_BLINK:        setBalancer(AnalogInputs::Vb4_pin); break;
-    }
-}
-
-bool Calibrate::calibrateBlink(screenType p, int8_t maxBlink)
-{
-    bool retu = false;
-    bool released = false;
-    dispVal_ = 1;
-    blink_ = 0;
-    blinkOn_ = true;
-    uint8_t blinkCount = 0;
-    SMPS::powerOn();
-#ifdef ENABLE_B0_CALIBRATION
-    if(p == SCREEN_B0_BLINK)
-        hardware::setBatteryOutput(false);
-#endif
-
-    uint8_t key, last_key;
-    do {
-        printCalibrate(p);
-        key = Keyboard::getPressedWithSpeed();
-
-        blinkOn_ = (blinkCount%6) != 0;
-        blinkCount++;
-        if(key == BUTTON_INC && blink_ < maxBlink - 1)      blink_++;
-        if(key == BUTTON_DEC && blink_ > 0)                 blink_--;
-
-        if(key == BUTTON_START && released) {
-            Buzzer::soundSelect();
-            setBlink(p);
-            released = false;
-        }
-        if(key == BUTTON_NONE) released = true;
-        else blinkCount = 0;
-
-    } while(key != BUTTON_STOP || !released);
-    SMPS::powerOff();
-    return retu;
-}
-
-
-bool Calibrate::setValue(uint8_t x, uint8_t y, AnalogInputs::ValueType &v, AnalogInputs::Type type, uint8_t dig)
-{
-    bool released = false;
-    uint8_t key;
-    int dir;
-    do {
-        dir = 0;
-        lcdSetCursor(x,y);
-        if(blinkOn_)    lcdPrintAnalog(v, type, dig);
-        else             lcdPrintSpaces(dig);
-        blinkOn_ = !blinkOn_;
-
-        key = Keyboard::getPressedWithSpeed();
-        if(key == BUTTON_INC) {  dir  = 1; blinkOn_ = true; }
-        if(key == BUTTON_DEC) {  dir = -1; blinkOn_ = true; }
-        if(key == BUTTON_START && released) {
-            return true;
-        }
-        if(key == BUTTON_NONE) released = true;
-
-        dir *= Keyboard::getSpeedFactor();
-        v+=dir;
-    } while(key != BUTTON_STOP);
-    return false;
-}
-
-
-bool Calibrate::calibrate(screenType p)
-{
-    if(p == SCREEN_IDISCHARGE)
-        return calibrateDischarge();
-
-    bool retu = false;
-    bool released = false;
-    value_ = 0;
-    dispVal_ = 1;
-    //turn on output
-    SMPS::powerOn();
-    uint8_t key, last_key;
-    do {
-        printCalibrate(p);
-        last_key = key;
-        key = Keyboard::getPressedWithSpeed();
-        if(key == BUTTON_INC && value_ < MAX_CALIBRATION_SMPS_VALUE) {
-            value_++;
-            SMPS::setValue(value_);
-        }
-        if(key == BUTTON_DEC && value_ > 0) {
-            value_--;
-            SMPS::setValue(value_);
-        }
-        if(key == BUTTON_START && Keyboard::getSpeed() == ACCEPT_DELAY && released) {
-            retu = true;
-            break;
-        }
-        if(key == BUTTON_NONE && last_key == BUTTON_START && released) {
-            dispVal_ = (dispVal_+1)%MAX_DISP_VAL;
-        }
-        if(key == BUTTON_NONE) released = true;
-
-    } while(key != BUTTON_STOP);
-    SMPS::powerOff();
-    return retu;
-}
-
-void Calibrate::infoDis()
-{
-    calibrateDischarge();
-}
-
-bool Calibrate::calibrateDischarge()
-{
-    bool retu = false;
-    bool released = false;
-    value_ = 0;
-    dispVal_ = 1;
-    Discharger::powerOn();
-    uint8_t key, last_key;
-    do {
-        printCalibrateIdischarge();
-        last_key = key;
-        key = Keyboard::getPressedWithSpeed();
-        if(key == BUTTON_INC && value_ < 760*2) {
-            value_++;
-            Discharger::setValue(value_);
-        }
-        if(key == BUTTON_DEC && value_ > 0) {
-            value_--;
-            Discharger::setValue(value_);
-        }
-        if(key == BUTTON_START && Keyboard::getSpeed() == ACCEPT_DELAY && released) {
-            retu = true;
-            break;
-        } if(key == BUTTON_NONE && last_key == BUTTON_START  && released) {
-            dispVal_ = (dispVal_+1)%3;
-        }
-        if(key == BUTTON_NONE) released = true;
-    } while(key != BUTTON_STOP);
-    Discharger::powerOff();
-    return retu;
-}
-
-#ifdef ENABLE_STACK_INFO
-void Calibrate::infoStackInfo()
-{
-    lcdClear();
-    uint8_t key;
-    do {
-        key = Keyboard::getPressedWithSpeed();
-        lcdSetCursor0_0();
-        lcdPrint_P(PSTR(" stack: "));
-        lcdPrintUnsigned(StackInfo::getFreeStackSize());
-        lcdPrintSpaces();
-        lcdSetCursor0_1();
-        lcdPrint_P(PSTR("unused: "));
-        lcdPrintUnsigned(StackInfo::getNeverUsedStackSize());
-        lcdPrintSpaces();
-    } while(key != BUTTON_STOP);
-}
-#endif
-
-void Calibrate::infoTimeM()
-{
-    lcdClear();
-    AnalogInputs::powerOn();
-    uint8_t key;
-    do {
-        key = Keyboard::getPressedWithSpeed();
-        uint32_t t1,t0;
-        t0 = AnalogInputs::calculationCount_;
-        hardware::delay(10000);
-        t1 = AnalogInputs::calculationCount_;
-        lcdSetCursor0_0();
-        lcdPrint_P(PSTR("measu: "));
-        lcdPrintUnsigned(t0);
-        lcdPrintSpaces();
-        lcdSetCursor0_1();
-        lcdPrint_P(PSTR("  10s: "));
-        t1-=t0;
-        lcdPrintUnsigned(t1);
-        lcdPrintSpaces();
-
-    } while(key != BUTTON_STOP);
-    AnalogInputs::powerOff();
-}
-
+} // namespace Calibrate
 

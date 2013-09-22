@@ -29,8 +29,8 @@ public:
         EditBattery, LAST_PROGRAM_TYPE};
 
     enum ProgramState {
-        None, Info, Done, Error,
-        Charging, ChargingBalancing, Discharging, Balancing, Storage
+        None, Info, Calibration, Done, Error,
+        Charging, ChargingBalancing, Discharging, Balancing, Storage,
     };
 
     static AnalogInputs::Name iName_;

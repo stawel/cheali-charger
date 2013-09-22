@@ -50,7 +50,7 @@ uint8_t Menu::run() {
 
     return button;
 }
-int8_t Menu::runSimple() {
+int8_t Menu::runSimple(bool animate) {
     uint8_t key;
     render();
     do {
@@ -61,6 +61,7 @@ int8_t Menu::runSimple() {
             waitRelease_ = true;
             return getIndex();
         }
+        if(animate) render();
     } while(key != BUTTON_STOP || waitRelease_);
     return MENU_EXIT;
 }
