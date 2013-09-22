@@ -375,7 +375,7 @@ namespace {
             return &selectNiXXMenu;
         else return &selectPbMenu;
     }
-    Program::ProgramType getSelectProgramType(int index) {
+    Program::ProgramType getSelectProgramType(uint8_t index) {
         const Program::ProgramType * address;
         if(ProgramData::currentProgramData.isLiXX())
             address = &programLiXXMenuType[index];
@@ -388,37 +388,24 @@ namespace {
 
 void Program::selectProgram(int index)
 {
-    uint8_t key;
-    bool release = true;
     ProgramData::loadProgramData(index);
     StaticMenu * selectPrograms = getSelectProgramMenu();
-    selectPrograms->render();
-
+    int8_t menuIndex;
     do {
-        key = selectPrograms->run();
-
-        if(key == BUTTON_NONE)
-            release = false;
-
-        if(!release && key == BUTTON_START)  {
-            int i = selectPrograms->getIndex();
-            Program::ProgramType prog = getSelectProgramType(i);
-            switch(prog) {
-            case Program::EditBattery:
+        menuIndex = selectPrograms->runSimple();
+        if(menuIndex >= 0)  {
+            Program::ProgramType prog = getSelectProgramType(menuIndex);
+            if(prog == Program::EditBattery) {
                 if(ProgramData::currentProgramData.edit(index)) {
                     Buzzer::soundSave();
                     ProgramData::saveProgramData(index);
                     selectPrograms = getSelectProgramMenu();
                 }
-                break;
-            default:
+            } else {
                 Program::run(prog);
-                break;
             }
-            selectPrograms->render();
-            release = true;
         }
-    } while(key != BUTTON_STOP || release);
+    } while(menuIndex >= 0);
 }
 
 

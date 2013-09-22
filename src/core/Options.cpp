@@ -66,7 +66,7 @@ void Options::run()
     do {
         i = optionsMenu.runSimple();
         switch(i) {
-        case 0: settings.edit();; break;
+        case 0: settings.edit(); break;
         case 1: calibrate.run(); break;
         case 2: resetDefault(); break;
         }
