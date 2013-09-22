@@ -38,7 +38,7 @@ const char string_CDcycles[]    PROGMEM = "C/D cycles:";
 const char string_capCoff[]     PROGMEM = "cap COff:";
 const char string_inputLow[]    PROGMEM = "input low:";
 const char string_balancErr[]   PROGMEM = "bal. err:";
-const char string_view[]        PROGMEM = "view: ";
+const char string_view[]        PROGMEM = "UART: ";
 const char string_reset[]       PROGMEM = "   reset";
 const char string_save[]        PROGMEM = "    save"    ;
 
@@ -96,7 +96,7 @@ uint8_t SettingsMenu::printItem(uint8_t index)
             case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff_, 5);   break;
             case NEXT_CASE:     printVolt(p_.inputVoltageLow_);         break;
             case NEXT_CASE:     lcdPrint_mV(p_.balancerError_, 5);      break;
-            case NEXT_CASE:     printViewType();                        break;
+            case NEXT_CASE:     printUART();                        break;
         }
     }
 }
@@ -126,7 +126,7 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     change1Max(p_.capCutoff_, dir, 250);        break;
         case NEXT_CASE:     changeVolt(p_.inputVoltageLow_, dir);       break;
         case NEXT_CASE:     changeBalanceError(p_.balancerError_, dir); break;
-        case NEXT_CASE:     changeViewType(dir);                        break;
+        case NEXT_CASE:     changeUART(dir);                        break;
     }
 }
 
@@ -180,19 +180,19 @@ void SettingsMenu::changeBacklight(int dir) {
 }
 #endif
 
-void SettingsMenu::changeViewType(int dir)
+void SettingsMenu::changeUART(int dir)
 {
-    uint16_t v = p_.view_;
-    if(dir < 0) p_.view_ = 0;
-    if(dir > 0) p_.view_ = 1;
+    changeMax(p_.UART_, dir, Settings::ExtDebug);
 }
 
-void SettingsMenu::printViewType() const
+void SettingsMenu::printUART() const
 {
-    if(p_.view_ == 0)
-        lcdPrint_P(PSTR("normal"));
-    else
-        lcdPrint_P(PSTR("debug"));
+    switch(p_.UART_) {
+    case Settings::Disabled:    lcdPrint_P(PSTR("disabled"));   break;
+    case Settings::Normal:      lcdPrint_P(PSTR("normal"));     break;
+    case Settings::Debug:       lcdPrint_P(PSTR("debug"));      break;
+    default:                    lcdPrint_P(PSTR("ext. debug")); break;
+    }
 }
 
 void SettingsMenu::changeTemp(AnalogInputs::ValueType &v, int step) {

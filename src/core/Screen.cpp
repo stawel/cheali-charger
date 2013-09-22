@@ -234,18 +234,28 @@ void Screen::displayScreenTime()
     lcdPrintTime(totalChargDischargeTime_/1000);
 }
 
+AnalogInputs::ValueType Screen::calculateBattRth()
+{
+    return calculateRth_calibrated(TheveninMethod::tVout_.Rth_V_, TheveninMethod::tVout_.Rth_I_);
+}
+AnalogInputs::ValueType Screen::calculateWiresRth()
+{
+    int16_t Vwires =  AnalogInputs::getRealValue(AnalogInputs::Vout);
+    Vwires -= AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
+    return calculateRth2(Vwires, AnalogInputs::getRealValue(AnalogInputs::Iout)+1);
+}
+
+
 void Screen::displayScreenR()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("batt. R="));
-    lcdPrintResistance(calculateRth_calibrated(TheveninMethod::tVout_.Rth_V_, TheveninMethod::tVout_.Rth_I_),8);
+    lcdPrintResistance(calculateBattRth(), 8);
     lcdPrintSpaces();
     lcdSetCursor0_1();
     if(AnalogInputs::isConnected(AnalogInputs::Vbalancer)) {
         lcdPrint_P(PSTR("wires R="));
-        int16_t Vwires =  AnalogInputs::getRealValue(AnalogInputs::Vout);
-        Vwires -= AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
-        lcdPrintResistance(calculateRth2(Vwires, AnalogInputs::getRealValue(AnalogInputs::Iout)+1),8);
+        lcdPrintResistance(calculateWiresRth(),8);
     }
     lcdPrintSpaces();
 }

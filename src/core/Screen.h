@@ -44,6 +44,11 @@ namespace Screen {
     void powerOn();
     void powerOff();
 
+    AnalogInputs::ValueType calculateRthCell(uint8_t cell);
+    AnalogInputs::ValueType calculateBattRth();
+    AnalogInputs::ValueType calculateWiresRth();
+
+
 
     void display(ScreenType screen);
 

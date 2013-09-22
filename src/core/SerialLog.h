@@ -22,17 +22,10 @@
 //#define SERIAL_SPEED 9600
 
 namespace SerialLog {
-
-    void initialize();
     void powerOn();
     void send();
     void powerOff();
 
-    void sendTime(uint32_t t);
-    void printChar(char c);
-    void printString(char *s);
-    void printUInt(uint16_t x);
-    void printD();
 } //namespace SerialLog
 
 

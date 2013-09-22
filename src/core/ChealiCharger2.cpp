@@ -61,8 +61,6 @@ void setup()
     StackInfo::initialize();
 #endif
 
-    SerialLog::initialize();
-
     Settings::load();
     lcdPrint_P(PSTR("  ChealiCharger"));
     lcdSetCursor0_1();

@@ -28,6 +28,7 @@
 
 struct Settings {
 
+    enum UARTType {Disabled, Normal, Debug, ExtDebug };
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5);
 #ifdef ENABLE_LCD_BACKLIGHT
     uint16_t backlight_;
@@ -46,13 +47,12 @@ struct Settings {
     uint16_t capCutoff_;
     AnalogInputs::ValueType inputVoltageLow_;
     AnalogInputs::ValueType balancerError_;
-    uint16_t view_;
+    uint16_t UART_;
 
     void edit();
     void check();
     void apply();
     void setDefault();
-    bool isDebug() { return view_ == 1; /*TODO: */  }
 
     static void load();
     static void save();

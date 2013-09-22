@@ -22,13 +22,17 @@
 #include "Timer.h"
 #include "LcdPrint.h"
 #include "Program.h"
+#include "Settings.h"
+#include "memory.h"
 
 namespace SerialLog {
     enum State { On, Off, Starting };
     uint32_t startTime;
-    State state;
+    uint32_t currentTime;
+
+    State state = Off;
     uint8_t CRC;
-    AnalogInputs::Name logging[] = {
+    const AnalogInputs::Name channel1[] PROGMEM = {
             AnalogInputs::VoutBalancer,
             AnalogInputs::Iout,
             AnalogInputs::Cout,
@@ -44,36 +48,44 @@ namespace SerialLog {
             AnalogInputs::Vb5,
             AnalogInputs::Vb6,
     };
-}
 
 
-void SerialLog::initialize()
+
+void sendTime();
+
+void powerOn()
 {
-#ifdef ENABLE_SERIAL_LOG
-#ifndef ENABLE_SERIAL_LOG_WAIT
-    Serial.begin(SERIAL_SPEED);
-#endif
-    state = Off;
-#endif //ENABLE_SERIAL_LOG
-}
 
-void SerialLog::powerOn()
-{
 #ifdef ENABLE_SERIAL_LOG
     if(state != Off)
         return;
+    if(settings.UART_ == Settings::Disabled)
+        return;
+
+#ifndef ENABLE_SERIAL_LOG_WAIT
+    Serial.begin(SERIAL_SPEED);
+#endif
+
     state = Starting;
 #endif //ENABLE_SERIAL_LOG
 }
 
-void SerialLog::powerOff()
+void powerOff()
 {
 #ifdef ENABLE_SERIAL_LOG
+
+    if(state == Off)
+        return;
+
+#ifndef ENABLE_SERIAL_LOG_WAIT
+    Serial.end();
+#endif
+
     state = Off;
 #endif //ENABLE_SERIAL_LOG
 }
 
-void SerialLog::send()
+void send()
 {
 #ifdef ENABLE_SERIAL_LOG
 
@@ -84,34 +96,37 @@ void SerialLog::send()
     Serial.begin(SERIAL_SPEED);
 #endif
 
+    currentTime = Timer::getMiliseconds();
+
     if(state == Starting) {
-        startTime = Timer::getMiliseconds();
+        startTime = currentTime;
         state = On;
     }
 
-    uint32_t t = Timer::getMiliseconds();
-    sendTime(t);
+    currentTime -= startTime;
+    sendTime();
 
 #ifdef ENABLE_SERIAL_LOG_WAIT
     Serial.flush();
     Serial.end();
     pinMode(10, INPUT);
 #endif
+
 #endif //ENABLE_SERIAL_LOG
 }
 
 
-void SerialLog::printChar(char c)
+void printChar(char c)
 {
     Serial.print(c);
     CRC^=c;
 }
-void SerialLog::printD()
+void printD()
 {
     printChar(';');
 }
 
-void SerialLog::printString(char *s)
+void printString(char *s)
 {
     while(*s) {
         printChar(*s);
@@ -119,7 +134,7 @@ void SerialLog::printString(char *s)
     }
 }
 
-void SerialLog::printUInt(uint16_t x)
+void printUInt(uint16_t x)
 {
     char buf[8];
     char *str = buf;
@@ -129,34 +144,90 @@ void SerialLog::printUInt(uint16_t x)
 }
 
 
-void SerialLog::sendTime(uint32_t t)
-{
-    if(state != On)
-        return;
 
+void sendHeader(uint16_t channel)
+{
     CRC = 0;
-    t-=startTime;
     printChar('$');
-    printUInt(1);   //channel
+    printUInt(channel);
     printD();
     printUInt(Program::programState_);   //state
     printD();
 
-    printUInt(t/1000);   //timestamp
+    printUInt(currentTime/1000);   //timestamp
     printChar('.');
-    printUInt((t/100)%10);   //timestamp
+    printUInt((currentTime/100)%10);   //timestamp
     printD();
+}
 
-    //analog inputs
-    for(int8_t i=0;i < sizeOfArray(logging);i++) {
-        printUInt(AnalogInputs::getRealValue(logging[i]));
-        printD();
-    }
+void sendEnd()
+{
     //checksum
     printUInt(CRC);
     printChar('\r');
     printChar('\n');
 }
 
+void sendChannel1()
+{
+    sendHeader(1);
+    //analog inputs
+    for(int8_t i=0;i < sizeOfArray(channel1);i++) {
+        printUInt(AnalogInputs::getRealValue(pgm::read(&channel1[i])));
+        printD();
+    }
+    sendEnd();
+}
+
+void sendChannel2()
+{
+    sendHeader(2);
+    FOR_ALL_INPUTS(it) {
+        printUInt(AnalogInputs::getRealValue(it));
+        printD();
+    }
+    printUInt(SMPS::getValue());
+    printD();
+    printUInt(Discharger::getValue());
+    printD();
+    printUInt(balancer.balance_);
+    printD();
+
+    printUInt(Screen::calculateBattRth());
+    printD();
+
+    printUInt(Screen::calculateWiresRth());
+    printD();
+
+    for(int8_t i=0;i<MAX_BANANCE_CELLS;i++) {
+        printUInt(Screen::calculateRthCell(i));
+        printD();
+    }
+
+    sendEnd();
+}
+
+void sendChannel3()
+{
+    sendHeader(3);
+    FOR_ALL_PHY_INPUTS(it) {
+        printUInt(AnalogInputs::getValue(it));
+        printD();
+    }
+    sendEnd();
+}
 
 
+void sendTime()
+{
+    sendChannel1();
+    if(settings.UART_>1)
+        sendChannel2();
+
+    if(settings.UART_>2)
+        sendChannel3();
+
+}
+
+
+} //namespace SerialLog

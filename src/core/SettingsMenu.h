@@ -32,11 +32,11 @@ public:
     Settings p_;
 private:
 
-    void printViewType() const;
+    void printUART() const;
 #ifdef ENABLE_LCD_BACKLIGHT
     void changeBacklight(int dir);
 #endif
-    void changeViewType(int dir);
+    void changeUART(int dir);
 
     static void printTemp(AnalogInputs::ValueType t);
     static void printDeltaT(AnalogInputs::ValueType dt);
