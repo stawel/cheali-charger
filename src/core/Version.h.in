@@ -29,10 +29,9 @@
 #define CHEALI_CHARGER_EPPROM_VERSION_STRING    CHEALI_CHARGER_STRING(CHEALI_CHARGER_EEPROM_VERSION)
 
 
-class Version {
-public:
-    static int getCurrentEEPROMVersion();
-    static void restoreDefault();
+namespace Version {
+    int getCurrentEEPROMVersion();
+    void restoreDefault();
 };
 
 
