@@ -21,23 +21,14 @@
 #include "Hardware.h"
 #include "Thevenin.h"
 
-class TheveninMethod {
-public:
+namespace TheveninMethod {
     enum FallingState {NotFalling, LastRthMesurment, Falling};
-    uint16_t minValue_;
-    uint16_t maxValue_;
-    AnalogInputs::ValueType Vend_;
-    AnalogInputs::ValueType valueTh_;
 
-    Thevenin tVout_;
-    Thevenin tBal_[MAX_BANANCE_CELLS];
-    FallingState Ifalling_;
-    uint8_t fullCount_;
-    uint8_t cells_;
+    extern AnalogInputs::ValueType Vend_;
+    extern Thevenin tVout_;
+    extern Thevenin tBal_[MAX_BANANCE_CELLS];
 
-    TheveninMethod(){}
-
-    void init();
+    void initialize();
     bool isComlete(bool isEndVout, AnalogInputs::ValueType value);
     void calculateRthVth(AnalogInputs::ValueType oldValue);
     AnalogInputs::ValueType calculateNewValue(bool isEndVout, AnalogInputs::ValueType oldValue);
@@ -46,11 +37,9 @@ public:
     AnalogInputs::ValueType storeOldValue(AnalogInputs::ValueType oldValue);
 
     void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
-    void setMinI(AnalogInputs::ValueType i) {    minValue_ = i; };
+    void setMinI(AnalogInputs::ValueType i);
 
 };
-
-extern TheveninMethod theveninMethod;
 
 
 #endif /* THEVENINCHARGE_H_ */

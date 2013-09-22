@@ -67,7 +67,7 @@ namespace Screen{
     }
     AnalogInputs::ValueType calculateRthCell(uint8_t cell)
     {
-        return calculateRth_calibrated(theveninMethod.tBal_[cell].Rth_V_, theveninMethod.tBal_[cell].Rth_I_);
+        return calculateRth_calibrated(TheveninMethod::tBal_[cell].Rth_V_, TheveninMethod::tBal_[cell].Rth_I_);
     }
     AnalogInputs::ValueType getBalanceValue(uint8_t cell, AnalogInputs::Type type)
     {
@@ -238,7 +238,7 @@ void Screen::displayScreenR()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("batt. R="));
-    lcdPrintResistance(calculateRth_calibrated(theveninMethod.tVout_.Rth_V_, theveninMethod.tVout_.Rth_I_),8);
+    lcdPrintResistance(calculateRth_calibrated(TheveninMethod::tVout_.Rth_V_, TheveninMethod::tVout_.Rth_I_),8);
     lcdPrintSpaces();
     lcdSetCursor0_1();
     if(AnalogInputs::isConnected(AnalogInputs::Vbalancer)) {

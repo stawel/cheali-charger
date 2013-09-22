@@ -22,7 +22,21 @@
 #include "Screen.h"
 
 
-TheveninMethod theveninMethod;
+namespace TheveninMethod {
+    uint16_t minValue_;
+    uint16_t maxValue_;
+    AnalogInputs::ValueType Vend_;
+    AnalogInputs::ValueType valueTh_;
+
+    Thevenin tVout_;
+    Thevenin tBal_[MAX_BANANCE_CELLS];
+    FallingState Ifalling_;
+    uint8_t fullCount_;
+    uint8_t cells_;
+
+    void setMinI(AnalogInputs::ValueType i) {    minValue_ = i; };
+
+}
 
 
 void TheveninMethod::setVI(AnalogInputs::ValueType Vend, AnalogInputs::ValueType i)
@@ -32,7 +46,7 @@ void TheveninMethod::setVI(AnalogInputs::ValueType Vend, AnalogInputs::ValueType
     minValue_ = i/10;
 }
 
-void TheveninMethod::init()
+void TheveninMethod::initialize()
 {
     AnalogInputs::ValueType Vout = AnalogInputs::getVout();
     tVout_.init(Vout, Vend_, minValue_);

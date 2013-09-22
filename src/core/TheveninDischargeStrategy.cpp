@@ -33,19 +33,19 @@ void TheveninDischargeStrategy::powerOn()
 {
     Discharger::powerOn();
     balancer.powerOn();
-    theveninMethod.init();
+    TheveninMethod::initialize();
     Program::iName_ = AnalogInputs::IdischargeValue;
 }
 
 void TheveninDischargeStrategy::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
     SimpleDischargeStrategy::setVI(v,i);
-    theveninMethod.setVI(v, AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, i));
+    TheveninMethod::setVI(v, AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, i));
     setMinI(i/10);
 }
 void TheveninDischargeStrategy::setMinI(AnalogInputs::ValueType i)
 {
-    theveninMethod.setMinI(AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, i));
+    TheveninMethod::setMinI(AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, i));
 }
 
 Strategy::statusType TheveninDischargeStrategy::doStrategy()
@@ -59,13 +59,13 @@ Strategy::statusType TheveninDischargeStrategy::doStrategy()
     stable = AnalogInputs::isOutStable() || isEndVout;
 
     //test for charge complete
-    if(theveninMethod.isComlete(isEndVout, oldValue)) {
+    if(TheveninMethod::isComlete(isEndVout, oldValue)) {
         Discharger::powerOff(Discharger::DISCHARGING_COMPLETE);
         return COMPLETE;
     }
 
     if(stable) {
-        uint16_t value = theveninMethod.calculateNewValue(isEndVout, oldValue);
+        uint16_t value = TheveninMethod::calculateNewValue(isEndVout, oldValue);
         if(value != oldValue) {
             Discharger::setValue(value);
         }

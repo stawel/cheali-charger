@@ -32,8 +32,8 @@ void SimpleChargeStrategy::powerOn()
     AnalogInputs::ValueType Vc = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
     I/=5; //start charging with 0.2CmAh
     uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, I);
-    theveninMethod.setVI(Vc, value);
-    theveninMethod.init();
+    TheveninMethod::setVI(Vc, value);
+    TheveninMethod::initialize();
     SMPS::setValue(value);
     Program::iName_ = AnalogInputs::IsmpsValue;
 }
@@ -45,7 +45,7 @@ void SimpleChargeStrategy::powerOff()
 
 void SimpleChargeStrategy::calculateThevenin() const
 {
-    if(AnalogInputs::isOutStable()) theveninMethod.calculateRthVth(SMPS::getValue());
+    if(AnalogInputs::isOutStable()) TheveninMethod::calculateRthVth(SMPS::getValue());
 }
 
 /*
