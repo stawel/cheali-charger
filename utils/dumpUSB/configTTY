@@ -1,0 +1,7 @@
+#!/bin/bash
+
+TTY=$1
+#TTY=/dev/ttyUSB0
+SPEED=57600
+
+stty -F $TTY cs8 $SPEED ignbrk -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke noflsh -ixon -crtscts -clocal

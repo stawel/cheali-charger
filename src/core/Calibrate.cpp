@@ -25,6 +25,7 @@
 #include "Buzzer.h"
 #include "StackInfo.h"
 #include "EditMenu.h"
+#include "SerialLog.h"
 
 namespace Calibrate {
 
@@ -35,9 +36,15 @@ const char c4[] PROGMEM = "temp extern";
 #ifdef ENABLE_T_INTERNAL
 const char c5[] PROGMEM = "temp intern";
 #endif
+#ifdef ENABLE_SERIAL_LOG
+const char c6[] PROGMEM = "calib->UART";
+#endif
 const char * const calibrateMenu[] PROGMEM = {c1,c2,c3,c4
 #ifdef ENABLE_T_INTERNAL
   ,c5
+#endif
+#ifdef ENABLE_SERIAL_LOG
+  ,c6
 #endif
 };
 
@@ -382,6 +389,9 @@ void run()
         case NEXT_CASE: calibrateTemp(AnalogInputs::Textern); break;
 #ifdef ENABLE_T_INTERNAL
         case NEXT_CASE: calibrateTemp(AnalogInputs::Tintern); break;
+#endif
+#ifdef ENABLE_SERIAL_LOG
+        case NEXT_CASE: SerialLog::sendCalibration(); break;
 #endif
         }
     } while(true);

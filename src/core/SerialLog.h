@@ -25,7 +25,7 @@ namespace SerialLog {
     void powerOn();
     void send();
     void powerOff();
-
+    void sendCalibration();
 } //namespace SerialLog
 
 

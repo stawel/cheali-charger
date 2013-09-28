@@ -24,6 +24,7 @@
 #include "Program.h"
 #include "Settings.h"
 #include "memory.h"
+#include "Version.h"
 
 namespace SerialLog {
     enum State { On, Off, Starting };
@@ -53,6 +54,17 @@ namespace SerialLog {
 
 void sendTime();
 
+void serialBegin()
+{
+    Serial.begin(SERIAL_SPEED);
+}
+void serialEnd()
+{
+    Serial.flush();
+    Serial.end();
+    pinMode(10, INPUT);
+}
+
 void powerOn()
 {
 
@@ -63,7 +75,7 @@ void powerOn()
         return;
 
 #ifndef ENABLE_SERIAL_LOG_WAIT
-    Serial.begin(SERIAL_SPEED);
+    serialBegin();
 #endif
 
     state = Starting;
@@ -78,7 +90,7 @@ void powerOff()
         return;
 
 #ifndef ENABLE_SERIAL_LOG_WAIT
-    Serial.end();
+    serialEnd();
 #endif
 
     state = Off;
@@ -93,7 +105,7 @@ void send()
         return;
 
 #ifdef ENABLE_SERIAL_LOG_WAIT
-    Serial.begin(SERIAL_SPEED);
+    serialBegin();
 #endif
 
     currentTime = Timer::getMiliseconds();
@@ -107,9 +119,7 @@ void send()
     sendTime();
 
 #ifdef ENABLE_SERIAL_LOG_WAIT
-    Serial.flush();
-    Serial.end();
-    pinMode(10, INPUT);
+    serialEnd();
 #endif
 
 #endif //ENABLE_SERIAL_LOG
@@ -160,12 +170,18 @@ void sendHeader(uint16_t channel)
     printD();
 }
 
+
+void printNL()
+{
+    printChar('\r');
+    printChar('\n');
+}
+
 void sendEnd()
 {
     //checksum
     printUInt(CRC);
-    printChar('\r');
-    printChar('\n');
+    printNL();
 }
 
 void sendChannel1()
@@ -229,5 +245,39 @@ void sendTime()
 
 }
 
+void printV(char c,uint8_t nr, AnalogInputs::ValueType value)
+{
+    printChar(c);
+    printUInt(nr);
+    printChar('=');
+    printUInt(value);
+    printNL();
+}
+
+void dumpCalibration()
+{
+    printString("V=" CHEALI_CHARGER_VERSION_STRING);
+    printNL();
+    printV('E',0,CHEALI_CHARGER_EEPROM_VERSION);
+
+    AnalogInputs::CalibrationPoint p;
+    FOR_ALL_PHY_INPUTS(it) {
+        AnalogInputs::getCalibrationPoint(p,it,0);
+        printV('a',it, p.x);
+        printV('r',it, p.y);
+        AnalogInputs::getCalibrationPoint(p,it,1);
+        printV('A',it, p.x);
+        printV('R',it, p.y);
+    }
+}
+void sendCalibration()
+{
+    serialBegin();
+    dumpCalibration();
+    printNL();
+    dumpCalibration();
+    printNL();
+    serialEnd();
+}
 
 } //namespace SerialLog
