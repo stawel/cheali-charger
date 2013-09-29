@@ -202,14 +202,16 @@ void sendChannel2()
         printUInt(AnalogInputs::getRealValue(it));
         printD();
     }
-    printUInt(SMPS::getValue());
-    printD();
-    printUInt(Discharger::getValue());
-    printD();
     printUInt(Balancer::balance_);
     printD();
 
-    printUInt(Screen::calculateBattRth());
+    uint16_t pidV=0;
+#ifdef ENABLE_GET_PID_VALUE
+    pidV = hardware::getPIDValue();
+#endif
+    printUInt(pidV);
+    printD();
+/*    printUInt(Screen::calculateBattRth());
     printD();
 
     printUInt(Screen::calculateWiresRth());
@@ -219,7 +221,7 @@ void sendChannel2()
         printUInt(Screen::calculateRthCell(i));
         printD();
     }
-
+*/
     sendEnd();
 }
 

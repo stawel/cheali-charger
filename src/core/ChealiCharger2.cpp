@@ -71,6 +71,5 @@ void setup()
         Timer::delay(2000);
 
         Options::resetDefault();
-        Screen::runCalibrateBeforeUse();
     }
 }

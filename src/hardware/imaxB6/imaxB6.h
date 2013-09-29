@@ -48,7 +48,7 @@
 //wait for the transition end and disable UART,
 //the UART interfere with Vb0_pin measurement
 #define ENABLE_SERIAL_LOG_WAIT
-
+#define ENABLE_GET_PID_VALUE
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
 
 
@@ -78,6 +78,7 @@ namespace hardware {
     void doInterrupt();
 
     void soundInterrupt();
+    uint16_t getPIDValue();
 }
 
 

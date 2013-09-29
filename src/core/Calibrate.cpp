@@ -160,6 +160,17 @@ void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
 
 
 
+bool testVout()
+{
+    Screen::displayStrings(PSTR("Connect Battery!"),NULL);
+    do {
+        if(AnalogInputs::isConnected(AnalogInputs::Vout))
+            return true;
+        if(Keyboard::getPressedWithSpeed() == BUTTON_STOP)
+            return false;
+    }while(true);
+}
+
 void saveVoltage(AnalogInputs::Name name, AnalogInputs::ValueType adc, AnalogInputs::ValueType newValue)
 {
     AnalogInputs::CalibrationPoint p;
@@ -190,23 +201,27 @@ void saveVoltage(int8_t index)
     copyVbalVout();
 }
 
+
 void calibrateVoltage()
 {
-    SMPS::powerOn();
-    VoltageMenu v;
-    int8_t index;
-    do {
-        index = v.runSimple(true);
-        if(index < 0) break;
-        if(index < 7) {
-            AnalogInputs::doFullMeasurement();
-            AnalogInputs::on_ = false;
-            if(v.runEdit(index))
-                saveVoltage(index);
-            AnalogInputs::on_ = true;
-        }
-    } while(true);
-    SMPS::powerOff();
+    Discharger::powerOn();
+
+    if(testVout()) {
+        VoltageMenu v;
+        int8_t index;
+        do {
+            index = v.runSimple(true);
+            if(index < 0) break;
+            if(index < 7) {
+                AnalogInputs::doFullMeasurement();
+                AnalogInputs::on_ = false;
+                if(v.runEdit(index))
+                    saveVoltage(index);
+                AnalogInputs::on_ = true;
+            }
+        } while(true);
+    }
+    Discharger::powerOff();
 }
 
 enum calibrateType {CCharger, CDischarger};
@@ -217,9 +232,11 @@ void printCalibrate()
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("value: "));
     lcdPrintUnsigned(value_, 5);
+    lcdPrintSpaces();
     lcdSetCursor0_1();
     lcdPrint_P(PSTR("Iout:  "));
     AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+    lcdPrintSpaces();
 }
 
 bool calibrateI(calibrateType p)
@@ -237,31 +254,33 @@ bool calibrateI(calibrateType p)
         Discharger::powerOn();
     }
 
-    uint8_t key, val_changed;
-    do {
-        printCalibrate();
-        key = Keyboard::getPressedWithSpeed();
-        val_changed = 0;
-        if(key == BUTTON_INC && value_ < maxValue) {
-            value_++;
-            val_changed++;
-        }
-        if(key == BUTTON_DEC && value_ > 0) {
-            value_--;
-            val_changed++;
-        }
-        if(val_changed) {
-            if(p == CCharger)   SMPS::setValue(value_);
-            else                Discharger::setValue(value_);
-        }
+    if(testVout()) {
+        uint8_t key, val_changed;
+        do {
+            printCalibrate();
+            key = Keyboard::getPressedWithSpeed();
+            val_changed = 0;
+            if(key == BUTTON_INC && value_ < maxValue) {
+                value_++;
+                val_changed++;
+            }
+            if(key == BUTTON_DEC && value_ > 0) {
+                value_--;
+                val_changed++;
+            }
+            if(val_changed) {
+                if(p == CCharger)   SMPS::setValue(value_);
+                else                Discharger::setValue(value_);
+            }
 
-        if(key == BUTTON_START && released) {
-            retu = true;
-            break;
-        }
+            if(key == BUTTON_START && released) {
+                retu = true;
+                break;
+            }
 
-        if(key == BUTTON_NONE) released = true;
-    } while(key != BUTTON_STOP);
+            if(key == BUTTON_NONE) released = true;
+        } while(key != BUTTON_STOP);
+    }
     if(p == CCharger)   SMPS::powerOff();
     else                Discharger::powerOff();
     return retu;

@@ -13,6 +13,12 @@ namespace {
 
 #define A 4
 
+uint16_t hardware::getPIDValue()
+{
+    return PID_MV>>PID_MV_PRECISION;
+}
+
+
 void SMPS_PID::update()
 {
     if(!PID_enable) return;
@@ -41,8 +47,6 @@ void SMPS_PID::init(uint16_t Vin, uint16_t Vout)
 {
 
     PID_setpoint = 0;
-    // 1V as an error margin
-    Vout -= ANALOG_VOLT(1.000);
     if(Vout>Vin) {
         Vout = Vin;
     }
