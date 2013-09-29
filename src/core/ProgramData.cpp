@@ -198,14 +198,11 @@ char * ProgramData::getName_E(int index)
 }
 
 
-bool ProgramData::edit(int index)
+void ProgramData::edit(int index)
 {
     ProgramDataMenu menu(*this, index);
-    if(menu.run()) {
-        *this = menu.p_;
-        return true;
-    }
-    return false;
+    menu.run();
+    *this = menu.p_;
 }
 
 template<class val_t>

@@ -40,7 +40,6 @@ const char string_inputLow[]    PROGMEM = "input low:";
 const char string_balancErr[]   PROGMEM = "bal. err:";
 const char string_view[]        PROGMEM = "UART: ";
 const char string_reset[]       PROGMEM = "   reset";
-const char string_save[]        PROGMEM = "    save"    ;
 
 const char * const SettingsStaticMenu[] PROGMEM =
 {
@@ -64,7 +63,6 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_balancErr,
         string_view,
         string_reset,
-        string_save
 };
 
 
@@ -130,19 +128,17 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
     }
 }
 
-bool SettingsMenu::run() {
+void SettingsMenu::run() {
     int8_t index;
     do {
         index = runSimple();
 
-        if(index < 0) return false;
+        if(index < 0) return;
         switch(index) {
-        case sizeOfArray(SettingsStaticMenu) - 2:  //reset
+        case sizeOfArray(SettingsStaticMenu) - 1:  //reset
             p_.setDefault();
             Buzzer::soundSelect();
             break;
-        case sizeOfArray(SettingsStaticMenu) - 1:  //save
-            return true;
         default:
             Settings undo(p_);
             if(!runEdit(index))

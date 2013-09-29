@@ -28,8 +28,6 @@ const char string_PDMM3[] PROGMEM = "Ic: ";
 const char string_PDMM4[] PROGMEM = "Id: ";
 const char string_PDMM5[] PROGMEM = "  create name";
 const char string_PDMM6[] PROGMEM = "   edit name";
-const char string_PDMM7[] PROGMEM = "     save";
-
 
 
 const char * const ProgramDataStaticMenu[] PROGMEM =
@@ -41,7 +39,6 @@ const char * const ProgramDataStaticMenu[] PROGMEM =
         string_PDMM4,
         string_PDMM5,
         string_PDMM6,
-        string_PDMM7,
 };
 
 
@@ -100,16 +97,15 @@ void ProgramDataMenu::editItem(uint8_t index, uint8_t key)
     }
 }
 
-bool ProgramDataMenu::run() {
+void ProgramDataMenu::run() {
     int8_t index;
     do {
         index = runSimple();
 
-        if(index < 0) return false;
+        if(index < 0) return;
         switch(index) {
         case 5: createName(); break;
         case 6: editName(); break;
-        case PROGRAM_DATA_MENU_SIZE - 1: return true; //save
         default:
             ProgramData undo(p_);
             if(!runEdit(index))

@@ -434,11 +434,9 @@ void Program::selectProgram(int index)
         if(menuIndex >= 0)  {
             Program::ProgramType prog = getSelectProgramType(menuIndex);
             if(prog == Program::EditBattery) {
-                if(ProgramData::currentProgramData.edit(index)) {
-                    Buzzer::soundSave();
-                    ProgramData::saveProgramData(index);
-                    selectPrograms = getSelectProgramMenu();
-                }
+                ProgramData::currentProgramData.edit(index);
+                ProgramData::saveProgramData(index);
+                selectPrograms = getSelectProgramMenu();
             } else {
                 Program::run(prog);
             }

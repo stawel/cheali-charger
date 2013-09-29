@@ -44,7 +44,7 @@ struct ProgramData {
     int16_t getDeltaVLimit() const;
     int16_t getDeltaTLimit() const;
 
-    bool edit(int index);
+    void edit(int index);
     void createName(int index);
 
     uint8_t printBatteryString(int n) const;

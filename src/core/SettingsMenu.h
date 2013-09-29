@@ -27,7 +27,7 @@ public:
     virtual uint8_t printItem(uint8_t i);
     virtual void editItem(uint8_t i, uint8_t key);
 
-    bool run();
+    void run();
 
     Settings p_;
 private:

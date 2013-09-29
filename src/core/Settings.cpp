@@ -83,12 +83,9 @@ void Settings::apply() {
 void Settings::edit()
 {
     SettingsMenu menu(*this);
-    if(menu.run()) {
-        //save settings
-        Buzzer::soundSave();
-        *this = menu.p_;
-        save();
-    }
+    menu.run();
+    *this = menu.p_;
+    save();
     apply();
 }
 
