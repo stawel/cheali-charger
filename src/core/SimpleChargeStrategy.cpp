@@ -22,7 +22,10 @@
 #include "TheveninMethod.h"
 
 
-SimpleChargeStrategy simpleChargeStrategy;
+namespace SimpleChargeStrategy {
+    bool testVout_;
+}
+
 
 
 void SimpleChargeStrategy::powerOn()
@@ -43,7 +46,7 @@ void SimpleChargeStrategy::powerOff()
     SMPS::powerOff();
 }
 
-void SimpleChargeStrategy::calculateThevenin() const
+void SimpleChargeStrategy::calculateThevenin()
 {
     if(AnalogInputs::isOutStable()) TheveninMethod::calculateRthVth(SMPS::getValue());
 }

@@ -21,23 +21,15 @@
 #include "Strategy.h"
 #include "AnalogInputs.h"
 
-class SimpleDischargeStrategy : public Strategy {
-public:
+namespace SimpleDischargeStrategy {
 
-    AnalogInputs::ValueType I_;
-    AnalogInputs::ValueType V_;
+    void powerOn();
+    Strategy::statusType doStrategy();
+    void powerOff();
 
-    SimpleDischargeStrategy(){}
-    virtual void powerOn();
-    virtual statusType doStrategy();
-    virtual void powerOff();
-
-    bool isMinVout() const;
-
-    void setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I) { I_ = I; V_ = V; };
+    bool isMinVout();
+    void setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I);
 };
-
-extern SimpleDischargeStrategy simpleDischargeStrategy;
 
 
 #endif /* SIMPLEDISCHARGESTRATEGY_H_ */

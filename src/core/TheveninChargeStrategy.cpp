@@ -22,7 +22,14 @@
 #include "Screen.h"
 #include "TheveninMethod.h"
 
-TheveninChargeStrategy theveninChargeStrategy;
+
+namespace TheveninChargeStrategy {
+    const Strategy::VTable vtable PROGMEM = {
+        powerOn,
+        powerOff,
+        doStrategy
+    };
+}
 
 void TheveninChargeStrategy::powerOff()
 {
@@ -33,7 +40,7 @@ void TheveninChargeStrategy::powerOff()
 void TheveninChargeStrategy::powerOn()
 {
     SMPS::powerOn();
-    balancer.powerOn();
+    Balancer::powerOn();
     TheveninMethod::initialize();
     Program::iName_ = AnalogInputs::IsmpsValue;
 }
@@ -57,7 +64,7 @@ Strategy::statusType TheveninChargeStrategy::doStrategy()
     //test for charge complete
     if(TheveninMethod::isComlete(isendVout, oldValue)) {
         SMPS::powerOff(SMPS::CHARGING_COMPLETE);
-        return COMPLETE;
+        return Strategy::COMPLETE;
     }
 
     if(stable) {
@@ -65,16 +72,16 @@ Strategy::statusType TheveninChargeStrategy::doStrategy()
         if(value != oldValue)
             SMPS::setValue(value);
     }
-    return RUNNING;
+    return Strategy::RUNNING;
 }
 
 
-bool TheveninChargeStrategy::isEndVout() const
+bool TheveninChargeStrategy::isEndVout()
 {
     AnalogInputs::ValueType Vc = TheveninMethod::Vend_;
-    AnalogInputs::ValueType Vc_per_cell = balancer.calculatePerCell(Vc);
+    AnalogInputs::ValueType Vc_per_cell = Balancer::calculatePerCell(Vc);
 
-    return Vc <= AnalogInputs::getVout() || balancer.isMaxVout(Vc_per_cell);
+    return Vc <= AnalogInputs::getVout() || Balancer::isMaxVout(Vc_per_cell);
 }
 
 

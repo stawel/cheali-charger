@@ -21,18 +21,13 @@
 
 #include "Strategy.h"
 
-class StartInfoStrategy : public Strategy {
-public:
-    uint8_t ok_;
-    bool balancePort_;
-    StartInfoStrategy(){};
-    virtual void powerOn();
-    virtual statusType doStrategy();
-    virtual void powerOff();
-    void setBalancePort(bool p) {balancePort_ = p;}
+namespace StartInfoStrategy {
+    extern const Strategy::VTable vtable;
+    void powerOn();
+    Strategy::statusType doStrategy();
+    void powerOff();
+    void setBalancePort(bool p);
 };
-
-extern StartInfoStrategy startInfoStrategy;
 
 #endif /* STARTINFOSTRATEGY_H_ */
 

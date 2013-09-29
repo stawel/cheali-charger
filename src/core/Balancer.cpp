@@ -21,6 +21,34 @@
 #include "Screen.h"
 #include "Settings.h"
 
+
+
+namespace Balancer {
+    uint8_t cells_;
+    uint8_t minCell_;
+    uint8_t balance_;
+    bool done_;
+    AnalogInputs::ValueType Von_[MAX_BANANCE_CELLS], Voff_[MAX_BANANCE_CELLS];
+    bool savedVon_;
+    uint32_t startBalanceTime_;
+    uint32_t startSwitchTime_;
+
+    uint32_t IVtime_;
+    AnalogInputs::ValueType V_[MAX_BANANCE_CELLS];
+    uint16_t stableCount_;
+
+    uint8_t getCells() { return cells_; }
+    bool isWorking()  { return balance_ != 0; }
+
+    const Strategy::VTable vtable PROGMEM = {
+        powerOn,
+        powerOff,
+        doStrategy
+    };
+
+
+} // namespace Balancer
+
 void Balancer::powerOn()
 {
     hardware::setBalancerOutput(true);
@@ -41,7 +69,7 @@ void Balancer::powerOn()
     startSwitchTime_ = 0;
 }
 
-uint8_t Balancer::getCellMinV() const
+uint8_t Balancer::getCellMinV()
 {
     uint8_t c = 0;
     AnalogInputs::ValueType vmin = 65535;
@@ -61,7 +89,7 @@ AnalogInputs::ValueType Balancer::getV(uint8_t cell)
     return AnalogInputs::getRealValue(AnalogInputs::Name(AnalogInputs::Vb1+cell));
 }
 
-AnalogInputs::ValueType Balancer::getPresumedV(uint8_t cell) const
+AnalogInputs::ValueType Balancer::getPresumedV(uint8_t cell)
 {
     if(balance_ == 0)
         return getV(cell);
@@ -87,10 +115,6 @@ void Balancer::powerOff()
     hardware::setBalancerOutput(false);
 }
 
-Balancer::Balancer()
-{
-    powerOff();
-}
 
 void Balancer::setBalance(uint8_t v)
 {
@@ -150,7 +174,7 @@ uint8_t Balancer::calculateBalance()
     return retu;
 }
 
-bool Balancer::isStable(const uint16_t stableCount) const
+bool Balancer::isStable(const uint16_t stableCount)
 {
     for(uint8_t c = 0; c < cells_; c++) {
         if(AnalogInputs::getStableCount(AnalogInputs::Name(AnalogInputs::Vb1+c)) < stableCount)
@@ -169,7 +193,7 @@ void Balancer::trySaveVon() {
     }
 }
 
-uint16_t Balancer::getBalanceTime() const
+uint16_t Balancer::getBalanceTime()
 {
     return (Timer::getMiliseconds() - startBalanceTime_) / 1000;
 }
@@ -178,7 +202,7 @@ uint16_t Balancer::getBalanceTime() const
 Strategy::statusType Balancer::doStrategy()
 {
     if(done_)
-        return COMPLETE;
+        return Strategy::COMPLETE;
     if(isStable()) {
         if(balance_ == 0) {
             startBalacing();
@@ -190,11 +214,11 @@ Strategy::statusType Balancer::doStrategy()
             }
         }
     }
-    return RUNNING;
+    return Strategy::RUNNING;
 }
 
 
-bool Balancer::isMaxVout(AnalogInputs::ValueType maxV) const
+bool Balancer::isMaxVout(AnalogInputs::ValueType maxV)
 {
     for(uint8_t c = 0; c < cells_; c++) {
         if(getV(c) >= maxV)
@@ -206,7 +230,7 @@ bool Balancer::isMaxVout(AnalogInputs::ValueType maxV) const
     return false;
 }
 
-bool Balancer::isMinVout(AnalogInputs::ValueType minV) const
+bool Balancer::isMinVout(AnalogInputs::ValueType minV)
 {
     for(uint8_t c = 0; c < cells_; c++) {
         if(getV(c) <= minV)
@@ -218,7 +242,7 @@ bool Balancer::isMinVout(AnalogInputs::ValueType minV) const
     return false;
 }
 
-AnalogInputs::ValueType Balancer::calculatePerCell(AnalogInputs::ValueType v) const
+AnalogInputs::ValueType Balancer::calculatePerCell(AnalogInputs::ValueType v)
 {
     if(cells_ == 0)
         return 0;

@@ -22,48 +22,40 @@
 #include "Thevenin.h"
 #include "Strategy.h"
 
-class Balancer : public Strategy {
-public:
+namespace Balancer {
     const static AnalogInputs::ValueType Ibalance = 200; //200mA
     const static uint16_t maxBalanceTime = 30; //30s
     const static uint16_t balancerStartStableCount = 10; //30s
-    uint8_t cells_;
-    uint8_t minCell_;
-    uint8_t balance_;
-    bool done_;
-    AnalogInputs::ValueType Von_[MAX_BANANCE_CELLS], Voff_[MAX_BANANCE_CELLS];
-    bool savedVon_;
-    uint32_t startBalanceTime_;
-    uint32_t startSwitchTime_;
 
-    uint32_t IVtime_;
-    AnalogInputs::ValueType V_[MAX_BANANCE_CELLS];
-    uint16_t stableCount_;
+    extern const Strategy::VTable vtable;
+
+    extern uint8_t balance_;
+    extern bool savedVon_;
+    extern uint8_t minCell_;
 
 
-    Balancer();
-    virtual void powerOn();
-    virtual void powerOff();
-    virtual statusType doStrategy();
+    void powerOn();
+    void powerOff();
+    Strategy::statusType doStrategy();
     void startBalacing();
     void trySaveVon();
-    uint16_t getBalanceTime() const;
+    uint16_t getBalanceTime();
 
     uint8_t calculateBalance();
     void setBalance(uint8_t v);
-    uint8_t getCellMinV() const;
-    uint8_t getCells() const { return cells_; }
+    uint8_t getCellMinV();
+    uint8_t getCells();
     static AnalogInputs::ValueType getV(uint8_t cell);
-    AnalogInputs::ValueType getPresumedV(uint8_t cell) const;
-    AnalogInputs::ValueType getRealV(uint8_t cell) const { return getPresumedV(cell); }
-    bool isWorking() const { return balance_ != 0; }
+    AnalogInputs::ValueType getPresumedV(uint8_t cell);
+    inline AnalogInputs::ValueType getRealV(uint8_t cell) { return getPresumedV(cell); }
+    bool isWorking();
 
-    bool isMaxVout(AnalogInputs::ValueType maxV) const;
-    bool isMinVout(AnalogInputs::ValueType minV) const;
-    bool isStable(const uint16_t stableCount = AnalogInputs::STABLE_MIN_VALUE) const;
+    bool isMaxVout(AnalogInputs::ValueType maxV);
+    bool isMinVout(AnalogInputs::ValueType minV);
+    bool isStable(const uint16_t stableCount = AnalogInputs::STABLE_MIN_VALUE);
     void endBalancing();
 
-    AnalogInputs::ValueType calculatePerCell(AnalogInputs::ValueType v) const;
+    AnalogInputs::ValueType calculatePerCell(AnalogInputs::ValueType v);
 };
 
 #endif /* BALANCER_H_ */

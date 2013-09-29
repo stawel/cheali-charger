@@ -72,7 +72,7 @@ namespace Screen{
     AnalogInputs::ValueType getBalanceValue(uint8_t cell, AnalogInputs::Type type)
     {
         if(type == AnalogInputs::Voltage)
-            return balancer.getPresumedV(cell);
+            return Balancer::getPresumedV(cell);
         return calculateRthCell(cell);
     }
 
@@ -89,11 +89,11 @@ namespace Screen{
         lcdSetCursor0_0();
 
         char c = ' ';
-        if(!balancer.isWorking()) {
-            if(!balancer.isStable())
+        if(!Balancer::isWorking()) {
+            if(!Balancer::isStable())
                 c = 'm';
         } else {
-            if(balancer.savedVon_)
+            if(Balancer::savedVon_)
                 c = 'B';
             else
                 c = 'b';
@@ -101,13 +101,13 @@ namespace Screen{
 
         lcdPrintChar(c);
 
-        if(balancer.balance_ != 0) {
+        if(Balancer::balance_ != 0) {
             uint8_t  j = 1;
             for(uint8_t i = 0; i < 6; i++) {
-                if(i == balancer.minCell_) {
+                if(i == Balancer::minCell_) {
                     c = '_';
                 } else {
-                    if(balancer.balance_&j) c = '1';
+                    if(Balancer::balance_&j) c = '1';
                     else c = '0';
                 }
                 lcdPrintChar(c);
@@ -154,7 +154,7 @@ void Screen::printChar_Time() {
     } else if(Discharger::isPowerOn()) {
         c = 'D';
         if(SMPS::isPowerOn()) c = 'E';
-    } else if(balancer.isWorking()) {
+    } else if(Balancer::isWorking()) {
         c = 'B';
     }
 
@@ -218,7 +218,7 @@ void Screen::doSlowInterrupt()
    if(SMPS::isWorking() || Discharger::isWorking())
        totalChargDischargeTime_ += SLOW_INTERRUPT_PERIOD_MILISECONDS;
 
-   if(balancer.isWorking())
+   if(Balancer::isWorking())
        totalBalanceTime_ += SLOW_INTERRUPT_PERIOD_MILISECONDS;
 
 }

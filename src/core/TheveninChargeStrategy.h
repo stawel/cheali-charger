@@ -22,20 +22,19 @@
 #include "Thevenin.h"
 #include "TheveninMethod.h"
 
-class TheveninChargeStrategy : public SimpleChargeStrategy {
-public:
-    TheveninChargeStrategy(){}
-    virtual void powerOn();
-    virtual statusType doStrategy();
-    virtual void powerOff();
-    bool isEndVout() const;
+namespace TheveninChargeStrategy
+{
+    extern const Strategy::VTable vtable;
+
+    void powerOn();
+    Strategy::statusType doStrategy();
+    void powerOff();
+    bool isEndVout();
 
     void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
     void setMinI(AnalogInputs::ValueType i);
 
 };
-
-extern TheveninChargeStrategy theveninChargeStrategy;
 
 
 #endif /* THEVENINCHARGESTRATEGY_H_ */

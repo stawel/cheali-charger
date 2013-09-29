@@ -22,7 +22,19 @@
 #include "Buzzer.h"
 
 
-StartInfoStrategy startInfoStrategy;
+namespace StartInfoStrategy {
+    uint8_t ok_;
+    bool balancePort_;
+    void setBalancePort(bool p) {balancePort_ = p;}
+
+    const Strategy::VTable vtable PROGMEM = {
+        powerOn,
+        powerOff,
+        doStrategy
+    };
+
+}
+
 
 void StartInfoStrategy::powerOn()
 {

@@ -206,7 +206,7 @@ void sendChannel2()
     printD();
     printUInt(Discharger::getValue());
     printD();
-    printUInt(balancer.balance_);
+    printUInt(Balancer::balance_);
     printD();
 
     printUInt(Screen::calculateBattRth());

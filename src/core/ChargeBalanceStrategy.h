@@ -22,21 +22,15 @@
 
 #define CHARGE_BALANCE_COUNT 3
 
-class ChargeBalanceStrategy : public Strategy {
-public:
-    enum State  {Charge, Balance};
+namespace ChargeBalanceStrategy
+{
+    extern const Strategy::VTable vtable;
 
-    State state_;
-    uint8_t count_;
-
-    ChargeBalanceStrategy(){}
-    virtual void powerOn();
-    virtual statusType doStrategy();
-    virtual void powerOff();
+    void powerOn();
+    Strategy::statusType doStrategy();
+    void powerOff();
     void setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic);
 };
-
-extern ChargeBalanceStrategy chargeBalanceStrategy;
 
 
 #endif /* CHARGEBALANCESTRATEGY_H_ */

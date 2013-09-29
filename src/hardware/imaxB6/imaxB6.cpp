@@ -125,8 +125,6 @@ void hardware::setBalancer(uint8_t v)
     digitalWrite(BALANCER6_LOAD_PIN, v&32);
 }
 
-Balancer balancer;
-
 LiquidCrystal lcd(LCD_ENABLE_RS, LCD_ENABLE_PIN,
         LCD_D0_PIN, LCD_D1_PIN, LCD_D2_PIN, LCD_D3_PIN);
 

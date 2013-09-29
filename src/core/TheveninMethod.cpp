@@ -51,11 +51,11 @@ void TheveninMethod::initialize()
     AnalogInputs::ValueType Vout = AnalogInputs::getVout();
     tVout_.init(Vout, Vend_, minValue_);
 
-    cells_ = balancer.getCells();
-    AnalogInputs::ValueType Vend_per_cell = balancer.calculatePerCell(Vend_);
+    cells_ = Balancer::getCells();
+    AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(Vend_);
 
     for(uint8_t c = 0; c < cells_; c++) {
-        AnalogInputs::ValueType v = balancer.getPresumedV(c);
+        AnalogInputs::ValueType v = Balancer::getPresumedV(c);
         tBal_[c].init(v, Vend_per_cell, minValue_);
     }
 
@@ -106,14 +106,14 @@ void TheveninMethod::calculateRthVth(AnalogInputs::ValueType oldValue)
     tVout_.calculateRthVth(AnalogInputs::getVout(),oldValue);
 
     for(uint8_t c = 0; c < cells_; c++) {
-        tBal_[c].calculateRthVth(balancer.getPresumedV(c),oldValue);
+        tBal_[c].calculateRthVth(Balancer::getPresumedV(c),oldValue);
     }
 }
 
 AnalogInputs::ValueType TheveninMethod::calculateI()
 {
     AnalogInputs::ValueType i = tVout_.calculateI(Vend_);
-    AnalogInputs::ValueType Vend_per_cell = balancer.calculatePerCell(Vend_);
+    AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(Vend_);
     for(uint8_t c = 0; c < cells_; c++) {
         i = min(i, tBal_[c].calculateI(Vend_per_cell));
     }
@@ -144,7 +144,7 @@ void TheveninMethod::storeOldValue(AnalogInputs::ValueType oldValue)
     tVout_.storeLast(AnalogInputs::getVout(), oldValue);
 
     for(uint8_t i = 0; i < cells_; i++) {
-        AnalogInputs::ValueType vi = balancer.getPresumedV(i);
+        AnalogInputs::ValueType vi = Balancer::getPresumedV(i);
         tBal_[i].storeLast(vi, oldValue);
     }
 }

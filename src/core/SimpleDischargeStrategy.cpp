@@ -20,18 +20,23 @@
 #include "ProgramData.h"
 
 
-SimpleDischargeStrategy simpleDischargeStrategy;
+namespace SimpleDischargeStrategy {
+    AnalogInputs::ValueType I_;
+    AnalogInputs::ValueType V_;
+    void setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I) { I_ = I; V_ = V; };
+
+}
 
 void SimpleDischargeStrategy::powerOff()
 {
-    balancer.powerOff();
+    Balancer::powerOff();
     Discharger::powerOff();
 }
 
 void SimpleDischargeStrategy::powerOn()
 {
     Discharger::powerOn();
-    balancer.powerOn();
+    Balancer::powerOn();
 
     Discharger::setRealValue(I_);
 }
@@ -41,18 +46,18 @@ Strategy::statusType SimpleDischargeStrategy::doStrategy()
 {
     if(isMinVout()) {
         Discharger::powerOff(Discharger::DISCHARGING_COMPLETE);
-        return COMPLETE;
+        return Strategy::COMPLETE;
     }
-    return RUNNING;
+    return Strategy::RUNNING;
 }
 
 
-bool SimpleDischargeStrategy::isMinVout() const
+bool SimpleDischargeStrategy::isMinVout()
 {
     AnalogInputs::ValueType Vc = V_;
-    AnalogInputs::ValueType Vc_per_cell = balancer.calculatePerCell(Vc);
+    AnalogInputs::ValueType Vc_per_cell = Balancer::calculatePerCell(Vc);
 
-    return Vc >= AnalogInputs::getVout() || balancer.isMinVout(Vc_per_cell);
+    return Vc >= AnalogInputs::getVout() || Balancer::isMinVout(Vc_per_cell);
 }
 
 

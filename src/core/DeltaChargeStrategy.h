@@ -21,26 +21,15 @@
 
 #include "SimpleChargeStrategy.h"
 
-class DeltaChargeStrategy : public SimpleChargeStrategy {
-public:
-    enum StateType {PreCharge, RapidCharge};
+namespace DeltaChargeStrategy
+{
+    extern const Strategy::VTable vtable;
 
-    bool testDeltaT_;
-    bool testDeltaV_;
-
-    StateType state_;
-
-    DeltaChargeStrategy(){};
-
-    virtual void powerOn();
-    virtual statusType doStrategy();
-    void setTestTV(bool t, bool v) {
-        testDeltaT_ = t;
-        testDeltaV_ = v;
-    }
+    void powerOn();
+    Strategy::statusType doStrategy();
+    void setTestTV(bool t, bool v);
 };
 
-extern DeltaChargeStrategy deltaChargeStrategy;
 
 #endif /* DELTACHARGESTRATEGY_H_ */
 

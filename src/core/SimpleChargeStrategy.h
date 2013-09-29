@@ -21,18 +21,13 @@
 
 #include "Strategy.h"
 
-class SimpleChargeStrategy : public Strategy {
-public:
-    bool testVout_;
-    SimpleChargeStrategy(){};
-    virtual void powerOn();
+namespace SimpleChargeStrategy {
+    void powerOn();
 //    virtual statusType doStrategy();
-    virtual void powerOff();
-    void calculateThevenin() const;
+    void powerOff();
+    void calculateThevenin();
     static bool isLCDRunning();
 };
-
-extern SimpleChargeStrategy simpleChargeStrategy;
 
 #endif /* SIMPLECHARGESTRATEGY_H_ */
 

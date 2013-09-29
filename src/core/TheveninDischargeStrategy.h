@@ -21,19 +21,18 @@
 #include "SimpleDischargeStrategy.h"
 #include "TheveninMethod.h"
 
-class TheveninDischargeStrategy : public SimpleDischargeStrategy {
-public:
-    TheveninDischargeStrategy(){}
-    virtual void powerOn();
-    virtual statusType doStrategy();
-    virtual void powerOff();
+namespace TheveninDischargeStrategy
+{
+    extern const Strategy::VTable vtable;
+
+    void powerOn();
+    Strategy::statusType doStrategy();
+    void powerOff();
 
     void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
     void setMinI(AnalogInputs::ValueType i);
 
 };
-
-extern TheveninDischargeStrategy theveninDischargeStrategy;
 
 
 #endif /* THEVENINDISCHARGESTRATEGY_H_ */

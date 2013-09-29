@@ -20,23 +20,40 @@
 #include "TheveninChargeStrategy.h"
 #include "TheveninDischargeStrategy.h"
 
-StorageStrategy storageStrategy;
+
+namespace StorageStrategy {
+
+    enum State  {Charge, Discharge, Balance};
+
+    AnalogInputs::ValueType V_;
+    State state;
+    bool doBalance_;
+    void setDoBalance(bool v) { doBalance_ = v; }
+
+    const Strategy::VTable vtable PROGMEM = {
+        powerOn,
+        powerOff,
+        doStrategy
+    };
+
+
+}// namespace StorageStrategy
 
 void StorageStrategy::powerOff()
 {
-    theveninChargeStrategy.powerOff();
-    theveninDischargeStrategy.powerOff();
-    balancer.powerOff();
+    TheveninChargeStrategy::powerOff();
+    TheveninDischargeStrategy::powerOff();
+    Balancer::powerOff();
 }
 
 void StorageStrategy::powerOn()
 {
-    balancer.powerOn();
-    if(balancer.isMinVout(balancer.calculatePerCell(V_))) {
-        theveninChargeStrategy.powerOn();
+    Balancer::powerOn();
+    if(Balancer::isMinVout(Balancer::calculatePerCell(V_))) {
+        TheveninChargeStrategy::powerOn();
         state = Charge;
     } else {
-        theveninDischargeStrategy.powerOn();
+        TheveninDischargeStrategy::powerOn();
         state = Discharge;
     }
 }
@@ -47,25 +64,25 @@ Strategy::statusType StorageStrategy::doStrategy()
     Strategy::statusType status;
     switch(state) {
         case Charge:
-            status = theveninChargeStrategy.doStrategy();
+            status = TheveninChargeStrategy::doStrategy();
             break;
         case Discharge:
-            status = theveninDischargeStrategy.doStrategy();
+            status = TheveninDischargeStrategy::doStrategy();
             break;
         case Balance:
-            status = balancer.doStrategy();
-            if(status != RUNNING) {
+            status = Balancer::doStrategy();
+            if(status != Strategy::RUNNING) {
                 powerOff();
                 return status;
             }
             break;
     }
 
-    if(status == COMPLETE && doBalance_) {
-        status = RUNNING;
+    if(status == Strategy::COMPLETE && doBalance_) {
+        status = Strategy::RUNNING;
         state = Balance;
         //turn one measurement
-        balancer.powerOn();
+        Balancer::powerOn();
     }
 
     return status;
@@ -74,6 +91,6 @@ Strategy::statusType StorageStrategy::doStrategy()
 void StorageStrategy::setVII(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic, AnalogInputs::ValueType Id)
 {
     V_ = V;
-    theveninChargeStrategy.setVI(V, Ic);
-    theveninDischargeStrategy.setVI(V, Id);
+    TheveninChargeStrategy::setVI(V, Ic);
+    TheveninDischargeStrategy::setVI(V, Id);
 }

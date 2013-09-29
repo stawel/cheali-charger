@@ -24,6 +24,7 @@
 
 namespace Screen {
     enum ScreenType {
+        ScreenEnd,
         ScreenStartInfo,
         ScreenFirst, ScreenCIVlimits, ScreenTime, ScreenTemperature,
         ScreenBalancer1_3,      ScreenBalancer4_6,

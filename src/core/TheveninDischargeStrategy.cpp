@@ -21,7 +21,15 @@
 #include "TheveninDischargeStrategy.h"
 
 
-TheveninDischargeStrategy theveninDischargeStrategy;
+namespace TheveninDischargeStrategy {
+    const Strategy::VTable vtable PROGMEM = {
+        powerOn,
+        powerOff,
+        doStrategy
+    };
+}
+
+
 
 void TheveninDischargeStrategy::powerOff()
 {
@@ -32,7 +40,7 @@ void TheveninDischargeStrategy::powerOff()
 void TheveninDischargeStrategy::powerOn()
 {
     Discharger::powerOn();
-    balancer.powerOn();
+    Balancer::powerOn();
     TheveninMethod::initialize();
     Program::iName_ = AnalogInputs::IdischargeValue;
 }
@@ -51,7 +59,7 @@ void TheveninDischargeStrategy::setMinI(AnalogInputs::ValueType i)
 Strategy::statusType TheveninDischargeStrategy::doStrategy()
 {
     bool stable;
-    bool isEndVout = isMinVout();
+    bool isEndVout = SimpleDischargeStrategy::isMinVout();
     uint16_t oldValue = Discharger::getValue();
 
     //when discharging near the end, the battery voltage is very unstable
@@ -61,7 +69,7 @@ Strategy::statusType TheveninDischargeStrategy::doStrategy()
     //test for charge complete
     if(TheveninMethod::isComlete(isEndVout, oldValue)) {
         Discharger::powerOff(Discharger::DISCHARGING_COMPLETE);
-        return COMPLETE;
+        return Strategy::COMPLETE;
     }
 
     if(stable) {
@@ -70,6 +78,6 @@ Strategy::statusType TheveninDischargeStrategy::doStrategy()
             Discharger::setValue(value);
         }
     }
-    return RUNNING;
+    return Strategy::RUNNING;
 }
 

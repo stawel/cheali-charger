@@ -19,7 +19,21 @@
 #include "ChargeBalanceStrategy.h"
 #include "TheveninChargeStrategy.h"
 
-ChargeBalanceStrategy chargeBalanceStrategy;
+namespace ChargeBalanceStrategy {
+
+    enum State  {Charge, Balance};
+
+    State state_;
+    uint8_t count_;
+
+    const Strategy::VTable vtable PROGMEM = {
+        powerOn,
+        powerOff,
+        doStrategy
+    };
+
+}
+
 
 
 // This is a simple implementation of "Charge + Balance",
@@ -31,13 +45,13 @@ ChargeBalanceStrategy chargeBalanceStrategy;
 
 void ChargeBalanceStrategy::powerOff()
 {
-    theveninChargeStrategy.powerOff();
-    balancer.powerOff();
+    TheveninChargeStrategy::powerOff();
+    Balancer::powerOff();
 }
 
 void ChargeBalanceStrategy::powerOn()
 {
-    theveninChargeStrategy.powerOn();
+    TheveninChargeStrategy::powerOn();
     state_ = Charge;
     count_ = CHARGE_BALANCE_COUNT;
 }
@@ -47,21 +61,21 @@ Strategy::statusType ChargeBalanceStrategy::doStrategy()
 {
     Strategy::statusType status;
     if(state_ == Charge) {
-        status = theveninChargeStrategy.doStrategy();
+        status = TheveninChargeStrategy::doStrategy();
     } else {
-        status = balancer.doStrategy();
+        status = Balancer::doStrategy();
     }
-    if(status == COMPLETE && count_) {
+    if(status == Strategy::COMPLETE && count_) {
         if(state_ == Charge) {
-            theveninChargeStrategy.powerOff();
-            balancer.powerOn();
+            TheveninChargeStrategy::powerOff();
+            Balancer::powerOn();
             state_ = Balance;
         } else {
-            theveninChargeStrategy.powerOn();
+            TheveninChargeStrategy::powerOn();
             state_ = Charge;
         }
 
-        status = RUNNING;
+        status = Strategy::RUNNING;
         count_--;
     }
     return status;
@@ -69,5 +83,5 @@ Strategy::statusType ChargeBalanceStrategy::doStrategy()
 
 void ChargeBalanceStrategy::setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic)
 {
-    theveninChargeStrategy.setVI(V, Ic);
+    TheveninChargeStrategy::setVI(V, Ic);
 }

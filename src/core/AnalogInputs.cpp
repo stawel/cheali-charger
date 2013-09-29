@@ -258,7 +258,7 @@ AnalogInputs::ValueType AnalogInputs::getIout()
 
 bool AnalogInputs::isOutStable()
 {
-    return isStable(AnalogInputs::VoutBalancer) && isStable(AnalogInputs::Iout) && balancer.isStable();
+    return isStable(AnalogInputs::VoutBalancer) && isStable(AnalogInputs::Iout) && Balancer::isStable();
 }
 
 

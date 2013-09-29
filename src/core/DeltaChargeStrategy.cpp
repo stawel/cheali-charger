@@ -21,7 +21,30 @@
 #include "Screen.h"
 #include "TheveninMethod.h"
 
-DeltaChargeStrategy deltaChargeStrategy;
+
+
+namespace DeltaChargeStrategy {
+    enum StateType {PreCharge, RapidCharge};
+
+    bool testDeltaT_;
+    bool testDeltaV_;
+
+    StateType state_;
+
+    void setTestTV(bool t, bool v) {
+        testDeltaT_ = t;
+        testDeltaV_ = v;
+    }
+
+    const Strategy::VTable vtable PROGMEM = {
+        powerOn,
+        SimpleChargeStrategy::powerOff,
+        doStrategy
+    };
+
+
+}
+
 
 void DeltaChargeStrategy::powerOn()
 {
@@ -32,7 +55,7 @@ void DeltaChargeStrategy::powerOn()
 
 Strategy::statusType DeltaChargeStrategy::doStrategy()
 {
-    calculateThevenin();
+    SimpleChargeStrategy::calculateThevenin();
     AnalogInputs::ValueType Vout = AnalogInputs::getVout();
 
     if(state_ == PreCharge) {
@@ -44,29 +67,29 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
 
     if(AnalogInputs::isOutStable() && Vout > ProgramData::currentProgramData.getVoltage(ProgramData::VUpperLimit)) {
         Program::stopReason_ = PSTR("V limit");
-        return COMPLETE;
+        return Strategy::COMPLETE;
     }
 
     if(AnalogInputs::deltaCount_ <= 1)
-        return RUNNING;
+        return Strategy::RUNNING;
 
     if(testDeltaV_) {
         int x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
         x=-x;
         if(x > ProgramData::currentProgramData.getDeltaVLimit()) {
             Program::stopReason_ = PSTR("-dV");
-            return COMPLETE;
+            return Strategy::COMPLETE;
         }
     }
     if(testDeltaT_) {
         int x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
         if(x > ProgramData::currentProgramData.getDeltaTLimit()) {
             Program::stopReason_ = PSTR("dT/dt");
-            return COMPLETE;
+            return Strategy::COMPLETE;
         }
     }
 
-    return RUNNING;
+    return Strategy::RUNNING;
 }
 
 

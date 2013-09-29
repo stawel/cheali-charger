@@ -52,7 +52,8 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
-      Screen::ScreenCIVlimits
+      Screen::ScreenCIVlimits,
+      Screen::ScreenEnd
     };
     const Screen::ScreenType NiXXDischargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
@@ -62,7 +63,8 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
-      Screen::ScreenCIVlimits
+      Screen::ScreenCIVlimits,
+      Screen::ScreenEnd
     };
 
     const Screen::ScreenType theveninScreens[] PROGMEM = {
@@ -74,12 +76,16 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
-      Screen::ScreenCIVlimits
+      Screen::ScreenCIVlimits,
+      Screen::ScreenEnd
+
     };
     const Screen::ScreenType balanceScreens[] PROGMEM = {
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
       Screen::ScreenTime,
-      Screen::ScreenTemperature };
+      Screen::ScreenTemperature,
+      Screen::ScreenEnd
+    };
     const Screen::ScreenType dischargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
@@ -89,7 +95,9 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
-      Screen::ScreenCIVlimits
+      Screen::ScreenCIVlimits,
+      Screen::ScreenEnd
+
     };
     const Screen::ScreenType storageScreens[] PROGMEM = {
       Screen::ScreenFirst,
@@ -100,17 +108,23 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
-      Screen::ScreenCIVlimits
+      Screen::ScreenCIVlimits,
+      Screen::ScreenEnd
+
     };
 
     const Screen::ScreenType startInfoBalanceScreens[] PROGMEM = {
       Screen::ScreenStartInfo,
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
-      Screen::ScreenTemperature };
+      Screen::ScreenTemperature,
+      Screen::ScreenEnd
+    };
 
     const Screen::ScreenType startInfoScreens[] PROGMEM = {
       Screen::ScreenStartInfo,
-      Screen::ScreenTemperature };
+      Screen::ScreenTemperature,
+      Screen::ScreenEnd
+    };
 
     void chargingComplete() {
         lcdClear();
@@ -128,12 +142,27 @@ namespace {
         Buzzer::soundOff();
     }
 
-    bool analizeStrategyStatus(Strategy &strategy,  Strategy::statusType status, bool exitImmediately) {
+    const Strategy::VTable * strategy_;
+    void strategyPowerOn() {
+        void (*powerOn)() = pgm::read(&strategy_->powerOn);
+        powerOn();
+    }
+    void strategyPowerOff() {
+        void (*powerOff)() = pgm::read(&strategy_->powerOff);
+        powerOff();
+    }
+    Strategy::statusType strategyDoStrategy() {
+        Strategy::statusType (*doStrategy)() = pgm::read(&strategy_->doStrategy);
+        return doStrategy();
+    }
+
+
+    bool analizeStrategyStatus(Strategy::statusType status, bool exitImmediately) {
         bool run = true;
         if(status == Strategy::ERROR) {
             Program::programState_ = Program::Error;
             Screen::powerOff();
-            strategy.powerOff();
+            strategyPowerOff();
             chargingMonitorError();
             run = false;
         }
@@ -141,7 +170,7 @@ namespace {
         if(status == Strategy::COMPLETE) {
             Program::programState_ = Program::Done;
             Screen::powerOff();
-            strategy.powerOff();
+            strategyPowerOff();
             if(!exitImmediately)
                 chargingComplete();
             run = false;
@@ -149,20 +178,18 @@ namespace {
         return run;
     }
 
-    Strategy::statusType doStrategy(Program::ProgramState state, Strategy &strategy, const Screen::ScreenType chargeScreens[]
-                                                      , uint8_t screen_limit, bool exitImmediately = false)
+    Strategy::statusType doStrategy(Program::ProgramState state, const Screen::ScreenType chargeScreens[], bool exitImmediately = false)
     {
         Program::programState_ = state;
         uint8_t key;
         bool run = true;
         uint16_t newMesurmentData = 0;
         Strategy::statusType status = Strategy::RUNNING;
-        strategy.powerOn();
+        strategyPowerOn();
         Screen::powerOn();
         Monitor::powerOn();
         lcdClear();
         uint8_t screen_nr = 0;
-        screen_limit--;
         do {
             if(!PolarityCheck::runReversedPolarityInfo()) {
                 Screen::display(pgm::read(&chargeScreens[screen_nr]));
@@ -171,18 +198,20 @@ namespace {
             {
                 //change displayed screen
                 key =  Keyboard::getPressedWithSpeed();
-                if(key == BUTTON_INC && screen_nr < screen_limit)   screen_nr++;
-                if(key == BUTTON_DEC && screen_nr > 0)              screen_nr--;
+                if(key == BUTTON_INC && pgm::read(&chargeScreens[screen_nr+1]) != Screen::ScreenEnd)
+                    screen_nr++;
+                if(key == BUTTON_DEC && screen_nr > 0)
+                    screen_nr--;
             }
 
             if(run) {
                 status = Monitor::run();
-                run = analizeStrategyStatus(strategy, status, exitImmediately);
+                run = analizeStrategyStatus(status, exitImmediately);
 
                 if(run && newMesurmentData != AnalogInputs::getCalculationCount()) {
                     newMesurmentData = AnalogInputs::getCalculationCount();
-                    status = strategy.doStrategy();
-                    run = analizeStrategyStatus(strategy, status, exitImmediately);
+                    status = strategyDoStrategy();
+                    run = analizeStrategyStatus(status, exitImmediately);
                 }
             }
             if(!run && exitImmediately)
@@ -190,7 +219,7 @@ namespace {
         } while(key != BUTTON_STOP);
 
         Screen::powerOff();
-        strategy.powerOff();
+        strategyPowerOff();
         Program::programState_ = Program::None;
         return status;
     }
@@ -199,58 +228,67 @@ namespace {
 
 bool Program::startInfo()
 {
+    bool balancer = false;
+    const Screen::ScreenType * screen = startInfoScreens;
+    strategy_ = &StartInfoStrategy::vtable;
     if(ProgramData::currentProgramData.isLiXX()) {
         //usues balance port
-        startInfoStrategy.setBalancePort(true);
-        return doStrategy(Info, startInfoStrategy, startInfoBalanceScreens, sizeOfArray(startInfoBalanceScreens), true) == Strategy::COMPLETE;
-    } else {
-        startInfoStrategy.setBalancePort(false);
-        return doStrategy(Info, startInfoStrategy, startInfoScreens, sizeOfArray(startInfoScreens), true) == Strategy::COMPLETE;
+        balancer = true;
+        screen = startInfoBalanceScreens;
     }
+    StartInfoStrategy::setBalancePort(balancer);
+    return doStrategy(Info, startInfoBalanceScreens, true) == Strategy::COMPLETE;
 }
 
 Strategy::statusType Program::runStorage(bool balance)
 {
-    storageStrategy.setDoBalance(balance);
-    storageStrategy.setVII(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage),
+    StorageStrategy::setDoBalance(balance);
+    StorageStrategy::setVII(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage),
             ProgramData::currentProgramData.battery.Ic, ProgramData::currentProgramData.battery.Id);
-    return doStrategy(Storage, storageStrategy, storageScreens, sizeOfArray(storageScreens));
+    strategy_ = &StorageStrategy::vtable;
+    return doStrategy(Storage, storageScreens);
 }
 Strategy::statusType Program::runTheveninCharge(int minChargeC)
 {
-    theveninChargeStrategy.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.battery.Ic);
-    theveninChargeStrategy.setMinI(ProgramData::currentProgramData.battery.Ic/minChargeC);
-    return doStrategy(Charging, theveninChargeStrategy, theveninScreens, sizeOfArray(theveninScreens));
+    TheveninChargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.battery.Ic);
+    TheveninChargeStrategy::setMinI(ProgramData::currentProgramData.battery.Ic/minChargeC);
+    strategy_ = &TheveninChargeStrategy::vtable;
+    return doStrategy(Charging, theveninScreens);
 }
 
 Strategy::statusType Program::runTheveninChargeBalance(int minChargeC)
 {
-    chargeBalanceStrategy.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.battery.Ic);
-    return doStrategy(ChargingBalancing, chargeBalanceStrategy, theveninScreens, sizeOfArray(theveninScreens));
+    ChargeBalanceStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.battery.Ic);
+    strategy_ = &ChargeBalanceStrategy::vtable;
+    return doStrategy(ChargingBalancing, theveninScreens);
 }
 
 
 Strategy::statusType Program::runDeltaCharge()
 {
-    deltaChargeStrategy.setTestTV(settings.externT_, true);
-    return doStrategy(Charging, deltaChargeStrategy, deltaChargeScreens, sizeOfArray(deltaChargeScreens));
+    DeltaChargeStrategy::setTestTV(settings.externT_, true);
+    strategy_ = &DeltaChargeStrategy::vtable;
+    return doStrategy(Charging, deltaChargeScreens);
 }
 
 Strategy::statusType Program::runDischarge()
 {
-    theveninDischargeStrategy.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-    return doStrategy(Discharging, theveninDischargeStrategy, dischargeScreens, sizeOfArray(dischargeScreens));
+    TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+    strategy_ = &TheveninDischargeStrategy::vtable;
+    return doStrategy(Discharging, dischargeScreens);
 }
 
 Strategy::statusType Program::runNiXXDischarge()
 {
-    theveninDischargeStrategy.setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-    return doStrategy(Discharging, theveninDischargeStrategy, NiXXDischargeScreens, sizeOfArray(NiXXDischargeScreens));
+    TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+    strategy_ = &TheveninDischargeStrategy::vtable;
+    return doStrategy(Discharging, NiXXDischargeScreens);
 }
 
 Strategy::statusType Program::runBalance()
 {
-    return doStrategy(Balancing, balancer, balanceScreens, sizeOfArray(balanceScreens));
+    strategy_ = &Balancer::vtable;
+    return doStrategy(Balancing,  balanceScreens);
 }
 
 void Program::run(ProgramType prog)

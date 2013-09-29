@@ -20,23 +20,15 @@
 
 #include "SimpleChargeStrategy.h"
 
-class StorageStrategy : public Strategy {
-public:
-    enum State  {Charge, Discharge, Balance};
-
-    AnalogInputs::ValueType V_;
-    State state;
-    bool doBalance_;
-
-    StorageStrategy(){}
-    virtual void powerOn();
-    virtual statusType doStrategy();
-    virtual void powerOff();
+namespace StorageStrategy {
+    extern const Strategy::VTable vtable;
+    void powerOn();
+    Strategy::statusType doStrategy();
+    void powerOff();
     void setVII(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic, AnalogInputs::ValueType Id);
-    void setDoBalance(bool v) { doBalance_ = v; }
+    void setDoBalance(bool v);
 };
 
-extern StorageStrategy storageStrategy;
 
 
 #endif /* STORAGESTRATEGY_H_ */

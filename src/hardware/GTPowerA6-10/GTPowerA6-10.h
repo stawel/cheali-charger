@@ -58,7 +58,6 @@
 
 
 extern LiquidCrystal lcd;
-extern Balancer balancer;
 
 namespace hardware {
     void initialize();
