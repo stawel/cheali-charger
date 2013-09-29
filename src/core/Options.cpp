@@ -55,6 +55,8 @@ void Options::resetDefault()
     lcdPrint_P(PSTR("Done"));
     Version::restoreDefault();
     Timer::delay(100);
+    Screen::runCalibrateBeforeUse();
+
 }
 
 void Options::run()

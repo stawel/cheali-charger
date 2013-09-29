@@ -76,6 +76,7 @@ namespace Screen {
     void displayNotImplemented();
     void displayScreenReversedPolarity();
 
+    void runCalibrateBeforeUse();
     void runNotImplemented();
 };
 

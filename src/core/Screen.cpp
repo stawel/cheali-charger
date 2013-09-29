@@ -304,6 +304,7 @@ void Screen::displayScreenTemperature()
 
 void Screen::displayStrings(const char *s1, const char *s2)
 {
+    lcdClear();
     lcdSetCursor0_0(); lcdPrint_P(s1);
     lcdSetCursor0_1(); lcdPrint_P(s2);
 }
@@ -399,11 +400,19 @@ void Screen::displayNotImplemented()
     displayStrings(PSTR("Function not"), PSTR("implemented yet"));
 }
 
+
 void Screen::runNotImplemented()
 {
     displayNotImplemented();
     waitButtonPressed();
 }
+
+void Screen::runCalibrateBeforeUse()
+{
+    displayStrings(PSTR("please calibrate"), PSTR("before use"));
+    Timer::delay(5000);
+}
+
 
 void Screen::displayScreenReversedPolarity()
 {
