@@ -18,9 +18,6 @@
 #ifndef SERIALLOG_H_
 #define SERIALLOG_H_
 
-#define SERIAL_SPEED 57600
-//#define SERIAL_SPEED 9600
-
 namespace SerialLog {
     void powerOn();
     void send();

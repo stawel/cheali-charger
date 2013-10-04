@@ -29,6 +29,7 @@
 struct Settings {
 
     enum UARTType {Disabled, Normal, Debug, ExtDebug };
+    static const uint8_t Speeds = 5;
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5);
 #ifdef ENABLE_LCD_BACKLIGHT
     uint16_t backlight_;
@@ -48,11 +49,13 @@ struct Settings {
     AnalogInputs::ValueType inputVoltageLow_;
     AnalogInputs::ValueType balancerError_;
     uint16_t UART_;
+    uint16_t UARTspeed_;
 
     void edit();
     void check();
     void apply();
     void setDefault();
+    uint32_t getUARTspeed() const;
 
     static void load();
     static void save();

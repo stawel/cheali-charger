@@ -44,10 +44,23 @@ const Settings defaultSettings PROGMEM = {
         120,                //"%" capCutoff_
         ANALOG_VOLT(7),     //inputVoltageLow_
         ANALOG_VOLT(0.003), //balancerError_
-//        Settings::Disabled  //UART_ - disabled
-        Settings::Debug
+        Settings::Disabled, //UART_ - disabled
+        0                   //115200
 };
 
+
+const uint32_t Settings_speeds[Settings::Speeds] PROGMEM = {
+    115200,
+    57600,
+    38400,
+    19200,
+    9600
+};
+
+
+uint32_t Settings::getUARTspeed() const {
+    return pgm::read(&Settings_speeds[UARTspeed_]);
+}
 
 void Settings::load() {
     eeprom::read(settings, &savedSetting);

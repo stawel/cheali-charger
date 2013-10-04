@@ -39,6 +39,7 @@ const char string_capCoff[]     PROGMEM = "cap COff:";
 const char string_inputLow[]    PROGMEM = "input low:";
 const char string_balancErr[]   PROGMEM = "bal. err:";
 const char string_view[]        PROGMEM = "UART: ";
+const char string_speed[]       PROGMEM = "speed: ";
 const char string_reset[]       PROGMEM = "   reset";
 
 const char * const SettingsStaticMenu[] PROGMEM =
@@ -62,6 +63,7 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_inputLow,
         string_balancErr,
         string_view,
+        string_speed,
         string_reset,
 };
 
@@ -94,7 +96,8 @@ uint8_t SettingsMenu::printItem(uint8_t index)
             case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff_, 5);   break;
             case NEXT_CASE:     printVolt(p_.inputVoltageLow_);         break;
             case NEXT_CASE:     lcdPrint_mV(p_.balancerError_, 5);      break;
-            case NEXT_CASE:     printUART();                        break;
+            case NEXT_CASE:     printUART();                            break;
+            case NEXT_CASE:     printUARTSpeed();                       break;
         }
     }
 }
@@ -124,7 +127,8 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     change1Max(p_.capCutoff_, dir, 250);        break;
         case NEXT_CASE:     changeVolt(p_.inputVoltageLow_, dir);       break;
         case NEXT_CASE:     changeBalanceError(p_.balancerError_, dir); break;
-        case NEXT_CASE:     changeUART(dir);                        break;
+        case NEXT_CASE:     changeMax(p_.UART_, dir, Settings::ExtDebug); break;
+        case NEXT_CASE:     changeMax(p_.UARTspeed_, dir, Settings::Speeds-1); break;
     }
 }
 
@@ -181,18 +185,36 @@ void SettingsMenu::changeBacklight(int dir) {
 
 void SettingsMenu::changeUART(int dir)
 {
-    changeMax(p_.UART_, dir, Settings::ExtDebug);
 }
+
+const char string_disable[]     PROGMEM = "disabled";
+const char string_normal[]      PROGMEM = "normal";
+const char string_debug[]       PROGMEM = "debug";
+const char string_extDebug[]    PROGMEM = "ext. debug";
+
+const char * const SettingsUART[] PROGMEM =
+{
+        string_disable,
+        string_normal,
+        string_debug,
+        string_extDebug
+};
 
 void SettingsMenu::printUART() const
 {
-    switch(p_.UART_) {
-    case Settings::Disabled:    lcdPrint_P(PSTR("disabled"));   break;
-    case Settings::Normal:      lcdPrint_P(PSTR("normal"));     break;
-    case Settings::Debug:       lcdPrint_P(PSTR("debug"));      break;
-    default:                    lcdPrint_P(PSTR("ext. debug")); break;
-    }
+    lcdPrint_P(pgm::read(&SettingsUART[p_.UART_]));
 }
+
+void SettingsMenu::printUARTSpeed() const
+{
+    //TODO: add printULong
+    uint32_t s = p_.getUARTspeed();
+    s/=100;
+    lcdPrintUnsigned(s,5);
+    lcdPrintChar('0');
+    lcdPrintChar('0');
+}
+
 
 void SettingsMenu::changeTemp(AnalogInputs::ValueType &v, int step) {
     const AnalogInputs::ValueType min = ANALOG_CELCIUS(1);

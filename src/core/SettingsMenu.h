@@ -33,6 +33,7 @@ public:
 private:
 
     void printUART() const;
+    void printUARTSpeed() const;
 #ifdef ENABLE_LCD_BACKLIGHT
     void changeBacklight(int dir);
 #endif

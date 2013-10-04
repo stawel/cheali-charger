@@ -56,7 +56,7 @@ void sendTime();
 
 void serialBegin()
 {
-    Serial.begin(SERIAL_SPEED);
+    Serial.begin(settings.getUARTspeed());
 }
 void serialEnd()
 {
