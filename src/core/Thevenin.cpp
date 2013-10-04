@@ -21,9 +21,10 @@
 
 AnalogInputs::ValueType Resistance::getReadableRth()
 {
+    if(I_ == 0)
+        return 0;
     uint32_t R = abs(V_);
     R*=1000;
-    if(I_ == 0) I_=1;
     R/=abs(I_);
     return R;
 }

@@ -45,7 +45,7 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_VOLT(7),     //inputVoltageLow_
         ANALOG_VOLT(0.003), //balancerError_
         Settings::Disabled, //UART_ - disabled
-        0                   //115200
+        1                   //57600
 };
 
 

@@ -25,6 +25,7 @@
 #include "Settings.h"
 #include "memory.h"
 #include "Version.h"
+#include "TheveninMethod.h"
 
 namespace SerialLog {
     enum State { On, Off, Starting };
@@ -192,6 +193,18 @@ void sendChannel1()
         printUInt(AnalogInputs::getRealValue(pgm::read(&channel1[i])));
         printD();
     }
+
+    for(int8_t i=0;i<MAX_BANANCE_CELLS;i++) {
+        printUInt(TheveninMethod::getReadableRthCell(i));
+        printD();
+    }
+
+    printUInt(TheveninMethod::getReadableBattRth());
+    printD();
+
+    printUInt(TheveninMethod::getReadableWiresRth());
+    printD();
+
     sendEnd();
 }
 

@@ -9,7 +9,7 @@ AVR Memory Usage
 ----------------
 Device: Unknown
 
-Program:   28902 bytes
+Program:   28946 bytes
 (.text + .data + .bootloader)
 
 Data:        936 bytes
