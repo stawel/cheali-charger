@@ -292,6 +292,25 @@ namespace {
       Program::EditBattery
     };
 
+    const char * const programNiZnMenu[] PROGMEM =
+    { charge_str,
+      chaBal_str,
+      balanc_str,
+      discha_str,
+      fastCh_str,
+      edBatt_str
+    };
+
+    const Program::ProgramType programNiZnMenuType[] PROGMEM =
+    { Program::ChargeLiXX,
+      Program::ChargeLiXX_Balance,
+      Program::Balance,
+      Program::DischargeLiXX,
+      Program::FastChargeLiXX,
+      Program::EditBattery
+    };
+
+
     const char * const programNiXXMenu[] PROGMEM =
     { charge_str,
       discha_str,
@@ -323,9 +342,12 @@ namespace {
 
     StaticMenu selectLiXXMenu(programLiXXMenu, sizeOfArray(programLiXXMenu));
     StaticMenu selectNiXXMenu(programNiXXMenu, sizeOfArray(programNiXXMenu));
+    StaticMenu selectNiZnMenu(programNiZnMenu, sizeOfArray(programNiZnMenu));
     StaticMenu selectPbMenu(programPbMenu, sizeOfArray(programPbMenu));
 
     StaticMenu * getSelectProgramMenu() {
+        if(ProgramData::currentProgramData.battery.type == ProgramData::NiZn)
+            return &selectNiZnMenu;
         if(ProgramData::currentProgramData.isLiXX())
             return &selectLiXXMenu;
         else if(ProgramData::currentProgramData.isNiXX())
@@ -334,7 +356,9 @@ namespace {
     }
     Program::ProgramType getSelectProgramType(uint8_t index) {
         const Program::ProgramType * address;
-        if(ProgramData::currentProgramData.isLiXX())
+        if(ProgramData::currentProgramData.battery.type == ProgramData::NiZn)
+            address = &programNiZnMenuType[index];
+        else if(ProgramData::currentProgramData.isLiXX())
             address = &programLiXXMenuType[index];
         else if(ProgramData::currentProgramData.isNiXX())
             address = &programNiXXMenuType[index];

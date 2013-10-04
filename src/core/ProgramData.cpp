@@ -66,7 +66,7 @@ const char batteryString_Pb[]       PROGMEM = "Pb";
 const char batteryString_Life[]     PROGMEM = "Life";
 const char batteryString_Lilo[]     PROGMEM = "Lilo";
 const char batteryString_Lipo[]     PROGMEM = "Lipo";
-const char batteryString_NiZn[]     PROGMEM = "NiZn?";
+const char batteryString_NiZn[]     PROGMEM = "NiZn";
 
 const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
         batteryString_Unknown,
