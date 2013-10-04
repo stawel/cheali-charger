@@ -41,8 +41,7 @@ void TheveninChargeStrategy::powerOn()
 {
     SMPS::powerOn();
     Balancer::powerOn();
-    TheveninMethod::initialize();
-    Program::iName_ = AnalogInputs::IsmpsValue;
+    TheveninMethod::initialize(AnalogInputs::IsmpsValue);
 }
 
 void TheveninChargeStrategy::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)

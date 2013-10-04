@@ -19,6 +19,8 @@
 #define STRATEGY_H_
 
 #include <inttypes.h>
+#include "Screen.h"
+
 
 namespace Strategy {
     enum statusType {ERROR, COMPLETE, RUNNING };
@@ -28,6 +30,9 @@ namespace Strategy {
         statusType (*doStrategy)();
     };
 
+    extern const VTable * strategy_;
+
+    statusType doStrategy(const Screen::ScreenType chargeScreens[], bool exitImmediately = false);
 };
 
 

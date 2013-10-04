@@ -27,8 +27,9 @@ namespace TheveninMethod {
     extern AnalogInputs::ValueType Vend_;
     extern Thevenin tVout_;
     extern Thevenin tBal_[MAX_BANANCE_CELLS];
+    extern AnalogInputs::Name iName_;
 
-    void initialize();
+    void initialize(AnalogInputs::Name iName);
     bool isComlete(bool isEndVout, AnalogInputs::ValueType value);
     void calculateRthVth(AnalogInputs::ValueType oldValue);
     AnalogInputs::ValueType calculateNewValue(bool isEndVout, AnalogInputs::ValueType oldValue);
@@ -39,6 +40,9 @@ namespace TheveninMethod {
     void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
     void setMinI(AnalogInputs::ValueType i);
 
+    AnalogInputs::ValueType getReadableRthCell(uint8_t cell);
+    AnalogInputs::ValueType getReadableBattRth();
+    AnalogInputs::ValueType getReadableWiresRth();
 };
 
 

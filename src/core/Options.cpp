@@ -24,6 +24,7 @@
 #include "Screen.h"
 #include "Version.h"
 #include "Settings.h"
+#include "ProgramData.h"
 
 const char string_o1[] PROGMEM = "settings";
 const char string_o2[] PROGMEM = "calibrate";

@@ -36,9 +36,8 @@ void SimpleChargeStrategy::powerOn()
     I/=5; //start charging with 0.2CmAh
     uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, I);
     TheveninMethod::setVI(Vc, value);
-    TheveninMethod::initialize();
+    TheveninMethod::initialize(AnalogInputs::IsmpsValue);
     SMPS::setValue(value);
-    Program::iName_ = AnalogInputs::IsmpsValue;
 }
 
 void SimpleChargeStrategy::powerOff()

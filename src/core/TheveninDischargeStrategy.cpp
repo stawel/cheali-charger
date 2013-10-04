@@ -41,8 +41,7 @@ void TheveninDischargeStrategy::powerOn()
 {
     Discharger::powerOn();
     Balancer::powerOn();
-    TheveninMethod::initialize();
-    Program::iName_ = AnalogInputs::IdischargeValue;
+    TheveninMethod::initialize(AnalogInputs::IdischargeValue);
 }
 
 void TheveninDischargeStrategy::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)

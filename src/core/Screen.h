@@ -19,7 +19,6 @@
 #define SCREEN_H_
 
 #include <inttypes.h>
-#include "Program.h"
 #include "Blink.h"
 
 namespace Screen {
@@ -44,12 +43,6 @@ namespace Screen {
 
     void powerOn();
     void powerOff();
-
-    AnalogInputs::ValueType calculateRthCell(uint8_t cell);
-    AnalogInputs::ValueType calculateBattRth();
-    AnalogInputs::ValueType calculateWiresRth();
-
-
 
     void display(ScreenType screen);
 

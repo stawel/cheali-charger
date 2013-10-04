@@ -20,11 +20,19 @@
 
 #include "AnalogInputs.h"
 
+class Resistance {
+public:
+    int16_t V_,I_;
+
+    AnalogInputs::ValueType getReadableRth();
+    AnalogInputs::ValueType getReadableRth_calibrateI(AnalogInputs::Name name);
+};
+
 class Thevenin {
 public:
 
     AnalogInputs::ValueType Vth_;
-    int16_t Rth_V_,Rth_I_;
+    Resistance Rth_;
 
     AnalogInputs::ValueType VLast_;
     AnalogInputs::ValueType ILast_;

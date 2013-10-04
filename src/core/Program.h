@@ -19,6 +19,7 @@
 #define PROGRAM_H_
 
 #include "ProgramData.h"
+#include "Strategy.h"
 
 class Program {
 public:
@@ -33,7 +34,6 @@ public:
         Charging, ChargingBalancing, Discharging, Balancing, Storage,
     };
 
-    static AnalogInputs::Name iName_;
     static ProgramType programType_;
     static ProgramState programState_;
     static const char * stopReason_;

@@ -21,7 +21,8 @@
 #include "ProgramData.h"
 #include "TheveninMethod.h"
 #include "Settings.h"
-
+#include "Hardware.h"
+#include "Program.h"
 
 namespace Screen{
 
@@ -53,27 +54,11 @@ namespace Screen{
         return v;
     }
 
-    AnalogInputs::ValueType calculateRth2(int16_t V, uint16_t I) {
-        uint32_t R = abs(V);
-        R*=1000;
-        R/=I;
-        return R;
-    }
-
-    AnalogInputs::ValueType calculateRth_calibrated(int16_t V, int16_t I) {
-        AnalogInputs::Name iName = Program::iName_;
-        AnalogInputs::ValueType  I2 = AnalogInputs::calibrateValue(iName, abs(I));
-        return calculateRth2(V,I2);
-    }
-    AnalogInputs::ValueType calculateRthCell(uint8_t cell)
-    {
-        return calculateRth_calibrated(TheveninMethod::tBal_[cell].Rth_V_, TheveninMethod::tBal_[cell].Rth_I_);
-    }
     AnalogInputs::ValueType getBalanceValue(uint8_t cell, AnalogInputs::Type type)
     {
         if(type == AnalogInputs::Voltage)
             return Balancer::getPresumedV(cell);
-        return calculateRthCell(cell);
+        return TheveninMethod::getReadableRthCell(cell);
     }
 
     void printBalancer(uint8_t cell, AnalogInputs::Type type) {
@@ -234,28 +219,17 @@ void Screen::displayScreenTime()
     lcdPrintTime(totalChargDischargeTime_/1000);
 }
 
-AnalogInputs::ValueType Screen::calculateBattRth()
-{
-    return calculateRth_calibrated(TheveninMethod::tVout_.Rth_V_, TheveninMethod::tVout_.Rth_I_);
-}
-AnalogInputs::ValueType Screen::calculateWiresRth()
-{
-    int16_t Vwires =  AnalogInputs::getRealValue(AnalogInputs::Vout);
-    Vwires -= AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
-    return calculateRth2(Vwires, AnalogInputs::getRealValue(AnalogInputs::Iout)+1);
-}
-
 
 void Screen::displayScreenR()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("batt. R="));
-    lcdPrintResistance(calculateBattRth(), 8);
+    lcdPrintResistance(TheveninMethod::getReadableBattRth(), 8);
     lcdPrintSpaces();
     lcdSetCursor0_1();
     if(AnalogInputs::isConnected(AnalogInputs::Vbalancer)) {
         lcdPrint_P(PSTR("wires R="));
-        lcdPrintResistance(calculateWiresRth(),8);
+        lcdPrintResistance(TheveninMethod::getReadableWiresRth(),8);
     }
     lcdPrintSpaces();
 }

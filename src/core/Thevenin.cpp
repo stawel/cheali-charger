@@ -18,13 +18,33 @@
 #include "Thevenin.h"
 #include "Utils.h"
 
+
+AnalogInputs::ValueType Resistance::getReadableRth()
+{
+    uint32_t R = abs(V_);
+    R*=1000;
+    if(I_ == 0) I_=1;
+    R/=abs(I_);
+    return R;
+}
+
+AnalogInputs::ValueType Resistance::getReadableRth_calibrateI(AnalogInputs::Name name)
+{
+    Resistance R;
+    R.I_ = AnalogInputs::calibrateValue(name, abs(I_));
+    R.V_ = V_;
+    return R.getReadableRth();
+}
+
+
+
 void Thevenin::init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i)
 {
     VLast_ = Vth_ = Vth;
     ILastDiff_ = ILast_ = 0;
 
-    Rth_I_ = i;
-    Rth_V_ = Vmax;  Rth_V_ -= Vth;
+    Rth_.I_ = i;
+    Rth_.V_ = Vmax;  Rth_.V_ -= Vth;
 }
 
 AnalogInputs::ValueType Thevenin::calculateI(AnalogInputs::ValueType v) const
@@ -32,8 +52,8 @@ AnalogInputs::ValueType Thevenin::calculateI(AnalogInputs::ValueType v) const
     int32_t i;
     i  = v;
     i -= Vth_;
-    i *= Rth_I_;
-    i /= Rth_V_;
+    i *= Rth_.I_;
+    i /= Rth_.V_;
     //TODO:
     if(i >  32000) return  32000;
     if(i < 0) return 0;
@@ -54,10 +74,10 @@ void Thevenin::calculateRth(AnalogInputs::ValueType v, AnalogInputs::ValueType i
         rth_v -= VLast_;
         rth_i  = i;
         rth_i -= ILast_;
-        if(sign(rth_v)*sign(rth_i) == sign(Rth_V_)*sign(Rth_I_)) {
+        if(sign(rth_v)*sign(rth_i) == sign(Rth_.V_)*sign(Rth_.I_)) {
             ILastDiff_ = absDiff(i, ILast_);
-            Rth_V_ = rth_v;
-            Rth_I_ = rth_i;
+            Rth_.V_ = rth_v;
+            Rth_.I_ = rth_i;
         }
     }
 }
@@ -66,8 +86,8 @@ void Thevenin::calculateVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i
 {
     int32_t VRth;
     VRth = i;
-    VRth *= Rth_V_;
-    VRth /= Rth_I_;
+    VRth *= Rth_.V_;
+    VRth /= Rth_.I_;
     if(v < VRth) Vth_ = 0;
     else Vth_ = v - VRth;
 }

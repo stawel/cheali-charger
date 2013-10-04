@@ -18,7 +18,6 @@
 #ifndef BLINK_H
 #define BLINK_H
 
-#include "LcdPrint.h"
 
 #define BLINK_SPEED_TIME 2
 

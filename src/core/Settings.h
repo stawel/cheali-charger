@@ -20,7 +20,7 @@
 
 #include <inttypes.h>
 #include "AnalogInputs.h"
-#include "Screen.h"
+#include "Hardware.h"
 
 #ifndef DEFAULT_SETTINGS_EXTERNAL_T
 #define DEFAULT_SETTINGS_EXTERNAL_T 1

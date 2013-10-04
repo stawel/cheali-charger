@@ -20,7 +20,7 @@
 #include "ProgramData.h"
 #include "Screen.h"
 #include "TheveninMethod.h"
-
+#include "Program.h"
 
 
 namespace DeltaChargeStrategy {

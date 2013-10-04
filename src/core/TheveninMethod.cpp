@@ -33,10 +33,31 @@ namespace TheveninMethod {
     FallingState Ifalling_;
     uint8_t fullCount_;
     uint8_t cells_;
+    AnalogInputs::Name iName_;
 
     void setMinI(AnalogInputs::ValueType i) {    minValue_ = i; };
 
 }
+
+AnalogInputs::ValueType TheveninMethod::getReadableRthCell(uint8_t cell)
+{
+    return tBal_[cell].Rth_.getReadableRth_calibrateI(iName_);
+}
+AnalogInputs::ValueType TheveninMethod::getReadableBattRth()
+{
+    return tVout_.Rth_.getReadableRth_calibrateI(iName_);
+}
+
+AnalogInputs::ValueType TheveninMethod::getReadableWiresRth()
+{
+    Resistance R;
+    R.V_ =  AnalogInputs::getRealValue(AnalogInputs::Vout);
+    R.V_ -= AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
+    R.I_ = AnalogInputs::getRealValue(AnalogInputs::Iout);
+    return R.getReadableRth();
+
+}
+
 
 
 void TheveninMethod::setVI(AnalogInputs::ValueType Vend, AnalogInputs::ValueType i)
@@ -46,8 +67,9 @@ void TheveninMethod::setVI(AnalogInputs::ValueType Vend, AnalogInputs::ValueType
     minValue_ = i/10;
 }
 
-void TheveninMethod::initialize()
+void TheveninMethod::initialize(AnalogInputs::Name iName)
 {
+    iName_ = iName;
     AnalogInputs::ValueType Vout = AnalogInputs::getVout();
     tVout_.init(Vout, Vend_, minValue_);
 

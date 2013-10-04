@@ -26,6 +26,7 @@
 #include "StackInfo.h"
 #include "EditMenu.h"
 #include "SerialLog.h"
+#include "Program.h"
 
 namespace Calibrate {
 
