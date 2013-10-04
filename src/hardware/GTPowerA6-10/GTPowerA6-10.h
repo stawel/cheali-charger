@@ -19,6 +19,7 @@
 #define GTPOWERA610_H_
 
 #include "AnalogInputs.h"
+#include "Timer.h"
 
 #define LCD_LINES               2
 #define LCD_COLUMNS             16
@@ -37,10 +38,14 @@
 
 //use unknown mux values
 //#define ANALOG_INPUTS_V_UNKNOWN
-#define TIMER1_PERIOD_MICROSECONDS 512
-#define SMPS_MAX_VALUE             ((F_CPU / 2000000) * TIMER1_PERIOD_MICROSECONDS)
-#define SMPS_UPPERBOUND_VALUE     (SMPS_MAX_VALUE/4)
-#define MAX_CALIBRATION_SMPS_VALUE 760
+#define TIMER1_PERIOD_MICROSECONDS  512
+#define SMPS_MAX_VALUE              ((F_CPU / 2000000) * TIMER1_PERIOD_MICROSECONDS)
+
+#define SMPS_UPPERBOUND_VALUE       (SMPS_MAX_VALUE/4)
+#define MAX_CALIBRATION_SMPS_VALUE  760
+#define DISCHARGER_UPPERBOUND_VALUE ((F_CPU / 2000000) * TIMER_INTERRUPT_PERIOD_MICROSECONDS)
+#define CALIBRATION_SPEED           1
+
 
 #define ENABLE_LCD_BACKLIGHT
 #define ENABLE_FAN
@@ -50,7 +55,6 @@
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
-#include "Timer.h"
 #include "SMPS.h"
 #include "Discharger.h"
 #include "Balancer.h"

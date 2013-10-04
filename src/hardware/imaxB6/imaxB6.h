@@ -19,6 +19,7 @@
 #define IMAXB6_H_
 
 #include "AnalogInputs.h"
+#include "TimerOne.h"
 
 #define LCD_LINES               2
 #define LCD_COLUMNS             16
@@ -32,9 +33,12 @@
 
 #define MAX_BANANCE_CELLS       6
 
-//1-1 correlation
-#define SMPS_UPPERBOUND_VALUE     MAX_CHARGE_I
-#define MAX_CALIBRATION_SMPS_VALUE ANALOG_AMP(1.500)
+//1-13? correlation
+#define SMPS_UPPERBOUND_VALUE       (MAX_CHARGE_I*13)
+#define MAX_CALIBRATION_SMPS_VALUE  (SMPS_UPPERBOUND_VALUE/4)
+#define DISCHARGER_UPPERBOUND_VALUE TIMERONE_PRECISION_PERIOD
+#define CALIBRATION_SPEED           10
+
 
 #define ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
 //TODO: should be implemented!

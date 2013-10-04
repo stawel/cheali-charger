@@ -11,10 +11,11 @@ namespace {
     volatile bool PID_enable;
 }
 
-#define A 4
+#define A 16
 
 uint16_t hardware::getPIDValue()
 {
+//    return PID_setpoint;
     return PID_MV>>PID_MV_PRECISION;
 }
 
@@ -48,12 +49,10 @@ void SMPS_PID::init(uint16_t Vin, uint16_t Vout)
 
     PID_setpoint = 0;
     if(Vout>Vin) {
-        Vout = Vin;
+        PID_MV = TIMERONE_PRECISION_PERIOD;
+    } else {
+        PID_MV = 0;
     }
-
-    PID_MV = TIMERONE_PRECISION_PERIOD;
-    PID_MV *= Vout;
-    PID_MV /= Vin;
     PID_MV <<= PID_MV_PRECISION;
     PID_enable = true;
 }
@@ -90,7 +89,7 @@ void SMPS_PID::setPID_MV(uint16_t value) {
 void hardware::setChargerValue(uint16_t value)
 {
 
-    PID_setpoint = AnalogInputs::reverseCalibrateValue(AnalogInputs::Ismps, value);
+    PID_setpoint = value;
     PID_CutOff = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout, PID_CUTOFF_VOLTAGE);
 }
 
@@ -116,6 +115,6 @@ void hardware::setDischargerOutput(bool enable)
 
 void hardware::setDischargerValue(uint16_t value)
 {
-    TimerOne::setPWM(DISCHARGE_VALUE_PIN, value<<3);
+    TimerOne::setPWM(DISCHARGE_VALUE_PIN, value);
 }
 

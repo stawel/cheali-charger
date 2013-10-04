@@ -247,7 +247,7 @@ bool calibrateI(calibrateType p)
     AnalogInputs::ValueType maxValue;
 
     if(p == CCharger){
-        maxValue = SMPS_UPPERBOUND_VALUE;
+        maxValue = MAX_CALIBRATION_SMPS_VALUE;
         SMPS::powerOn();
     } else {
         maxValue = DISCHARGER_UPPERBOUND_VALUE;
@@ -260,12 +260,14 @@ bool calibrateI(calibrateType p)
             printCalibrate();
             key = Keyboard::getPressedWithSpeed();
             val_changed = 0;
+            uint16_t speed = Keyboard::getSpeedFactor();
+            speed *= CALIBRATION_SPEED;
             if(key == BUTTON_INC && value_ < maxValue) {
-                value_++;
+                value_ += speed;
                 val_changed++;
             }
             if(key == BUTTON_DEC && value_ > 0) {
-                value_--;
+                value_ -= speed;
                 val_changed++;
             }
             if(val_changed) {
