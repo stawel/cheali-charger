@@ -29,15 +29,18 @@ bool EditMenu::runEdit(uint8_t index)
             editItem(index, key);
             startBlinkOn(index);
             render_ = true;
+        } else if(key == BUTTON_STOP || key == BUTTON_START) {
+            break;
         }
         if(getBlinkChanged())
             render_ = true;
         if(render_)
             display();
         incBlinkTime();
-    } while(key != BUTTON_STOP && key != BUTTON_START);
+    } while(true);
 
     stopBlink();
+    waitRelease_ = true;
     render_ = true;
     return key == BUTTON_START;
 }
