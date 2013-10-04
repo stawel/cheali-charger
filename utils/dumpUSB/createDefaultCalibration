@@ -1,0 +1,14 @@
+#!/bin/bash
+
+TEMPLATE=./defaultCalibration.cpp.template
+VALUES=./dump.txt
+OUTPUT=./defaultCalibration.cpp
+
+dos2unix -f $VALUES
+
+source $VALUES
+
+source $TEMPLATE > $OUTPUT
+
+
+
