@@ -1,23 +1,6 @@
-include(${CMAKE_SOURCE_DIR}/src/core/CMakeLists.txt)
 
-set(hardware imaxB6)
 set(execName "cheali-charger-${hardware}-${cheali-charger-version}")
 set(sizeName "cheali-charger-${hardware}")
-
-
-set(SOURCE_FILES
-    imaxB6.cpp
-    imaxB6.h
-    imaxB6-pins.h
-    TimerOne.cpp
-    TimerOne.h
-    SMPS_PID.h
-    SMPS_PID.cpp
-    adc.cpp
-    adc.h
-    Hardware.h
-    ${CORE_SOURCE_FILES}
-)
 
 include(${CMAKE_SOURCE_DIR}/arduino/arduino.cmake)
 include_directories(${CMAKE_SOURCE_DIR}/arduino/cores/arduino ${CMAKE_SOURCE_DIR}/arduino/variants/atmega32)
@@ -28,7 +11,7 @@ include_directories(/usr/lib/avr/include/)
 link_libraries(arduino)
 link_libraries(m)
 
-add_executable(${execName} ${SOURCE_FILES})
+add_executable(${execName} ${ALL_SOURCE_FILES})
 
 add_custom_command(
     TARGET ${execName}
