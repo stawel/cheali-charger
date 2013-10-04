@@ -192,6 +192,7 @@ void saveVoltage(AnalogInputs::Name name, AnalogInputs::ValueType adc, AnalogInp
 
 void saveVoltage(int8_t index)
 {
+    Buzzer::soundSelect();
     AnalogInputs::Name name1 = pgm::read(&voltageName[index]);
     AnalogInputs::Name name2 = pgm::read(&voltageName2[index]);
     AnalogInputs::ValueType newValue = AnalogInputs::getRealValue(name1);
@@ -294,6 +295,7 @@ void calibrateI(calibrateType t, uint8_t point, AnalogInputs::ValueType current,
 {
     AnalogInputs::CalibrationPoint p;
     if(calibrateI(t)) {
+        Buzzer::soundSelect();
         p.y = current;
         p.x = AnalogInputs::getValue(name1);
         AnalogInputs::setCalibrationPoint(name1, point, p);

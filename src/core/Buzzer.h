@@ -22,7 +22,8 @@ namespace Buzzer {
     enum SoundType { Keyboard, Info, Save, Select, StartProgram, ProgramComplete, Error, ReversedPolarity, Off };
 
     void sound(SoundType s);
-    inline void soundKeyboard()             {sound(Keyboard); }
+    void soundIfSilence(SoundType s);
+    inline void soundKeyboard()             {soundIfSilence(Keyboard); }
     inline void soundInfo()                 {sound(Info); }
     inline void soundSave()                 {sound(Save); }
     inline void soundSelect()               {sound(Select); }

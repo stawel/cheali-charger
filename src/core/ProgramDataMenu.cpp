@@ -108,9 +108,12 @@ void ProgramDataMenu::run() {
         case 6: editName(); break;
         default:
             ProgramData undo(p_);
-            if(!runEdit(index))
+            if(!runEdit(index)) {
                 p_ = undo;
-            p_.check();
+            } else {
+                Buzzer::soundSelect();
+                p_.check();
+            }
             break;
         }
     } while(true);

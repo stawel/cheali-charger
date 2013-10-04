@@ -38,6 +38,6 @@ bool EditMenu::runEdit(uint8_t index)
     } while(key != BUTTON_STOP && key != BUTTON_START);
 
     stopBlink();
-    display();
+    render_ = true;
     return key == BUTTON_START;
 }

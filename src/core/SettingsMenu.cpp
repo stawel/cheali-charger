@@ -141,10 +141,13 @@ void SettingsMenu::run() {
             break;
         default:
             Settings undo(p_);
-            if(!runEdit(index))
+            if(!runEdit(index)) {
                 p_ = undo;
-            p_.check();
-            p_.apply();
+            } else {
+                Buzzer::soundSelect();
+                p_.check();
+                p_.apply();
+            }
             break;
         }
     } while(true);

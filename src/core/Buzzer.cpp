@@ -51,6 +51,12 @@ void Buzzer::sound(Buzzer::SoundType s)
       begin();
 }
 
+void Buzzer::soundIfSilence(Buzzer::SoundType s)
+{
+    if(sound_ == Off)
+        sound(s);
+}
+
 
 void Buzzer::begin()
 {
