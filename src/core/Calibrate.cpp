@@ -268,7 +268,7 @@ bool calibrateI(calibrateType p)
                 value_ += speed;
                 val_changed++;
             }
-            if(key == BUTTON_DEC && value_ > 0) {
+            if(key == BUTTON_DEC && value_ >= speed) {
                 value_ -= speed;
                 val_changed++;
             }

@@ -19,31 +19,32 @@
 #include "AnalogInputs.h"
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
-    {{0,0},                         {27328, ANALOG_VOLT(12.518)}},  //Vout
-    {{0,0},                         {26613, ANALOG_VOLT(12.518)}},  //VreversePolarity
-    {{778,ANALOG_AMP(0.050)},       {11121, ANALOG_AMP(1.000)}},    //Ismps
-    {{0,0},                         {11992, ANALOG_AMP(0.300)}},    //Idischarge
+    {{0, 0},                        {55102, 25141}},    //Vout
+    {{0, 0},                        {26613, 12518}},    //VreversePolarity
+    {{775, 50},                        {11080, 1000}},    //Ismps
+    {{2017, 50},                        {11971, 300}},    //Idischarge
 
-    {{0, 0},                        {0, ANALOG_VOLT(0)}},           //VoutMux
-    {{0, 0},                        {0, ANALOG_CELCIUS(0)}},        //Tintern
-    {{0, 0},                        {47828, ANALOG_VOLT(14.042)}},  //Vin
-    {{19650,ANALOG_CELCIUS(29.8)},  {18700, ANALOG_CELCIUS(60)}},   //Textern
+    {{0, 0},                        {0, 0}},    //VoutMux
+    {{0, 0},                        {0, 0}},    //Tintern
+    {{0, 0},                        {48061, 14047}},    //Vin
+    {{19650, 2980},                        {18700, 6000}},    //Textern
 
-    {{0, 0},                        {48963, ANALOG_VOLT(3.752)}},   //Vb0_pin
-    {{0, 0},                        {54848, ANALOG_VOLT(4.179)}},   //Vb1_pin
-    {{0, 0},                        {56000, ANALOG_VOLT(8.359)}},   //Vb2_pin
-    {{0, 0},                        {55667, ANALOG_VOLT(4.171)}},   //Vb3_pin
+    {{0, 0},                        {48963, 3752}},    //Vb0_pin
+    {{0, 0},                        {55048, 4187}},    //Vb1_pin
+    {{0, 0},                      {56248, 8378}},  //Vb2_pin
+    {{0, 0},                      {56067, 4191}},  //Vb3_pin
 
-    {{0, 0},                        {54577, ANALOG_VOLT(4.182)}},   //Vb4_pin
-    {{0, 0},                        {54720, ANALOG_VOLT(4.178)}},   //Vb5_pin
-    {{0, 0},                        {55300, ANALOG_VOLT(4.165)}},   //Vb6_pin
+    {{0, 0},                      {54784, 4193}},  //Vb4_pin
+    {{0, 0},                      {55070, 4196}},  //Vb5_pin
+    {{0, 0},                      {55808, 4193}},  //Vb6_pin
 
     //1-1 correlation
-    {{0,0},                         {10000, 10000}},                //IsmpsValue
-    {{0, 0},                        {551,    ANALOG_AMP(0.300)}},    //IdischargeValue
+    {{780, 50},                      {11080, 1000}},  //IsmpsValue
+    {{730, 50},                      {4410, 300}},  //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
-    {{0,0},                         {1, 1}},                        //UNKNOWN0
-    {{0,0},                         {1, 1}},                        //UNKNOWN1
+    {{0, 0},                         {1, 1}},           //UNKNOWN0
+    {{0, 0},                         {1, 1}},           //UNKNOWN1
 #endif
 };
+
 
