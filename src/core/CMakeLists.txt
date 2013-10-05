@@ -46,8 +46,6 @@ set(CORE_SOURCE
         StorageStrategy.h
         StartInfoStrategy.cpp
         StartInfoStrategy.h
-        ChargeBalanceStrategy.cpp
-        ChargeBalanceStrategy.h
 
         SMPS.cpp
         SMPS.h

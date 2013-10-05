@@ -23,7 +23,6 @@
 
 namespace SimpleChargeStrategy {
     void powerOn();
-//    virtual statusType doStrategy();
     void powerOff();
     void calculateThevenin();
     static bool isLCDRunning();

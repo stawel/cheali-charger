@@ -159,7 +159,7 @@ namespace AnalogInputs {
     uint8_t getConnectedBalancePorts();
     bool isConnected(Name name);
 
-    uint16_t getCalculationCount();
+    uint16_t getFullMeasurementCount();
     void printRealValue(Name name, uint8_t dig);
     void printMeasuredValue(Name name, uint8_t dig);
     static Type getType(Name name);

@@ -34,6 +34,7 @@ namespace TheveninDischargeStrategy {
 void TheveninDischargeStrategy::powerOff()
 {
     Discharger::powerOff();
+    Balancer::powerOff();
 }
 
 
@@ -47,7 +48,7 @@ void TheveninDischargeStrategy::powerOn()
 void TheveninDischargeStrategy::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
     SimpleDischargeStrategy::setVI(v,i);
-    TheveninMethod::setVI(v, AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, i));
+    TheveninMethod::setVIB(v, AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, i), false);
     setMinI(i/10);
 }
 void TheveninDischargeStrategy::setMinI(AnalogInputs::ValueType i)

@@ -106,8 +106,8 @@ namespace Strategy {
                 status = Monitor::run();
                 run = analizeStrategyStatus(status, exitImmediately);
 
-                if(run && newMesurmentData != AnalogInputs::getCalculationCount()) {
-                    newMesurmentData = AnalogInputs::getCalculationCount();
+                if(run && newMesurmentData != AnalogInputs::getFullMeasurementCount()) {
+                    newMesurmentData = AnalogInputs::getFullMeasurementCount();
                     status = strategyDoStrategy();
                     run = analizeStrategyStatus(status, exitImmediately);
                 }

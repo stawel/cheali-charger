@@ -43,7 +43,7 @@ const Settings defaultSettings PROGMEM = {
         5,                  //CDcycles_
         120,                //"%" capCutoff_
         ANALOG_VOLT(7),     //inputVoltageLow_
-        ANALOG_VOLT(0.003), //balancerError_
+        ANALOG_VOLT(0.006), //balancerError_
         Settings::Disabled, //UART_ - disabled
         1                   //57600
 };

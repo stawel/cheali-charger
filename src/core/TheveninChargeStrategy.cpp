@@ -34,6 +34,7 @@ namespace TheveninChargeStrategy {
 void TheveninChargeStrategy::powerOff()
 {
     SMPS::powerOff();
+    Balancer::powerOff();
 }
 
 
@@ -44,9 +45,9 @@ void TheveninChargeStrategy::powerOn()
     TheveninMethod::initialize(AnalogInputs::IsmpsValue);
 }
 
-void TheveninChargeStrategy::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
+void TheveninChargeStrategy::setVIB(AnalogInputs::ValueType v, AnalogInputs::ValueType i, bool balance)
 {
-       TheveninMethod::setVI(v, AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, i));
+       TheveninMethod::setVIB(v, AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, i), balance);
 }
 void TheveninChargeStrategy::setMinI(AnalogInputs::ValueType i)
 {
@@ -66,7 +67,7 @@ Strategy::statusType TheveninChargeStrategy::doStrategy()
         return Strategy::COMPLETE;
     }
 
-    if(stable) {
+    if(stable && !Balancer::isWorking()) {
         uint16_t value = TheveninMethod::calculateNewValue(isendVout, oldValue);
         if(value != oldValue)
             SMPS::setValue(value);

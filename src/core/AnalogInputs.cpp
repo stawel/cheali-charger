@@ -47,7 +47,7 @@ namespace AnalogInputs {
     ValueType getRealValue(Name name)           { return real_[name]; }
     ValueType getMeasuredValue(Name name)       { return measured_[name]; }
     bool isPowerOn() { return on_; }
-    uint16_t getCalculationCount() { return calculationCount_; }
+    uint16_t getFullMeasurementCount() { return calculationCount_; }
     uint16_t getStableCount(Name name)   { return stableCount_[name]; };
     bool isStable(Name name)     { return stableCount_[name] >= STABLE_MIN_VALUE; };
     void setReal(Name name, ValueType real);

@@ -25,13 +25,14 @@
 namespace Balancer {
     const static AnalogInputs::ValueType Ibalance = 200; //200mA
     const static uint16_t maxBalanceTime = 30; //30s
-    const static uint16_t balancerStartStableCount = 10; //30s
+    const static uint16_t balancerStartStableCount = 10; //10s
 
     extern const Strategy::VTable vtable;
 
     extern uint8_t balance_;
     extern bool savedVon_;
     extern uint8_t minCell_;
+    extern bool done_;
 
 
     void powerOn();

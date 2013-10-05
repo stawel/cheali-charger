@@ -32,13 +32,18 @@ namespace Balancer {
     bool savedVon_;
     uint32_t startBalanceTime_;
     uint32_t startSwitchTime_;
+    uint16_t startNotWorkingAnalogCount_;
 
     uint32_t IVtime_;
     AnalogInputs::ValueType V_[MAX_BANANCE_CELLS];
     uint16_t stableCount_;
 
     uint8_t getCells() { return cells_; }
-    bool isWorking()  { return balance_ != 0; }
+    bool isWorking()  {
+        if(balance_ != 0) return true;
+        uint16_t isOff = AnalogInputs::getFullMeasurementCount() - startNotWorkingAnalogCount_;
+        return isOff < balancerStartStableCount/2;
+    }
 
     const Strategy::VTable vtable PROGMEM = {
         powerOn,
@@ -66,6 +71,7 @@ void Balancer::powerOn()
     balance_ = 0;
     done_ = false;
     setBalance(0);
+    startNotWorkingAnalogCount_ = 0;
     startSwitchTime_ = 0;
 }
 
@@ -118,6 +124,9 @@ void Balancer::powerOff()
 
 void Balancer::setBalance(uint8_t v)
 {
+    if(balance_ && v == 0)
+        startNotWorkingAnalogCount_ = AnalogInputs::getFullMeasurementCount();
+
     balance_ = v;
     startSwitchTime_ = Timer::getMiliseconds();
     AnalogInputs::resetStable();

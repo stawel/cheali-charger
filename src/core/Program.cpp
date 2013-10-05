@@ -24,7 +24,6 @@
 #include "SimpleChargeStrategy.h"
 #include "TheveninChargeStrategy.h"
 #include "TheveninDischargeStrategy.h"
-#include "ChargeBalanceStrategy.h"
 #include "DeltaChargeStrategy.h"
 #include "StorageStrategy.h"
 #include "Monitor.h"
@@ -163,17 +162,19 @@ Strategy::statusType Program::runStorage(bool balance)
 }
 Strategy::statusType Program::runTheveninCharge(int minChargeC)
 {
-    TheveninChargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.battery.Ic);
+    TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
+            ProgramData::currentProgramData.battery.Ic, false);
     TheveninChargeStrategy::setMinI(ProgramData::currentProgramData.battery.Ic/minChargeC);
     Strategy::strategy_ = &TheveninChargeStrategy::vtable;
     programState_ = Charging;
     return doStrategy(theveninScreens);
 }
 
-Strategy::statusType Program::runTheveninChargeBalance(int minChargeC)
+Strategy::statusType Program::runTheveninChargeBalance()
 {
-    ChargeBalanceStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), ProgramData::currentProgramData.battery.Ic);
-    Strategy::strategy_ = &ChargeBalanceStrategy::vtable;
+    TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
+            ProgramData::currentProgramData.battery.Ic, true);
+    Strategy::strategy_ = &TheveninChargeStrategy::vtable;
     programState_ = ChargingBalancing;
     return doStrategy(theveninScreens);
 }
@@ -243,7 +244,7 @@ void Program::run(ProgramType prog)
             runNiXXDischarge();
             break;
         case Program::ChargeLiXX_Balance:
-            runTheveninChargeBalance(10);
+            runTheveninChargeBalance();
             break;
         default:
             //TODO:

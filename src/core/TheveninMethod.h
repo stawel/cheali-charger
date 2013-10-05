@@ -37,7 +37,7 @@ namespace TheveninMethod {
     AnalogInputs::ValueType normalizeI(AnalogInputs::ValueType value, AnalogInputs::ValueType oldValue);
     void storeOldValue(AnalogInputs::ValueType oldValue);
 
-    void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
+    void setVIB(AnalogInputs::ValueType v, AnalogInputs::ValueType i, bool balance);
     void setMinI(AnalogInputs::ValueType i);
 
     AnalogInputs::ValueType getReadableRthCell(uint8_t cell);

@@ -50,7 +50,7 @@ public:
     static Strategy::statusType runDischarge();
     static Strategy::statusType runNiXXDischarge();
 
-    static Strategy::statusType runTheveninChargeBalance(int minChargeC);
+    static Strategy::statusType runTheveninChargeBalance();
     static Strategy::statusType runBalance();
     static Strategy::statusType runDeltaCharge();
 };

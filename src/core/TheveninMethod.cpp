@@ -34,9 +34,16 @@ namespace TheveninMethod {
     uint8_t fullCount_;
     uint8_t cells_;
     AnalogInputs::Name iName_;
+    bool balance_;
+    Strategy::statusType bstatus_;
 
     void setMinI(AnalogInputs::ValueType i) {    minValue_ = i; };
 
+    uint16_t getMinValueB() {
+        if(bstatus_ != Strategy::COMPLETE)
+            return 0;
+        else return minValue_;
+    }
 }
 
 AnalogInputs::ValueType TheveninMethod::getReadableRthCell(uint8_t cell)
@@ -60,15 +67,18 @@ AnalogInputs::ValueType TheveninMethod::getReadableWiresRth()
 
 
 
-void TheveninMethod::setVI(AnalogInputs::ValueType Vend, AnalogInputs::ValueType i)
+void TheveninMethod::setVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueType i, bool balance)
 {
     Vend_ = Vend;
     maxValue_ = i;
     minValue_ = i/10;
+    balance_ = balance;
 }
 
 void TheveninMethod::initialize(AnalogInputs::Name iName)
 {
+    Strategy::statusType bstatus_ = Strategy::COMPLETE;
+
     iName_ = iName;
     AnalogInputs::ValueType Vout = AnalogInputs::getVout();
     tVout_.init(Vout, Vend_, minValue_);
@@ -88,7 +98,18 @@ void TheveninMethod::initialize(AnalogInputs::Name iName)
 
 bool TheveninMethod::isComlete(bool isEndVout, AnalogInputs::ValueType value)
 {
-    if(value <= minValue_ && isEndVout) {
+    if(balance_) {
+        if(Ifalling_ == NotFalling)
+            Balancer::done_ = false;
+        bstatus_ = Balancer::doStrategy();
+    }
+
+    if(bstatus_ != Strategy::COMPLETE)
+        return false;
+
+    isEndVout |= (Ifalling_ == Falling)  && value == 0;
+
+    if(value <= getMinValueB() && isEndVout) {
         if(fullCount_++ >= 10) {
             return true;
         }
@@ -148,15 +169,18 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value
     if(value > maxValue_) {
         value = maxValue_;
     }
-    if(value < minValue_) {
-        value = minValue_;
+    if(value < getMinValueB()) {
+        value = getMinValueB();
     }
 
-    if((oldValue != value && Ifalling_ != Falling) ||
-            oldValue > value) {
+    if(oldValue != value) {
+        if(Ifalling_ != Falling
+            || value < oldValue
+            || value <= minValue_) {
 
-        storeOldValue(oldValue);
-        return value;
+            storeOldValue(oldValue);
+            return value;
+        }
     }
     return oldValue;
 }

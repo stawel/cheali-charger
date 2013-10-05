@@ -91,6 +91,6 @@ Strategy::statusType StorageStrategy::doStrategy()
 void StorageStrategy::setVII(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic, AnalogInputs::ValueType Id)
 {
     V_ = V;
-    TheveninChargeStrategy::setVI(V, Ic);
+    TheveninChargeStrategy::setVIB(V, Ic, false);
     TheveninDischargeStrategy::setVI(V, Id);
 }
