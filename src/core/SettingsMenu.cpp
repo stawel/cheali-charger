@@ -150,8 +150,8 @@ void SettingsMenu::run() {
             } else {
                 Buzzer::soundSelect();
                 p_.check();
-                p_.apply();
             }
+            p_.apply();
             break;
         }
     } while(true);
