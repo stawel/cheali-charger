@@ -252,7 +252,7 @@ bool calibrateI(calibrateType p)
         maxValue = MAX_CALIBRATION_SMPS_VALUE;
         SMPS::powerOn();
     } else {
-        maxValue = DISCHARGER_UPPERBOUND_VALUE;
+        maxValue = MAX_CALIBRATION_DISCHARGER_VALUE;
         Discharger::powerOn();
     }
 
