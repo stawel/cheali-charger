@@ -29,7 +29,7 @@
 #define MAX_CHARGE_P            50000               //50W
 
 #define MAX_DISCHARGE_P         5000                //5W
-#define MAX_DISCHARGE_I         ANALOG_AMP(2.000)   //1A
+#define MAX_DISCHARGE_I         ANALOG_AMP(2.000)   //should be 1A
 
 #define MAX_BANANCE_CELLS       6
 
@@ -52,6 +52,7 @@
 #define ENABLE_SERIAL_LOG
 //wait for the transition end and disable UART,
 //the UART interfere with Vb0_pin measurement
+//TODO: write own SerialHardware class
 #define ENABLE_SERIAL_LOG_WAIT
 #define ENABLE_GET_PID_VALUE
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
