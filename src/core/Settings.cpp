@@ -93,7 +93,6 @@ void Settings::apply() {
 }
 
 
-//TODO: hmm... maybe it should be somewhere else
 void Settings::edit()
 {
     SettingsMenu menu(*this);

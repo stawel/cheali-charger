@@ -262,8 +262,10 @@ bool calibrateI(calibrateType p)
             printCalibrate();
             key = Keyboard::getPressedWithSpeed();
             val_changed = 0;
-            uint16_t speed = Keyboard::getSpeedFactor();
-            speed *= CALIBRATION_SPEED;
+            uint16_t speed = CALIBRATION_SPEED;
+#if CALIBRATION_SPEED > 1
+            speed *= Keyboard::getSpeedFactor();
+#endif
             if(key == BUTTON_INC && value_ < maxValue) {
                 value_ += speed;
                 val_changed++;
