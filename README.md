@@ -5,11 +5,8 @@ G.T. POWER A6-10 200W
 or IMAX B6
 Lipo charger.
 
-Don't use it if You don't need to!  
+Don't use it if You don't need to  
 (not everything is implemented yet).  
-This is a early version so be very careful.  
-Use it only if You can not calibrate your  
-charger with the original firmware.
 
 Any feedback is very welcome!  
 https://github.com/stawel/cheali-charger
@@ -24,10 +21,16 @@ Features
   - balancing
   - storage
   - storage + balancing
-- Ni-Cd and NiMH - not well tested!
+- NiCd and NiMH:
   - charging, method: -dV/dT
   - discharging
   - cycling (not implemented yet)
+- NiZn: - not well tested!
+  - charging
+  - fast charging
+  - charging + balancing at the same time
+  - discharging
+  - balancing
 - Pb (not implemented yet)
 - Internal resistance display
   - single cell resistance
@@ -37,15 +40,15 @@ Features
 - Overcharge and overdischarge monitoring
 - Input voltage monitoring
 - Memory for 32 batteries
+- LogView support
 - CALIBATION!
 
 
 WARNING
 -------
 Please CALIBRATE the charger before use!  
-Always use the external temperature probe!  
+Use an external temperature probe.  
 (if You like your house ;) )
-
 
 Hardware
 --------
@@ -71,15 +74,19 @@ user@~/cheali-charger$ make
 
 flashing GTPowerA6-10 with USBasp:
 
-user@~/cheali-charger$ cd src/hardware/GTPowerA6-10
-edit file: progUSBasp.sh, replace "TTY=/dev/ttyUSB0" to match your configuration.
-user@~/cheali-charger/src/hardware/GTPowerA6-10$ ./progUSBasp.sh
+user@~/cheali-charger$ cd src/hardware/GTPowerA6-10-original/
+user@~/cheali-charger/src/hardware/GTPowerA6-10-original$ ./progUSBasp.sh
 
-flashing imaxB6 with USBasp:
+flashing imaxB6-original with USBasp:
 
-user@~/cheali-charger$ cd src/hardware/imaxB6/
-edit file: progUSBasp.sh, replace "TTY=/dev/ttyUSB0" to match your configuration.
-user@~/cheali-charger/src/hardware/imaxB6$ ./progUSBasp.sh
+user@~/cheali-charger$ cd src/hardware/imaxB6-original/
+user@~/cheali-charger/src/hardware/imaxB6-original$ ./progUSBasp.sh
+
+flashing imaxB6-clone with USBasp:
+
+user@~/cheali-charger$ cd src/hardware/imaxB6-clone/
+user@~/cheali-charger/src/hardware/imaxB6-clone$ ./progUSBasp.sh
+
 
 </pre>
 
@@ -92,7 +99,7 @@ Flashing: G.T. POWER A6-10 200W
 
 - Connect a standard AVR ISP 10-pin cable to the board: https://github.com/stawel/cheali-charger/blob/master/docs/GTPowerA6-10/front.jpg
 - set "Device" to: atmega32
-- use the cheali-charger/hex/cheali-charger-GTPowerA6-10-0.20.hex file as "Flash"
+- use the cheali-charger/hex/cheali-charger-GTPowerA6-10-0.30.hex file as "Flash"
 
 
 Flashing: IMAX B6
@@ -102,7 +109,7 @@ Flashing: IMAX B6
     - IMAX B6 - original: https://github.com/stawel/cheali-charger/blob/master/docs/imaxB6/imaxB6-original-front.jpg
     - IMAX B6 - clone: https://github.com/stawel/cheali-charger/blob/master/docs/imaxB6/imaxB6-clone-front.jpg
 - set "Device" to: atmega32
-- use the cheali-charger/hex/cheali-charger-imaxB6-0.20.hex file as "Flash"
+- use the cheali-charger/hex/cheali-charger-imaxB6-original-0.30.hex  (or cheali-charger-imaxB6-clone-0.30.hex) file as "Flash"
 
 
 Calibration (IMAX B6 and G.T. POWER A6-10 200W)
@@ -111,13 +118,10 @@ Connect a NOT fully charged LiPo battery to the main leads
 and the balance port.
 
 go to: "options"->"calibrate":
-- balance port calibration: go to "B1-3", "B4-6"
-   - use a voltmeter to measure the voltage of all cells  
+- voltage calibration: go to "voltage"
+   - use a voltmeter to measure the voltage of all cells and the power supply voltage (Vin)  
      and set the values in the appropriate fields.
-- output voltage calibration: go to "B1-6 to Vout"
-   - press the "start" button for a few seconds  
-     (this will copy the voltage from the balance port)
-- charge current calibration: go to "Icharge"  
+- charge current calibration: go to "I charge"  
   connect your ampere meter in series with the battery on the red wire! (+)  
   - go to: "50mA"  
     press "Inc", "Dec" buttons until the amperemeter shows 50mA  
@@ -126,9 +130,11 @@ go to: "options"->"calibrate":
     press "Inc", "Dec" buttons until the amperemeter shows 1000mA  
     press "start" button for a few seconds  
     WARNING: the battery will be charged with high current!
-- discharge current calibration: go to "Idischarge"  
+- discharge current calibration: go to "I discharge"  
     Repeat the same steps as before  
     WARNING: the battery will be discharged with high current!
+- when needed: external (internal) temperature probe calibration: go to "temp extern" ("temp intern")
+    You have to set two calibration points
 
 Done.
 

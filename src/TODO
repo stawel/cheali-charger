@@ -5,17 +5,8 @@ high priority:
 
 low priority:
  - add Pb batter type
- - add new "charge complete" msg
- - add calibration done sound
- - add input voltage drop warning
-
-Done:
- - Rapid charge start voltage: Approx. 0.8V/cell rapid charge, transition voltage restoration current: 0.2 ~ 0.3CmA
- - add Rth measurement at the charge end
- - automatically change Icharge when Capacity changed
- - add Buzzer class (sound)
- - add info sound
- - add wrong polarity warning
- - disable not implemented battery types
- - add "create name"
- - disconnected warnings
+ - add NiXX cycling
+ - add "stack info" to LogView debug informations
+ - optimisation: rewrite Screen, remove switch..case
+ - optimisation: write own serialHardware class
+ - optimisation: remove arduino
