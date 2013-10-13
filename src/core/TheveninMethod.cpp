@@ -77,7 +77,7 @@ void TheveninMethod::setVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueTyp
 
 void TheveninMethod::initialize(AnalogInputs::Name iName)
 {
-    Strategy::statusType bstatus_ = Strategy::COMPLETE;
+    bstatus_ = Strategy::COMPLETE;
 
     iName_ = iName;
     AnalogInputs::ValueType Vout = AnalogInputs::getVout();
