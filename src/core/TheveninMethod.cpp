@@ -24,9 +24,11 @@
 
 namespace TheveninMethod {
     uint16_t minValue_;
+    uint16_t minBalanceValue_;
     uint16_t maxValue_;
     AnalogInputs::ValueType Vend_;
     AnalogInputs::ValueType valueTh_;
+    uint16_t lastBallancingEnded_;
 
     Thevenin tVout_;
     Thevenin tBal_[MAX_BANANCE_CELLS];
@@ -85,6 +87,7 @@ void TheveninMethod::initialize(AnalogInputs::Name iName)
     bstatus_ = Strategy::COMPLETE;
 
     iName_ = iName;
+    minBalanceValue_ = AnalogInputs::reverseCalibrateValue(iName_, Balancer::Ibalance);
     AnalogInputs::ValueType Vout = AnalogInputs::getVout();
     tVout_.init(Vout, Vend_, minValue_);
 
@@ -104,9 +107,10 @@ void TheveninMethod::initialize(AnalogInputs::Name iName)
 bool TheveninMethod::isComlete(bool isEndVout, AnalogInputs::ValueType value)
 {
     if(balance_) {
-        if(Ifalling_ == NotFalling)
+        if(value > minBalanceValue_ && value > minValue_)
             Balancer::done_ = false;
-        bstatus_ = Balancer::doStrategy();
+        if(Ifalling_ != LastRthMesurment)
+            bstatus_ = Balancer::doStrategy();
     }
 
     if(bstatus_ != Strategy::COMPLETE)
@@ -133,6 +137,7 @@ AnalogInputs::ValueType TheveninMethod::calculateNewValue(bool isEndVout, Analog
     if(isEndVout) {
         switch(Ifalling_) {
         case NotFalling:
+            if(balance_) Balancer::endBalancing();
             Ifalling_ = LastRthMesurment;
             //temporarily turn off
             storeOldValue(oldValue);
@@ -181,8 +186,9 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value
     if(oldValue != value) {
         if(Ifalling_ != Falling
             || value < oldValue
-            || value <= minValue_) {
+            || (value <= minValue_ && lastBallancingEnded_ != Balancer::balancingEnded_ )) {
 
+            lastBallancingEnded_ = Balancer::balancingEnded_;
             storeOldValue(oldValue);
             return value;
         }

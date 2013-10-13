@@ -23,7 +23,7 @@
 #include "Strategy.h"
 
 namespace Balancer {
-    const static AnalogInputs::ValueType Ibalance = 200; //200mA
+    const static AnalogInputs::ValueType Ibalance = ANALOG_AMP(0.200); //200mA
     const static uint16_t maxBalanceTime = 30; //30s
     const static uint16_t balancerStartStableCount = 10; //10s
 
@@ -33,6 +33,7 @@ namespace Balancer {
     extern bool savedVon_;
     extern uint8_t minCell_;
     extern bool done_;
+    extern uint16_t balancingEnded_;
 
 
     void powerOn();

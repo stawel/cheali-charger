@@ -32,7 +32,7 @@ namespace Balancer {
     bool savedVon_;
     uint32_t startBalanceTime_;
     uint32_t startSwitchTime_;
-    uint16_t startNotWorkingAnalogCount_;
+    uint16_t balancingEnded_;
 
     uint32_t IVtime_;
     AnalogInputs::ValueType V_[MAX_BANANCE_CELLS];
@@ -41,7 +41,7 @@ namespace Balancer {
     uint8_t getCells() { return cells_; }
     bool isWorking()  {
         if(balance_ != 0) return true;
-        uint16_t isOff = AnalogInputs::getFullMeasurementCount() - startNotWorkingAnalogCount_;
+        uint16_t isOff = AnalogInputs::getFullMeasurementCount() - balancingEnded_;
         return isOff < balancerStartStableCount/2;
     }
 
@@ -71,7 +71,7 @@ void Balancer::powerOn()
     balance_ = 0;
     done_ = false;
     setBalance(0);
-    startNotWorkingAnalogCount_ = 0;
+    balancingEnded_ = 0;
     startSwitchTime_ = 0;
 }
 
@@ -125,7 +125,7 @@ void Balancer::powerOff()
 void Balancer::setBalance(uint8_t v)
 {
     if(balance_ && v == 0)
-        startNotWorkingAnalogCount_ = AnalogInputs::getFullMeasurementCount();
+        balancingEnded_ = AnalogInputs::getFullMeasurementCount();
 
     balance_ = v;
     startSwitchTime_ = Timer::getMiliseconds();
@@ -210,8 +210,6 @@ uint16_t Balancer::getBalanceTime()
 
 Strategy::statusType Balancer::doStrategy()
 {
-    if(done_)
-        return Strategy::COMPLETE;
     if(isStable()) {
         if(balance_ == 0) {
             startBalacing();
@@ -223,6 +221,8 @@ Strategy::statusType Balancer::doStrategy()
             }
         }
     }
+    if(done_)
+        return Strategy::COMPLETE;
     return Strategy::RUNNING;
 }
 

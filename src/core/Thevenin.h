@@ -29,14 +29,12 @@ public:
 };
 
 class Thevenin {
-public:
-
-    AnalogInputs::ValueType Vth_;
-    Resistance Rth_;
-
     AnalogInputs::ValueType VLast_;
     AnalogInputs::ValueType ILast_;
     AnalogInputs::ValueType ILastDiff_;
+    AnalogInputs::ValueType Vth_;
+public:
+    Resistance Rth_;
 
     Thevenin(){};
     void storeLast(AnalogInputs::ValueType VLast, AnalogInputs::ValueType ILast) { VLast_ = VLast; ILast_ = ILast; }
