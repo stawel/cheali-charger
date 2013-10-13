@@ -31,6 +31,7 @@ struct Settings {
     enum UARTType {Disabled, Normal, Debug, ExtDebug };
     static const uint8_t Speeds = 5;
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5);
+    static const AnalogInputs::ValueType MaxDischargeOffset_LiXX = ANALOG_VOLT(1.000);
 #ifdef ENABLE_LCD_BACKLIGHT
     uint16_t backlight_;
 #endif
@@ -47,6 +48,7 @@ struct Settings {
     uint16_t CDcycles_;
     uint16_t capCutoff_;
     AnalogInputs::ValueType inputVoltageLow_;
+    AnalogInputs::ValueType dischargeOffset_LiXX_;
     AnalogInputs::ValueType balancerError_;
     uint16_t UART_;
     uint16_t UARTspeed_;

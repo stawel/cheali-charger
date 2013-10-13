@@ -167,12 +167,12 @@ void Screen::displayScreenCIVlimits()
     lcdSetCursor0_0();
     lcdPrintCharge(ProgramData::currentProgramData.getCapacityLimit(), 8);
     lcdPrintChar(' ');
-    lcdPrintCurrent(ProgramData::currentProgramData.battery.Ic, 7);
+    lcdPrintCurrent(TheveninMethod::getImax(), 7);
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
     lcdPrint_P(PSTR("Limits: "));
-    lcdPrintVoltage(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge), 7);
+    lcdPrintVoltage(TheveninMethod::Vend_, 7);
     lcdPrintSpaces();
 }
 

@@ -39,6 +39,7 @@ namespace TheveninMethod {
 
     void setVIB(AnalogInputs::ValueType v, AnalogInputs::ValueType i, bool balance);
     void setMinI(AnalogInputs::ValueType i);
+    AnalogInputs::ValueType getImax();
 
     AnalogInputs::ValueType getReadableRthCell(uint8_t cell);
     AnalogInputs::ValueType getReadableBattRth();

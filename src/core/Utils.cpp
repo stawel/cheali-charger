@@ -91,7 +91,7 @@ void changeMaxSmart(uint16_t &v, int direc, uint16_t max)
         else step = r;
     }
     if(direction) ADD_MAX(v, step, max);
-    else SUB_MIN(v, step ,1);
+    else SUB_MIN(v, step ,0);
 }
 
 void waitButtonPressed()

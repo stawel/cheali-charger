@@ -190,7 +190,9 @@ Strategy::statusType Program::runDeltaCharge()
 
 Strategy::statusType Program::runDischarge()
 {
-    TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+    AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
+    Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
+    TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
     Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
     programState_ = Discharging;
     return doStrategy(dischargeScreens);

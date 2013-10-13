@@ -44,6 +44,11 @@ namespace TheveninMethod {
             return 0;
         else return minValue_;
     }
+    AnalogInputs::ValueType getImax()
+    {
+        return AnalogInputs::calibrateValue(iName_, maxValue_);
+    }
+
 }
 
 AnalogInputs::ValueType TheveninMethod::getReadableRthCell(uint8_t cell)

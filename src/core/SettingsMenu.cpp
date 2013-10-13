@@ -37,6 +37,7 @@ const char string_NiCddV[]      PROGMEM = "NiCd -dV:";
 const char string_CDcycles[]    PROGMEM = "C/D cycles:";
 const char string_capCoff[]     PROGMEM = "cap COff:";
 const char string_inputLow[]    PROGMEM = "input low:";
+const char string_dichLiXX[]    PROGMEM = "disch +:";
 const char string_balancErr[]   PROGMEM = "bal. err:";
 const char string_view[]        PROGMEM = "UART: ";
 const char string_speed[]       PROGMEM = "speed: ";
@@ -61,6 +62,7 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_CDcycles,
         string_capCoff,
         string_inputLow,
+        string_dichLiXX,
         string_balancErr,
         string_view,
         string_speed,
@@ -95,6 +97,7 @@ uint8_t SettingsMenu::printItem(uint8_t index)
             case NEXT_CASE:     lcdPrintUnsigned(p_.CDcycles_, 3);      break;
             case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff_, 5);   break;
             case NEXT_CASE:     printVolt(p_.inputVoltageLow_);         break;
+            case NEXT_CASE:     lcdPrint_mV(p_.dischargeOffset_LiXX_,6);break;
             case NEXT_CASE:     lcdPrint_mV(p_.balancerError_, 5);      break;
             case NEXT_CASE:     printUART();                            break;
             case NEXT_CASE:     printUARTSpeed();                       break;
@@ -125,7 +128,8 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     changeMax(p_.deltaV_NiCd_, dir, 20);        break;
         case NEXT_CASE:     change1Max(p_.CDcycles_, dir, 5);           break;
         case NEXT_CASE:     change1Max(p_.capCutoff_, dir, 250);        break;
-        case NEXT_CASE:     changeVolt(p_.inputVoltageLow_, dir);       break;
+        case NEXT_CASE:     changeInputVolt(p_.inputVoltageLow_, dir);  break;
+        case NEXT_CASE:     changeMaxSmart(p_.dischargeOffset_LiXX_, dir, Settings::MaxDischargeOffset_LiXX);  break;
         case NEXT_CASE:     changeBalanceError(p_.balancerError_, dir); break;
         case NEXT_CASE:     changeMax(p_.UART_, dir, Settings::ExtDebug); break;
         case NEXT_CASE:     changeMax(p_.UARTspeed_, dir, Settings::Speeds-1); break;
@@ -233,7 +237,7 @@ void SettingsMenu::changeDeltaTemp(AnalogInputs::ValueType &v, int step) {
     if(v > max) v = max;
 }
 
-void SettingsMenu::changeVolt(AnalogInputs::ValueType &v, int step) {
+void SettingsMenu::changeInputVolt(AnalogInputs::ValueType &v, int step) {
     const AnalogInputs::ValueType min = ANALOG_VOLT(7);
     const AnalogInputs::ValueType max = ANALOG_VOLT(30);
     step *= ANALOG_VOLT(1);

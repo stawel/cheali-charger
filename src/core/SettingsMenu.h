@@ -44,7 +44,7 @@ private:
     static void printVolt(AnalogInputs::ValueType v);
     static void changeTemp(AnalogInputs::ValueType &v, int dir);
     static void changeDeltaTemp(AnalogInputs::ValueType &v, int dir);
-    static void changeVolt(AnalogInputs::ValueType &v, int dir);
+    static void changeInputVolt(AnalogInputs::ValueType &v, int dir);
     static void changeBalanceError(AnalogInputs::ValueType &v, int dir);
 };
 
