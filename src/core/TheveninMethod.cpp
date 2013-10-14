@@ -51,11 +51,17 @@ namespace TheveninMethod {
         return AnalogInputs::calibrateValue(iName_, maxValue_);
     }
 
+    bool isBelowMin(AnalogInputs::ValueType value)
+    {
+        return value < minValue_;
+    }
+
 }
 
 AnalogInputs::ValueType TheveninMethod::getReadableRthCell(uint8_t cell)
 {
     return tBal_[cell].Rth_.getReadableRth_calibrateI(iName_);
+//      return tBal_[cell].ILastDiff_;
 }
 AnalogInputs::ValueType TheveninMethod::getReadableBattRth()
 {
@@ -149,6 +155,7 @@ AnalogInputs::ValueType TheveninMethod::calculateNewValue(bool isEndVout, Analog
     }
 
     calculateRthVth(oldValue);
+    storeOldValue(oldValue);
     i = calculateI();
     return normalizeI(i, oldValue);
 }
@@ -189,7 +196,6 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value
             || (value <= minValue_ && lastBallancingEnded_ != Balancer::balancingEnded_ )) {
 
             lastBallancingEnded_ = Balancer::balancingEnded_;
-            storeOldValue(oldValue);
             return value;
         }
     }

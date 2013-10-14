@@ -31,6 +31,7 @@ namespace TheveninMethod {
 
     void initialize(AnalogInputs::Name iName);
     bool isComlete(bool isEndVout, AnalogInputs::ValueType value);
+    bool isBelowMin(AnalogInputs::ValueType value);
     void calculateRthVth(AnalogInputs::ValueType oldValue);
     AnalogInputs::ValueType calculateNewValue(bool isEndVout, AnalogInputs::ValueType oldValue);
     AnalogInputs::ValueType calculateI();

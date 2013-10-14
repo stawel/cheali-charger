@@ -56,18 +56,20 @@ void TheveninChargeStrategy::setMinI(AnalogInputs::ValueType i)
 
 Strategy::statusType TheveninChargeStrategy::doStrategy()
 {
-    bool stable;
+    bool update;
     bool isendVout = isEndVout();
     uint16_t oldValue = SMPS::getValue();
 
-    stable = AnalogInputs::isOutStable() || isendVout;
     //test for charge complete
     if(TheveninMethod::isComlete(isendVout, oldValue)) {
         SMPS::powerOff(SMPS::CHARGING_COMPLETE);
         return Strategy::COMPLETE;
     }
 
-    if(stable && !Balancer::isWorking()) {
+    update = AnalogInputs::isOutStable() || isendVout || TheveninMethod::isBelowMin(oldValue);
+
+
+    if(update && !Balancer::isWorking()) {
         uint16_t value = TheveninMethod::calculateNewValue(isendVout, oldValue);
         if(value != oldValue)
             SMPS::setValue(value);

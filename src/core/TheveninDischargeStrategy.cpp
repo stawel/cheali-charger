@@ -67,7 +67,8 @@ Strategy::statusType TheveninDischargeStrategy::doStrategy()
     stable = AnalogInputs::isOutStable() || isEndVout;
 
     //test for charge complete
-    if(TheveninMethod::isComlete(isEndVout, oldValue)) {
+//    if(TheveninMethod::isComlete(isEndVout, oldValue)) {
+    if(isEndVout) {
         Discharger::powerOff(Discharger::DISCHARGING_COMPLETE);
         return Strategy::COMPLETE;
     }
