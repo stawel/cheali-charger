@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 2.6)
 
 Project(cheali-charger)
 
-set(cheali-charger-version 0.30)
-set(cheali-charger-eeprom-version 4)
+set(cheali-charger-version 0.31)
+set(cheali-charger-eeprom-version 5)
 
 configure_file(src/core/Version.h.in src/core/Version.h)
 
