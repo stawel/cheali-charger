@@ -40,7 +40,11 @@ namespace Balancer {
 
     uint8_t getCells() { return cells_; }
     bool isWorking()  {
-        if(balance_ != 0) return true;
+        if(balance_ != 0)
+            return true;
+        //wait until the balance port voltage stabilize
+        if(!AnalogInputs::isPowerOn())
+            return false;
         uint16_t isOff = AnalogInputs::getFullMeasurementCount() - balancingEnded_;
         return isOff < balancerStartStableCount/2;
     }
@@ -221,7 +225,7 @@ Strategy::statusType Balancer::doStrategy()
             }
         }
     }
-    if(done_)
+    if(!isWorking() && done_)
         return Strategy::COMPLETE;
     return Strategy::RUNNING;
 }
