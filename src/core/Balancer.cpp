@@ -225,7 +225,7 @@ Strategy::statusType Balancer::doStrategy()
             }
         }
     }
-    if(!isWorking() && done_)
+    if((!isWorking()) && done_)
         return Strategy::COMPLETE;
     return Strategy::RUNNING;
 }

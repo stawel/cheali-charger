@@ -143,7 +143,10 @@ AnalogInputs::ValueType TheveninMethod::calculateNewValue(bool isEndVout, Analog
     if(isEndVout) {
         switch(Ifalling_) {
         case NotFalling:
-            if(balance_) Balancer::endBalancing();
+            if(balance_) {
+                Balancer::endBalancing();
+                Balancer::done_ = false;
+            }
             Ifalling_ = LastRthMesurment;
             //temporarily turn off
             storeOldValue(oldValue);
