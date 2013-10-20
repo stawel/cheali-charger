@@ -18,6 +18,6 @@
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
-#include "GTPowerA6-10-original.h"
+#include "Turnigy-MEGA400.h"
 
 #endif /* HARDWARE_H_ */

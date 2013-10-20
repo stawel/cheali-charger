@@ -26,23 +26,11 @@
 #define LCD_BACKLIGHT_MIN       100
 #define LCD_BACKLIGHT_MAX       3000
 
-
-#define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(10.000)  //10A
-#define MAX_CHARGE_P            200000              //200W
-
-#define MAX_DISCHARGE_P         25000               //25W
-#define MAX_DISCHARGE_I         ANALOG_AMP(5.000)   //5A
-
 #define MAX_BANANCE_CELLS       6
 
 //use unknown mux values
 //#define ANALOG_INPUTS_V_UNKNOWN
 #define TIMER1_PERIOD_MICROSECONDS          512
-#define SMPS_UPPERBOUND_VALUE               4096
-#define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/8)
-#define DISCHARGER_UPPERBOUND_VALUE         4096
-#define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/14)
 #define CALIBRATION_SPEED                   1
 
 

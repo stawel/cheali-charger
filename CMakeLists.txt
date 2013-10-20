@@ -12,4 +12,4 @@ add_subdirectory(src/core)
 add_subdirectory(src/hardware/GTPowerA6-10-original)
 add_subdirectory(src/hardware/imaxB6-original)
 add_subdirectory(src/hardware/imaxB6-clone)
-
+add_subdirectory(src/hardware/Turnigy-MEGA400)
