@@ -18,7 +18,6 @@
 
 #include "AnalogInputs.h"
 
-
 //TODO: create default calibration
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
