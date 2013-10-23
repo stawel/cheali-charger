@@ -19,7 +19,7 @@
 #include "AnalogInputs.h"
 
 
-//file provided by: Jozef N.
+//file provided by: Jozsef N.
 //TODO: calibrate Vb6_pin, Textern
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
