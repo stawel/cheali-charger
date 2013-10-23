@@ -18,6 +18,6 @@
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
-#include "imaxB6.h"
+#include "imaxB6-clone.h"
 
 #endif /* HARDWARE_H_ */

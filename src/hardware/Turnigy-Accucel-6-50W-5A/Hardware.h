@@ -18,6 +18,6 @@
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
-#include "imaxB6-original.h"
+#include "Turnigy-Accucel-6-50W-5A.h"
 
 #endif /* HARDWARE_H_ */

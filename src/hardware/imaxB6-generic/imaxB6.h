@@ -24,22 +24,7 @@
 #define LCD_LINES               2
 #define LCD_COLUMNS             16
 
-#define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(5.000)   //5A
-#define MAX_CHARGE_P            50000               //50W
-
-#define MAX_DISCHARGE_P         5000                //5W
-#define MAX_DISCHARGE_I         ANALOG_AMP(2.000)   //should be 1A
-
 #define MAX_BANANCE_CELLS       6
-
-//1-13? correlation
-#define SMPS_UPPERBOUND_VALUE               (MAX_CHARGE_I*13)
-#define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/4)
-#define DISCHARGER_UPPERBOUND_VALUE         TIMERONE_PRECISION_PERIOD
-#define MAX_CALIBRATION_DISCHARGER_VALUE    DISCHARGER_UPPERBOUND_VALUE
-#define CALIBRATION_SPEED                   10
-
 
 #define ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
 //TODO: should be implemented!
