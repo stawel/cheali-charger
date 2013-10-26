@@ -34,7 +34,6 @@ set(SOURCE_FILES
 
         CDC.cpp
 #        HardwareSerial.cpp
-        HardwareSerial.cpp
         HID.cpp
         IPAddress.cpp
         Stream.cpp

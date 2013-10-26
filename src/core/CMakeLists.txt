@@ -90,6 +90,9 @@ set(CORE_SOURCE
 
         SerialLog.h
         SerialLog.cpp
+
+        Serial.h
+        Serial.cpp
 )
 
 set (CORE_SOURCE_FILES "")
