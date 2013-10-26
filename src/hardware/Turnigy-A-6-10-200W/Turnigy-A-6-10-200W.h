@@ -22,9 +22,9 @@
 
 #define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
 #define MAX_CHARGE_I            ANALOG_AMP(10.000)  //10A
-#define MAX_CHARGE_P            200000              //200W
+#define MAX_CHARGE_P            ANALOG_WATT(200.000)              //200W
 
-#define MAX_DISCHARGE_P         25000               //25W
+#define MAX_DISCHARGE_P         ANALOG_WATT(25.000)               //25W
 #define MAX_DISCHARGE_I         ANALOG_AMP(5.000)   //5A
 
 #define SMPS_UPPERBOUND_VALUE               4096

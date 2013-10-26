@@ -22,9 +22,9 @@
 
 #define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
 #define MAX_CHARGE_I            ANALOG_AMP(20.000)  //20A
-#define MAX_CHARGE_P            400000              //400W
+#define MAX_CHARGE_P            ANALOG_WATT(400.000)              //400W
 
-#define MAX_DISCHARGE_P         25000               //25W
+#define MAX_DISCHARGE_P         ANALOG_WATT(25.000)               //25W
 #define MAX_DISCHARGE_I         ANALOG_AMP(5.000)   //5A
 
 
