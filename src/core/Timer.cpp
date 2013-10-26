@@ -56,8 +56,8 @@ void Timer::initialize()
 #if F_CPU != 16000000
 #error "F_CPU != 16000000 - not implemented"
 #endif
-#if TIMER_INTERRUPT_PERIOD_MICROSECONDS != 512
-#error "TIMER_INTERRUPT_PERIOD_MICROSECONDS != 512 - not implemented"
+#if TIMER_INTERRUPT_PERIOD_MICROSECONDS != 500
+#error "TIMER_INTERRUPT_PERIOD_MICROSECONDS != 500 - not implemented"
 #endif
 
     TCNT0=0;
@@ -78,11 +78,10 @@ uint32_t Timer::getMiliseconds()
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         retu = interrupts_;
     }
-#if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 512
-    retu *= (TIMER_INTERRUPT_PERIOD_MICROSECONDS/8);
-    retu /= (1000/8);
+#if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 500
+    retu /= 2;
 #else
-#warning "TIMER_INTERRUPT_PERIOD_MICROSECONDS != 512"
+#warning "TIMER_INTERRUPT_PERIOD_MICROSECONDS != 500"
     retu *= TIMER_INTERRUPT_PERIOD_MICROSECONDS;
     retu /= 1000;
 #endif
