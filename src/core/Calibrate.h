@@ -27,67 +27,8 @@
 #endif
 
 namespace Calibrate {
-
     void run();
     void calibrateVoltage();
-
-/*    uint16_t value_;
-    uint8_t dispVal_;
-    int8_t blink_;
-    bool blinkOn_;
-
-    enum screenType { SCREEN_ICHARGE = 0, SCREEN_VOUT = 1, SCREEN_B1_3 = 2, SCREEN_B4_6 = 3,
-            SCREEN_T = 4, SCREEN_VIN = 5, SCREEN_VREVERSE = 6, SCREEN_VUNKNOWN = 7,
-            SCREEN_VOUT_VBAL = 99, SCREEN_IDISCHARGE = 100,
-#ifdef ENABLE_B0_CALIBRATION
-            SCREEN_B0_BLINK = 200,
-#endif
-            SCREEN_B1_3_BLINK = 201, SCREEN_B4_6_BLINK = 202};
-
-    Calibrate(){};
-
-    void print_v(uint8_t dig = 5);
-    void print_d(AnalogInputs::Name name, int dig = 7);
-    void print_m(const char *str, AnalogInputs::Name name, int dig = 7);
-    void print_m_2(const char *str, AnalogInputs::Name name, int dig = 7);
-    void print_m_1(const char *str, AnalogInputs::Name name, int dig = 7);
-    void print_m_3(const char *str, AnalogInputs::Name name, int dig = 7);
-    void printCalibrateIcharge();
-    void printCalibrateIdischarge();
-    void printCalibrateVout();
-    void printCalibrateVoutVbal();
-    void printCalibrateB1_3();
-    void printCalibrateB4_6();
-    void printCalibrateT();
-    void printCalibrateVin();
-    void printCalibrateVreverse();
-    void printCalibrateVunknown();
-#ifdef ENABLE_B0_CALIBRATION
-    void printCalibrateB0_Blink();
-#endif
-    void printCalibrateB1_3_Blink();
-    void printCalibrateB4_6_Blink();
-
-    void printCalibrate(screenType screen);
-    void info(screenType screen);
-    void infoDis();
-    void infoTimeM();
-
-#ifdef ENABLE_STACK_INFO
-    void infoStackInfo();
-#endif
-
-    void runInfo();
-    bool calibrate(screenType screen);
-    bool calibrateBlink(screenType screen, int8_t maxBlink);
-    bool calibrateDischarge();
-
-    void setBlink(screenType screen);
-    void copyVbalVout();
-    void calibrateI(screenType screen, AnalogInputs::Name name1, AnalogInputs::Name name2);
-    void setBalancer(AnalogInputs::Name firstName);
-    bool setValue(uint8_t x, uint8_t y, AnalogInputs::ValueType &v, AnalogInputs::Type, uint8_t dig);
-*/
 };
 
 #endif /* CALIBRATE_H_ */

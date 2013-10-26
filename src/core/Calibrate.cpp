@@ -40,12 +40,19 @@ const char c5[] PROGMEM = "temp intern";
 #ifdef ENABLE_SERIAL_LOG
 const char c6[] PROGMEM = "calib->UART";
 #endif
+#ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
+const char c7[] PROGMEM = "expert DANGER!";
+#endif
+
 const char * const calibrateMenu[] PROGMEM = {c1,c2,c3,c4
 #ifdef ENABLE_T_INTERNAL
   ,c5
 #endif
 #ifdef ENABLE_SERIAL_LOG
   ,c6
+#endif
+#ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
+  ,c7
 #endif
 };
 
@@ -59,14 +66,7 @@ const char cv7[] PROGMEM = "Vb6: ";
 const char cv8[] PROGMEM = "V1-6:";
 const char cv9[] PROGMEM = "Vout:";
 
-
-/* TODO: implement?
-#ifdef ENABLE_B0_CALIBRATION
-const char string_cv9[] PROGMEM = "B0-dangerous";
-#endif
-const char string_cv10[] PROGMEM = "Vreversed";
-const char string_cv11[] PROGMEM = "Vunknown";
-*/
+const char * const voltageMenu[] PROGMEM = {cv1, cv2,cv3,cv4,cv5,cv6,cv7,cv8, cv9};
 
 const AnalogInputs::Name voltageName[] PROGMEM = {
        AnalogInputs::Vin,
@@ -89,9 +89,6 @@ const AnalogInputs::Name voltageName2[] PROGMEM = {
        AnalogInputs::Vb6_pin,
 };
 
-
-const char * const voltageMenu[] PROGMEM = {cv1, cv2,cv3,cv4,cv5,cv6,cv7,cv8, cv9};
-
 const char cI0[] PROGMEM = "50mA";
 const char cI1[] PROGMEM = "1000mA";
 const char cID1[] PROGMEM = "300mA";
@@ -112,21 +109,27 @@ const char * const tempMenu[] PROGMEM = {ct1,ct2};
 
 class VoltageMenu: public EditMenu {
 public:
-    VoltageMenu() : EditMenu(voltageMenu, sizeOfArray(voltageMenu)){};
+    VoltageMenu(const char * const* vMenu, uint8_t size,
+            const AnalogInputs::Name * vNames, uint8_t dig) :
+        EditMenu(vMenu, size),
+        mVNames(vNames),
+        mDig(dig){};
     virtual uint8_t printItem(uint8_t index) {
         StaticMenu::printItem(index);
         if(getBlinkIndex() != index) {
-            AnalogInputs::Name name = pgm::read(&voltageName[index]);
-            AnalogInputs::printRealValue(name, 9);
+            AnalogInputs::Name name = pgm::read(&mVNames[index]);
+            AnalogInputs::printRealValue(name, mDig);
         }
     }
     virtual void editItem(uint8_t index, uint8_t key) {
         int dir = -1;
         if(key == BUTTON_INC) dir = 1;
         dir *= Keyboard::getSpeedFactor();
-        AnalogInputs::Name name = pgm::read(&voltageName[index]);
+        AnalogInputs::Name name = pgm::read(&mVNames[index]);
         AnalogInputs::real_[name] += dir;
     }
+    const AnalogInputs::Name * mVNames;
+    const uint8_t mDig;
 };
 
 
@@ -172,36 +175,82 @@ bool testVout()
     }while(true);
 }
 
-void saveVoltage(AnalogInputs::Name name, AnalogInputs::ValueType adc, AnalogInputs::ValueType newValue)
+void saveVoltage(AnalogInputs::Name name1, AnalogInputs::Name name2, AnalogInputs::ValueType adc, AnalogInputs::ValueType newValue)
 {
     AnalogInputs::CalibrationPoint p;
     p.x = adc;
     p.y = newValue;
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-        if(name == AnalogInputs::Vb1_pin)
+        if(name1 == AnalogInputs::Vb1)
             calibrateSimplifiedVb1_pin(p.y);
-        else if(name == AnalogInputs::Vb2_pin)
+        else if(name1 == AnalogInputs::Vb2)
             calibrateSimplifiedVb2_pin(p.y);
         else
-            AnalogInputs::setCalibrationPoint(name, 1, p);
+            AnalogInputs::setCalibrationPoint(name2, 1, p);
 #else
-        AnalogInputs::setCalibrationPoint(name, 1, p);
+        AnalogInputs::setCalibrationPoint(name2, 1, p);
 #endif
 }
 
-void saveVoltage(int8_t index)
+void saveVoltage(int8_t index, bool copyVbal2Vout, AnalogInputs::Name name1,  AnalogInputs::Name name2)
 {
     Buzzer::soundSelect();
-    AnalogInputs::Name name1 = pgm::read(&voltageName[index]);
-    AnalogInputs::Name name2 = pgm::read(&voltageName2[index]);
     AnalogInputs::ValueType newValue = AnalogInputs::getRealValue(name1);
     AnalogInputs::on_ = true;
     AnalogInputs::doFullMeasurement();
-    saveVoltage(name2, AnalogInputs::getValue(name2), newValue);
+    saveVoltage(name1, name2, AnalogInputs::getValue(name2), newValue);
     AnalogInputs::doFullMeasurement();
-    copyVbalVout();
+    if(copyVbal2Vout)
+        copyVbalVout();
 }
+
+
+#ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
+
+const char cev0[] PROGMEM = "Vb0pin: ";
+const char cev1[] PROGMEM = "Vb1pin: ";
+const char cev2[] PROGMEM = "Vb2pin: ";
+
+const char * const expertVoltageMenu[] PROGMEM = {cev0, cev1,cev2};
+
+/* TODO: implement?
+const char string_cv10[] PROGMEM = "Vreversed";
+const char string_cv11[] PROGMEM = "Vunknown";
+*/
+
+const AnalogInputs::Name expertVoltageName[] PROGMEM = {
+        AnalogInputs::Vb0_pin,
+        AnalogInputs::Vb1_pin,
+        AnalogInputs::Vb2_pin,
+};
+const AnalogInputs::Name expertVoltageName2[] PROGMEM = {
+        AnalogInputs::Vb0_pin,
+        AnalogInputs::Vb1_pin,
+        AnalogInputs::Vb2_pin,
+};
+
+
+void expertCalibrateVoltage()
+{
+    Discharger::powerOn();
+
+    if(testVout()) {
+        VoltageMenu v(expertVoltageMenu, sizeOfArray(expertVoltageMenu), expertVoltageName, 6);
+        int8_t index;
+        do {
+            index = v.runSimple(true);
+            if(index < 0) break;
+            AnalogInputs::doFullMeasurement();
+            AnalogInputs::on_ = false;
+            if(v.runEdit(index))
+                saveVoltage(index, false , pgm::read(&expertVoltageName[index]),pgm::read(&expertVoltageName2[index]));
+            AnalogInputs::on_ = true;
+        } while(true);
+    }
+    Discharger::powerOff();
+}
+#endif
 
 
 void calibrateVoltage()
@@ -209,7 +258,7 @@ void calibrateVoltage()
     Discharger::powerOn();
 
     if(testVout()) {
-        VoltageMenu v;
+        VoltageMenu v(voltageMenu, sizeOfArray(voltageMenu), voltageName, 9);
         int8_t index;
         do {
             index = v.runSimple(true);
@@ -218,7 +267,7 @@ void calibrateVoltage()
                 AnalogInputs::doFullMeasurement();
                 AnalogInputs::on_ = false;
                 if(v.runEdit(index))
-                    saveVoltage(index);
+                    saveVoltage(index, true , pgm::read(&voltageName[index]),pgm::read(&voltageName2[index]));
                 AnalogInputs::on_ = true;
             }
         } while(true);
@@ -418,6 +467,9 @@ void run()
 #endif
 #ifdef ENABLE_SERIAL_LOG
         case NEXT_CASE: SerialLog::sendCalibration(); break;
+#endif
+#ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
+        case NEXT_CASE: expertCalibrateVoltage(); break;
 #endif
         }
     } while(true);

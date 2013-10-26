@@ -37,9 +37,11 @@
 #define ENABLE_SERIAL_LOG
 //wait for the transition end and disable UART,
 //the UART interfere with Vb0_pin measurement
-//TODO: write own SerialHardware class
+//TODO: check why this is happening
 #define ENABLE_SERIAL_LOG_WAIT
 #define ENABLE_GET_PID_VALUE
+//#define ENABLE_EXPERT_VOLTAGE_CALIBRATION
+
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
 
 
