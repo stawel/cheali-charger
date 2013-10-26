@@ -15,8 +15,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef Turnigy_MEGA200_H_
-#define Turnigy_MEGA200_H_
+#ifndef Turnigy_A_6_10_200W_H_
+#define Turnigy_A_6_10_200W_H_
 
 #include "GTPowerA6-10.h"
 
@@ -33,4 +33,4 @@
 #define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/14)
 
 
-#endif /* Turnigy_MEGA200_H_ */
+#endif /* Turnigy_A_6_10_200W_H_ */

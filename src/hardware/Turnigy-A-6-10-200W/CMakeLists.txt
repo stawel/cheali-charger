@@ -1,8 +1,8 @@
-set(hardware Turnigy-MEGA200)
+set(hardware Turnigy-A-6-10-200W)
 
 set(SOURCE_FILES
     defaultCalibration.cpp
-    Turnigy-MEGA200.h
+    Turnigy-A-6-10-200W.h
     Hardware.h
 )
 

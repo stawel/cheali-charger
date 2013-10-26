@@ -18,6 +18,6 @@
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
-#include "Turnigy-MEGA200.h"
+#include "Turnigy-A-6-10-200W.h"
 
 #endif /* HARDWARE_H_ */
