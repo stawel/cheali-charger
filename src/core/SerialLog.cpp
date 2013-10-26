@@ -25,6 +25,7 @@
 #include "memory.h"
 #include "Version.h"
 #include "TheveninMethod.h"
+#include "StackInfo.h"
 
 namespace SerialLog {
     enum State { On, Off, Starting };
@@ -244,6 +245,10 @@ void sendChannel3()
         printUInt(AnalogInputs::getValue(it));
         printD();
     }
+    printUInt(StackInfo::getNeverUsedStackSize());
+    printD();
+    printUInt(StackInfo::getFreeStackSize());
+    printD();
     sendEnd();
 }
 

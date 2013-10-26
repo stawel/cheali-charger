@@ -42,7 +42,7 @@
 //wait for the transition end and disable UART,
 //the UART interfere with the fan.
 //TODO: write own SerialHardware class
-#define ENABLE_SERIAL_LOG_WAIT
+//#define ENABLE_SERIAL_LOG_WAIT
 
 
 #include "LiquidCrystal.h"

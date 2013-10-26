@@ -28,11 +28,13 @@
 #include "Arduino.h"
 #include "wiring_private.h"
 
+#define DISABLE_RX
+
 // this next line disables the entire HardwareSerial.cpp, 
 // this is so I can support Attiny series and any other chip without a uart
 #if defined(UBRRH) || defined(UBRR0H) || defined(UBRR1H) || defined(UBRR2H) || defined(UBRR3H)
 
-#include "HardwareSerial.h"
+#include "Serial.h"
 
 /*
  * on ATmega8, the uart and its bits are not numbered, so there is no "TXC0"
@@ -56,7 +58,8 @@
 #if (RAMEND < 1000)
   #define SERIAL_BUFFER_SIZE 16
 #else
-  #define SERIAL_BUFFER_SIZE 64
+//  #define SERIAL_BUFFER_SIZE 64
+  #define SERIAL_BUFFER_SIZE 256
 #endif
 
 struct ring_buffer
@@ -71,8 +74,13 @@ struct ring_buffer
   ring_buffer tx_buffer = { { 0 }, 0, 0};
 #endif
 #if defined(UBRRH) || defined(UBRR0H)
-  ring_buffer rx_buffer  =  { { 0 }, 0, 0 };
   ring_buffer tx_buffer  =  { { 0 }, 0, 0 };
+#ifndef DISABLE_RX
+  ring_buffer rx_buffer  =  { { 0 }, 0, 0 };
+#else
+  //TODO: change this
+  ring_buffer &rx_buffer = tx_buffer;
+#endif
 #endif
 #if defined(UBRR1H)
   ring_buffer rx_buffer1  =  { { 0 }, 0, 0 };
@@ -356,7 +364,9 @@ try_again:
 
   transmitting = false;
 
+#ifndef DISABLE_RX
   sbi(*_ucsrb, _rxen);
+#endif
   sbi(*_ucsrb, _txen);
   sbi(*_ucsrb, _rxcie);
   cbi(*_ucsrb, _udrie);
@@ -403,7 +413,11 @@ try_again:
 #endif
   *_ucsrc = config;
   
+#ifndef DISABLE_RX
   sbi(*_ucsrb, _rxen);
+#else
+  cbi(*_ucsrb, _rxen);
+#endif
   sbi(*_ucsrb, _txen);
   sbi(*_ucsrb, _rxcie);
   cbi(*_ucsrb, _udrie);
@@ -415,7 +429,9 @@ void HardwareSerial::end()
   while (_tx_buffer->head != _tx_buffer->tail)
     ;
 
+#ifndef DISABLE_RX
   cbi(*_ucsrb, _rxen);
+#endif
   cbi(*_ucsrb, _txen);
   cbi(*_ucsrb, _rxcie);  
   cbi(*_ucsrb, _udrie);
