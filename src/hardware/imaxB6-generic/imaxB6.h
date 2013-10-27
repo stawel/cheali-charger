@@ -31,7 +31,7 @@
 //when the imaxB6 discharges, the voltage on Vb0_pin
 //(Vb0_pin = VBATT- on the balance port)
 //drops below 0V so the ADC doesn't see it.
-//This is why we see a greater Vb1 resistance.
+//This is why we see a bigger Vb1 resistance.
 #define ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
 #define ENABLE_STACK_INFO
 #define ENABLE_SERIAL_LOG

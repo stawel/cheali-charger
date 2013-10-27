@@ -112,24 +112,24 @@ public:
     VoltageMenu(const char * const* vMenu, uint8_t size,
             const AnalogInputs::Name * vNames, uint8_t dig) :
         EditMenu(vMenu, size),
-        mVNames(vNames),
-        mDig(dig){};
+        vNames_(vNames),
+        dig_(dig){};
     virtual uint8_t printItem(uint8_t index) {
         StaticMenu::printItem(index);
         if(getBlinkIndex() != index) {
-            AnalogInputs::Name name = pgm::read(&mVNames[index]);
-            AnalogInputs::printRealValue(name, mDig);
+            AnalogInputs::Name name = pgm::read(&vNames_[index]);
+            AnalogInputs::printRealValue(name, dig_);
         }
     }
     virtual void editItem(uint8_t index, uint8_t key) {
         int dir = -1;
         if(key == BUTTON_INC) dir = 1;
         dir *= Keyboard::getSpeedFactor();
-        AnalogInputs::Name name = pgm::read(&mVNames[index]);
+        AnalogInputs::Name name = pgm::read(&vNames_[index]);
         AnalogInputs::real_[name] += dir;
     }
-    const AnalogInputs::Name * mVNames;
-    const uint8_t mDig;
+    const AnalogInputs::Name * vNames_;
+    const uint8_t dig_;
 };
 
 
