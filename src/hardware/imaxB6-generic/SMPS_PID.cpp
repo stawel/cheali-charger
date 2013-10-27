@@ -24,7 +24,7 @@ void SMPS_PID::update()
 {
     if(!PID_enable) return;
     //if Vout is too high disable PID
-    if(AnalogInputs::getMeasuredValue(AnalogInputs::Vout) > PID_CutOff) {
+    if(AnalogInputs::getADCValue(AnalogInputs::Vout) > PID_CutOff) {
         hardware::setChargerOutput(false);
         PID_enable = false;
         return;
@@ -32,7 +32,7 @@ void SMPS_PID::update()
 
     //TODO: rewrite PID
     //this is the PID - actually it is an I (Integral part) - should be rewritten
-    uint16_t PV = AnalogInputs::getMeasuredValue(AnalogInputs::Ismps);
+    uint16_t PV = AnalogInputs::getADCValue(AnalogInputs::Ismps);
     long error = PID_setpoint;
     error -= PV;
     PID_MV += error*A;

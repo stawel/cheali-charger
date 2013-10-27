@@ -44,7 +44,7 @@ void Monitor::doInterrupt()
 #ifdef ENABLE_FAN
 #ifdef ENABLE_T_INTERNAL
 
-    AnalogInputs::ValueType t = AnalogInputs::getMeasuredValue(AnalogInputs::Tintern);
+    AnalogInputs::ValueType t = AnalogInputs::getADCValue(AnalogInputs::Tintern);
     bool retu = false;
     if(t > monitor_off_T) {
         hardware::setFan(false);
@@ -82,7 +82,7 @@ Strategy::statusType Monitor::run()
     }
 #endif
 
-    AnalogInputs::ValueType VMout = AnalogInputs::getMeasuredValue(AnalogInputs::Vout);
+    AnalogInputs::ValueType VMout = AnalogInputs::getADCValue(AnalogInputs::Vout);
     if(VMout > VoutMaxMesured_) {
         Program::stopReason_ = PSTR("bat disc");
         return Strategy::ERROR;

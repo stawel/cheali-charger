@@ -27,8 +27,8 @@ namespace AnalogInputs {
     bool on_;
     uint16_t avrCount_;
     uint32_t avrSum_[PHYSICAL_INPUTS];
-    ValueType avrValue_[PHYSICAL_INPUTS];
-    ValueType measured_[PHYSICAL_INPUTS];
+    ValueType avrAdc_[PHYSICAL_INPUTS];
+    ValueType adc_[PHYSICAL_INPUTS];
     ValueType real_[ALL_INPUTS];
     uint16_t stableCount_[ALL_INPUTS];
 
@@ -43,11 +43,11 @@ namespace AnalogInputs {
 
     uint32_t    charge_;
 
-    ValueType getValue(Name name)                { return avrValue_[name]; }
-    ValueType getRealValue(Name name)           { return real_[name]; }
-    ValueType getMeasuredValue(Name name)       { return measured_[name]; }
+    ValueType getAvrADCValue(Name name)     { return avrAdc_[name]; }
+    ValueType getRealValue(Name name)       { return real_[name]; }
+    ValueType getADCValue(Name name)        { return adc_[name]; }
     bool isPowerOn() { return on_; }
-    uint16_t getFullMeasurementCount() { return calculationCount_; }
+    uint16_t getFullMeasurementCount()  { return calculationCount_; }
     uint16_t getStableCount(Name name)   { return stableCount_[name]; };
     bool isStable(Name name)     { return stableCount_[name] >= STABLE_MIN_VALUE; };
     void setReal(Name name, ValueType real);
@@ -112,9 +112,9 @@ void AnalogInputs::finalizeDeltaMeasurement()
         //its "real" voltage to calculate deltaVout
         deltaAvrSumVout_ += real_[VoutBalancer];
     } else {
-        deltaAvrSumVout_ += measured_[Vout];
+        deltaAvrSumVout_ += adc_[Vout];
     }
-    deltaAvrSumTextern_ += measured_[Textern];
+    deltaAvrSumTextern_ += adc_[Textern];
     deltaAvrCount_++;
     if(Timer::getMiliseconds() - deltaStartTime_ > DELTA_TIME_MILISECONDS) {
         deltaCount_++;
@@ -266,8 +266,8 @@ void AnalogInputs::finalizeFullMeasurement()
 {
     calculationCount_++;
     FOR_ALL_PHY_INPUTS(name) {
-        avrValue_[name] = avrSum_[name] / avrCount_;
-        ValueType real = calibrateValue(name, avrValue_[name]);
+        avrAdc_[name] = avrSum_[name] / avrCount_;
+        ValueType real = calibrateValue(name, avrAdc_[name]);
         setReal(name, real);
     }
     finalizeFullVirtualMeasurement();
@@ -350,8 +350,8 @@ void AnalogInputs::powerOff()
 
 bool AnalogInputs::isReversePolarity()
 {
-    AnalogInputs::ValueType vr = getMeasuredValue(VreversePolarity);
-    AnalogInputs::ValueType vo = getMeasuredValue(Vout);
+    AnalogInputs::ValueType vr = getADCValue(VreversePolarity);
+    AnalogInputs::ValueType vo = getADCValue(Vout);
     if(vr > vo) vr -=  vo;
     else vr = 0;
 
@@ -361,7 +361,7 @@ bool AnalogInputs::isReversePolarity()
 void AnalogInputs::finalizeMeasurement()
 {
     FOR_ALL_PHY_INPUTS(name) {
-        avrSum_[name] += measured_[name];
+        avrSum_[name] += adc_[name];
     }
     avrCount_++;
     finalizeDeltaMeasurement();
@@ -435,12 +435,6 @@ AnalogInputs::Type AnalogInputs::getType(Name name)
 void AnalogInputs::printRealValue(Name name, uint8_t dig)
 {
     ValueType x = getRealValue(name);
-    Type t = getType(name);
-    lcdPrintAnalog(x, t, dig);
-}
-void AnalogInputs::printMeasuredValue(Name name, uint8_t dig)
-{
-    ValueType x = calibrateValue(name, getMeasuredValue(name));
     Type t = getType(name);
     lcdPrintAnalog(x, t, dig);
 }

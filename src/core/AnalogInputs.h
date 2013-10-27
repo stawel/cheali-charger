@@ -119,12 +119,12 @@ namespace AnalogInputs {
     static const uint16_t   STABLE_MIN_VALUE    = 3;
     static const ValueType  REVERSE_POLARITY_MIN_VALUE = ANALOG_VOLT(1.000);
 
-    //get the average (measured) value
-    ValueType getValue(Name name);
+    //get the average ADC value
+    ValueType getAvrADCValue(Name name);
     //get real value (usable) - average, after calibration
     ValueType getRealValue(Name name);
-    //get the measured value - in this particular moment
-    ValueType getMeasuredValue(Name name);
+    //get the ADC (measured) value - in this particular moment
+    ValueType getADCValue(Name name);
 
     ValueType calibrateValue(Name name, ValueType x);
     ValueType reverseCalibrateValue(Name name, ValueType y);
@@ -162,7 +162,6 @@ namespace AnalogInputs {
 
     uint16_t getFullMeasurementCount();
     void printRealValue(Name name, uint8_t dig);
-    void printMeasuredValue(Name name, uint8_t dig);
     static Type getType(Name name);
     uint16_t getStableCount(Name name);
     bool isStable(Name name);
@@ -172,7 +171,7 @@ namespace AnalogInputs {
 
     extern const DefaultValues inputsP_[AnalogInputs::PHYSICAL_INPUTS];
     extern ValueType real_[ALL_INPUTS];
-    extern ValueType measured_[PHYSICAL_INPUTS];
+    extern ValueType adc_[PHYSICAL_INPUTS];
     extern bool on_;
     extern uint16_t calculationCount_;
     extern ValueType   deltaLastT_;

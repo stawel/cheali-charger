@@ -242,7 +242,7 @@ void sendChannel3()
 {
     sendHeader(3);
     FOR_ALL_PHY_INPUTS(it) {
-        printUInt(AnalogInputs::getValue(it));
+        printUInt(AnalogInputs::getAvrADCValue(it));
         printD();
     }
     printUInt(StackInfo::getNeverUsedStackSize());

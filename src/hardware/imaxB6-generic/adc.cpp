@@ -135,7 +135,7 @@ void adc::processConversion(bool finalize)
     low  = ADCL;
     high = ADCH;
 
-    AnalogInputs::measured_[getAIName(current_input)] = (high << 8) | low;
+    AnalogInputs::adc_[getAIName(current_input)] = (high << 8) | low;
     trigger_PID = getTriggerPID(current_input);
 
     current_input = nextInput(current_input);
@@ -168,8 +168,8 @@ void adc::startConversion() {
 
 void adc::finalizeMeasurement()
 {
-    AnalogInputs::measured_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
-    AnalogInputs::measured_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
+    AnalogInputs::adc_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
+    AnalogInputs::adc_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
     AnalogInputs::finalizeMeasurement();
 }
 

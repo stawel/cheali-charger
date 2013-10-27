@@ -136,7 +136,7 @@ public:
 void copyVbalVout()
 {
     AnalogInputs::CalibrationPoint p;
-    p.x = AnalogInputs::getValue(AnalogInputs::Vout);
+    p.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vout);
     p.y = AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
     AnalogInputs::setCalibrationPoint(AnalogInputs::Vout, 1, p);
 }
@@ -145,9 +145,9 @@ void copyVbalVout()
 void calibrateSimplifiedVb1_pin(AnalogInputs::ValueType real_v)
 {
     AnalogInputs::CalibrationPoint p1,p2;
-    p1.x = AnalogInputs::getValue(AnalogInputs::Vb1_pin);
+    p1.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vb1_pin);
     p1.y = real_v + AnalogInputs::getRealValue(AnalogInputs::Vb0_pin);
-    p2.x = AnalogInputs::getValue(AnalogInputs::Vb2_pin);
+    p2.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vb2_pin);
     p2.y = p1.y + AnalogInputs::getRealValue(AnalogInputs::Vb2);
     AnalogInputs::setCalibrationPoint(AnalogInputs::Vb1_pin, 1, p1);
     AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, 1, p2);
@@ -155,7 +155,7 @@ void calibrateSimplifiedVb1_pin(AnalogInputs::ValueType real_v)
 void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
 {
     AnalogInputs::CalibrationPoint p2;
-    p2.x = AnalogInputs::getValue(AnalogInputs::Vb2_pin);
+    p2.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vb2_pin);
     p2.y = real_v + AnalogInputs::getRealValue(AnalogInputs::Vb1_pin);
     AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, 1, p2);
 }
@@ -199,7 +199,7 @@ void saveVoltage(int8_t index, bool copyVbal2Vout, AnalogInputs::Name name1,  An
     AnalogInputs::ValueType newValue = AnalogInputs::getRealValue(name1);
     AnalogInputs::on_ = true;
     AnalogInputs::doFullMeasurement();
-    saveVoltage(name1, name2, AnalogInputs::getValue(name2), newValue);
+    saveVoltage(name1, name2, AnalogInputs::getAvrADCValue(name2), newValue);
     AnalogInputs::doFullMeasurement();
     if(copyVbal2Vout)
         copyVbalVout();
@@ -348,9 +348,9 @@ void calibrateI(calibrateType t, uint8_t point, AnalogInputs::ValueType current,
     if(calibrateI(t)) {
         Buzzer::soundSelect();
         p.y = current;
-        p.x = AnalogInputs::getValue(name1);
+        p.x = AnalogInputs::getAvrADCValue(name1);
         AnalogInputs::setCalibrationPoint(name1, point, p);
-        p.x = AnalogInputs::getValue(name2);
+        p.x = AnalogInputs::getAvrADCValue(name2);
         AnalogInputs::setCalibrationPoint(name2, point, p);
     }
 }
@@ -395,7 +395,7 @@ public:
             if(index == 0) {
                 AnalogInputs::printRealValue(tName_, 7);
             } else {
-                lcdPrintUnsigned(AnalogInputs::getValue(tName_), 7);
+                lcdPrintUnsigned(AnalogInputs::getAvrADCValue(tName_), 7);
             }
         }
     }
@@ -412,7 +412,7 @@ public:
 void saveTemp(AnalogInputs::Name name, uint8_t point)
 {
     AnalogInputs::CalibrationPoint p;
-    p.x = AnalogInputs::getValue(name);
+    p.x = AnalogInputs::getAvrADCValue(name);
     p.y = AnalogInputs::getRealValue(name);
     AnalogInputs::setCalibrationPoint(name, point, p);
 }
