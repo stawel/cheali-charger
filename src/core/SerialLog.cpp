@@ -137,7 +137,7 @@ void printD()
     printChar(';');
 }
 
-void printString(char *s)
+void printString(const char *s)
 {
     while(*s) {
         printChar(*s);
