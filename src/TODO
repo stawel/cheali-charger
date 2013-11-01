@@ -1,0 +1,12 @@
+
+high priority:
+ - Upper battery voltage limit control: Approx. 1.8V/cell.
+ - Intermittent timer charge ??
+
+low priority:
+ - add Pb batter type
+ - add NiXX cycling
+ - add "stack info" to LogView debug informations
+ - optimisation: rewrite Screen, remove switch..case
+ - optimisation: write own serialHardware class
+ - optimisation: remove arduino
