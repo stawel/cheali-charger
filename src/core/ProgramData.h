@@ -70,6 +70,7 @@ struct ProgramData {
 
     bool isLiXX() const { return battery.type == Life || battery.type == Lilo || battery.type == Lipo || battery.type == NiZn; };
     bool isNiXX() const { return battery.type == NiCd || battery.type == NiMH; };
+    bool isPb() const { return battery.type == Pb; };
 
     static void loadProgramData(int index);
     static void saveProgramData(int index);

@@ -229,8 +229,13 @@ void Program::run(ProgramType prog)
             runBalance();
             break;
         case Program::DischargeLiXX:
+        case Program::DischargePb:
             runDischarge();
             break;
+        case Program::ChargePb:
+            runTheveninCharge(5); //(end current = start current / 5)
+            break;
+
         case Program::FastChargeLiXX:
             runTheveninCharge(5);
             break;

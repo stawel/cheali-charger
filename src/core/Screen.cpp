@@ -32,9 +32,10 @@ namespace Screen{
     Blink blink;
     bool on_;
 
-    const char programString[] PROGMEM = "ChCBBlDiFCStSBChDiCyChDiEBLP";
+    const char programString[] PROGMEM = "ChCBBlDiFCStSBChDiCyCYChDiEB";
     void printProgram2chars(Program::ProgramType prog)
     {
+        STATIC_ASSERT(sizeOfArray(programString)-1 == Program::LAST_PROGRAM_TYPE*2);
         //TODO: ??
         lcdPrint_P(programString+prog*2, 2);
     }

@@ -40,4 +40,6 @@ void waitButtonPressed();
 #define START_CASE_COUNTER const uint8_t _case_counter = __COUNTER__
 #define NEXT_CASE (__COUNTER__ - _case_counter - 1)
 
+#define STATIC_ASSERT( x ) typedef char __STATIC_ASSERT__[( x )?1:-1]
+
 #endif /* UTILS_H_ */

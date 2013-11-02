@@ -37,7 +37,13 @@ const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][Progr
 //http://www6.zetatalk.com/docs/Batteries/Chemistry/Duracell_Ni-MH_Rechargeable_Batteries_2007.pdf
 /*NiMH*/{ ANALOG_VOLT(1.200), ANALOG_VOLT(1.600), ANALOG_VOLT(1.000),   0,  ANALOG_VOLT(1.800)},
 
-/*Pb*/  { ANALOG_VOLT(2.000), ANALOG_VOLT(2.460), ANALOG_VOLT(1.500),   0,  0 /*??*/},
+//Pb based on:
+//http://www.battery-usa.com/Catalog/NPAppManual%28Rev0500%29.pdf
+//charge start current 0.25C (stage 1 - constant current)
+//charge end current 0.05C (end current = start current / 5) (stage 2 - constant voltage)
+//Stage 3 (float charge) - not implemented
+//http://batteryuniversity.com/learn/article/charging_the_lead_acid_battery
+/*Pb*/  { ANALOG_VOLT(2.000), ANALOG_VOLT(2.450), ANALOG_VOLT(1.750),   0,  0 /*??*/},
 //LiXX
 /*Life*/{ ANALOG_VOLT(3.300), ANALOG_VOLT(3.600), ANALOG_VOLT(2.000),   ANALOG_VOLT(3.300) /*??*/, 0},
 /*Lilo*/{ ANALOG_VOLT(3.600), ANALOG_VOLT(4.100), ANALOG_VOLT(2.500),   ANALOG_VOLT(3.750) /*??*/, 0},
@@ -52,7 +58,7 @@ const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PR
         {ProgramData::Unknown,  ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 10000},
         {ProgramData::NiCd,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 1},
         {ProgramData::NiMH,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 1},
-        {ProgramData::Pb,       ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 6},
+        {ProgramData::Pb,       ANALOG_CHARGE(2.200), ANALOG_AMP(0.220), ANALOG_AMP(1.900), 6},
         {ProgramData::Life,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 3},
         {ProgramData::Lilo,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 3},
         {ProgramData::Lipo,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 3},
@@ -62,7 +68,7 @@ const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PR
 const char batteryString_Unknown[]  PROGMEM = "Unknown";
 const char batteryString_NiCd[]     PROGMEM = "NiCd";
 const char batteryString_NiMH[]     PROGMEM = "NiMH";
-const char batteryString_Pb[]       PROGMEM = "Pb";
+const char batteryString_Pb[]       PROGMEM = "Pb?";
 const char batteryString_Life[]     PROGMEM = "Life";
 const char batteryString_Lilo[]     PROGMEM = "Lilo";
 const char batteryString_Lipo[]     PROGMEM = "Lipo";
@@ -228,6 +234,8 @@ void ProgramData::changeCharge(int direction)
 {
     changeMaxSmart(battery.C, direction, ANALOG_CHARGE(65.000));
     battery.Ic = battery.C;
+    if(isPb())
+        battery.Ic/=4; //0.25C
     battery.Id = battery.C;
     check();
 }
