@@ -92,13 +92,8 @@ set(CORE_SOURCE
         SerialLog.h
         SerialLog.cpp
 
-<<<<<<< HEAD
-        Serial_tx_only.h
-        Serial_tx_only.cpp
-=======
         Serial.h
         Serial.cpp
->>>>>>> 0f85addb331c77a277305f8c06a521e43b9aae9b
 )
 
 set (CORE_SOURCE_FILES "")

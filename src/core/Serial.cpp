@@ -28,10 +28,6 @@
 #include "Arduino.h"
 #include "wiring_private.h"
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 0f85addb331c77a277305f8c06a521e43b9aae9b
 #define DISABLE_RX
 
 // this next line disables the entire HardwareSerial.cpp, 
@@ -370,19 +366,9 @@ try_again:
 
 #ifndef DISABLE_RX
   sbi(*_ucsrb, _rxen);
-<<<<<<< HEAD
-  sbi(*_ucsrb, _rxcie);
-#else
-  cbi(*_ucsrb, _rxen);
-  cbi(*_ucsrb, _rxcie);
-
-#endif
-  sbi(*_ucsrb, _txen);
-=======
 #endif
   sbi(*_ucsrb, _txen);
   sbi(*_ucsrb, _rxcie);
->>>>>>> 0f85addb331c77a277305f8c06a521e43b9aae9b
   cbi(*_ucsrb, _udrie);
 }
 
@@ -427,23 +413,6 @@ try_again:
 #endif
   *_ucsrc = config;
   
-<<<<<<< HEAD
-
-#ifndef DISABLE_RX
-
-
-  sbi(*_ucsrb, _rxen);
-  sbi(*_ucsrb, _rxcie);
-  
-#else
-  cbi(*_ucsrb, _rxen);
-  cbi(*_ucsrb, _rxcie);
-  
-#endif
-  sbi(*_ucsrb, _txen);
-  cbi(*_ucsrb, _udrie);
-
-=======
 #ifndef DISABLE_RX
   sbi(*_ucsrb, _rxen);
 #else
@@ -452,7 +421,6 @@ try_again:
   sbi(*_ucsrb, _txen);
   sbi(*_ucsrb, _rxcie);
   cbi(*_ucsrb, _udrie);
->>>>>>> 0f85addb331c77a277305f8c06a521e43b9aae9b
 }
 
 void HardwareSerial::end()

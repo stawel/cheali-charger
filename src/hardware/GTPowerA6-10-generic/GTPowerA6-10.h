@@ -40,11 +40,10 @@
 #define ENABLE_STACK_INFO
 #define ENABLE_SERIAL_LOG
 
+//for testing
+//#define ENABLE_SERIAL_LOG_WAIT
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 0f85addb331c77a277305f8c06a521e43b9aae9b
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
 #include "SMPS.h"
