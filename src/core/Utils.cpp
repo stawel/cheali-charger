@@ -17,7 +17,16 @@
 */
 
 #include "Utils.h"
+#include "memory.h"
 
+uint8_t countElements(const char * const* staticMenu)
+{
+    uint8_t retu=0;
+    while(pgm::read(staticMenu++))
+        retu++;
+
+    return retu;
+}
 
 
 bool testTintern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on)

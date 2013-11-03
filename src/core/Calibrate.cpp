@@ -54,6 +54,7 @@ const char * const calibrateMenu[] PROGMEM = {c1,c2,c3,c4
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
   ,c7
 #endif
+  ,NULL
 };
 
 const char cv1[] PROGMEM = "Vin: ";
@@ -66,7 +67,7 @@ const char cv7[] PROGMEM = "Vb6: ";
 const char cv8[] PROGMEM = "V1-6:";
 const char cv9[] PROGMEM = "Vout:";
 
-const char * const voltageMenu[] PROGMEM = {cv1, cv2,cv3,cv4,cv5,cv6,cv7,cv8, cv9};
+const char * const voltageMenu[] PROGMEM = {cv1, cv2,cv3,cv4,cv5,cv6,cv7,cv8, cv9, NULL};
 
 const AnalogInputs::Name voltageName[] PROGMEM = {
        AnalogInputs::Vin,
@@ -93,25 +94,25 @@ const char cI0[] PROGMEM = "50mA";
 const char cI1[] PROGMEM = "1000mA";
 const char cID1[] PROGMEM = "300mA";
 
-const char * const chargeIMenu[] PROGMEM = { cI0, cI1};
-const char * const dischargeIMenu[] PROGMEM = { cI0, cID1};
+const char * const chargeIMenu[] PROGMEM = { cI0, cI1, NULL};
+const char * const dischargeIMenu[] PROGMEM = { cI0, cID1, NULL};
 
 const char cp1[] PROGMEM = "point 1.";
 const char cp2[] PROGMEM = "point 2.";
 
-const char * const pointMenu[] PROGMEM = {cp1,cp2};
+const char * const pointMenu[] PROGMEM = {cp1,cp2, NULL};
 
 const char ct1[] PROGMEM = "temp: ";
 const char ct2[] PROGMEM = "value:";
 
-const char * const tempMenu[] PROGMEM = {ct1,ct2};
+const char * const tempMenu[] PROGMEM = {ct1,ct2, NULL};
 
 
 class VoltageMenu: public EditMenu {
 public:
-    VoltageMenu(const char * const* vMenu, uint8_t size,
+    VoltageMenu(const char * const* vMenu,
             const AnalogInputs::Name * vNames, uint8_t dig) :
-        EditMenu(vMenu, size),
+        EditMenu(vMenu),
         vNames_(vNames),
         dig_(dig){};
     virtual uint8_t printItem(uint8_t index) {
@@ -212,7 +213,7 @@ const char cev0[] PROGMEM = "Vb0pin: ";
 const char cev1[] PROGMEM = "Vb1pin: ";
 const char cev2[] PROGMEM = "Vb2pin: ";
 
-const char * const expertVoltageMenu[] PROGMEM = {cev0, cev1,cev2};
+const char * const expertVoltageMenu[] PROGMEM = {cev0, cev1,cev2, NULL};
 
 /* TODO: implement?
 const char string_cv10[] PROGMEM = "Vreversed";
@@ -258,7 +259,7 @@ void calibrateVoltage()
     Discharger::powerOn();
 
     if(testVout()) {
-        VoltageMenu v(voltageMenu, sizeOfArray(voltageMenu), voltageName, 9);
+        VoltageMenu v(voltageMenu, voltageName, 9);
         int8_t index;
         do {
             index = v.runSimple(true);
@@ -358,7 +359,7 @@ void calibrateI(calibrateType t, uint8_t point, AnalogInputs::ValueType current,
 
 void calibrateIcharge()
 {
-    StaticMenu menu(chargeIMenu, sizeOfArray(chargeIMenu));
+    StaticMenu menu(chargeIMenu);
     int8_t i;
     AnalogInputs::ValueType current;
     do {
@@ -372,7 +373,7 @@ void calibrateIcharge()
 
 void calibrateIdischarge()
 {
-    StaticMenu menu(dischargeIMenu, sizeOfArray(dischargeIMenu));
+    StaticMenu menu(dischargeIMenu);
     int8_t i;
     AnalogInputs::ValueType current;
     do {
@@ -388,7 +389,7 @@ void calibrateIdischarge()
 class TempMenu: public EditMenu {
 public:
     AnalogInputs::Name tName_;
-    TempMenu(AnalogInputs::Name name) : EditMenu(tempMenu, sizeOfArray(tempMenu)), tName_(name){};
+    TempMenu(AnalogInputs::Name name) : EditMenu(tempMenu), tName_(name){};
     virtual uint8_t printItem(uint8_t index) {
         StaticMenu::printItem(index);
         if(getBlinkIndex() != index) {
@@ -438,7 +439,7 @@ void calibrateTemp(AnalogInputs::Name name, uint8_t point)
 
 void calibrateTemp(AnalogInputs::Name name)
 {
-    StaticMenu menu(pointMenu, sizeOfArray(pointMenu));
+    StaticMenu menu(pointMenu);
     int8_t i;
     do {
         i = menu.runSimple();
@@ -451,7 +452,7 @@ void calibrateTemp(AnalogInputs::Name name)
 void run()
 {
     Program::programState_ = Program::Calibration;
-    StaticMenu menu(calibrateMenu, sizeOfArray(calibrateMenu));
+    StaticMenu menu(calibrateMenu);
     int8_t i;
     do {
         i = menu.runSimple();

@@ -35,6 +35,7 @@ void changeMax(uint16_t &v, int direc, uint8_t max);
 void change1Max(uint16_t &v, int direc, uint8_t max);
 
 void waitButtonPressed();
+uint8_t countElements(const char * const* staticMenu);
 
 //info: I use __ COUNTER__ which is not supported by some compilers
 #define START_CASE_COUNTER const uint8_t _case_counter = __COUNTER__

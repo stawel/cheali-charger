@@ -67,11 +67,12 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_view,
         string_speed,
         string_reset,
+        NULL
 };
 
 
 SettingsMenu::SettingsMenu(const Settings &p):
-        EditMenu(SettingsStaticMenu, sizeOfArray(SettingsStaticMenu)), p_(p){};
+        EditMenu(SettingsStaticMenu), p_(p){};
 
 
 uint8_t SettingsMenu::printItem(uint8_t index)

@@ -17,6 +17,7 @@ set(CORE_SOURCE
         LiquidCrystal.cpp
         LiquidCrystal.h
         MainMenu.h
+        StaticMenu.cpp
         StaticMenu.h
         EditMenu.h
         EditMenu.cpp
