@@ -1,15 +1,27 @@
 Using built-in specs.
 COLLECT_GCC=avr-gcc
+<<<<<<< HEAD
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/avr/4.7.2/lto-wrapper
 Target: avr
 Configured with: ../src/configure -v --enable-languages=c,c++ --prefix=/usr/lib --infodir=/usr/share/info --mandir=/usr/share/man --bindir=/usr/bin --libexecdir=/usr/lib --libdir=/usr/lib --enable-shared --with-system-zlib --enable-long-long --enable-nls --without-included-gettext --disable-libssp --build=i686-linux-gnu --host=i686-linux-gnu --target=avr
 Thread model: single
 gcc version 4.7.2 (GCC) 
+=======
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/avr/4.7.0/lto-wrapper
+Target: avr
+Configured with: ../src/configure -v --enable-languages=c,c++ --prefix=/usr/lib --infodir=/usr/share/info --mandir=/usr/share/man --bindir=/usr/bin --libexecdir=/usr/lib --libdir=/usr/lib --enable-shared --with-system-zlib --enable-long-long --enable-nls --without-included-gettext --disable-libssp --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=avr
+Thread model: single
+gcc version 4.7.0 (GCC) 
+>>>>>>> 0f85addb331c77a277305f8c06a521e43b9aae9b
 AVR Memory Usage
 ----------------
 Device: Unknown
 
+<<<<<<< HEAD
 Program:   29102 bytes
+=======
+Program:   29110 bytes
+>>>>>>> 0f85addb331c77a277305f8c06a521e43b9aae9b
 (.text + .data + .bootloader)
 
 Data:       1067 bytes

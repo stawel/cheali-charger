@@ -23,7 +23,11 @@
 #define ACCEPT_DELAY 3
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+<<<<<<< HEAD
   #define ENABLE_B0_CALIBRATION
+=======
+#define ENABLE_B0_CALIBRATION
+>>>>>>> 0f85addb331c77a277305f8c06a521e43b9aae9b
 #endif
 
 namespace Calibrate {

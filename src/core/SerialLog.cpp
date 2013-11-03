@@ -15,7 +15,11 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+<<<<<<< HEAD
 #include "Serial_tx_only.h"
+=======
+#include "Serial.h"
+>>>>>>> 0f85addb331c77a277305f8c06a521e43b9aae9b
 #include "SerialLog.h"
 #include "Hardware.h"
 #include "Timer.h"
