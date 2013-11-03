@@ -128,6 +128,8 @@ uint16_t ProgramData::getCapacityLimit() const
     uint32_t cap = battery.C;
     cap *= settings.capCutoff_;
     cap/=100;
+    if(cap>PROGRAM_DATA_MAX_CHARGE)
+        cap = PROGRAM_DATA_MAX_CHARGE;
     return cap;
 }
 
@@ -193,7 +195,10 @@ uint8_t ProgramData::printIdString() const
 
 uint8_t ProgramData::printChargeString() const
 {
-    lcdPrintCharge(battery.C, 7);
+    if(battery.C == PROGRAM_DATA_MAX_CHARGE)
+        lcdPrint_P(PSTR("unlimited"));
+    else
+        lcdPrintCharge(battery.C, 7);
     return 8;
 }
 
@@ -232,7 +237,7 @@ void ProgramData::changeVoltage(int direction)
 
 void ProgramData::changeCharge(int direction)
 {
-    changeMaxSmart(battery.C, direction, ANALOG_CHARGE(65.000));
+    changeMaxSmart(battery.C, direction, PROGRAM_DATA_MAX_CHARGE);
     battery.Ic = battery.C;
     if(isPb())
         battery.Ic/=4; //0.25C

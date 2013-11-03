@@ -95,7 +95,8 @@ Strategy::statusType Monitor::run()
     }
 
     AnalogInputs::ValueType c = AnalogInputs::getRealValue(AnalogInputs::Cout);
-    if(c > ProgramData::currentProgramData.getCapacityLimit()) {
+    AnalogInputs::ValueType c_limit  = ProgramData::currentProgramData.getCapacityLimit();
+    if(c_limit != PROGRAM_DATA_MAX_CHARGE && c > c_limit) {
         Program::stopReason_ = PSTR("cap COFF");
         return Strategy::COMPLETE;
     }

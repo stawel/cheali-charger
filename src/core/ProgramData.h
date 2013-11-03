@@ -25,6 +25,7 @@
 
 #define MAX_PROGRAMS 32
 #define PROGRAM_DATA_MAX_NAME 14
+#define PROGRAM_DATA_MAX_CHARGE ANALOG_CHARGE(65.000)
 
 struct ProgramData {
     enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo, NiZn,           LAST_BATTERY_TYPE};
