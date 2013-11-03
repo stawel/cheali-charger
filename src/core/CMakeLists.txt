@@ -91,8 +91,8 @@ set(CORE_SOURCE
         SerialLog.h
         SerialLog.cpp
 
-        Serial.h
-        Serial.cpp
+        Serial_tx_only.h
+        Serial_tx_only.cpp
 )
 
 set (CORE_SOURCE_FILES "")

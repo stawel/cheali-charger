@@ -424,10 +424,11 @@ try_again:
 
   sbi(*_ucsrb, _rxen);
   sbi(*_ucsrb, _rxcie);
+  
 #else
   cbi(*_ucsrb, _rxen);
   cbi(*_ucsrb, _rxcie);
-
+  
 #endif
   sbi(*_ucsrb, _txen);
   cbi(*_ucsrb, _udrie);
