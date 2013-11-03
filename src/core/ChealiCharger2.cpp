@@ -32,7 +32,7 @@
 
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
-{string_options };
+{string_options, NULL };
 
 MainMenu mainMenu(progmemMainMenu, 1);
 

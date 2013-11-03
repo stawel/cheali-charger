@@ -34,6 +34,7 @@ const char * const optionsStaticMenu[] PROGMEM =
 { string_o1,
   string_o2,
   string_o3,
+  NULL
 };
 
 void Options::resetDefault()
@@ -62,7 +63,7 @@ void Options::resetDefault()
 
 void Options::run()
 {
-    StaticMenu optionsMenu(optionsStaticMenu, sizeOfArray(optionsStaticMenu));
+    StaticMenu optionsMenu(optionsStaticMenu);
     int8_t i;
 
     do {

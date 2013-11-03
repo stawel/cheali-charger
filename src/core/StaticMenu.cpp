@@ -15,19 +15,16 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef EDITMENU_H_
-#define EDITMENU_H_
-
+#include <inttypes.h>
+#include "LcdPrint.h"
+#include "Menu.h"
 #include "StaticMenu.h"
-#include "Blink.h"
 
 
-class EditMenu : public StaticMenu, public Blink {
-public:
-    EditMenu(const char * const* staticMenu): StaticMenu(staticMenu){}
-    virtual uint8_t printItem(uint8_t item) {}
-    virtual void editItem(uint8_t item, uint8_t key) {}
-    bool runEdit(uint8_t index);
-};
+StaticMenu::StaticMenu(const char * const* staticMenu):
+            Menu(countElements(staticMenu)), staticMenu_(staticMenu){}
 
-#endif /* EDITMENU_H_ */
+
+uint8_t StaticMenu::printItem(uint8_t i) {
+        return lcdPrint_P(pgm::read(&staticMenu_[i]));
+}

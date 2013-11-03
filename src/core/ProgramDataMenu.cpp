@@ -39,11 +39,12 @@ const char * const ProgramDataStaticMenu[] PROGMEM =
         string_PDMM4,
         string_PDMM5,
         string_PDMM6,
+        NULL
 };
 
 
 ProgramDataMenu::ProgramDataMenu(const ProgramData &p, int programIndex):
-        EditMenu(ProgramDataStaticMenu, sizeOfArray(ProgramDataStaticMenu)), p_(p), programIndex_(programIndex){};
+        EditMenu(ProgramDataStaticMenu), p_(p), programIndex_(programIndex){};
 
 
 void ProgramDataMenu::editName()

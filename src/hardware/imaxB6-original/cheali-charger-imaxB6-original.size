@@ -18,10 +18,14 @@ AVR Memory Usage
 Device: Unknown
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Program:   29336 bytes
 =======
 Program:   29344 bytes
 >>>>>>> 0f85addb331c77a277305f8c06a521e43b9aae9b
+=======
+Program:   29376 bytes
+>>>>>>> 645a068ae8e386fb37ded2845073b3242ce9676e
 (.text + .data + .bootloader)
 
 Data:       1068 bytes

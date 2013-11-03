@@ -229,8 +229,13 @@ void Program::run(ProgramType prog)
             runBalance();
             break;
         case Program::DischargeLiXX:
+        case Program::DischargePb:
             runDischarge();
             break;
+        case Program::ChargePb:
+            runTheveninCharge(5); //(end current = start current / 5)
+            break;
+
         case Program::FastChargeLiXX:
             runTheveninCharge(5);
             break;
@@ -281,7 +286,8 @@ namespace {
       fastCh_str,
       storag_str,
       stoBal_str,
-      edBatt_str
+      edBatt_str,
+      NULL
     };
 
     const Program::ProgramType programLiXXMenuType[] PROGMEM =
@@ -301,7 +307,8 @@ namespace {
       balanc_str,
       discha_str,
       fastCh_str,
-      edBatt_str
+      edBatt_str,
+      NULL
     };
 
     const Program::ProgramType programNiZnMenuType[] PROGMEM =
@@ -319,7 +326,8 @@ namespace {
       discha_str,
       CDcycl_str,
       DCcycl_str,
-      edBatt_str
+      edBatt_str,
+      NULL
     };
 
     const Program::ProgramType programNiXXMenuType[] PROGMEM =
@@ -333,7 +341,8 @@ namespace {
     const char * const programPbMenu[] PROGMEM =
     { charge_str,
       discha_str,
-      edBatt_str
+      edBatt_str,
+      NULL
     };
 
     const Program::ProgramType programPbMenuType[] PROGMEM =
@@ -343,10 +352,10 @@ namespace {
     };
 
 
-    StaticMenu selectLiXXMenu(programLiXXMenu, sizeOfArray(programLiXXMenu));
-    StaticMenu selectNiXXMenu(programNiXXMenu, sizeOfArray(programNiXXMenu));
-    StaticMenu selectNiZnMenu(programNiZnMenu, sizeOfArray(programNiZnMenu));
-    StaticMenu selectPbMenu(programPbMenu, sizeOfArray(programPbMenu));
+    StaticMenu selectLiXXMenu(programLiXXMenu);
+    StaticMenu selectNiXXMenu(programNiXXMenu);
+    StaticMenu selectNiZnMenu(programNiZnMenu);
+    StaticMenu selectPbMenu(programPbMenu);
 
     StaticMenu * getSelectProgramMenu() {
         if(ProgramData::currentProgramData.battery.type == ProgramData::NiZn)
