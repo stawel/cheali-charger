@@ -300,6 +300,8 @@ namespace {
 void Screen::displayScreenProgramCompleted()
 {
     screenEnd(PSTR("program complete"));
+    lcdSetCursor0_1();
+    lcdPrint_P(PSTR("Time:    ")); lcdPrintTime(getTimeSec());
 }
 
 void Screen::displayMonitorError()
@@ -351,6 +353,31 @@ void Screen::displayDeltaVout()
     lcdSetCursor0_1();
     lcdPrint_P(PSTR("delta V= "));
     deltaV();
+}
+
+void Screen::displayScreenEnergy()
+{
+
+   // uint32_t Power;
+   // uint32_t Energy;
+   // Power=AnalogInputs::Vout * AnalogInputs::Iout;
+   // Energy=AnalogInputs::Cout * AnalogInputs::Vout;
+    
+    lcdSetCursor0_0();
+    lcdPrint_P(PSTR(""));
+    AnalogInputs::printRealValue(AnalogInputs::Pout, 7);
+
+    lcdPrint_P(PSTR(" "));
+    AnalogInputs::printRealValue(AnalogInputs::Eout, 7);
+    lcdPrintSpaces();
+    
+    lcdSetCursor0_1();
+    lcdPrint_P(PSTR(""));
+    AnalogInputs::printRealValue(AnalogInputs::Vout, 7);
+    
+    lcdPrint_P(PSTR(" "));
+    AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+    lcdPrintSpaces();
 }
 
 void Screen::displayDeltaTextern()
@@ -453,6 +480,7 @@ void Screen::display(ScreenType screen)
     case ScreenR:                       return displayScreenR();
     case ScreenVout:                    return displayScreenVout();
     case ScreenVinput:                  return displayScreenVinput();
+    case ScreenEnergy:                  return displayScreenEnergy();
     case ScreenDeltaVout:               return displayDeltaVout();
     case ScreenDeltaTextern:            return displayDeltaTextern();
     case ScreenDeltaFirst:              return displayDeltaFirst();
