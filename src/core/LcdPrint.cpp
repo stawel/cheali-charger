@@ -175,7 +175,7 @@ void lcdPrintInf(int8_t dig)
 }
 }
 
-void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
+void lcdPrintEValue(uint32_t x, int8_t dig, bool dot)
 {
     const char prefix = ' ';
     if(dig<=0)
@@ -355,12 +355,12 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
         unit ='A';
         break;
     case AnalogInputs::Power:
-        dot = false;
+        //dot = false;
         x = x * 10;  //pout ???
         unit ='W';
         break;
     case AnalogInputs::Work:
-        dot = false;
+        //dot = false;
         x = x * 10; //Eout ???
         unit ='W';
         break;
