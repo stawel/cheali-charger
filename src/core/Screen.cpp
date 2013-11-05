@@ -364,19 +364,16 @@ void Screen::displayScreenEnergy()
    // Energy=AnalogInputs::Cout * AnalogInputs::Vout;
     
     lcdSetCursor0_0();
-    lcdPrint_P(PSTR(""));
-    AnalogInputs::printRealValue(AnalogInputs::Pout, 7);
+    AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
 
     lcdPrint_P(PSTR(" "));
-    AnalogInputs::printRealValue(AnalogInputs::Eout, 7);
+    AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
     lcdPrintSpaces();
     
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR(""));
-    AnalogInputs::printRealValue(AnalogInputs::Vout, 7);
-    
+    AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
     lcdPrint_P(PSTR(" "));
-    AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+    AnalogInputs::printRealValue(AnalogInputs::Vout, 7);
     lcdPrintSpaces();
 }
 
