@@ -41,6 +41,7 @@ const char * Program::stopReason_;
 namespace {
     const Screen::ScreenType deltaChargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
+      Screen::ScreenEnergy,
       Screen::ScreenDeltaFirst,
       Screen::ScreenDeltaVout,
       Screen::ScreenDeltaTextern,
@@ -54,6 +55,7 @@ namespace {
     };
     const Screen::ScreenType NiXXDischargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
+      Screen::ScreenEnergy,
       Screen::ScreenDeltaTextern,
       Screen::ScreenR,
       Screen::ScreenVout,
@@ -66,6 +68,7 @@ namespace {
 
     const Screen::ScreenType theveninScreens[] PROGMEM = {
       Screen::ScreenFirst,
+      Screen::ScreenEnergy,
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
       Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
       Screen::ScreenR,
@@ -85,6 +88,7 @@ namespace {
     };
     const Screen::ScreenType dischargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
+      Screen::ScreenEnergy,
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
       Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
       Screen::ScreenR,
