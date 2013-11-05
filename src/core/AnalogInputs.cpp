@@ -427,6 +427,10 @@ AnalogInputs::Type AnalogInputs::getType(Name name)
     case Tintern:
     case Textern:
         return Temperature;
+    case Pout:
+        return Power;
+    case Eout:
+        return Work;
     default:
         return Voltage;
     }

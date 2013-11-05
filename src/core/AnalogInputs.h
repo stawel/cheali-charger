@@ -55,6 +55,8 @@ namespace AnalogInputs {
     enum Type {
         Current,
         Voltage,
+        Power,
+        Work,
         Temperature,
         Charge,
         Resistance,
