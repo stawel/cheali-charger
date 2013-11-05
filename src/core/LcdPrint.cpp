@@ -354,6 +354,16 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
         dot = false;
         unit ='A';
         break;
+    case AnalogInputs::Power:
+        dot = false;
+        x = x * 10;  //pout ???
+        unit ='W';
+        break;
+    case AnalogInputs::Work:
+        dot = false;
+        x = x * 10; //Eout ???
+        unit ='W';
+        break;
     case AnalogInputs::Voltage:
         unit ='V';
         break;
@@ -377,7 +387,7 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
     lcdPrintEValue(x, (int8_t) dig, dot);
     lcdPrintChar(unit);
 
-    if(type == AnalogInputs::Charge)     lcdPrintChar('h');
+    if(type == AnalogInputs::Charge | type == AnalogInputs::Work)     lcdPrintChar('h');
 }
 
 
