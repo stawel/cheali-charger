@@ -11,6 +11,6 @@ find -iname '*.bin'  -exec rm -rf {} \+
 find -iname '*.eep'  -exec rm -rf {} \+
 find -iname '*.cproject'  -exec rm -rf {} \+
 find -iname '*.project'  -exec rm -rf {} \+
-find -iname '*.hex'  -exec rm -rf {} \+
+find -iname '*.hex' -not -name 'cheali-charger-*.hex' -exec rm -rf {} \+
 find -iname '*.bak'  -exec rm -rf {} \+
 
