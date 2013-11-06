@@ -57,9 +57,10 @@ namespace Screen{
     
     uint8_t getChargeProcentLipo(){
         uint64_t v3;
-        v3 = AnalogInputs::VoutBalancer/Balancer::getCells();
+        v3 = AnalogInputs::VoutBalancer / Balancer::getCells();
         v3 = (116*v3)-396;
         if(v3 >= 100) return 100;
+        if(v3 <= 0) return 0;
         return v3;
     }
     
@@ -369,26 +370,20 @@ void Screen::displayDeltaVout()
 
 void Screen::displayScreenEnergy()
 {    
+    uint16_t procent = getChargeProcent();
+    //temporary lipo valid procent
+    if ( ProgramData::currentProgramData.battery.type == ProgramData::Lipo )  uint16_t procent = getChargeProcentLipo();
+    
     lcdSetCursor0_0();
-    lcdPrint_P(PSTR("P="));
-    AnalogInputs::printRealValue(AnalogInputs::Pout, 9);
+    AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
+    lcdPrint_P(PSTR(" "));
     AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
     lcdPrintSpaces();
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR("E="));
-    AnalogInputs::printRealValue(AnalogInputs::Eout, 9);
-    
-   if ( ProgramData::currentProgramData.battery.type == ProgramData::Lipo )
-    {
-        uint16_t procentLipo = getChargeProcentLipo();
-        lcdPrintUnsigned(procentLipo, 3);
-        lcdPrint_P(PSTR("%"));
-    } else {
-        uint16_t procent = getChargeProcent();
-        lcdPrintUnsigned(procent, 3);
-        lcdPrint_P(PSTR("%"));
-        
-    }
+    AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
+    lcdPrint_P(PSTR(" "));
+    lcdPrintUnsigned(procent, 4);
+    lcdPrint_P(PSTR("%"));  
     lcdPrintSpaces();  
 }
 
