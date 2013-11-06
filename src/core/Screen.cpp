@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2013  Pawel Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -54,6 +54,18 @@ namespace Screen{
         v=  v/v2;
         return v;
     }
+    
+    uint8_t getChargeProcentLipo(){
+        uint64_t v3;
+        v3 = AnalogInputs::VoutBalancer/Balancer::getCells();
+        v3 = (116*v3)-396;
+        if(v3 >= 100) return 100;
+        return v3;
+    }
+    
+    
+    
+    
 
     AnalogInputs::ValueType getBalanceValue(uint8_t cell, AnalogInputs::Type type)
     {
@@ -358,12 +370,25 @@ void Screen::displayDeltaVout()
 void Screen::displayScreenEnergy()
 {    
     lcdSetCursor0_0();
-    lcdPrint_P(PSTR("Power="));
-    AnalogInputs::printRealValue(AnalogInputs::Pout, 7);
+    lcdPrint_P(PSTR("P="));
+    AnalogInputs::printRealValue(AnalogInputs::Pout, 9);
+    AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
     lcdPrintSpaces();
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR(" Work="));
-    AnalogInputs::printRealValue(AnalogInputs::Eout, 7);
+    lcdPrint_P(PSTR("E="));
+    AnalogInputs::printRealValue(AnalogInputs::Eout, 9);
+    
+   if ( ProgramData::currentProgramData.battery.type == ProgramData::Lipo )
+    {
+        uint16_t procentLipo = getChargeProcentLipo();
+        lcdPrintUnsigned(procentLipo, 3);
+        lcdPrint_P(PSTR("%"));
+    } else {
+        uint16_t procent = getChargeProcent();
+        lcdPrintUnsigned(procent, 3);
+        lcdPrint_P(PSTR("%"));
+        
+    }
     lcdPrintSpaces();  
 }
 
@@ -411,6 +436,7 @@ void Screen::displayScreenReversedPolarity()
 
 void Screen::displayStartInfo()
 {
+    uint16_t 
     lcdSetCursor0_0();
     ProgramData::currentProgramData.printBatteryString(4);
     lcdPrintChar(' ');
@@ -419,7 +445,14 @@ void Screen::displayStartInfo()
     printProgram2chars(Program::programType_);
 
     lcdSetCursor0_1();
+   
     uint16_t procent = getChargeProcent();
+    
+    //temporary lipo valid procent
+    if ( ProgramData::currentProgramData.battery.type == ProgramData::Lipo )  uint16_t procent = getChargeProcentLipo();
+
+   
+   
     if(procent == 100) {
         if(blink.getBlinkOff())
             lcdPrintSpaces(4);
