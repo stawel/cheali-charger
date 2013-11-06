@@ -436,7 +436,6 @@ void Screen::displayScreenReversedPolarity()
 
 void Screen::displayStartInfo()
 {
-    uint16_t 
     lcdSetCursor0_0();
     ProgramData::currentProgramData.printBatteryString(4);
     lcdPrintChar(' ');
