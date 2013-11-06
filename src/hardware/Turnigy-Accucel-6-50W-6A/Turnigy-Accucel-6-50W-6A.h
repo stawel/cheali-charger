@@ -15,13 +15,13 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef Turnigy_Accucel_6_50W_5A_H_
-#define Turnigy_Accucel_6_50W_5A_H_
+#ifndef Turnigy_Accucel_6_50W_6A_H_
+#define Turnigy_Accucel_6_50W_6A_H_
 
 #include "imaxB6.h"
 
 #define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(5.000)   //5A
+#define MAX_CHARGE_I            ANALOG_AMP(6.000)   //should be 5A
 #define MAX_CHARGE_P            ANALOG_WATT(50.000)               //50W
 
 #define MAX_DISCHARGE_P         ANALOG_WATT(5.000)                //5W
@@ -36,4 +36,4 @@
 #define CALIBRATION_SPEED                   10
 
 
-#endif /* Turnigy_Accucel_6_50W_5A_H_ */
+#endif /* Turnigy_Accucel_6_50W_6A_H_ */
