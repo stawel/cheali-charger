@@ -356,25 +356,15 @@ void Screen::displayDeltaVout()
 }
 
 void Screen::displayScreenEnergy()
-{
-
-   // uint32_t Power;
-   // uint32_t Energy;
-   // Power=AnalogInputs::Vout * AnalogInputs::Iout;
-   // Energy=AnalogInputs::Cout * AnalogInputs::Vout;
-    
+{    
     lcdSetCursor0_0();
-    AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
-
-    lcdPrint_P(PSTR(" "));
-    AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+    lcdPrint_P(PSTR("Power="));
+    AnalogInputs::printRealValue(AnalogInputs::Pout, 7);
     lcdPrintSpaces();
-    
     lcdSetCursor0_1();
-    AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
-    lcdPrint_P(PSTR(" "));
-    AnalogInputs::printRealValue(AnalogInputs::Vout, 7);
-    lcdPrintSpaces();
+    lcdPrint_P(PSTR(" Work="));
+    AnalogInputs::printRealValue(AnalogInputs::Eout, 7);
+    lcdPrintSpaces();  
 }
 
 void Screen::displayDeltaTextern()
