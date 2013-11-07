@@ -87,9 +87,9 @@ void print(char * &buf, uint8_t &maxSize, const char *str)
     }
 }
 
-
-void printUInt (char * &buf, uint8_t &maxSize, uint16_t value)
+void printUInt(char * &buf, uint8_t &maxSize, uint16_t value)
 {
+    //TODO: use printULong - for some reason the program size is smaller now!?
     uint8_t dig = digits(value);
     if(dig > maxSize) {
         printChar(buf, maxSize,'?');
@@ -101,6 +101,28 @@ void printUInt (char * &buf, uint8_t &maxSize, uint16_t value)
             *buf = 0;
         while(dig) {
             uint16_t m = value;
+            value /= 10;
+            char c = m - 10 * value;
+            *--str = c + '0';
+            dig--;
+        }
+    }
+}
+
+
+void printULong(char * &buf, uint8_t &maxSize, uint32_t value)
+{
+    uint8_t dig = digits(value);
+    if(dig > maxSize) {
+        printChar(buf, maxSize,'?');
+    } else {
+        buf+=dig;
+        char * str = buf;
+        maxSize-=dig;
+        if(maxSize > 0)
+            *buf = 0;
+        while(dig) {
+            uint32_t m = value;
             value /= 10;
             char c = m - 10 * value;
             *--str = c + '0';
