@@ -39,13 +39,15 @@ namespace Screen{
         //TODO: ??
         lcdPrint_P(programString+prog*2, 2);
     }
-
-    uint8_t getChargeProcent(){
+   
+        uint8_t getChargeProcentValid(){
         uint16_t v1,v2, v;
-        v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
-        v1 = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
+        v2 = ProgramData::currentProgramData.getVoltage(ProgramData::ValidFull);
+        v1 = ProgramData::currentProgramData.getVoltage(ProgramData::ValidEmpty);
         v = AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
-
+        
+        
+        
         if(v >= v2) return 100;
         if(v <= v1) return 0;
         v-=v1;
@@ -55,19 +57,6 @@ namespace Screen{
         return v;
     }
     
-    uint8_t getChargeProcentLipo(){
-        uint64_t v3;
-        v3 = AnalogInputs::getRealValue(AnalogInputs::VoutBalancer) / Balancer::getCells();
-        v3 = (116*v3)-396;
-        if(v3 >= 100) return 100;
-        if(v3 <= 0) return 0;
-        return v3;
-    }
-    
-    
-    
-    
-
     AnalogInputs::ValueType getBalanceValue(uint8_t cell, AnalogInputs::Type type)
     {
         if(type == AnalogInputs::Voltage)
@@ -370,9 +359,9 @@ void Screen::displayDeltaVout()
 
 void Screen::displayScreenEnergy()
 {    
-    uint16_t procent = getChargeProcent();
+    uint16_t procent = getChargeProcentValid();
     //temporary lipo valid procent
-    if ( ProgramData::currentProgramData.battery.type == ProgramData::Lipo )  uint16_t procent = getChargeProcentLipo();
+   // if ( ProgramData::currentProgramData.battery.type == ProgramData::Lipo )  uint16_t procent = getChargeProcentLipo();
     
     lcdSetCursor0_0();
     AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
@@ -440,10 +429,10 @@ void Screen::displayStartInfo()
 
     lcdSetCursor0_1();
    
-    uint16_t procent = getChargeProcent();
+    uint16_t procent = getChargeProcentValid();
     
     //temporary lipo valid procent
-    if ( ProgramData::currentProgramData.battery.type == ProgramData::Lipo )  uint16_t procent = getChargeProcentLipo();
+    //if ( ProgramData::currentProgramData.battery.type == ProgramData::Lipo )  uint16_t procent = getChargeProcentLipo();
 
    
    
