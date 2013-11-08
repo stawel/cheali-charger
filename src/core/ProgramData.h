@@ -28,8 +28,8 @@
 #define PROGRAM_DATA_MAX_CHARGE ANALOG_CHARGE(65.000)
 
 struct ProgramData {
-    enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo, NiZn,           LAST_BATTERY_TYPE};
-    enum VoltageType {VIdle,VCharge,VDischarge,VStorage, VUpperLimit,            LAST_VOLTAGE_TYPE};
+    enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo, NiZn,                                  LAST_BATTERY_TYPE};
+    enum VoltageType {VIdle,VCharge,VDischarge,VStorage, VUpperLimit, ValidEmpty, ValidFull,            LAST_VOLTAGE_TYPE};
 
     struct BatteryData {
         uint8_t type;
