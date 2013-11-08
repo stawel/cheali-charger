@@ -409,7 +409,7 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
     lcdPrintEValue(x, (int8_t) dig, dot);
     lcdPrintChar(unit);
 
-    if(type == AnalogInputs::Charge | type == AnalogInputs::Work)     lcdPrintChar('h');
+    if(type == AnalogInputs::Charge || type == AnalogInputs::Work)     lcdPrintChar('h');
 }
 
 
