@@ -56,7 +56,7 @@ AnalogInputs::ValueType Thevenin::calculateI(AnalogInputs::ValueType v) const
     i *= Rth_.I_;
     i /= Rth_.V_;
     //TODO:
-    if(i >  32000) return  32000;
+    if(i >  65000) return  65000;
     if(i < 0) return 0;
     return i;
 }

@@ -154,6 +154,15 @@ void printUInt(uint16_t x)
     printString(buf);
 }
 
+void printULong(uint32_t x)
+{
+    char buf[8];
+    char *str = buf;
+    uint8_t maxSize = 7;
+    ::printULong(str, maxSize, x);
+    printString(buf);
+}
+
 
 
 void sendHeader(uint16_t channel)

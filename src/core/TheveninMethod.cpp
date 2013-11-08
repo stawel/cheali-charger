@@ -185,13 +185,36 @@ AnalogInputs::ValueType TheveninMethod::calculateI()
 
 AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value, AnalogInputs::ValueType oldValue)
 {
+    
+      
+     
     valueTh_ = value;
     if(value > maxValue_) {
         value = maxValue_;
-    }
+    }  
     if(value < getMinValueB()) {
         value = getMinValueB();
     }
+      
+      
+ /*         
+//  ********************************************************************
+
+    uint64_t p;
+    
+    p = value * AnalogInputs::Vout;         // actual planned output power  (limited charger abs. max. current) 
+     
+    if(Discharger::isPowerOn())   {     //not working
+        if(p > MAX_DISCHARGE_P)  value = MAX_DISCHARGE_P / AnalogInputs::Vout;
+    }  else if (SMPS::isPowerOn()) {
+        if(p > MAX_CHARGE_P) value = MAX_CHARGE_P / AnalogInputs::Vout;
+    }
+  
+
+ //  ********************************************************************     
+  */      
+
+
 
     if(oldValue != value) {
         if(Ifalling_ != Falling

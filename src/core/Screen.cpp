@@ -57,7 +57,7 @@ namespace Screen{
     
     uint8_t getChargeProcentLipo(){
         uint64_t v3;
-        v3 = AnalogInputs::VoutBalancer / Balancer::getCells();
+        v3 = AnalogInputs::getRealValue(AnalogInputs::VoutBalancer) / Balancer::getCells();
         v3 = (116*v3)-396;
         if(v3 >= 100) return 100;
         if(v3 <= 0) return 0;

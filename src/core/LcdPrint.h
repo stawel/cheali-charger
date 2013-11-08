@@ -27,6 +27,7 @@ void print_P(char * &buf, uint8_t &maxSize, const char *str);
 void print(char * &buf, uint8_t &maxSize, const char *str);
 void printChar(char * &buf, uint8_t &maxSize, char chr);
 void printUInt(char * &buf, uint8_t &maxSize, uint16_t value);
+void printULong(char * &buf, uint8_t &maxSize, uint32_t value);
 
 
 void lcdSetCursor(uint8_t x, uint8_t y);

@@ -250,12 +250,13 @@ uint16_t ProgramData::getMaxIc() const
     uint32_t i;
     uint16_t v;
     v = getVoltage(VCharge);
-    i = MAX_CHARGE_P;
-    i *= ANALOG_VOLT(1);
-    i /= v;
+    i = MAX_CHARGE_P;        
+    i *= ANALOG_VOLT(1);    
+    i /= v;                 
 
-    if(i > MAX_CHARGE_I)
-        i = MAX_CHARGE_I;
+   
+    if(i > MAX_CHARGE_I)    
+        i = MAX_CHARGE_I; 
     return i;
 }
 
