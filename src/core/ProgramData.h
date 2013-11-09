@@ -29,7 +29,7 @@
 
 struct ProgramData {
     enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo, NiZn,                                  LAST_BATTERY_TYPE};
-    enum VoltageType {VIdle,VCharge,VDischarge,VStorage, VUpperLimit, ValidEmpty, ValidFull,            LAST_VOLTAGE_TYPE};
+    enum VoltageType {VIdle,VCharge,VDischarge,VStorage, VUpperLimit, ValidEmpty,                        LAST_VOLTAGE_TYPE};
 
     struct BatteryData {
         uint8_t type;
