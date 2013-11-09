@@ -42,6 +42,9 @@
 #define ENABLE_GET_PID_VALUE
 //#define ENABLE_EXPERT_VOLTAGE_CALIBRATION
 
+//start warning-text
+#define TESTINGALERT
+
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
 
 

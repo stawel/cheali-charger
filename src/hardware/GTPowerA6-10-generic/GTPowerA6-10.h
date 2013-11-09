@@ -43,6 +43,8 @@
 //for testing
 //#define ENABLE_SERIAL_LOG_WAIT
 
+//start warning-text
+#define TESTINGALERT
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
