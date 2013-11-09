@@ -42,12 +42,10 @@ namespace Screen{
    
         uint8_t getChargeProcentValid(){
         uint16_t v1,v2, v;
-        v2 = ProgramData::currentProgramData.getVoltage(ProgramData::ValidFull);
+        v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
         v1 = ProgramData::currentProgramData.getVoltage(ProgramData::ValidEmpty);
         v = AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
-        
-        
-        
+  
         if(v >= v2) return 100;
         if(v <= v1) return 0;
         v-=v1;
@@ -360,9 +358,7 @@ void Screen::displayDeltaVout()
 void Screen::displayScreenEnergy()
 {    
     uint16_t procent = getChargeProcentValid();
-    //temporary lipo valid procent
-   // if ( ProgramData::currentProgramData.battery.type == ProgramData::Lipo )  uint16_t procent = getChargeProcentLipo();
-    
+   
     lcdSetCursor0_0();
     AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
     lcdPrint_P(PSTR(" "));
@@ -430,11 +426,7 @@ void Screen::displayStartInfo()
     lcdSetCursor0_1();
    
     uint16_t procent = getChargeProcentValid();
-    
-    //temporary lipo valid procent
-    //if ( ProgramData::currentProgramData.battery.type == ProgramData::Lipo )  uint16_t procent = getChargeProcentLipo();
 
-   
    
     if(procent == 100) {
         if(blink.getBlinkOff())
