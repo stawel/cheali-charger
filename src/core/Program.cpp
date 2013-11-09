@@ -144,16 +144,18 @@ bool Program::startInfo()
 {
     bool balancer = false;
     const Screen::ScreenType * screen = startInfoScreens;
-    Strategy::strategy_ = &StartInfoStrategy::vtable;
+    Strategy::strategy_ = &StartInfoStrategy::vtable; 
     if(ProgramData::currentProgramData.isLiXX()) {
         //usues balance port
         balancer = true;
         screen = startInfoBalanceScreens;
     }
+    
     StartInfoStrategy::setBalancePort(balancer);
-    programState_ = Info;
+    programState_ = Info;  
     return doStrategy(startInfoBalanceScreens, true) == Strategy::COMPLETE;
 }
+
 
 Strategy::statusType Program::runStorage(bool balance)
 {
