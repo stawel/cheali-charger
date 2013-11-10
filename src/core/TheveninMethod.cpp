@@ -128,7 +128,7 @@ bool TheveninMethod::isComlete(bool isEndVout, AnalogInputs::ValueType value)
     if(bstatus_ != Strategy::COMPLETE)
         return false;
 
-    isEndVout |= (Ifalling_ == Falling)  && value == 0;
+    isEndVout |= (Ifalling_ == Falling)  && value < minValue_;
 
     if(value <= getMinValueB() && isEndVout) {
         if(fullCount_++ >= 10) {
