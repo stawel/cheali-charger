@@ -198,32 +198,6 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value
         value = getMinValueB();
     }
       
-      
-         
-//  *********************  info from Pawel  ***********************************************
-//value = AnalogInputs::reverseCalibrate(AnalogInputs::IsmpsValue, your current in Amps);
-//value = AnalogInputs::reverseCalibrate(AnalogInputs::IdischargerValue, your current in Amps);
-
-
-
-    uint32_t p;
-    uint16_t u;
-
-    u = getRealValue(AnalogInputs::Vout)/1000;
-
-    if(u > 0) { //protect division by zero
-      if(Discharger::isPowerOn())   {
-          p = (AnalogInputs::calibrateValue(AnalogInputs::IdischargeValue, value)) * (getRealValue(AnalogInputs::Vout));         // actual planned output power  (limiting charger abs. max. current) 
-          // hmmm this is not good. Pawel you can simlify?
-          if(p > MAX_DISCHARGE_P)  value =AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, MAX_DISCHARGE_P / u);
-      }  else if (SMPS::isPowerOn()) {
-          p = (AnalogInputs::calibrateValue(AnalogInputs::IsmpsValue, value)) * (getRealValue(AnalogInputs::Vout));         // actual planned output power  (limiting charger abs. max. current) 
-          // hmmm this is not good. Pawel you can simlify?
-          if(p > MAX_CHARGE_P) value =AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, MAX_CHARGE_P / u);
-      }
-    }
-    
-
     if(oldValue != value) {
         if(Ifalling_ != Falling
             || value < oldValue

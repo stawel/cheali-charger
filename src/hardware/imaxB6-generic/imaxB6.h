@@ -69,6 +69,8 @@ namespace hardware {
     void setBalancerOutput(bool enable);
 
     void setChargerValue(uint16_t value);
+ //   uint16_t reduceMaxPowerCharge(uint16_t value);
+ //   uint16_t reduceMaxPowerDisCharge(uint16_t value);
     void setDischargerValue(uint16_t value);
     void setBalancer(uint8_t balance);
     void doInterrupt();

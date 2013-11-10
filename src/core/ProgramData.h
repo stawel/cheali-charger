@@ -61,10 +61,14 @@ struct ProgramData {
     void changeCharge(int direction);
     void changeIc(int direction);
     void changeId(int direction);
+    void changeIcmax(int direction);
+    void changeIdmax(int direction);
 
     uint16_t getMaxCells() const;
     uint16_t getMaxIc() const;
     uint16_t getMaxId() const;
+    uint16_t getMaxIcmax() const;
+    uint16_t getMaxIdmax() const;
 
     void check();
     void loadDefault();
