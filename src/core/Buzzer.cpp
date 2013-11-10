@@ -38,10 +38,22 @@ namespace Buzzer {
 
     uint16_t getSound(uint16_t time);
     uint16_t setOff();
+    
+    void beeploud(int16_t dur);
 
 
 } // namespace Buzzer
 
+void Buzzer::loudSound1()
+{
+     //only use the "program complete" status. Dont use charging status.
+    int8_t dur1 = 10;
+    for( dur1 <= 0; dur1--;) {
+     hardware::beepLoud(1000);
+     hardware::delay(100);
+    }
+
+}
 
 void Buzzer::sound(Buzzer::SoundType s)
 {

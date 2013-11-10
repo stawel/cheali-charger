@@ -64,13 +64,13 @@ void setup()
     Settings::load();
     Screen::displayStrings(PSTR("  ChealiCharger"),
                            PSTR("    ver: "  CHEALI_CHARGER_VERSION_STRING));
-    hardware::delay(4000);
+    hardware::delay(1000);
 
 #ifdef TESTINGALERT
 //                               1234567890123456 
     Screen::displayStrings(PSTR(" Modded version"),
                            PSTR("  FOR TESTING"));
-    hardware::delay(3000);
+    hardware::delay(1000);
 #endif    
     if(Version::getCurrentEEPROMVersion() != CHEALI_CHARGER_EEPROM_VERSION) {
         Screen::displayStrings(PSTR("reseting eeprom"),

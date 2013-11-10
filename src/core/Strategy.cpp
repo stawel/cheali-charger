@@ -30,8 +30,12 @@ namespace Strategy {
 
     void chargingComplete() {
         lcdClear();
-        Screen::displayScreenProgramCompleted();
+        Screen::displayScreenProgramCompleted();      
+#ifdef LOUDSOUND
+        Buzzer::loudSound1();
+#else
         Buzzer::soundProgramComplete();
+#endif
         waitButtonPressed();
         Buzzer::soundOff();
     }

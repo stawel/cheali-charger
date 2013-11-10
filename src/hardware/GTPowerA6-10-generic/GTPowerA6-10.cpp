@@ -61,6 +61,20 @@ void hardware::initialize()
     AnalogInputs::initialize();
 }
 
+void hardware::beepLoud(uint16_t dur) //dur is milisec
+{
+     
+     //only use the "program complete" status. Dont use charging status.
+     // good param: 140/40
+     
+     for( dur <= dur; dur--;) {
+       digitalWrite(BUZZER_PIN,HIGH);
+      delayMicroseconds(140);
+       digitalWrite(BUZZER_PIN,LOW);
+      delayMicroseconds(40);     
+       } 
+}
+
 void hardware::setLCDBacklight(uint8_t val)
 {
     uint32_t v1,v2;

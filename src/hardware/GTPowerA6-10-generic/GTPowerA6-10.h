@@ -62,6 +62,7 @@ namespace hardware {
     void delay(uint16_t t);
     void setLCDBacklight(uint8_t val);
     void setBuzzer(uint16_t val);
+    void beepLoud(uint16_t dur);
     void setBatteryOutput(bool enable);
     void setChargerOutput(bool enable);
     void setBalancerOutput(bool enable);

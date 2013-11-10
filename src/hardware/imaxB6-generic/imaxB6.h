@@ -45,6 +45,9 @@
 //start warning-text
 #define TESTINGALERT
 
+//loudness programcomplete
+#define LOUDSOUND
+
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
 
 
@@ -63,6 +66,7 @@ namespace hardware {
     uint8_t getKeyPressed();
     void delay(uint16_t t);
     void setBuzzer(uint16_t val);
+    void beepLoud(uint16_t dur);
     void setBatteryOutput(bool enable);
     void setChargerOutput(bool enable);
     void setDischargerOutput(bool enable);
