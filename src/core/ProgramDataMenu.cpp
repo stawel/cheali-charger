@@ -93,8 +93,8 @@ void ProgramDataMenu::editItem(uint8_t index, uint8_t key)
     case 0: p_.changeBattery(dir);     break;
     case 1: p_.changeVoltage(dir);     break;
     case 2: p_.changeCharge(dir);     break;
-    case 3: p_.changeIcmax(dir);         break;
-    case 4: p_.changeIdmax(dir);         break;
+    case 3: p_.changeIcSettings(dir);         break;
+    case 4: p_.changeIdSettings(dir);         break;
     }
 }
 

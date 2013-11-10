@@ -251,11 +251,10 @@ uint16_t ProgramData::getMaxIc() const
     uint32_t i;
     uint16_t v;
     v = getVoltage(VCharge);
-    i = MAX_CHARGE_P;        
-    i *= ANALOG_VOLT(1);    
+    i = MAX_CHARGE_P;
+    i *= ANALOG_VOLT(1);
     i /= v;                 
 
-   
     if(i > MAX_CHARGE_I)  
         i = MAX_CHARGE_I; 
     return i;
@@ -263,8 +262,6 @@ uint16_t ProgramData::getMaxIc() const
 
 uint16_t ProgramData::getMaxId() const
 {
-
-
     uint32_t i;
     uint16_t v;
     v = getVoltage(VCharge);
@@ -279,14 +276,50 @@ uint16_t ProgramData::getMaxId() const
 }
 
 
-uint16_t ProgramData::getMaxIcmax() const
+uint16_t ProgramData::getMaxIcRealtime() const
+{
+   
+    uint32_t i;
+    uint16_t v;
+    v = AnalogInputs::getRealValue(AnalogInputs::Vout);  //actual vout in mV??
+    i = MAX_CHARGE_P;         //50
+    i *= ANALOG_VOLT(1);      //1?? 
+    i /= v;                 
+
+    if(i > MAX_CHARGE_I)  
+        i = MAX_CHARGE_I; 
+    return i;
+}
+
+uint16_t ProgramData::getMaxIdRealtime() const
+{
+
+
+    uint32_t i;
+    uint16_t v;
+    v = AnalogInputs::getRealValue(AnalogInputs::Vout);  //actual vout in mV??
+    i = MAX_DISCHARGE_P;
+    i *= ANALOG_VOLT(1);
+    i /= v;
+
+    if(i > MAX_DISCHARGE_I) 
+        i = MAX_DISCHARGE_I;
+    return i;
+
+}
+
+
+
+// for edit battery
+uint16_t ProgramData::getMaxIcSettings() const
 {
     uint32_t i;
     i = MAX_CHARGE_I; 
     return i;
 }
 
-uint16_t ProgramData::getMaxIdmax() const
+// for edit battery
+uint16_t ProgramData::getMaxIdSettings() const
 {
     uint32_t i;
     i = MAX_DISCHARGE_I;
@@ -295,13 +328,15 @@ uint16_t ProgramData::getMaxIdmax() const
 }
 
 
-void ProgramData::changeIcmax(int direction)
+//for edit battery
+void ProgramData::changeIcSettings(int direction)
 {
-    changeMaxSmart(battery.Ic, direction, getMaxIcmax());
+    changeMaxSmart(battery.Ic, direction, getMaxIcSettings());
 }
-void ProgramData::changeIdmax(int direction)
+//for edit battery
+void ProgramData::changeIdSettings(int direction)
 {
-    changeMaxSmart(battery.Id, direction, getMaxIdmax());
+    changeMaxSmart(battery.Id, direction, getMaxIdSettings());
 }
 
 
