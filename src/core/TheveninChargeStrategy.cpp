@@ -40,8 +40,8 @@ void TheveninChargeStrategy::powerOff()
 
 void TheveninChargeStrategy::powerOn()
 {
-    SMPS::powerOn();
     Balancer::powerOn();
+    SMPS::powerOn();
     TheveninMethod::initialize(AnalogInputs::IsmpsValue);
 }
 
@@ -60,7 +60,7 @@ Strategy::statusType TheveninChargeStrategy::doStrategy()
     bool isendVout = isEndVout();
     uint16_t oldValue = SMPS::getValue();
 
-    //test for charge complete
+    //test if charge complete
     if(TheveninMethod::isComlete(isendVout, oldValue)) {
         SMPS::powerOff(SMPS::CHARGING_COMPLETE);
         return Strategy::COMPLETE;

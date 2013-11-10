@@ -1,0 +1,15 @@
+/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/CMakeFiles/arduino.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-original/CMakeFiles/cheali-charger-GTPowerA6-10-0.31.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-original/CMakeFiles/cheali-charger-GTPowerA6-10-0.31.size.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-A-6-10-200W/CMakeFiles/cheali-charger-Turnigy-A-6-10-200W-0.31.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-A-6-10-200W/CMakeFiles/cheali-charger-Turnigy-A-6-10-200W-0.31.size.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-Accucel-6-50W-5A/CMakeFiles/cheali-charger-Turnigy-Accucel-6-50W-5A-0.31.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-Accucel-6-50W-5A/CMakeFiles/cheali-charger-Turnigy-Accucel-6-50W-5A-0.31.size.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-Accucel-6-50W-6A/CMakeFiles/cheali-charger-Turnigy-Accucel-6-50W-6A-0.31.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-Accucel-6-50W-6A/CMakeFiles/cheali-charger-Turnigy-Accucel-6-50W-6A-0.31.size.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-MEGA-400Wx2/CMakeFiles/cheali-charger-Turnigy-MEGA-400Wx2-0.31.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-MEGA-400Wx2/CMakeFiles/cheali-charger-Turnigy-MEGA-400Wx2-0.31.size.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-clone/CMakeFiles/cheali-charger-imaxB6-clone-0.31.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-clone/CMakeFiles/cheali-charger-imaxB6-clone-0.31.size.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-original/CMakeFiles/cheali-charger-imaxB6-original-0.31.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-original/CMakeFiles/cheali-charger-imaxB6-original-0.31.size.dir

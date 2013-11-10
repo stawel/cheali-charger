@@ -101,7 +101,6 @@ void hardware::setChargerOutput(bool enable)
     PID_enable = false;
     digitalWrite(SMPS_DISABLE_PIN, !enable);
     if(enable) {
-        AnalogInputs::doFullMeasurement();
         SMPS_PID::init(AnalogInputs::getRealValue(AnalogInputs::Vin), AnalogInputs::getRealValue(AnalogInputs::Vout));
     }
 }

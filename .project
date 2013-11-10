@@ -1,0 +1,3837 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>cheali-charger@cheali-charger-test1</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.cdt.make.core.makeBuilder</name>
+			<triggers>clean,full,incremental,</triggers>
+			<arguments>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.cleanBuildTarget</key>
+					<value>clean</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enableCleanBuild</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.append_environment</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.stopOnError</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enabledIncrementalBuild</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.command</key>
+					<value>/usr/bin/make</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.contents</key>
+					<value>org.eclipse.cdt.make.core.activeConfigSettings</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.target.inc</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.arguments</key>
+					<value>-j2</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.buildLocation</key>
+					<value>/home/njozsef/cheali-git/cheali-charger-test1</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.useDefaultBuildCmd</key>
+					<value>false</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.environment</key>
+					<value>VERBOSE=1|CMAKE_NO_VERBOSE=1|</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enableFullBuild</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.target.auto</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enableAutoBuild</key>
+					<value>false</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.target.clean</key>
+					<value>clean</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.fullBuildTarget</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.buildArguments</key>
+					<value></value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.location</key>
+					<value>/home/njozsef/cheali-git/cheali-charger-test1</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.autoBuildTarget</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.core.errorOutputParser</key>
+					<value>org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser;</value>
+				</dictionary>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.cdt.make.core.ScannerConfigBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.cdt.core.ccnature</nature>
+		<nature>org.eclipse.cdt.make.core.makeNature</nature>
+		<nature>org.eclipse.cdt.make.core.ScannerConfigNature</nature>
+		<nature>org.eclipse.cdt.core.cnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[Subprojects]</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/main.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/main.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/new.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/new.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/WString.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/WString.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/Print.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/Print.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/wiring_analog.c</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/wiring_analog.c</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/wiring.c</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/wiring.c</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/wiring_digital.c</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/wiring_digital.c</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/CDC.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/CDC.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/HID.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/HID.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/IPAddress.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/IPAddress.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/Stream.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/Stream.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/Tone.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/Tone.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/USBCore.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/USBCore.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/WMath.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/WMath.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/WInterrupts.c</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/WInterrupts.c</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/wiring_pulse.c</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/wiring_pulse.c</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Source Files/wiring_shift.c</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/wiring_shift.c</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/Arduino.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/Arduino.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/binary.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/binary.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/Client.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/Client.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/HardwareSerial.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/HardwareSerial.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/IPAddress.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/IPAddress.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/new.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/new.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/Platform.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/Platform.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/Printable.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/Printable.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/Print.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/Print.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/Server.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/Server.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/Stream.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/Stream.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/Udp.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/Udp.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/USBAPI.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/USBAPI.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/USBCore.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/USBCore.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/USBDesc.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/USBDesc.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/WCharacter.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/WCharacter.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/wiring_private.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/wiring_private.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Header Files/WString.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/arduino/cores/arduino/WString.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] arduino/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31//CMakeLists.txt</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/CMakeLists.txt</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/defaultCalibration.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-original/defaultCalibration.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/GTPowerA6-10.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/GTPowerA6-10.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/TimerOne.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/TimerOne.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/adc.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/adc.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/AnalogInputs.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/AnalogInputs.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Balancer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Balancer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Strategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Strategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/ChealiCharger2.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ChealiCharger2.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/EditName.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditName.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Keyboard.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Keyboard.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/LcdPrint.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LcdPrint.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/LiquidCrystal.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LiquidCrystal.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/StaticMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StaticMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/EditMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Menu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Menu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/ProgramData.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/ProgramDataMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramDataMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Screen.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Screen.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/SimpleChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/DeltaChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/DeltaChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/SimpleDischargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleDischargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/TheveninDischargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninDischargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/TheveninChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/StorageStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StorageStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/StartInfoStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StartInfoStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/SMPS.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SMPS.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Discharger.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Discharger.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Program.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Program.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Thevenin.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Thevenin.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/TheveninMethod.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninMethod.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Timer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Timer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Utils.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Utils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Blink.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Blink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Monitor.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Monitor.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Calibrate.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Calibrate.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Options.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Options.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Settings.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Settings.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/SettingsMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SettingsMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/PolarityCheck.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/PolarityCheck.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Buzzer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Buzzer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Version.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Version.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/StackInfo.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StackInfo.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/SerialLog.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SerialLog.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Source Files/Serial.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Serial.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/GTPowerA6-10-original.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-original/GTPowerA6-10-original.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Hardware.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-original/Hardware.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/GTPowerA6-10.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/GTPowerA6-10.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/TimerOne.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/TimerOne.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/adc.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/adc.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/AnalogInputs.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/AnalogInputs.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Balancer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Balancer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Strategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Strategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/ChealiCharger2.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ChealiCharger2.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/EditName.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditName.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Keyboard.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Keyboard.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/LcdPrint.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LcdPrint.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/LiquidCrystal.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LiquidCrystal.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/MainMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/MainMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/StaticMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StaticMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/EditMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Menu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Menu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/memory.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/memory.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/ProgramData.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramData.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/ProgramDataMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramDataMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Screen.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Screen.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/SimpleChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/DeltaChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/DeltaChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/SimpleDischargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleDischargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/TheveninDischargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninDischargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/TheveninChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/StorageStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StorageStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/StartInfoStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StartInfoStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/SMPS.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SMPS.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Discharger.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Discharger.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Program.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Program.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Thevenin.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Thevenin.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/TheveninMethod.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninMethod.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Timer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Timer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Utils.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Utils.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Blink.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Blink.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Monitor.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Monitor.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Calibrate.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Calibrate.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Options.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Options.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Settings.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Settings.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/SettingsMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SettingsMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/PolarityCheck.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/PolarityCheck.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Buzzer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Buzzer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Version.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Version.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/StackInfo.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StackInfo.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/SerialLog.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SerialLog.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Header Files/Serial.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Serial.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-GTPowerA6-10-0.31/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31//CMakeLists.txt</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/CMakeLists.txt</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/defaultCalibration.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-original/defaultCalibration.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/imaxB6.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/imaxB6.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/TimerOne.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/TimerOne.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/SMPS_PID.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/SMPS_PID.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/adc.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/adc.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/AnalogInputs.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/AnalogInputs.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Balancer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Balancer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Strategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Strategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/ChealiCharger2.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ChealiCharger2.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/EditName.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditName.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Keyboard.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Keyboard.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/LcdPrint.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LcdPrint.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/LiquidCrystal.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LiquidCrystal.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/StaticMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StaticMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/EditMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Menu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Menu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/ProgramData.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/ProgramDataMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramDataMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Screen.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Screen.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/SimpleChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/DeltaChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/DeltaChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/SimpleDischargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleDischargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/TheveninDischargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninDischargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/TheveninChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/StorageStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StorageStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/StartInfoStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StartInfoStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/SMPS.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SMPS.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Discharger.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Discharger.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Program.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Program.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Thevenin.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Thevenin.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/TheveninMethod.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninMethod.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Timer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Timer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Utils.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Utils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Blink.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Blink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Monitor.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Monitor.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Calibrate.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Calibrate.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Options.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Options.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Settings.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Settings.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/SettingsMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SettingsMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/PolarityCheck.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/PolarityCheck.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Buzzer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Buzzer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Version.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Version.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/StackInfo.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StackInfo.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/SerialLog.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SerialLog.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Source Files/Serial.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Serial.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Hardware.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-original/Hardware.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/imaxB6.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/imaxB6.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/imaxB6-pins.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/imaxB6-pins.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/TimerOne.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/TimerOne.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/SMPS_PID.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/SMPS_PID.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/adc.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/adc.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/AnalogInputs.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/AnalogInputs.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Balancer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Balancer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Strategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Strategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/ChealiCharger2.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ChealiCharger2.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/EditName.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditName.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Keyboard.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Keyboard.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/LcdPrint.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LcdPrint.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/LiquidCrystal.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LiquidCrystal.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/MainMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/MainMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/StaticMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StaticMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/EditMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Menu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Menu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/memory.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/memory.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/ProgramData.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramData.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/ProgramDataMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramDataMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Screen.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Screen.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/SimpleChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/DeltaChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/DeltaChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/SimpleDischargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleDischargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/TheveninDischargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninDischargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/TheveninChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/StorageStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StorageStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/StartInfoStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StartInfoStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/SMPS.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SMPS.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Discharger.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Discharger.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Program.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Program.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Thevenin.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Thevenin.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/TheveninMethod.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninMethod.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Timer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Timer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Utils.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Utils.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Blink.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Blink.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Monitor.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Monitor.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Calibrate.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Calibrate.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Options.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Options.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Settings.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Settings.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/SettingsMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SettingsMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/PolarityCheck.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/PolarityCheck.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Buzzer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Buzzer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Version.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Version.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/StackInfo.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StackInfo.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/SerialLog.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SerialLog.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Header Files/Serial.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Serial.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-original-0.31/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31//CMakeLists.txt</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/CMakeLists.txt</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/defaultCalibration.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-clone/defaultCalibration.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/imaxB6.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/imaxB6.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/TimerOne.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/TimerOne.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/SMPS_PID.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/SMPS_PID.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/adc.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/adc.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/AnalogInputs.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/AnalogInputs.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Balancer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Balancer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Strategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Strategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/ChealiCharger2.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ChealiCharger2.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/EditName.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditName.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Keyboard.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Keyboard.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/LcdPrint.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LcdPrint.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/LiquidCrystal.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LiquidCrystal.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/StaticMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StaticMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/EditMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Menu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Menu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/ProgramData.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/ProgramDataMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramDataMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Screen.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Screen.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/SimpleChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/DeltaChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/DeltaChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/SimpleDischargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleDischargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/TheveninDischargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninDischargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/TheveninChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/StorageStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StorageStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/StartInfoStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StartInfoStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/SMPS.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SMPS.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Discharger.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Discharger.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Program.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Program.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Thevenin.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Thevenin.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/TheveninMethod.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninMethod.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Timer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Timer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Utils.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Utils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Blink.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Blink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Monitor.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Monitor.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Calibrate.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Calibrate.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Options.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Options.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Settings.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Settings.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/SettingsMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SettingsMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/PolarityCheck.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/PolarityCheck.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Buzzer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Buzzer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Version.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Version.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/StackInfo.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StackInfo.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/SerialLog.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SerialLog.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Source Files/Serial.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Serial.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Hardware.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-clone/Hardware.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/imaxB6.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/imaxB6.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/imaxB6-pins.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/imaxB6-pins.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/TimerOne.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/TimerOne.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/SMPS_PID.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/SMPS_PID.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/adc.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/adc.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/AnalogInputs.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/AnalogInputs.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Balancer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Balancer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Strategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Strategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/ChealiCharger2.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ChealiCharger2.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/EditName.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditName.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Keyboard.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Keyboard.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/LcdPrint.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LcdPrint.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/LiquidCrystal.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LiquidCrystal.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/MainMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/MainMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/StaticMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StaticMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/EditMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Menu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Menu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/memory.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/memory.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/ProgramData.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramData.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/ProgramDataMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramDataMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Screen.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Screen.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/SimpleChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/DeltaChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/DeltaChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/SimpleDischargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleDischargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/TheveninDischargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninDischargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/TheveninChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/StorageStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StorageStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/StartInfoStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StartInfoStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/SMPS.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SMPS.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Discharger.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Discharger.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Program.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Program.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Thevenin.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Thevenin.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/TheveninMethod.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninMethod.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Timer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Timer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Utils.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Utils.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Blink.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Blink.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Monitor.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Monitor.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Calibrate.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Calibrate.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Options.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Options.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Settings.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Settings.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/SettingsMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SettingsMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/PolarityCheck.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/PolarityCheck.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Buzzer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Buzzer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Version.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Version.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/StackInfo.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StackInfo.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/SerialLog.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SerialLog.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Header Files/Serial.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Serial.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-imaxB6-clone-0.31/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31//CMakeLists.txt</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/CMakeLists.txt</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/defaultCalibration.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-Accucel-6-50W-5A/defaultCalibration.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/imaxB6.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/imaxB6.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/TimerOne.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/TimerOne.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/SMPS_PID.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/SMPS_PID.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/adc.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/adc.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/AnalogInputs.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/AnalogInputs.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Balancer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Balancer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Strategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Strategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/ChealiCharger2.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ChealiCharger2.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/EditName.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditName.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Keyboard.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Keyboard.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/LcdPrint.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LcdPrint.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/LiquidCrystal.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LiquidCrystal.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/StaticMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StaticMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/EditMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Menu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Menu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/ProgramData.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/ProgramDataMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramDataMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Screen.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Screen.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/SimpleChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/DeltaChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/DeltaChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/SimpleDischargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleDischargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/TheveninDischargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninDischargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/TheveninChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/StorageStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StorageStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/StartInfoStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StartInfoStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/SMPS.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SMPS.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Discharger.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Discharger.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Program.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Program.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Thevenin.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Thevenin.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/TheveninMethod.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninMethod.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Timer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Timer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Utils.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Utils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Blink.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Blink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Monitor.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Monitor.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Calibrate.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Calibrate.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Options.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Options.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Settings.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Settings.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/SettingsMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SettingsMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/PolarityCheck.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/PolarityCheck.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Buzzer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Buzzer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Version.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Version.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/StackInfo.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StackInfo.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/SerialLog.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SerialLog.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Source Files/Serial.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Serial.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Hardware.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-Accucel-6-50W-5A/Hardware.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/imaxB6.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/imaxB6.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/imaxB6-pins.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/imaxB6-pins.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/TimerOne.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/TimerOne.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/SMPS_PID.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/SMPS_PID.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/adc.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/adc.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/AnalogInputs.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/AnalogInputs.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Balancer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Balancer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Strategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Strategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/ChealiCharger2.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ChealiCharger2.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/EditName.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditName.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Keyboard.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Keyboard.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/LcdPrint.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LcdPrint.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/LiquidCrystal.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LiquidCrystal.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/MainMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/MainMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/StaticMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StaticMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/EditMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Menu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Menu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/memory.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/memory.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/ProgramData.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramData.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/ProgramDataMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramDataMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Screen.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Screen.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/SimpleChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/DeltaChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/DeltaChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/SimpleDischargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleDischargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/TheveninDischargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninDischargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/TheveninChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/StorageStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StorageStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/StartInfoStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StartInfoStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/SMPS.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SMPS.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Discharger.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Discharger.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Program.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Program.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Thevenin.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Thevenin.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/TheveninMethod.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninMethod.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Timer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Timer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Utils.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Utils.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Blink.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Blink.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Monitor.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Monitor.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Calibrate.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Calibrate.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Options.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Options.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Settings.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Settings.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/SettingsMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SettingsMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/PolarityCheck.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/PolarityCheck.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Buzzer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Buzzer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Version.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Version.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/StackInfo.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StackInfo.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/SerialLog.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SerialLog.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Header Files/Serial.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Serial.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-5A-0.31/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31//CMakeLists.txt</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/CMakeLists.txt</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/defaultCalibration.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-Accucel-6-50W-6A/defaultCalibration.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/imaxB6.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/imaxB6.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/TimerOne.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/TimerOne.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/SMPS_PID.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/SMPS_PID.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/adc.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/adc.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/AnalogInputs.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/AnalogInputs.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Balancer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Balancer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Strategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Strategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/ChealiCharger2.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ChealiCharger2.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/EditName.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditName.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Keyboard.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Keyboard.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/LcdPrint.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LcdPrint.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/LiquidCrystal.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LiquidCrystal.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/StaticMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StaticMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/EditMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Menu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Menu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/ProgramData.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/ProgramDataMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramDataMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Screen.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Screen.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/SimpleChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/DeltaChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/DeltaChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/SimpleDischargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleDischargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/TheveninDischargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninDischargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/TheveninChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/StorageStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StorageStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/StartInfoStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StartInfoStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/SMPS.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SMPS.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Discharger.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Discharger.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Program.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Program.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Thevenin.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Thevenin.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/TheveninMethod.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninMethod.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Timer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Timer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Utils.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Utils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Blink.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Blink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Monitor.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Monitor.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Calibrate.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Calibrate.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Options.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Options.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Settings.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Settings.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/SettingsMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SettingsMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/PolarityCheck.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/PolarityCheck.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Buzzer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Buzzer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Version.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Version.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/StackInfo.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StackInfo.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/SerialLog.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SerialLog.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Source Files/Serial.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Serial.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Hardware.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-Accucel-6-50W-6A/Hardware.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/imaxB6.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/imaxB6.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/imaxB6-pins.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/imaxB6-pins.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/TimerOne.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/TimerOne.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/SMPS_PID.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/SMPS_PID.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/adc.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6-generic/adc.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/AnalogInputs.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/AnalogInputs.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Balancer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Balancer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Strategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Strategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/ChealiCharger2.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ChealiCharger2.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/EditName.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditName.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Keyboard.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Keyboard.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/LcdPrint.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LcdPrint.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/LiquidCrystal.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LiquidCrystal.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/MainMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/MainMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/StaticMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StaticMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/EditMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Menu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Menu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/memory.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/memory.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/ProgramData.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramData.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/ProgramDataMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramDataMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Screen.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Screen.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/SimpleChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/DeltaChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/DeltaChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/SimpleDischargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleDischargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/TheveninDischargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninDischargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/TheveninChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/StorageStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StorageStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/StartInfoStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StartInfoStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/SMPS.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SMPS.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Discharger.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Discharger.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Program.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Program.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Thevenin.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Thevenin.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/TheveninMethod.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninMethod.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Timer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Timer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Utils.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Utils.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Blink.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Blink.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Monitor.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Monitor.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Calibrate.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Calibrate.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Options.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Options.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Settings.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Settings.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/SettingsMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SettingsMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/PolarityCheck.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/PolarityCheck.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Buzzer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Buzzer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Version.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Version.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/StackInfo.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StackInfo.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/SerialLog.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SerialLog.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Header Files/Serial.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Serial.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-Accucel-6-50W-6A-0.31/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31//CMakeLists.txt</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/CMakeLists.txt</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/defaultCalibration.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-MEGA-400Wx2/defaultCalibration.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/GTPowerA6-10.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/GTPowerA6-10.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/TimerOne.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/TimerOne.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/adc.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/adc.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/AnalogInputs.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/AnalogInputs.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Balancer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Balancer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Strategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Strategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/ChealiCharger2.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ChealiCharger2.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/EditName.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditName.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Keyboard.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Keyboard.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/LcdPrint.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LcdPrint.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/LiquidCrystal.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LiquidCrystal.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/StaticMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StaticMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/EditMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Menu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Menu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/ProgramData.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/ProgramDataMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramDataMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Screen.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Screen.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/SimpleChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/DeltaChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/DeltaChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/SimpleDischargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleDischargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/TheveninDischargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninDischargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/TheveninChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/StorageStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StorageStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/StartInfoStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StartInfoStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/SMPS.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SMPS.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Discharger.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Discharger.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Program.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Program.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Thevenin.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Thevenin.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/TheveninMethod.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninMethod.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Timer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Timer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Utils.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Utils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Blink.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Blink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Monitor.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Monitor.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Calibrate.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Calibrate.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Options.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Options.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Settings.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Settings.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/SettingsMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SettingsMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/PolarityCheck.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/PolarityCheck.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Buzzer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Buzzer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Version.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Version.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/StackInfo.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StackInfo.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/SerialLog.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SerialLog.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Source Files/Serial.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Serial.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Hardware.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-MEGA-400Wx2/Hardware.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Turnigy-MEGA-400Wx2.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-MEGA-400Wx2/Turnigy-MEGA-400Wx2.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/GTPowerA6-10.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/GTPowerA6-10.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/TimerOne.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/TimerOne.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/adc.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/adc.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/AnalogInputs.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/AnalogInputs.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Balancer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Balancer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Strategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Strategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/ChealiCharger2.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ChealiCharger2.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/EditName.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditName.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Keyboard.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Keyboard.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/LcdPrint.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LcdPrint.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/LiquidCrystal.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LiquidCrystal.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/MainMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/MainMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/StaticMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StaticMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/EditMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Menu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Menu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/memory.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/memory.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/ProgramData.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramData.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/ProgramDataMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramDataMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Screen.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Screen.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/SimpleChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/DeltaChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/DeltaChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/SimpleDischargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleDischargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/TheveninDischargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninDischargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/TheveninChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/StorageStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StorageStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/StartInfoStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StartInfoStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/SMPS.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SMPS.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Discharger.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Discharger.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Program.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Program.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Thevenin.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Thevenin.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/TheveninMethod.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninMethod.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Timer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Timer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Utils.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Utils.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Blink.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Blink.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Monitor.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Monitor.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Calibrate.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Calibrate.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Options.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Options.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Settings.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Settings.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/SettingsMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SettingsMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/PolarityCheck.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/PolarityCheck.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Buzzer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Buzzer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Version.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Version.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/StackInfo.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StackInfo.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/SerialLog.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SerialLog.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Header Files/Serial.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Serial.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-MEGA-400Wx2-0.31/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31//CMakeLists.txt</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/CMakeLists.txt</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/defaultCalibration.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-A-6-10-200W/defaultCalibration.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/GTPowerA6-10.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/GTPowerA6-10.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/TimerOne.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/TimerOne.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/adc.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/adc.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/AnalogInputs.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/AnalogInputs.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Balancer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Balancer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Strategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Strategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/ChealiCharger2.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ChealiCharger2.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/EditName.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditName.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Keyboard.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Keyboard.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/LcdPrint.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LcdPrint.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/LiquidCrystal.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LiquidCrystal.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/StaticMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StaticMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/EditMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Menu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Menu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/ProgramData.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/ProgramDataMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramDataMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Screen.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Screen.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/SimpleChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/DeltaChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/DeltaChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/SimpleDischargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleDischargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/TheveninDischargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninDischargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/TheveninChargeStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninChargeStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/StorageStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StorageStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/StartInfoStrategy.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StartInfoStrategy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/SMPS.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SMPS.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Discharger.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Discharger.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Program.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Program.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Thevenin.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Thevenin.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/TheveninMethod.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninMethod.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Timer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Timer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Utils.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Utils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Blink.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Blink.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Monitor.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Monitor.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Calibrate.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Calibrate.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Options.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Options.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Settings.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Settings.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/SettingsMenu.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SettingsMenu.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/PolarityCheck.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/PolarityCheck.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Buzzer.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Buzzer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Version.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Version.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/StackInfo.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StackInfo.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/SerialLog.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SerialLog.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Source Files/Serial.cpp</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Serial.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Turnigy-A-6-10-200W.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-A-6-10-200W/Turnigy-A-6-10-200W.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Hardware.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/Turnigy-A-6-10-200W/Hardware.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/GTPowerA6-10.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/GTPowerA6-10.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/TimerOne.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/TimerOne.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/adc.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/GTPowerA6-10-generic/adc.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/AnalogInputs.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/AnalogInputs.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Balancer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Balancer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Strategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Strategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/ChealiCharger2.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ChealiCharger2.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/EditName.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditName.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Keyboard.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Keyboard.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/LcdPrint.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LcdPrint.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/LiquidCrystal.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/LiquidCrystal.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/MainMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/MainMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/StaticMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StaticMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/EditMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/EditMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Menu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Menu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/memory.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/memory.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/ProgramData.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramData.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/ProgramDataMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/ProgramDataMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Screen.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Screen.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/SimpleChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/DeltaChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/DeltaChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/SimpleDischargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SimpleDischargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/TheveninDischargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninDischargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/TheveninChargeStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninChargeStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/StorageStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StorageStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/StartInfoStrategy.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StartInfoStrategy.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/SMPS.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SMPS.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Discharger.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Discharger.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Program.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Program.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Thevenin.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Thevenin.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/TheveninMethod.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/TheveninMethod.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Timer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Timer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Utils.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Utils.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Blink.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Blink.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Monitor.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Monitor.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Calibrate.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Calibrate.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Options.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Options.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Settings.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Settings.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/SettingsMenu.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SettingsMenu.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/PolarityCheck.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/PolarityCheck.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Buzzer.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Buzzer.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Version.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Version.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/StackInfo.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/StackInfo.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/SerialLog.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/SerialLog.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Header Files/Serial.h</name>
+			<type>1</type>
+			<location>/home/njozsef/cheali-git/cheali-charger-test1/src/core/Serial.h</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] cheali-charger-Turnigy-A-6-10-200W-0.31/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>

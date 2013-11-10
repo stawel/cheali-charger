@@ -61,11 +61,6 @@ namespace Balancer {
 void Balancer::powerOn()
 {
     hardware::setBalancerOutput(true);
-    hardware::setBatteryOutput(true);
-    if(!AnalogInputs::isPowerOn()) {
-        AnalogInputs::powerOn();
-        AnalogInputs::doFullMeasurement();
-    }
 
     cells_ = AnalogInputs::getRealValue(AnalogInputs::VbalanceInfo);
     for(int i = 0; i < cells_; i++) {
@@ -120,8 +115,6 @@ void Balancer::endBalancing()
 void Balancer::powerOff()
 {
     endBalancing();
-    AnalogInputs::powerOff();
-    hardware::setBatteryOutput(false);
     hardware::setBalancerOutput(false);
 }
 

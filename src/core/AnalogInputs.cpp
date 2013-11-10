@@ -336,16 +336,17 @@ void AnalogInputs::reset()
 void AnalogInputs::powerOn()
 {
     if(!on_) {
+        hardware::setBatteryOutput(true);
         reset();
         on_ = true;
-        SerialLog::powerOn();
+        doFullMeasurement();
     }
 }
 
 void AnalogInputs::powerOff()
 {
     on_ = false;
-    SerialLog::powerOff();
+    hardware::setBatteryOutput(false);
 }
 
 bool AnalogInputs::isReversePolarity()

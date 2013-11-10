@@ -1,0 +1,8 @@
+# Hashes of file build rules.
+0e45481a38344f4a1b1e3cc6c4de0085 src/hardware/GTPowerA6-10-original/CMakeFiles/cheali-charger-GTPowerA6-10-0.31.size
+2282b850ce8fda4366e9d2a52e47a11a src/hardware/Turnigy-A-6-10-200W/CMakeFiles/cheali-charger-Turnigy-A-6-10-200W-0.31.size
+10ec46b4e32662af626825a9d3ee02b7 src/hardware/Turnigy-Accucel-6-50W-5A/CMakeFiles/cheali-charger-Turnigy-Accucel-6-50W-5A-0.31.size
+19edc4d25ef31c7dedf43956a8faba68 src/hardware/Turnigy-Accucel-6-50W-6A/CMakeFiles/cheali-charger-Turnigy-Accucel-6-50W-6A-0.31.size
+7f62a9a1dd165f8cef1c880b19652a9a src/hardware/Turnigy-MEGA-400Wx2/CMakeFiles/cheali-charger-Turnigy-MEGA-400Wx2-0.31.size
+45b0ee626c39a9326d40369dea8d2eb4 src/hardware/imaxB6-clone/CMakeFiles/cheali-charger-imaxB6-clone-0.31.size
+ea8ec0cd879560019d6037a9121a9171 src/hardware/imaxB6-original/CMakeFiles/cheali-charger-imaxB6-original-0.31.size

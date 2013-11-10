@@ -58,11 +58,8 @@ void SMPS::powerOn()
     if(isPowerOn())
         return;
 
-    hardware::setBatteryOutput(true);
     setValue(0);
     hardware::setChargerOutput(true);
-    AnalogInputs::powerOn();
-    AnalogInputs::doFullMeasurement();
     state_ = CHARGING;
 }
 
@@ -72,9 +69,7 @@ void SMPS::powerOff(STATE reason)
     if(!isPowerOn() || reason == CHARGING)
         return;
 
-    AnalogInputs::powerOff();
     setValue(0);
     hardware::setChargerOutput(false);
-    hardware::setBatteryOutput(false);
     state_ = reason;
 }

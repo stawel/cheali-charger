@@ -28,6 +28,7 @@ namespace TheveninMethod {
     extern Thevenin tVout_;
     extern Thevenin tBal_[MAX_BANANCE_CELLS];
     extern AnalogInputs::Name iName_;
+    extern AnalogInputs::ValueType idebug_;
 
     void initialize(AnalogInputs::Name iName);
     bool isComlete(bool isEndVout, AnalogInputs::ValueType value);
