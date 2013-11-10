@@ -231,7 +231,7 @@ void sendChannel2()
 #ifdef ENABLE_GET_PID_VALUE
     pidV = hardware::getPIDValue();
 #endif
-    printUInt(pidV);
+    printUInt(TheveninMethod::idebug_);
     printD();
 /*    printUInt(Screen::calculateBattRth());
     printD();

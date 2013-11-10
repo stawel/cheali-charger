@@ -38,6 +38,8 @@ namespace TheveninMethod {
     AnalogInputs::Name iName_;
     bool balance_;
     Strategy::statusType bstatus_;
+    AnalogInputs::ValueType idebug_;
+
 
     void setMinI(AnalogInputs::ValueType i) {    minValue_ = i; };
 
@@ -53,6 +55,8 @@ namespace TheveninMethod {
 
     bool isBelowMin(AnalogInputs::ValueType value)
     {
+        if(Ifalling_ == LastRthMesurment)
+            return false;
         return value < minValue_;
     }
 
@@ -109,11 +113,13 @@ void TheveninMethod::initialize(AnalogInputs::Name iName)
     fullCount_ = 0;
 }
 
+//TODO: the TheveninMethod  is too complex, should be refactored, maybe when switching to mAmps
+
 
 bool TheveninMethod::isComlete(bool isEndVout, AnalogInputs::ValueType value)
 {
     if(balance_) {
-        if(value > minBalanceValue_ && value > minValue_)
+        if(value > max(minBalanceValue_, minValue_))
             Balancer::done_ = false;
         if(Ifalling_ != LastRthMesurment)
             bstatus_ = Balancer::doStrategy();
@@ -139,28 +145,31 @@ AnalogInputs::ValueType TheveninMethod::calculateNewValue(bool isEndVout, Analog
 {
     AnalogInputs::ValueType i;
 
-    //test for maximum output voltage reached
-    if(isEndVout) {
-        switch(Ifalling_) {
-        case NotFalling:
-            if(balance_) {
-                Balancer::endBalancing();
-                Balancer::done_ = false;
-            }
-            Ifalling_ = LastRthMesurment;
-            //temporarily turn off
-            storeOldValue(oldValue);
-            return 0;
-        default:
-            Ifalling_ = Falling;
-            break;
-        }
-    }
-
     calculateRthVth(oldValue);
     storeOldValue(oldValue);
+
     i = calculateI();
-    return normalizeI(i, oldValue);
+    idebug_ = i;
+    i = normalizeI(i, oldValue);
+
+    //test if maximum output voltage reached
+    switch(Ifalling_) {
+    case NotFalling:
+        if(!isEndVout)
+            break;
+        if(balance_) {
+            Balancer::endBalancing();
+            Balancer::done_ = false;
+        }
+        Ifalling_ = LastRthMesurment;
+        //temporarily turn off
+        i = 0;
+        break;
+    default:
+        Ifalling_ = Falling;
+        break;
+    }
+    return i;
 }
 
 
@@ -196,7 +205,7 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value
     if(oldValue != value) {
         if(Ifalling_ != Falling
             || value < oldValue
-            || (value <= minValue_ && lastBallancingEnded_ != Balancer::balancingEnded_ )) {
+            || lastBallancingEnded_ != Balancer::balancingEnded_) {
 
             lastBallancingEnded_ = Balancer::balancingEnded_;
             return value;

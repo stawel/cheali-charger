@@ -32,6 +32,7 @@
 #include "Buzzer.h"
 #include "StaticMenu.h"
 #include "Settings.h"
+#include "SerialLog.h"
 
 
 Program::ProgramType Program::programType_;
@@ -126,10 +127,6 @@ namespace {
     Strategy::statusType doStrategy(const Screen::ScreenType chargeScreens[], bool exitImmediately = false){
 
         Strategy::statusType status = Strategy::doStrategy(chargeScreens, exitImmediately);
-        Program::programState_ = Program::Done;
-        if(status == Strategy::ERROR) {
-            Program::programState_ = Program::Error;
-        }
         return status;
     }
 
@@ -147,7 +144,6 @@ bool Program::startInfo()
         screen = startInfoBalanceScreens;
     }
     StartInfoStrategy::setBalancePort(balancer);
-    programState_ = Info;
     return doStrategy(startInfoBalanceScreens, true) == Strategy::COMPLETE;
 }
 
@@ -157,7 +153,6 @@ Strategy::statusType Program::runStorage(bool balance)
     StorageStrategy::setVII(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage),
             ProgramData::currentProgramData.battery.Ic, ProgramData::currentProgramData.battery.Id);
     Strategy::strategy_ = &StorageStrategy::vtable;
-    programState_ = Storage;
     return doStrategy(storageScreens);
 }
 Strategy::statusType Program::runTheveninCharge(int minChargeC)
@@ -166,7 +161,6 @@ Strategy::statusType Program::runTheveninCharge(int minChargeC)
             ProgramData::currentProgramData.battery.Ic, false);
     TheveninChargeStrategy::setMinI(ProgramData::currentProgramData.battery.Ic/minChargeC);
     Strategy::strategy_ = &TheveninChargeStrategy::vtable;
-    programState_ = Charging;
     return doStrategy(theveninScreens);
 }
 
@@ -175,7 +169,6 @@ Strategy::statusType Program::runTheveninChargeBalance()
     TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
             ProgramData::currentProgramData.battery.Ic, true);
     Strategy::strategy_ = &TheveninChargeStrategy::vtable;
-    programState_ = ChargingBalancing;
     return doStrategy(theveninScreens);
 }
 
@@ -184,7 +177,6 @@ Strategy::statusType Program::runDeltaCharge()
 {
     DeltaChargeStrategy::setTestTV(settings.externT_, true);
     Strategy::strategy_ = &DeltaChargeStrategy::vtable;
-    programState_ = Charging;
     return doStrategy(deltaChargeScreens);
 }
 
@@ -194,7 +186,6 @@ Strategy::statusType Program::runDischarge()
     Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
     TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
     Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-    programState_ = Discharging;
     return doStrategy(dischargeScreens);
 }
 
@@ -202,21 +193,57 @@ Strategy::statusType Program::runNiXXDischarge()
 {
     TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
     Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-    programState_ = Discharging;
     return doStrategy(NiXXDischargeScreens);
 }
 
 Strategy::statusType Program::runBalance()
 {
     Strategy::strategy_ = &Balancer::vtable;
-    programState_ = Balancing;
     return doStrategy(balanceScreens);
+}
+
+Program::ProgramState getProgramState(Program::ProgramType prog)
+{
+    Program::ProgramState retu;
+    switch(prog) {
+    case Program::ChargeLiXX:
+    case Program::ChargePb:
+    case Program::FastChargeLiXX:
+    case Program::ChargeNiXX:
+        retu = Program::Charging;
+        break;
+    case Program::Balance:
+        retu = Program::Balancing;
+        break;
+    case Program::DischargeLiXX:
+    case Program::DischargePb:
+    case Program::DischargeNiXX:
+        retu = Program::Discharging;
+        break;
+
+    case Program::StorageLiXX:
+    case Program::StorageLiXX_Balance:
+        retu = Program::Storage;
+        break;
+    case Program::ChargeLiXX_Balance:
+        retu = Program::ChargingBalancing;
+        break;
+    default:
+        retu = Program::None;
+        break;
+    }
+    return retu;
 }
 
 void Program::run(ProgramType prog)
 {
     programType_ = prog;
     stopReason_ = PSTR("");
+
+    programState_ = getProgramState(prog);
+    SerialLog::powerOn();
+    AnalogInputs::powerOn();
+
 
     if(startInfo()) {
         Buzzer::soundStartProgram();
@@ -259,6 +286,8 @@ void Program::run(ProgramType prog)
             break;
         }
     }
+    AnalogInputs::powerOff();
+    SerialLog::powerOff();
 }
 
 

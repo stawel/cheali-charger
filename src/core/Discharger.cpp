@@ -89,11 +89,8 @@ void Discharger::powerOn()
     if(isPowerOn())
         return;
 
-    hardware::setBatteryOutput(true);
     setValue(0);
     hardware::setDischargerOutput(true);
-    AnalogInputs::powerOn();
-    AnalogInputs::doFullMeasurement();
     state_ = DISCHARGING;
 }
 
@@ -102,10 +99,8 @@ void Discharger::powerOff(STATE reason)
     if(!isPowerOn() || reason == DISCHARGING)
         return;
 
-    AnalogInputs::powerOff();
     setValue(0);
     hardware::setDischargerOutput(false);
-    hardware::setBatteryOutput(false);
     state_ = reason;
 }
 

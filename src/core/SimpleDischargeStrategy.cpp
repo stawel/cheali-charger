@@ -29,8 +29,8 @@ namespace SimpleDischargeStrategy {
 
 void SimpleDischargeStrategy::powerOff()
 {
-    Balancer::powerOff();
     Discharger::powerOff();
+    Balancer::powerOff();
 }
 
 void SimpleDischargeStrategy::powerOn()

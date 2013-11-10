@@ -421,7 +421,6 @@ void saveTemp(AnalogInputs::Name name, uint8_t point)
 
 void calibrateTemp(AnalogInputs::Name name, uint8_t point)
 {
-    AnalogInputs::powerOn();
     TempMenu v(name);
     int8_t index;
     do {
@@ -434,7 +433,6 @@ void calibrateTemp(AnalogInputs::Name name, uint8_t point)
             AnalogInputs::on_ = true;
         }
     } while(true);
-    AnalogInputs::powerOff();
 }
 
 void calibrateTemp(AnalogInputs::Name name)
@@ -457,6 +455,8 @@ void run()
     do {
         i = menu.runSimple();
         if(i<0) break;
+        SerialLog::powerOn();
+        AnalogInputs::powerOn();
         START_CASE_COUNTER;
         switch(i) {
         case NEXT_CASE: calibrateVoltage(); break;
@@ -473,6 +473,9 @@ void run()
         case NEXT_CASE: expertCalibrateVoltage(); break;
 #endif
         }
+        AnalogInputs::powerOff();
+        SerialLog::powerOff();
+
     } while(true);
     Program::programState_ = Program::Done;
 }

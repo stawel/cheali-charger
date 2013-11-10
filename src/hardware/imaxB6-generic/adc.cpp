@@ -206,7 +206,6 @@ void AnalogInputs::resetADC()
 //this method depends on the ADC implementation
 void AnalogInputs::doFullMeasurement()
 {
-    powerOn();
     clearAvr();
     uint16_t c = calculationCount_;
     while(c == calculationCount_)
