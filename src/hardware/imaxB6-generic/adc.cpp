@@ -24,10 +24,18 @@
 #include "Utils.h"
 #include "memory.h"
 #include <avr/io.h>
+#include <util/atomic.h>
+#include "Settings.h"
 
 
-#define ADC_DELAY_MS 30
+//TODO: the imaxb6 "adc" and GTPowerA6-10 "adc" should be refactored in the future,
+//measurement should be done in an interrupt handler,
+//the adc capacitor should be charged at a constant time.
 
+#define ADC_DELAY_US 60
+//discharge ADC capacitor on Vb6 - there is an operational amplifier
+#define ADC_CAPACITOR_DISCHARGE_ADDRESS MADDR_V_BALANSER6
+#define ADC_CAPACITOR_DISCHARGE_DELAY_US 10
 
 struct adc_correlation {
     int8_t mux_;
@@ -37,8 +45,6 @@ struct adc_correlation {
 };
 
 const adc_correlation order_analogInputs_on[] PROGMEM = {
-    {MADDR_T_EXTERN,                MUX0_Z_A_PIN,           AnalogInputs::Textern,          false},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            true},
     {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_A_PIN,           AnalogInputs::Vb0_pin,         false},
     {-1,                            REVERSE_POLARITY_PIN,   AnalogInputs::VreversePolarity, false},
     {MADDR_V_BALANSER6,             MUX0_Z_A_PIN,           AnalogInputs::Vb6_pin,         false},
@@ -53,6 +59,8 @@ const adc_correlation order_analogInputs_on[] PROGMEM = {
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            true},
     {MADDR_V_BALANSER2,             MUX0_Z_A_PIN,           AnalogInputs::Vb2_pin,         false},
     {-1,                            OUTPUT_VOLATAGE_PIN,    AnalogInputs::Vout ,            false},
+    {MADDR_T_EXTERN,                MUX0_Z_A_PIN,           AnalogInputs::Textern,          false},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            true},
 };
 
 
@@ -63,11 +71,16 @@ namespace {
 
 static const uint8_t analog_reference = EXTERNAL;
 
-static uint8_t current_input;
+static uint8_t current_input_;
 
 void setADC(uint8_t pin) {
     // ADLAR - ADC Left Adjust Result
     ADMUX = (analog_reference << 6) | _BV(ADLAR) | (pin & 0x07);
+}
+
+inline uint8_t getPortBAddress(uint8_t address)
+{
+    return (PORTB & 0x1f) | (address & 7) << 5;
 }
 
 void setMuxAddress(uint8_t address)
@@ -78,7 +91,27 @@ void setMuxAddress(uint8_t address)
 //        digitalWrite(MUX_ADR0_PIN, address&1);
 //        digitalWrite(MUX_ADR1_PIN, address&2);
 //        digitalWrite(MUX_ADR2_PIN, address&4);
-        PORTB = (PORTB & 0x1f) | (address & 7) << 5;
+
+        //discharge ADC capacitor first
+        uint8_t new_portb = getPortBAddress(address);
+        uint8_t disc_adr = getPortBAddress(ADC_CAPACITOR_DISCHARGE_ADDRESS);
+        uint8_t bit = digitalPinToBitMask(MUX0_Z_D_PIN);
+        uint8_t ddra_input = DDRA & (~bit);
+        uint8_t ddra_output = DDRA | bit;
+
+        PORTB = disc_adr;
+        //pinMode(MUX0_Z_D_PIN, OUTPUT);
+        DDRA = ddra_output;
+
+        delayMicroseconds(ADC_CAPACITOR_DISCHARGE_DELAY_US);
+
+        //switch to the desired address
+
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+            PORTB = new_portb;
+            //pinMode(MUX0_Z_D_PIN, INPUT);
+            DDRA = ddra_input;
+        }
     }
 }
 
@@ -91,7 +124,7 @@ inline uint8_t nextInput(uint8_t x)
 /* if You want use interrupts then
  * most of the AnalogInputs methods should be rewritten
  * to be atomic. (see <util/atomic.h>)
- * We use a ADC_DELAY_MS delay between setting the multiplexer address
+ * We use a ADC_DELAY_US delay between setting the multiplexer address
  * and the ADC measurement which is also a problem.
  */
 ISR(ADC_vect)
@@ -122,6 +155,8 @@ int8_t getMUX(uint8_t input)
     do {
         mux = pgm::read(&order_analogInputs_on[input].mux_);
         input = nextInput(input);
+        if(mux == MADDR_T_EXTERN && !settings.externT_)
+            mux = -1;
     } while(mux<0);
     return mux;
 }
@@ -135,29 +170,32 @@ void adc::processConversion(bool finalize)
     low  = ADCL;
     high = ADCH;
 
-    AnalogInputs::adc_[getAIName(current_input)] = (high << 8) | low;
-    trigger_PID = getTriggerPID(current_input);
+    AnalogInputs::adc_[getAIName(current_input_)] = (high << 8) | low;
+    trigger_PID = getTriggerPID(current_input_);
 
-    current_input = nextInput(current_input);
-    setADC(getADC(current_input));
-    setMuxAddress(getMUX(current_input));
+    current_input_ = nextInput(current_input_);
+    if(getAIName(current_input_) == AnalogInputs::Textern  && !settings.externT_)
+        current_input_ = nextInput(current_input_);
+
+    setADC(getADC(current_input_));
+    setMuxAddress(getMUX(current_input_));
 
     if(trigger_PID)
         SMPS_PID::update();
 
-    if(finalize && current_input == 0)
+    if(finalize && current_input_ == 0)
         finalizeMeasurement();
     else {
         //info:improves the precision
-        delayMicroseconds(ADC_DELAY_MS);
+        delayMicroseconds(ADC_DELAY_US);
     }
 }
 
 void adc::reset()
 {
-    current_input = 0;
-    setADC(getADC(current_input));
-    setMuxAddress(getMUX(current_input));
+    current_input_ = 0;
+    setADC(getADC(current_input_));
+    setMuxAddress(getMUX(current_input_));
 }
 
 void adc::startConversion() {
@@ -175,6 +213,8 @@ void adc::finalizeMeasurement()
 
 void adc::initialize()
 {
+    digitalWrite(MUX0_Z_D_PIN, 0);
+    pinMode(MUX0_Z_D_PIN, INPUT);
 
     pinMode(MUX_ADR0_PIN, OUTPUT);
     pinMode(MUX_ADR1_PIN, OUTPUT);

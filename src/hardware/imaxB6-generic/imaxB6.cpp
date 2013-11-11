@@ -60,11 +60,6 @@ void hardware::initialize()
     pinMode(SMPS_VALUE_BOOST_PIN, OUTPUT);
     pinMode(SMPS_DISABLE_PIN, OUTPUT);
 
-    pinMode(MUX_ADR0_PIN, OUTPUT);
-    pinMode(MUX_ADR1_PIN, OUTPUT);
-    pinMode(MUX_ADR2_PIN, OUTPUT);
-    pinMode(MUX0_Z_D_PIN, INPUT);
-
     setBatteryOutput(false);
     setBuzzer(0);
 

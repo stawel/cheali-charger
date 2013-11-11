@@ -237,7 +237,7 @@ void expertCalibrateVoltage()
     Discharger::powerOn();
 
     if(testVout()) {
-        VoltageMenu v(expertVoltageMenu, sizeOfArray(expertVoltageMenu), expertVoltageName, 6);
+        VoltageMenu v(expertVoltageMenu, expertVoltageName, 6);
         int8_t index;
         do {
             index = v.runSimple(true);
