@@ -473,6 +473,7 @@ uint16_t AnalogInputs::checkMaxPowerCvalue(uint16_t value)
     if (value == 0) return value;  
     value_ = value;
     value_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, AnalogInputs::maxIc());
+    if (value < value_) value_ = value;
     return value_;
 }
 
@@ -483,6 +484,7 @@ uint16_t AnalogInputs::checkMaxPowerDvalue(uint16_t value)
     if (value == 0) return value;
     value_ = value;
     value_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, AnalogInputs::maxId());
+    if (value < value_) value_ = value;
     return value_;
 }
 
