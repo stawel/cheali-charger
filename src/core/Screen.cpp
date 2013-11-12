@@ -41,7 +41,7 @@ namespace Screen{
         lcdPrint_P(programString+prog*2, 2);
     }
    
-        uint16_t getChargeProcentValid(){
+        uint8_t getChargeProcentValid(){
         uint16_t v1,v2, v;
         v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
         v1 = ProgramData::currentProgramData.getVoltage(ProgramData::ValidEmpty);
@@ -361,7 +361,7 @@ void Screen::displayDeltaVout()
 
 void Screen::displayScreenEnergy()
 {    
-    uint16_t procent = getChargeProcentValid();
+    uint8_t procent = getChargeProcentValid();
    
     lcdSetCursor0_0();
     AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
