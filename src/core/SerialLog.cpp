@@ -315,12 +315,14 @@ void debugSerial(uint16_t a, uint16_t b)
 
 
     //temporary for debugging
+    SerialLog::powerOn();
     serialBegin();
-  //  printUInt(a);
+    printUInt(a);
     printChar('-');
-  //  printUInt(b);
+    printUInt(b);
     printNL();
     serialEnd();
+    SerialLog::powerOff();
 }
 
 

@@ -42,7 +42,7 @@ namespace AnalogInputs {
 
     uint32_t    charge_;
     
-    uint16_t    value_;
+    uint32_t    value_;
     
 
     ValueType getAvrADCValue(Name name)     { return avrAdc_[name]; }
@@ -459,7 +459,7 @@ void AnalogInputs::checkMaxPower()
 //TODO_NJ
 //outer calculation. part of slowinterrupt.
 // monitoring code here.
-
+//not neseccary if calling-SMPS:  frequency minimum 1Hz.
 return;
 }
 

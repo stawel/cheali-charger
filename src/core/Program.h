@@ -24,14 +24,14 @@
 class Program {
 public:
     enum ProgramType {
-        ChargeLiXX, ChargeLiXX_Balance, Balance, DischargeLiXX, FastChargeLiXX, StorageLiXX, StorageLiXX_Balance,
+        ChargeLiXX, ChargeLiXX_Balance, SuperChargeLiXX_Balance, Balance, DischargeLiXX, FastChargeLiXX, StorageLiXX, StorageLiXX_Balance,
         ChargeNiXX, DischargeNiXX, CDcycleNiXX,DCcycleNiXX,
         ChargePb, DischargePb,
         EditBattery, LAST_PROGRAM_TYPE};
 
     enum ProgramState {
         None, Info, Calibration, Done, Error,
-        Charging, ChargingBalancing, Discharging, Balancing, Storage,
+        Charging, ChargingBalancing, SuperChargingBalancing, Discharging, Balancing, Storage,
     };
 
     static ProgramType programType_;
@@ -51,9 +51,9 @@ public:
     static Strategy::statusType runNiXXDischarge();
 
     static Strategy::statusType runTheveninChargeBalance();
+    static Strategy::statusType runTheveninSuperChargeBalance();
     static Strategy::statusType runBalance();
     static Strategy::statusType runDeltaCharge();
 };
-
 
 #endif /* PROGRAM_H_ */

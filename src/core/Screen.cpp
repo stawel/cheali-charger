@@ -33,7 +33,7 @@ namespace Screen{
     Blink blink;
     bool on_;
 
-    const char programString[] PROGMEM = "ChCBBlDiFCStSBChDiCyCYChDiEB";
+    const char programString[] PROGMEM = "ChCBSBBlDiFCStSBChDiCyCYChDiEB";
     void printProgram2chars(Program::ProgramType prog)
     {
         STATIC_ASSERT(sizeOfArray(programString)-1 == Program::LAST_PROGRAM_TYPE*2);
@@ -41,18 +41,20 @@ namespace Screen{
         lcdPrint_P(programString+prog*2, 2);
     }
    
-        uint8_t getChargeProcentValid(){
+        uint16_t getChargeProcentValid(){
         uint16_t v1,v2, v;
         v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
         v1 = ProgramData::currentProgramData.getVoltage(ProgramData::ValidEmpty);
-        v = AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
-  
+        //v =  AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
+        v =  AnalogInputs::getRealValue(AnalogInputs::Vout);
+        
         if(v >= v2) return 100;
         if(v <= v1) return 0;
         v-=v1;
         v2-=v1;
         v2/=100;
         v=  v/v2;
+        if(v >= 100) v=99;
         return v;
     }
     
@@ -427,7 +429,7 @@ void Screen::displayStartInfo()
 
     lcdSetCursor0_1();
    
-    uint16_t procent = getChargeProcentValid();
+    uint8_t procent = getChargeProcentValid();
 
    
     if(procent == 100) {

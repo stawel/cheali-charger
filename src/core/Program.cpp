@@ -84,6 +84,7 @@ namespace {
     const Screen::ScreenType balanceScreens[] PROGMEM = {
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
       Screen::ScreenTime,
+      Screen::ScreenVinput,
       Screen::ScreenTemperature,
       Screen::ScreenEnd
     };
@@ -118,12 +119,14 @@ namespace {
     const Screen::ScreenType startInfoBalanceScreens[] PROGMEM = {
       Screen::ScreenStartInfo,
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
+      Screen::ScreenVinput,
       Screen::ScreenTemperature,
       Screen::ScreenEnd
     };
 
     const Screen::ScreenType startInfoScreens[] PROGMEM = {
       Screen::ScreenStartInfo,
+      Screen::ScreenVinput,
       Screen::ScreenTemperature,
       Screen::ScreenEnd
     };
@@ -172,6 +175,14 @@ Strategy::statusType Program::runTheveninCharge(int minChargeC)
 Strategy::statusType Program::runTheveninChargeBalance()
 {
     TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
+            ProgramData::currentProgramData.battery.Ic, true);
+    Strategy::strategy_ = &TheveninChargeStrategy::vtable;
+    return doStrategy(theveninScreens);
+}
+
+Strategy::statusType Program::runTheveninSuperChargeBalance()
+{
+    TheveninChargeStrategy::superSetVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
             ProgramData::currentProgramData.battery.Ic, true);
     Strategy::strategy_ = &TheveninChargeStrategy::vtable;
     return doStrategy(theveninScreens);
@@ -233,6 +244,9 @@ Program::ProgramState getProgramState(Program::ProgramType prog)
     case Program::ChargeLiXX_Balance:
         retu = Program::ChargingBalancing;
         break;
+    case Program::SuperChargeLiXX_Balance:
+        retu = Program::SuperChargingBalancing;
+        break;
     default:
         retu = Program::None;
         break;
@@ -285,6 +299,12 @@ void Program::run(ProgramType prog)
         case Program::ChargeLiXX_Balance:
             runTheveninChargeBalance();
             break;
+        case Program::SuperChargeLiXX_Balance:
+            runTheveninSuperChargeBalance();
+            break;
+
+            
+            
         default:
             //TODO:
             Screen::runNotImplemented();
@@ -303,6 +323,7 @@ namespace {
 
     const char charge_str[] PROGMEM = "charge";
     const char chaBal_str[] PROGMEM = "charge+balance";
+    const char sChaBa_str[] PROGMEM = "supercharge+b.";
     const char balanc_str[] PROGMEM = "balance";
     const char discha_str[] PROGMEM = "discharge";
     const char fastCh_str[] PROGMEM = "fast charge";
@@ -315,6 +336,7 @@ namespace {
     const char * const programLiXXMenu[] PROGMEM =
     { charge_str,
       chaBal_str,
+      sChaBa_str,
       balanc_str,
       discha_str,
       fastCh_str,
@@ -327,6 +349,7 @@ namespace {
     const Program::ProgramType programLiXXMenuType[] PROGMEM =
     { Program::ChargeLiXX,
       Program::ChargeLiXX_Balance,
+      Program::SuperChargeLiXX_Balance,
       Program::Balance,
       Program::DischargeLiXX,
       Program::FastChargeLiXX,
@@ -338,6 +361,7 @@ namespace {
     const char * const programNiZnMenu[] PROGMEM =
     { charge_str,
       chaBal_str,
+      sChaBa_str,
       balanc_str,
       discha_str,
       fastCh_str,
@@ -348,6 +372,7 @@ namespace {
     const Program::ProgramType programNiZnMenuType[] PROGMEM =
     { Program::ChargeLiXX,
       Program::ChargeLiXX_Balance,
+      Program::SuperChargeLiXX_Balance,
       Program::Balance,
       Program::DischargeLiXX,
       Program::FastChargeLiXX,

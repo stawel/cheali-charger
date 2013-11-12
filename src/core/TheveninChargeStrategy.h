@@ -32,6 +32,7 @@ namespace TheveninChargeStrategy
     bool isEndVout();
 
     void setVIB(AnalogInputs::ValueType v, AnalogInputs::ValueType i, bool balance);
+    void superSetVIB(AnalogInputs::ValueType v, AnalogInputs::ValueType i, bool balance);
     void setMinI(AnalogInputs::ValueType i);
 
 };
