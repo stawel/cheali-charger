@@ -69,8 +69,6 @@ struct ProgramData {
     uint16_t getMaxId() const;
     uint16_t getMaxIcSettings() const;
     uint16_t getMaxIdSettings() const;
-    uint16_t getMaxIcRealtime() const;
-    uint16_t getMaxIdRealtime() const;
 
     void check();
     void loadDefault();

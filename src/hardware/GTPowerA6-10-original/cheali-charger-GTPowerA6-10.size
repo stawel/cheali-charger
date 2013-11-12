@@ -7,15 +7,15 @@ Thread model: single
 gcc version 4.7.2 (GCC) 
 AVR Memory Usage
 ----------------
-Device: Unknown
+Device: atmega32
 
-Program:   29404 bytes
+Program:   29516 bytes (90.1% Full)
 (.text + .data + .bootloader)
 
-Data:       1085 bytes
+Data:       1087 bytes (53.1% Full)
 (.data + .bss + .noinit)
 
-EEPROM:      904 bytes
+EEPROM:      904 bytes (88.3% Full)
 (.eeprom)
 
 

@@ -308,4 +308,22 @@ void sendCalibration()
     serialEnd();
 }
 
+
+void debugSerial(uint16_t a, uint16_t b)
+{
+    //dont working. Why??
+
+
+    //temporary for debugging
+    serialBegin();
+  //  printUInt(a);
+    printChar('-');
+  //  printUInt(b);
+    printNL();
+    serialEnd();
+}
+
+
+
+
 } //namespace SerialLog

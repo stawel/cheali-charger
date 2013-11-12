@@ -23,6 +23,8 @@ namespace SerialLog {
     void send();
     void powerOff();
     void sendCalibration();
+    //temporary for debugging
+    void debugSerial(uint16_t a, uint16_t b);
 } //namespace SerialLog
 
 

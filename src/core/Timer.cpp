@@ -39,7 +39,7 @@ namespace Timer {
         if(--slowInterval == 0){
             slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
             Discharger::doSlowInterrupt();
-            AnalogInputs::doSlowInterrupt();
+            AnalogInputs::doSlowInterrupt(); //TODO_NJ: extend the maxpower adjust.
             Screen::doSlowInterrupt();
         }
     }

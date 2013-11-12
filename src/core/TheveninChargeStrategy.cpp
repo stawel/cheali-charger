@@ -71,8 +71,8 @@ Strategy::statusType TheveninChargeStrategy::doStrategy()
 
     if(update && !Balancer::isWorking()) {
         uint16_t value = TheveninMethod::calculateNewValue(isendVout, oldValue);
-        if(value != oldValue)
-            SMPS::setValue(value);
+        if(value != oldValue)    
+            SMPS::setValue(value);    
     }
     return Strategy::RUNNING;
 }

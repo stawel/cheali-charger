@@ -275,41 +275,6 @@ uint16_t ProgramData::getMaxId() const
 
 }
 
-
-uint16_t ProgramData::getMaxIcRealtime() const
-{
-   
-    uint32_t i;
-    uint16_t v;
-    v = AnalogInputs::getRealValue(AnalogInputs::Vout);  //actual vout in mV??
-    i = MAX_CHARGE_P;         //50
-    i *= ANALOG_VOLT(1);      //1?? 
-    i /= v;                 
-
-    if(i > MAX_CHARGE_I)  
-        i = MAX_CHARGE_I; 
-    return i;
-}
-
-uint16_t ProgramData::getMaxIdRealtime() const
-{
-
-
-    uint32_t i;
-    uint16_t v;
-    v = AnalogInputs::getRealValue(AnalogInputs::Vout);  //actual vout in mV??
-    i = MAX_DISCHARGE_P;
-    i *= ANALOG_VOLT(1);
-    i /= v;
-
-    if(i > MAX_DISCHARGE_I) 
-        i = MAX_DISCHARGE_I;
-    return i;
-
-}
-
-
-
 // for edit battery
 uint16_t ProgramData::getMaxIcSettings() const
 {
@@ -364,9 +329,9 @@ void ProgramData::check()
     v = getMaxCells();
     if(battery.cells > v) battery.cells = v;
 
-    v = getMaxIc();
+    v = getMaxIcSettings();
     if(battery.Ic > v) battery.Ic = v;
 
-    v = getMaxId();
+    v = getMaxIdSettings();
     if(battery.Id > v) battery.Id = v;
 }

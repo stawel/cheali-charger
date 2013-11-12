@@ -33,4 +33,11 @@
 #define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/14)
 
 
+//start warning-text
+#define TESTINGALERT
+
+//loudness programcomplete
+#define LOUDSOUND
+
+
 #endif /* GTPOWERA610_ORIGINAL_H_ */

@@ -154,6 +154,13 @@ namespace AnalogInputs {
     void initialize();
     void doSlowInterrupt();
     uint16_t getCharge();
+    
+    //for maxpowercalc
+    void checkMaxPower();
+    uint16_t checkMaxPowerCvalue(uint16_t);
+    uint16_t checkMaxPowerDvalue(uint16_t);
+    uint16_t maxIc();
+    uint16_t maxId();
 
     void restoreDefault();
     void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);
