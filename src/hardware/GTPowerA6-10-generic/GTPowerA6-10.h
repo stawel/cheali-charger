@@ -40,11 +40,11 @@
 #define ENABLE_STACK_INFO
 #define ENABLE_SERIAL_LOG
 
-//for testing
-//#define ENABLE_SERIAL_LOG_WAIT
-
 //start warning-text
 #define TESTINGALERT
+
+//loudness programcomplete
+#define LOUDSOUND
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"

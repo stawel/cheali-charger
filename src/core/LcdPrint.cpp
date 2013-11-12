@@ -197,7 +197,7 @@ void lcdPrintInf(int8_t dig)
 }
 }
 
-void lcdPrintEValue(uint32_t x, int8_t dig, bool dot)
+void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
 {
     const char prefix = ' ';
     if(dig<=0)

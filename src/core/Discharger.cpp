@@ -47,13 +47,6 @@ void Discharger::setValue(uint16_t value)
 {
     if(value > DISCHARGER_UPPERBOUND_VALUE)
         value = DISCHARGER_UPPERBOUND_VALUE;
-    valueSet_ = value;
-    setValue1(valueSet_);
-}
-
-void Discharger::setValue1(uint16_t value)
-{
-    //protect the continuously period
     valueSet_ = AnalogInputs::checkMaxPowerDvalue(value);
     finalizeValueTintern(true);
 }

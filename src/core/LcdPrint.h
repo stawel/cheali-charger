@@ -50,7 +50,7 @@ void lcdPrintDigit(uint8_t d);
 void lcdPrintUInt(uint16_t x);
 void lcdPrintYesNo(uint8_t yes);
 
-void lcdPrintEValue(uint32_t x, int8_t dig, bool dot);
+void lcdPrintEValue(uint16_t x, int8_t dig, bool dot);
 
 void lcdPrintTemperature(AnalogInputs::ValueType c, int8_t dig);
 void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig);

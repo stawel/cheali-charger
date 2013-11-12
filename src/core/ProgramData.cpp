@@ -29,7 +29,7 @@ ProgramData ProgramData::currentProgramData;
 //expanded Validempty. Needed clear EEPROM!!!! (I increase EEPROM version to 6)
 const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
 {
-//      { VIdle,              VCharge,            VDischarge,           VStorage, VUpperLimit,         ValidEmpty,};
+//      { VIdle,              VCharge,            VDischarge,           VStorage, VUpperLimit,         ValidEmpty};
 /*Unknown*/{ 1,               1,                  1,                    1,        0,                   ANALOG_VOLT(1.000)},
 //                               ???
 /*NiCd*/{ ANALOG_VOLT(1.200), ANALOG_VOLT(1.820), ANALOG_VOLT(0.850),   0,  ANALOG_VOLT(1.800),        ANALOG_VOLT(1.300)},
@@ -247,7 +247,6 @@ void ProgramData::changeCharge(int direction)
 
 uint16_t ProgramData::getMaxIc() const
 {
-   
     uint32_t i;
     uint16_t v;
     v = getVoltage(VCharge);

@@ -43,16 +43,9 @@ void SMPS::setValue(uint16_t value)
     if(value > SMPS_UPPERBOUND_VALUE)
         value = SMPS_UPPERBOUND_VALUE;      
     value_ = AnalogInputs::checkMaxPowerCvalue(value);
-    setValue1(value_);
-}
-
-void SMPS::setValue1(uint16_t value)
-{      
-    //protect the contiuously cycle
-    hardware::setChargerValue(value);
+    hardware::setChargerValue(value_);
     AnalogInputs::resetMeasurement();
 }
-
 
 void SMPS::setRealValue(uint16_t I)
 {

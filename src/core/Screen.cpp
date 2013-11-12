@@ -41,12 +41,11 @@ namespace Screen{
         lcdPrint_P(programString+prog*2, 2);
     }
    
-        uint8_t getChargeProcentValid(){
+        uint8_t getChargeProcent(){
         uint16_t v1,v2, v;
         v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
         v1 = ProgramData::currentProgramData.getVoltage(ProgramData::ValidEmpty);
-        //v =  AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
-        v =  AnalogInputs::getRealValue(AnalogInputs::Vout);
+        v =  AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
         
         if(v >= v2) return 100;
         if(v <= v1) return 0;
@@ -54,7 +53,7 @@ namespace Screen{
         v2-=v1;
         v2/=100;
         v=  v/v2;
-        if(v >= 100) v=99;
+        if(v >= 100) v=99; //not 100 or 101% with isCharge
         return v;
     }
     
@@ -361,7 +360,7 @@ void Screen::displayDeltaVout()
 
 void Screen::displayScreenEnergy()
 {    
-    uint8_t procent = getChargeProcentValid();
+    uint8_t procent = getChargeProcent();
    
     lcdSetCursor0_0();
     AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
@@ -428,10 +427,7 @@ void Screen::displayStartInfo()
     printProgram2chars(Program::programType_);
 
     lcdSetCursor0_1();
-   
-    uint8_t procent = getChargeProcentValid();
-
-   
+    uint16_t procent = getChargeProcent();
     if(procent == 100) {
         if(blink.getBlinkOff())
             lcdPrintSpaces(4);

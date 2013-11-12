@@ -22,8 +22,6 @@
 #include "Screen.h"
 
 
-
-
 namespace TheveninMethod {
     uint16_t minValue_;
     uint16_t minBalanceValue_;
@@ -204,9 +202,6 @@ AnalogInputs::ValueType TheveninMethod::calculateI()
 
 AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value, AnalogInputs::ValueType oldValue)
 {
-    
-      
-     
     valueTh_ = value;
     if(value > maxValue_) {
         value = maxValue_;
