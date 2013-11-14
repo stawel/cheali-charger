@@ -161,6 +161,9 @@ namespace AnalogInputs {
     uint16_t checkMaxPowerDvalue(uint16_t);
     uint16_t maxIc1();
     uint16_t maxId1();
+     //TODO_NJ for smooth-current
+    extern uint16_t smoothCounter;
+    extern uint16_t smoothCurrentOldValue;
 
     void restoreDefault();
     void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);

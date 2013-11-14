@@ -22,7 +22,7 @@
 #include "SerialLog.h"
 
 //TODO_NJ for testing
-//#include "Buzzer.h"
+#include "Buzzer.h"
 
 
 namespace AnalogInputs {
@@ -57,6 +57,12 @@ namespace AnalogInputs {
     uint16_t getStableCount(Name name)   { return stableCount_[name]; };
     bool isStable(Name name)     { return stableCount_[name] >= STABLE_MIN_VALUE; };
     void setReal(Name name, ValueType real);
+    
+    //TODO_NJ for smooth-current
+    uint16_t smoothCounter;
+    uint16_t smoothCurrentOldValue;
+    
+    
     
 
 } // namespace AnalogInputs
@@ -474,8 +480,22 @@ uint16_t AbsMaximalValue = AnalogInputs::checkMaxPowerCvalue(checkOverDriveValue
 
   if (checkOverDriveValue > AbsMaximalValue)
   {
+     
      SMPS::setValue1(AbsMaximalValue);
-     //Buzzer::soundKeyboard();   //tick if outer routine limitly actual current.
+     
+     //TODO_NJ (testing for smoothcurrent)
+     Buzzer::soundKeyboard();   //tick if outer routine limitly actual current.
+     //smoothCounter=smoothCounter+1;       //smoothCurrentOldValue();  //not tested
+     
+     //SerialLog::debugSerial(checkOverDriveValue,smoothCounter);   //never use (long)
+  
+  
+  
+  
+  
+  
+  
+     
   }
 
 
@@ -501,7 +521,7 @@ uint16_t AnalogInputs::checkMaxPowerCvalue(uint16_t value)
     if (valueTemp1 < value)
     {
       //TODO_NJ for testing
-      //Buzzer::soundSelect();  //for testing
+      //Buzzer::soundSelect();  //testing
       return valueTemp1;
     }
     return value;
