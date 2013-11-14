@@ -39,7 +39,7 @@ namespace Buzzer {
     uint16_t getSound(uint16_t time);
     uint16_t setOff();
     
-    void beeploud(int16_t dur);
+    void beepLoud(int16_t dur);
 
 
 } // namespace Buzzer

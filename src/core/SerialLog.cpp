@@ -311,7 +311,7 @@ void sendCalibration()
 
 void debugSerial(uint16_t a, uint16_t b)
 {
-    //dont working. Why??
+    //working on imaxb6. (set option:UART 'DISABLED')
 
 
     //temporary for debugging

@@ -18,7 +18,7 @@
 #ifndef VERSION_H_
 #define VERSION_H_
 
-#define CHEALI_CHARGER_VERSION          0.31mod
+#define CHEALI_CHARGER_VERSION          0.31
 #define CHEALI_CHARGER_EEPROM_VERSION   6
 
 

@@ -56,7 +56,7 @@ AnalogInputs::ValueType Thevenin::calculateI(AnalogInputs::ValueType v) const
     i *= Rth_.I_;
     i /= Rth_.V_;
     //TODO:
-    if(i >  65000) return  65000;  //need change pumpcapacitor my charger?
+    if(i >  65535) return  65535;  //need for accucel6 because value=3200 only 2.9A.
     if(i < 0) return 0;
     return i;
 }

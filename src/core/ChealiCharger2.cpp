@@ -67,7 +67,6 @@ void setup()
     hardware::delay(1000);
 
 #ifdef TESTINGALERT
-//                               1234567890123456 
     Screen::displayStrings(PSTR(" Modded version"),
                            PSTR("  FOR TESTING"));
     hardware::delay(1000);

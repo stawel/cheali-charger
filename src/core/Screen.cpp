@@ -23,7 +23,6 @@
 #include "Settings.h"
 #include "Hardware.h"
 #include "Program.h"
-#include "Buzzer.h"
 
 namespace Screen{
 
@@ -304,7 +303,7 @@ void Screen::displayScreenProgramCompleted()
     screenEnd(PSTR("program complete"));
     lcdSetCursor0_1();
     lcdPrint_P(PSTR("Time:    ")); lcdPrintTime(getTimeSec());
-    Buzzer::loudSound1();
+
 }
 
 void Screen::displayMonitorError()

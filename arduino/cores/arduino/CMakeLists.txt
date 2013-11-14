@@ -37,7 +37,7 @@ set(SOURCE_FILES
         HID.cpp
         IPAddress.cpp
         Stream.cpp
-        Tone.cpp
+#        Tone.cpp
         USBCore.cpp
         WMath.cpp
 

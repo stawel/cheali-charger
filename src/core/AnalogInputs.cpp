@@ -21,6 +21,7 @@
 #include "LcdPrint.h"
 #include "SerialLog.h"
 
+
 namespace AnalogInputs {
 
     bool on_;
@@ -42,7 +43,7 @@ namespace AnalogInputs {
 
     uint32_t    charge_;
     
-    uint32_t    value_;
+    uint16_t    value_;
     
 
     ValueType getAvrADCValue(Name name)     { return avrAdc_[name]; }
@@ -54,7 +55,6 @@ namespace AnalogInputs {
     bool isStable(Name name)     { return stableCount_[name] >= STABLE_MIN_VALUE; };
     void setReal(Name name, ValueType real);
     
-
 
 } // namespace AnalogInputs
 
@@ -232,7 +232,7 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
 void AnalogInputs::doSlowInterrupt()
 {
     charge_ += getIout();
-    checkMaxPower();
+    AnalogInputs::checkMaxPower();  //TODO_NJ
 }
 
 uint16_t AnalogInputs::getCharge()
@@ -459,8 +459,11 @@ void AnalogInputs::checkMaxPower()
 //TODO_NJ
 //outer calculation. part of slowinterrupt.
 // monitoring code here.
-//not neseccary if calling-SMPS:  frequency minimum 1Hz.
-return;
+//not neseccary if calling-SMPS:  calling freq min 60sec.
+
+//actually not used.
+
+//SerialLog::debugSerial(0,0);
 }
 
 
@@ -468,33 +471,42 @@ return;
 
 uint16_t AnalogInputs::checkMaxPowerCvalue(uint16_t value)
 {
+//SerialLog::debugSerial(value,12345);
+//return value;
 //inner directly control. Call this routine always  before  call SMPS::setvalue()
 //NJ
-    if (value == 0) return value;  
-    value_ = value;
-    value_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, AnalogInputs::maxIc());
-    if (value < value_) value_ = value;
-    return value_;
+    uint16_t valueTemp1;
+    
+    if (value == 0) return value; 
+    
+    valueTemp1 = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, AnalogInputs::maxIc1());
+    
+    if (valueTemp1 < value) return valueTemp1;
+    
+    return value;
 }
 
 uint16_t AnalogInputs::checkMaxPowerDvalue(uint16_t value)
 {
 //inner directly control. Call this routine always before call Discharger::setvalue()
 //NJ 
+    uint16_t valueTemp1;
+
     if (value == 0) return value;
-    value_ = value;
-    value_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, AnalogInputs::maxId());
-    if (value < value_) value_ = value;
-    return value_;
+    
+    valueTemp1 = AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, AnalogInputs::maxId1());
+    if (valueTemp1 < value) return valueTemp1;
+    
+    return value;
 }
 
-uint16_t AnalogInputs::maxIc()
+uint16_t AnalogInputs::maxIc1()
 {
     // max Ic calc dependent actual voltage
     uint32_t i;
     uint16_t v;
     v = getRealValue(Vout);
-    if (v == 0) return 0; //protect division by zero
+    if (v == 0) return 0;          //protect division by zero
     i = MAX_CHARGE_P;
     i *= ANALOG_VOLT(1);
     i /= v;                 
@@ -504,13 +516,13 @@ uint16_t AnalogInputs::maxIc()
     return i;
 }
 
-uint16_t AnalogInputs::maxId()
+uint16_t AnalogInputs::maxId1()
 {
     // max Ic calc dependent actual voltage
     uint32_t i;
     uint16_t v;
     v = getRealValue(Vout);
-    if (v == 0) return 0; //protect division by zero
+    if (v == 0) return 0;      //protect division by zero
     i = MAX_DISCHARGE_P;
     i *= ANALOG_VOLT(1);
     i /= v;                 

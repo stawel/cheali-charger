@@ -154,7 +154,6 @@ bool Program::startInfo()
     return doStrategy(startInfoBalanceScreens, true) == Strategy::COMPLETE;
 }
 
-
 Strategy::statusType Program::runStorage(bool balance)
 {
     StorageStrategy::setDoBalance(balance);
@@ -301,10 +300,7 @@ void Program::run(ProgramType prog)
             break;
         case Program::SuperChargeLiXX_Balance:
             runTheveninSuperChargeBalance();
-            break;
-
-            
-            
+            break;            
         default:
             //TODO:
             Screen::runNotImplemented();

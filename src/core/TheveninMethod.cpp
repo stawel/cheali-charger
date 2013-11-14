@@ -50,7 +50,8 @@ namespace TheveninMethod {
     }
     AnalogInputs::ValueType getImax()
     {
-        return AnalogInputs::calibrateValue(iName_, maxValue_);
+       //return maxValue_;
+       return AnalogInputs::calibrateValue(iName_, maxValue_);
     }
 
     bool isBelowMin(AnalogInputs::ValueType value)
