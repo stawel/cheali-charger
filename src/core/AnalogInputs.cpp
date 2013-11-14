@@ -21,6 +21,9 @@
 #include "LcdPrint.h"
 #include "SerialLog.h"
 
+//TODO_NJ for testing
+#include "Buzzer.h"
+
 
 namespace AnalogInputs {
 
@@ -458,12 +461,26 @@ void AnalogInputs::checkMaxPower()
 {
 //TODO_NJ
 //outer calculation. part of slowinterrupt.
-// monitoring code here.
-//not neseccary if calling-SMPS:  calling freq min 60sec.
 
-//actually not used.
+//not neseccary if calling-SMPS:  calling freq min 2sec alltime.
+
+//cargebalanced and charge mode after start, climbing the Vout but sometimes SMPS:setvalue not called about 30sec.
+
+//actually used.
 
 //SerialLog::debugSerial(0,0);
+uint16_t checkOverDriveValue = SMPS::getValue();;
+uint16_t AbsMaximalValue = AnalogInputs::checkMaxPowerCvalue(checkOverDriveValue);
+
+  if (checkOverDriveValue > AbsMaximalValue)
+  {
+     SMPS::setValue1(AbsMaximalValue);
+     Buzzer::soundKeyboard();   //tick if outer routine limitly actual current.
+  }
+
+
+
+
 }
 
 
@@ -481,8 +498,12 @@ uint16_t AnalogInputs::checkMaxPowerCvalue(uint16_t value)
     
     valueTemp1 = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, AnalogInputs::maxIc1());
     
-    if (valueTemp1 < value) return valueTemp1;
-    
+    if (valueTemp1 < value)
+    {
+      //TODO_NJ for testing
+      //Buzzer::soundSelect();  //for testing
+      return valueTemp1;
+    }
     return value;
 }
 

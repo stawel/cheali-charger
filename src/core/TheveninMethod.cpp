@@ -97,7 +97,10 @@ void TheveninMethod::superSetVIB(AnalogInputs::ValueType Vend, AnalogInputs::Val
 {
     Vend_ = Vend;
     maxValue_ = i;
-    minValue_ = i/50;
+    minValue_ = i/100;
+//TODO_NJ need set minimal minvalue_ if charge small pack (example 1S 100mAh Ic=100mA  minvalue=2mA  too low)
+    if (minValue_ < 10) minValue_ = 10;
+    
     balance_ = balance;
 }
 

@@ -52,6 +52,7 @@ void SMPS::setValue(uint16_t value)
 
 void SMPS::setValue1(uint16_t value)
 {      
+    value_ = value;  //TODO_NJ
     //protect the contiuously cycle
     hardware::setChargerValue(value);
     AnalogInputs::resetMeasurement();

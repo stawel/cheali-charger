@@ -9,7 +9,7 @@ AVR Memory Usage
 ----------------
 Device: atmega32
 
-Program:   29620 bytes (90.4% Full)
+Program:   29690 bytes (90.6% Full)
 (.text + .data + .bootloader)
 
 Data:       1087 bytes (53.1% Full)
