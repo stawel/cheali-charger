@@ -22,7 +22,7 @@
 #include "SerialLog.h"
 
 //TODO_NJ for testing
-#include "Buzzer.h"
+//#include "Buzzer.h"
 
 
 namespace AnalogInputs {
@@ -475,7 +475,7 @@ uint16_t AbsMaximalValue = AnalogInputs::checkMaxPowerCvalue(checkOverDriveValue
   if (checkOverDriveValue > AbsMaximalValue)
   {
      SMPS::setValue1(AbsMaximalValue);
-     Buzzer::soundKeyboard();   //tick if outer routine limitly actual current.
+     //Buzzer::soundKeyboard();   //tick if outer routine limitly actual current.
   }
 
 
