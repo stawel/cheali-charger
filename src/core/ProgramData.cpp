@@ -271,40 +271,7 @@ uint16_t ProgramData::getMaxId() const
     if(i > MAX_DISCHARGE_I) 
         i = MAX_DISCHARGE_I;
     return i;
-
 }
-
-// for edit battery
-uint16_t ProgramData::getMaxIcSettings() const
-{
-    uint32_t i;
-    i = MAX_CHARGE_I; 
-    return i;
-}
-
-// for edit battery
-uint16_t ProgramData::getMaxIdSettings() const
-{
-    uint32_t i;
-    i = MAX_DISCHARGE_I;
-    return i;
-
-}
-
-
-//for edit battery
-void ProgramData::changeIcSettings(int direction)
-{
-    changeMaxSmart(battery.Ic, direction, getMaxIcSettings());
-}
-//for edit battery
-void ProgramData::changeIdSettings(int direction)
-{
-    changeMaxSmart(battery.Id, direction, getMaxIdSettings());
-}
-
-
-
 
 void ProgramData::changeIc(int direction)
 {
@@ -328,9 +295,9 @@ void ProgramData::check()
     v = getMaxCells();
     if(battery.cells > v) battery.cells = v;
 
-    v = getMaxIcSettings();
+    v = getMaxIc();
     if(battery.Ic > v) battery.Ic = v;
 
-    v = getMaxIdSettings();
+    v = getMaxId();
     if(battery.Id > v) battery.Id = v;
 }

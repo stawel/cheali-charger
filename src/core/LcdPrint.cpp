@@ -256,6 +256,22 @@ void lcdPrintTemperature_(AnalogInputs::ValueType x, int8_t dig)
     }
 }
 
+void lcdPrintPower(AnalogInputs::ValueType x, char u1, char u2)
+{
+    const char prefix = ' ';
+    x /=100;
+    if(x<10000) lcdPrintChar(prefix);
+    if(x<1000) lcdPrintChar(prefix);
+    if(x<100) lcdPrintChar(prefix);
+    if(x<10) lcdPrintChar(prefix);
+    
+    lcdPrintUInt(x);
+     lcdPrintChar(u1);
+     lcdPrintChar(u2);
+     lcdPrintChar(prefix);
+    
+}
+
 void lcdPrintTime(uint16_t timeSec)
 {
     lcdPrintUnsigned(timeSec/60, 3, '0');
@@ -377,14 +393,10 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
         unit ='A';
         break;
     case AnalogInputs::Power:
-        //dot = false;
-        x = x * 10;  //pout ???
-        unit ='W';
+        return lcdPrintPower(x,'W',' ');
         break;
     case AnalogInputs::Work:
-        //dot = false;
-        x = x * 10; //Eout ???
-        unit ='W';
+        return lcdPrintPower(x,'W','h');
         break;
     case AnalogInputs::Voltage:
         unit ='V';
@@ -409,7 +421,7 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
     lcdPrintEValue(x, (int8_t) dig, dot);
     lcdPrintChar(unit);
 
-    if(type == AnalogInputs::Charge || type == AnalogInputs::Work)     lcdPrintChar('h');
+    if(type == AnalogInputs::Charge)     lcdPrintChar('h');
 }
 
 

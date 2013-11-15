@@ -308,24 +308,4 @@ void sendCalibration()
     serialEnd();
 }
 
-
-void debugSerial(uint16_t a, uint16_t b)
-{
-    //working on imaxb6. (set option:UART 'DISABLED')
-
-
-    //temporary for debugging
-    SerialLog::powerOn();
-    serialBegin();
-    printUInt(a);
-    printChar('-');
-    printUInt(b);
-    printNL();
-    serialEnd();
-    SerialLog::powerOff();
-}
-
-
-
-
 } //namespace SerialLog

@@ -155,12 +155,6 @@ namespace AnalogInputs {
     void doSlowInterrupt();
     uint16_t getCharge();
     
-    //for maxpowercalc
-    void  checkMaxPower();
-    uint16_t checkMaxPowerCvalue(uint16_t);
-    uint16_t checkMaxPowerDvalue(uint16_t);
-    uint16_t maxIc1();
-    uint16_t maxId1();
      //TODO_NJ for smooth-current
     extern uint16_t smoothCounter;
     extern uint16_t smoothCurrentOldValue;

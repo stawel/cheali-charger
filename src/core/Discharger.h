@@ -33,7 +33,6 @@ namespace Discharger {
 
     uint16_t getValue();
     void setValue(uint16_t value);
-    void setValue1(uint16_t value);
     void setRealValue(uint16_t I);
 
     void powerOn();

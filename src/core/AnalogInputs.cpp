@@ -22,7 +22,7 @@
 #include "SerialLog.h"
 
 //TODO_NJ for testing
-#include "Buzzer.h"
+//#include "Buzzer.h"
 
 
 namespace AnalogInputs {
@@ -46,9 +46,6 @@ namespace AnalogInputs {
 
     uint32_t    charge_;
     
-    uint16_t    value_;
-    
-
     ValueType getAvrADCValue(Name name)     { return avrAdc_[name]; }
     ValueType getRealValue(Name name)       { return real_[name]; }
     ValueType getADCValue(Name name)        { return adc_[name]; }
@@ -241,7 +238,6 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
 void AnalogInputs::doSlowInterrupt()
 {
     charge_ += getIout();
-    AnalogInputs::checkMaxPower();  //TODO_NJ
 }
 
 uint16_t AnalogInputs::getCharge()
@@ -462,19 +458,15 @@ void AnalogInputs::printRealValue(Name name, uint8_t dig)
 
 
 
-
+/*
 void AnalogInputs::checkMaxPower()
 {
 //TODO_NJ
 //outer calculation. part of slowinterrupt.
 
-//not neseccary if calling-SMPS:  calling freq min 2sec alltime.
+//disabled because causes other charging calculations
+return;
 
-//cargebalanced and charge mode after start, climbing the Vout but sometimes SMPS:setvalue not called about 30sec.
-
-//actually used.
-
-//SerialLog::debugSerial(0,0);
 uint16_t checkOverDriveValue = SMPS::getValue();;
 uint16_t AbsMaximalValue = AnalogInputs::checkMaxPowerCvalue(checkOverDriveValue);
 
@@ -504,14 +496,20 @@ uint16_t AbsMaximalValue = AnalogInputs::checkMaxPowerCvalue(checkOverDriveValue
 }
 
 
-
-
 uint16_t AnalogInputs::checkMaxPowerCvalue(uint16_t value)
 {
+  return value;
+//disabled
+
+
 //SerialLog::debugSerial(value,12345);
 //return value;
 //inner directly control. Call this routine always  before  call SMPS::setvalue()
 //NJ
+
+
+
+
     uint16_t valueTemp1;
     
     if (value == 0) return value; 
@@ -525,12 +523,19 @@ uint16_t AnalogInputs::checkMaxPowerCvalue(uint16_t value)
       return valueTemp1;
     }
     return value;
+   
 }
 
 uint16_t AnalogInputs::checkMaxPowerDvalue(uint16_t value)
 {
+return value;
+//disabled
+
 //inner directly control. Call this routine always before call Discharger::setvalue()
 //NJ 
+
+
+
     uint16_t valueTemp1;
 
     if (value == 0) return value;
@@ -539,10 +544,17 @@ uint16_t AnalogInputs::checkMaxPowerDvalue(uint16_t value)
     if (valueTemp1 < value) return valueTemp1;
     
     return value;
+
 }
 
 uint16_t AnalogInputs::maxIc1()
 {
+
+
+//disabled
+
+
+
     // max Ic calc dependent actual voltage
     uint32_t i;
     uint16_t v;
@@ -555,10 +567,14 @@ uint16_t AnalogInputs::maxIc1()
     if(i > MAX_CHARGE_I)  
         i = MAX_CHARGE_I; 
     return i;
+
 }
 
 uint16_t AnalogInputs::maxId1()
 {
+//disabled
+
+
     // max Ic calc dependent actual voltage
     uint32_t i;
     uint16_t v;
@@ -571,4 +587,7 @@ uint16_t AnalogInputs::maxId1()
     if(i > MAX_DISCHARGE_I)  
         i = MAX_DISCHARGE_I; 
     return i;
+
 }
+
+*/

@@ -22,9 +22,6 @@
 #include "Screen.h"
 #include "TheveninMethod.h"
 
-//TODO_NJ
-//#include "Buzzer.h"  //for testing
-
 
 namespace TheveninChargeStrategy {
     const Strategy::VTable vtable PROGMEM = {
@@ -67,7 +64,6 @@ Strategy::statusType TheveninChargeStrategy::doStrategy()
     bool isendVout = isEndVout();
     uint16_t oldValue = SMPS::getValue();
 
-
     //test if charge complete
     if(TheveninMethod::isComlete(isendVout, oldValue)) {
         SMPS::powerOff(SMPS::CHARGING_COMPLETE);
@@ -81,7 +77,6 @@ Strategy::statusType TheveninChargeStrategy::doStrategy()
         uint16_t value = TheveninMethod::calculateNewValue(isendVout, oldValue);
         if(value != oldValue)    
             SMPS::setValue(value);
-            //Buzzer::soundKeyboard();  //TODO_NJ for testing    
     }
     return Strategy::RUNNING;
 }

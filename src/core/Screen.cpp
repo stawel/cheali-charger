@@ -303,7 +303,6 @@ void Screen::displayScreenProgramCompleted()
     screenEnd(PSTR("program complete"));
     lcdSetCursor0_1();
     lcdPrint_P(PSTR("Time:    ")); lcdPrintTime(getTimeSec());
-
 }
 
 void Screen::displayMonitorError()
@@ -368,7 +367,7 @@ void Screen::displayScreenEnergy()
     lcdPrintSpaces();
     lcdSetCursor0_1();
     AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
-    lcdPrint_P(PSTR(" "));
+    lcdPrint_P(PSTR("  "));
     lcdPrintUnsigned(procent, 4);
     lcdPrint_P(PSTR("%"));  
     lcdPrintSpaces();  

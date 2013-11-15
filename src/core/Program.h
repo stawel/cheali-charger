@@ -56,4 +56,5 @@ public:
     static Strategy::statusType runDeltaCharge();
 };
 
+
 #endif /* PROGRAM_H_ */

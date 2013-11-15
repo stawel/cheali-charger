@@ -18,9 +18,6 @@
 #include "Hardware.h"
 #include "SMPS.h"
 
-//for debug
-#include "SerialLog.h"
-
 namespace SMPS {
     STATE state_;
     uint16_t value_;
@@ -45,19 +42,10 @@ void SMPS::setValue(uint16_t value)
 {
     if(value > SMPS_UPPERBOUND_VALUE)
         value = SMPS_UPPERBOUND_VALUE;      
-    value_ = AnalogInputs::checkMaxPowerCvalue(value);
-   // SerialLog::debugSerial(value, value_);
-    setValue1(value_);
-}
-
-void SMPS::setValue1(uint16_t value)
-{      
-    value_ = value;  //TODO_NJ
-    //protect the contiuously cycle
-    hardware::setChargerValue(value);
+    value_ = value;
+    hardware::setChargerValue(value_);
     AnalogInputs::resetMeasurement();
 }
-
 
 void SMPS::setRealValue(uint16_t I)
 {
