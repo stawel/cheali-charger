@@ -1,8 +1,5 @@
 
 high priority:
--monitoring 'start charge phase' and all (powerlimit for first 1 minute)
-  -inner side: maximum power clalc only max_Vcharge. (this is protect caclulations if you need to (constant Ic)) need chargestate for maxcharge method.
-
 
 -lipo charge without balance (Startinfostrategy.cpp:70)
 -smooth deltaIc. plusDeltaIc and minusDeltaIc (protect the power supply)
@@ -18,13 +15,8 @@ low priority:
 
 *****************************************************************************************************************************************************
 ready:
--monitoring 'start charge phase' and all (powerlimit)
-  -Outer (not recommended) (slowinterrupt)  (not constant current because powercharge method limited current for actual Vout)     *****ok.
-     info: ic connect the full discharged battery or bad internal battery. The first time drastically increase the Vout. SMPS:setvalue not called about 15-30 sec.
-     charge power greater the charger maximum limit. (need innerside control.)
-     
+    
 -Powerscreen
--maxchargepower (maximized power on alltime)
--superCharge+balance mode
+-superCharge+balance mode  (PID and measuring(logview) problem if mini)
 -loudness sound at the program complete
 -valid chargeprercent
