@@ -94,6 +94,9 @@ set(CORE_SOURCE
 
         Serial.h
         Serial.cpp
+
+        eeprom.h
+        eeprom.cpp
 )
 
 set (CORE_SOURCE_FILES "")

@@ -21,8 +21,8 @@
 #include "ProgramDataMenu.h"
 #include "Utils.h"
 #include "Settings.h"
+#include "eeprom.h"
 
-ProgramData allProgramData[MAX_PROGRAMS] EEMEM;
 ProgramData ProgramData::currentProgramData;
 
 //TODO_NJ
@@ -106,12 +106,12 @@ void ProgramData::createName(int index)
 
 void ProgramData::loadProgramData(int index)
 {
-    eeprom::read<ProgramData>(currentProgramData, &allProgramData[index]);
+    eeprom::read<ProgramData>(currentProgramData, &eeprom::data.programData[index]);
 }
 
 void ProgramData::saveProgramData(int index)
 {
-    eeprom::write<ProgramData>(&allProgramData[index], currentProgramData);
+    eeprom::write<ProgramData>(&eeprom::data.programData[index], currentProgramData);
 }
 
 uint16_t ProgramData::getVoltagePerCell(VoltageType type) const
@@ -205,7 +205,7 @@ uint8_t ProgramData::printChargeString() const
 
 char * ProgramData::getName_E(int index)
 {
-    return allProgramData[index].name;
+    return eeprom::data.programData[index].name;
 }
 
 

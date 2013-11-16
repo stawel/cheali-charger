@@ -25,6 +25,7 @@
 #include "Version.h"
 #include "Settings.h"
 #include "ProgramData.h"
+#include "eeprom.h"
 
 const char string_o1[] PROGMEM = "settings";
 const char string_o2[] PROGMEM = "calibrate";
@@ -39,26 +40,7 @@ const char * const optionsStaticMenu[] PROGMEM =
 
 void Options::resetDefault()
 {
-    lcdClear();
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("Reseting: "));
-
-    lcdSetCursor(7,1);
-    lcdPrint_P(PSTR(" 0%"));
-    AnalogInputs::restoreDefault();
-
-    lcdSetCursor(7,1);
-    lcdPrint_P(PSTR("50%"));
-    ProgramData::restoreDefault();
-    Settings::restoreDefault();
-
-
-    lcdSetCursor(6,1);
-    lcdPrint_P(PSTR("Done"));
-    Version::restoreDefault();
-    Timer::delay(100);
-    Screen::runCalibrateBeforeUse();
-
+    eeprom::restoreDefault(true);
 }
 
 void Options::run()

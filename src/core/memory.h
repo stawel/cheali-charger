@@ -22,7 +22,7 @@
 #include <avr/eeprom.h>
 
 
-struct pgm {
+namespace pgm {
     template<class Type, int n>
     struct read_impl{
         inline Type operator()(const Type * addressP) {
@@ -85,7 +85,7 @@ struct pgm {
 };
 
 
-struct eeprom {
+namespace eeprom {
 
     template<class Type, int n>
     struct read_impl{

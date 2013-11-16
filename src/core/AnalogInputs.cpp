@@ -20,6 +20,7 @@
 #include "memory.h"
 #include "LcdPrint.h"
 #include "SerialLog.h"
+#include "eeprom.h"
 
 //TODO_NJ for testing
 //#include "Buzzer.h"
@@ -65,9 +66,6 @@ namespace AnalogInputs {
 } // namespace AnalogInputs
 
 
-AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS] EEMEM;
-
-
 void AnalogInputs::restoreDefault()
 {
     CalibrationPoint p;
@@ -85,12 +83,12 @@ void AnalogInputs::getCalibrationPoint(CalibrationPoint &x, Name name, uint8_t i
         x.x = x.y = 1;
         return;
     }
-    eeprom::read<CalibrationPoint>(x,&calibration[name].p[i]);
+    eeprom::read<CalibrationPoint>(x,&eeprom::data.calibration[name].p[i]);
 }
 void AnalogInputs::setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &x)
 {
     if(name >= PHYSICAL_INPUTS || i >= MAX_CALIBRATION_POINTS) return;
-    eeprom::write<CalibrationPoint>(&calibration[name].p[i], x);
+    eeprom::write<CalibrationPoint>(&eeprom::data.calibration[name].p[i], x);
 }
 
 uint8_t AnalogInputs::getConnectedBalancePorts()

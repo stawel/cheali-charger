@@ -29,15 +29,13 @@
 #include "StackInfo.h"
 #include "Hardware.h"
 #include "SerialLog.h"
+#include "eeprom.h"
 
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
 {string_options, NULL };
 
 MainMenu mainMenu(progmemMainMenu, 1);
-
-
-int backlight_val = 1200;
 
 void loop()
 {
@@ -65,17 +63,10 @@ void setup()
     Screen::displayStrings(PSTR("  ChealiCharger"),
                            PSTR("    ver: "  CHEALI_CHARGER_VERSION_STRING));
     hardware::delay(1000);
-
 #ifdef TESTINGALERT
     Screen::displayStrings(PSTR(" Modded version"),
                            PSTR("  FOR TESTING"));
     hardware::delay(1000);
-#endif    
-    if(Version::getCurrentEEPROMVersion() != CHEALI_CHARGER_EEPROM_VERSION) {
-        Screen::displayStrings(PSTR("reseting eeprom"),
-                               PSTR("to ver: " CHEALI_CHARGER_EPPROM_VERSION_STRING));
-        Timer::delay(2000);
-
-        Options::resetDefault();
-    }
+#endif
+    eeprom::restoreDefault();
 }

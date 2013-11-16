@@ -15,25 +15,29 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+#define __STDC_LIMIT_MACROS
+#include <stdint.h>
+
 #include "Thevenin.h"
 #include "Utils.h"
 
 
 AnalogInputs::ValueType Resistance::getReadableRth()
 {
-    if(I_ == 0)
+    if(uI_ == 0)
         return 0;
-    uint32_t R = abs(V_);
+    uint32_t R = abs(iV_);
     R*=1000;
-    R/=abs(I_);
+    R/=uI_;
     return R;
 }
 
 AnalogInputs::ValueType Resistance::getReadableRth_calibrateI(AnalogInputs::Name name)
 {
     Resistance R;
-    R.I_ = AnalogInputs::calibrateValue(name, abs(I_));
-    R.V_ = V_;
+    R.uI_ = AnalogInputs::calibrateValue(name, uI_);
+    R.iV_ = iV_;
     return R.getReadableRth();
 }
 
@@ -44,8 +48,8 @@ void Thevenin::init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, An
     VLast_ = Vth_ = Vth;
     ILastDiff_ = ILast_ = 0;
 
-    Rth_.I_ = i;
-    Rth_.V_ = Vmax;  Rth_.V_ -= Vth;
+    Rth_.uI_ = i;
+    Rth_.iV_ = Vmax;  Rth_.iV_ -= Vth;
 }
 
 AnalogInputs::ValueType Thevenin::calculateI(AnalogInputs::ValueType v) const
@@ -53,10 +57,9 @@ AnalogInputs::ValueType Thevenin::calculateI(AnalogInputs::ValueType v) const
     int32_t i;
     i  = v;
     i -= Vth_;
-    i *= Rth_.I_;
-    i /= Rth_.V_;
-    //TODO:
-    if(i >  65535) return  65535;  //need for accucel6 because value=3200 only 2.9A.
+    i *= Rth_.uI_;
+    i /= Rth_.iV_;
+    if(i >  UINT16_MAX) return  UINT16_MAX;
     if(i < 0) return 0;
     return i;
 }
@@ -70,15 +73,23 @@ void Thevenin::calculateRthVth(AnalogInputs::ValueType v, AnalogInputs::ValueTyp
 void Thevenin::calculateRth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
     if(absDiff(i, ILast_) > ILastDiff_/2 && absDiff(v, VLast_) > 0) {
-        int16_t rth_v,rth_i;
-        rth_v  = v;
-        rth_v -= VLast_;
-        rth_i  = i;
-        rth_i -= ILast_;
-        if(sign(rth_v)*sign(rth_i) == sign(Rth_.V_)*sign(Rth_.I_)) {
-            ILastDiff_ = absDiff(i, ILast_);
-            Rth_.V_ = rth_v;
-            Rth_.I_ = rth_i;
+        int16_t rth_v;
+        uint16_t rth_i;
+        if(i > ILast_) {
+            rth_i  = i;
+            rth_i -= ILast_;
+            rth_v  = v;
+            rth_v -= VLast_;
+        } else {
+            rth_v  = VLast_;
+            rth_v -= v;
+            rth_i  = ILast_;
+            rth_i  -= i;
+        }
+        if(sign(rth_v) == sign(Rth_.iV_)) {
+            ILastDiff_ = rth_i;
+            Rth_.iV_ = rth_v;
+            Rth_.uI_ = rth_i;
         }
     }
 }
@@ -87,8 +98,8 @@ void Thevenin::calculateVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i
 {
     int32_t VRth;
     VRth = i;
-    VRth *= Rth_.V_;
-    VRth /= Rth_.I_;
+    VRth *= Rth_.iV_;
+    VRth /= Rth_.uI_;
     if(v < VRth) Vth_ = 0;
     else Vth_ = v - VRth;
 }
