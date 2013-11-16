@@ -286,7 +286,9 @@ void dumpCalibration()
 {
     printString("V=" CHEALI_CHARGER_VERSION_STRING);
     printNL();
-    printV('E',0,CHEALI_CHARGER_EEPROM_VERSION);
+    printV('E',0,CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION);
+    printV('E',1,CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION);
+    printV('E',2,CHEALI_CHARGER_EEPROM_SETTINGS_VERSION);
 
     AnalogInputs::CalibrationPoint p;
     FOR_ALL_PHY_INPUTS(it) {

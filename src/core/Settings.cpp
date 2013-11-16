@@ -21,9 +21,9 @@
 #include "Buzzer.h"
 #include "Settings.h"
 #include "Monitor.h"
+#include "eeprom.h"
 
 Settings settings;
-Settings savedSetting EEMEM;
 
 const Settings defaultSettings PROGMEM = {
 #ifdef ENABLE_LCD_BACKLIGHT
@@ -64,12 +64,12 @@ uint32_t Settings::getUARTspeed() const {
 }
 
 void Settings::load() {
-    eeprom::read(settings, &savedSetting);
+    eeprom::read(settings, &eeprom::data.setting);
     settings.apply();
 }
 
 void Settings::save() {
-    eeprom::write(&savedSetting, settings);
+    eeprom::write(&eeprom::data.setting, settings);
     settings.apply();
 }
 

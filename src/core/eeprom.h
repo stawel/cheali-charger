@@ -15,6 +15,23 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Version.h"
-#include "memory.h"
 
+#include "AnalogInputs.h"
+#include "ProgramData.h"
+#include "Settings.h"
+
+namespace eeprom {
+
+    struct Data {
+        int calibrationVersion;
+        AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS];
+
+        int programDataVersion;
+        ProgramData programData[MAX_PROGRAMS];
+
+        int settingVersion;
+        Settings setting;
+    };
+    extern Data data;
+    void restoreDefault(bool force = false);
+}
