@@ -132,8 +132,8 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     changeInputVolt(p_.inputVoltageLow_, dir);  break;
         case NEXT_CASE:     changeMaxSmart(p_.dischargeOffset_LiXX_, dir, Settings::MaxDischargeOffset_LiXX);  break;
         case NEXT_CASE:     changeBalanceError(p_.balancerError_, dir); break;
-        case NEXT_CASE:     changeMax(p_.UART_, dir, Settings::ExtDebug); break;
-        case NEXT_CASE:     changeMax(p_.UARTspeed_, dir, Settings::Speeds-1); break;
+        case NEXT_CASE:     changeMax(p_.UART_, dir, Settings::ExtDebugAdc); break;
+        case NEXT_CASE:     changeMax(p_.UARTspeed_, dir, Settings::UARTSpeeds-1); break;
     }
 }
 
@@ -195,14 +195,16 @@ void SettingsMenu::changeUART(int dir)
 const char string_disable[]     PROGMEM = "disabled";
 const char string_normal[]      PROGMEM = "normal";
 const char string_debug[]       PROGMEM = "debug";
-const char string_extDebug[]    PROGMEM = "ext. debug";
+const char string_extDebug[]    PROGMEM = "ext. deb";
+const char string_extDebugAdc[] PROGMEM = "ext. Adc";
 
 const char * const SettingsUART[] PROGMEM =
 {
         string_disable,
         string_normal,
         string_debug,
-        string_extDebug
+        string_extDebug,
+        string_extDebugAdc
 };
 
 void SettingsMenu::printUART() const

@@ -46,16 +46,16 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_VOLT(0),     //dischargeOffset_LiXX_
         ANALOG_VOLT(0.006), //balancerError_
         Settings::Disabled, //UART_ - disabled
-        1                   //57600
+        3                   //57600
 };
 
 
-const uint32_t Settings_speeds[Settings::Speeds] PROGMEM = {
-    115200,
-    57600,
-    38400,
+const uint32_t Settings_speeds[Settings::UARTSpeeds] PROGMEM = {
+    9600,
     19200,
-    9600
+    38400,
+    57600,
+    115200,
 };
 
 
