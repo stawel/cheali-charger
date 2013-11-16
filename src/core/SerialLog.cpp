@@ -75,9 +75,7 @@ void powerOn()
     if(settings.UART_ == Settings::Disabled)
         return;
 
-#ifndef ENABLE_SERIAL_LOG_WAIT
     serialBegin();
-#endif
 
     state = Starting;
 #endif //ENABLE_SERIAL_LOG
@@ -90,10 +88,7 @@ void powerOff()
     if(state == Off)
         return;
 
-#ifndef ENABLE_SERIAL_LOG_WAIT
     serialEnd();
-#endif
-
     state = Off;
 #endif //ENABLE_SERIAL_LOG
 }
@@ -105,10 +100,6 @@ void send()
     if(state == Off)
         return;
 
-#ifdef ENABLE_SERIAL_LOG_WAIT
-    serialBegin();
-#endif
-
     currentTime = Timer::getMiliseconds();
 
     if(state == Starting) {
@@ -118,11 +109,6 @@ void send()
 
     currentTime -= startTime;
     sendTime();
-
-#ifdef ENABLE_SERIAL_LOG_WAIT
-    serialEnd();
-#endif
-
 #endif //ENABLE_SERIAL_LOG
 }
 
@@ -199,7 +185,9 @@ void sendChannel1()
     sendHeader(1);
     //analog inputs
     for(int8_t i=0;i < sizeOfArray(channel1);i++) {
-        printUInt(AnalogInputs::getRealValue(pgm::read(&channel1[i])));
+        AnalogInputs::Name name = pgm::read(&channel1[i]);
+        uint16_t v = AnalogInputs::getRealValue(name);
+        printUInt(v);
         printD();
     }
 
@@ -217,11 +205,14 @@ void sendChannel1()
     sendEnd();
 }
 
-void sendChannel2()
+void sendChannel2(bool adc)
 {
     sendHeader(2);
     FOR_ALL_INPUTS(it) {
-        printUInt(AnalogInputs::getRealValue(it));
+        uint16_t v;
+        if(adc) v = AnalogInputs::getAvrADCValue(it);
+        else    v = AnalogInputs::getRealValue(it);
+        printUInt(v);
         printD();
     }
     printUInt(Balancer::balance_);
@@ -231,29 +222,15 @@ void sendChannel2()
 #ifdef ENABLE_GET_PID_VALUE
     pidV = hardware::getPIDValue();
 #endif
+//    printUInt(pidV);
     printUInt(TheveninMethod::idebug_);
     printD();
-/*    printUInt(Screen::calculateBattRth());
-    printD();
-
-    printUInt(Screen::calculateWiresRth());
-    printD();
-
-    for(int8_t i=0;i<MAX_BANANCE_CELLS;i++) {
-        printUInt(Screen::calculateRthCell(i));
-        printD();
-    }
-*/
     sendEnd();
 }
 
 void sendChannel3()
 {
     sendHeader(3);
-    FOR_ALL_PHY_INPUTS(it) {
-        printUInt(AnalogInputs::getAvrADCValue(it));
-        printD();
-    }
     printUInt(StackInfo::getNeverUsedStackSize());
     printD();
     printUInt(StackInfo::getFreeStackSize());
@@ -264,11 +241,19 @@ void sendChannel3()
 
 void sendTime()
 {
-    sendChannel1();
-    if(settings.UART_>1)
-        sendChannel2();
+    int uart = settings.UART_;
+    bool adc = false;
 
-    if(settings.UART_>2)
+    STATIC_ASSERT(Settings::ExtDebugAdc == 4);
+
+    if(uart > Settings::ExtDebug) {
+        adc = true;
+    }
+    sendChannel1();
+    if(uart>Settings::Normal)
+        sendChannel2(adc);
+
+    if(uart>Settings::Debug)
         sendChannel3();
 
 }

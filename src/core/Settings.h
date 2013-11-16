@@ -28,8 +28,8 @@
 
 struct Settings {
 
-    enum UARTType {Disabled, Normal, Debug, ExtDebug };
-    static const uint8_t Speeds = 5;
+    enum UARTType {Disabled, Normal,  Debug,  ExtDebug, ExtDebugAdc};
+    static const uint8_t UARTSpeeds = 5;
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5);
     static const AnalogInputs::ValueType MaxDischargeOffset_LiXX = ANALOG_VOLT(1.000);
 #ifdef ENABLE_LCD_BACKLIGHT
