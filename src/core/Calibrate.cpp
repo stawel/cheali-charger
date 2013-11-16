@@ -242,10 +242,13 @@ void expertCalibrateVoltage()
         do {
             index = v.runSimple(true);
             if(index < 0) break;
+            AnalogInputs::Name Vinput = pgm::read(&expertVoltageName[index]);
+            if(!AnalogInputs::isConnected(Vinput))
+                continue;
             AnalogInputs::doFullMeasurement();
             AnalogInputs::on_ = false;
             if(v.runEdit(index))
-                saveVoltage(index, false , pgm::read(&expertVoltageName[index]),pgm::read(&expertVoltageName2[index]));
+                saveVoltage(index, false, Vinput, pgm::read(&expertVoltageName2[index]));
             AnalogInputs::on_ = true;
         } while(true);
     }
@@ -264,11 +267,12 @@ void calibrateVoltage()
         do {
             index = v.runSimple(true);
             if(index < 0) break;
-            if(index < 7) {
+            AnalogInputs::Name Vinput = pgm::read(&voltageName[index]);
+            if(index < 7 && AnalogInputs::isConnected(Vinput)) {
                 AnalogInputs::doFullMeasurement();
                 AnalogInputs::on_ = false;
                 if(v.runEdit(index))
-                    saveVoltage(index, true , pgm::read(&voltageName[index]),pgm::read(&voltageName2[index]));
+                    saveVoltage(index, true, Vinput,pgm::read(&voltageName2[index]));
                 AnalogInputs::on_ = true;
             }
         } while(true);
