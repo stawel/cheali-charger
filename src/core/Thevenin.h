@@ -22,7 +22,13 @@
 
 class Resistance {
 public:
-    int16_t V_,I_;
+   //R = iV_/uI_;
+   //when discharging the resistance is negative (iV_ < 0)
+   //in a Thevenin model this is mathematically equivalent
+   //to a positive resistance and a current flowing in the opposite direction
+
+    int16_t iV_;
+    uint16_t uI_;
 
     AnalogInputs::ValueType getReadableRth();
     AnalogInputs::ValueType getReadableRth_calibrateI(AnalogInputs::Name name);
