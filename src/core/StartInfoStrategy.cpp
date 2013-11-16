@@ -21,6 +21,8 @@
 #include "Screen.h"
 #include "Buzzer.h"
 
+//for LAST_PROGRAMTYPE const ???? (charge without balancer)
+#include "Program.h"
 
 namespace StartInfoStrategy {
     uint8_t ok_;
@@ -70,7 +72,30 @@ Strategy::statusType StartInfoStrategy::doStrategy()
             cell_nr =   false;
             v_balance = false;
         }
-    }
+     }   
+
+    
+    if( (AnalogInputs::getConnectedBalancePorts() == 0) && (v_balance == true) &&
+          (absDiff(AnalogInputs::getRealValue(AnalogInputs::Vout),
+             AnalogInputs::getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)  ))
+             {
+                 if(ProgramData::currentProgramData.isLiXX())
+                 { 
+                   if (Program::LAST_PROGRAM_TYPE ==1 || Program::LAST_PROGRAM_TYPE==5 || Program::LAST_PROGRAM_TYPE ==6) 
+                    {
+                      //Ch=1 ???  Di=5 ??? FC=6 ??? 
+                      
+                      //Buzzer::soundSelect();
+                      Screen::warningScreen();
+                      //without balancer
+                      cell_nr =   false;
+                      v_balance = false;
+                    }  
+                  }
+              }
+    
+    
+    
     if(AnalogInputs::isConnected(AnalogInputs::Vbalancer) &&
             absDiff(AnalogInputs::getRealValue(AnalogInputs::Vout),
                AnalogInputs::getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)) v_out = true;
@@ -96,3 +121,5 @@ Strategy::statusType StartInfoStrategy::doStrategy()
     }
     return Strategy::RUNNING;
 }
+
+

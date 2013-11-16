@@ -58,6 +58,7 @@ namespace Screen {
     void displayDeltaTextern();
     void displayDeltaFirst();
     void displayScreenEnergy();
+    void warningScreen();
 
     void displayScreenProgramCompleted();
 

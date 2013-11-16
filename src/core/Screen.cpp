@@ -415,6 +415,19 @@ void Screen::displayScreenReversedPolarity()
     lcdPrint_P(PSTR("REVERSE POLARITY"));
 }
 
+
+void Screen::warningScreen()
+{
+    Timer::delay(500);
+//                               1234567890123456
+    Screen::displayStrings(PSTR("****WARNING*****"),
+                           PSTR("Balancer not.con"));
+    Timer::delay(500);
+    Screen::displayStrings(PSTR("  hold button   "),
+                           PSTR("   to Start     "));
+    Timer::delay(500);                       
+}
+
 void Screen::displayStartInfo()
 {
     lcdSetCursor0_0();

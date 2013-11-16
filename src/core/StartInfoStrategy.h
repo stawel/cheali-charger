@@ -21,6 +21,8 @@
 
 #include "Strategy.h"
 
+
+
 namespace StartInfoStrategy {
     extern const Strategy::VTable vtable;
     void powerOn();
