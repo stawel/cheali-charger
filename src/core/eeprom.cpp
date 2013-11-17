@@ -41,17 +41,17 @@ namespace eeprom {
                                PSTR("v: " CHEALI_CHARGER_EPPROM_VERSION_STRING " "));
 
         if(testWriteVersion(&data.calibrationVersion, CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION) || force)  {
-            lcdPrint_P(PSTR("c "));
+            lcdPrint_P(PSTR("c"));
             calib = force = true;
             AnalogInputs::restoreDefault();
         }
         if(testWriteVersion(&data.programDataVersion, CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION) || force)  {
-            lcdPrint_P(PSTR("d "));
+            lcdPrint_P(PSTR("d"));
             force = true;
             ProgramData::restoreDefault();
         }
         if(testWriteVersion(&data.settingVersion, CHEALI_CHARGER_EEPROM_SETTINGS_VERSION) || force)  {
-            lcdPrint_P(PSTR("s "));
+            lcdPrint_P(PSTR("s"));
             force = true;
             Settings::restoreDefault();
         }

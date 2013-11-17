@@ -29,8 +29,7 @@
 namespace Calibrate {
     void run();
     void calibrateVoltage();
-    uint16_t checkCalibrateC(uint16_t);
-    uint16_t checkCalibrateD(uint16_t);
+    AnalogInputs::ValueType checkCalibrate(AnalogInputs::ValueType,AnalogInputs::Name,AnalogInputs::Name);
     void checkCalibrateIdischarge();
     void checkCalibrateIcharge();
 };

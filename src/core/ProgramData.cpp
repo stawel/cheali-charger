@@ -30,7 +30,7 @@ ProgramData ProgramData::currentProgramData;
 const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
 {
 //      { VIdle,              VCharge,            VDischarge,           VStorage, VUpperLimit,         ValidEmpty};
-/*Unknown*/{ 1,               1,                  1,                    1,        0,                   ANALOG_VOLT(1.000)},
+/*Unknown*/{ 1,               1,                  1,                    1,        0,                   1},
 //                               ???
 /*NiCd*/{ ANALOG_VOLT(1.200), ANALOG_VOLT(1.820), ANALOG_VOLT(0.850),   0,  ANALOG_VOLT(1.800),        ANALOG_VOLT(1.300)},
 //http://en.wikipedia.org/wiki/Nickel%E2%80%93metal_hydride_battery

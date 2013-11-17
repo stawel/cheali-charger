@@ -30,7 +30,7 @@
 
 //for checkcalibration
 #include "Hardware.h"
-#include "AnalogInputs.h"
+//#include "AnalogInputs.h"
 
 namespace Calibrate {
 
@@ -393,11 +393,12 @@ void calibrateIdischarge()
     } while(true);
 }
 
-uint16_t checkCalibrateC(uint16_t testCurrent)
+AnalogInputs::ValueType checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name1, AnalogInputs::Name name2)
 {
-    uint16_t x1,x2;  
-    x1 = AnalogInputs::calibrateValue(AnalogInputs::Ismps, testCurrent);
-    x2 = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, x1);
+    AnalogInputs::ValueType x1;
+    AnalogInputs::ValueType x2;
+    x1 = AnalogInputs::reverseCalibrateValue(name1, testCurrent);
+    x2 = AnalogInputs::calibrateValue(name2, x1);
        
     //test
         lcdClear();
@@ -405,36 +406,16 @@ uint16_t checkCalibrateC(uint16_t testCurrent)
         lcdPrintUnsigned(testCurrent,5);lcdPrintUnsigned(x1,5);
         lcdSetCursor0_1();
         lcdPrintUnsigned(x2, 5);lcdPrintUnsigned(testCurrent, 5);
-        hardware::delay(8000);
+        hardware::delay(2000);
     //test end
      
-    return x2;
-}
-
-uint16_t checkCalibrateD(uint16_t testCurrent)
-{
-    uint16_t x1,x2;  
-    x1 = AnalogInputs::calibrateValue(AnalogInputs::Idischarge, testCurrent);
-    x2 = AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, x1);   
-    
-        //test
-        lcdClear();
-        lcdSetCursor0_0();
-        lcdPrintUnsigned(testCurrent,5);lcdPrintUnsigned(x1,5);
-        lcdSetCursor0_1();
-        lcdPrintUnsigned(x2, 5);lcdPrintUnsigned(testCurrent, 5);
-        hardware::delay(8000);
-    //test end
-    
-    
-    
     return x2;
 }
 
 void checkCalibrateIcharge()
 {
     //check 'overflow'                                       // calibrate/reveresecalibrate inaccurate
-     if (absDiff (checkCalibrateC(MAX_CHARGE_I), MAX_CHARGE_I) >100)
+     if (absDiff (checkCalibrate(MAX_CHARGE_I,AnalogInputs::Ismps,AnalogInputs::IsmpsValue), MAX_CHARGE_I) >100)
      {
         Screen::displayStrings(PSTR("Calibration"),PSTR("ERROR"));
         hardware::delay(8000);
@@ -442,12 +423,15 @@ void checkCalibrateIcharge()
 }
 
 void checkCalibrateIdischarge()
-{ 
-    if (absDiff (checkCalibrateD(MAX_DISCHARGE_I), MAX_DISCHARGE_I) >100)
+{
+/*
+//not work
+    if (absDiff (checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::Idischarge, AnalogInputs::IdischargeValue), MAX_DISCHARGE_I) >100)
      {
         Screen::displayStrings(PSTR("Calibration"),PSTR("ERROR"));
         hardware::delay(8000);
     }
+*/
 }
 
 

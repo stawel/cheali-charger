@@ -18,19 +18,16 @@
 
 #include "AnalogInputs.h"
 
-//file provided by: Jozsef N.
-//TODO: calibrate Vb6_pin, Textern
-
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
     {{0, 0},                        {26368, 12120}},    //Vout
     {{0, 0},                        {26613, 12518}},    //VreversePolarity
-    {{712, 50},                        {11311, 1000}},    //Ismps
-    {{2320, 50},                        {12160, 300}},    //Idischarge
+    {{160, 50},                        {163, 1000}},    //Ismps
+    {{18682, 50},                        {832, 300}},    //Idischarge
 
     {{0, 0},                        {0, 0}},    //VoutMux
     {{0, 0},                        {0, 0}},    //Tintern
     {{0, 0},                        {51758, 15230}},    //Vin
-    {{19650, 2980},                        {18700, 6000}},    //Textern??
+    {{64, 2000},                        {64, 2100}},    //Textern
 
     {{0, 0},                        {48963, 3752}},    //Vb0_pin
     {{0, 0},                        {54656, 4198}},    //Vb1_pin
@@ -39,11 +36,11 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
 
     {{0, 0},                      {54976, 4197}},  //Vb4_pin
     {{0, 0},                      {54400, 4197}},  //Vb5_pin
-    {{0, 0},                      {54400, 4197}},  //Vb6_pin??
+    {{0, 0},                      {54400, 4197}},  //Vb6_pin
 
     //1-1 correlation
-    {{710, 50},                      {11310, 1000}},  //IsmpsValue
-    {{260, 50},                      {1490, 300}},  //IdischargeValue
+    {{10, 50},                      {20, 1000}},  //IsmpsValue
+    {{0, 50},                      {60, 300}},  //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {{0, 0},                         {1, 1}},           //UNKNOWN0
     {{0, 0},                         {1, 1}},           //UNKNOWN1
