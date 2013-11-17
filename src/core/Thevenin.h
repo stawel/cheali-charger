@@ -50,7 +50,7 @@ public:
     void calculateVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
     AnalogInputs::ValueType calculateI(AnalogInputs::ValueType Vc) const;
 
-    void init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i);
+    void init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i, bool charge);
 };
 
 #endif /* THEVENIN_H_ */
