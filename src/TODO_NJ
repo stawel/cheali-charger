@@ -2,7 +2,6 @@
 high priority:
 -smooth deltaIc. plusDeltaIc and minusDeltaIc (protect the power supply)
   
--calibrationerror sense (p2<p1) and value<65535 for maximum Ic.
 
 low priority:
 - power supply mode (if available this hardware)
@@ -19,3 +18,4 @@ ready:
 -loudness sound at the program complete
 -valid chargeprercent
 -lipo charge/discharge without balance
+-calibrationerror sense (p2<p1) and value<65535 for maximum Ic.

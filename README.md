@@ -1,6 +1,13 @@
 for testing
 
 
+Plus Features
+--------
+
+-Powerscren (Watt and Watthour)
+-Valid charge percent meter
+-loudness sound end program
+-Calibration error checking
 
 
 
@@ -30,7 +37,7 @@ Features
   - charging + balancing at the same time
   - discharging
   - balancing
-- Pb (not implemented yet)
+- Pb (TESTING)
 - Internal resistance display
   - single cell resistance
   - whole battery resistance
