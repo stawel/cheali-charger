@@ -1,12 +1,21 @@
 
 high priority:
- - Upper battery voltage limit control: Approx. 1.8V/cell.
+ - add smallTimeDiff function
  - Intermittent timer charge ??
 
 low priority:
- - add Pb batter type
+ - Upper battery voltage limit control: Approx. 1.8V/cell.
+ - increase capacity limit:
+   a) multiply capacity by 10
+   b) or 32bit capacity type
+ - increase AnalogInputs::Pout,Eout,Cout limits
+ - don't allow charge when cell volt. >= 4.20V
+ - output current slope limit
  - add NiXX cycling
- - add "stack info" to LogView debug informations
+ - new battery types??
+ - rewrite adc.cpp
+ - rewrite TheveninMethod.cpp
+ - optimisation: remove AnalogInputs::stableCount_
  - optimisation: rewrite Screen, remove switch..case
- - optimisation: write own serialHardware class
  - optimisation: remove arduino
+ - optimisation: display methods like sprintf?

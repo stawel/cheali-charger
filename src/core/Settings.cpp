@@ -44,7 +44,7 @@ const Settings defaultSettings PROGMEM = {
         120,                //"%" capCutoff_
         ANALOG_VOLT(7),     //inputVoltageLow_
         ANALOG_VOLT(0),     //dischargeOffset_LiXX_
-        ANALOG_VOLT(0.006), //balancerError_
+        ANALOG_VOLT(0.008), //balancerError_
         Settings::Disabled, //UART_ - disabled
         3                   //57600
 };

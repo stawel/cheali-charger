@@ -46,6 +46,9 @@
 //loudness programcomplete
 #define LOUDSOUND
 
+//Lixx withoutbalancer
+#define CHARGE_LIXX_WITHOUT_BALANCER
+
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
 #include "SMPS.h"

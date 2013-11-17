@@ -178,8 +178,10 @@ namespace AnalogInputs {
     extern const DefaultValues inputsP_[AnalogInputs::PHYSICAL_INPUTS];
     extern ValueType real_[ALL_INPUTS];
     extern ValueType adc_[PHYSICAL_INPUTS];
+
     extern bool on_;
     extern uint16_t calculationCount_;
+    extern uint16_t avrCount_;
     extern ValueType   deltaLastT_;
     extern uint16_t    deltaCount_;
 

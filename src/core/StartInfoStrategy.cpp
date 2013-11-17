@@ -74,26 +74,27 @@ Strategy::statusType StartInfoStrategy::doStrategy()
         }
      }   
 
-    
+#ifdef CHARGE_LIXX_WITHOUT_BALANCER
     if( (AnalogInputs::getConnectedBalancePorts() == 0) && (v_balance == true) &&
           (absDiff(AnalogInputs::getRealValue(AnalogInputs::Vout),
              AnalogInputs::getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)  ))
              {
                  if(ProgramData::currentProgramData.isLiXX())
                  { 
-                   if (Program::LAST_PROGRAM_TYPE ==1 || Program::LAST_PROGRAM_TYPE==5 || Program::LAST_PROGRAM_TYPE ==6) 
-                    {
-                      //Ch=1 ???  Di=5 ??? FC=6 ??? 
-                      
-                      //Buzzer::soundSelect();
+                   if ( Program::programType_ == Program::ChargeLiXX ||
+                        Program::programType_ == Program::DischargeLiXX ||
+                        Program::programType_ == Program::FastChargeLiXX ||
+                        Program::programType_ == Program::StorageLiXX) 
+                   {                      
                       Screen::warningScreen();
+                      Buzzer::soundInfo();
                       //without balancer
                       cell_nr =   false;
                       v_balance = false;
-                    }  
+                   }  
                   }
               }
-    
+#endif    
     
     
     if(AnalogInputs::isConnected(AnalogInputs::Vbalancer) &&

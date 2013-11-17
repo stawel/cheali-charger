@@ -1,13 +1,11 @@
 
 high priority:
-
--lipo charge without balance (Startinfostrategy.cpp:70)
 -smooth deltaIc. plusDeltaIc and minusDeltaIc (protect the power supply)
   
 -calibrationerror sense (p2<p1) and value<65535 for maximum Ic.
 
 low priority:
-- power supply mode
+- power supply mode (if available this hardware)
 - power current-supply
 - hot-wire support (foam cutter).
 
@@ -20,3 +18,4 @@ ready:
 -superCharge+balance mode  (PID and measuring(logview) problem if mini)
 -loudness sound at the program complete
 -valid chargeprercent
+-lipo charge without balance

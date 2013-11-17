@@ -44,6 +44,9 @@
 //loudness programcomplete
 #define LOUDSOUND
 
+//Lixx withoutbalancer
+#define CHARGE_LIXX_WITHOUT_BALANCER
+
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
 
 
