@@ -32,42 +32,63 @@
 //measurement should be done in an interrupt handler,
 //the adc capacitor should be charged at a constant time.
 
+//Then inputs: Vb0_pin,Vb1_pin,Vb2_pin should be measured less
+//frequently,  because they have a big input resistance and the corresponding
+//input capacitors need more time to charge.
+
+/* if You want use interrupts then
+ * most of the AnalogInputs methods should be rewritten
+ * to be atomic. (see <util/atomic.h>)
+ * We use a ADC_DELAY_US delay between setting the multiplexer address
+ * and the ADC measurement which is also a problem.
+ */
+/*ISR(ADC_vect)
+{
+//    adc::processMeasurement();
+//    adc::startConversion();
+}*/
+
+
 #define ADC_DELAY_US 60
 //discharge ADC capacitor on Vb6 - there is an operational amplifier
 #define ADC_CAPACITOR_DISCHARGE_ADDRESS MADDR_V_BALANSER6
 #define ADC_CAPACITOR_DISCHARGE_DELAY_US 10
+#define SLOW_INPUT_FACTOR 3
+
+
+namespace adc {
 
 struct adc_correlation {
     int8_t mux_;
     uint8_t adc_;
     AnalogInputs::Name ai_name_;
     bool trigger_PID_;
+    bool slow_input_;
 };
 
 const adc_correlation order_analogInputs_on[] PROGMEM = {
-    {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_A_PIN,           AnalogInputs::Vb0_pin,         false},
-    {-1,                            REVERSE_POLARITY_PIN,   AnalogInputs::VreversePolarity, false},
-    {MADDR_V_BALANSER6,             MUX0_Z_A_PIN,           AnalogInputs::Vb6_pin,         false},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            true},
-    {MADDR_V_BALANSER5,             MUX0_Z_A_PIN,           AnalogInputs::Vb5_pin,         false},
-    {-1,                            DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       false},
-    {MADDR_V_BALANSER4,             MUX0_Z_A_PIN,           AnalogInputs::Vb4_pin,         false},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            true},
-    {MADDR_V_BALANSER3,             MUX0_Z_A_PIN,           AnalogInputs::Vb3_pin,         false},
-    {-1,                            V_IN_PIN,               AnalogInputs::Vin,              false},
-    {MADDR_V_BALANSER1,             MUX0_Z_A_PIN,           AnalogInputs::Vb1_pin,         false},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            true},
-    {MADDR_V_BALANSER2,             MUX0_Z_A_PIN,           AnalogInputs::Vb2_pin,         false},
-    {-1,                            OUTPUT_VOLATAGE_PIN,    AnalogInputs::Vout ,            false},
-    {MADDR_T_EXTERN,                MUX0_Z_A_PIN,           AnalogInputs::Textern,          false},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            true},
+    {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_A_PIN,           AnalogInputs::Vb0_pin,         false, true},
+    {-1,                            REVERSE_POLARITY_PIN,   AnalogInputs::VreversePolarity,false, false},
+    {MADDR_V_BALANSER6,             MUX0_Z_A_PIN,           AnalogInputs::Vb6_pin,         false, false},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
+    {MADDR_V_BALANSER5,             MUX0_Z_A_PIN,           AnalogInputs::Vb5_pin,         false, false},
+    {-1,                            DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,      false, false},
+    {MADDR_V_BALANSER4,             MUX0_Z_A_PIN,           AnalogInputs::Vb4_pin,         false, false},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
+    {MADDR_V_BALANSER3,             MUX0_Z_A_PIN,           AnalogInputs::Vb3_pin,         false, false},
+    {-1,                            V_IN_PIN,               AnalogInputs::Vin,             false, false},
+    {MADDR_V_BALANSER1,             MUX0_Z_A_PIN,           AnalogInputs::Vb1_pin,         false, true},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
+    {MADDR_V_BALANSER2,             MUX0_Z_A_PIN,           AnalogInputs::Vb2_pin,         false, true},
+    {-1,                            OUTPUT_VOLATAGE_PIN,    AnalogInputs::Vout ,           false, false},
+    {MADDR_T_EXTERN,                MUX0_Z_A_PIN,           AnalogInputs::Textern,         false, false},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
 };
 
 
 #define DEFAULT 1
 #define EXTERNAL 0
 
-namespace {
 
 static const uint8_t analog_reference = EXTERNAL;
 
@@ -115,28 +136,15 @@ void setMuxAddress(uint8_t address)
     }
 }
 
-inline uint8_t nextInput(uint8_t x)
-{
-    if(x == sizeOfArray(order_analogInputs_on) -1) return 0;
-    return x+1;
-}
-
-/* if You want use interrupts then
- * most of the AnalogInputs methods should be rewritten
- * to be atomic. (see <util/atomic.h>)
- * We use a ADC_DELAY_US delay between setting the multiplexer address
- * and the ADC measurement which is also a problem.
- */
-ISR(ADC_vect)
-{
-//    adc::processMeasurement();
-//    adc::startConversion();
-}
-
 
 AnalogInputs::Name getAIName(uint8_t input)
 {
     return pgm::read(&order_analogInputs_on[input].ai_name_);
+}
+
+bool getSlowInput(uint8_t input)
+{
+    return pgm::read(&order_analogInputs_on[input].slow_input_);
 }
 
 uint8_t getADC(uint8_t input)
@@ -151,67 +159,40 @@ bool getTriggerPID(uint8_t input)
 
 int8_t getMUX(uint8_t input)
 {
-    int8_t mux;
-    do {
-        mux = pgm::read(&order_analogInputs_on[input].mux_);
-        input = nextInput(input);
-        if(mux == MADDR_T_EXTERN && !settings.externT_)
-            mux = -1;
-    } while(mux<0);
-    return mux;
+    return pgm::read(&order_analogInputs_on[input].mux_);;
 }
 
-} // namespace ""
 
-void adc::processConversion(bool finalize)
+void processConversion(uint8_t input)
 {
     uint8_t low, high;
-    bool trigger_PID;
     low  = ADCL;
     high = ADCH;
 
-    AnalogInputs::adc_[getAIName(current_input_)] = (high << 8) | low;
-    trigger_PID = getTriggerPID(current_input_);
-
-    current_input_ = nextInput(current_input_);
-    if(getAIName(current_input_) == AnalogInputs::Textern  && !settings.externT_)
-        current_input_ = nextInput(current_input_);
-
-    setADC(getADC(current_input_));
-    setMuxAddress(getMUX(current_input_));
-
-    if(trigger_PID)
-        SMPS_PID::update();
-
-    if(finalize && current_input_ == 0)
-        finalizeMeasurement();
-    else {
-        //info:improves the precision
-        delayMicroseconds(ADC_DELAY_US);
-    }
+    AnalogInputs::adc_[getAIName(input)] = (high << 8) | low;
 }
 
-void adc::reset()
+void reset()
 {
     current_input_ = 0;
     setADC(getADC(current_input_));
     setMuxAddress(getMUX(current_input_));
 }
 
-void adc::startConversion() {
+void startConversion() {
     // start the conversion
     ADCSRA |= _BV(ADSC);
 }
 
 
-void adc::finalizeMeasurement()
+void finalizeMeasurement()
 {
     AnalogInputs::adc_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
     AnalogInputs::adc_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
     AnalogInputs::finalizeMeasurement();
 }
 
-void adc::initialize()
+void initialize()
 {
     digitalWrite(MUX0_Z_D_PIN, 0);
     pinMode(MUX0_Z_D_PIN, INPUT);
@@ -223,18 +204,56 @@ void adc::initialize()
     //ADEN: ADC Enable
     //ADIE: ADC Interrupt Enable
     //ADPS2:0: ADC Prescaler Select Bits = 16MHz/ 128 = 125kHz
-    ADCSRA = _BV(ADEN) | _BV(ADIE) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0);
+//    ADCSRA = _BV(ADEN) | _BV(ADIE) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0);
+    ADCSRA = _BV(ADEN) |  _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0);
 
     adc::reset();
 }
 
-void adc::doMeasurement()
+void doMeasurement()
 {
+    bool dontSave = getSlowInput(current_input_) && (AnalogInputs::avrCount_ % SLOW_INPUT_FACTOR);
+
+    uint8_t mux = getMUX(current_input_);
+
+    dontSave = dontSave || (settings.UART_ != Settings::Disabled && mux == MADDR_T_EXTERN);
+
+    if(dontSave) {
+        //TODO: disable temperature measurement when UART is on
+        mux = MADDR_V_BALANSER5;
+    }
+    setMuxAddress(mux);
+    setADC(getADC(current_input_ + 1));
+    delayMicroseconds(ADC_DELAY_US);
     startConversion();
-    //TODO: go into Idle mode
     while (bit_is_set(ADCSRA, ADSC));
-    processConversion(AnalogInputs::isPowerOn());
+    processConversion(current_input_ + 1);
+
+    setADC(getADC(current_input_));
+    delayMicroseconds(ADC_DELAY_US);
+    startConversion();
+    while (bit_is_set(ADCSRA, ADSC));
+    if(!dontSave)
+        processConversion(current_input_);
+
+
+    bool trigger_PID = getTriggerPID(current_input_ + 1);
+
+    if(trigger_PID)
+        SMPS_PID::update();
+
+    current_input_ += 2;
+    if(current_input_ >= sizeOfArray(order_analogInputs_on))
+        current_input_ = 0;
+
+    if(AnalogInputs::isPowerOn() && current_input_ == 0)
+        finalizeMeasurement();
+    else {
+        //info:improves the precision
+    }
 }
+
+} //namespace adc
 
 
 //this method depends on the ADC implementation

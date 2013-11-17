@@ -205,7 +205,7 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value
     if(oldValue != value) {
         if(Ifalling_ != Falling
             || value < oldValue
-            || lastBallancingEnded_ != Balancer::balancingEnded_) {
+            || (oldValue <= minValue_ && lastBallancingEnded_ != Balancer::balancingEnded_)) {
 
             lastBallancingEnded_ = Balancer::balancingEnded_;
             return value;
