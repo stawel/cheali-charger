@@ -416,6 +416,18 @@ uint16_t checkCalibrateD(uint16_t testCurrent)
     uint16_t x1,x2;  
     x1 = AnalogInputs::calibrateValue(AnalogInputs::Idischarge, testCurrent);
     x2 = AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, x1);   
+    
+        //test
+        lcdClear();
+        lcdSetCursor0_0();
+        lcdPrintUnsigned(testCurrent,5);lcdPrintUnsigned(x1,5);
+        lcdSetCursor0_1();
+        lcdPrintUnsigned(x2, 5);lcdPrintUnsigned(testCurrent, 5);
+        hardware::delay(8000);
+    //test end
+    
+    
+    
     return x2;
 }
 
