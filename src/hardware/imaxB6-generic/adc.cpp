@@ -53,7 +53,7 @@
 //discharge ADC capacitor on Vb6 - there is an operational amplifier
 #define ADC_CAPACITOR_DISCHARGE_ADDRESS MADDR_V_BALANSER6
 #define ADC_CAPACITOR_DISCHARGE_DELAY_US 10
-#define SLOW_INPUT_FACTOR 3
+#define SLOW_INPUT_FACTOR 2
 
 
 namespace adc {
@@ -69,6 +69,10 @@ struct adc_correlation {
 const adc_correlation order_analogInputs_on[] PROGMEM = {
     {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_A_PIN,           AnalogInputs::Vb0_pin,         false, true},
     {-1,                            REVERSE_POLARITY_PIN,   AnalogInputs::VreversePolarity,false, false},
+    {MADDR_V_BALANSER1,             MUX0_Z_A_PIN,           AnalogInputs::Vb1_pin,         false, true},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
+    {MADDR_V_BALANSER2,             MUX0_Z_A_PIN,           AnalogInputs::Vb2_pin,         false, true},
+    {-1,                            OUTPUT_VOLATAGE_PIN,    AnalogInputs::Vout ,           false, false},
     {MADDR_V_BALANSER6,             MUX0_Z_A_PIN,           AnalogInputs::Vb6_pin,         false, false},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
     {MADDR_V_BALANSER5,             MUX0_Z_A_PIN,           AnalogInputs::Vb5_pin,         false, false},
@@ -77,10 +81,6 @@ const adc_correlation order_analogInputs_on[] PROGMEM = {
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
     {MADDR_V_BALANSER3,             MUX0_Z_A_PIN,           AnalogInputs::Vb3_pin,         false, false},
     {-1,                            V_IN_PIN,               AnalogInputs::Vin,             false, false},
-    {MADDR_V_BALANSER1,             MUX0_Z_A_PIN,           AnalogInputs::Vb1_pin,         false, true},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
-    {MADDR_V_BALANSER2,             MUX0_Z_A_PIN,           AnalogInputs::Vb2_pin,         false, true},
-    {-1,                            OUTPUT_VOLATAGE_PIN,    AnalogInputs::Vout ,           false, false},
     {MADDR_T_EXTERN,                MUX0_Z_A_PIN,           AnalogInputs::Textern,         false, false},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
 };
@@ -113,21 +113,24 @@ void setMuxAddress(uint8_t address)
 //        digitalWrite(MUX_ADR1_PIN, address&2);
 //        digitalWrite(MUX_ADR2_PIN, address&4);
 
-        //discharge ADC capacitor first
         uint8_t new_portb = getPortBAddress(address);
         uint8_t disc_adr = getPortBAddress(ADC_CAPACITOR_DISCHARGE_ADDRESS);
         uint8_t bit = digitalPinToBitMask(MUX0_Z_D_PIN);
         uint8_t ddra_input = DDRA & (~bit);
         uint8_t ddra_output = DDRA | bit;
 
-        PORTB = disc_adr;
-        //pinMode(MUX0_Z_D_PIN, OUTPUT);
-        DDRA = ddra_output;
+        //TODO: (yet another hack) do not discharge ADC capacitor when measuring:
+        //Vb1_pin,Vb2_pin (slow inputs)
+        if(address != MADDR_V_BALANSER1 && address != MADDR_V_BALANSER2) {
+            //discharge ADC capacitor first
+            PORTB = disc_adr;
+            //pinMode(MUX0_Z_D_PIN, OUTPUT);
+            DDRA = ddra_output;
 
-        delayMicroseconds(ADC_CAPACITOR_DISCHARGE_DELAY_US);
+            delayMicroseconds(ADC_CAPACITOR_DISCHARGE_DELAY_US);
+        }
 
         //switch to the desired address
-
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
             PORTB = new_portb;
             //pinMode(MUX0_Z_D_PIN, INPUT);
