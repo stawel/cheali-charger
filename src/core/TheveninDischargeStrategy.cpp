@@ -27,6 +27,8 @@ namespace TheveninDischargeStrategy {
         powerOff,
         doStrategy
     };
+
+    bool endOnTheveninMethodComplete_;
 }
 
 
@@ -42,6 +44,8 @@ void TheveninDischargeStrategy::powerOn()
 {
     Discharger::powerOn();
     Balancer::powerOn();
+    //end on Voltage reached
+    endOnTheveninMethodComplete_ = false;
     TheveninMethod::initialize(AnalogInputs::IdischargeValue);
 }
 
@@ -67,8 +71,11 @@ Strategy::statusType TheveninDischargeStrategy::doStrategy()
     stable = AnalogInputs::isOutStable() || isEndVout;
 
     //test for charge complete
-//    if(TheveninMethod::isComlete(isEndVout, oldValue)) {
-    if(isEndVout) {
+    bool end = isEndVout;
+    if(endOnTheveninMethodComplete_) {
+        end = TheveninMethod::isComlete(isEndVout, oldValue);
+    }
+    if(end) {
         Discharger::powerOff(Discharger::DISCHARGING_COMPLETE);
         return Strategy::COMPLETE;
     }
