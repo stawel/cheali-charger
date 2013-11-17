@@ -99,7 +99,7 @@ Flashing: G.T. POWER A6-10 200W
 
 - Connect a standard AVR ISP 10-pin cable to the board: https://github.com/stawel/cheali-charger/blob/master/docs/GTPowerA6-10/front.jpg
 - set "Device" to: atmega32
-- use the cheali-charger/hex/cheali-charger-GTPowerA6-10-0.31.hex file as "Flash"
+- use the cheali-charger/hex/cheali-charger-GTPowerA6-10-0.32.hex file as "Flash"
 
 
 Flashing: IMAX B6
@@ -109,7 +109,7 @@ Flashing: IMAX B6
     - IMAX B6 - original: https://github.com/stawel/cheali-charger/blob/master/docs/imaxB6/imaxB6-original-front.jpg
     - IMAX B6 - clone: https://github.com/stawel/cheali-charger/blob/master/docs/imaxB6/imaxB6-clone-front.jpg
 - set "Device" to: atmega32
-- use the cheali-charger/hex/cheali-charger-imaxB6-original-0.31.hex  (or cheali-charger-imaxB6-clone-0.31.hex) file as "Flash"
+- use the cheali-charger/hex/cheali-charger-imaxB6-original-0.32.hex  (or cheali-charger-imaxB6-clone-0.32.hex) file as "Flash"
 
 
 Calibration (IMAX B6 and G.T. POWER A6-10 200W)
@@ -137,6 +137,25 @@ go to: "options"->"calibrate":
     You have to set two calibration points
 
 Done.
+
+Calibration - Expert (IMAX B6)
+-----------
+If you think that the accuracy on the first two cells is not satisfying,  
+you can try to calibrate the voltage on the first three pins on the balance port.  
+(be aware that on some chargers this can be dangerous)
+- disconnect everything from the charger
+- measure the resistance between the BLACK battery plug and the first pin on the balance port
+  - if the resistance is very low (<1k Ohm), stop this procedure!
+- connect the power supply, and go to "options"->"calibrate"->"expert DANGER!"
+- connect a 1.5V battery through a 1k-10k Ohm resistor to the BLACK battery plug (-) and the first pin on the balance port (+).
+- measure the voltage between the BLACK battery plug and the first pin on the balance port
+  and set the appropriate value on: "Vb0pin"
+- disconnect the battery.
+- connect a 2-cell (or more) LiPo battery.
+- measure the voltage between the BLACK battery plug and the second and third pin on the balance port
+  and set the appropriate value on: "Vb1pin" and "Vb2pin"
+- Done - after that You should proceed with the normal calibration.
+
 
 Mailing list
 ------------

@@ -268,6 +268,7 @@ void Program::run(ProgramType prog)
             break;
         case Program::StorageLiXX:
             runStorage(false);
+            break;
         case Program::StorageLiXX_Balance:
             runStorage(true);
             break;
