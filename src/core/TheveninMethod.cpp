@@ -95,18 +95,19 @@ void TheveninMethod::setVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueTyp
 void TheveninMethod::initialize(AnalogInputs::Name iName)
 {
     bstatus_ = Strategy::COMPLETE;
+    bool charge = (iName == AnalogInputs::IsmpsValue);
 
     iName_ = iName;
     minBalanceValue_ = AnalogInputs::reverseCalibrateValue(iName_, Balancer::Ibalance);
     AnalogInputs::ValueType Vout = AnalogInputs::getVout();
-    tVout_.init(Vout, Vend_, minValue_);
+    tVout_.init(Vout, Vend_, minValue_, charge);
 
     cells_ = Balancer::getCells();
     AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(Vend_);
 
     for(uint8_t c = 0; c < cells_; c++) {
         AnalogInputs::ValueType v = Balancer::getPresumedV(c);
-        tBal_[c].init(v, Vend_per_cell, minValue_);
+        tBal_[c].init(v, Vend_per_cell, minValue_, charge);
     }
 
     Ifalling_ = NotFalling;

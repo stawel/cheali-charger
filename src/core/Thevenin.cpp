@@ -43,13 +43,22 @@ AnalogInputs::ValueType Resistance::getReadableRth_calibrateI(AnalogInputs::Name
 
 
 
-void Thevenin::init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i)
+void Thevenin::init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i, bool charge)
 {
-    VLast_ = Vth_ = Vth;
+    AnalogInputs::ValueType Vfrom, Vto;
+    if(charge) {
+        //safety routine - important when one cell is overcharged
+        Vfrom = min(Vth, Vmax);
+        Vto = max(Vth, Vmax);
+    } else {
+        Vfrom = max(Vth, Vmax);
+        Vto = min(Vth, Vmax);
+    }
+    VLast_ = Vth_ = Vfrom;
     ILastDiff_ = ILast_ = 0;
 
     Rth_.uI_ = i;
-    Rth_.iV_ = Vmax;  Rth_.iV_ -= Vth;
+    Rth_.iV_ = Vto;  Rth_.iV_ -= Vfrom;
 }
 
 AnalogInputs::ValueType Thevenin::calculateI(AnalogInputs::ValueType v) const
