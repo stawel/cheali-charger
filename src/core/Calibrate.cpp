@@ -28,6 +28,10 @@
 #include "SerialLog.h"
 #include "Program.h"
 
+//for checkcalibration
+#include "Hardware.h"
+#include "AnalogInputs.h"
+
 namespace Calibrate {
 
 const char c1[] PROGMEM = "voltage";
@@ -389,6 +393,43 @@ void calibrateIdischarge()
     } while(true);
 }
 
+void checkCalibrateIcharge()
+{
+/*
+    int16_t x1value,x2;
+    x1value = AnalogInputs::calibrateValue(AnalogInputs::Ismps, MAX_CHARGE_I/1000);
+    x2 = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, x1value);
+    //check 'overflow'
+//    if (x2 != MAX_CHARGE_I)
+//    {
+        //Screen::displayStrings(PSTR("Calibration"),PSTR("ERROR"));
+        lcdClear();
+        lcdSetCursor0_0();
+        lcdPrintUnsigned(x1value, 5);
+        lcdSetCursor0_1();
+        lcdPrintUnsigned(x2, 5);lcdPrintUnsigned(MAX_CHARGE_I/1000, 5);
+        hardware::delay(8000);
+//    }
+
+*/
+}
+
+void checkCalibrateIdischarge()
+{ 
+/*
+  
+    int16_t x1value,x2;
+    x1value = AnalogInputs::calibrateValue(AnalogInputs::Idischarge, MAX_DISCHARGE_I/1000);
+    x2 = AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, x1value);
+    if (x2 != MAX_DISCHARGE_I)
+    {
+        Screen::displayStrings(PSTR("Calibration"),PSTR("ERROR"));
+        hardware::delay(2000);
+    }    
+
+*/
+}
+
 
 class TempMenu: public EditMenu {
 public:
@@ -464,8 +505,8 @@ void run()
         START_CASE_COUNTER;
         switch(i) {
         case NEXT_CASE: calibrateVoltage(); break;
-        case NEXT_CASE: calibrateIcharge(); break;
-        case NEXT_CASE: calibrateIdischarge(); break;
+        case NEXT_CASE: calibrateIcharge(); checkCalibrateIcharge(); break;
+        case NEXT_CASE: calibrateIdischarge(); checkCalibrateIdischarge(); break;
         case NEXT_CASE: calibrateTemp(AnalogInputs::Textern); break;
 #ifdef ENABLE_T_INTERNAL
         case NEXT_CASE: calibrateTemp(AnalogInputs::Tintern); break;

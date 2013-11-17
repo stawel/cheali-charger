@@ -18,4 +18,4 @@ ready:
 -superCharge+balance mode  (PID and measuring(logview) problem if mini)
 -loudness sound at the program complete
 -valid chargeprercent
--lipo charge without balance
+-lipo charge/discharge without balance
