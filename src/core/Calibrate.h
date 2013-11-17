@@ -29,6 +29,8 @@
 namespace Calibrate {
     void run();
     void calibrateVoltage();
+    uint16_t checkCalibrateC(uint16_t);
+    uint16_t checkCalibrateD(uint16_t);
     void checkCalibrateIdischarge();
     void checkCalibrateIcharge();
 };
