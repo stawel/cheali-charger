@@ -395,8 +395,8 @@ void calibrateIdischarge()
 
 AnalogInputs::ValueType checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name1, AnalogInputs::Name name2)
 {
-    AnalogInputs::ValueType x1;
-    AnalogInputs::ValueType x2;
+    uint16_t x1,x2;
+
     x1 = AnalogInputs::reverseCalibrateValue(name1, testCurrent);
     x2 = AnalogInputs::calibrateValue(name2, x1);
        
@@ -415,7 +415,7 @@ AnalogInputs::ValueType checkCalibrate(AnalogInputs::ValueType testCurrent, Anal
 void checkCalibrateIcharge()
 {
     //check 'overflow'                                       // calibrate/reveresecalibrate inaccurate
-     if (absDiff (checkCalibrate(MAX_CHARGE_I,AnalogInputs::Ismps,AnalogInputs::IsmpsValue), MAX_CHARGE_I) >100)
+     if (absDiff (checkCalibrate(MAX_CHARGE_I,AnalogInputs::IsmpsValue,AnalogInputs::Ismps), MAX_CHARGE_I) >100)
      {
         Screen::displayStrings(PSTR("Calibration"),PSTR("ERROR"));
         hardware::delay(8000);
@@ -424,14 +424,14 @@ void checkCalibrateIcharge()
 
 void checkCalibrateIdischarge()
 {
-/*
+
 //not work
-    if (absDiff (checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::Idischarge, AnalogInputs::IdischargeValue), MAX_DISCHARGE_I) >100)
+    if (absDiff (checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::IdischargeValue, AnalogInputs::Idischarge), MAX_DISCHARGE_I) >100)
      {
         Screen::displayStrings(PSTR("Calibration"),PSTR("ERROR"));
         hardware::delay(8000);
     }
-*/
+
 }
 
 

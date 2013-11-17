@@ -18,32 +18,29 @@
 
 #include "AnalogInputs.h"
 
-//file provided by: Jozsef N.
-//TODO: calibrate Vb6_pin, Textern
-
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
-    {{0, 0},                        {26368, 12120}},    //Vout
+    {{0, 0},                        {54592, 25094}},    //Vout
     {{0, 0},                        {26613, 12518}},    //VreversePolarity
-    {{712, 50},                        {11311, 1000}},    //Ismps
-    {{2320, 50},                        {12160, 300}},    //Idischarge
+    {{378, 50},                        {10916, 1000}},    //Ismps
+    {{7095, 50},                        {43070, 300}},    //Idischarge
 
     {{0, 0},                        {0, 0}},    //VoutMux
     {{0, 0},                        {0, 0}},    //Tintern
-    {{0, 0},                        {51758, 15230}},    //Vin
-    {{19650, 2980},                        {18700, 6000}},    //Textern??
+    {{0, 0},                        {48013, 14038}},    //Vin
+    {{19650, 2980},                        {18700, 6000}},    //Textern
 
     {{0, 0},                        {48963, 3752}},    //Vb0_pin
-    {{0, 0},                        {54656, 4198}},    //Vb1_pin
-    {{0, 0},                      {53376, 8068}},  //Vb2_pin
-    {{0, 0},                      {54577, 4193}},  //Vb3_pin
+    {{0, 0},                        {54805, 4177}},    //Vb1_pin
+    {{0, 0},                      {55707, 8392}},  //Vb2_pin
+    {{0, 0},                      {55498, 4195}},  //Vb3_pin
 
-    {{0, 0},                      {54976, 4197}},  //Vb4_pin
-    {{0, 0},                      {54400, 4197}},  //Vb5_pin
-    {{0, 0},                      {54400, 4197}},  //Vb6_pin??
+    {{0, 0},                      {55303, 4183}},  //Vb4_pin
+    {{0, 0},                      {55360, 4191}},  //Vb5_pin
+    {{0, 0},                      {53157, 4184}},  //Vb6_pin
 
     //1-1 correlation
-    {{710, 50},                      {11310, 1000}},  //IsmpsValue
-    {{260, 50},                      {1490, 300}},  //IdischargeValue
+    {{380, 50},                      {10920, 1000}},  //IsmpsValue
+    {{2610, 50},                      {15850, 300}},  //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {{0, 0},                         {1, 1}},           //UNKNOWN0
     {{0, 0},                         {1, 1}},           //UNKNOWN1
