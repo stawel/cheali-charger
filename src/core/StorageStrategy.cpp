@@ -54,6 +54,7 @@ void StorageStrategy::powerOn()
         state = Charge;
     } else {
         TheveninDischargeStrategy::powerOn();
+        TheveninDischargeStrategy::endOnTheveninMethodComplete_ = true;
         state = Discharge;
     }
 }

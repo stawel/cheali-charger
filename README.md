@@ -37,7 +37,13 @@ Features
   - charging + balancing at the same time
   - discharging
   - balancing
+<<<<<<< HEAD
 - Pb (TESTING)
+=======
+- Pb: - not well tested!
+  - charging
+  - discharging
+>>>>>>> 043514b576a26f9ffbb32d382f5e725639b494cf
 - Internal resistance display
   - single cell resistance
   - whole battery resistance
@@ -161,6 +167,11 @@ you can try to calibrate the voltage on the first three pins on the balance port
 - measure the voltage between the BLACK battery plug and the second and third pin on the balance port
   and set the appropriate value on: "Vb1pin" and "Vb2pin"
 - Done - after that You should proceed with the normal calibration.
+
+Troubleshooting
+---------------
+- After flashing charger doesn't work:
+  - set the atmega fuses to: lfuse=0xde, hfuse=0xd7 and reflash the device.
 
 
 Mailing list
