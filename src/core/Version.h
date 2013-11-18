@@ -18,7 +18,7 @@
 #ifndef VERSION_H_
 #define VERSION_H_
 
-#define CHEALI_CHARGER_VERSION                          0.32
+#define CHEALI_CHARGER_VERSION                          0.32m
 #define CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION       99
 #define CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION       99
 #define CHEALI_CHARGER_EEPROM_SETTINGS_VERSION          99
