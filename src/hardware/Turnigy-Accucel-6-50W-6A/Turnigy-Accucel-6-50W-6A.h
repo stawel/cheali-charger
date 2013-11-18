@@ -21,11 +21,11 @@
 #include "imaxB6.h"
 
 #define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(5.000)   //should be 5A      //replaced 0r1 resistor
+#define MAX_CHARGE_I            ANALOG_AMP(6.000)   //should be 5A      //replaced 0r1 resistor
 #define MAX_CHARGE_P            ANALOG_WATT(50.000)               //50W
 
-#define MAX_DISCHARGE_P         ANALOG_WATT(5.000)                //5W  //replaced resistor
-#define MAX_DISCHARGE_I         ANALOG_AMP(1.000)   //should be 1A      //replaced resistor (need more cooling)
+#define MAX_DISCHARGE_P         ANALOG_WATT(10.000)                //5W  //replaced resistor
+#define MAX_DISCHARGE_I         ANALOG_AMP(2.000)   //should be 1A      //replaced resistor (need more cooling)
 
 
 //1-13? correlation
@@ -33,6 +33,6 @@
 #define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/1)
 #define DISCHARGER_UPPERBOUND_VALUE         TIMERONE_PRECISION_PERIOD
 #define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/6)
-#define CALIBRATION_SPEED                   1
+#define CALIBRATION_SPEED                   10
 
 #endif /* Turnigy_Accucel_6_50W_6A_H_ */

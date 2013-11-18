@@ -399,7 +399,7 @@ AnalogInputs::ValueType checkCalibrate(AnalogInputs::ValueType testCurrent, Anal
 
     x1 = AnalogInputs::reverseCalibrateValue(name1, testCurrent);
     x2 = AnalogInputs::calibrateValue(name2, x1);
-       
+ /*      
     //test
         lcdClear();
         lcdSetCursor0_0();
@@ -408,7 +408,7 @@ AnalogInputs::ValueType checkCalibrate(AnalogInputs::ValueType testCurrent, Anal
         lcdPrintUnsigned(x2, 5);lcdPrintUnsigned(testCurrent, 5);
         hardware::delay(2000);
     //test end
-     
+ */    
     return x2;
 }
 
@@ -426,12 +426,15 @@ void checkCalibrateIdischarge()
 {
 
 //not work
+
+/*
+
     if (absDiff (checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::IdischargeValue, AnalogInputs::Idischarge), MAX_DISCHARGE_I) >100)
      {
         Screen::displayStrings(PSTR("Calibration"),PSTR("ERROR"));
         hardware::delay(8000);
     }
-
+*/
 }
 
 

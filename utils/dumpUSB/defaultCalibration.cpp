@@ -21,8 +21,8 @@
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
     {{0, 0},                        {54592, 25094}},    //Vout
     {{0, 0},                        {26613, 12518}},    //VreversePolarity
-    {{378, 50},                        {10916, 1000}},    //Ismps
-    {{7095, 50},                        {43070, 300}},    //Idischarge
+    {{713, 50},                        {10838, 1000}},    //Ismps
+    {{2240, 50},                        {11200, 300}},    //Idischarge
 
     {{0, 0},                        {0, 0}},    //VoutMux
     {{0, 0},                        {0, 0}},    //Tintern
@@ -39,8 +39,8 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                      {53157, 4184}},  //Vb6_pin
 
     //1-1 correlation
-    {{380, 50},                      {10920, 1000}},  //IsmpsValue
-    {{2610, 50},                      {15850, 300}},  //IdischargeValue
+    {{720, 50},                      {10840, 1000}},  //IsmpsValue
+    {{250, 50},                      {1370, 300}},  //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {{0, 0},                         {1, 1}},           //UNKNOWN0
     {{0, 0},                         {1, 1}},           //UNKNOWN1
