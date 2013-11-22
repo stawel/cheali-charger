@@ -41,7 +41,7 @@
 #define ENABLE_SERIAL_LOG
 
 //start warning-text
-#define TESTINGALERT
+//#define TESTINGALERT
 
 //loudness programcomplete
 #define LOUDSOUND
@@ -49,8 +49,7 @@
 //Lixx withoutbalancer
 #define CHARGE_LIXX_WITHOUT_BALANCER
 
-//TODO_NJ
-//if no external temp sensor, then not calibrated. false high temperature measurement. Program completed event after 1 sec. (no message "high temperature")
+// I not used external temp sensor
 #define DEFAULT_SETTINGS_EXTERNAL_T 0  
 
 #include "LiquidCrystal.h"
