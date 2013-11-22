@@ -5,11 +5,11 @@ Plus Features
 --------
 
 -Powerscren (Watt and Watthour)
--Valid charge percent meter
--loudness sound end program
--Calibration error checking
-
-
+-Valid charge-percent meter
+-loudness sound for end-program
+-Calibration error checking (not tested)
+-supercharge-balance (not tested)
+-charge without balancer-port
 
 original source and hex:
 https://github.com/stawel/cheali-charger
@@ -37,13 +37,9 @@ Features
   - charging + balancing at the same time
   - discharging
   - balancing
-<<<<<<< HEAD
-- Pb (TESTING)
-=======
 - Pb: - not well tested!
   - charging
   - discharging
->>>>>>> 043514b576a26f9ffbb32d382f5e725639b494cf
 - Internal resistance display
   - single cell resistance
   - whole battery resistance

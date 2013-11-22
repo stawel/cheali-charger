@@ -19,7 +19,7 @@
 #include "AnalogInputs.h"
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
-    {{0, 0},                        {54592, 25094}},    //Vout
+    {{0, 0},                        {52160, 24039}},    //Vout
     {{0, 0},                        {26613, 12518}},    //VreversePolarity
     {{713, 50},                        {10838, 1000}},    //Ismps
     {{2240, 50},                        {11200, 300}},    //Idischarge
@@ -30,13 +30,13 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{19650, 2980},                        {18700, 6000}},    //Textern
 
     {{0, 0},                        {48963, 3752}},    //Vb0_pin
-    {{0, 0},                        {54805, 4177}},    //Vb1_pin
-    {{0, 0},                      {55707, 8392}},  //Vb2_pin
-    {{0, 0},                      {55498, 4195}},  //Vb3_pin
+    {{0, 0},                        {49536, 3815}},    //Vb1_pin
+    {{0, 0},                      {50624, 7644}},  //Vb2_pin
+    {{0, 0},                      {49727, 3821}},  //Vb3_pin
 
-    {{0, 0},                      {55303, 4183}},  //Vb4_pin
-    {{0, 0},                      {55360, 4191}},  //Vb5_pin
-    {{0, 0},                      {53157, 4184}},  //Vb6_pin
+    {{0, 0},                      {54912, 4190}},  //Vb4_pin
+    {{0, 0},                      {54445, 4193}},  //Vb5_pin
+    {{0, 0},                      {55168, 4195}},  //Vb6_pin
 
     //1-1 correlation
     {{720, 50},                      {10840, 1000}},  //IsmpsValue
