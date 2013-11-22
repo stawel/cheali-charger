@@ -240,22 +240,21 @@ void expertCalibrateVoltage()
 {
     Discharger::powerOn();
 
-    if(testVout()) {
-        VoltageMenu v(expertVoltageMenu, expertVoltageName, 6);
-        int8_t index;
-        do {
-            index = v.runSimple(true);
-            if(index < 0) break;
-            AnalogInputs::Name Vinput = pgm::read(&expertVoltageName[index]);
-            if(!AnalogInputs::isConnected(Vinput))
-                continue;
-            AnalogInputs::doFullMeasurement();
-            AnalogInputs::on_ = false;
-            if(v.runEdit(index))
-                saveVoltage(index, false, Vinput, pgm::read(&expertVoltageName2[index]));
-            AnalogInputs::on_ = true;
-        } while(true);
-    }
+    //TODO: optimization: this method should be merged with calibrateVoltage
+    VoltageMenu v(expertVoltageMenu, expertVoltageName, 6);
+    int8_t index;
+    do {
+        index = v.runSimple(true);
+        if(index < 0) break;
+        AnalogInputs::Name Vinput = pgm::read(&expertVoltageName[index]);
+        if(!AnalogInputs::isConnected(Vinput))
+            continue;
+        AnalogInputs::doFullMeasurement();
+        AnalogInputs::on_ = false;
+        if(v.runEdit(index))
+            saveVoltage(index, false, Vinput, pgm::read(&expertVoltageName2[index]));
+        AnalogInputs::on_ = true;
+    } while(true);
     Discharger::powerOff();
 }
 #endif
