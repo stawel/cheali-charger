@@ -29,7 +29,7 @@
 namespace Calibrate {
     void run();
     void calibrateVoltage();
-    AnalogInputs::ValueType checkCalibrate(AnalogInputs::ValueType,AnalogInputs::Name,AnalogInputs::Name);
+    bool checkCalibrate(AnalogInputs::ValueType);
     void checkCalibrateIdischarge();
     void checkCalibrateIcharge();
 };

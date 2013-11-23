@@ -420,13 +420,22 @@ void Screen::warningScreen()
 {
     Timer::delay(500);
 //                               1234567890123456
-    Screen::displayStrings(PSTR("****WARNING*****"),
+    Screen::displayStrings(PSTR("    WARNING     "),
                            PSTR("Balancer not.con"));
     Timer::delay(500);
     Screen::displayStrings(PSTR("  hold button   "),
-                           PSTR("   to Start     "));
+                           PSTR(" to Start/stop  "));
     Timer::delay(500);                       
 }
+
+void Screen::calibrationErrorScreen()
+{
+//                                 1234567890123456
+      Screen::displayStrings(PSTR("  Calibration   "),
+                             PSTR("     ERROR      "));
+      hardware::delay(8000);
+}
+
 
 void Screen::displayStartInfo()
 {

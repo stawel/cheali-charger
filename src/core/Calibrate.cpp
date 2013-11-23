@@ -392,51 +392,35 @@ void calibrateIdischarge()
     } while(true);
 }
 
-AnalogInputs::ValueType checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name1, AnalogInputs::Name name2)
+bool checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name1)
 {
-    uint16_t x1,x2;
-
-    x1 = AnalogInputs::reverseCalibrateValue(name1, testCurrent);
-    x2 = AnalogInputs::calibrateValue(name2, x1);
-     
-    //test
-        lcdClear();
-        lcdSetCursor0_0();
-        lcdPrintUnsigned(testCurrent,5); 
-        lcdPrintChar('-'); 
-        lcdPrintUnsigned(x1,5);
-        lcdSetCursor0_1();
-        lcdPrintUnsigned(x2, 5);
-        lcdPrintChar('-');  
-        lcdPrintUnsigned(testCurrent, 5);
-        hardware::delay(2000);
-    //test end
-   
-    return x2;
+    uint16_t x1,x2=0;
+    bool r=true;
+    for(uint16_t i=0; i < testCurrent; i=i++){
+        if (i>=testCurrent) i=testCurrent;
+        x1 = AnalogInputs::reverseCalibrateValue(name1, i);
+        if (x1 < x2)  r=false;
+        x2=x1;
+    }
+    return r;
 }
 
 void checkCalibrateIcharge()
 {
-    //check 'overflow'                                       // calibrate/reveresecalibrate inaccurate
-     if (absDiff (checkCalibrate(MAX_CHARGE_I,AnalogInputs::IsmpsValue,AnalogInputs::Ismps), MAX_CHARGE_I) >100)
+    //check 'overflow"
+     if (checkCalibrate(MAX_CHARGE_I,AnalogInputs::IsmpsValue) != true)
      {
-        Screen::displayStrings(PSTR("Calibration"),PSTR("ERROR"));
-        hardware::delay(8000);
-    }
+        Screen::calibrationErrorScreen();
+     }
 }
 
 void checkCalibrateIdischarge()
 {
-
-//not work
-
-
-
-    if (absDiff (checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::IdischargeValue, AnalogInputs::Idischarge), MAX_DISCHARGE_I) >100)
+     //check 'overflow"
+     if (checkCalibrate(MAX_CHARGE_I,AnalogInputs::IdischargeValue) != true)
      {
-        Screen::displayStrings(PSTR("Calibration"),PSTR("ERROR"));
-        hardware::delay(8000);
-    }
+        Screen::calibrationErrorScreen();
+     }
 
 }
 

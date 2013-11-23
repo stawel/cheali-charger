@@ -4,18 +4,19 @@ high priority:
   
 
 low priority:
-- power supply mode (if available this hardware)
+- "unknown" battery voltage step 0.1V
 - power current-supply
 - hot-wire support (foam cutter).
-
-
+- calibrationerror sense (p2<p1) and value<65535 for maximum Ic.
+-superCharge+balance mode  (PID and measuring(logview) problem if minI too low)
 
 *****************************************************************************************************************************************************
 ready:
     
--Powerscreen
--superCharge+balance mode  (PID and measuring(logview) problem if mini)
+-Powerscreen (Watts(actual) and WattsHour(accumulated))
 -loudness sound at the program complete
--valid chargeprercent
--lipo charge/discharge without balance
--calibrationerror sense (p2<p1) and value<65535 for maximum Ic.
+-real chargepercent values all battery types.
+-lipo charge/discharge without balancer port
+- calibration-error sense (value<65535) for maximum Ic and Id.
+   good thing for explore hardware failure.
+
