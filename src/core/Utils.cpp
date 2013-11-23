@@ -88,15 +88,24 @@ void change1Max(uint16_t &v, int dir, uint8_t max)
 }
 
 
-void changeMaxSmart(uint16_t &v, int direc, uint16_t max)
+void changeMaxSmart(uint16_t &v, int direc, uint16_t max, bool noPow10)
 {
     uint16_t r;
     int step = 1;
     bool direction = direc > 0;
 
     uint8_t dv = digits(v);
-    if(dv>1) step = pow10(dv-2);
-
+    
+    //unknown battery type voltage /10 stepping
+    if (noPow10==false)
+    {
+      if(dv>1) step = pow10(dv-2);
+    }
+    else
+    {
+      step = 100;
+    }
+    
     r = v%step;
 
     if(r) {

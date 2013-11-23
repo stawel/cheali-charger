@@ -397,7 +397,6 @@ bool checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name
     uint16_t x1,x2=0;
     bool r=true;
     for(uint16_t i=0; i < testCurrent; i=i++){
-        if (i>=testCurrent) i=testCurrent;
         x1 = AnalogInputs::reverseCalibrateValue(name1, i);
         if (x1 < x2)  r=false;
         x2=x1;

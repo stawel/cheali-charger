@@ -130,7 +130,7 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     change1Max(p_.CDcycles_, dir, 5);           break;
         case NEXT_CASE:     change1Max(p_.capCutoff_, dir, 250);        break;
         case NEXT_CASE:     changeInputVolt(p_.inputVoltageLow_, dir);  break;
-        case NEXT_CASE:     changeMaxSmart(p_.dischargeOffset_LiXX_, dir, Settings::MaxDischargeOffset_LiXX);  break;
+        case NEXT_CASE:     changeMaxSmart(p_.dischargeOffset_LiXX_, dir, Settings::MaxDischargeOffset_LiXX,false);  break;
         case NEXT_CASE:     changeBalanceError(p_.balancerError_, dir); break;
         case NEXT_CASE:     changeMax(p_.UART_, dir, Settings::ExtDebugAdc); break;
         case NEXT_CASE:     changeMax(p_.UARTspeed_, dir, Settings::UARTSpeeds-1); break;
@@ -183,7 +183,7 @@ void SettingsMenu::printDeltaT(AnalogInputs::ValueType dt)
 
 #ifdef ENABLE_LCD_BACKLIGHT
 void SettingsMenu::changeBacklight(int dir) {
-    changeMaxSmart(p_.backlight_, dir, 99);
+    changeMaxSmart(p_.backlight_, dir, 99,false);
     p_.apply();
 }
 #endif

@@ -1,22 +1,23 @@
 
 high priority:
--smooth deltaIc. plusDeltaIc and minusDeltaIc (protect the power supply)
+-smooth deltaIc. plusDeltaIc and minusDeltaIc (protect the power supply voltage-breakdown)
   
 
 low priority:
-- "unknown" battery voltage step 0.1V
 - power current-supply
 - hot-wire support (foam cutter).
-- calibrationerror sense (p2<p1) and value<65535 for maximum Ic.
--superCharge+balance mode  (PID and measuring(logview) problem if minI too low)
+- Pb battery desulfator.
+
 
 *****************************************************************************************************************************************************
 ready:
     
--Powerscreen (Watts(actual) and WattsHour(accumulated))
+-Powerscreen
 -loudness sound at the program complete
--real chargepercent values all battery types.
+-valid chargeprercent
 -lipo charge/discharge without balancer port
-- calibration-error sense (value<65535) for maximum Ic and Id.
-   good thing for explore hardware failure.
+-Unknown battery voltage stepping 0.1V always.
 
+
+testing:
+-superCharge+balance mode  (PID and measuring(logview) problem if minI too low)
