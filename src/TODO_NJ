@@ -1,6 +1,6 @@
 
 high priority:
--smooth deltaIc. plusDeltaIc and minusDeltaIc (protect the power supply voltage-breakdown)
+
   
 
 low priority:
@@ -22,3 +22,4 @@ ready:
 
 testing:
 -superCharge+balance mode  (SETVIB ---> minValue_ = i/20;)
+-smooth deltaIc. plusDeltaIc and minusDeltaIc (protect the power supply voltage-breakdown)

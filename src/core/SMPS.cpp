@@ -74,7 +74,7 @@ uint16_t SMPS::setSmoothI(uint16_t value)
          if (i> value) i=value;
          hardware::setChargerValue(i);
          Buzzer::soundKeyboard();
-         hardware::delay(MAX_CURRENT_RISING/2);
+         hardware::delay(500);
     }
     AnalogInputs::isOutStable();     
   }
