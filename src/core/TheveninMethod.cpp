@@ -40,7 +40,6 @@ namespace TheveninMethod {
     Strategy::statusType bstatus_;
     AnalogInputs::ValueType idebug_;
 
-
     void setMinI(AnalogInputs::ValueType i) {    minValue_ = i; };
 
     uint16_t getMinValueB() {
@@ -210,7 +209,7 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value
     if(value < getMinValueB()) {
         value = getMinValueB();
     }
-      
+ 
     if(oldValue != value) {
         if(Ifalling_ != Falling
             || value < oldValue
@@ -220,6 +219,7 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value
             return value;
         }
     }
+ 
     return oldValue;
 }
 

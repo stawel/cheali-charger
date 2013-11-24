@@ -18,6 +18,11 @@
 #include "Hardware.h"
 #include "SMPS.h"
 
+//TODO_NJ temp for test
+#include "Buzzer.h"
+#include "LcdPrint.h"
+#include "Screen.h"
+
 namespace SMPS {
     STATE state_;
     uint16_t value_;
@@ -41,11 +46,43 @@ void SMPS::initialize()
 void SMPS::setValue(uint16_t value)
 {
     if(value > SMPS_UPPERBOUND_VALUE)
-        value = SMPS_UPPERBOUND_VALUE;      
-    value_ = value;
+        value = SMPS_UPPERBOUND_VALUE;     
+    value_ = SMPS::setSmoothI(value);
     hardware::setChargerValue(value_);
     AnalogInputs::resetMeasurement();
 }
+
+
+uint16_t SMPS::setSmoothI(uint16_t value)
+{
+#ifdef MAX_CURRENT_RISING
+
+  uint16_t oldI, newI, oldValue,stepValue;
+   
+  oldI = calibrateValue(AnalogInputs::Ismps, AnalogInputs::getADCValue(AnalogInputs::Ismps));
+  oldValue = AnalogInputs::getADCValue(AnalogInputs::Ismps);
+  stepValue = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, MAX_CURRENT_RISING);
+  newI = calibrateValue(AnalogInputs::Ismps, value); //??? good?
+
+  if ((newI > oldI) && ((newI-oldI) > MAX_CURRENT_RISING))
+  {
+    lcdClear();
+    lcdSetCursor0_0();
+    Screen::displayStrings(PSTR("SMPS"), PSTR("busy")); 
+     
+    for(uint16_t i=oldValue; i <= value; i=i+stepValue){
+         if (i> value) i=value;
+         hardware::setChargerValue(i);
+         Buzzer::soundKeyboard();
+         hardware::delay(MAX_CURRENT_RISING/2);
+    }
+    AnalogInputs::isOutStable();     
+  }
+#endif
+  return value;
+}
+
+
 
 void SMPS::setRealValue(uint16_t I)
 {

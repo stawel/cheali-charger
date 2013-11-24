@@ -53,13 +53,6 @@ namespace AnalogInputs {
     bool isStable(Name name)     { return stableCount_[name] >= STABLE_MIN_VALUE; };
     void setReal(Name name, ValueType real);
     
-    //TODO_NJ for smooth-current
-    uint16_t smoothCounter;
-    uint16_t smoothCurrentOldValue;
-    
-    
-    
-
 } // namespace AnalogInputs
 
 

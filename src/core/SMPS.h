@@ -34,6 +34,8 @@ namespace SMPS {
 
     uint16_t getValue();
     void setValue(uint16_t value);
+    
+    uint16_t setSmoothI(uint16_t value);
 
     void setRealValue(uint16_t I);
 

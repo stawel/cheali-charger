@@ -50,7 +50,10 @@
 #define CHARGE_LIXX_WITHOUT_BALANCER
 
 // I not used external temp sensor
-#define DEFAULT_SETTINGS_EXTERNAL_T 0  
+#define DEFAULT_SETTINGS_EXTERNAL_T 0
+
+//prevent power supply
+#define MAX_CURRENT_RISING ANALOG_AMP(0.100)
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"

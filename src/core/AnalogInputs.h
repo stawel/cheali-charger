@@ -154,10 +154,6 @@ namespace AnalogInputs {
     void initialize();
     void doSlowInterrupt();
     uint16_t getCharge();
-    
-     //TODO_NJ for smooth-current
-    extern uint16_t smoothCounter;
-    extern uint16_t smoothCurrentOldValue;
 
     void restoreDefault();
     void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);
