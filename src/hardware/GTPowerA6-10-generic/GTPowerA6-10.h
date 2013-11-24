@@ -53,7 +53,7 @@
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
 
 //prevent power supply
-#define MAX_CURRENT_RISING ANALOG_AMP(0.100)
+#define MAX_CURRENT_RISING ANALOG_AMP(1.000)
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
