@@ -210,6 +210,12 @@ void Screen::doSlowInterrupt()
 
 }
 
+uint16_t Screen::getTotalChargDischargeTime()
+{
+    return (totalChargDischargeTime_/1000/60);
+}
+
+
 void Screen::displayScreenTime()
 {
     lcdSetCursor0_0();

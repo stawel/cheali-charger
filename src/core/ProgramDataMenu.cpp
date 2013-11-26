@@ -26,8 +26,9 @@ const char string_PDMM1[] PROGMEM = "V:  ";
 const char string_PDMM2[] PROGMEM = "Ch: ";
 const char string_PDMM3[] PROGMEM = "Ic: ";
 const char string_PDMM4[] PROGMEM = "Id: ";
-const char string_PDMM5[] PROGMEM = "  create name";
-const char string_PDMM6[] PROGMEM = "   edit name";
+const char string_PDMM5[] PROGMEM = "Max-T: ";
+const char string_PDMM6[] PROGMEM = "  create name";
+const char string_PDMM7[] PROGMEM = "   edit name";
 
 
 const char * const ProgramDataStaticMenu[] PROGMEM =
@@ -39,6 +40,7 @@ const char * const ProgramDataStaticMenu[] PROGMEM =
         string_PDMM4,
         string_PDMM5,
         string_PDMM6,
+        string_PDMM7,
         NULL
 };
 
@@ -78,6 +80,7 @@ uint8_t ProgramDataMenu::printItem(uint8_t index)
             case 2:    p_.printChargeString();  break;
             case 3:    p_.printIcString();      break;
             case 4:    p_.printIdString();      break;
+            case 5:    p_.printTimeString();    break;
         }
     }
     return 0;
@@ -95,6 +98,7 @@ void ProgramDataMenu::editItem(uint8_t index, uint8_t key)
     case 2: p_.changeCharge(dir);     break;
     case 3: p_.changeIc(dir);         break;
     case 4: p_.changeId(dir);         break;
+    case 5: p_.changeTime(dir);         break;    
     }
 }
 
@@ -105,8 +109,8 @@ void ProgramDataMenu::run() {
 
         if(index < 0) return;
         switch(index) {
-        case 5: createName(); break;
-        case 6: editName(); break;
+        case 6: createName(); break;
+        case 7: editName(); break;
         default:
             ProgramData undo(p_);
             if(!runEdit(index)) {

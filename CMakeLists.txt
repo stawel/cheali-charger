@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 2.6)
 Project(cheali-charger-mod)
 
 set(cheali-charger-version 0.32m)
-set(cheali-charger-eeprom-calibration-version 99)
-set(cheali-charger-eeprom-programdata-version 99)  # TODO_NJ: for testing
-set(cheali-charger-eeprom-settings-version 99)
+set(cheali-charger-eeprom-calibration-version 7)
+set(cheali-charger-eeprom-programdata-version 98)  # TODO_NJ: for testing
+set(cheali-charger-eeprom-settings-version 98)
 
 configure_file(src/core/Version.h.in src/core/Version.h)
 

@@ -87,6 +87,15 @@ void change1Max(uint16_t &v, int dir, uint8_t max)
     else v+=dir;
 }
 
+void changeMaxStep10(uint16_t &v, int dir, uint16_t max)
+{
+    if (dir<0) dir=-10;
+    if (dir>0) dir=10;
+    
+    if( ((int)v) + dir< 0) v = 0;
+    else if(((int)v)+dir > max) v = max;
+    else v+=dir;
+}
 
 void changeMaxSmart(uint16_t &v, int direc, uint16_t max, bool noPow10)
 {

@@ -25,6 +25,9 @@
 #include "ProgramData.h"
 #include "Program.h"
 
+//TODO_NJ
+#include "Screen.h"
+
 namespace Monitor {
 
 uint16_t VoutMaxMesured_;
@@ -98,8 +101,21 @@ Strategy::statusType Monitor::run()
     AnalogInputs::ValueType c_limit  = ProgramData::currentProgramData.getCapacityLimit();
     if(c_limit != PROGRAM_DATA_MAX_CHARGE && c > c_limit) {
         Program::stopReason_ = PSTR("cap COFF");
-        return Strategy::COMPLETE;
+        return Strategy::ERROR;
     }
+    
+//TODO_NJ timelimit        
+    uint16_t chargeMin = Screen::getTotalChargDischargeTime();
+    if (ProgramData::currentProgramData.getTimeLimit() < 1000)  //unlomited
+    {
+        uint16_t time_limit  = ProgramData::currentProgramData.getTimeLimit();
+        if(chargeMin >= time_limit) {
+            Program::stopReason_ = PSTR("T. limit");
+            return Strategy::ERROR;
+        }               
+    }
+//timelimit end      
+    
     if(settings.externT_) {
         AnalogInputs::ValueType Textern = AnalogInputs::getRealValue(AnalogInputs::Textern);
         if(Textern > settings.externTCO_) {

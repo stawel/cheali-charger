@@ -7,12 +7,14 @@ low priority:
 - power current-supply
 - hot-wire support (foam cutter).
 - Pb battery desulfator.
-- high temperature sense  on Imaxb6 (CPU-internal temp sensor) (only alert and stopping program) 
+
+
 
 
 *****************************************************************************************************************************************************
 ready:
-    
+
+-time limit per battery plus Unlimited time.   
 -Powerscreen
 -loudness sound at the program complete
 -valid chargeprercent
@@ -22,4 +24,4 @@ ready:
 
 testing:
 -superCharge+balance mode  (SETVIB ---> minValue_ = i/20;)
--smooth deltaIc. plusDeltaIc and minusDeltaIc (protect the power supply voltage-breakdown)
+-smooth current rising (protect the power supply voltage-breakdown) (limited current rise speed: +1A/500ms)

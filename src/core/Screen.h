@@ -40,6 +40,7 @@ namespace Screen {
     extern Blink blink;
 
     uint16_t getTimeSec();
+    uint16_t getTotalChargDischargeTime();
     void doSlowInterrupt();
 
     void powerOn();

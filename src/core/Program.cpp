@@ -104,6 +104,7 @@ namespace {
     };
     const Screen::ScreenType storageScreens[] PROGMEM = {
       Screen::ScreenFirst,
+      Screen::ScreenEnergy,
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
       Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
       Screen::ScreenR,
