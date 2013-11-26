@@ -26,6 +26,9 @@
 namespace SMPS {
     STATE state_;
     uint16_t value_;
+#ifdef MAX_CURRENT_RISING    
+    uint16_t oldI, newI,stepValue;
+#endif
 
     STATE getState()    { return state_; }
     bool isPowerOn()    { return getState() == CHARGING; }
@@ -45,24 +48,21 @@ void SMPS::initialize()
 
 void SMPS::setValue(uint16_t value)
 {
+    
     if(value > SMPS_UPPERBOUND_VALUE)
         value = SMPS_UPPERBOUND_VALUE;     
-    value_ = SMPS::setSmoothI(value);
+    value_ = SMPS::setSmoothI(value, value_);
     hardware::setChargerValue(value_);
     AnalogInputs::resetMeasurement();
 }
 
 
-uint16_t SMPS::setSmoothI(uint16_t value)
+uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
 {
-#ifdef MAX_CURRENT_RISING
-
-  uint16_t oldI, newI, oldValue,stepValue;
-   
-  oldI = calibrateValue(AnalogInputs::Ismps, AnalogInputs::getADCValue(AnalogInputs::Ismps));
-  oldValue = AnalogInputs::getADCValue(AnalogInputs::Ismps);
+#ifdef MAX_CURRENT_RISING 
+  oldI = calibrateValue(AnalogInputs::Ismps, oldValue);
   stepValue = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, MAX_CURRENT_RISING);
-  newI = calibrateValue(AnalogInputs::Ismps, value); //??? good?
+  newI = calibrateValue(AnalogInputs::IsmpsValue, value); //??? good?
 
   if ((newI > oldI) && ((newI-oldI) > MAX_CURRENT_RISING))
   {
@@ -71,14 +71,14 @@ uint16_t SMPS::setSmoothI(uint16_t value)
     Screen::displayStrings(PSTR("SMPS"), PSTR("busy")); 
      
     for(uint16_t i=oldValue; i <= value; i=i+stepValue){
-         if (i> value) i=value;
+         if (i> value) i=value; //safety
          hardware::setChargerValue(i);
-         Buzzer::soundKeyboard();
+         //Buzzer::soundKeyboard();
          hardware::delay(500);
     }
     AnalogInputs::isOutStable();     
   }
-#endif
+#endif 
   return value;
 }
 

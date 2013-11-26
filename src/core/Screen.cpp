@@ -424,14 +424,15 @@ void Screen::displayScreenReversedPolarity()
 
 void Screen::warningScreen()
 {
-    Timer::delay(500);
+   hardware::delay(500);
 //                               1234567890123456
     Screen::displayStrings(PSTR("    WARNING     "),
                            PSTR("Balancer not.con"));
-    Timer::delay(500);
+   
+    hardware::delay(900);
     Screen::displayStrings(PSTR("  hold button   "),
                            PSTR(" to Start/stop  "));
-    Timer::delay(500);                       
+    hardware::delay(900);                       
 }
 
 void Screen::calibrationErrorScreen()
