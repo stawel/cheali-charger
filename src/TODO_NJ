@@ -1,6 +1,6 @@
 
 high priority:
-
+-ETA
   
 
 low priority:
@@ -20,8 +20,5 @@ ready:
 -valid chargeprercent
 -lipo charge/discharge without balancer port
 -Unknown battery voltage stepping 0.1V always.
-
-
-testing:
 -superCharge+balance mode  (SETVIB ---> minValue_ = i/20;)
 -smooth current rising (protect the power supply voltage-breakdown) (limited current rise speed: +1A/500ms)

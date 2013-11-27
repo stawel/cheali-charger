@@ -19,7 +19,7 @@
 #include "SMPS.h"
 
 //TODO_NJ temp for test
-#include "Buzzer.h"
+//#include "Buzzer.h"
 #include "LcdPrint.h"
 #include "Screen.h"
 
@@ -67,12 +67,17 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
   if ((newI > oldI) && ((newI-oldI) > MAX_CURRENT_RISING))
   {
     lcdClear();
-    lcdSetCursor0_0();
-    Screen::displayStrings(PSTR("SMPS"), PSTR("busy")); 
-     
-    for(uint16_t i=oldValue; i <= value; i=i+stepValue){
+    
+    uint16_t cCounter= ((newI-oldI)+(MAX_CURRENT_RISING/2));
+    for(uint16_t i=oldValue; i <= value; i=i+(stepValue/2)){
          if (i> value) i=value; //safety
+         cCounter -=(MAX_CURRENT_RISING/2);
+         lcdSetCursor0_0();
+         Screen::displayStrings(PSTR("SMPS"), PSTR("busy  -->"));
+         lcdPrintUInt(cCounter/1000); 
+         lcdPrint_P(PSTR("<-- "));
          hardware::setChargerValue(i);
+         
          //Buzzer::soundKeyboard();
          hardware::delay(500);
     }
