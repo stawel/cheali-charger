@@ -40,20 +40,8 @@
 #define ENABLE_STACK_INFO
 #define ENABLE_SERIAL_LOG
 
-//start warning-text
-//#define TESTINGALERT
-
-//loudness programcomplete
-#define LOUDSOUND
-
-//Lixx withoutbalancer
-#define CHARGE_LIXX_WITHOUT_BALANCER
-
 // I not used external temp sensor
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
-
-//prevent power supply
-#define MAX_CURRENT_RISING ANALOG_AMP(1.000)
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"

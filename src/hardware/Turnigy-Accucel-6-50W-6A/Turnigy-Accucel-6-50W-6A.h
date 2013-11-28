@@ -28,9 +28,17 @@
 #define MAX_DISCHARGE_I         ANALOG_AMP(2.000)   //should be 1A      //replaced resistor (need more cooling)
 
 
+//start warning-text
+//#define TESTINGALERT
+
+//loudness programcomplete
+#define LOUDSOUND
+
+//Lixx withoutbalancer
+#define CHARGE_LIXX_WITHOUT_BALANCER
+
 //prevent power supply
 #define MAX_CURRENT_RISING ANALOG_AMP(1.000)
-
 
 //1-13? correlation
 #define SMPS_UPPERBOUND_VALUE               65535

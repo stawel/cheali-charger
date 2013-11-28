@@ -32,12 +32,17 @@
 #define DISCHARGER_UPPERBOUND_VALUE         4096
 #define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/14)
 
-
 //start warning-text
-#define TESTINGALERT
+//#define TESTINGALERT
 
 //loudness programcomplete
 #define LOUDSOUND
+
+//Lixx withoutbalancer
+#define CHARGE_LIXX_WITHOUT_BALANCER
+
+//prevent power supply
+#define MAX_CURRENT_RISING ANALOG_AMP(1.000)
 
 
 #endif /* GTPOWERA610_ORIGINAL_H_ */

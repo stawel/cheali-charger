@@ -35,5 +35,16 @@
 #define MAX_CALIBRATION_DISCHARGER_VALUE    DISCHARGER_UPPERBOUND_VALUE
 #define CALIBRATION_SPEED                   10
 
+//start warning-text
+//#define TESTINGALERT
+
+//loudness programcomplete
+#define LOUDSOUND
+
+//Lixx withoutbalancer
+#define CHARGE_LIXX_WITHOUT_BALANCER
+
+//prevent power supply
+#define MAX_CURRENT_RISING ANALOG_AMP(1.000)
 
 #endif /* imaxB6_original_H_ */

@@ -33,5 +33,17 @@
 #define DISCHARGER_UPPERBOUND_VALUE         1024
 #define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/14)
 
+//start warning-text
+//#define TESTINGALERT
+
+//loudness programcomplete
+#define LOUDSOUND
+
+//Lixx withoutbalancer
+#define CHARGE_LIXX_WITHOUT_BALANCER
+
+//prevent power supply
+#define MAX_CURRENT_RISING ANALOG_AMP(3.000)
+
 
 #endif /* Turnigy_MEGA_400Wx2_H_ */

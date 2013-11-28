@@ -94,8 +94,8 @@ namespace Screen{
                 if(i == Balancer::minCell_) {
                     c = '_';
                 } else {
-                    if(Balancer::balance_&j) c = '1';
-                    else c = '0';
+                    if(Balancer::balance_&j) c = '!'-34;  //1
+                    else c = ' ';                         //0
                 }
                 lcdPrintChar(c);
                 j<<=1;

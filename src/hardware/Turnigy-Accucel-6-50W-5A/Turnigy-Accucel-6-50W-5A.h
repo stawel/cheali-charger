@@ -35,5 +35,16 @@
 #define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/6)
 #define CALIBRATION_SPEED                   10
 
+//start warning-text
+//#define TESTINGALERT
+
+//loudness programcomplete
+#define LOUDSOUND
+
+//Lixx withoutbalancer
+#define CHARGE_LIXX_WITHOUT_BALANCER
+
+//prevent power supply
+#define MAX_CURRENT_RISING ANALOG_AMP(1.000)
 
 #endif /* Turnigy_Accucel_6_50W_5A_H_ */
