@@ -22,3 +22,5 @@ ready:
 -Unknown battery voltage stepping 0.1V always.
 -superCharge+balance mode  (SETVIB ---> minValue_ = i/20;)
 -smooth current rising (protect the power supply voltage-breakdown) (limited current rise speed: +1A/s  (2x500msec)
+-graphical balance status
+-wire resistance minimize value
