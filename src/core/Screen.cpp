@@ -30,6 +30,7 @@ namespace Screen{
     uint32_t totalBalanceTime_;
     uint32_t totalChargDischargeTime_;
     Blink blink;
+    bool blinkIcon;
     bool on_;
 
     const char programString[] PROGMEM = "ChCBSbBlDiFCStSBChDiCyCYChDiEB";
@@ -75,7 +76,14 @@ namespace Screen{
     {
         
         lcdSetCursor0_0();
-
+        if (blinkIcon)
+        {
+         blinkIcon = false;
+        } else
+        {
+         blinkIcon = true;
+        }
+        
         char c = ' ';
         if(!Balancer::isWorking()) {
             if(!Balancer::isStable())
@@ -95,7 +103,7 @@ namespace Screen{
                 if(i == Balancer::minCell_) {
                   c = '_';
                 } else {
-                    if(Balancer::balance_&j) c = '!'-34;  //big 'battery' symbol
+                    if(Balancer::balance_&j) if (blinkIcon) c = '!'-34; else c =' ';
                     else c = '-';
                 }
                 lcdPrintChar(c);
