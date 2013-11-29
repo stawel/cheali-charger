@@ -5,17 +5,17 @@ no use. Dangerous!
 Plus Features
 -------------
 
--Powerscren (Watt and Watthour)
--Valid charge-percent meter
--loudness sound for end-program
--Calibration error checking
--supercharge-balance
--Lixx charge without balancer-port
--time limit per battery plus Unlimited time.
--Unknown battery voltage stepping 0.1V always.
--smooth current rising (protect the power supply voltage-breakdown) (limited current rise speed: +1A/s (50W chargers) 3A/sec(>50W chargers) (2x500msec)
--graphical balance status
--wire resistance minimize value
+ - Powerscren (Watt and Watthour)
+ - Valid charge-percent meter
+ - loudness sound for end-program
+ - Calibration error checking
+ - supercharge-balance
+ - Lixx charge without balancer-port
+ - time limit per battery plus Unlimited time.
+ - Unknown battery voltage stepping 0.1V always.
+ - smooth current rising (protect the power supply voltage-breakdown) (limited current rise speed: +1A/s (50W chargers) 3A/sec(>50W chargers) (2x500msec)
+ - graphical balance status
+ - wire resistance minimize value
 
 original source and hex:
 https://github.com/stawel/cheali-charger
