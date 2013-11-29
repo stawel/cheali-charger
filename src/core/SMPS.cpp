@@ -21,10 +21,12 @@
 #include "LcdPrint.h"
 #include "Screen.h"
 
+//TODO_NJ for test
+//#include "Buzzer.h"
+
 namespace SMPS {
     STATE state_;
     uint16_t value_;
-    bool validState_;
 #ifdef MAX_CURRENT_RISING    
     uint16_t oldI, newI,stepValue;
 #endif
@@ -60,46 +62,25 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
 {
 #ifdef MAX_CURRENT_RISING 
   oldI = calibrateValue(AnalogInputs::Ismps, oldValue);
-  stepValue = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, MAX_CURRENT_RISING);
+  stepValue = (AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, MAX_CURRENT_RISING))/2;
   newI = calibrateValue(AnalogInputs::IsmpsValue, value);
   
 //rising
   if ((newI > oldI) && ((newI-oldI) > MAX_CURRENT_RISING))
   {
     lcdClear();
-    validState_ = true; //no falling if no rising
-    uint16_t cCounter= ((newI-oldI)+(MAX_CURRENT_RISING/2));
-    for(uint16_t i=oldValue; i <= value; i=i+(stepValue/2)){
+    lcdSetCursor0_0();
+    Screen::displayStrings(PSTR("Prevent P.Supply"), PSTR("SMPS busy"));
+    for(uint16_t i=oldValue; i <= value; i=i+(stepValue)){
          if (i> value) i=value; //safety
-         cCounter -=(MAX_CURRENT_RISING/2);
-         lcdSetCursor0_0();
-         Screen::displayStrings(PSTR("Prevent P.Supply"), PSTR("SMPS up  ->"));
-         lcdPrintUInt(cCounter/1000); 
-         lcdPrint_P(PSTR("<- "));
          hardware::setChargerValue(i);
          hardware::delay(500);
     }
     AnalogInputs::isOutStable();     
   }
   
-//falling  
-   if ((oldI > newI)  && (validState_ == true) && ((oldI-newI) > MAX_CURRENT_RISING))
-  {
-    lcdClear();
-    
-    uint16_t cCounter= ((oldI-newI)+(MAX_CURRENT_RISING));
-    for(uint16_t i=value; i <= oldValue; i=i-(stepValue)){
-         if (i< value) i=value; //safety
-         cCounter -=(MAX_CURRENT_RISING);
-         lcdSetCursor0_0();
-         Screen::displayStrings(PSTR("Prevent P.Supply"), PSTR("SMPS down ->"));
-         lcdPrintUInt(cCounter/1000); 
-         lcdPrint_P(PSTR("<- "));
-         hardware::setChargerValue(i);
-         hardware::delay(500);
-    }
-    AnalogInputs::isOutStable();     
-  }
+
+  
 #endif 
   return value;
 }
@@ -117,7 +98,6 @@ void SMPS::powerOn()
     if(isPowerOn())
         return;
     
-    validState_ = false; //prevent calculation random value_  (SMPS-falling)
     setValue(0);
     hardware::setChargerOutput(true);
     state_ = CHARGING;
@@ -129,7 +109,6 @@ void SMPS::powerOff(STATE reason)
     if(!isPowerOn() || reason == CHARGING)
         return;
     
-    validState_ = false;
     setValue(0);
     hardware::setChargerOutput(false);
     state_ = reason;

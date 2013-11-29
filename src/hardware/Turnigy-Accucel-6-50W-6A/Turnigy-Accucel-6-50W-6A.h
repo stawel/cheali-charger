@@ -24,7 +24,7 @@
 #define MAX_CHARGE_I            ANALOG_AMP(6.000)   //should be 5A      //replaced 0r1 resistor
 #define MAX_CHARGE_P            ANALOG_WATT(50.000)               //50W
 
-#define MAX_DISCHARGE_P         ANALOG_WATT(5.000)                //5W  //replaced resistor
+#define MAX_DISCHARGE_P         ANALOG_WATT(10.000)                //5W  //replaced resistor
 #define MAX_DISCHARGE_I         ANALOG_AMP(2.000)   //should be 1A      //replaced resistor (need more cooling)
 
 
