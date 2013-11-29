@@ -32,7 +32,7 @@ namespace Screen{
     Blink blink;
     bool on_;
 
-    const char programString[] PROGMEM = "ChCBSBBlDiFCStSBChDiCyCYChDiEB";
+    const char programString[] PROGMEM = "ChCBSbBlDiFCStSBChDiCyCYChDiEB";
     void printProgram2chars(Program::ProgramType prog)
     {
         STATIC_ASSERT(sizeOfArray(programString)-1 == Program::LAST_PROGRAM_TYPE*2);
@@ -73,6 +73,7 @@ namespace Screen{
 
     void displayBalanceInfo(uint8_t from, AnalogInputs::Type type)
     {
+        
         lcdSetCursor0_0();
 
         char c = ' ';
@@ -90,18 +91,21 @@ namespace Screen{
 
         if(Balancer::balance_ != 0) {
             uint8_t  j = 1;
-            for(uint8_t i = 0; i < 6; i++) {
+            for(uint8_t i = 0; i < Balancer::getCells(); i++) {
                 if(i == Balancer::minCell_) {
-                    c = '_';
+                  c = '_';
                 } else {
-                    if(Balancer::balance_&j) c = '!'-34;  //1
-                    else c = ' ';                         //0
+                    if(Balancer::balance_&j) c = '!'-34;  //big 'battery' symbol
+                    else c = '-';
                 }
                 lcdPrintChar(c);
                 j<<=1;
             }
-            lcdPrintChar(' ');
+            lcdPrintSpaces(7 - Balancer::getCells());
+            //lcdPrintChar(' ');
         } else lcdPrintSpaces(7);
+
+        
 
         lcdPrintDigit(from+1);
         lcdPrintChar(':');

@@ -39,7 +39,6 @@ namespace TheveninMethod {
     bool balance_;
     Strategy::statusType bstatus_;
     AnalogInputs::ValueType idebug_;
-    AnalogInputs::ValueType getReadableRth_ = 65535;
     
     void setMinI(AnalogInputs::ValueType i) {    minValue_ = i; };
 
@@ -78,13 +77,8 @@ AnalogInputs::ValueType TheveninMethod::getReadableWiresRth()
     R.iV_ =  AnalogInputs::getRealValue(AnalogInputs::Vout);
     R.iV_ -= AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
     R.uI_ = AnalogInputs::getRealValue(AnalogInputs::Iout);
-    // always return smallest value
-    if (getReadableRth_ > R.getReadableRth())
-    {
-      getReadableRth_ = R.getReadableRth();
-    }
     
-    return getReadableRth_;
+    return R.getReadableRth();
 }
 
 
