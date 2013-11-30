@@ -35,7 +35,8 @@ namespace Screen{
     bool knightRiderDir;
     uint8_t toggleTextCounter = 0;
     uint16_t procentTime = 0;
-    uint16_t procent_ =0;
+    uint8_t procent_ = 0;
+    uint8_t procent;
     uint16_t etaSec;
     uint16_t etaSec_ = 0;
     bool on_;
@@ -413,16 +414,8 @@ void Screen::displayScreenEnergy()
     toggleTextCounter++;
     if (toggleTextCounter>20) toggleTextCounter=0;
     
-    uint8_t procent = getChargeProcent();
     
-    //TODO_NJ procent increment time calc here
-    if(procent_ < procent)
-    {
-       procent_=procent;
-       etaSec = getTimeSec()-etaSec_;
-       etaSec_=etaSec;
-    
-    }
+
     //TODO_NJ_end   
    
     lcdSetCursor0_0();
@@ -437,8 +430,14 @@ void Screen::displayScreenEnergy()
     
     if (toggleTextCounter<10 && SMPS::isPowerOn() )
     { //display calculated simple ETA
+       procent = getChargeProcent();
+       if(procent_ < procent)
+       {
+         procent_=procent;
+         etaSec = getTimeSec()-etaSec_;
+         etaSec_=etaSec;
+       }    
       if(getTimeSec()>60) lcdPrintTime((etaSec*(100-procent))); else lcdPrint_P(PSTR("---:--")); 
-       // lcdPrintUnsigned(procent,5); 
     }
     else
     {  
@@ -519,6 +518,7 @@ void Screen::displayStartInfo()
     //reset ETA
     etaSec_=0;
     etaSec=0;
+    procent_=0;
     
     lcdSetCursor0_0();
     ProgramData::currentProgramData.printBatteryString(4);
