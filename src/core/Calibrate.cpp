@@ -416,7 +416,7 @@ void checkCalibrateIcharge()
 void checkCalibrateIdischarge()
 {
      //check 'overflow"
-     if (checkCalibrate(MAX_CHARGE_I,AnalogInputs::IdischargeValue) != true)
+     if (checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::IdischargeValue) != true)
      {
         Screen::calibrationErrorScreen();
      }

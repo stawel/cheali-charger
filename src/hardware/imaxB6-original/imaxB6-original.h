@@ -45,6 +45,6 @@
 #define CHARGE_LIXX_WITHOUT_BALANCER
 
 //prevent power supply
-#define MAX_CURRENT_RISING ANALOG_AMP(1.000)
+//#define MAX_CURRENT_RISING ANALOG_AMP(1.000)
 
 #endif /* imaxB6_original_H_ */

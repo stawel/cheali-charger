@@ -31,6 +31,13 @@ namespace Screen{
     uint32_t totalChargDischargeTime_;
     Blink blink;
     bool blinkIcon;
+    int8_t knightRiderCounter = 0;
+    bool knightRiderDir;
+    uint8_t toggleTextCounter = 0;
+    uint16_t procentTime = 0;
+    uint16_t procent_ =0;
+    uint16_t etaSec;
+    uint16_t etaSec_ = 0;
     bool on_;
 
     const char programString[] PROGMEM = "ChCBSbBlDiFCStSBChDiCyCYChDiEB";
@@ -84,6 +91,14 @@ namespace Screen{
          blinkIcon = true;
         }
         
+        
+        if ( knightRiderDir==true) knightRiderCounter++; else knightRiderCounter--;
+        if (knightRiderCounter>5) knightRiderDir=false;
+        if (knightRiderCounter<=1) knightRiderDir=true;
+        
+        
+        
+        
         char c = ' ';
         if(!Balancer::isWorking()) {
             if(!Balancer::isStable())
@@ -111,8 +126,24 @@ namespace Screen{
             }
             lcdPrintSpaces(7 - Balancer::getCells());
             //lcdPrintChar(' ');
-        } else lcdPrintSpaces(7);
-
+        }
+        else 
+        {
+           char knightRiderArrow;
+           if (knightRiderDir==true) knightRiderArrow='>'; else knightRiderArrow='<';
+           if (c == 'm' || c==' ')
+           {
+             for (uint8_t i=1; i<7; i++ )
+             {
+              if (knightRiderCounter==i) lcdPrintChar(knightRiderArrow); else lcdPrintChar(' ');
+             }
+           lcdPrintChar(' ');
+           }
+           else
+           {
+           lcdPrintSpaces(7);
+           }
+        }
         
 
         lcdPrintDigit(from+1);
@@ -320,7 +351,7 @@ void Screen::displayScreenProgramCompleted()
 {
     screenEnd(PSTR("program complete"));
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR("Time:    ")); lcdPrintTime(getTimeSec());
+    lcdPrint_P(PSTR("Time: ")); lcdPrintTime(getTimeSec());
 }
 
 void Screen::displayMonitorError()
@@ -376,7 +407,23 @@ void Screen::displayDeltaVout()
 
 void Screen::displayScreenEnergy()
 {    
+
+    
+    //TODO_NJ please separate this function
+    toggleTextCounter++;
+    if (toggleTextCounter>20) toggleTextCounter=0;
+    
     uint8_t procent = getChargeProcent();
+    
+    //TODO_NJ procent increment time calc here
+    if(procent_ < procent)
+    {
+       procent_=procent;
+       etaSec = getTimeSec()-etaSec_;
+       etaSec_=etaSec;
+    
+    }
+    //TODO_NJ_end   
    
     lcdSetCursor0_0();
     AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
@@ -385,10 +432,21 @@ void Screen::displayScreenEnergy()
     lcdPrintSpaces();
     lcdSetCursor0_1();
     AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
+    
     lcdPrint_P(PSTR("  "));
-    lcdPrintUnsigned(procent, 4);
-    lcdPrint_P(PSTR("%"));  
-    lcdPrintSpaces();  
+    
+    if (toggleTextCounter<10 && SMPS::isPowerOn() )
+    { //display calculated simple ETA
+      if(getTimeSec()>300) lcdPrintTime((etaSec*(100-procent))); else lcdPrint_P(PSTR("---:--")); 
+       // lcdPrintUnsigned(procent,5); 
+    }
+    else
+    {  
+      lcdPrintUnsigned(procent, 4);
+      lcdPrint_P(PSTR("%"));  
+      lcdPrintSpaces();
+    }
+    
 }
 
 void Screen::displayDeltaTextern()
@@ -438,26 +496,30 @@ void Screen::warningScreen()
 {
    hardware::delay(500);
 //                               1234567890123456
-    Screen::displayStrings(PSTR("    WARNING     "),
+    Screen::displayStrings(PSTR("    WARNING"),
                            PSTR("Balancer not.con"));
    
     hardware::delay(900);
-    Screen::displayStrings(PSTR("  hold button   "),
-                           PSTR(" to Start/stop  "));
+    Screen::displayStrings(PSTR("  hold button"),
+                           PSTR(" to Start/stop"));
     hardware::delay(900);                       
 }
 
 void Screen::calibrationErrorScreen()
 {
 //                                 1234567890123456
-      Screen::displayStrings(PSTR("  Calibration   "),
-                             PSTR("     ERROR      "));
+      Screen::displayStrings(PSTR("  Calibration"),
+                             PSTR("     ERROR"));
       hardware::delay(8000);
 }
 
 
 void Screen::displayStartInfo()
 {
+    //reset ETA
+    etaSec_=0;
+    etaSec=0;
+    
     lcdSetCursor0_0();
     ProgramData::currentProgramData.printBatteryString(4);
     lcdPrintChar(' ');
