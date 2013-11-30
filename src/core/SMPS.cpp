@@ -22,7 +22,7 @@
 #include "Screen.h"
 
 //TODO_NJ for test
-//#include "Buzzer.h"
+#include "Buzzer.h"
 
 namespace SMPS {
     STATE state_;
@@ -61,13 +61,14 @@ void SMPS::setValue(uint16_t value)
 uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
 {
 #ifdef MAX_CURRENT_RISING 
-  oldI = calibrateValue(AnalogInputs::Ismps, oldValue);
+  oldI = calibrateValue(AnalogInputs::IsmpsValue, oldValue);
   stepValue = (AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, MAX_CURRENT_RISING))/2;
   newI = calibrateValue(AnalogInputs::IsmpsValue, value);
   
 //rising
   if ((newI > oldI) && ((newI-oldI) > MAX_CURRENT_RISING))
   {
+    //Buzzer::soundSelect();
     lcdClear();
     lcdSetCursor0_0();
     Screen::displayStrings(PSTR("Prevent P.Supply"), PSTR("SMPS up"));
@@ -85,6 +86,7 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
 //falling
   if ((oldI > newI) && ((oldI-newI) > MAX_CURRENT_RISING))
   {
+    //Buzzer::soundSelect();
     lcdClear();
     lcdSetCursor0_0();
     Screen::displayStrings(PSTR("Prevent P.Supply"), PSTR("SMPS down"));
