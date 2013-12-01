@@ -451,9 +451,9 @@ void Screen::displayScreenEnergy()
     { //display calculated simple ETA
        
    
-      if(etaSec>60)  //bigger 1 min for ETA calc 
+      if(etaSec>20)  //bigger 20sec for ETA calc 
       {
-        lcdPrintTime(((etaSec*(99-procent_))+etaSec)); 
+        lcdPrintTime(((etaSec*(102-procent_)))); //TODO_NJ (not accurate for balancing time)
       }
       else 
       {
@@ -555,11 +555,7 @@ void Screen::calibrationErrorScreen()
 
 
 void Screen::displayStartInfo()
-{
-    //reset ETA
-    etaSec=0;
-    procent_=0;
-    
+{   
     lcdSetCursor0_0();
     ProgramData::currentProgramData.printBatteryString(4);
     lcdPrintChar(' ');
@@ -568,9 +564,14 @@ void Screen::displayStartInfo()
     printProgram2chars(Program::programType_);
 
     lcdSetCursor0_1();
-    //uint8_t procent = getChargeProcent();
-    lcdPrintUnsigned(getChargeProcent(), 2);
+    procent = getChargeProcent();
+    lcdPrintUnsigned(procent, 2);
     lcdPrint_P(PSTR("% "));
+    
+    //reset ETA
+    etaSec=0;
+    etaSecOld=0;
+    procent_=procent;
     
 
     int bindex = blink.getBlinkIndex();
