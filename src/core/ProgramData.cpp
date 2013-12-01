@@ -201,11 +201,12 @@ uint8_t ProgramData::printIdString() const
 
 uint8_t ProgramData::printTimeString() const
 {
-    if(battery.Time == 1000)
+    if(battery.Time == 1000) {
         lcdPrint_P(PSTR("unlimited"));
-    else
+    } else {
         lcdPrintUInt(battery.Time);
         lcdPrint_P(PSTR("min."));
+    }
     return 6;
 }
 

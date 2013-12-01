@@ -26,7 +26,7 @@ const char string_PDMM1[] PROGMEM = "V:  ";
 const char string_PDMM2[] PROGMEM = "Ch: ";
 const char string_PDMM3[] PROGMEM = "Ic: ";
 const char string_PDMM4[] PROGMEM = "Id: ";
-const char string_PDMM5[] PROGMEM = "Max-T: ";
+const char string_PDMM5[] PROGMEM = "Tlim:";
 const char string_PDMM6[] PROGMEM = "  create name";
 const char string_PDMM7[] PROGMEM = "   edit name";
 

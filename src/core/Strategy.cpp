@@ -100,10 +100,9 @@ namespace Strategy {
             {
                 //change displayed screen
                 key =  Keyboard::getPressedWithSpeed();
-                if(key == BUTTON_INC && pgm::read(&chargeScreens[screen_nr+1]) != Screen::ScreenEnd)
-                    screen_nr++;
-                if(key == BUTTON_DEC && screen_nr > 0)
-                    screen_nr--;
+                if(key == BUTTON_INC && pgm::read(&chargeScreens[screen_nr+1]) != Screen::ScreenEnd) { Screen::displayAnimation(); screen_nr++;}
+                if(key == BUTTON_DEC && screen_nr > 0) {Screen::displayAnimation(); screen_nr--;}
+                    
             }
 
             if(run) {

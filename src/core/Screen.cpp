@@ -408,7 +408,7 @@ void Screen::displayDeltaVout()
 
 void Screen::displayScreenEnergy()
 {    
-
+    procent = getChargeProcent();
     
     //TODO_NJ please separate this function
     toggleTextCounter++;
@@ -417,27 +417,53 @@ void Screen::displayScreenEnergy()
     
 
     //TODO_NJ_end   
-   
-    lcdSetCursor0_0();
-    AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
-    lcdPrint_P(PSTR(" "));
-    AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
-    lcdPrintSpaces();
-    lcdSetCursor0_1();
-    AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
-    
-    lcdPrint_P(PSTR("  "));
-    
+    if (toggleTextCounter<10)
+    {
+      lcdSetCursor0_0();
+      printCharge();
+      //AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
+      //lcdPrint_P(PSTR(" "));
+      AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+      lcdPrintSpaces();
+      lcdSetCursor0_1();
+      printChar_Time();
+      lcdPrint_P(PSTR(" "));
+    }
+    else
+    {
+      lcdSetCursor0_0();
+      AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
+      lcdPrint_P(PSTR(" "));
+      AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+      lcdPrintSpaces();
+      lcdSetCursor0_1();
+      AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
+      lcdPrint_P(PSTR("  "));
+    }
+ 
     if (toggleTextCounter<10 && SMPS::isPowerOn() )
     { //display calculated simple ETA
-       procent = getChargeProcent();
+       
        if(procent_ < procent)
        {
-         procent_=procent;
+         procent_=procent; //probable only 1% max incremet/running
          etaSec = getTimeSec()-etaSec_;
          etaSec_=etaSec;
        }    
-      if(getTimeSec()>60) lcdPrintTime((etaSec*(100-procent))); else lcdPrint_P(PSTR("---:--")); 
+      if(etaSec>60) 
+      {
+       // uint16_t etaTemp;
+       // etaTemp =etaSec_*(100-procent_);
+        
+        lcdPrintTime(etaSec_*(99-procent_)); //probable average 102-  (compensate average balance time)
+      }
+      else 
+      {
+        lcdPrint_P(PSTR("---:--")); 
+      }
+    
+    
+    
     }
     else
     {  
@@ -447,6 +473,23 @@ void Screen::displayScreenEnergy()
     }
     
 }
+
+void Screen::displayAnimation()
+{
+
+    for (uint8_t i=0; i<16; i++)
+    {
+      
+      lcdSetCursor(15-i,1);
+      lcdPrintChar('!'-34);
+      lcdSetCursor(i,0);
+      lcdPrintChar('!'-34);
+      hardware::delay(10); 
+    }
+     hardware::delay(150);
+
+}
+
 
 void Screen::displayDeltaTextern()
 {
@@ -528,8 +571,8 @@ void Screen::displayStartInfo()
     printProgram2chars(Program::programType_);
 
     lcdSetCursor0_1();
-    uint16_t procent = getChargeProcent();
-    lcdPrintUnsigned(procent, 2);
+    //uint8_t procent = getChargeProcent();
+    lcdPrintUnsigned(getChargeProcent(), 2);
     lcdPrint_P(PSTR("% "));
     
 

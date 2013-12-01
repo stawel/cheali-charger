@@ -61,6 +61,7 @@ namespace Screen {
     void displayScreenEnergy();
     void warningScreen();
     void calibrationErrorScreen();
+    void displayAnimation();
 
     void displayScreenProgramCompleted();
 
