@@ -1,29 +1,34 @@
-FOR TESTING
-no use. Dangerous!
+FOR TESTING.
+
 
 
 Plus Features
 -------------
 
+ - first EnergyScreen is multiscreen
+ - Simply Estimated Time for Accomplishment
+ - ChargerScreen Animation (nice only)
+ - Knightrider effect is balancescreens (represents for ADC measure (& nice))
  - Powerscren (Watt and Watthour)
  - Valid charge-percent meter
  - loudness sound for end-program
  - Calibration error checking
- - supercharge-balance
+ - supercharge-balance  (longer charging time)
  - Lixx charge without balancer-port
  - time limit per battery plus Unlimited time.
  - Unknown battery voltage stepping 0.1V always.
- - smooth current rising (protect the power supply voltage-breakdown) (limited current rise speed: +1A/s (50W chargers) 3A/sec(>50W chargers) (2x500msec)
+ - smooth current rising/falling (protect the power supply voltage-breakdown) (limited current riseing/falling speed: 3A/sec(>50W chargers))
  - graphical balance status
  - wire resistance minimize value
 
+
+
+
 original source and hex:
 https://github.com/stawel/cheali-charger
+Thanks Pawel.   
 
-
-   
-
-icluded Features (original)
+Icluded Features (from Pawel Stawicki)
 ---------------------------
 - Li-ion, LiPo and LiFe:
   - charging
