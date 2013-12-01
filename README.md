@@ -5,8 +5,8 @@ FOR TESTING.
 Plus Features
 -------------
 
- - first EnergyScreen is multiscreen
- - Simply Estimated Time for Accomplishment
+ - first EnergyScreen is multiscreen 
+ - Simply Estimated Time for Accomplishment (TESTING)
  - ChargerScreen Animation (nice only)
  - Knightrider effect is balancescreens (represents for ADC measure (& nice))
  - Powerscren (Watt and Watthour)

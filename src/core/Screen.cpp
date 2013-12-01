@@ -36,8 +36,8 @@ namespace Screen{
     uint8_t toggleTextCounter = 0;
     uint8_t procent_ = 0;
     uint8_t procent;
-    uint16_t etaSec;
-    uint16_t etaSec_ = 0;
+    uint16_t etaSec = 0;
+    uint16_t etaSecOld;
     bool on_;
 
     const char programString[] PROGMEM = "ChCBSbBlDiFCStSBChDiCyCYChDiEB";
@@ -407,12 +407,18 @@ void Screen::displayDeltaVout()
 
 void Screen::displayScreenEnergy()
 {    
-    procent = getChargeProcent();
+
     
     //TODO_NJ please separate this function
-    toggleTextCounter++;
-    if (toggleTextCounter>20) toggleTextCounter=0;
+    toggleTextCounter++; if (toggleTextCounter>20) toggleTextCounter=0;
     
+    procent = getChargeProcent();
+    if(procent_ < procent)
+    {
+      procent_=procent; //probable only 1% max incremet/running
+      etaSec = getTimeSec()-etaSecOld;
+      etaSecOld = getTimeSec();
+    } 
     
 
     //TODO_NJ_end   
@@ -438,18 +444,16 @@ void Screen::displayScreenEnergy()
       lcdPrint_P(PSTR("  "));
     }
  
+
+ 
+ 
     if (toggleTextCounter<10 && SMPS::isPowerOn() )
     { //display calculated simple ETA
        
-       if(procent_ < procent)
-       {
-         procent_=procent; //probable only 1% max incremet/running
-         etaSec = getTimeSec()-etaSec_;
-         etaSec_=etaSec;
-       }    
+   
       if(etaSec>60)  //bigger 1 min for ETA calc 
       {
-        lcdPrintTime((etaSec_*(99-procent_))); 
+        lcdPrintTime(((etaSec*(99-procent_))+etaSec)); 
       }
       else 
       {
@@ -553,7 +557,7 @@ void Screen::calibrationErrorScreen()
 void Screen::displayStartInfo()
 {
     //reset ETA
-    etaSec_=0;
+    etaSec=0;
     procent_=0;
     
     lcdSetCursor0_0();
