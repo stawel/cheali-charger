@@ -34,7 +34,6 @@ namespace Screen{
     int8_t knightRiderCounter = 0;
     bool knightRiderDir;
     uint8_t toggleTextCounter = 0;
-    uint16_t procentTime = 0;
     uint8_t procent_ = 0;
     uint8_t procent;
     uint16_t etaSec;
@@ -421,8 +420,6 @@ void Screen::displayScreenEnergy()
     {
       lcdSetCursor0_0();
       printCharge();
-      //AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
-      //lcdPrint_P(PSTR(" "));
       AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
       lcdPrintSpaces();
       lcdSetCursor0_1();
@@ -450,16 +447,13 @@ void Screen::displayScreenEnergy()
          etaSec = getTimeSec()-etaSec_;
          etaSec_=etaSec;
        }    
-      if(etaSec>60) 
+      if(etaSec>60)  //bigger 1 min for ETA calc 
       {
-       // uint16_t etaTemp;
-       // etaTemp =etaSec_*(100-procent_);
-        
-        lcdPrintTime(etaSec_*(99-procent_)); //probable average 102-  (compensate average balance time)
+        lcdPrintTime((etaSec_*(99-procent_))); 
       }
       else 
       {
-        lcdPrint_P(PSTR("---:--")); 
+        lcdPrint_P(PSTR(" --:--")); 
       }
     
     
@@ -560,7 +554,6 @@ void Screen::displayStartInfo()
 {
     //reset ETA
     etaSec_=0;
-    etaSec=0;
     procent_=0;
     
     lcdSetCursor0_0();
