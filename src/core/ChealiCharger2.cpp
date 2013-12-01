@@ -60,13 +60,16 @@ void setup()
 #endif
 
     Settings::load();
+    Screen::displayAnimation();
     Screen::displayStrings(PSTR("  ChealiCharger"),
                            PSTR("    ver: "  CHEALI_CHARGER_VERSION_STRING));
     hardware::delay(1000);
+    Screen::displayAnimation();
 #ifdef TESTINGALERT
     Screen::displayStrings(PSTR(" Modded version"),
                            PSTR("  FOR TESTING"));
     hardware::delay(1000);
+    Screen::displayAnimation();
 #endif
     eeprom::restoreDefault();
 }

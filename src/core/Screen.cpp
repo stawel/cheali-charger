@@ -38,6 +38,7 @@ namespace Screen{
     uint8_t procent;
     uint16_t etaSec = 0;
     uint16_t etaSecOld;
+    uint16_t etaSecLarge = 0;
     bool on_;
 
     const char programString[] PROGMEM = "ChCBSbBlDiFCStSBChDiCyCYChDiEB";
@@ -406,9 +407,7 @@ void Screen::displayDeltaVout()
 }
 
 void Screen::displayScreenEnergy()
-{    
-
-    
+{   
     //TODO_NJ please separate this function
     toggleTextCounter++; if (toggleTextCounter>20) toggleTextCounter=0;
     
@@ -418,6 +417,7 @@ void Screen::displayScreenEnergy()
       procent_=procent; //probable only 1% max incremet/running
       etaSec = getTimeSec()-etaSecOld;
       etaSecOld = getTimeSec();
+      if ((etaSec > etaSecLarge) || (etaSecLarge==0) )  { etaSecLarge=etaSec;}  // find longer time for deltaprocent
     } 
     
 
@@ -451,9 +451,9 @@ void Screen::displayScreenEnergy()
     { //display calculated simple ETA
        
    
-      if(etaSec>20)  //bigger 20sec for ETA calc 
+      if(etaSecLarge>60)  //bigger 60sec for ETA calc 
       {
-        lcdPrintTime(((etaSec*(102-procent_)))); //TODO_NJ (not accurate for balancing time)
+        lcdPrintTime(((etaSecLarge*(102-procent_)))); //TODO_NJ (not accurate for balancing time)
       }
       else 
       {
@@ -572,6 +572,7 @@ void Screen::displayStartInfo()
     etaSec=0;
     etaSecOld=0;
     procent_=procent;
+    etaSecLarge = 0;
     
 
     int bindex = blink.getBlinkIndex();
