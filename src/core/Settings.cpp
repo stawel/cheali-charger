@@ -41,6 +41,7 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_VOLT(0.007), //deltaV_NiMH_
         ANALOG_VOLT(0.012), //deltaV_NiCd_
         5,                  //CDcycles_
+        30,                 //Waste Time
         120,                //"%" capCutoff_
         ANALOG_VOLT(7),     //inputVoltageLow_
         ANALOG_VOLT(0),     //dischargeOffset_LiXX_

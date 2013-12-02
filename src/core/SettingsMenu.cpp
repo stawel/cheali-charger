@@ -35,6 +35,7 @@ const char string_dTdt[]        PROGMEM = "dT/dt:";
 const char string_NiMHdV[]      PROGMEM = "NiMH -dV:";
 const char string_NiCddV[]      PROGMEM = "NiCd -dV:";
 const char string_CDcycles[]    PROGMEM = "C/D cycles:";
+const char string_WasteTime[]   PROGMEM = "waste T.:  ";
 const char string_capCoff[]     PROGMEM = "cap COff:";
 const char string_inputLow[]    PROGMEM = "input low:";
 const char string_dichLiXX[]    PROGMEM = "disch +:";
@@ -60,6 +61,7 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_NiMHdV,
         string_NiCddV,
         string_CDcycles,
+        string_WasteTime,
         string_capCoff,
         string_inputLow,
         string_dichLiXX,
@@ -96,6 +98,7 @@ uint8_t SettingsMenu::printItem(uint8_t index)
             case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiMH_, 5);        break;
             case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiCd_, 5);        break;
             case NEXT_CASE:     lcdPrintUnsigned(p_.CDcycles_, 3);      break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.WasteTime_, 3);     break;
             case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff_, 5);   break;
             case NEXT_CASE:     printVolt(p_.inputVoltageLow_);         break;
             case NEXT_CASE:     lcdPrint_mV(p_.dischargeOffset_LiXX_,6);break;
@@ -128,6 +131,7 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     changeMax(p_.deltaV_NiMH_, dir, 20);        break;
         case NEXT_CASE:     changeMax(p_.deltaV_NiCd_, dir, 20);        break;
         case NEXT_CASE:     change1Max(p_.CDcycles_, dir, 5);           break;
+        case NEXT_CASE:     change1Max(p_.WasteTime_, dir, 99);           break;
         case NEXT_CASE:     change1Max(p_.capCutoff_, dir, 250);        break;
         case NEXT_CASE:     changeInputVolt(p_.inputVoltageLow_, dir);  break;
         case NEXT_CASE:     changeMaxSmart(p_.dischargeOffset_LiXX_, dir, Settings::MaxDischargeOffset_LiXX,false);  break;

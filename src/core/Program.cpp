@@ -212,6 +212,24 @@ Strategy::statusType Program::runNiXXDischarge()
     return doStrategy(NiXXDischargeScreens);
 }
 
+Strategy::statusType Program::runNiXXCDcycleNiXX()
+{ //TODO_NJ  Nixxcdcycle
+  //  TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+  //  Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
+    return doStrategy(deltaChargeScreens);
+}
+
+
+Strategy::statusType Program::runNiXXDCcycleNiXX()
+{  //TODO_NJ  Nixxdccycle
+  //  TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+  //  Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
+    return doStrategy(deltaChargeScreens);
+}
+
+
+
+
 Strategy::statusType Program::runBalance()
 {
     Strategy::strategy_ = &Balancer::vtable;
@@ -236,7 +254,15 @@ Program::ProgramState getProgramState(Program::ProgramType prog)
     case Program::DischargeNiXX:
         retu = Program::Discharging;
         break;
-
+    case Program::CDcycleNiXX:
+         retu = Program::DischargingCharging;
+        break;
+    
+    case Program::DCcycleNiXX:
+         retu = Program::ChargingDischarging;
+        break;
+    
+    
     case Program::StorageLiXX:
     case Program::StorageLiXX_Balance:
         retu = Program::Storage;
@@ -297,6 +323,19 @@ void Program::run(ProgramType prog)
         case Program::DischargeNiXX:
             runNiXXDischarge();
             break;
+            
+        case Program::CDcycleNiXX:
+            runNiXXCDcycleNiXX();
+            break;
+            
+        case Program::DCcycleNiXX:
+            runNiXXDCcycleNiXX();
+            break;
+            
+            
+            
+            
+            
         case Program::ChargeLiXX_Balance:
             runTheveninChargeBalance();
             break;

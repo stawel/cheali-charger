@@ -31,7 +31,7 @@ public:
 
     enum ProgramState {
         None, Info, Calibration, Done, Error,
-        Charging, ChargingBalancing, SuperChargingBalancing, Discharging, Balancing, Storage,
+        Charging, ChargingBalancing, SuperChargingBalancing, Discharging,DischargingCharging,ChargingDischarging, Balancing, Storage,
     };
 
     static ProgramType programType_;
@@ -49,6 +49,9 @@ public:
     static Strategy::statusType runTheveninCharge(int minChargeC);
     static Strategy::statusType runDischarge();
     static Strategy::statusType runNiXXDischarge();
+    
+    static Strategy::statusType runNiXXCDcycleNiXX();
+    static Strategy::statusType runNiXXDCcycleNiXX();
 
     static Strategy::statusType runTheveninChargeBalance();
     static Strategy::statusType runTheveninSuperChargeBalance();

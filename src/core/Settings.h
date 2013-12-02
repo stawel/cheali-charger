@@ -46,6 +46,7 @@ struct Settings {
     AnalogInputs::ValueType deltaT_;
     AnalogInputs::ValueType deltaV_NiMH_, deltaV_NiCd_;
     uint16_t CDcycles_;
+    uint16_t WasteTime_;
     uint16_t capCutoff_;
     AnalogInputs::ValueType inputVoltageLow_;
     AnalogInputs::ValueType dischargeOffset_LiXX_;
