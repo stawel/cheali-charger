@@ -37,7 +37,7 @@ namespace Screen{
     uint8_t procent_ = 0;
     uint8_t procent;
     uint16_t etaSec = 0;
-    uint16_t etaSecOld;
+    uint16_t timeSecOldETACalc;
     uint16_t etaSecLarge = 0;
     bool on_;
 
@@ -49,7 +49,8 @@ namespace Screen{
         lcdPrint_P(programString+prog*2, 2);
     }
    
-        uint8_t getChargeProcent(){
+    uint8_t getChargeProcent()
+    {
         uint16_t v1,v2, v;
         v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
         v1 = ProgramData::currentProgramData.getVoltage(ProgramData::ValidEmpty);
@@ -407,26 +408,23 @@ void Screen::displayDeltaVout()
 }
 
 void Screen::displayScreenEnergy()
-{   
-    //TODO_NJ please separate this function
+{   //TODO_NJ
+    //this is multiscreen
     toggleTextCounter++; if (toggleTextCounter>20) toggleTextCounter=0;
     
-    procent = getChargeProcent();
-    if(procent_ < procent)
-    {
-      procent_=procent; //probable only 1% max incremet/running
-      etaSec = getTimeSec()-etaSecOld;
-      etaSecOld = getTimeSec();
-      if ((etaSec > etaSecLarge) || (etaSecLarge==0) )  { etaSecLarge=etaSec;}  // find longer time for deltaprocent
-    } 
+    //get procent increment time
+    getDeltaProcentTimeSec();
+    //TODO_NJ_end  
     
-
-    //TODO_NJ_end   
+     
     if (toggleTextCounter<10)
     {
       lcdSetCursor0_0();
       printCharge();
       AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+      //TODO_NJ (debugging)
+      //lcdPrintUInt(etaSecLarge);lcdPrint_P(PSTR(" "));lcdPrintUInt(etaSec);lcdPrint_P(PSTR(" "));lcdPrintUInt(timeSecOldETACalc);
+      
       lcdPrintSpaces();
       lcdSetCursor0_1();
       printChar_Time();
@@ -451,9 +449,9 @@ void Screen::displayScreenEnergy()
     { //display calculated simple ETA
        
    
-      if(etaSecLarge>60)  //bigger 60sec for ETA calc 
+      if(etaSecLarge>20)  //bigger 20sec for ETA calc (is 1C)
       {
-        lcdPrintTime(((etaSecLarge*(102-procent_)))); //TODO_NJ (not accurate for balancing time)
+        lcdPrintTime(getETATime()); //TODO_NJ (not accurate for balancing time)
       }
       else 
       {
@@ -556,6 +554,9 @@ void Screen::calibrationErrorScreen()
 
 void Screen::displayStartInfo()
 {   
+    
+    resetETA();
+    
     lcdSetCursor0_0();
     ProgramData::currentProgramData.printBatteryString(4);
     lcdPrintChar(' ');
@@ -568,11 +569,7 @@ void Screen::displayStartInfo()
     lcdPrintUnsigned(procent, 2);
     lcdPrint_P(PSTR("% "));
     
-    //reset ETA
-    etaSec=0;
-    etaSecOld=0;
-    procent_=procent;
-    etaSecLarge = 0;
+    
     
 
     int bindex = blink.getBlinkIndex();
@@ -594,6 +591,47 @@ void Screen::displayStartInfo()
     }
 }
 
+void Screen::resetETA()
+{
+//reset ETA
+    etaSec=0;
+    timeSecOldETACalc=0;
+    procent_=procent;
+    etaSecLarge = 0;
+
+}
+
+void Screen::getDeltaProcentTimeSec()
+{
+    procent = getChargeProcent();
+    if(procent_ < procent)
+    {
+      procent_=procent; //probable only 1% max incremet/running
+      etaSec = getTimeSec()-timeSecOldETACalc;
+      timeSecOldETACalc = getTimeSec();
+      if ((etaSec > etaSecLarge) || (etaSecLarge==0) )  { etaSecLarge=etaSec;}  // find longer time for deltaprocent
+    } 
+}
+
+uint16_t Screen::getETATime()
+{
+    getDeltaProcentTimeSec();
+    uint8_t kx;
+ if( (AnalogInputs::getConnectedBalancePorts() == 0) && (absDiff(AnalogInputs::getRealValue(AnalogInputs::Vout),
+             AnalogInputs::getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)  ))
+             {
+             //balancer not connected
+             kx=100;
+             }
+             else
+             {
+             //balancer connected
+             kx=105; //plus 5% for balancing time (not accurate the oldiest lipo battery)
+             }
+
+
+    return (etaSecLarge*(kx-procent_));
+}
 
 
 void Screen::display(ScreenType screen)

@@ -22,7 +22,7 @@
 #include "Screen.h"
 
 //TODO_NJ for test
-#include "Buzzer.h"
+//#include "Buzzer.h"
 
 namespace SMPS {
     STATE state_;
@@ -42,6 +42,7 @@ namespace SMPS {
 
 void SMPS::initialize()
 {
+    value_ = 0;
     setValue(0);
     powerOff(CHARGING_COMPLETE);
 }
@@ -122,6 +123,8 @@ void SMPS::powerOn()
     if(isPowerOn())
         return;
     
+    //reset rising value
+    value_ = 0;
     setValue(0);
     hardware::setChargerOutput(true);
     state_ = CHARGING;
@@ -134,6 +137,9 @@ void SMPS::powerOff(STATE reason)
         return;
     
     setValue(0);
+    //reset rising value
+    value_ = 0;
+    
     hardware::setChargerOutput(false);
     state_ = reason;
 }

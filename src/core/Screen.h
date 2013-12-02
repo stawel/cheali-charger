@@ -41,6 +41,7 @@ namespace Screen {
 
     uint16_t getTimeSec();
     uint16_t getTotalChargDischargeTime();
+    uint8_t getChargeProcent();
     void doSlowInterrupt();
 
     void powerOn();
@@ -62,6 +63,12 @@ namespace Screen {
     void warningScreen();
     void calibrationErrorScreen();
     void displayAnimation();
+    void getDeltaProcentTimeSec();
+    uint16_t getETATime();
+    void resetETA();
+    
+    
+    
 
     void displayScreenProgramCompleted();
 
