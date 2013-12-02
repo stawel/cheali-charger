@@ -255,11 +255,11 @@ Program::ProgramState getProgramState(Program::ProgramType prog)
         retu = Program::Discharging;
         break;
     case Program::CDcycleNiXX:
-         retu = Program::DischargingCharging;
+         retu = Program::ChargingDischarging;
         break;
     
     case Program::DCcycleNiXX:
-         retu = Program::ChargingDischarging;
+         retu = Program::DischargingCharging;
         break;
     
     
