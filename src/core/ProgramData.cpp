@@ -258,7 +258,7 @@ void ProgramData::changeCharge(int direction)
 {
     changeMaxSmart(battery.C, direction, PROGRAM_DATA_MAX_CHARGE,false);
     battery.Ic = battery.C;
-    if(isPb())
+    if(isPb() || isNiXX())
         battery.Ic/=4; //0.25C
     battery.Id = battery.C;
     check();

@@ -70,6 +70,7 @@ namespace Screen {
     void getDeltaProcentTimeSec();
     uint16_t getETATime();
     void resetETA();
+    void resetCycleHistory();
     
     
     

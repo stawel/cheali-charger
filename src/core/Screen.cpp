@@ -37,7 +37,7 @@ namespace Screen{
     bool knightRiderDir;
 #endif
     uint8_t toggleTextCounter = 0;
-    uint8_t toggleTextCycleCounter_ = 0;
+    uint8_t toggleTextCycleCounter_ = 1;
     uint8_t procent_ = 0;
     uint8_t procent;
     uint16_t etaSec = 0;
@@ -46,10 +46,10 @@ namespace Screen{
     
     
     //TODO_NJ for cyclehistory
-    uint16_t cyclesHistoryChCapacity[5] = {0,0,0,0,0};
-    uint16_t cyclesHistoryDcCapacity[5] = {0,0,0,0,0};
-    uint16_t cyclesHistoryTime[5] =     {0,0,0,0,0};
-    char  cyclesHistoryMode[5] =     {'C','D','-','-','-'};   //C=cd   D=dc
+    uint16_t cyclesHistoryChCapacity[10] = {0,0,0,0,0,0,0,0,0,0};
+    uint16_t cyclesHistoryDcCapacity[10] = {0,0,0,0,0,0,0,0,0,0};
+    uint16_t cyclesHistoryTime[10]       = {0,0,0,0,0,0,0,0,0,0};
+    char     cyclesHistoryMode[10]      = {'-','-','-','-','-','-','-','-','-','-'};   //C=charge   D=discharge '-' = none
 
     bool on_;
 
@@ -413,32 +413,30 @@ void Screen::displayDeltaFirst()
 
 void Screen::displayScreenCycles()
 {
-
-  //multiscreen (5x cyclenumber, C/D/watstestate, timeC timeDC, mAhCh, mADC)
-  toggleTextCounter++; if (toggleTextCounter>5) toggleTextCounter=0;
+   uint8_t c;
+   //multiscreen (5x2 cyclenumber, C/D, timeC/timeDC, mAhCh/mAhDC)
+   toggleTextCounter++; if (toggleTextCounter>5) toggleTextCounter=0;
   
-   if ( toggleTextCounter==5){ toggleTextCycleCounter_++ ;if (toggleTextCycleCounter_ > settings.CDcycles_) toggleTextCycleCounter_ = 1;}
-
-   lcdSetCursor0_0();
-   lcdPrintUnsigned(toggleTextCycleCounter_, 1);
-   lcdPrintSpaces(1);
+   if ( toggleTextCounter==5){ toggleTextCycleCounter_++ ;if (toggleTextCycleCounter_ > (settings.CDcycles_*2)) toggleTextCycleCounter_ = 1;}
    
-   lcdPrintChar(cyclesHistoryMode[toggleTextCycleCounter_-1]);
+   c=toggleTextCycleCounter_-1;
+   lcdSetCursor0_0();
+   lcdPrintUnsigned(toggleTextCycleCounter_, 2);
    lcdPrintSpaces(1);
-   lcdPrintTime(cyclesHistoryTime[toggleTextCycleCounter_-1]);
+   lcdPrintChar(cyclesHistoryMode[c]);
+   lcdPrintSpaces(1);
+   lcdPrintTime(cyclesHistoryTime[c]);
    lcdPrintSpaces();
    lcdSetCursor0_1();
-   
-   //cyclesHistoryMode
-     if (cyclesHistoryMode[toggleTextCycleCounter_ -1] == 'C')
+   lcdPrintSpaces(1);
+     if (cyclesHistoryMode[c] == 'C')
      {
-      lcdPrintCharge(cyclesHistoryChCapacity[toggleTextCycleCounter_ -1],8); 
+      lcdPrintCharge(cyclesHistoryChCapacity[c],8); 
      }
-     else if (cyclesHistoryMode[toggleTextCycleCounter_ -1] == 'D')
+     else if (cyclesHistoryMode[c] == 'D')
      {
-      lcdPrintCharge(cyclesHistoryDcCapacity[toggleTextCycleCounter_ -1],8); 
+      lcdPrintCharge(cyclesHistoryDcCapacity[c],8); 
      }
-
    lcdPrintSpaces();
 }
 
@@ -602,6 +600,8 @@ void Screen::displayStartInfo()
 {   
     
     resetETA();
+    //resetCycleHistory();
+    
     
     lcdSetCursor0_0();
     ProgramData::currentProgramData.printBatteryString(4);
@@ -644,6 +644,16 @@ void Screen::resetETA()
     timeSecOldETACalc=0;
     procent_=procent;
     etaSecLarge = 0;
+
+}
+
+void Screen::resetCycleHistory()
+{
+  for (uint8_t i=0; i<10; i++)
+  {
+    cyclesHistoryMode[i] = '-';  
+    cyclesHistoryTime[i] = 0;
+  }
 
 }
 

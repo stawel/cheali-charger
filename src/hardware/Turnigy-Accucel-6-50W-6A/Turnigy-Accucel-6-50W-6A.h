@@ -41,10 +41,10 @@
 //#define MAX_CURRENT_RISING ANALOG_AMP(1.000)
 
 //screenanimation
-#define SCREENANIMATION
+//#define SCREENANIMATION
 
 //knightrider effect is ADC working
-#define KNIGHTRIDEREFFECT
+//#define KNIGHTRIDEREFFECT
 
 //1-13? correlation
 #define SMPS_UPPERBOUND_VALUE               65535
