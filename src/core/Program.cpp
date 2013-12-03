@@ -140,6 +140,7 @@ namespace {
         return status;
     }
 
+    uint8_t tempCDcycles_ = settings.CDcycles_;
 
 } //namespace {
 

@@ -409,7 +409,7 @@ void checkCalibrateIcharge()
     //check 'overflow"
      if (checkCalibrate(MAX_CHARGE_I,AnalogInputs::IsmpsValue) != true)
      {
-        Screen::calibrationErrorScreen();
+        Screen::displayCalibrationErrorScreen();
      }
 }
 
@@ -418,7 +418,7 @@ void checkCalibrateIdischarge()
      //check 'overflow"
      if (checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::IdischargeValue) != true)
      {
-        Screen::calibrationErrorScreen();
+        Screen::displayCalibrationErrorScreen();
      }
 
 }

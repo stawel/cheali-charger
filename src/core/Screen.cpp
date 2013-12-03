@@ -24,6 +24,7 @@
 #include "Hardware.h"
 #include "Program.h"
 
+
 namespace Screen{
 
     uint32_t startTime_totalTime_;
@@ -31,14 +32,25 @@ namespace Screen{
     uint32_t totalChargDischargeTime_;
     Blink blink;
     bool blinkIcon;
+#ifdef  KNIGHTRIDEREFFECT   
     int8_t knightRiderCounter = 0;
     bool knightRiderDir;
+#endif
     uint8_t toggleTextCounter = 0;
+    uint8_t toggleTextCycleCounter_ = 0;
     uint8_t procent_ = 0;
     uint8_t procent;
     uint16_t etaSec = 0;
     uint16_t timeSecOldETACalc;
     uint16_t etaSecLarge = 0;
+    
+    
+    //TODO_NJ for cyclehistory
+    uint16_t cyclesHistoryChCapacity[5] = {0,0,0,0,0};
+    uint16_t cyclesHistoryDcCapacity[5] = {0,0,0,0,0};
+    uint16_t cyclesHistoryTime[5] =     {0,0,0,0,0};
+    char  cyclesHistoryMode[5] =     {'C','D','-','-','-'};   //C=cd   D=dc
+
     bool on_;
 
     const char programString[] PROGMEM = "ChCBSbBlDiFCStSBChDiCyCYChDiEB";
@@ -93,11 +105,11 @@ namespace Screen{
          blinkIcon = true;
         }
         
-        
+#ifdef KNIGHTRIDEREFFECT        
         if ( knightRiderDir==true) knightRiderCounter++; else knightRiderCounter--;
         if (knightRiderCounter>5) knightRiderDir=false;
         if (knightRiderCounter<=1) knightRiderDir=true;
-        
+#endif
         
         
         
@@ -131,9 +143,10 @@ namespace Screen{
         }
         else 
         {
+#ifdef KNIGHTRIDEREFFECT        
            char knightRiderArrow;
            if (knightRiderDir==true) knightRiderArrow='>'; else knightRiderArrow='<';
-           if (c == 'm' || c==' ')
+           if (c == 'm')
            {
              for (uint8_t i=1; i<7; i++ )
              {
@@ -145,6 +158,10 @@ namespace Screen{
            {
            lcdPrintSpaces(7);
            }
+#endif
+#ifndef KNIGHTRIDEREFFECT  
+        lcdPrintSpaces(7);
+#endif
         }
         
 
@@ -396,11 +413,33 @@ void Screen::displayDeltaFirst()
 
 void Screen::displayScreenCycles()
 {
-  //TODO_NJ (write NOW)
-  toggleTextCounter++; if (toggleTextCounter>20) toggleTextCounter=0;
+
+  //multiscreen (5x cyclenumber, C/D/watstestate, timeC timeDC, mAhCh, mADC)
+  toggleTextCounter++; if (toggleTextCounter>5) toggleTextCounter=0;
   
-  lcdSetCursor0_0();
-  lcdPrint_P(PSTR("displaycyles here"));
+   if ( toggleTextCounter==5){ toggleTextCycleCounter_++ ;if (toggleTextCycleCounter_ > settings.CDcycles_) toggleTextCycleCounter_ = 1;}
+
+   lcdSetCursor0_0();
+   lcdPrintUnsigned(toggleTextCycleCounter_, 1);
+   lcdPrintSpaces(1);
+   
+   lcdPrintChar(cyclesHistoryMode[toggleTextCycleCounter_-1]);
+   lcdPrintSpaces(1);
+   lcdPrintTime(cyclesHistoryTime[toggleTextCycleCounter_-1]);
+   lcdPrintSpaces();
+   lcdSetCursor0_1();
+   
+   //cyclesHistoryMode
+     if (cyclesHistoryMode[toggleTextCycleCounter_ -1] == 'C')
+     {
+      lcdPrintCharge(cyclesHistoryChCapacity[toggleTextCycleCounter_ -1],8); 
+     }
+     else if (cyclesHistoryMode[toggleTextCycleCounter_ -1] == 'D')
+     {
+      lcdPrintCharge(cyclesHistoryDcCapacity[toggleTextCycleCounter_ -1],8); 
+     }
+
+   lcdPrintSpaces();
 }
 
 void Screen::displayDeltaVout()
@@ -430,9 +469,7 @@ void Screen::displayScreenEnergy()
       lcdSetCursor0_0();
       printCharge();
       AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
-      //TODO_NJ (debugging)
-      //lcdPrintUInt(etaSecLarge);lcdPrint_P(PSTR(" "));lcdPrintUInt(etaSec);lcdPrint_P(PSTR(" "));lcdPrintUInt(timeSecOldETACalc);
-      
+       
       lcdPrintSpaces();
       lcdSetCursor0_1();
       printChar_Time();
@@ -478,6 +515,7 @@ void Screen::displayScreenEnergy()
     
 }
 
+#ifdef SCREENANIMATION
 void Screen::displayAnimation()
 {
 
@@ -493,7 +531,7 @@ void Screen::displayAnimation()
      hardware::delay(150);
 
 }
-
+#endif
 
 void Screen::displayDeltaTextern()
 {
@@ -538,7 +576,7 @@ void Screen::displayScreenReversedPolarity()
 }
 
 
-void Screen::warningScreen()
+void Screen::displayWarningScreen()
 {
    hardware::delay(500);
 //                               1234567890123456
@@ -551,7 +589,7 @@ void Screen::warningScreen()
     hardware::delay(900);                       
 }
 
-void Screen::calibrationErrorScreen()
+void Screen::displayCalibrationErrorScreen()
 {
 //                                 1234567890123456
       Screen::displayStrings(PSTR("  Calibration"),

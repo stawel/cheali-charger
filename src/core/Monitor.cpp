@@ -120,7 +120,7 @@ Strategy::statusType Monitor::run()
         AnalogInputs::ValueType Textern = AnalogInputs::getRealValue(AnalogInputs::Textern);
         if(Textern > settings.externTCO_) {
             Program::stopReason_ = PSTR("ext TCOF");
-            return Strategy::ERROR;
+            return Strategy::COMPLETE;
         }
     }
 

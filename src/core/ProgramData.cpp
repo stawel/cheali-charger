@@ -325,3 +325,4 @@ void ProgramData::check()
     v = getMaxId();
     if(battery.Id > v) battery.Id = v;
 }
+

@@ -34,8 +34,8 @@ namespace Screen {
         ScreenVinput,
         ScreenDeltaVout,
         ScreenDeltaTextern,
-        ScreenEnergy,
-        ScreenCycles,
+        ScreenEnergy,  //multiscreen
+        ScreenCycles,  //multiscreen
         };
 
     extern Blink blink;
@@ -62,9 +62,11 @@ namespace Screen {
     void displayDeltaFirst();
     void displayScreenEnergy();
     void displayScreenCycles();
-    void warningScreen();
-    void calibrationErrorScreen();
+    void displayWarningScreen();
+    void displayCalibrationErrorScreen();
+
     void displayAnimation();
+
     void getDeltaProcentTimeSec();
     uint16_t getETATime();
     void resetETA();
