@@ -29,7 +29,7 @@ void printChar(char * &buf, uint8_t &maxSize, char chr);
 void printUInt(char * &buf, uint8_t &maxSize, uint16_t value);
 void printULong(char * &buf, uint8_t &maxSize, uint32_t value);
 
-
+void lcdCreateCGRam();
 void lcdSetCursor(uint8_t x, uint8_t y);
 void lcdSetCursor0_0();
 void lcdSetCursor0_1();

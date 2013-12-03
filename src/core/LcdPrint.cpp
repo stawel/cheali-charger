@@ -20,6 +20,43 @@
 #include "memory.h"
 
 
+
+void lcdCreateCGRam()
+{
+   byte CGRAM[8];
+   CGRAM[0] = B01110;
+   CGRAM[1] = B11111;
+   CGRAM[2] = B10001;
+   CGRAM[3] = B10001;
+   CGRAM[4] = B10001;
+   CGRAM[5] = B10001;
+   CGRAM[6] = B11111;
+   CGRAM[7] = B11111;
+   lcd.createChar(0, CGRAM); //empty
+   
+   CGRAM[0] = B01110;
+   CGRAM[1] = B11111;
+   CGRAM[2] = B10001;
+   CGRAM[3] = B10001;
+   CGRAM[4] = B11111;
+   CGRAM[5] = B11111;
+   CGRAM[6] = B11111;
+   CGRAM[7] = B11111;           
+   lcd.createChar(1, CGRAM); //half
+   
+   CGRAM[0] = B01110;
+   CGRAM[1] = B11111;
+   CGRAM[2] = B11111;
+   CGRAM[3] = B11111;
+   CGRAM[4] = B11111;
+   CGRAM[5] = B11111;
+   CGRAM[6] = B11111;
+   CGRAM[7] = B11111;           
+   lcd.createChar(2, CGRAM); //full      
+}
+
+
+
 void lcdSetCursor(uint8_t x, uint8_t y)
 {
     lcd.setCursor(x, y);

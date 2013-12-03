@@ -63,8 +63,9 @@ void setup()
 #ifdef SCREENANIMATION
     Screen::displayAnimation();
 #endif
-    Screen::displayStrings(PSTR("  ChealiCharger"),
-                           PSTR("    ver: "  CHEALI_CHARGER_VERSION_STRING));
+    lcdCreateCGRam();
+    Screen::displayStrings(PSTR("ChealiCharger"),
+                           PSTR("ver: "  CHEALI_CHARGER_VERSION_STRING));
     hardware::delay(1000);
 #ifdef SCREENANIMATION    
     Screen::displayAnimation();

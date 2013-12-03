@@ -130,10 +130,10 @@ namespace Screen{
             uint8_t  j = 1;
             for(uint8_t i = 0; i < Balancer::getCells(); i++) {
                 if(i == Balancer::minCell_) {
-                  c = '_';
+                  c = 0; //lowest cell  //c = '_';
                 } else {
-                    if(Balancer::balance_&j) if (blinkIcon) c = '!'-34; else c =' ';
-                    else c = '-';
+                    if(Balancer::balance_&j) if (blinkIcon) c = 2 /* balancing cell */; else c =0;
+                    else c = 1;  //average cell
                 }
                 lcdPrintChar(c);
                 j<<=1;
@@ -375,7 +375,7 @@ void Screen::displayScreenProgramCompleted()
 
 void Screen::displayMonitorError()
 {
-    screenEnd(PSTR("monitor error"));
+    screenEnd(PSTR("Error"));
 }
 
 namespace {
@@ -550,7 +550,8 @@ void Screen::displayDeltaTextern()
 
 void Screen::displayNotImplemented()
 {
-    displayStrings(PSTR("Function not"), PSTR("implemented yet"));
+  //  displayStrings(PSTR("Function not"), PSTR("implemented yet"));
+      displayStrings(PSTR("N/A"),NULL);
 }
 
 
@@ -590,8 +591,8 @@ void Screen::displayWarningScreen()
 void Screen::displayCalibrationErrorScreen()
 {
 //                                 1234567890123456
-      Screen::displayStrings(PSTR("  Calibration"),
-                             PSTR("     ERROR"));
+      Screen::displayStrings(PSTR("Calibration"),
+                             PSTR("ERROR"));
       hardware::delay(8000);
 }
 

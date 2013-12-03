@@ -34,12 +34,12 @@
 
 namespace Calibrate {
 
-const char c1[] PROGMEM = "voltage";
+const char c1[] PROGMEM = "volt";
 const char c2[] PROGMEM = "I charge";
 const char c3[] PROGMEM = "I discharge";
-const char c4[] PROGMEM = "temp extern";
+const char c4[] PROGMEM = "temp ext";
 #ifdef ENABLE_T_INTERNAL
-const char c5[] PROGMEM = "temp intern";
+const char c5[] PROGMEM = "temp int";
 #endif
 #ifdef ENABLE_SERIAL_LOG
 const char c6[] PROGMEM = "calib->UART";
@@ -171,7 +171,7 @@ void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
 
 bool testVout()
 {
-    Screen::displayStrings(PSTR("Connect Battery!"),NULL);
+    Screen::displayStrings(PSTR("Connect Batt!"),NULL);
     do {
         if(AnalogInputs::isConnected(AnalogInputs::Vout))
             return true;
