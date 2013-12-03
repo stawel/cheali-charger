@@ -394,6 +394,14 @@ void Screen::displayDeltaFirst()
     deltaV();
 }
 
+void Screen::displayScreenCycles()
+{
+  //TODO_NJ (write NOW)
+  toggleTextCounter++; if (toggleTextCounter>20) toggleTextCounter=0;
+  
+  lcdSetCursor0_0();
+  lcdPrint_P(PSTR("displaycyles here"));
+}
 
 void Screen::displayDeltaVout()
 {
@@ -654,5 +662,6 @@ void Screen::display(ScreenType screen)
     case ScreenDeltaVout:               return displayDeltaVout();
     case ScreenDeltaTextern:            return displayDeltaTextern();
     case ScreenDeltaFirst:              return displayDeltaFirst();
+    case ScreenCycles:                  return displayScreenCycles();
     }
 }

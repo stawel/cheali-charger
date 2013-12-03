@@ -35,6 +35,7 @@ namespace Screen {
         ScreenDeltaVout,
         ScreenDeltaTextern,
         ScreenEnergy,
+        ScreenCycles,
         };
 
     extern Blink blink;
@@ -60,6 +61,7 @@ namespace Screen {
     void displayDeltaTextern();
     void displayDeltaFirst();
     void displayScreenEnergy();
+    void displayScreenCycles();
     void warningScreen();
     void calibrationErrorScreen();
     void displayAnimation();

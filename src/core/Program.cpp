@@ -51,6 +51,7 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
+      Screen::ScreenCycles,
       Screen::ScreenCIVlimits,
       Screen::ScreenEnd
     };
@@ -64,6 +65,7 @@ namespace {
       Screen::ScreenTime,
       Screen::ScreenTemperature,
       Screen::ScreenCIVlimits,
+      Screen::ScreenCycles,
       Screen::ScreenEnd
     };
 
@@ -331,10 +333,6 @@ void Program::run(ProgramType prog)
         case Program::DCcycleNiXX:
             runNiXXDCcycleNiXX();
             break;
-            
-            
-            
-            
             
         case Program::ChargeLiXX_Balance:
             runTheveninChargeBalance();
