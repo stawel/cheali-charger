@@ -46,6 +46,9 @@
 //knightrider effect is ADC working
 //#define KNIGHTRIDEREFFECT
 
+//use RAMCG battery icons for hitachi HD44780
+#define RAMCG
+
 //1-13? correlation
 #define SMPS_UPPERBOUND_VALUE               65535
 #define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/1)

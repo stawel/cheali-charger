@@ -71,6 +71,7 @@ namespace Screen {
     uint16_t getETATime();
     void resetETA();
     void resetCycleHistory();
+    void storeCycleHistoryInfo();
     
     
     

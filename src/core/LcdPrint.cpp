@@ -20,7 +20,7 @@
 #include "memory.h"
 
 
-
+#ifdef RAMCG
 void lcdCreateCGRam()
 {
    byte CGRAM[8];
@@ -30,7 +30,7 @@ void lcdCreateCGRam()
    CGRAM[3] = B10001;
    CGRAM[4] = B10001;
    CGRAM[5] = B10001;
-   CGRAM[6] = B11111;
+   CGRAM[6] = B10001;
    CGRAM[7] = B11111;
    lcd.createChar(0, CGRAM); //empty
    
@@ -54,7 +54,7 @@ void lcdCreateCGRam()
    CGRAM[7] = B11111;           
    lcd.createChar(2, CGRAM); //full      
 }
-
+#endif
 
 
 void lcdSetCursor(uint8_t x, uint8_t y)

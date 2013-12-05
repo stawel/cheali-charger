@@ -23,6 +23,7 @@
 #include "Settings.h"
 #include "Hardware.h"
 #include "Program.h"
+#include "DelayStrategy.h"
 
 
 namespace Screen{
@@ -47,7 +48,7 @@ namespace Screen{
     
     //TODO_NJ for cyclehistory
     uint16_t cyclesHistoryChCapacity[10] = {0,0,0,0,0,0,0,0,0,0};
-    uint16_t cyclesHistoryDcCapacity[10] = {0,0,0,0,0,0,0,0,0,0};
+   // uint16_t cyclesHistoryDcCapacity[10] = {0,0,0,0,0,0,0,0,0,0};
     uint16_t cyclesHistoryTime[10]       = {0,0,0,0,0,0,0,0,0,0};
     char     cyclesHistoryMode[10]      = {'-','-','-','-','-','-','-','-','-','-'};   //C=charge   D=discharge '-' = none
 
@@ -126,15 +127,34 @@ namespace Screen{
 
         lcdPrintChar(c);
 
+#ifdef RAMCG 
+
+
+
         if(Balancer::balance_ != 0) {
             uint8_t  j = 1;
             for(uint8_t i = 0; i < Balancer::getCells(); i++) {
-                if(i == Balancer::minCell_) {
+                if(i == Balancer::minCell_) 
+                {
                   c = 0; //lowest cell  //c = '_';
-                } else {
-                    if(Balancer::balance_&j) if (blinkIcon) c = 2 /* balancing cell */; else c =0;
-                    else c = 1;  //average cell
-                }
+                } 
+                else 
+                {
+                    if(Balancer::balance_&j) 
+                    {  if (blinkIcon)
+                       {  
+                        c = 2; //flash full
+                       } 
+                       else 
+                       { 
+                        c = 0; //flash empty
+                       }
+                    } 
+                    else
+                    {
+                     c = 1; //average
+                    }
+                 }    
                 lcdPrintChar(c);
                 j<<=1;
             }
@@ -143,6 +163,48 @@ namespace Screen{
         }
         else 
         {
+#endif   
+
+#ifndef RAMCG 
+         if(Balancer::balance_ != 0) {
+            uint8_t  j = 1;
+            for(uint8_t i = 0; i < Balancer::getCells(); i++) {
+                if(i == Balancer::minCell_) 
+                {
+                  c = '_'; //lowest cell  //c = '_';
+                } 
+                else 
+                {
+                    if(Balancer::balance_&j) 
+                    {  if (blinkIcon)
+                       {  
+                        c = '!'-34; //flash full
+                       } 
+                       else 
+                       { 
+                        c = ' '; //flash empty
+                       }
+                    } 
+                    else
+                    {
+                     c = '-'; //average
+                    }
+                 }    
+                lcdPrintChar(c);
+                j<<=1;
+            }
+            lcdPrintSpaces(7 - Balancer::getCells());
+            //lcdPrintChar(' ');
+        }
+        else 
+        {
+#endif
+
+
+
+
+
+     
 #ifdef KNIGHTRIDEREFFECT        
            char knightRiderArrow;
            if (knightRiderDir==true) knightRiderArrow='>'; else knightRiderArrow='<';
@@ -205,6 +267,12 @@ void Screen::printChar_Time() {
         if(SMPS::isPowerOn()) c = 'E';
     } else if(Balancer::isWorking()) {
         c = 'B';
+    }
+
+
+   if(DelayStrategy::isDelay() == true )
+    {
+        c = 'W';
     }
 
     lcdPrintChar(c);
@@ -414,10 +482,17 @@ void Screen::displayDeltaFirst()
 void Screen::displayScreenCycles()
 {
    uint8_t c;
+   Screen::storeCycleHistoryInfo();
    //multiscreen (5x2 cyclenumber, C/D, timeC/timeDC, mAhCh/mAhDC)
    toggleTextCounter++; if (toggleTextCounter>5) toggleTextCounter=0;
   
-   if ( toggleTextCounter==5){ toggleTextCycleCounter_++ ;if (toggleTextCycleCounter_ > (settings.CDcycles_*2)) toggleTextCycleCounter_ = 1;}
+   if ( toggleTextCounter==5)
+   { 
+      toggleTextCycleCounter_++ ;
+      if (toggleTextCycleCounter_ > (settings.CDcycles_*2)) toggleTextCycleCounter_ = 1;
+      //if (cyclesHistoryMode[toggleTextCycleCounter_]=='-') toggleTextCycleCounter_ = 1;
+      
+   }
    
    c=toggleTextCycleCounter_-1;
    lcdSetCursor0_0();
@@ -426,16 +501,13 @@ void Screen::displayScreenCycles()
    lcdPrintChar(cyclesHistoryMode[c]);
    lcdPrintSpaces(1);
    lcdPrintTime(cyclesHistoryTime[c]);
+   //lcdPrintUnsigned(cyclesHistoryTime[c],8);
    lcdPrintSpaces();
    lcdSetCursor0_1();
    lcdPrintSpaces(1);
-     if (cyclesHistoryMode[c] == 'C')
+     if (cyclesHistoryMode[c] == 'C' || cyclesHistoryMode[c] == 'D')
      {
       lcdPrintCharge(cyclesHistoryChCapacity[c],8); 
-     }
-     else if (cyclesHistoryMode[c] == 'D')
-     {
-      lcdPrintCharge(cyclesHistoryDcCapacity[c],8); 
      }
    lcdPrintSpaces();
 }
@@ -688,6 +760,20 @@ uint16_t Screen::getETATime()
 
 
     return (etaSecLarge*(kx-procent_));
+}
+
+void Screen::storeCycleHistoryInfo()
+{
+/*
+    uint16_t cyclesHistoryChCapacity[10] = {0,0,0,0,0,0,0,0,0,0};
+    uint16_t cyclesHistoryDcCapacity[10] = {0,0,0,0,0,0,0,0,0,0};
+    uint16_t cyclesHistoryTime[10]       = {0,0,0,0,0,0,0,0,0,0};
+    char     cyclesHistoryMode[10]      = {'-','-','-','-','-','-','-','-','-','-'};  
+*/
+cyclesHistoryMode[Program::currentCycle()] = Program::currentCycleMode();
+cyclesHistoryTime[Program::currentCycle()] = totalChargDischargeTime_/1000;
+cyclesHistoryChCapacity[Program::currentCycle()] = AnalogInputs::getRealValue(AnalogInputs::Cout);
+//cyclesHistoryDcCapacity[cycleNumber] = AnalogInputs::Eout;
 }
 
 

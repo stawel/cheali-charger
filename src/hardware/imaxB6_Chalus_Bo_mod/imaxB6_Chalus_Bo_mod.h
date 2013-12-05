@@ -45,6 +45,16 @@
 #define CHARGE_LIXX_WITHOUT_BALANCER
 
 //prevent power supply
-#define MAX_CURRENT_RISING ANALOG_AMP(3.000)
+//#define MAX_CURRENT_RISING ANALOG_AMP(3.000)
+
+//screenanimation
+//#define SCREENANIMATION
+
+//knightrider effect is ADC working
+//#define KNIGHTRIDEREFFECT
+
+//use RAMCG battery icons for hitachi HD44780
+//#define RAMCG
+
 
 #endif /* imaxB6_Chalus_Bo_mod_H_ */

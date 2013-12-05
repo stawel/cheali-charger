@@ -47,6 +47,8 @@ set(CORE_SOURCE
         StorageStrategy.h
         StartInfoStrategy.cpp
         StartInfoStrategy.h
+        DelayStrategy.cpp
+        DelayStrategy.h
 
         SMPS.cpp
         SMPS.h

@@ -33,6 +33,7 @@
 #include "StaticMenu.h"
 #include "Settings.h"
 #include "SerialLog.h"
+#include "DelayStrategy.h"
 
 
 Program::ProgramType Program::programType_;
@@ -140,7 +141,8 @@ namespace {
         return status;
     }
 
-    uint8_t tempCDcycles_ = settings.CDcycles_;
+    uint8_t tempCDcycles_ = 0;
+    char cycleMode='-';
 
 } //namespace {
 
@@ -215,16 +217,64 @@ Strategy::statusType Program::runNiXXDischarge()
     return doStrategy(NiXXDischargeScreens);
 }
 
+
+//******************************************************************
 Strategy::statusType Program::runNiXXCDcycleNiXX()
 { //TODO_NJ  Nixxcdcycle
-  //  TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-  //  Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-    return doStrategy(deltaChargeScreens);
+   //temporary disable
+   return (Strategy::COMPLETE);
+
+
+    //Screen::storeCycleHistoryInfo(tempCDcycles_, cycleMode );
+    //Buzzer::soundKeyboard();
+
+    TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+    DeltaChargeStrategy::setTestTV(settings.externT_, true);
+    DelayStrategy::setDelay((settings.WasteTime_));
+
+    
+    Strategy::statusType status;
+    for(tempCDcycles_=0; tempCDcycles_<settings.CDcycles_; tempCDcycles_++) {
+        if(tempCDcycles_&1) { Strategy::strategy_ = &DeltaChargeStrategy::vtable;cycleMode='C';}
+	      else {  Strategy::strategy_ = &TheveninDischargeStrategy::vtable;cycleMode='D';}
+
+        
+	      status = doStrategy(deltaChargeScreens, true);
+  	    if(status != Strategy::COMPLETE) {
+	        break;
+        }
+        
+	      Strategy::strategy_ = &DelayStrategy::vtable;
+	      //Buzzer::soundSelect();
+	      cycleMode='W';
+	      status = doStrategy(deltaChargeScreens, true);	
+    }
+    
+
+    
+    return status;
 }
+//************************************************************************
+
+uint8_t Program::currentCycle()
+{
+  return tempCDcycles_;
+}
+
+char Program::currentCycleMode()
+{
+  return cycleMode;
+}
+
 
 
 Strategy::statusType Program::runNiXXDCcycleNiXX()
 {  //TODO_NJ  Nixxdccycle
+   
+   //temporary disabled
+   
+   return (Strategy::COMPLETE);
+   
   //  TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
   //  Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
     return doStrategy(deltaChargeScreens);
