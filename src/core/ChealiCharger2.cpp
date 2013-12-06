@@ -65,7 +65,7 @@ void setup()
 #ifdef SCREENANIMATION
     Screen::displayAnimation();
 #endif
-#ifdef RAMCG
+#ifdef RAM_CG
     lcdCreateCGRam();
 #endif    
     Screen::displayStrings(PSTR("ChealiCharger"),

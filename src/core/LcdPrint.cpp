@@ -20,7 +20,7 @@
 #include "memory.h"
 
 
-#ifdef RAMCG
+#ifdef RAM_CG
 void lcdCreateCGRam()
 {
    byte CGRAM[8];

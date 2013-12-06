@@ -49,7 +49,7 @@ const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][Progr
 /*Life*/{ ANALOG_VOLT(3.300), ANALOG_VOLT(3.600), ANALOG_VOLT(2.000),   ANALOG_VOLT(3.300) /*??*/, 0, ANALOG_VOLT(3.000)},
 /*Lilo*/{ ANALOG_VOLT(3.600), ANALOG_VOLT(4.100), ANALOG_VOLT(2.500),   ANALOG_VOLT(3.750) /*??*/, 0, ANALOG_VOLT(3.500)},
 /*LiPo*/{ ANALOG_VOLT(3.700), ANALOG_VOLT(4.200), ANALOG_VOLT(3.000),   ANALOG_VOLT(3.850) /*??*/, 0, ANALOG_VOLT(3.209)},
-/*Liio*/{ ANALOG_VOLT(3.700), ANALOG_VOLT(4.350), ANALOG_VOLT(3.000),   ANALOG_VOLT(3.850) /*??*/, 0, ANALOG_VOLT(3.309)},
+/*Li43*/{ ANALOG_VOLT(3.700), ANALOG_VOLT(4.350), ANALOG_VOLT(3.000),   ANALOG_VOLT(3.850) /*??*/, 0, ANALOG_VOLT(3.309)},
 
 //based on "mars" settings - not tested
 /*NiZn*/{ ANALOG_VOLT(1.600), ANALOG_VOLT(1.900), ANALOG_VOLT(1.300),   ANALOG_VOLT(1.600) /*Probably not??*/, 0, ANALOG_VOLT(1.500)},
@@ -63,7 +63,7 @@ const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PR
         {ProgramData::Life,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
         {ProgramData::Lilo,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
         {ProgramData::Lipo,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
-        {ProgramData::Liio,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
+        {ProgramData::Li43,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
         {ProgramData::NiZn,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120}
 };
 
@@ -74,7 +74,7 @@ const char batteryString_Pb[]       PROGMEM = "Pb?";
 const char batteryString_Life[]     PROGMEM = "Life";
 const char batteryString_Lilo[]     PROGMEM = "Lilo";
 const char batteryString_Lipo[]     PROGMEM = "Lipo";
-const char batteryString_Liio[]     PROGMEM = "Liio";
+const char batteryString_Li43[]     PROGMEM = "Li43";
 const char batteryString_NiZn[]     PROGMEM = "NiZn";
 
 const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
@@ -85,7 +85,7 @@ const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
         batteryString_Life,
         batteryString_Lilo,
         batteryString_Lipo,
-        batteryString_Liio,
+        batteryString_Li43,
         batteryString_NiZn
 };
 

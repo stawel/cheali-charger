@@ -54,7 +54,7 @@
 //#define KNIGHTRIDEREFFECT
 
 //use RAMCG battery icons for hitachi HD44780
-//#define RAMCG
+//#define RAM_CG
 
 
 #endif /* imaxB6_Chalus_Bo_mod_H_ */

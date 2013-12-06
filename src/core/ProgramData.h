@@ -28,7 +28,7 @@
 #define PROGRAM_DATA_MAX_CHARGE ANALOG_CHARGE(65.000)
 
 struct ProgramData {
-    enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo, Liio, NiZn,                                  LAST_BATTERY_TYPE};
+    enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo, Li43, NiZn,                                  LAST_BATTERY_TYPE};
     enum VoltageType {VIdle,VCharge,VDischarge,VStorage, VUpperLimit, ValidEmpty,                        LAST_VOLTAGE_TYPE};
 
     struct BatteryData {
@@ -72,7 +72,7 @@ struct ProgramData {
     void check();
     void loadDefault();
 
-    bool isLiXX() const { return battery.type == Life || battery.type == Lilo || battery.type == Lipo || battery.type == Liio || battery.type == NiZn; };
+    bool isLiXX() const { return battery.type == Life || battery.type == Lilo || battery.type == Lipo || battery.type == Li43 || battery.type == NiZn; };
     bool isNiXX() const { return battery.type == NiCd || battery.type == NiMH; };
     bool isPb() const { return battery.type == Pb; };
 

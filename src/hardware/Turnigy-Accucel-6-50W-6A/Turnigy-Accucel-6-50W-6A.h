@@ -47,7 +47,7 @@
 //#define KNIGHTRIDEREFFECT
 
 //use RAMCG battery icons for hitachi HD44780
-#define RAMCG
+//#define RAM_CG
 
 //1-13? correlation
 #define SMPS_UPPERBOUND_VALUE               65535

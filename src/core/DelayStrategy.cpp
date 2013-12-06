@@ -1,12 +1,13 @@
 #include "DelayStrategy.h"
 #include "Timer.h"
 #include "Strategy.h"
+#include "Buzzer.h"
 
 namespace DelayStrategy {
 
-    bool state;
+    bool state = false;
 
-    int32_t start_time_;
+    int16_t start_time_;
     int16_t delay_;
     
     
@@ -27,12 +28,12 @@ namespace DelayStrategy {
 
     void powerOn() 
     {
-        start_time_ = Timer::getMiliseconds();
+        start_time_ = Timer::getMiliseconds()/1000;
     }
 
     Strategy::statusType doStrategy() 
     {
-	    if(Timer::getMiliseconds() < start_time_ + delay_) 
+	    if((Timer::getMiliseconds()/1000) <= start_time_ + delay_) 
 	    {
 	       state = true;
 	       return Strategy::RUNNING;
@@ -56,7 +57,8 @@ namespace DelayStrategy {
     
     void setDelay(int16_t minutes) 
     {
-         delay_ = minutes*60*1000;
+         delay_ = minutes*60;
+         powerOn();
     }
 
 }

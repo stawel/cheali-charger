@@ -48,7 +48,6 @@ namespace Screen{
     
     //TODO_NJ for cyclehistory
     uint16_t cyclesHistoryChCapacity[10] = {0,0,0,0,0,0,0,0,0,0};
-   // uint16_t cyclesHistoryDcCapacity[10] = {0,0,0,0,0,0,0,0,0,0};
     uint16_t cyclesHistoryTime[10]       = {0,0,0,0,0,0,0,0,0,0};
     char     cyclesHistoryMode[10]      = {'-','-','-','-','-','-','-','-','-','-'};   //C=charge   D=discharge '-' = none
 
@@ -127,7 +126,15 @@ namespace Screen{
 
         lcdPrintChar(c);
 
-#ifdef RAMCG 
+ #ifdef RAM_CG
+   #define BALANCE_FULL_CELL_CHAR   2
+   #define BALANCE_AVR_CELL_CHAR    1
+   #define BALANCE_EMPTY_CELL_CHAR  0
+ #else
+   #define BALANCE_FULL_CELL_CHAR   255    //'!'-34 (fulfill char)
+   #define BALANCE_AVR_CELL_CHAR    '-'
+   #define BALANCE_EMPTY_CELL_CHAR  '_'
+ #endif
 
 
 
@@ -136,74 +143,33 @@ namespace Screen{
             for(uint8_t i = 0; i < Balancer::getCells(); i++) {
                 if(i == Balancer::minCell_) 
                 {
-                  c = 0; //lowest cell  //c = '_';
+                  c = BALANCE_EMPTY_CELL_CHAR; //lowest cell  
                 } 
                 else 
                 {
                     if(Balancer::balance_&j) 
                     {  if (blinkIcon)
                        {  
-                        c = 2; //flash full
+                        c = BALANCE_FULL_CELL_CHAR; //flash full/empty cells
                        } 
                        else 
                        { 
-                        c = 0; //flash empty
+                        c = BALANCE_EMPTY_CELL_CHAR; //flash full/empty cells
                        }
                     } 
                     else
                     {
-                     c = 1; //average
+                     c = BALANCE_AVR_CELL_CHAR; //average cells
                     }
                  }    
                 lcdPrintChar(c);
                 j<<=1;
             }
             lcdPrintSpaces(7 - Balancer::getCells());
-            //lcdPrintChar(' ');
         }
         else 
         {
-#endif   
-
-#ifndef RAMCG 
-         if(Balancer::balance_ != 0) {
-            uint8_t  j = 1;
-            for(uint8_t i = 0; i < Balancer::getCells(); i++) {
-                if(i == Balancer::minCell_) 
-                {
-                  c = '_'; //lowest cell  //c = '_';
-                } 
-                else 
-                {
-                    if(Balancer::balance_&j) 
-                    {  if (blinkIcon)
-                       {  
-                        c = '!'-34; //flash full
-                       } 
-                       else 
-                       { 
-                        c = ' '; //flash empty
-                       }
-                    } 
-                    else
-                    {
-                     c = '-'; //average
-                    }
-                 }    
-                lcdPrintChar(c);
-                j<<=1;
-            }
-            lcdPrintSpaces(7 - Balancer::getCells());
-            //lcdPrintChar(' ');
-        }
-        else 
-        {
-#endif
-
-
-
-
-
+   
      
 #ifdef KNIGHTRIDEREFFECT        
            char knightRiderArrow;
@@ -489,9 +455,11 @@ void Screen::displayScreenCycles()
    if ( toggleTextCounter==5)
    { 
       toggleTextCycleCounter_++ ;
-      if (toggleTextCycleCounter_ > (settings.CDcycles_*2)) toggleTextCycleCounter_ = 1;
+      //if (toggleTextCycleCounter_ > (settings.CDcycles_*2)) toggleTextCycleCounter_ = 1;
       //if (cyclesHistoryMode[toggleTextCycleCounter_]=='-') toggleTextCycleCounter_ = 1;
-      
+     if (toggleTextCycleCounter_ > ( Program::currentCycle()*2)) toggleTextCycleCounter_ = 1;
+     
+     
    }
    
    c=toggleTextCycleCounter_-1;
@@ -505,10 +473,11 @@ void Screen::displayScreenCycles()
    lcdPrintSpaces();
    lcdSetCursor0_1();
    lcdPrintSpaces(1);
-     if (cyclesHistoryMode[c] == 'C' || cyclesHistoryMode[c] == 'D')
+     if (cyclesHistoryMode[c] == 'C' || cyclesHistoryMode[c] == 'D' || cyclesHistoryMode[c] == 'W')
      {
       lcdPrintCharge(cyclesHistoryChCapacity[c],8); 
      }
+     if (Program::currentCycleMode() == 'W') lcdPrint_P(PSTR("   WAIT"));
    lcdPrintSpaces();
 }
 
@@ -770,10 +739,12 @@ void Screen::storeCycleHistoryInfo()
     uint16_t cyclesHistoryTime[10]       = {0,0,0,0,0,0,0,0,0,0};
     char     cyclesHistoryMode[10]      = {'-','-','-','-','-','-','-','-','-','-'};  
 */
-cyclesHistoryMode[Program::currentCycle()] = Program::currentCycleMode();
-cyclesHistoryTime[Program::currentCycle()] = totalChargDischargeTime_/1000;
-cyclesHistoryChCapacity[Program::currentCycle()] = AnalogInputs::getRealValue(AnalogInputs::Cout);
-//cyclesHistoryDcCapacity[cycleNumber] = AnalogInputs::Eout;
+  if (Program::currentCycleMode() != 'W' ) 
+  {
+    cyclesHistoryMode[Program::currentCycle()] = Program::currentCycleMode();
+    cyclesHistoryTime[Program::currentCycle()] = totalChargDischargeTime_/1000;
+    cyclesHistoryChCapacity[Program::currentCycle()] = AnalogInputs::getRealValue(AnalogInputs::Cout);
+  }
 }
 
 

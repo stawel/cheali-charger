@@ -52,10 +52,11 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
-      Screen::ScreenCycles,
       Screen::ScreenCIVlimits,
+      Screen::ScreenCycles,
       Screen::ScreenEnd
     };
+
     const Screen::ScreenType NiXXDischargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenEnergy,
@@ -218,43 +219,16 @@ Strategy::statusType Program::runNiXXDischarge()
 }
 
 
-//******************************************************************
+
 Strategy::statusType Program::runNiXXCDcycleNiXX()
 { //TODO_NJ  Nixxcdcycle
-   //temporary disable
+   
+   //temporary disabled
+   
    return (Strategy::COMPLETE);
 
-
-    //Screen::storeCycleHistoryInfo(tempCDcycles_, cycleMode );
-    //Buzzer::soundKeyboard();
-
-    TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-    DeltaChargeStrategy::setTestTV(settings.externT_, true);
-    DelayStrategy::setDelay((settings.WasteTime_));
-
-    
-    Strategy::statusType status;
-    for(tempCDcycles_=0; tempCDcycles_<settings.CDcycles_; tempCDcycles_++) {
-        if(tempCDcycles_&1) { Strategy::strategy_ = &DeltaChargeStrategy::vtable;cycleMode='C';}
-	      else {  Strategy::strategy_ = &TheveninDischargeStrategy::vtable;cycleMode='D';}
-
-        
-	      status = doStrategy(deltaChargeScreens, true);
-  	    if(status != Strategy::COMPLETE) {
-	        break;
-        }
-        
-	      Strategy::strategy_ = &DelayStrategy::vtable;
-	      //Buzzer::soundSelect();
-	      cycleMode='W';
-	      status = doStrategy(deltaChargeScreens, true);	
-    }
-    
-
-    
-    return status;
 }
-//************************************************************************
+
 
 uint8_t Program::currentCycle()
 {
@@ -267,19 +241,45 @@ char Program::currentCycleMode()
 }
 
 
-
+//******************************************************************
 Strategy::statusType Program::runNiXXDCcycleNiXX()
 {  //TODO_NJ  Nixxdccycle
-   
-   //temporary disabled
-   
-   return (Strategy::COMPLETE);
-   
-  //  TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-  //  Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-    return doStrategy(deltaChargeScreens);
-}
 
+
+    TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+    DeltaChargeStrategy::setTestTV(settings.externT_, true);
+    DelayStrategy::setDelay((settings.WasteTime_));
+
+    
+    Strategy::statusType status;
+    for(tempCDcycles_=0; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
+        if(tempCDcycles_&1) { Strategy::strategy_ = &DeltaChargeStrategy::vtable;cycleMode='C';}
+	      else {  Strategy::strategy_ = &TheveninDischargeStrategy::vtable;cycleMode='D';}
+
+        
+	      status = doStrategy(deltaChargeScreens, true);
+	      Buzzer::soundSelect();
+  	    if(status != Strategy::COMPLETE) {
+	        break;
+        }
+        
+	      Strategy::strategy_ = &DelayStrategy::vtable;
+	      Buzzer::soundSelect();
+	      cycleMode='W';
+	      
+	      
+	      status = doStrategy(deltaChargeScreens, true);	
+	      Buzzer::soundSelect();
+	      if(status != Strategy::COMPLETE) {
+	        break;      
+	      }  
+    } 
+    return status;
+
+
+
+}
+//************************************************************************
 
 
 
