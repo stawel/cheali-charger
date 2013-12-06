@@ -219,7 +219,7 @@ Strategy::statusType Program::runNiXXDischarge()
 }
 
 
-
+/*
 Strategy::statusType Program::runNiXXCDcycleNiXX()
 { //TODO_NJ  Nixxcdcycle
    
@@ -228,17 +228,11 @@ Strategy::statusType Program::runNiXXCDcycleNiXX()
    return (Strategy::COMPLETE);
 
 }
+*/
 
+uint8_t Program::currentCycle() { return tempCDcycles_;}
 
-uint8_t Program::currentCycle()
-{
-  return tempCDcycles_;
-}
-
-char Program::currentCycleMode()
-{
-  return cycleMode;
-}
+char Program::currentCycleMode() { return cycleMode;}
 
 
 //******************************************************************
@@ -307,10 +301,10 @@ Program::ProgramState getProgramState(Program::ProgramType prog)
     case Program::DischargeNiXX:
         retu = Program::Discharging;
         break;
-    case Program::CDcycleNiXX:
+/*    case Program::CDcycleNiXX:
          retu = Program::ChargingDischarging;
         break;
-    
+*/    
     case Program::DCcycleNiXX:
          retu = Program::DischargingCharging;
         break;
@@ -376,11 +370,11 @@ void Program::run(ProgramType prog)
         case Program::DischargeNiXX:
             runNiXXDischarge();
             break;
-            
+ /*           
         case Program::CDcycleNiXX:
             runNiXXCDcycleNiXX();
             break;
-            
+ */           
         case Program::DCcycleNiXX:
             runNiXXDCcycleNiXX();
             break;
@@ -415,7 +409,7 @@ namespace {
     const char fastCh_str[] PROGMEM = "fast charge";
     const char storag_str[] PROGMEM = "storage";
     const char stoBal_str[] PROGMEM = "storage+balanc";
-    const char CDcycl_str[] PROGMEM = "c>d cycle";
+ /*   const char CDcycl_str[] PROGMEM = "c>d cycle";       */
     const char DCcycl_str[] PROGMEM = "d>c cycle";
     const char edBatt_str[] PROGMEM = "edit battery";
 
@@ -469,7 +463,7 @@ namespace {
     const char * const programNiXXMenu[] PROGMEM =
     { charge_str,
       discha_str,
-      CDcycl_str,
+/*      CDcycl_str,  */
       DCcycl_str,
       edBatt_str,
       NULL
@@ -478,7 +472,7 @@ namespace {
     const Program::ProgramType programNiXXMenuType[] PROGMEM =
     { Program::ChargeNiXX,
       Program::DischargeNiXX,
-      Program::CDcycleNiXX,
+/*      Program::CDcycleNiXX,   */
       Program::DCcycleNiXX,
       Program::EditBattery
     };
