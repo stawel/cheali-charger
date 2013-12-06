@@ -32,7 +32,7 @@
 //#define TESTINGALERT
 
 //loudness programcomplete
-#define LOUDSOUND
+//#define LOUDSOUND
 
 //Lixx withoutbalancer
 #define CHARGE_LIXX_WITHOUT_BALANCER

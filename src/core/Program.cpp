@@ -82,6 +82,7 @@ namespace {
       Screen::ScreenTime,
       Screen::ScreenTemperature,
       Screen::ScreenCIVlimits,
+      Screen::ScreenCycles,
       Screen::ScreenEnd
 
     };
@@ -103,6 +104,7 @@ namespace {
       Screen::ScreenTime,
       Screen::ScreenTemperature,
       Screen::ScreenCIVlimits,
+      Screen::ScreenCycles,
       Screen::ScreenEnd
 
     };
@@ -219,20 +221,57 @@ Strategy::statusType Program::runNiXXDischarge()
 }
 
 
-/*
-Strategy::statusType Program::runNiXXCDcycleNiXX()
-{ //TODO_NJ  Nixxcdcycle
-   
-   //temporary disabled
-   
-   return (Strategy::COMPLETE);
 
-}
-*/
+
+
 
 uint8_t Program::currentCycle() { return tempCDcycles_;}
 
 char Program::currentCycleMode() { return cycleMode;}
+
+//#####################################################################
+Strategy::statusType Program::runLiXXDCcycleLiXX()
+{ //TODO_NJ
+  
+    AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
+    Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
+    TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
+
+    TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
+            ProgramData::currentProgramData.battery.Ic, true);
+
+    DelayStrategy::setDelay((settings.WasteTime_));
+ 
+    Strategy::statusType status;
+    for(tempCDcycles_=0; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
+        if(tempCDcycles_&1) { Strategy::strategy_ = &TheveninChargeStrategy::vtable; cycleMode='C';}
+	      else {  Strategy::strategy_ = &TheveninDischargeStrategy::vtable;cycleMode='D';}
+
+        
+	      status = doStrategy(dischargeScreens, true);
+	      Buzzer::soundSelect();
+  	    if(status != Strategy::COMPLETE) {
+	        break;
+        }
+        
+	      Strategy::strategy_ = &DelayStrategy::vtable;
+	      Buzzer::soundSelect();
+	      cycleMode='W';
+	      
+	      
+	      status = doStrategy(theveninScreens, true);	
+	      Buzzer::soundSelect();
+	      if(status != Strategy::COMPLETE) {
+	        break;      
+	      }  
+    } 
+    return status;
+
+}
+//#####################################################################
+
+
+
 
 
 //******************************************************************
@@ -301,10 +340,10 @@ Program::ProgramState getProgramState(Program::ProgramType prog)
     case Program::DischargeNiXX:
         retu = Program::Discharging;
         break;
-/*    case Program::CDcycleNiXX:
-         retu = Program::ChargingDischarging;
+    case Program::DCcycleLiXX:
+         retu = Program::DischargingCharging;
         break;
-*/    
+   
     case Program::DCcycleNiXX:
          retu = Program::DischargingCharging;
         break;
@@ -370,11 +409,11 @@ void Program::run(ProgramType prog)
         case Program::DischargeNiXX:
             runNiXXDischarge();
             break;
- /*           
-        case Program::CDcycleNiXX:
-            runNiXXCDcycleNiXX();
+           
+        case Program::DCcycleLiXX:
+            runLiXXDCcycleLiXX();
             break;
- */           
+          
         case Program::DCcycleNiXX:
             runNiXXDCcycleNiXX();
             break;
@@ -409,8 +448,8 @@ namespace {
     const char fastCh_str[] PROGMEM = "fast charge";
     const char storag_str[] PROGMEM = "storage";
     const char stoBal_str[] PROGMEM = "storage+balanc";
- /*   const char CDcycl_str[] PROGMEM = "c>d cycle";       */
-    const char DCcycl_str[] PROGMEM = "d>c cycle";
+    const char dccycl_str[] PROGMEM = "format";       
+    const char DCcycl_str[] PROGMEM = "D>C cycle";
     const char edBatt_str[] PROGMEM = "edit battery";
 
     const char * const programLiXXMenu[] PROGMEM =
@@ -422,6 +461,7 @@ namespace {
       fastCh_str,
       storag_str,
       stoBal_str,
+      dccycl_str,
       edBatt_str,
       NULL
     };
@@ -435,6 +475,7 @@ namespace {
       Program::FastChargeLiXX,
       Program::StorageLiXX,
       Program::StorageLiXX_Balance,
+      Program::DCcycleLiXX,   
       Program::EditBattery
     };
 
@@ -472,7 +513,6 @@ namespace {
     const Program::ProgramType programNiXXMenuType[] PROGMEM =
     { Program::ChargeNiXX,
       Program::DischargeNiXX,
-/*      Program::CDcycleNiXX,   */
       Program::DCcycleNiXX,
       Program::EditBattery
     };

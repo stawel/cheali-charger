@@ -26,13 +26,13 @@ class Program {
 public:
     enum ProgramType {
         ChargeLiXX, ChargeLiXX_Balance, SuperChargeLiXX_Balance, Balance, DischargeLiXX, FastChargeLiXX, StorageLiXX, StorageLiXX_Balance,
-        ChargeNiXX, DischargeNiXX, /* CDcycleNiXX, */ DCcycleNiXX,
+        ChargeNiXX, DischargeNiXX,  DCcycleLiXX,  DCcycleNiXX,
         ChargePb, DischargePb,
         EditBattery, LAST_PROGRAM_TYPE};
 
     enum ProgramState {
         None, Info, Calibration, Done, Error,
-        Charging, ChargingBalancing, SuperChargingBalancing, Discharging,DischargingCharging,ChargingDischarging, Balancing, Storage,
+        Charging, ChargingBalancing, SuperChargingBalancing, Discharging,DischargingCharging, Balancing, Storage,
     };
 
 
@@ -53,7 +53,7 @@ public:
     static Strategy::statusType runDischarge();
     static Strategy::statusType runNiXXDischarge();
     
- /*   static Strategy::statusType runNiXXCDcycleNiXX();    */
+    static Strategy::statusType runLiXXDCcycleLiXX();    
     static Strategy::statusType runNiXXDCcycleNiXX();
     static uint8_t currentCycle();
     static char currentCycleMode();
