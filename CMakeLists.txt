@@ -4,8 +4,8 @@ Project(cheali-charger-mod)
 
 set(cheali-charger-version 0.32m)
 set(cheali-charger-eeprom-calibration-version 1)
-set(cheali-charger-eeprom-programdata-version 1)  # TODO_NJ: for testing
-set(cheali-charger-eeprom-settings-version 1)
+set(cheali-charger-eeprom-programdata-version 2)  # TODO_NJ: for testing
+set(cheali-charger-eeprom-settings-version 2)
 
 configure_file(src/core/Version.h.in src/core/Version.h)
 

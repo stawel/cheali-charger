@@ -232,23 +232,45 @@ char Program::currentCycleMode() { return cycleMode;}
 //#####################################################################
 Strategy::statusType Program::runLiXXDCcycleLiXX()
 { //TODO_NJ
-  
-    AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
-    Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
-    TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
+    
+    //AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
+    //Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
+    //TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
+    
+ 
+    
+  //  TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
+  //          ProgramData::currentProgramData.battery.Ic, true);
 
-    TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
-            ProgramData::currentProgramData.battery.Ic, true);
-
-    DelayStrategy::setDelay((settings.WasteTime_));
+  //  TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+    
+  //  DelayStrategy::setDelay((settings.WasteTime_));
  
     Strategy::statusType status;
     for(tempCDcycles_=0; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
-        if(tempCDcycles_&1) { Strategy::strategy_ = &TheveninChargeStrategy::vtable; cycleMode='C';}
-	      else {  Strategy::strategy_ = &TheveninDischargeStrategy::vtable;cycleMode='D';}
 
-        
-	      status = doStrategy(dischargeScreens, true);
+    
+        if(tempCDcycles_&1) 
+        {
+         Screen::resetETA();
+         TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
+            ProgramData::currentProgramData.battery.Ic, true); 
+         Strategy::strategy_ = &TheveninChargeStrategy::vtable;
+         cycleMode='C';
+        }
+	      else 
+	      { 
+	        AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
+          Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
+          TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
+          
+	       //TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+	       Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
+	       cycleMode='D';
+	       }
+
+        DelayStrategy::setDelay((settings.WasteTime_));
+	      status = doStrategy(theveninScreens, true);
 	      Buzzer::soundSelect();
   	    if(status != Strategy::COMPLETE) {
 	        break;
@@ -264,7 +286,10 @@ Strategy::statusType Program::runLiXXDCcycleLiXX()
 	      if(status != Strategy::COMPLETE) {
 	        break;      
 	      }  
+    
     } 
+
+
     return status;
 
 }
@@ -279,22 +304,37 @@ Strategy::statusType Program::runNiXXDCcycleNiXX()
 {  //TODO_NJ  Nixxdccycle
 
 
-    TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-    DeltaChargeStrategy::setTestTV(settings.externT_, true);
-    DelayStrategy::setDelay((settings.WasteTime_));
+  //  TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+  //  DeltaChargeStrategy::setTestTV(settings.externT_, true);
+  //  DelayStrategy::setDelay((settings.WasteTime_));
 
     
     Strategy::statusType status;
     for(tempCDcycles_=0; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
-        if(tempCDcycles_&1) { Strategy::strategy_ = &DeltaChargeStrategy::vtable;cycleMode='C';}
-	      else {  Strategy::strategy_ = &TheveninDischargeStrategy::vtable;cycleMode='D';}
 
         
+        if(tempCDcycles_&1) 
+        { 
+          Screen::resetETA();
+          DeltaChargeStrategy::setTestTV(settings.externT_, true);
+          Strategy::strategy_ = &DeltaChargeStrategy::vtable;
+          cycleMode='C';
+        }
+	      else 
+	      {
+	        TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+	        Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
+	        cycleMode='D';
+	      }
+
+        DelayStrategy::setDelay((settings.WasteTime_));
 	      status = doStrategy(deltaChargeScreens, true);
 	      Buzzer::soundSelect();
+  	    
   	    if(status != Strategy::COMPLETE) {
 	        break;
         }
+        
         
 	      Strategy::strategy_ = &DelayStrategy::vtable;
 	      Buzzer::soundSelect();
@@ -307,6 +347,7 @@ Strategy::statusType Program::runNiXXDCcycleNiXX()
 	        break;      
 	      }  
     } 
+
     return status;
 
 
