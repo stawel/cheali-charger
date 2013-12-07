@@ -26,6 +26,7 @@
 #include "DelayStrategy.h"
 
 
+
 namespace Screen{
 
     uint32_t startTime_totalTime_;
@@ -303,6 +304,8 @@ void Screen::doSlowInterrupt()
 
    if(Balancer::isWorking())
        totalBalanceTime_ += SLOW_INTERRUPT_PERIOD_MILISECONDS;
+       
+   Screen::storeCycleHistoryInfo();     //actualisation values
 
 }
 

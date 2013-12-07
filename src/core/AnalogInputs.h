@@ -149,6 +149,7 @@ namespace AnalogInputs {
     void resetADC();
     void reset();
     void resetMeasurement();
+    void resetAccumulatedMeasurements();
     void resetDelta();
     void powerOn();
     void powerOff();

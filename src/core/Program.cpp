@@ -232,42 +232,26 @@ char Program::currentCycleMode() { return cycleMode;}
 //#####################################################################
 Strategy::statusType Program::runLiXXDCcycleLiXX()
 { //TODO_NJ
-    
-    //AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
-    //Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
-    //TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
-    
- 
-    
-  //  TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
-  //          ProgramData::currentProgramData.battery.Ic, true);
-
-  //  TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-    
-  //  DelayStrategy::setDelay((settings.WasteTime_));
- 
     Strategy::statusType status;
     for(tempCDcycles_=0; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
-
-    
         if(tempCDcycles_&1) 
         {
-         Screen::resetETA();
-         TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
-            ProgramData::currentProgramData.battery.Ic, true); 
-         Strategy::strategy_ = &TheveninChargeStrategy::vtable;
-         cycleMode='C';
+           Screen::resetETA();
+           AnalogInputs::resetAccumulatedMeasurements();
+           TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
+              ProgramData::currentProgramData.battery.Ic, true); 
+           Strategy::strategy_ = &TheveninChargeStrategy::vtable;
+           cycleMode='C';
         }
 	      else 
 	      { 
-	        AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
+          AnalogInputs::resetAccumulatedMeasurements();
+          AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
           Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
           TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
-          
-	       //TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-	       Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-	       cycleMode='D';
-	       }
+          Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
+	        cycleMode='D';
+	      }
 
         DelayStrategy::setDelay((settings.WasteTime_));
 	      status = doStrategy(theveninScreens, true);
@@ -288,8 +272,6 @@ Strategy::statusType Program::runLiXXDCcycleLiXX()
 	      }  
     
     } 
-
-
     return status;
 
 }
@@ -301,27 +283,20 @@ Strategy::statusType Program::runLiXXDCcycleLiXX()
 
 //******************************************************************
 Strategy::statusType Program::runNiXXDCcycleNiXX()
-{  //TODO_NJ  Nixxdccycle
-
-
-  //  TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-  //  DeltaChargeStrategy::setTestTV(settings.externT_, true);
-  //  DelayStrategy::setDelay((settings.WasteTime_));
-
-    
+{  //TODO_NJ  Nixxdccycle 
     Strategy::statusType status;
     for(tempCDcycles_=0; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
-
-        
         if(tempCDcycles_&1) 
         { 
           Screen::resetETA();
+          AnalogInputs::resetAccumulatedMeasurements();
           DeltaChargeStrategy::setTestTV(settings.externT_, true);
           Strategy::strategy_ = &DeltaChargeStrategy::vtable;
           cycleMode='C';
         }
 	      else 
 	      {
+	        AnalogInputs::resetAccumulatedMeasurements();
 	        TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
 	        Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
 	        cycleMode='D';
@@ -330,28 +305,21 @@ Strategy::statusType Program::runNiXXDCcycleNiXX()
         DelayStrategy::setDelay((settings.WasteTime_));
 	      status = doStrategy(deltaChargeScreens, true);
 	      Buzzer::soundSelect();
-  	    
   	    if(status != Strategy::COMPLETE) {
 	        break;
         }
-        
-        
+
 	      Strategy::strategy_ = &DelayStrategy::vtable;
 	      Buzzer::soundSelect();
 	      cycleMode='W';
-	      
-	      
+
 	      status = doStrategy(deltaChargeScreens, true);	
 	      Buzzer::soundSelect();
 	      if(status != Strategy::COMPLETE) {
 	        break;      
 	      }  
     } 
-
     return status;
-
-
-
 }
 //************************************************************************
 
@@ -489,7 +457,7 @@ namespace {
     const char fastCh_str[] PROGMEM = "fast charge";
     const char storag_str[] PROGMEM = "storage";
     const char stoBal_str[] PROGMEM = "storage+balanc";
-    const char dccycl_str[] PROGMEM = "format";       
+    const char dccycl_str[] PROGMEM = "D>C cycle";       
     const char DCcycl_str[] PROGMEM = "D>C cycle";
     const char edBatt_str[] PROGMEM = "edit battery";
 
@@ -545,7 +513,6 @@ namespace {
     const char * const programNiXXMenu[] PROGMEM =
     { charge_str,
       discha_str,
-/*      CDcycl_str,  */
       DCcycl_str,
       edBatt_str,
       NULL

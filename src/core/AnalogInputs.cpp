@@ -317,6 +317,13 @@ void AnalogInputs::resetMeasurement()
     resetStable();
 }
 
+void AnalogInputs::resetAccumulatedMeasurements()
+{
+    charge_ = 0;
+    resetMeasurement();
+}
+
+
 void AnalogInputs::reset()
 {
 

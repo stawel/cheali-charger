@@ -70,7 +70,7 @@ const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PR
 const char batteryString_Unknown[]  PROGMEM = "Unknown";
 const char batteryString_NiCd[]     PROGMEM = "NiCd";
 const char batteryString_NiMH[]     PROGMEM = "NiMH";
-const char batteryString_Pb[]       PROGMEM = "Pb?";
+const char batteryString_Pb[]       PROGMEM = "Pb";
 const char batteryString_Life[]     PROGMEM = "Life";
 const char batteryString_Lilo[]     PROGMEM = "Lilo";
 const char batteryString_Lipo[]     PROGMEM = "Lipo";
