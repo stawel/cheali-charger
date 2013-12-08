@@ -49,10 +49,6 @@ void TheveninChargeStrategy::setVIB(AnalogInputs::ValueType v, AnalogInputs::Val
 {
        TheveninMethod::setVIB(v, AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, i), balance);
 }
-void TheveninChargeStrategy::superSetVIB(AnalogInputs::ValueType v, AnalogInputs::ValueType i, bool balance)
-{
-       TheveninMethod::superSetVIB(v, AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, i), balance);
-}
 void TheveninChargeStrategy::setMinI(AnalogInputs::ValueType i)
 {
        TheveninMethod::setMinI(AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, i));

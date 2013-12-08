@@ -115,13 +115,6 @@ void TheveninMethod::setVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueTyp
     balance_ = balance;
 }
 
-void TheveninMethod::superSetVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueType i, bool balance)
-{
-    Vend_ = Vend;
-    maxValue_ = i;
-    minValue_ = i/20;
-    balance_ = balance;
-}
 
 void TheveninMethod::initialize(AnalogInputs::Name iName)
 {

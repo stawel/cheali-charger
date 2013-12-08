@@ -26,6 +26,16 @@
 #include "DelayStrategy.h"
 
 
+ #ifdef RAM_CG
+   #define BALANCE_FULL_CELL_CHAR   2
+   #define BALANCE_AVR_CELL_CHAR    1
+   #define BALANCE_EMPTY_CELL_CHAR  0
+ #else
+   #define BALANCE_FULL_CELL_CHAR   255    //'!'-34 (fulfill char)
+   #define BALANCE_AVR_CELL_CHAR    '-'
+   #define BALANCE_EMPTY_CELL_CHAR  '_'
+ #endif
+
 
 namespace Screen{
 
@@ -47,14 +57,18 @@ namespace Screen{
     uint16_t etaSecLarge = 0;
     
     
-    //TODO_NJ for cyclehistory
-    uint16_t cyclesHistoryChCapacity[10] = {0,0,0,0,0,0,0,0,0,0};
-    uint16_t cyclesHistoryTime[10]       = {0,0,0,0,0,0,0,0,0,0};
-    char     cyclesHistoryMode[10]      = {'-','-','-','-','-','-','-','-','-','-'};   //C=charge   D=discharge '-' = none
+    //TODO_NJ for cyclehistory  
+    uint16_t cyclesHistoryChCapacity[5]   = {0,0,0,0,0};
+    uint16_t cyclesHistoryDcCapacity[5]   = {0,0,0,0,0};
+    uint16_t cyclesHistoryChTime[5]       = {0,0,0,0,0};
+    uint16_t cyclesHistoryDcTime[5]       = {0,0,0,0,0};
+    char     cyclesHistoryMode[5]         = {'-','-','-','-','-'}; //C=charge   D=discharge '-' = none
+
+
 
     bool on_;
 
-    const char programString[] PROGMEM = "ChCBSbBlDiFCStSBChDiCYcyChDiEB";
+    const char programString[] PROGMEM = "ChCBBlDiFCStSBChDiCYcyChDiEB";
     void printProgram2chars(Program::ProgramType prog)
     {
         STATIC_ASSERT(sizeOfArray(programString)-1 == Program::LAST_PROGRAM_TYPE*2);
@@ -127,15 +141,7 @@ namespace Screen{
 
         lcdPrintChar(c);
 
- #ifdef RAM_CG
-   #define BALANCE_FULL_CELL_CHAR   2
-   #define BALANCE_AVR_CELL_CHAR    1
-   #define BALANCE_EMPTY_CELL_CHAR  0
- #else
-   #define BALANCE_FULL_CELL_CHAR   255    //'!'-34 (fulfill char)
-   #define BALANCE_AVR_CELL_CHAR    '-'
-   #define BALANCE_EMPTY_CELL_CHAR  '_'
- #endif
+
 
 
 
@@ -406,8 +412,8 @@ namespace {
 void Screen::displayScreenProgramCompleted()
 {
     screenEnd(PSTR("program complete"));
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("Time: ")); lcdPrintTime(getTimeSec());
+//    lcdSetCursor0_1();
+//    lcdPrint_P(PSTR("Time: ")); lcdPrintTime(getTimeSec());
 }
 
 void Screen::displayMonitorError()
@@ -451,37 +457,29 @@ void Screen::displayDeltaFirst()
 void Screen::displayScreenCycles()
 {
    uint8_t c;
-   Screen::storeCycleHistoryInfo();
    //multiscreen (5x2 cyclenumber, C/D, timeC/timeDC, mAhCh/mAhDC)
    toggleTextCounter++; if (toggleTextCounter>5) toggleTextCounter=0;
   
    if ( toggleTextCounter==5)
    { 
       toggleTextCycleCounter_++ ;
-      //if (toggleTextCycleCounter_ > (settings.CDcycles_*2)) toggleTextCycleCounter_ = 1;
-      //if (cyclesHistoryMode[toggleTextCycleCounter_]=='-') toggleTextCycleCounter_ = 1;
-     if (toggleTextCycleCounter_ > ( Program::currentCycle()*2)) toggleTextCycleCounter_ = 1;
-     
-     
+     if (toggleTextCycleCounter_ >  Program::currentCycle()) toggleTextCycleCounter_ = 1;  
    }
    
    c=toggleTextCycleCounter_-1;
    lcdSetCursor0_0();
-   lcdPrintUnsigned(toggleTextCycleCounter_, 2);
+   lcdPrintUnsigned(toggleTextCycleCounter_, 1);
+   lcdPrintChar(BALANCE_EMPTY_CELL_CHAR);
+   lcdPrintTime(cyclesHistoryDcTime[c]);
    lcdPrintSpaces(1);
-   lcdPrintChar(cyclesHistoryMode[c]);
-   lcdPrintSpaces(1);
-   lcdPrintTime(cyclesHistoryTime[c]);
-   //lcdPrintUnsigned(cyclesHistoryTime[c],8);
+   lcdPrintChar(BALANCE_FULL_CELL_CHAR);
+   lcdPrintTime(cyclesHistoryChTime[c]);
    lcdPrintSpaces();
+   
    lcdSetCursor0_1();
-   lcdPrintSpaces(1);
-     if (cyclesHistoryMode[c] == 'C' || cyclesHistoryMode[c] == 'D' || cyclesHistoryMode[c] == 'W')
-     {
-      lcdPrintCharge(cyclesHistoryChCapacity[c],8); 
-     }
-     if (Program::currentCycleMode() == 'W') lcdPrint_P(PSTR("   WAIT"));
-   lcdPrintSpaces();
+   lcdPrintCharge(cyclesHistoryDcCapacity[c],8);
+   lcdPrintCharge(cyclesHistoryChCapacity[c],8);
+   lcdPrintSpaces();  
 }
 
 void Screen::displayDeltaVout()
@@ -645,7 +643,7 @@ void Screen::displayStartInfo()
 {   
     
     resetETA();
-    //resetCycleHistory();
+    resetCycleHistory();
     
     
     lcdSetCursor0_0();
@@ -694,10 +692,13 @@ void Screen::resetETA()
 
 void Screen::resetCycleHistory()
 {
-  for (uint8_t i=0; i<10; i++)
+  for (uint8_t i=0; i<5; i++)
   {
     cyclesHistoryMode[i] = '-';  
-    cyclesHistoryTime[i] = 0;
+    cyclesHistoryChTime[i] = 0;
+    cyclesHistoryDcTime[i] = 0;
+    cyclesHistoryChCapacity[i] =0;
+    cyclesHistoryDcCapacity[i] =0;
   }
 
 }
@@ -737,17 +738,27 @@ uint16_t Screen::getETATime()
 void Screen::storeCycleHistoryInfo()
 {
 /*
-    uint16_t cyclesHistoryChCapacity[10] = {0,0,0,0,0,0,0,0,0,0};
-    uint16_t cyclesHistoryDcCapacity[10] = {0,0,0,0,0,0,0,0,0,0};
-    uint16_t cyclesHistoryTime[10]       = {0,0,0,0,0,0,0,0,0,0};
-    char     cyclesHistoryMode[10]      = {'-','-','-','-','-','-','-','-','-','-'};  
+    uint16_t cyclesHistoryChCapacity[5] = {0,0,0,0,0};
+    uint16_t cyclesHistoryDcCapacity[5] = {0,0,0,0,0};
+    uint16_t cyclesHistoryChTime[5]       = {0,0,0,0,0};
+    uint16_t cyclesHistoryDcTime[5]       = {0,0,0,0,0};
+    char     cyclesHistoryMode[5]      = {'-','-','-','-','-'};  
 */
-  if (Program::currentCycleMode() != 'W' ) 
-  {
-    cyclesHistoryMode[Program::currentCycle()] = Program::currentCycleMode();
-    cyclesHistoryTime[Program::currentCycle()] = totalChargDischargeTime_/1000;
-    cyclesHistoryChCapacity[Program::currentCycle()] = AnalogInputs::getRealValue(AnalogInputs::Cout);
-  }
+   int8_t c=Program::currentCycle()-1;
+   if (Program::currentCycleMode() == 'C')
+   {
+    cyclesHistoryMode[c] = 'C';
+    cyclesHistoryChTime[c] = totalChargDischargeTime_/1000;
+    cyclesHistoryChCapacity[c] = AnalogInputs::getRealValue(AnalogInputs::Cout);
+   } 
+   if (Program::currentCycleMode() == 'D')
+   {
+    cyclesHistoryMode[c] = 'D';
+    cyclesHistoryDcTime[c] = totalChargDischargeTime_/1000;
+    cyclesHistoryDcCapacity[c] = AnalogInputs::getRealValue(AnalogInputs::Cout);
+   }
+   
+  
 }
 
 

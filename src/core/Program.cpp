@@ -188,15 +188,6 @@ Strategy::statusType Program::runTheveninChargeBalance()
     return doStrategy(theveninScreens);
 }
 
-Strategy::statusType Program::runTheveninSuperChargeBalance()
-{
-    TheveninChargeStrategy::superSetVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
-            ProgramData::currentProgramData.battery.Ic, true);
-    Strategy::strategy_ = &TheveninChargeStrategy::vtable;
-    return doStrategy(theveninScreens);
-}
-
-
 Strategy::statusType Program::runDeltaCharge()
 {
     DeltaChargeStrategy::setTestTV(settings.externT_, true);
@@ -220,8 +211,12 @@ Strategy::statusType Program::runNiXXDischarge()
     return doStrategy(NiXXDischargeScreens);
 }
 
-
-
+Strategy::statusType Program::runWasteTime()
+{    
+    DelayStrategy::setDelay(settings.WasteTime_);
+    Strategy::strategy_ = &DelayStrategy::vtable;
+    return doStrategy(theveninScreens, true);	
+}
 
 
 
@@ -229,99 +224,135 @@ uint8_t Program::currentCycle() { return tempCDcycles_;}
 
 char Program::currentCycleMode() { return cycleMode;}
 
-//#####################################################################
 Strategy::statusType Program::runLiXXDCcycleLiXX()
 { //TODO_NJ
     Strategy::statusType status;
-    for(tempCDcycles_=0; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
-        if(tempCDcycles_&1) 
-        {
-           Screen::resetETA();
-           AnalogInputs::resetAccumulatedMeasurements();
-           TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
-              ProgramData::currentProgramData.battery.Ic, true); 
-           Strategy::strategy_ = &TheveninChargeStrategy::vtable;
-           cycleMode='C';
-        }
-	      else 
-	      { 
+    
+    for(tempCDcycles_=1; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
+
+          //dc
           AnalogInputs::resetAccumulatedMeasurements();
+          cycleMode='D';
           AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
           Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
           TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
           Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-	        cycleMode='D';
-	      }
-
-        DelayStrategy::setDelay((settings.WasteTime_));
-	      status = doStrategy(theveninScreens, true);
-	      Buzzer::soundSelect();
-  	    if(status != Strategy::COMPLETE) {
-	        break;
-        }
-        
-	      Strategy::strategy_ = &DelayStrategy::vtable;
-	      Buzzer::soundSelect();
-	      cycleMode='W';
-	      
-	      
-	      status = doStrategy(theveninScreens, true);	
-	      Buzzer::soundSelect();
-	      if(status != Strategy::COMPLETE) {
-	        break;      
-	      }  
-    
+          status= doStrategy(theveninScreens, true);
+          if(status != Strategy::COMPLETE) {break;} 
+          status = Strategy::RUNNING;
+       
+          //waiting
+          cycleMode='W';
+          if(runWasteTime() != Strategy::COMPLETE) { break; }
+          status = Strategy::RUNNING;
+          
+          
+          //charge
+          Screen::resetETA();
+          AnalogInputs::resetAccumulatedMeasurements();
+          cycleMode='C';
+          
+          
+          TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
+            ProgramData::currentProgramData.battery.Ic, true);
+          Strategy::strategy_ = &TheveninChargeStrategy::vtable;
+         
+            //lastcharge
+            if (tempCDcycles_ != settings.CDcycles_)
+             {
+                status = doStrategy(theveninScreens,true);
+             } 
+             else 
+             {
+                status = doStrategy(theveninScreens);
+             }  
+         
+         
+          if(status != Strategy::COMPLETE) {break;} 
+          status = Strategy::RUNNING;
+          
+          
+         //no lastwait
+         if (tempCDcycles_ != settings.CDcycles_)
+       {
+          status = Strategy::RUNNING;
+          cycleMode='W';
+           status = runWasteTime();
+          if(status != Strategy::COMPLETE) { break; }
+       } else
+       {
+        status = Strategy::COMPLETE;
+       }
+          
     } 
     return status;
 
 }
-//#####################################################################
 
 
 
-
-
-//******************************************************************
 Strategy::statusType Program::runNiXXDCcycleNiXX()
 {  //TODO_NJ  Nixxdccycle 
     Strategy::statusType status;
-    for(tempCDcycles_=0; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
-        if(tempCDcycles_&1) 
-        { 
+    
+    for(tempCDcycles_=1; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
+    
+           //dc
+          AnalogInputs::resetAccumulatedMeasurements();
+          cycleMode='D';
+          TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
+	        Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
+          status= doStrategy(NiXXDischargeScreens, true);
+          if(status != Strategy::COMPLETE) {break;} 
+          status = Strategy::RUNNING;
+          
+          //waiting
+          cycleMode='W';
+          if(runWasteTime() != Strategy::COMPLETE) { break; }
+          status = Strategy::RUNNING;
+          
+           //charge
           Screen::resetETA();
           AnalogInputs::resetAccumulatedMeasurements();
+          cycleMode='C';
+          
           DeltaChargeStrategy::setTestTV(settings.externT_, true);
           Strategy::strategy_ = &DeltaChargeStrategy::vtable;
-          cycleMode='C';
-        }
-	      else 
-	      {
-	        AnalogInputs::resetAccumulatedMeasurements();
-	        TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-	        Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-	        cycleMode='D';
-	      }
+          status = doStrategy(deltaChargeScreens,true);
+          
+          
+            //lastcharge
+            if (tempCDcycles_ != settings.CDcycles_)
+             {
+                status = doStrategy(deltaChargeScreens,true);
+             } 
+             else 
+             {
+                status = doStrategy(deltaChargeScreens);
+             }  
+             
+             if(status != Strategy::COMPLETE) {break;} 
+          status = Strategy::RUNNING;
 
-        DelayStrategy::setDelay((settings.WasteTime_));
-	      status = doStrategy(deltaChargeScreens, true);
-	      Buzzer::soundSelect();
-  	    if(status != Strategy::COMPLETE) {
-	        break;
-        }
-
-	      Strategy::strategy_ = &DelayStrategy::vtable;
-	      Buzzer::soundSelect();
-	      cycleMode='W';
-
-	      status = doStrategy(deltaChargeScreens, true);	
-	      Buzzer::soundSelect();
-	      if(status != Strategy::COMPLETE) {
-	        break;      
-	      }  
+        
+	    //no lastwait
+         if (tempCDcycles_ != settings.CDcycles_)
+       {
+          status = Strategy::RUNNING;
+          cycleMode='W';
+           status = runWasteTime();
+          if(status != Strategy::COMPLETE) { break; }
+       } else
+       {
+        status = Strategy::COMPLETE;
+       }
+          
     } 
     return status;
+
 }
 //************************************************************************
+
 
 
 
@@ -364,9 +395,6 @@ Program::ProgramState getProgramState(Program::ProgramType prog)
         break;
     case Program::ChargeLiXX_Balance:
         retu = Program::ChargingBalancing;
-        break;
-    case Program::SuperChargeLiXX_Balance:
-        retu = Program::SuperChargingBalancing;
         break;
     default:
         retu = Program::None;
@@ -429,10 +457,7 @@ void Program::run(ProgramType prog)
             
         case Program::ChargeLiXX_Balance:
             runTheveninChargeBalance();
-            break;
-        case Program::SuperChargeLiXX_Balance:
-            runTheveninSuperChargeBalance();
-            break;            
+            break;           
         default:
             //TODO:
             Screen::runNotImplemented();
@@ -451,7 +476,6 @@ namespace {
 
     const char charge_str[] PROGMEM = "charge";
     const char chaBal_str[] PROGMEM = "charge+balance";
-    const char sChaBa_str[] PROGMEM = "supercharge+b.";
     const char balanc_str[] PROGMEM = "balance";
     const char discha_str[] PROGMEM = "discharge";
     const char fastCh_str[] PROGMEM = "fast charge";
@@ -464,7 +488,6 @@ namespace {
     const char * const programLiXXMenu[] PROGMEM =
     { charge_str,
       chaBal_str,
-      sChaBa_str,
       balanc_str,
       discha_str,
       fastCh_str,
@@ -478,7 +501,6 @@ namespace {
     const Program::ProgramType programLiXXMenuType[] PROGMEM =
     { Program::ChargeLiXX,
       Program::ChargeLiXX_Balance,
-      Program::SuperChargeLiXX_Balance,
       Program::Balance,
       Program::DischargeLiXX,
       Program::FastChargeLiXX,
@@ -491,7 +513,6 @@ namespace {
     const char * const programNiZnMenu[] PROGMEM =
     { charge_str,
       chaBal_str,
-      sChaBa_str,
       balanc_str,
       discha_str,
       fastCh_str,
@@ -502,7 +523,6 @@ namespace {
     const Program::ProgramType programNiZnMenuType[] PROGMEM =
     { Program::ChargeLiXX,
       Program::ChargeLiXX_Balance,
-      Program::SuperChargeLiXX_Balance,
       Program::Balance,
       Program::DischargeLiXX,
       Program::FastChargeLiXX,

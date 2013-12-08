@@ -40,7 +40,6 @@ namespace TheveninMethod {
     void storeOldValue(AnalogInputs::ValueType oldValue);
 
     void setVIB(AnalogInputs::ValueType v, AnalogInputs::ValueType i, bool balance);
-    void superSetVIB(AnalogInputs::ValueType v, AnalogInputs::ValueType i, bool balance);
     void setMinI(AnalogInputs::ValueType i);
     AnalogInputs::ValueType getImax();
 

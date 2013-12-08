@@ -35,7 +35,7 @@
 //#define LOUDSOUND
 
 //Lixx withoutbalancer
-//#define CHARGE_LIXX_WITHOUT_BALANCER
+#define CHARGE_LIXX_WITHOUT_BALANCER
 
 //prevent power supply
 //#define MAX_CURRENT_RISING ANALOG_AMP(1.000)

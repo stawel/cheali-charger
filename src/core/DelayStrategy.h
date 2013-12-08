@@ -3,18 +3,15 @@
 
 #include "Strategy.h"
 
-namespace DelayStrategy {
-    
-    
-    
-    
-    
+namespace DelayStrategy 
+{
     extern const Strategy::VTable vtable;
-    bool isDelay();
+    
     void powerOn();
-    Strategy::statusType doStrategy();
     void powerOff();
+    Strategy::statusType doStrategy();
     void setDelay(int16_t minutes);
+    bool isDelay();
    
 };
 
