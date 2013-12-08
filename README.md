@@ -7,21 +7,24 @@ Plus Features
 
  - first EnergyScreen is multiscreen 
  - Simply Estimated Time for Accomplishment (TESTING)
- - ChargerScreen Animation (nice only)
- - Knightrider effect is balancescreens (represents for ADC measure (& nice))
+ - ChargerScreen Animation (compiler optionnally)
+ - Knightrider effect is balancescreens (represents for ADC measure (compiler optionnally))
  - Powerscren (Watt and Watthour)
  - Valid charge-percent meter
- - loudness sound for end-program
+ - loudness sound for end-program (compiler optionnally)
  - Calibration error checking
- - supercharge-balance  (longer charging time)
+ - cycle discharge/wait/charge program for Nixx and Lixx
+ - cyclehystory screen
  - Lixx charge without balancer-port
  - time limit per battery plus Unlimited time.
  - Unknown battery voltage stepping 0.1V always.
  - smooth current rising/falling (protect the power supply voltage-breakdown) (limited current riseing/falling speed: 3A/sec(>50W chargers))
- - graphical balance status
+ - graphical balance status (compiler optionnally)
  - wire resistance minimize value
 
-
+removed:
+--------
+ - supercharge-balance  (longer charging time)
 
 
 original source and hex:
