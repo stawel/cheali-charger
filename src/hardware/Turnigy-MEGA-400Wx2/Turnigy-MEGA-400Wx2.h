@@ -45,5 +45,13 @@
 //prevent power supply
 #define MAX_CURRENT_RISING ANALOG_AMP(3.000)
 
+//screenanimation
+//#define SCREENANIMATION
+
+//knightrider effect is ADC working
+//#define KNIGHTRIDEREFFECT
+
+//use RAMCG battery icons for hitachi HD44780
+#define RAM_CG
 
 #endif /* Turnigy_MEGA_400Wx2_H_ */
