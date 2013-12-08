@@ -171,6 +171,8 @@ Strategy::statusType Program::runStorage(bool balance)
     Strategy::strategy_ = &StorageStrategy::vtable;
     return doStrategy(storageScreens);
 }
+
+
 Strategy::statusType Program::runTheveninCharge(int minChargeC)
 {
     TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
@@ -180,42 +182,42 @@ Strategy::statusType Program::runTheveninCharge(int minChargeC)
     return doStrategy(theveninScreens);
 }
 
-Strategy::statusType Program::runTheveninChargeBalance()
+Strategy::statusType Program::runTheveninChargeBalance( bool immediately = false)
 {
     TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
             ProgramData::currentProgramData.battery.Ic, true);
     Strategy::strategy_ = &TheveninChargeStrategy::vtable;
-    return doStrategy(theveninScreens);
+    return doStrategy(theveninScreens, immediately);
 }
 
-Strategy::statusType Program::runDeltaCharge()
+Strategy::statusType Program::runDeltaCharge(bool immediately = false)
 {
     DeltaChargeStrategy::setTestTV(settings.externT_, true);
     Strategy::strategy_ = &DeltaChargeStrategy::vtable;
-    return doStrategy(deltaChargeScreens);
+    return doStrategy(deltaChargeScreens, immediately);
 }
 
-Strategy::statusType Program::runDischarge()
+Strategy::statusType Program::runDischarge(bool immediately = false)
 {
     AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
     Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
     TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
     Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-    return doStrategy(dischargeScreens);
+    return doStrategy(dischargeScreens, immediately);
 }
 
-Strategy::statusType Program::runNiXXDischarge()
+Strategy::statusType Program::runNiXXDischarge(bool immediately = false)
 {
     TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
     Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-    return doStrategy(NiXXDischargeScreens);
+    return doStrategy(NiXXDischargeScreens, immediately);
 }
 
 Strategy::statusType Program::runWasteTime()
 {    
     DelayStrategy::setDelay(settings.WasteTime_);
     Strategy::strategy_ = &DelayStrategy::vtable;
-    return doStrategy(theveninScreens, true);	
+    return doStrategy(dischargeScreens, true);	
 }
 
 
@@ -230,59 +232,43 @@ Strategy::statusType Program::runLiXXDCcycleLiXX()
     
     for(tempCDcycles_=1; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
 
-          //dc
+          //discharge
           AnalogInputs::resetAccumulatedMeasurements();
           cycleMode='D';
-          AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
-          Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
-          TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
-          Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-          status= doStrategy(theveninScreens, true);
+          status = runDischarge(true);
           if(status != Strategy::COMPLETE) {break;} 
+ 
+          //waiting after discharge
           status = Strategy::RUNNING;
-       
-          //waiting
           cycleMode='W';
-          if(runWasteTime() != Strategy::COMPLETE) { break; }
-          status = Strategy::RUNNING;
-          
+          if(runWasteTime() != Strategy::COMPLETE) { break; }   
           
           //charge
+          status = Strategy::RUNNING;
           Screen::resetETA();
           AnalogInputs::resetAccumulatedMeasurements();
           cycleMode='C';
+              
+          //lastcharge? (no need wait at end?)
+          if (tempCDcycles_ != settings.CDcycles_)
+           {
+              status =  runTheveninChargeBalance(true);
+           } 
+           else 
+           {
+              status =  runTheveninChargeBalance();  //normal exit point
+           }  
+           if(status != Strategy::COMPLETE) {break;} 
           
-          
-          TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
-            ProgramData::currentProgramData.battery.Ic, true);
-          Strategy::strategy_ = &TheveninChargeStrategy::vtable;
-         
-            //lastcharge
-            if (tempCDcycles_ != settings.CDcycles_)
-             {
-                status = doStrategy(theveninScreens,true);
-             } 
-             else 
-             {
-                status = doStrategy(theveninScreens);
-             }  
-         
-         
-          if(status != Strategy::COMPLETE) {break;} 
+     
           status = Strategy::RUNNING;
-          
-          
-         //no lastwait
-         if (tempCDcycles_ != settings.CDcycles_)
-       {
-          status = Strategy::RUNNING;
+          //waiting after charge
           cycleMode='W';
-           status = runWasteTime();
-          if(status != Strategy::COMPLETE) { break; }
-       } else
-       {
-        status = Strategy::COMPLETE;
-       }
+          if (tempCDcycles_ != settings.CDcycles_)
+           {
+            if(runWasteTime() != Strategy::COMPLETE) { break; }
+            else {status = Strategy::COMPLETE;}
+          }
           
     } 
     return status;
@@ -297,58 +283,48 @@ Strategy::statusType Program::runNiXXDCcycleNiXX()
     
     for(tempCDcycles_=1; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
     
-           //dc
+          //discharge
           AnalogInputs::resetAccumulatedMeasurements();
           cycleMode='D';
-          TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-	        Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-          status= doStrategy(NiXXDischargeScreens, true);
+          status = runNiXXDischarge(true);
           if(status != Strategy::COMPLETE) {break;} 
+
+          //waiting after discharge
           status = Strategy::RUNNING;
-          
-          //waiting
           cycleMode='W';
-          if(runWasteTime() != Strategy::COMPLETE) { break; }
-          status = Strategy::RUNNING;
+          if(runWasteTime() != Strategy::COMPLETE) { break; }   
           
-           //charge
+          //charge
+          status = Strategy::RUNNING;
           Screen::resetETA();
           AnalogInputs::resetAccumulatedMeasurements();
           cycleMode='C';
+              
+          //lastcharge? (no need wait at end?)
+          if (tempCDcycles_ != settings.CDcycles_)
+           {
+              status =  runDeltaCharge(true);
+           } 
+           else 
+           {
+              status =  runDeltaCharge();  //normal exit point
+           }  
+           if(status != Strategy::COMPLETE) {break;} 
           
-          DeltaChargeStrategy::setTestTV(settings.externT_, true);
-          Strategy::strategy_ = &DeltaChargeStrategy::vtable;
-          status = doStrategy(deltaChargeScreens,true);
-          
-          
-            //lastcharge
-            if (tempCDcycles_ != settings.CDcycles_)
-             {
-                status = doStrategy(deltaChargeScreens,true);
-             } 
-             else 
-             {
-                status = doStrategy(deltaChargeScreens);
-             }  
-             
-             if(status != Strategy::COMPLETE) {break;} 
+     
           status = Strategy::RUNNING;
-
-        
-	    //no lastwait
-         if (tempCDcycles_ != settings.CDcycles_)
-       {
-          status = Strategy::RUNNING;
+          //waiting after charge
           cycleMode='W';
-           status = runWasteTime();
-          if(status != Strategy::COMPLETE) { break; }
-       } else
-       {
-        status = Strategy::COMPLETE;
-       }
+          if (tempCDcycles_ != settings.CDcycles_)
+          {
+            if(runWasteTime() != Strategy::COMPLETE) { break; }
+            else {status = Strategy::COMPLETE;}
+          }
           
     } 
     return status;
+
+
 
 }
 //************************************************************************

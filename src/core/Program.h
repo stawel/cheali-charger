@@ -50,8 +50,8 @@ public:
 
     static Strategy::statusType runStorage(bool balance);
     static Strategy::statusType runTheveninCharge(int minChargeC);
-    static Strategy::statusType runDischarge();
-    static Strategy::statusType runNiXXDischarge();
+    static Strategy::statusType runDischarge(bool immediately);
+    static Strategy::statusType runNiXXDischarge(bool immediately);
     static Strategy::statusType runWasteTime();
     
     static Strategy::statusType runLiXXDCcycleLiXX();    
@@ -59,9 +59,9 @@ public:
     static uint8_t currentCycle();
     static char currentCycleMode();
 
-    static Strategy::statusType runTheveninChargeBalance();
+    static Strategy::statusType runTheveninChargeBalance( bool immediately);
     static Strategy::statusType runBalance();
-    static Strategy::statusType runDeltaCharge();
+    static Strategy::statusType runDeltaCharge( bool immediately);
 };
 
 
