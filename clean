@@ -15,3 +15,6 @@ find -iname '*.hex' -not -name 'cheali-charger-*.hex' -exec rm -rf {} \+
 #find -iname '*.hex'  -exec rm -rf {} \+
 find -iname '*.bak'  -exec rm -rf {} \+
 
+find src/hardware/*/*.hex -delete
+
+
