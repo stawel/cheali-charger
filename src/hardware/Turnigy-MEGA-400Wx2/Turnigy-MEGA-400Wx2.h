@@ -27,7 +27,6 @@
 #define MAX_DISCHARGE_P         ANALOG_WATT(25.000)               //25W
 #define MAX_DISCHARGE_I         ANALOG_AMP(5.000)   //5A
 
-
 #define SMPS_UPPERBOUND_VALUE               8192
 #define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/16)
 #define DISCHARGER_UPPERBOUND_VALUE         8192

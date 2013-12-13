@@ -94,9 +94,9 @@ const AnalogInputs::Name voltageName2[] PROGMEM = {
        AnalogInputs::Vb6_pin,
 };
 
-const char cI0[] PROGMEM = "50mA";
-const char cI1[] PROGMEM = "1000mA";
-const char cID1[] PROGMEM = "300mA";
+const char cI0[] PROGMEM = SPMS_DISCHARGER_P0_TEXT;
+const char cI1[] PROGMEM = SPMS_P1_TEXT;
+const char cID1[] PROGMEM = DISCHARGER_P1_TEXT;
 
 const char * const chargeIMenu[] PROGMEM = { cI0, cI1, NULL};
 const char * const dischargeIMenu[] PROGMEM = { cI0, cID1, NULL};
@@ -372,8 +372,8 @@ void calibrateIcharge()
     do {
         i = menu.runSimple();
         if(i<0) break;
-        if(i==0) current = ANALOG_AMP(0.050);
-        else     current = ANALOG_AMP(1.000);
+        if(i==0) current = SPMS_DISCHARGER_P0_POINT;
+        else     current = SPMS_P1_POINT;
         calibrateI(CCharger, i, current, AnalogInputs::Ismps, AnalogInputs::IsmpsValue);
     } while(true);
 }
@@ -386,8 +386,8 @@ void calibrateIdischarge()
     do {
         i = menu.runSimple();
         if(i<0) break;
-        if(i==0) current = ANALOG_AMP(0.050);
-        else     current = ANALOG_AMP(0.300);
+        if(i==0) current = SPMS_DISCHARGER_P0_POINT;
+        else     current = DISCHARGER_P1_POINT;
         calibrateI(CDischarger, i, current, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue);
     } while(true);
 }

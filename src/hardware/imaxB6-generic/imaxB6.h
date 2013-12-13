@@ -41,6 +41,15 @@
 // I not used external temp sensor
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
 
+#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.060) 
+#define DISCHARGER_P1_POINT          ANALOG_AMP(0.350) 
+#define SPMS_P1_POINT                ANALOG_AMP(1.000) 
+
+#define SPMS_DISCHARGER_P0_TEXT      "60mA" 
+#define DISCHARGER_P1_TEXT           "350mA" 
+#define SPMS_P1_TEXT                 "1A" 
+
+
 
 
 
