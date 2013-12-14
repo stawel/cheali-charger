@@ -30,9 +30,6 @@
 
 #define FOR_ALL_PHY_INPUTS(iterator) for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::PHYSICAL_INPUTS; iterator = AnalogInputs::Name(iterator + 1) )
 #define FOR_ALL_INPUTS(iterator)     for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::ALL_INPUTS;      iterator = AnalogInputs::Name(iterator + 1) )
- // #define FOR_ALL_PHY_INPUTS(iterator) for(AnalogInputs::Name iterator = AnalogInputs::Name(AnalogInputs::PHYSICAL_INPUTS - 1); iterator >=0 ; iterator = AnalogInputs::Name(iterator - 1) )
- // #define FOR_ALL_INPUTS(iterator)     for(AnalogInputs::Name iterator = AnalogInputs::Name(AnalogInputs::ALL_INPUTS - 1);      iterator >=0 ; iterator = AnalogInputs::Name(iterator - 1) )
-
 
 #define ANALOG_CELCIUS(x) ((AnalogInputs::ValueType)((x)*100))
 #define ANALOG_CHARGE(x) ((AnalogInputs::ValueType)((x)*1000))

@@ -26,6 +26,7 @@
 Settings settings;
 
 const Settings defaultSettings PROGMEM = {
+//TODO_NJ_DISABLES FOR EEPROM EDITOR
 #ifdef ENABLE_LCD_BACKLIGHT
         70,                 //backlight_
 #endif
@@ -47,7 +48,7 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_VOLT(0),     //dischargeOffset_LiXX_
         ANALOG_VOLT(0.008), //balancerError_
         Settings::Disabled, //UART_ - disabled
-        3                   //57600
+        0                   //9600
 };
 
 

@@ -47,7 +47,7 @@
 //#define KNIGHTRIDEREFFECT
 
 //use RAMCG battery icons for hitachi HD44780
-#define RAM_CG
+//#define RAM_CG
 
 
 

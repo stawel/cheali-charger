@@ -27,10 +27,18 @@
 #define MAX_DISCHARGE_P         ANALOG_WATT(25.000)   //25W
 #define MAX_DISCHARGE_I         ANALOG_AMP(5.000)   //5A
 
-#define SMPS_UPPERBOUND_VALUE               4096
+#define SMPS_UPPERBOUND_VALUE               8192
 #define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/8)
-#define DISCHARGER_UPPERBOUND_VALUE         4096
+#define DISCHARGER_UPPERBOUND_VALUE         8192
 #define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/14)
+
+#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.100) 
+#define DISCHARGER_P1_POINT          ANALOG_AMP(1.000) 
+#define SPMS_P1_POINT                ANALOG_AMP(2.000) 
+
+#define SPMS_DISCHARGER_P0_TEXT      "100mA" 
+#define DISCHARGER_P1_TEXT           "1A" 
+#define SPMS_P1_TEXT                 "2A" 
 
 //start warning-text
 //#define TESTINGALERT

@@ -32,6 +32,7 @@ struct Settings {
     static const uint8_t UARTSpeeds = 5;
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5);
     static const AnalogInputs::ValueType MaxDischargeOffset_LiXX = ANALOG_VOLT(1.000);
+//TODO_NJ_ for disable eeprom editor
 #ifdef ENABLE_LCD_BACKLIGHT
     uint16_t backlight_;
 #endif
