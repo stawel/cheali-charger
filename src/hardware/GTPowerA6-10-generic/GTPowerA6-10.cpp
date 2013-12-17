@@ -18,7 +18,7 @@
 #include "GTPowerA6-10-pins.h"
 #include "GTPowerA6-10.h"
 #include "adc.h"
-
+#include "Settings.h"
 
 void hardware::initialize()
 {
@@ -67,6 +67,8 @@ void hardware::beepLoud(uint16_t dur) //dur is milisec
      //only use the "program complete" status. Dont use charging status.
      // good param: 140/40
      
+     if (!settings.AudioBeep_) return;
+     
      for( dur <= dur; dur--;) {
        digitalWrite(BUZZER_PIN,HIGH);
       delayMicroseconds(140);
@@ -93,6 +95,7 @@ void hardware::setFan(bool enable)
 }
 void hardware::setBuzzer(uint16_t val)
 {
+    if (!settings.AudioBeep_) return;
     analogWrite(BUZZER_PIN, val);
 }
 

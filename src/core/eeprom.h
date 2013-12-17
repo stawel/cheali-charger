@@ -22,16 +22,25 @@
 
 namespace eeprom {
 
+    
+
     struct Data {
+        
+        int  EEPROMidentification1;
+        int  EEPROMidentification2;
+
         int calibrationVersion;
-        AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS];
-
         int programDataVersion;
-        ProgramData programData[MAX_PROGRAMS];
-
         int settingVersion;
+        
+        AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS];
+        ProgramData programData[MAX_PROGRAMS];
         Settings setting;
+        
     };
     extern Data data;
     void restoreDefault(bool force = false);
+    void restoreDefaultAll();
+    void calibrationDisplaymessage(bool calib, bool force);
+    void resetDisplay();
 }

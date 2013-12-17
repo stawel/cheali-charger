@@ -457,7 +457,7 @@ namespace {
     const char fastCh_str[] PROGMEM = "fast charge";
     const char storag_str[] PROGMEM = "storage";
     const char stoBal_str[] PROGMEM = "storage+balanc";
-    const char dccycl_str[] PROGMEM = "D>C cycle";       
+    const char dccycl_str[] PROGMEM = "D>C format";       
     const char DCcycl_str[] PROGMEM = "D>C cycle";
     const char edBatt_str[] PROGMEM = "edit battery";
 

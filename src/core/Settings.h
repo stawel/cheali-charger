@@ -33,27 +33,29 @@ struct Settings {
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5);
     static const AnalogInputs::ValueType MaxDischargeOffset_LiXX = ANALOG_VOLT(1.000);
 //TODO_NJ_ for disable eeprom editor
-#ifdef ENABLE_LCD_BACKLIGHT
+//#ifdef ENABLE_LCD_BACKLIGHT
     uint16_t backlight_;
-#endif
-#ifdef ENABLE_FAN
+//#endif
+//#ifdef ENABLE_FAN
     AnalogInputs::ValueType fanTempOn_;
-#endif
-#ifdef ENABLE_T_INTERNAL
+//#endif
+//#ifdef ENABLE_T_INTERNAL
     AnalogInputs::ValueType dischargeTempOff_;
-#endif
+//#endif
     uint16_t externT_;
     AnalogInputs::ValueType externTCO_;
     AnalogInputs::ValueType deltaT_;
     AnalogInputs::ValueType deltaV_NiMH_, deltaV_NiCd_;
     uint16_t CDcycles_;
     uint16_t WasteTime_;
+    uint16_t AudioBeep_;
     uint16_t capCutoff_;
     AnalogInputs::ValueType inputVoltageLow_;
     AnalogInputs::ValueType dischargeOffset_LiXX_;
     AnalogInputs::ValueType balancerError_;
     uint16_t UART_;
     uint16_t UARTspeed_;
+    
 
     void edit();
     void check();

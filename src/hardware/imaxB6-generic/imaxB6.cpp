@@ -20,6 +20,7 @@
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
 #include "adc.h"
+#include "Settings.h"
 
 
 uint8_t hardware::getKeyPressed()
@@ -75,7 +76,7 @@ void hardware::initialize()
 
 void hardware::beepLoud(uint16_t dur) //dur is milisec
 {
-     
+     if (!settings.AudioBeep_) return;
      //only use the "program complete" status. Dont use charging status.
      // good param: 140/40
      
@@ -99,6 +100,8 @@ namespace {
 }
 void hardware::soundInterrupt()
 {
+    
+    
     static uint8_t on = 0;
 
     uint8_t f = 0;
@@ -111,6 +114,7 @@ void hardware::soundInterrupt()
     if(sound >= 20) f=4;
     if(sound >= 30) f=2;
 
+    if (!settings.AudioBeep_) return;
     digitalWrite(BUZZER_PIN, on&f);
 }
 

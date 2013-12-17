@@ -56,6 +56,7 @@ namespace AnalogInputs {
 } // namespace AnalogInputs
 
 
+
 void AnalogInputs::restoreDefault()
 {
     CalibrationPoint p;

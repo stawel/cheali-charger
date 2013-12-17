@@ -27,15 +27,15 @@ Settings settings;
 
 const Settings defaultSettings PROGMEM = {
 //TODO_NJ_DISABLES FOR EEPROM EDITOR
-#ifdef ENABLE_LCD_BACKLIGHT
+//#ifdef ENABLE_LCD_BACKLIGHT
         70,                 //backlight_
-#endif
-#ifdef ENABLE_FAN
+//#endif
+//#ifdef ENABLE_FAN
         ANALOG_CELCIUS(50), //fanTempOn_
-#endif
-#ifdef ENABLE_T_INTERNAL
+//#endif
+//#ifdef ENABLE_T_INTERNAL
         ANALOG_CELCIUS(60), //dischargeTempOff_
-#endif
+//#endif
         DEFAULT_SETTINGS_EXTERNAL_T, //externT_
         ANALOG_CELCIUS(60), //externTCO_
         ANALOG_CELCIUS(1),  //deltaT_
@@ -43,12 +43,14 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_VOLT(0.012), //deltaV_NiCd_
         5,                  //CDcycles_
         30,                 //WasteTime_
+        1,                  //AudioBeep_ yes/no
         120,                //"%" capCutoff_
         ANALOG_VOLT(7),     //inputVoltageLow_
         ANALOG_VOLT(0),     //dischargeOffset_LiXX_
         ANALOG_VOLT(0.008), //balancerError_
         Settings::Disabled, //UART_ - disabled
         0                   //9600
+        
 };
 
 

@@ -33,33 +33,66 @@ namespace eeprom {
         eeprom::write(adr, version);
         return true;
     }
+    
 
     void restoreDefault(bool force) {
         bool calib = false;
 
-        Screen::displayStrings(PSTR("reseting eeprom:"),
-                               PSTR("v: " CHEALI_CHARGER_EPPROM_VERSION_STRING " "));
-
+        
+        
+        if(testWriteVersion( &data.EEPROMidentification1, 67) || force)  {  //C char
+            calib = force = true;
+            restoreDefaultAll();
+        }
+        if(testWriteVersion( &data.EEPROMidentification2, 72) || force)  {  // H char
+            calib = force = true;
+            restoreDefaultAll();
+        }
+        
         if(testWriteVersion(&data.calibrationVersion, CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION) || force)  {
-            lcdPrint_P(PSTR("c"));
             calib = force = true;
             AnalogInputs::restoreDefault();
         }
         if(testWriteVersion(&data.programDataVersion, CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION) || force)  {
-            lcdPrint_P(PSTR("d"));
             force = true;
             ProgramData::restoreDefault();
         }
         if(testWriteVersion(&data.settingVersion, CHEALI_CHARGER_EEPROM_SETTINGS_VERSION) || force)  {
-            lcdPrint_P(PSTR("s"));
             force = true;
             Settings::restoreDefault();
         }
 
+      calibrationDisplaymessage(calib, force);
+        
+    }
+
+
+
+void restoreDefaultAll()
+    {
+           resetDisplay();
+           AnalogInputs::restoreDefault();
+           ProgramData::restoreDefault();
+           Settings::restoreDefault();
+    }
+    
+    void calibrationDisplaymessage(bool calib, bool force)
+    {
         if(force)
+            resetDisplay();
             Timer::delay(2000);
 
         if(calib)
             Screen::runCalibrateBeforeUse();
+    
     }
+    
+    void resetDisplay()
+    {
+        Screen::displayStrings(PSTR("reseting eeprom:"),
+                               PSTR("v: " CHEALI_CHARGER_EPPROM_VERSION_STRING " "));
+        
+    }
+
+
 }

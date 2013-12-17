@@ -457,7 +457,7 @@ void Screen::displayDeltaFirst()
 void Screen::displayScreenCycles()
 {
    uint8_t c;
-   //multiscreen (5x2 cyclenumber, C/D, timeC/timeDC, mAhCh/mAhDC)
+   //multiscreen (5x2 cyclenumber, D/C, timeD/timeC, mAhDC/mAhC)
    toggleTextCounter++; if (toggleTextCounter>5) toggleTextCounter=0;
   
    if ( toggleTextCounter==5)

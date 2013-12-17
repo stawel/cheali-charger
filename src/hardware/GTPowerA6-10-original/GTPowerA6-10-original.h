@@ -44,13 +44,23 @@
 //#define TESTINGALERT
 
 //loudness programcomplete
-#define LOUDSOUND
+//#define LOUDSOUND
 
 //Lixx withoutbalancer
 #define CHARGE_LIXX_WITHOUT_BALANCER
 
 //prevent power supply
-#define MAX_CURRENT_RISING ANALOG_AMP(3.000)
+#define MAX_CURRENT_RISING ANALOG_AMP(2.000)
+
+
+//screenanimation
+//#define SCREENANIMATION
+
+//knightrider effect is ADC working
+//#define KNIGHTRIDEREFFECT
+
+//use RAMCG battery icons for hitachi HD44780
+#define RAM_CG
 
 
 #endif /* GTPOWERA610_ORIGINAL_H_ */
