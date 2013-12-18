@@ -127,10 +127,10 @@ go to: "options"->"calibrate":
   connect your ampere meter in series with the battery on the red wire! (+)  
   - go to: "50mA"  
     press "Inc", "Dec" buttons until the amperemeter shows 50mA  
-    press "start" button for a few seconds  
+    press "start" button  
   - go to: "1000mA"  
     press "Inc", "Dec" buttons until the amperemeter shows 1000mA  
-    press "start" button for a few seconds  
+    press "start" button  
     WARNING: the battery will be charged with high current!
 - discharge current calibration: go to "I discharge"  
     Repeat the same steps as before  
