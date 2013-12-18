@@ -23,18 +23,16 @@
 #include "Monitor.h"
 #include "eeprom.h"
 
+#ifndef DEFAULT_SETTINGS_EXTERNAL_T
+#define DEFAULT_SETTINGS_EXTERNAL_T 1
+#endif
+
 Settings settings;
 
 const Settings defaultSettings PROGMEM = {
-#ifdef ENABLE_LCD_BACKLIGHT
         70,                 //backlight_
-#endif
-#ifdef ENABLE_FAN
         ANALOG_CELCIUS(50), //fanTempOn_
-#endif
-#ifdef ENABLE_T_INTERNAL
         ANALOG_CELCIUS(60), //dischargeTempOff_
-#endif
         DEFAULT_SETTINGS_EXTERNAL_T, //externT_
         ANALOG_CELCIUS(60), //externTCO_
         ANALOG_CELCIUS(1),  //deltaT_

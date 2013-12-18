@@ -18,7 +18,7 @@
 #ifndef ANALOGINPUTS_H_
 #define ANALOGINPUTS_H_
 
-#include <Arduino.h>
+#include <inttypes.h>
 
 #define MAX_CALIBRATION_POINTS 2
 #define DELTA_TIME_MILISECONDS 60000

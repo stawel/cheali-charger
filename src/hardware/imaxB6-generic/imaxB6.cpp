@@ -15,6 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <Arduino.h>
 #include "imaxB6.h"
 #include "TimerOne.h"
 #include "imaxB6-pins.h"

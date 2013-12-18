@@ -17,14 +17,16 @@
 */
 
 #include <avr/interrupt.h>
+#include <avr/io.h>
+#include <util/atomic.h>
+#include <Arduino.h>
+
 #include "Hardware.h"
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
 #include "adc.h"
 #include "Utils.h"
 #include "memory.h"
-#include <avr/io.h>
-#include <util/atomic.h>
 #include "Settings.h"
 
 

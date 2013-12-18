@@ -15,7 +15,7 @@ Program:   29296 bytes
 Data:       1084 bytes
 (.data + .bss + .noinit)
 
-EEPROM:      908 bytes
+EEPROM:      912 bytes
 (.eeprom)
 
 
