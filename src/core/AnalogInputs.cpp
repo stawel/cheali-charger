@@ -96,7 +96,7 @@ bool AnalogInputs::isConnected(Name name)
     case Current:
         return x > ANALOG_AMP(0.050);
     case Voltage:
-        return x > ANALOG_VOLT(1);
+        return x > ANALOG_VOLT(0.6);
     default:
         return true;
     }
