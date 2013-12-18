@@ -62,12 +62,12 @@ uint32_t Settings::getUARTspeed() const {
 }
 
 void Settings::load() {
-    eeprom::read(settings, &eeprom::data.setting);
+    eeprom::read(settings, &eeprom::data.settings);
     settings.apply();
 }
 
 void Settings::save() {
-    eeprom::write(&eeprom::data.setting, settings);
+    eeprom::write(&eeprom::data.settings, settings);
     settings.apply();
 }
 

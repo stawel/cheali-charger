@@ -31,7 +31,7 @@ namespace eeprom {
 
         AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS];
         ProgramData programData[MAX_PROGRAMS];
-        Settings setting;
+        Settings settings;
     };
     extern Data data;
     void restoreDefault(bool force = false);
