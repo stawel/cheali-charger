@@ -173,8 +173,6 @@ If the measured resistance is much more than 1k Ohm you can proceed as follows:
 
 Troubleshooting
 ---------------
-- After flashing charger doesn't work:
-  - set the atmega fuses to: lfuse=0xde, hfuse=0xd7 and reflash the device.
 
 
 Mailing list
