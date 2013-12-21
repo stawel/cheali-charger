@@ -149,7 +149,7 @@ BE AWARE THAT ON SOME CHARGERS THIS CAN BE DANGEROUS!!!
 First check if you can safely proceed by using the following test:
 
 - disconnect everything from the charger
-- measure the resistance between the BLACK battery terminal and Pin "-" on the balance port  
+- measure the resistance between the BLACK battery terminal and Pin "0" on the balance port  
   (this is the furthest pin from the battery terminals and is  
   common to all the balance port connectors - it is also the most negative terminal of the battery)
 - if the resistance is very low (less than 1k Ohm) STOP THIS PROCEDURE!
@@ -159,13 +159,13 @@ If the measured resistance is much more than 1k Ohm you can proceed as follows:
 - connect the power supply to the ImaxB6 and go to "options" -> "calibrate" -> "expert DANGER!"
 - connect a 1.5V battery and a resistor (1k Ohm to 10kOhm) in the following manner:  
   BLACK battery terminal of ImaxB6 to one end of the resistor, the other end of the resistor  
-  to the negative pole of the battery, and the positive pole of the battery to Pin "-" (as above) on the balance port
-- with a multimeter measure the voltage between the BLACK battery terminal of ImaxB6 and Pin "-" on the balance port.
+  to the negative pole of the battery, and the positive pole of the battery to Pin "0" (as above) on the balance port
+- with a multimeter measure the voltage between the BLACK battery terminal of ImaxB6 and Pin "0" on the balance port.
   Adjust "Vb0pin" to this value using the inc/dec buttons
 - disconnect the 1.5V battery
 - connect a 2-cell (or more) LiPo or LiIon battery to the charger  
   (connecting both the main battery terminals and the balance port connections)
-- measure the voltage between the BLACK battery terminal and Pin "1" (next to pin "-") on the balance port,  
+- measure the voltage between the BLACK battery terminal and Pin "1" (next to pin "0") on the balance port,  
   and set the appropriate values on "Vb1pin"
 - measure the voltage between the BLACK battery terminal and Pin "2" on the balance port, and set the appropriate values on "Vb2pin"
 - the Expert Calibration is now completed - now proceed with the normal calibration
