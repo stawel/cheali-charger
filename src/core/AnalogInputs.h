@@ -166,6 +166,7 @@ namespace AnalogInputs {
     uint16_t getFullMeasurementCount();
     void printRealValue(Name name, uint8_t dig);
     static Type getType(Name name);
+    void printData(Name name);
     uint16_t getStableCount(Name name);
     bool isStable(Name name);
     void resetStable();

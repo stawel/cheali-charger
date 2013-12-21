@@ -43,14 +43,16 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_VOLT(0.012), //deltaV_NiCd_
         5,                  //CDcycles_
         30,                 //WasteTime_
-        1,                  //AudioBeep_ yes/no
+        0,                  //AudioBeep_ yes/no
         120,                //"%" capCutoff_
         ANALOG_VOLT(7),     //inputVoltageLow_
         ANALOG_VOLT(0),     //dischargeOffset_LiXX_
         ANALOG_VOLT(0.008), //balancerError_
         Settings::Disabled, //UART_ - disabled
-        0                   //9600
-        
+        0,                   //9600
+        0,                   //calibratedState_
+        0,                   //SMPS_Upperbound_Value_
+        0                    //DISCHARGER_Upperbound_Value_
 };
 
 

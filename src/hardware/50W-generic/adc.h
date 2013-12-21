@@ -15,35 +15,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-//Switched-mode power supply
+#ifndef ADC_H_
+#define ADC_H_
 
-#ifndef SMPS_H_
-#define SMPS_H_
-
-#include "AnalogInputs.h"
-#include "Timer.h"
-
-namespace SMPS {
-    enum STATE { CHARGING, CHARGING_COMPLETE, ERROR, STOP};
-
+namespace adc
+{
     void initialize();
-
-    STATE getState();
-    bool isPowerOn();
-    bool isWorking();
-
-    uint16_t getValue();
-    void setValue(uint16_t value);
-    
-    uint16_t setSmoothI(uint16_t value, uint16_t value_);
-
-    void setRealValue(uint16_t I);
-    
-    void powerOn();
-    void powerOff(STATE reason = CHARGING_COMPLETE);
-
+    void reset();
+    void doMeasurement();
 };
 
-
-
-#endif /* SMPS_H_ */
+#endif /* ADC_H_ */

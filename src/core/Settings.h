@@ -55,7 +55,9 @@ struct Settings {
     AnalogInputs::ValueType balancerError_;
     uint16_t UART_;
     uint16_t UARTspeed_;
-    
+    uint16_t calibratedState_;
+    uint16_t SMPS_Upperbound_Value_;
+    uint16_t DISCHARGER_Upperbound_Value_;
 
     void edit();
     void check();

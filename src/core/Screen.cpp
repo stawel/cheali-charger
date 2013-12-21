@@ -418,7 +418,7 @@ void Screen::displayScreenProgramCompleted()
 
 void Screen::displayMonitorError()
 {
-    screenEnd(PSTR("Error"));
+    screenEnd(PSTR("Err."));
 }
 
 namespace {
@@ -437,7 +437,7 @@ namespace {
             lcdPrintChar('m');
             lcdPrintChar('C');
         } else {
-            lcdPrint_P(PSTR("not used"));
+            lcdPrint_P(PSTR("N/A"));
         }
         lcdPrintSpaces();
     }
@@ -580,7 +580,7 @@ void Screen::displayDeltaTextern()
     if(settings.externT_) {
         lcdPrintTemperature(AnalogInputs::deltaLastT_, 9);
     } else {
-        lcdPrint_P(PSTR("not used"));
+        lcdPrint_P(PSTR("N/A"));
     }
     lcdPrintSpaces();
 
@@ -605,7 +605,7 @@ void Screen::runNotImplemented()
 
 void Screen::runCalibrateBeforeUse()
 {
-    displayStrings(PSTR("please calibrate"), PSTR("before use"));
+    displayStrings(PSTR("please cal."),NULL);
     Timer::delay(5000);
 }
 
@@ -613,10 +613,10 @@ void Screen::runCalibrateBeforeUse()
 void Screen::displayScreenReversedPolarity()
 {
     lcdSetCursor0_0();
-    lcdPrint_P(PSTR("REVERSE POLARITY"));
+    lcdPrint_P(PSTR("REV. POLARITY"));
 }
 
-
+/*
 void Screen::displayWarningScreen()
 {
    hardware::delay(500);
@@ -629,13 +629,21 @@ void Screen::displayWarningScreen()
                            PSTR(" to Start/stop"));
     hardware::delay(900);                       
 }
+*/
 
 void Screen::displayCalibrationErrorScreen()
 {
 //                                 1234567890123456
-      Screen::displayStrings(PSTR("Calibration"),
-                             PSTR("ERROR"));
+      Screen::displayStrings(PSTR("Cal."),
+                             PSTR("ERR."));
       hardware::delay(8000);
+}
+
+void Screen::displayWaitScreen()
+{
+//                                 1234567890123456
+      displayStrings(PSTR("wait"),NULL);
+      hardware::delay(2000);
 }
 
 
@@ -737,13 +745,6 @@ uint16_t Screen::getETATime()
 
 void Screen::storeCycleHistoryInfo()
 {
-/*
-    uint16_t cyclesHistoryChCapacity[5] = {0,0,0,0,0};
-    uint16_t cyclesHistoryDcCapacity[5] = {0,0,0,0,0};
-    uint16_t cyclesHistoryChTime[5]       = {0,0,0,0,0};
-    uint16_t cyclesHistoryDcTime[5]       = {0,0,0,0,0};
-    char     cyclesHistoryMode[5]      = {'-','-','-','-','-'};  
-*/
    int8_t c=Program::currentCycle()-1;
    if (Program::currentCycleMode() == 'C')
    {

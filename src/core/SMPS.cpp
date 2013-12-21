@@ -21,8 +21,7 @@
 #include "LcdPrint.h"
 #include "Screen.h"
 
-//TODO_NJ for test
-//#include "Buzzer.h"
+#include "Settings.h"
 
 namespace SMPS {
     STATE state_;
@@ -50,9 +49,11 @@ void SMPS::initialize()
 
 void SMPS::setValue(uint16_t value)
 {
+    if (settings.calibratedState_ >= 7) //disable limit on calibrating.
+    {
+      if(value > settings.SMPS_Upperbound_Value_) value = settings.SMPS_Upperbound_Value_;     
+    }
     
-    if(value > SMPS_UPPERBOUND_VALUE)
-        value = SMPS_UPPERBOUND_VALUE;     
     value_ = SMPS::setSmoothI(value, value_);
     hardware::setChargerValue(value_);
     AnalogInputs::resetMeasurement();
@@ -69,7 +70,6 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
 //rising
   if ((newI > oldI) && ((newI-oldI) > MAX_CURRENT_RISING))
   {
-    //Buzzer::soundSelect();
     lcdClear();
     lcdSetCursor0_0();
     Screen::displayStrings(PSTR("Prevent P.Supply"), PSTR("SMPS up"));
@@ -87,7 +87,6 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
 //falling
   if ((oldI > newI) && ((oldI-newI) > MAX_CURRENT_RISING))
   {
-    //Buzzer::soundSelect();
     lcdClear();
     lcdSetCursor0_0();
     Screen::displayStrings(PSTR("Prevent P.Supply"), PSTR("SMPS down"));
@@ -117,6 +116,8 @@ void SMPS::setRealValue(uint16_t I)
     uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, I);
     setValue(value);
 }
+
+
 
 void SMPS::powerOn()
 {

@@ -44,9 +44,9 @@ uint8_t Keyboard::getPressed()
     return hardware::getKeyPressed();
 }
 
-static const uint16_t speedTable[]  PROGMEM = {1, 2, 4, 16, 64, 256, 1024};//, 4096, 16384, 65535};
-static const uint16_t thisSpeedT[]  PROGMEM = {1, 3, 8,  7,  7,  20,    7};//,    7,     7,     7};
-static const uint16_t speedFactor[] PROGMEM = {1, 1, 1,  1,  1,  10,  100};//,   16,    64,   256};
+static const uint16_t speedTable[]  PROGMEM = {1, 2, 4, 6, 8, 10, 12};//, 4096, 16384, 65535};
+static const uint16_t thisSpeedT[]  PROGMEM = {1, 3, 8, 9,10, 11, 12};//,    7,     7,     7};
+static const uint16_t speedFactor[] PROGMEM = {1, 1, 1, 1, 1,  2,  5};//,   16,    64,   256};
 
 uint16_t Keyboard::getSpeedFactor()
 {

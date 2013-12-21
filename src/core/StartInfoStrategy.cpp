@@ -86,7 +86,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
                         Program::programType_ == Program::FastChargeLiXX ||
                         Program::programType_ == Program::StorageLiXX) 
                    {                      
-                      Screen::displayWarningScreen();
+                      //Screen::displayWarningScreen();
                       Buzzer::soundInfo();
                       //without balancer
                       cell_nr =   false;
