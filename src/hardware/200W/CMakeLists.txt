@@ -1,4 +1,4 @@
-set(hardware 200W-original)
+set(hardware 200W)
 
 set(SOURCE_FILES
     defaultCalibration.cpp

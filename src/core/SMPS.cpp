@@ -63,49 +63,53 @@ void SMPS::setValue(uint16_t value)
 uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
 {
 #ifdef MAX_CURRENT_RISING 
-  oldI = calibrateValue(AnalogInputs::IsmpsValue, oldValue);
-  stepValue = (AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, MAX_CURRENT_RISING))/2;
-  newI = calibrateValue(AnalogInputs::IsmpsValue, value);
-  
-//rising
-  if ((newI > oldI) && ((newI-oldI) > MAX_CURRENT_RISING))
-  {
-    lcdClear();
-    lcdSetCursor0_0();
-    Screen::displayStrings(PSTR("Prevent P.Supply"), PSTR("SMPS up"));
-    for(uint16_t i=oldValue; i <= value; i=i+stepValue){
-         if (i> value) //safety
-         {
-           i=value; 
-         }
-         hardware::setChargerValue(i);
-         hardware::delay(500);
-    }
-    AnalogInputs::isOutStable();     
+ if (settings.calibratedState_ >= 7) //disabled on calibrating.
+    {
+
+
+            oldI = calibrateValue(AnalogInputs::IsmpsValue, oldValue);
+            stepValue = (AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, MAX_CURRENT_RISING))/2;
+            newI = calibrateValue(AnalogInputs::IsmpsValue, value);
+            
+          //rising
+            if ((newI > oldI) && ((newI-oldI) > MAX_CURRENT_RISING))
+            {
+              lcdClear();
+              lcdSetCursor0_0();
+              Screen::displayStrings(PSTR("Prevent P.Supply"), PSTR("SMPS up"));
+              for(uint16_t i=oldValue; i <= value; i=i+stepValue){
+                   if (i> value) //safety
+                   {
+                     i=value; 
+                   }
+                   hardware::setChargerValue(i);
+                   hardware::delay(500);
+              }
+              AnalogInputs::isOutStable();     
+            }
+            
+          //falling
+            if ((oldI > newI) && ((oldI-newI) > MAX_CURRENT_RISING))
+            {
+              lcdClear();
+              lcdSetCursor0_0();
+              Screen::displayStrings(PSTR("Prevent P.Supply"), PSTR("SMPS down"));
+              for(uint16_t i=value; i <= oldValue; i=i+stepValue){
+                   if (i> oldValue)   //safety
+                   {
+                     i=oldValue;  
+                   } 
+                   hardware::setChargerValue(oldValue-i);
+                   hardware::delay(500);
+              }
+              AnalogInputs::isOutStable();     
+            }
+
   }
-  
-//falling
-  if ((oldI > newI) && ((oldI-newI) > MAX_CURRENT_RISING))
-  {
-    lcdClear();
-    lcdSetCursor0_0();
-    Screen::displayStrings(PSTR("Prevent P.Supply"), PSTR("SMPS down"));
-    for(uint16_t i=value; i <= oldValue; i=i+stepValue){
-         if (i> oldValue)   //safety
-         {
-           i=oldValue;  
-         } 
-         hardware::setChargerValue(oldValue-i);
-         hardware::delay(500);
-    }
-    AnalogInputs::isOutStable();     
-  }
 
 
-
-
-  
-#endif 
+            
+          #endif 
   return value;
 }
 
