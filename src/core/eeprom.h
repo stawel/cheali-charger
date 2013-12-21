@@ -20,23 +20,20 @@
 #include "ProgramData.h"
 #include "Settings.h"
 
+//#define MAGIC_STRING_LEN 4
+
+
 namespace eeprom {
-
-    
-
     struct Data {
-        
         int  EEPROMidentification1;
         int  EEPROMidentification2;
-
         int calibrationVersion;
         int programDataVersion;
         int settingVersion;
-        
+
         AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS];
         ProgramData programData[MAX_PROGRAMS];
-        Settings setting;
-        
+        Settings settings;
     };
     extern Data data;
     void restoreDefault(bool force = false);

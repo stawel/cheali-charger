@@ -18,6 +18,7 @@
 
 #define __STDC_LIMIT_MACROS
 #include <stdint.h>
+#include <Arduino.h>
 
 #include "Thevenin.h"
 #include "Utils.h"

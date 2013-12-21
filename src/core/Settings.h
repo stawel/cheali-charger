@@ -20,11 +20,7 @@
 
 #include <inttypes.h>
 #include "AnalogInputs.h"
-#include "Hardware.h"
 
-#ifndef DEFAULT_SETTINGS_EXTERNAL_T
-#define DEFAULT_SETTINGS_EXTERNAL_T 1
-#endif
 
 struct Settings {
 
@@ -32,16 +28,9 @@ struct Settings {
     static const uint8_t UARTSpeeds = 5;
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5);
     static const AnalogInputs::ValueType MaxDischargeOffset_LiXX = ANALOG_VOLT(1.000);
-//TODO_NJ_ for disable eeprom editor
-//#ifdef ENABLE_LCD_BACKLIGHT
     uint16_t backlight_;
-//#endif
-//#ifdef ENABLE_FAN
     AnalogInputs::ValueType fanTempOn_;
-//#endif
-//#ifdef ENABLE_T_INTERNAL
     AnalogInputs::ValueType dischargeTempOff_;
-//#endif
     uint16_t externT_;
     AnalogInputs::ValueType externTCO_;
     AnalogInputs::ValueType deltaT_;

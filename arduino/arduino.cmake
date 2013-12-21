@@ -4,7 +4,7 @@ SET(CMAKE_C_COMPILER avr-gcc)
 SET(CMAKE_CXX_COMPILER avr-g++)
 
 SET(CSTANDARD "-std=gnu99")
-SET(CDEBUG "-gstabs")
+SET(CDEBUG "-g -gdwarf-2")
 SET(CWARN "-Wall")
 SET(CTUNING "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums")
 SET(COPT "-Os")
@@ -18,7 +18,7 @@ SET(CXXEXTRA "-DARDUINO=100 -ffunction-sections -fdata-sections -fno-exceptions"
 
 
 SET(CFLAGS "${CMCU} ${CDEBUG} ${CDEFS} ${CINCS} ${COPT} ${CWARN} ${CSTANDARD} ${CTUNING} ${CEXTRA} ${CXXEXTRA}")
-SET(CXXFLAGS "${CMCU} ${CDEFS} ${CINCS} ${COPT} ${CXXEXTRA} ${CTUNING}")
+SET(CXXFLAGS "${CMCU} ${CDEBUG} ${CDEFS} ${CINCS} ${COPT} ${CXXEXTRA} ${CTUNING}")
 
 SET(CMAKE_C_FLAGS  ${CFLAGS})
 SET(CMAKE_CXX_FLAGS ${CXXFLAGS})

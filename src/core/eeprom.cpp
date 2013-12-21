@@ -18,6 +18,7 @@
 
 #include "AnalogInputs.h"
 #include "ProgramData.h"
+#include "Hardware.h"
 #include "Settings.h"
 #include "memory.h"
 #include "Version.h"

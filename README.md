@@ -147,10 +147,10 @@ go to: "options"->"calibrate":
   connect your ampere meter in series with the battery on the red wire! (+)  
   - go to: "50mA"  
     press "Inc", "Dec" buttons until the amperemeter shows 50mA  
-    press "start" button for a few seconds  
+    press "start" button  
   - go to: "1000mA"  
     press "Inc", "Dec" buttons until the amperemeter shows 1000mA  
-    press "start" button for a few seconds  
+    press "start" button  
     WARNING: the battery will be charged with high current!
 - discharge current calibration: go to "I discharge"  
     Repeat the same steps as before  
@@ -162,26 +162,37 @@ Done.
 
 Calibration - Expert (IMAX B6)
 -----------
-If you think that the accuracy on the first two cells is not satisfying,  
-you can try to calibrate the voltage on the first three pins on the balance port.  
-(be aware that on some chargers this can be dangerous)
+If you want to improve the accuracy of the balancing on the first two cells you can try  
+to calibrate the voltage on the first three pins of the balance port.
+BE AWARE THAT ON SOME CHARGERS THIS CAN BE DANGEROUS!!!
+
+First check if you can safely proceed by using the following test:
+
 - disconnect everything from the charger
-- measure the resistance between the BLACK battery plug and the first pin on the balance port
-  - if the resistance is very low (<1k Ohm), stop this procedure!
-- connect the power supply, and go to "options"->"calibrate"->"expert DANGER!"
-- connect a 1.5V battery through a 1k-10k Ohm resistor to the BLACK battery plug (-) and the first pin on the balance port (+).
-- measure the voltage between the BLACK battery plug and the first pin on the balance port
-  and set the appropriate value on: "Vb0pin"
-- disconnect the battery.
-- connect a 2-cell (or more) LiPo battery.
-- measure the voltage between the BLACK battery plug and the second and third pin on the balance port
-  and set the appropriate value on: "Vb1pin" and "Vb2pin"
-- Done - after that You should proceed with the normal calibration.
+- measure the resistance between the BLACK battery terminal and Pin "-" on the balance port  
+  (this is the furthest pin from the battery terminals and is  
+  common to all the balance port connectors - it is also the most negative terminal of the battery)
+- if the resistance is very low (less than 1k Ohm) STOP THIS PROCEDURE!
+
+If the measured resistance is much more than 1k Ohm you can proceed as follows:
+
+- connect the power supply to the ImaxB6 and go to "options" -> "calibrate" -> "expert DANGER!"
+- connect a 1.5V battery and a resistor (1k Ohm to 10kOhm) in the following manner:  
+  BLACK battery terminal of ImaxB6 to one end of the resistor, the other end of the resistor  
+  to the negative pole of the battery, and the positive pole of the battery to Pin "-" (as above) on the balance port
+- with a multimeter measure the voltage between the BLACK battery terminal of ImaxB6 and Pin "-" on the balance port.
+  Adjust "Vb0pin" to this value using the inc/dec buttons
+- disconnect the 1.5V battery
+- connect a 2-cell (or more) LiPo or LiIon battery to the charger  
+  (connecting both the main battery terminals and the balance port connections)
+- measure the voltage between the BLACK battery terminal and Pin "1" (next to pin "-") on the balance port,  
+  and set the appropriate values on "Vb1pin"
+- measure the voltage between the BLACK battery terminal and Pin "2" on the balance port, and set the appropriate values on "Vb2pin"
+- the Expert Calibration is now completed - now proceed with the normal calibration
+
 
 Troubleshooting
 ---------------
-- After flashing charger doesn't work:
-  - set the atmega fuses to: lfuse=0xde, hfuse=0xd7 and reflash the device.
 
 
 Mailing list

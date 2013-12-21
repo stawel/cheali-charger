@@ -5,7 +5,7 @@ set(SOURCE_FILES
     Hardware.h
 )
 
-include(${CMAKE_SOURCE_DIR}/src/hardware/imaxB6-generic/CMakeLists.txt)
+include(${CMAKE_SOURCE_DIR}/src/hardware/50W-generic/CMakeLists.txt)
 
 
 
