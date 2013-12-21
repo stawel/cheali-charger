@@ -283,7 +283,7 @@ void calibrateVoltage()
                 if(v.runEdit(index))
                     saveVoltage(index, true, Vinput,pgm::read(&voltageName2[index]));
                     //save calib status
-                   settings.calibratedState_ = settings.calibratedState_ | 1;  Settings::save();
+                   settings.calibratedState_ |= 1;  Settings::save();
                 AnalogInputs::on_ = true;
             }
         } while(true);
@@ -310,6 +310,7 @@ void printCalibrate()
 
 bool calibrateI(calibrateType p)
 {
+    
     bool retu = false;
     bool released = false;
     value_ = 0;
@@ -318,9 +319,9 @@ bool calibrateI(calibrateType p)
     AnalogInputs::ValueType maxValue = 65535;
 
     if(p == CCharger){
-        SMPS::powerOn();
+        SMPS::powerOn(); settings.calibratedState_   &= ~(1 << 1);  //relase calibrationlimit
     } else {
-        Discharger::powerOn();
+        Discharger::powerOn();settings.calibratedState_   &= ~(1 << 2); //relase calibrationlimit
     }
 
    // if(testVout()) {
@@ -395,6 +396,7 @@ void calibrateIcharge()
 
 void calibrateIdischarge()
 {
+
     StaticMenu menu(dischargeIMenu);
     int8_t i;
     AnalogInputs::ValueType current;
