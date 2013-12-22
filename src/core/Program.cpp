@@ -395,7 +395,7 @@ Program::ProgramState getProgramState(Program::ProgramType prog)
 
 void Program::run(ProgramType prog)
 {
-    if (settings.calibratedState_ < 7) return;
+    if (settings.calibratedState_ < 7) {Screen::runCalibrateBeforeUse; return;}
     
     programType_ = prog;
     stopReason_ = PSTR("");
