@@ -18,7 +18,7 @@
 #ifndef imaxB6_Chalus_Bo_mod_H_
 #define imaxB6_Chalus_Bo_mod_H_
 
-#include "imaxB6.h"
+#include "imaxB6-claus-bo-mod.h"
 
 #define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
 #define MAX_CHARGE_I            ANALOG_AMP(25.000)

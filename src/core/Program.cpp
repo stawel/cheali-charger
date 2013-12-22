@@ -146,6 +146,7 @@ namespace {
 
     uint8_t tempCDcycles_ = 0;
     char cycleMode='-';
+    
 
 } //namespace {
 
@@ -226,7 +227,9 @@ uint8_t Program::currentCycle() { return tempCDcycles_;}
 
 char Program::currentCycleMode() { return cycleMode;}
 
-Strategy::statusType Program::runLiXXDCcycleLiXX()
+
+//optimized cycle
+Strategy::statusType Program::runDCcycle(bool prog1)
 { //TODO_NJ
     Strategy::statusType status;
     
@@ -235,7 +238,7 @@ Strategy::statusType Program::runLiXXDCcycleLiXX()
           //discharge
           AnalogInputs::resetAccumulatedMeasurements();
           cycleMode='D';
-          status = runDischarge(true);
+          status = runCycleDischargeCommon(prog1);
           if(status != Strategy::COMPLETE) {break;} 
  
           //waiting after discharge
@@ -252,11 +255,11 @@ Strategy::statusType Program::runLiXXDCcycleLiXX()
           //lastcharge? (no need wait at end?)
           if (tempCDcycles_ != settings.CDcycles_)
            {
-              status =  runTheveninChargeBalance(true);
+              status = runCycleChargeCommon(prog1, true);
            } 
            else 
            {
-              status =  runTheveninChargeBalance();  //normal exit point
+              status = runCycleChargeCommon(prog1, false);
            }  
            if(status != Strategy::COMPLETE) {break;} 
           
@@ -276,58 +279,69 @@ Strategy::statusType Program::runLiXXDCcycleLiXX()
 }
 
 
+Strategy::statusType Program::runCycleDischargeCommon(bool prog1)
+{
+  Strategy::statusType status;
+  
+  if(prog1)  //1 is lixx
+  {
+    status = runDischarge(true);
+  }
+  else
+  {
+    status = runNiXXDischarge(true);
+  }
+  return status;
+}
 
-Strategy::statusType Program::runNiXXDCcycleNiXX()
-{  //TODO_NJ  Nixxdccycle 
-    Strategy::statusType status;
-    
-    for(tempCDcycles_=1; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
-    
-          //discharge
-          AnalogInputs::resetAccumulatedMeasurements();
-          cycleMode='D';
-          status = runNiXXDischarge(true);
-          if(status != Strategy::COMPLETE) {break;} 
-
-          //waiting after discharge
-          status = Strategy::RUNNING;
-          cycleMode='W';
-          if(runWasteTime() != Strategy::COMPLETE) { break; }   
-          
-          //charge
-          status = Strategy::RUNNING;
-          Screen::resetETA();
-          AnalogInputs::resetAccumulatedMeasurements();
-          cycleMode='C';
-              
+Strategy::statusType Program::runCycleChargeCommon(bool prog1, bool mode)
+{
+ Strategy::statusType status;
+ 
           //lastcharge? (no need wait at end?)
           if (tempCDcycles_ != settings.CDcycles_)
            {
-              status =  runDeltaCharge(true);
+
+              if(prog1)  //1 is lixx
+               {
+                 status =  runTheveninChargeBalance(mode); //independent exit
+               }
+               else
+               {
+                 status =  runDeltaCharge(mode);  //independent exit
+               }
            } 
            else 
            {
-              status =  runDeltaCharge();  //normal exit point
-           }  
-           if(status != Strategy::COMPLETE) {break;} 
-          
-     
-          status = Strategy::RUNNING;
-          //waiting after charge
-          cycleMode='W';
-          if (tempCDcycles_ != settings.CDcycles_)
-          {
-            if(runWasteTime() != Strategy::COMPLETE) { break; }
-            else {status = Strategy::COMPLETE;}
-          }
-          
-    } 
-    return status;
+              if(prog1)  //0 is nixx
+              {
+                 status = runTheveninChargeBalance();  //normal exit point
+              }
+              else
+              {
+                 status = runDeltaCharge();  //normal exit point
+              }           
 
+           }
 
-
+ return status;
 }
-//************************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -426,11 +440,11 @@ void Program::run(ProgramType prog)
             break;
            
         case Program::DCcycleLiXX:
-            runLiXXDCcycleLiXX();
+            runDCcycle(true);
             break;
           
         case Program::DCcycleNiXX:
-            runNiXXDCcycleNiXX();
+            runDCcycle(false);
             break;
             
         case Program::ChargeLiXX_Balance:

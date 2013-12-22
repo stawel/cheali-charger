@@ -54,8 +54,10 @@ public:
     static Strategy::statusType runNiXXDischarge(bool immediately);
     static Strategy::statusType runWasteTime();
     
-    static Strategy::statusType runLiXXDCcycleLiXX();    
-    static Strategy::statusType runNiXXDCcycleNiXX();
+    static Strategy::statusType runDCcycle(bool prog1);
+    static Strategy::statusType runCycleDischargeCommon(bool prog1); 
+    static Strategy::statusType runCycleChargeCommon(bool prog1, bool mode);  
+
     static uint8_t currentCycle();
     static char currentCycleMode();
 

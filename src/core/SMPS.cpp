@@ -76,7 +76,7 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
             {
               lcdClear();
               lcdSetCursor0_0();
-              Screen::displayStrings(PSTR("Prevent P.Supply"), PSTR("SMPS up"));
+              Screen::displayStrings(PSTR("SMPS up"), NULL);
               for(uint16_t i=oldValue; i <= value; i=i+stepValue){
                    if (i> value) //safety
                    {
@@ -85,7 +85,7 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
                    hardware::setChargerValue(i);
                    hardware::delay(500);
               }
-              AnalogInputs::isOutStable();     
+              AnalogInputs::isOutStable();    //resistance measure? 
             }
             
           //falling
@@ -93,7 +93,7 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
             {
               lcdClear();
               lcdSetCursor0_0();
-              Screen::displayStrings(PSTR("Prevent P.Supply"), PSTR("SMPS down"));
+              Screen::displayStrings(PSTR("SMPS down"), NULL);
               for(uint16_t i=value; i <= oldValue; i=i+stepValue){
                    if (i> oldValue)   //safety
                    {
@@ -102,7 +102,7 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
                    hardware::setChargerValue(oldValue-i);
                    hardware::delay(500);
               }
-              AnalogInputs::isOutStable();     
+              AnalogInputs::isOutStable();    //resistance measure? 
             }
 
   }
