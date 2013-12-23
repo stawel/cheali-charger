@@ -20,7 +20,11 @@
 
 #include <inttypes.h>
 #include "AnalogInputs.h"
+#include "Hardware.h"
 
+#ifndef DEFAULT_SETTINGS_EXTERNAL_T
+#define DEFAULT_SETTINGS_EXTERNAL_T 1
+#endif
 
 struct Settings {
 

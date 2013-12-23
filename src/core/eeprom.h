@@ -27,6 +27,7 @@ namespace eeprom {
     struct Data {
         int  EEPROMidentification1;
         int  EEPROMidentification2;
+               
         int calibrationVersion;
         int programDataVersion;
         int settingVersion;

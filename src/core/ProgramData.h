@@ -20,7 +20,7 @@
 
 #include <inttypes.h>
 #include "AnalogInputs.h"
-//#include "Hardware.h"
+#include "Hardware.h"
 
 
 #define MAX_PROGRAMS 32

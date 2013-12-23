@@ -2,6 +2,7 @@ set(hardware 50W)
 
 set(SOURCE_FILES
     defaultCalibration.cpp
+    50W.h
     Hardware.h
 )
 

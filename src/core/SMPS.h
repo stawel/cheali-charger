@@ -38,7 +38,7 @@ namespace SMPS {
     uint16_t setSmoothI(uint16_t value, uint16_t value_);
 
     void setRealValue(uint16_t I);
-    
+
     void powerOn();
     void powerOff(STATE reason = CHARGING_COMPLETE);
 

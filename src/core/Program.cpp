@@ -147,7 +147,6 @@ namespace {
     uint8_t tempCDcycles_ = 0;
     char cycleMode='-';
     
-
 } //namespace {
 
 bool Program::startInfo()
@@ -227,8 +226,6 @@ uint8_t Program::currentCycle() { return tempCDcycles_;}
 
 char Program::currentCycleMode() { return cycleMode;}
 
-
-//optimized cycle
 Strategy::statusType Program::runDCcycle(bool prog1)
 { //TODO_NJ
     Strategy::statusType status;
@@ -395,8 +392,6 @@ Program::ProgramState getProgramState(Program::ProgramType prog)
 
 void Program::run(ProgramType prog)
 {
-    if (settings.calibratedState_ < 7) {Screen::runCalibrateBeforeUse; return;}
-    
     programType_ = prog;
     stopReason_ = PSTR("");
 

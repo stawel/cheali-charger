@@ -2,6 +2,7 @@ set(hardware imaxB6_Chalus_Bo_mod)
 
 set(SOURCE_FILES
     defaultCalibration.cpp
+    imaxB6_Chalus_Bo_mod.h
     Hardware.h
 )
 

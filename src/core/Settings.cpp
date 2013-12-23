@@ -23,10 +23,6 @@
 #include "Monitor.h"
 #include "eeprom.h"
 
-#ifndef DEFAULT_SETTINGS_EXTERNAL_T
-#define DEFAULT_SETTINGS_EXTERNAL_T 1
-#endif
-
 Settings settings;
 
 const Settings defaultSettings PROGMEM = {
@@ -41,7 +37,7 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_VOLT(0.012), //deltaV_NiCd_
         5,                  //CDcycles_
         30,                 //WasteTime_
-        0,                  //AudioBeep_ yes/no
+        1,                  //AudioBeep_ yes/no
         120,                //"%" capCutoff_
         ANALOG_VOLT(7),     //inputVoltageLow_
         ANALOG_VOLT(0),     //dischargeOffset_LiXX_

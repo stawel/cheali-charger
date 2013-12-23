@@ -32,11 +32,11 @@
 //#define DISCHARGER_UPPERBOUND_VALUE         8192
 //#define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/8)
 
-#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.100) 
+#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.051) 
 #define DISCHARGER_P1_POINT          ANALOG_AMP(1.000) 
 #define SPMS_P1_POINT                ANALOG_AMP(2.000) 
 
-#define SPMS_DISCHARGER_P0_TEXT      "100mA" 
+#define SPMS_DISCHARGER_P0_TEXT      "50mA" 
 #define DISCHARGER_P1_TEXT           "1A" 
 #define SPMS_P1_TEXT                 "2A" 
 
@@ -51,10 +51,10 @@
 #define CHARGE_LIXX_WITHOUT_BALANCER
 
 //prevent power supply
-#define MAX_CURRENT_RISING ANALOG_AMP(3.000)
+//#define MAX_CURRENT_RISING ANALOG_AMP(3.000)
 
 //screenanimation
-#define SCREENANIMATION
+//#define SCREENANIMATION
 
 //knightrider effect is ADC working
 //#define KNIGHTRIDEREFFECT

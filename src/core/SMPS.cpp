@@ -49,7 +49,7 @@ void SMPS::initialize()
 
 void SMPS::setValue(uint16_t value)
 {
-    if (settings.calibratedState_ >= 7) //disable limit on calibrating.
+    if (settings.calibratedState_ >= 7) //disable limit if uncalibrated.
     {
       if(value > settings.SMPS_Upperbound_Value_) value = settings.SMPS_Upperbound_Value_;     
     }
@@ -63,7 +63,7 @@ void SMPS::setValue(uint16_t value)
 uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
 {
 #ifdef MAX_CURRENT_RISING 
- if (settings.calibratedState_ >= 7) //disabled on calibrating.
+ if (settings.calibratedState_ >= 7) //enabled if  calibrated.
     {
 
 
@@ -109,7 +109,7 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
 
 
             
-          #endif 
+#endif 
   return value;
 }
 
@@ -120,8 +120,6 @@ void SMPS::setRealValue(uint16_t I)
     uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, I);
     setValue(value);
 }
-
-
 
 void SMPS::powerOn()
 {

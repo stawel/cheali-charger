@@ -373,10 +373,8 @@ void calibrateI(calibrateType t, uint8_t point, AnalogInputs::ValueType current,
         AnalogInputs::setCalibrationPoint(name1, point, p);
         p.x = AnalogInputs::getAvrADCValue(name2);
         AnalogInputs::setCalibrationPoint(name2, point, p); 
-
     }
 }
-
 
 
 void calibrateIcharge()
@@ -390,13 +388,11 @@ void calibrateIcharge()
         if(i==0) current = SPMS_DISCHARGER_P0_POINT;
         else     current = SPMS_P1_POINT;
         calibrateI(CCharger, i, current, AnalogInputs::Ismps, AnalogInputs::IsmpsValue);
-
     } while(true);
 }
 
 void calibrateIdischarge()
 {
-
     StaticMenu menu(dischargeIMenu);
     int8_t i;
     AnalogInputs::ValueType current;
@@ -405,18 +401,17 @@ void calibrateIdischarge()
         if(i<0) break;
         if(i==0) current = SPMS_DISCHARGER_P0_POINT;
         else     current = DISCHARGER_P1_POINT;
-        calibrateI(CDischarger, i, current, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue);
-       
+        calibrateI(CDischarger, i, current, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue);      
     } while(true);
 }
 
 bool checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name1)
 {
-    return true;
+    //return true;
     
     uint16_t x1,x2=0;
     bool r=true;
-    for(uint16_t i=0; i <= testCurrent; i=i++){
+    for(uint16_t i=0; i < testCurrent; i=i++){
         x1 = AnalogInputs::reverseCalibrateValue(name1, i);
         if (x1 < x2)  r=false;
         x2=x1;
@@ -428,7 +423,7 @@ bool checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name
 void checkCalibrateIcharge()
 {
     //check 'overflow"
-    if (checkCalibrate(MAX_CHARGE_I,AnalogInputs::IsmpsValue) !=true)
+    if (checkCalibrate(MAX_CHARGE_I,AnalogInputs::IsmpsValue) != true)
      {
         Screen::displayCalibrationErrorScreen();
         settings.SMPS_Upperbound_Value_ = 0;
@@ -443,7 +438,7 @@ void checkCalibrateIcharge()
 void checkCalibrateIdischarge()
 {
     //check 'overflow"
-     if (checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::IdischargeValue) !=true )
+     if (checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::IdischargeValue) != true)
      {
         Screen::displayCalibrationErrorScreen();
         settings.DISCHARGER_Upperbound_Value_ = 0;
@@ -531,8 +526,8 @@ void run()
         START_CASE_COUNTER;
         switch(i) {
         case NEXT_CASE: calibrateVoltage(); break;
-        case NEXT_CASE: calibrateIcharge();checkCalibrateIcharge(); break;
-        case NEXT_CASE: calibrateIdischarge();checkCalibrateIdischarge(); break;
+        case NEXT_CASE: calibrateIcharge(); checkCalibrateIcharge(); break;
+        case NEXT_CASE: calibrateIdischarge(); checkCalibrateIdischarge(); break;
         case NEXT_CASE: calibrateTemp(AnalogInputs::Textern); break;
 #ifdef ENABLE_T_INTERNAL
         case NEXT_CASE: calibrateTemp(AnalogInputs::Tintern); break;

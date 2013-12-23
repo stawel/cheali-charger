@@ -17,13 +17,13 @@
 */
 
 #include "AnalogInputs.h"
-#include "imaxB6.h"
+#include "imaxB6_Chalus_Bo_mod.h"
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
     {{0, 0},                        {54592, 25094}},    //Vout
     {{0, 0},                        {26613, 12518}},    //VreversePolarity
-    {{378, SPMS_DISCHARGER_P0_POINT},                        {10916, SPMS_P1_POINT}},    //Ismps
-    {{7095, SPMS_DISCHARGER_P0_POINT},                        {43070, DISCHARGER_P1_POINT}},    //Idischarge
+    {{1, SPMS_DISCHARGER_P0_POINT},                        {2, SPMS_P1_POINT}},    //Ismps
+    {{1, SPMS_DISCHARGER_P0_POINT},                        {2, DISCHARGER_P1_POINT}},    //Idischarge
 
     {{0, 0},                        {0, 0}},    //VoutMux
     {{0, 0},                        {0, 0}},    //Tintern
@@ -40,8 +40,8 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                      {53157, 4184}},  //Vb6_pin
 
     //1-1 correlation
-    {{380, SPMS_DISCHARGER_P0_POINT},                      {10920, SPMS_P1_POINT}},  //IsmpsValue
-    {{2610, SPMS_DISCHARGER_P0_POINT},                      {15850, DISCHARGER_P1_POINT}},  //IdischargeValue
+    {{1, SPMS_DISCHARGER_P0_POINT},                      {2, SPMS_P1_POINT}},  //IsmpsValue
+    {{1, SPMS_DISCHARGER_P0_POINT},                      {2, DISCHARGER_P1_POINT}},  //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {{0, 0},                         {1, 1}},           //UNKNOWN0
     {{0, 0},                         {1, 1}},           //UNKNOWN1

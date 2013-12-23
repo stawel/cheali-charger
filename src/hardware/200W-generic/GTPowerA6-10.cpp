@@ -15,13 +15,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <Arduino.h>
-
 #include "GTPowerA6-10-pins.h"
 #include "GTPowerA6-10.h"
 #include "adc.h"
 #include "Settings.h"
-
 
 void hardware::initialize()
 {

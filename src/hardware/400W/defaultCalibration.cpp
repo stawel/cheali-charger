@@ -16,9 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <Arduino.h>
 #include "AnalogInputs.h"
-#include "GTPowerA6-10.h"
+#include "400W.h"
 
 //file provided by: Jozsef N.
 //TODO: calibrate Vb6_pin, Textern

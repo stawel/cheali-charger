@@ -28,10 +28,8 @@ public:
     virtual void editItem(uint8_t i, uint8_t key);
 
     void run();
-    
 
     Settings p_;
-    
 private:
 
     void printUART() const;
@@ -48,7 +46,6 @@ private:
     static void changeDeltaTemp(AnalogInputs::ValueType &v, int dir);
     static void changeInputVolt(AnalogInputs::ValueType &v, int dir);
     static void changeBalanceError(AnalogInputs::ValueType &v, int dir);
-   
 };
 
 #endif /* SETTINGSMENU_H_ */
