@@ -319,9 +319,11 @@ bool calibrateI(calibrateType p)
     AnalogInputs::ValueType maxValue = 65535;
 
     if(p == CCharger){
-        SMPS::powerOn(); settings.calibratedState_   &= ~(1 << 1);  //relase calibrationlimit
+        settings.calibratedState_   &= ~(1 << 1);  Settings::save();  //relase calibrationlimit
+        SMPS::powerOn(); 
     } else {
-        Discharger::powerOn();settings.calibratedState_   &= ~(1 << 2); //relase calibrationlimit
+        settings.calibratedState_   &= ~(1 << 2);  Settings::save();  //relase calibrationlimit
+        Discharger::powerOn();
     }
 
    // if(testVout()) {
@@ -426,7 +428,7 @@ void checkCalibrateIcharge()
     if (checkCalibrate(MAX_CHARGE_I,AnalogInputs::IsmpsValue) != true)
      {
         Screen::displayCalibrationErrorScreen();
-        settings.SMPS_Upperbound_Value_ = 0;
+        settings.SMPS_Upperbound_Value_ = 0; Settings::save(); 
         return;
      }
 
@@ -441,7 +443,7 @@ void checkCalibrateIdischarge()
      if (checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::IdischargeValue) != true)
      {
         Screen::displayCalibrationErrorScreen();
-        settings.DISCHARGER_Upperbound_Value_ = 0;
+        settings.DISCHARGER_Upperbound_Value_ = 0;  Settings::save(); 
         return;
      }
   

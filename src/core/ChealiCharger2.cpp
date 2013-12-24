@@ -56,24 +56,18 @@ void loop()
 void setup()
 {
     hardware::initialize();
-    hardware::delay(500); //waiting for internal-PS stabilized (EEPROM protect)
+    hardware::delay(100); //waiting for internal-PS stabilized (EEPROM protect)
 #ifdef ENABLE_STACK_INFO
     StackInfo::initialize();
 #endif
 
     Settings::load();
-#ifdef SCREENANIMATION
-    Screen::displayAnimation();
-#endif
 #ifdef RAM_CG
     lcdCreateCGRam();
 #endif    
     Screen::displayStrings(PSTR("ChealiCharger"),
                            PSTR("ver: "  CHEALI_CHARGER_VERSION_STRING));
     hardware::delay(1000);
-#ifdef SCREENANIMATION    
-    Screen::displayAnimation();
-#endif
 #ifdef TESTINGALERT
     Screen::displayStrings(PSTR(" Modded version"),
                            PSTR("  FOR TESTING"));

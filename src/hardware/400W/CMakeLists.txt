@@ -6,7 +6,7 @@ set(SOURCE_FILES
     Hardware.h
 )
 
-include(${CMAKE_SOURCE_DIR}/src/hardware/200W-generic/CMakeLists.txt)
+include(${CMAKE_SOURCE_DIR}/src/hardware/200W-generic/CMakeLists400.txt)
 
 
 

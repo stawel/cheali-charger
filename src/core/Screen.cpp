@@ -563,12 +563,12 @@ void Screen::displayAnimation()
     {
       
       lcdSetCursor(15-i,1);
-      lcdPrintChar('!'-34);
+      lcdPrintChar(255);
       lcdSetCursor(i,0);
-      lcdPrintChar('!'-34);
+      lcdPrintChar(255);
       hardware::delay(10); 
     }
-     hardware::delay(150);
+     hardware::delay(10);
 
 }
 #endif

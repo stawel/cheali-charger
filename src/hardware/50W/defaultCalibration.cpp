@@ -17,7 +17,7 @@
 */
 
 #include "AnalogInputs.h"
-#include "50W.h"
+#include "imaxB6.h"
 
 
 

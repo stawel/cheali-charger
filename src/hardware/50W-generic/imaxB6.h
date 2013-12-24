@@ -50,9 +50,6 @@
 #define SPMS_P1_TEXT                 "1A" 
 
 
-
-
-
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
 #include "Timer.h"
