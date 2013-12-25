@@ -51,8 +51,6 @@
 #define DISCHARGER_P1_TEXT           "1A" 
 #define SPMS_P1_TEXT                 "2A" 
 
-#define HARDWARE_PID_PROTECT  
-
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
 #include "SMPS.h"
