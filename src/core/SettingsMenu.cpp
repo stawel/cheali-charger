@@ -37,7 +37,7 @@ const char string_NiMHdV[]      PROGMEM = "NiMH -dV:";
 const char string_NiCddV[]      PROGMEM = "NiCd -dV:";
 const char string_CDcycles[]    PROGMEM = "D/C cycles:";
 const char string_WasteTime[]   PROGMEM = "waste T.:  ";
-const char string_AudioBeep[]   PROGMEM = "beep:     ";
+const char string_AudioBeep[]   PROGMEM = "beep:      ";
 const char string_capCoff[]     PROGMEM = "cap COff:";
 const char string_inputLow[]    PROGMEM = "input low:";
 const char string_dichLiXX[]    PROGMEM = "disch +:";
@@ -259,7 +259,7 @@ void SettingsMenu::changeInputVolt(AnalogInputs::ValueType &v, int step) {
 }
 
 void SettingsMenu::changeBalanceError(AnalogInputs::ValueType &v, int step) {
-    const AnalogInputs::ValueType min = ANALOG_VOLT(0.003);
+    const AnalogInputs::ValueType min = ANALOG_VOLT(0.002);
     const AnalogInputs::ValueType max = ANALOG_VOLT(0.200);
     v+=step;
     if(v < min) v = min;

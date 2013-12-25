@@ -20,7 +20,7 @@
 
 #include "GTPowerA6-10.h"
 
-#define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
+#define MAX_CHARGE_V            ANALOG_VOLT(26.100) //25.3V
 #define MAX_CHARGE_I            ANALOG_AMP(10.005)  //10A
 #define MAX_CHARGE_P            ANALOG_WATT(200.005)              //200W
 

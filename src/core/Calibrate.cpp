@@ -421,28 +421,6 @@ bool checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name
      if(x1==0) r=false;
     return r;
 }
-/*
-void checkCalibrateIcharge()
-{
-    //check 'overflow" ismpsvalue
-    if (checkCalibrate(MAX_CHARGE_I,AnalogInputs::IsmpsValue) != true)
-     {
-        Screen::displayCalibrationErrorScreen();
-        settings.SMPS_Upperbound_Value_ = 0; Settings::save(); 
-        return;
-     }
-
-#ifdef HARDWARE_PID_PROTECT     
-        //check 'overflow" ismps (protect hardware PID ctrl chargers)
-        //if r53-54 failure, then calibration value too high. Protect the SMPS circiuit the overflow value.
-    if (checkCalibrate(MAX_CHARGE_I,AnalogInputs::Ismps) != true)
-     {
-        Screen::displayCalibrationErrorScreen();
-        settings.SMPS_Upperbound_Value_ = 0; Settings::save(); 
-        return;
-     }    
-#endif   
-*/
 
 void checkCalibrateIcharge()
 {

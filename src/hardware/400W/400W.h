@@ -20,7 +20,7 @@
 
 #include "T400x2.h"
 
-#define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
+#define MAX_CHARGE_V            ANALOG_VOLT(26.100) //25.3V
 #define MAX_CHARGE_I            ANALOG_AMP(20.000)  //20A
 #define MAX_CHARGE_P            ANALOG_WATT(400.000)              //400W
 
