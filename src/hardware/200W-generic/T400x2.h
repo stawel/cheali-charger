@@ -52,6 +52,8 @@
 #define SPMS_P1_TEXT                 "5A" 
 
 
+#define HARDWARE_PID_PROTECT 
+
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
 #include "SMPS.h"

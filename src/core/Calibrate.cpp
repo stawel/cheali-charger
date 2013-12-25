@@ -432,7 +432,7 @@ void checkCalibrateIcharge()
         return;
      }
 
-     
+#ifdef HARDWARE_PID_PROTECT     
         //check 'overflow" ismps (protect hardware PID ctrl chargers)
         //if r53-54 failure, then calibration value too high. Protect the SMPS circiuit the overflow value.
     if (checkCalibrate(MAX_CHARGE_I,AnalogInputs::Ismps) != true)
@@ -441,7 +441,7 @@ void checkCalibrateIcharge()
         settings.SMPS_Upperbound_Value_ = 0; Settings::save(); 
         return;
      }    
-   
+#endif   
      
 
         settings.SMPS_Upperbound_Value_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, MAX_CHARGE_I);
