@@ -21,11 +21,11 @@
 #include "GTPowerA6-10.h"
 
 #define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(10.100)  //10A
-#define MAX_CHARGE_P            ANALOG_WATT(200.000)              //200W
+#define MAX_CHARGE_I            ANALOG_AMP(10.005)  //10A
+#define MAX_CHARGE_P            ANALOG_WATT(200.005)              //200W
 
-#define MAX_DISCHARGE_P         ANALOG_WATT(50.000)               //25W
-#define MAX_DISCHARGE_I         ANALOG_AMP(5.100)   //5A
+#define MAX_DISCHARGE_P         ANALOG_WATT(50.005)               //25W
+#define MAX_DISCHARGE_I         ANALOG_AMP(5.005)   //5A
 
 //#define SMPS_UPPERBOUND_VALUE               8192
 //#define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/8)

@@ -31,7 +31,7 @@
 //use unknown mux values
 //#define ANALOG_INPUTS_V_UNKNOWN
 #define TIMER1_PERIOD_MICROSECONDS          512
-#define CALIBRATION_SPEED                   2
+#define CALIBRATION_SPEED                   1
 
 
 #define ENABLE_LCD_BACKLIGHT
@@ -43,14 +43,13 @@
 // I not used external temp sensor
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
 
-#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.050) 
-#define DISCHARGER_P1_POINT          ANALOG_AMP(0.300) 
-#define SPMS_P1_POINT                ANALOG_AMP(1.000) 
+#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.200) 
+#define DISCHARGER_P1_POINT          ANALOG_AMP(1.000) 
+#define SPMS_P1_POINT                ANALOG_AMP(2.000) 
 
-#define SPMS_DISCHARGER_P0_TEXT      "50mA" 
-#define DISCHARGER_P1_TEXT           "300mA" 
-#define SPMS_P1_TEXT                 "1A" 
-
+#define SPMS_DISCHARGER_P0_TEXT      "200mA" 
+#define DISCHARGER_P1_TEXT           "1A" 
+#define SPMS_P1_TEXT                 "2A" 
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
