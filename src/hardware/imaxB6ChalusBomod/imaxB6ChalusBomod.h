@@ -15,12 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef imaxB6_Chalus_Bo_mod_H_
-#define imaxB6_Chalus_Bo_mod_H_
+#ifndef imaxB6Chalus_H_
+#define imaxB6Chalus_H_
 
-#include "imaxB6-claus-bo-mod.h"
+#include "imaxB6.h"
 
-#define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
+#define MAX_CHARGE_V            ANALOG_VOLT(26.100) //25.3V
 #define MAX_CHARGE_I            ANALOG_AMP(25.000)
 #define MAX_CHARGE_P            ANALOG_WATT(200.000)
 
@@ -33,6 +33,15 @@
 //#define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/4)
 //#define DISCHARGER_UPPERBOUND_VALUE         TIMERONE_PRECISION_PERIOD
 //#define MAX_CALIBRATION_DISCHARGER_VALUE    DISCHARGER_UPPERBOUND_VALUE
+
+#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.200) 
+#define DISCHARGER_P1_POINT          ANALOG_AMP(1.000) 
+#define SPMS_P1_POINT                ANALOG_AMP(5.000) 
+
+#define SPMS_DISCHARGER_P0_TEXT      "200mA" 
+#define DISCHARGER_P1_TEXT           "1A" 
+#define SPMS_P1_TEXT                 "5A" 
+
 
 #define CALIBRATION_SPEED                   10
 
@@ -58,4 +67,4 @@
 //#define RAM_CG
 
 
-#endif /* imaxB6_Chalus_Bo_mod_H_ */
+#endif /* imaxB6Chalus_H_ */

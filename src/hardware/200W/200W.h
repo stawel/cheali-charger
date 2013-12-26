@@ -32,6 +32,13 @@
 //#define DISCHARGER_UPPERBOUND_VALUE         8192
 //#define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/8)
 
+#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.200) 
+#define DISCHARGER_P1_POINT          ANALOG_AMP(1.000) 
+#define SPMS_P1_POINT                ANALOG_AMP(2.000) 
+
+#define SPMS_DISCHARGER_P0_TEXT      "200mA" 
+#define DISCHARGER_P1_TEXT           "1A" 
+#define SPMS_P1_TEXT                 "2A" 
 
 //start warning-text
 //#define TESTINGALERT

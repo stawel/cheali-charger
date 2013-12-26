@@ -17,7 +17,7 @@
 */
 
 #include "AnalogInputs.h"
-#include "imaxB6_Chalus_Bo_mod.h"
+#include "imaxB6ChalusBomod.h"
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
     {{0, 0},                        {54592, 25094}},    //Vout

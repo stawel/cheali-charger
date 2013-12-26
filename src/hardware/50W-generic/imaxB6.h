@@ -41,15 +41,6 @@
 // I not used external temp sensor
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
 
-#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.050) 
-#define DISCHARGER_P1_POINT          ANALOG_AMP(0.300) 
-#define SPMS_P1_POINT                ANALOG_AMP(1.000) 
-
-#define SPMS_DISCHARGER_P0_TEXT      "50mA" 
-#define DISCHARGER_P1_TEXT           "300mA" 
-#define SPMS_P1_TEXT                 "1A" 
-
-
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
 #include "Timer.h"

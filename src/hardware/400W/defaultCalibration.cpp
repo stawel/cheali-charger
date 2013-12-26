@@ -17,7 +17,7 @@
 */
 
 #include "AnalogInputs.h"
-#include "T400x2.h"
+#include "400W.h"
 
 //file provided by: Jozsef N.
 //TODO: calibrate Vb6_pin, Textern

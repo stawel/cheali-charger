@@ -17,8 +17,7 @@
 */
 
 #include "AnalogInputs.h"
-#include "imaxB6.h"
-
+#include "50W.h"
 
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {

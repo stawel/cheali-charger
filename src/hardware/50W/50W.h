@@ -34,6 +34,17 @@
 //#define DISCHARGER_UPPERBOUND_VALUE         TIMERONE_PRECISION_PERIOD
 //#define MAX_CALIBRATION_DISCHARGER_VALUE    DISCHARGER_UPPERBOUND_VALUE
 
+#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.050) 
+#define DISCHARGER_P1_POINT          ANALOG_AMP(0.300) 
+#define SPMS_P1_POINT                ANALOG_AMP(1.000) 
+
+#define SPMS_DISCHARGER_P0_TEXT      "50mA" 
+#define DISCHARGER_P1_TEXT           "300mA" 
+#define SPMS_P1_TEXT                 "1A" 
+
+
+
+
 #define CALIBRATION_SPEED                   10
 
 //start warning-text
@@ -47,7 +58,6 @@
 
 //prevent power supply
 //#define MAX_CURRENT_RISING ANALOG_AMP(1.000)
-
 
 //screenanimation
 //#define SCREENANIMATION

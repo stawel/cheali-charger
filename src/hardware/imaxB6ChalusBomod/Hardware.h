@@ -18,6 +18,6 @@
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
-#include "imaxB6_Chalus_Bo_mod.h"
+#include "imaxB6ChalusBomod.h"
 
 #endif /* HARDWARE_H_ */

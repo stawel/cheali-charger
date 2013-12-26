@@ -18,7 +18,7 @@
 #ifndef Turnigy_MEGA_400Wx2_H_
 #define Turnigy_MEGA_400Wx2_H_
 
-#include "T400x2.h"
+#include "GTPowerA6-10.h"
 
 #define MAX_CHARGE_V            ANALOG_VOLT(26.100) //25.3V
 #define MAX_CHARGE_I            ANALOG_AMP(20.000)  //20A
@@ -31,6 +31,14 @@
 //#define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/16)
 //#define DISCHARGER_UPPERBOUND_VALUE         8192
 //#define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/16)
+
+#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.200) 
+#define DISCHARGER_P1_POINT          ANALOG_AMP(1.000) 
+#define SPMS_P1_POINT                ANALOG_AMP(5.000) 
+
+#define SPMS_DISCHARGER_P0_TEXT      "200mA" 
+#define DISCHARGER_P1_TEXT           "1A" 
+#define SPMS_P1_TEXT                 "5A" 
 
 //start warning-text
 //#define TESTINGALERT
