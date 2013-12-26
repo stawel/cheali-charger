@@ -31,7 +31,6 @@
 #include "SerialLog.h"
 #include "eeprom.h"
 
-
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
 {string_options, NULL };
@@ -56,15 +55,12 @@ void loop()
 void setup()
 {
     hardware::initialize();
-    hardware::delay(100); //waiting for internal-PS stabilized (EEPROM protect)
+   // hardware::delay(100); //waiting for internal-PS stabilized (EEPROM protect)
 #ifdef ENABLE_STACK_INFO
     StackInfo::initialize();
 #endif
 
     Settings::load();
-#ifdef RAM_CG
-    lcdCreateCGRam();
-#endif    
     Screen::displayStrings(PSTR("ChealiCharger"),
                            PSTR("ver: "  CHEALI_CHARGER_VERSION_STRING));
     hardware::delay(1000);
@@ -72,12 +68,14 @@ void setup()
     Screen::displayStrings(PSTR(" Modded version"),
                            PSTR("  FOR TESTING"));
     hardware::delay(1000);
-#ifdef SCREENANIMATION    
-    Screen::displayAnimation();
-#endif 
 #endif 
     eeprom::restoreDefault();
     
+#ifdef RAM_CG
+    lcdCreateCGRam();
+#endif  
+
+
     if (settings.calibratedState_ <7)
     {
     Screen::runCalibrateBeforeUse();
