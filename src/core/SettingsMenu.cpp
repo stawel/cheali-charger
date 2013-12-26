@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-//#include "Hardware.h"
+#include "Hardware.h"
 #include "SettingsMenu.h"
 #include "Utils.h"
 #include "LcdPrint.h"
