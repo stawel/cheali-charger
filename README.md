@@ -1,30 +1,41 @@
 FOR TESTING.
 
 
-
 Plus Features
 -------------
 
- - first EnergyScreen is multiscreen 
- - Simply Estimated Time for Accomplishment (TESTING)
- - ChargerScreen Animation (compiler optionnally)
- - Knightrider effect is balancescreens (represents for ADC measure (compiler optionnally))
+ - Simple Estimated Time for Accomplishment (TESTING)
  - Powerscren (Watt and Watthour)
  - Valid charge-percent meter
  - loudness sound for end-program (compiler optionnally)
- - Calibration error checking
+ - Calibration error checking***
  - cycle discharge/wait/charge program for Nixx and Lixx
- - cyclehystory screen
+ - cyclehistory screen
  - Lixx charge without balancer-port
  - time limit per battery plus Unlimited time.
  - Unknown battery voltage stepping 0.1V always.
  - smooth current rising/falling (protect the power supply voltage-breakdown) (limited current riseing/falling speed: 3A/sec(>50W chargers))
  - graphical balance status (compiler optionnally)
  - wire resistance minimize value
+ - Li-Ion 4.35V supported
+ - simple charging-percent meter
 
-removed:
---------
- - supercharge-balance  (longer charging time)
+
+
+Calibrate checking
+------------------
+ - calibrate check is running always at the exit calibrate. This function protect your charger the overcurrent control.
+ - checking-calibration testing the charger for maximal capable currents. If routine failed state therefore not available start charge programs.
+ 
+cal.err. possible errors:
+-------------------------
+cal.err displayed and not start charge programs:
+ - hardware failure. current-measure resistor too high value or 'little' blowed and/or charger/SMPS FETs failure
+ - calibration failure. check again the good measured currents.
+ - wrong default EEPROM datas. Please select 'reset default'
+ - wrong flashed firmware. (accucel6-5A charger not compatible 50W-6A version firmware)
+
+
 
 
 original source and hex:
@@ -81,40 +92,7 @@ Hardware
 - .... - any suggestions are very welcome
 
 
-Building from Source
---------------------
-dependencies: cmake, avrdude, avr-libc, gcc-avr
 
-<pre>
-user@~$ sudo apt-get install cmake avrdude avr-libc gcc-avr git
-
-user@~$ git clone https://github.com/stawel/cheali-charger.git
-user@~$ cd cheali-charger
-
-user@~/cheali-charger$ ./bootstrap
-user@~/cheali-charger$ make
-
-flashing GTPowerA6-10 with USBasp:
-
-user@~/cheali-charger$ cd src/hardware/GTPowerA6-10-original/
-user@~/cheali-charger/src/hardware/GTPowerA6-10-original$ ./progUSBasp.sh
-
-flashing imaxB6-original with USBasp:
-
-user@~/cheali-charger$ cd src/hardware/imaxB6-original/
-user@~/cheali-charger/src/hardware/imaxB6-original$ ./progUSBasp.sh
-
-flashing imaxB6-clone with USBasp:
-
-user@~/cheali-charger$ cd src/hardware/imaxB6-clone/
-user@~/cheali-charger/src/hardware/imaxB6-clone$ ./progUSBasp.sh
-
-
-</pre>
-
-Now You should see a "ChealiCharger welcome" screen.
-
-Done.
 
 Flashing: G.T. POWER A6-10 200W
 -------------------------------
