@@ -43,6 +43,9 @@
 // I not used external temp sensor
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
 
+
+#define CHECKHARDWAREPIDVALIDCALIBRATE
+
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
 #include "SMPS.h"
