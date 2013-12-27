@@ -2,6 +2,7 @@
 high priority:
  - add smallTimeDiff function
  - Intermittent timer charge ??
+ - rewrite adc.cpp in imaxB6 and G.T. power, move it to a interrupt (timer)
 
 low priority:
  - calibration: https://groups.google.com/d/msg/cheali-charger/KmEv4DNsVe8/N7aueR4jou4J
@@ -14,7 +15,6 @@ low priority:
  - output current slope limit
  - add NiXX cycling
  - new battery types??
- - rewrite adc.cpp
  - rewrite TheveninMethod.cpp
  - optimisation: remove AnalogInputs::stableCount_
  - optimisation: rewrite Screen, remove switch..case
