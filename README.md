@@ -173,7 +173,9 @@ If the measured resistance is much more than 1k Ohm you can proceed as follows:
 
 Troubleshooting
 ---------------
-
+- After flashing charger doesn't work (display shows squares):
+  - check if the BOOTRST bit from "Fuse High byte" is unprogrammed (set to 1) and change it if needed
+  - You may also want to program (set to 0) the EESAVE bit
 
 Mailing list
 ------------
