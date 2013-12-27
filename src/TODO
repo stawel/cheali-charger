@@ -4,6 +4,7 @@ high priority:
  - Intermittent timer charge ??
 
 low priority:
+ - calibration: https://groups.google.com/d/msg/cheali-charger/KmEv4DNsVe8/N7aueR4jou4J
  - Upper battery voltage limit control: Approx. 1.8V/cell.
  - increase capacity limit:
    a) multiply capacity by 10
