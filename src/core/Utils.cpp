@@ -97,7 +97,7 @@ void changeMaxStep10(uint16_t &v, int dir, uint16_t max)
     else v+=dir;
 }
 
-void changeMaxSmart(uint16_t &v, int direc, uint16_t max, bool noPow10)
+void changeMaxSmart(uint16_t &v, int direc, uint16_t max, bool noPow10, uint8_t min)
 {
     uint16_t r;
     int step = 1;
@@ -122,7 +122,7 @@ void changeMaxSmart(uint16_t &v, int direc, uint16_t max, bool noPow10)
         else step = r;
     }
     if(direction) ADD_MAX(v, step, max);
-    else SUB_MIN(v, step ,0);
+    else SUB_MIN(v, step ,min);
 }
 
 void waitButtonPressed()

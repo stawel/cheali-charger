@@ -239,12 +239,13 @@ Strategy::statusType Program::runDCcycle(bool prog1)
           if(status != Strategy::COMPLETE) {break;} 
  
           //waiting after discharge
-          status = Strategy::RUNNING;
+          //status = Strategy::RUNNING;
           cycleMode='W';
-          if(runWasteTime() != Strategy::COMPLETE) { break; }   
+          status = runWasteTime();
+          if(status != Strategy::COMPLETE) { break; } 
           
           //charge
-          status = Strategy::RUNNING;
+          //status = Strategy::RUNNING;
           Screen::resetETA();
           AnalogInputs::resetAccumulatedMeasurements();
           cycleMode='C';
@@ -260,13 +261,13 @@ Strategy::statusType Program::runDCcycle(bool prog1)
            }  
            if(status != Strategy::COMPLETE) {break;} 
           
-     
-          status = Strategy::RUNNING;
           //waiting after charge
+          //status = Strategy::RUNNING;
           cycleMode='W';
           if (tempCDcycles_ != settings.CDcycles_)
            {
-            if(runWasteTime() != Strategy::COMPLETE) { break; }
+            status = runWasteTime();
+            if(status != Strategy::COMPLETE) { break; }
             else {status = Strategy::COMPLETE;}
           }
           
@@ -323,23 +324,6 @@ Strategy::statusType Program::runCycleChargeCommon(bool prog1, bool mode)
 
  return status;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
