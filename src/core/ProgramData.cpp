@@ -32,11 +32,11 @@ const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][Progr
 //      { VIdle,              VCharge,            VDischarge,           VStorage, VUpperLimit,         ValidEmpty};
 /*Unknown*/{ 1,               1,                  1,                    1,        0,                   1},
 //                               ???
-/*NiCd*/{ ANALOG_VOLT(1.200), ANALOG_VOLT(1.820), ANALOG_VOLT(0.850),   0,  ANALOG_VOLT(1.800),        ANALOG_VOLT(1.300)},
+/*NiCd*/{ ANALOG_VOLT(1.200), ANALOG_VOLT(1.820), ANALOG_VOLT(0.850),   0,  ANALOG_VOLT(1.800),        ANALOG_VOLT(0.850)},
 //http://en.wikipedia.org/wiki/Nickel%E2%80%93metal_hydride_battery
 //http://industrial.panasonic.com/eu/i/21291/Handbook2011/Handbook2011.pdf
 //http://www6.zetatalk.com/docs/Batteries/Chemistry/Duracell_Ni-MH_Rechargeable_Batteries_2007.pdf
-/*NiMH*/{ ANALOG_VOLT(1.200), ANALOG_VOLT(1.600), ANALOG_VOLT(1.000),   0,  ANALOG_VOLT(1.800),        ANALOG_VOLT(1.300)},
+/*NiMH*/{ ANALOG_VOLT(1.200), ANALOG_VOLT(1.600), ANALOG_VOLT(1.000),   0,  ANALOG_VOLT(1.800),        ANALOG_VOLT(1.000)},
 
 //Pb based on:
 //http://www.battery-usa.com/Catalog/NPAppManual%28Rev0500%29.pdf
