@@ -31,8 +31,8 @@ namespace DelayStrategy {
 
 
     bool state_ = false;
-    int16_t start_time_;
-    int16_t delay_;
+    uint32_t start_time_;
+    uint16_t delay_;
     
     
 

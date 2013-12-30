@@ -21,11 +21,11 @@
 #include "imaxB6.h"
 
 #define MAX_CHARGE_V            ANALOG_VOLT(26.100) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(25.000)
-#define MAX_CHARGE_P            ANALOG_WATT(200.000)
+#define MAX_CHARGE_I            ANALOG_AMP(25.001)
+#define MAX_CHARGE_P            ANALOG_WATT(200.001)
 
-#define MAX_DISCHARGE_P         ANALOG_WATT(25.000)
-#define MAX_DISCHARGE_I         ANALOG_AMP(6.000)
+#define MAX_DISCHARGE_P         ANALOG_WATT(25.001)
+#define MAX_DISCHARGE_I         ANALOG_AMP(6.001)
 
 
 //1-13? correlation

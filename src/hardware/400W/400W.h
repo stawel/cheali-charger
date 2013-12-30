@@ -21,11 +21,11 @@
 #include "GTPowerA6-10.h"
 
 #define MAX_CHARGE_V            ANALOG_VOLT(26.100) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(20.000)  //20A
-#define MAX_CHARGE_P            ANALOG_WATT(400.000)              //400W
+#define MAX_CHARGE_I            ANALOG_AMP(20.005)  //20A
+#define MAX_CHARGE_P            ANALOG_WATT(400.005)              //400W
 
-#define MAX_DISCHARGE_P         ANALOG_WATT(50.000)               //25W
-#define MAX_DISCHARGE_I         ANALOG_AMP(5.000)   //5A
+#define MAX_DISCHARGE_P         ANALOG_WATT(40.005)               //25W
+#define MAX_DISCHARGE_I         ANALOG_AMP(5.005)   //5A
 
 //#define SMPS_UPPERBOUND_VALUE               8192
 //#define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/16)
@@ -53,7 +53,7 @@
 #define MAX_CURRENT_RISING ANALOG_AMP(3.000)
 
 //screenanimation
-#define SCREENANIMATION
+//#define SCREENANIMATION
 
 //knightrider effect is ADC working
 //#define KNIGHTRIDEREFFECT

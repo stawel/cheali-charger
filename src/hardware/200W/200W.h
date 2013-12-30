@@ -24,7 +24,7 @@
 #define MAX_CHARGE_I            ANALOG_AMP(10.005)  //10A
 #define MAX_CHARGE_P            ANALOG_WATT(200.005)              //200W
 
-#define MAX_DISCHARGE_P         ANALOG_WATT(50.005)               //25W
+#define MAX_DISCHARGE_P         ANALOG_WATT(40.005)               //25W
 #define MAX_DISCHARGE_I         ANALOG_AMP(5.005)   //5A
 
 //#define SMPS_UPPERBOUND_VALUE               8192
@@ -53,7 +53,7 @@
 #define MAX_CURRENT_RISING ANALOG_AMP(3.000)
 
 //screenanimation
-#define SCREENANIMATION
+//#define SCREENANIMATION
 
 //knightrider effect is ADC working
 //#define KNIGHTRIDEREFFECT
