@@ -14,6 +14,7 @@ add_subdirectory(src/core)
 add_subdirectory(src/hardware/200W)
 add_subdirectory(src/hardware/50W-5A)
 add_subdirectory(src/hardware/50W-6A)
+add_subdirectory(src/hardware/80W)
 add_subdirectory(src/hardware/400W)
 add_subdirectory(src/hardware/imaxB6ChalusBomod)
 
