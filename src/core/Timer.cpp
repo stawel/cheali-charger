@@ -61,11 +61,10 @@ void Timer::initialize()
 #endif
 
     TCNT0=0;
-    OCR0=TIMER_INTERRUPT_PERIOD_MICROSECONDS/4;
-    TCCR0=(1<<WGM01);
+    OCR0=TIMER_INTERRUPT_PERIOD_MICROSECONDS/4 - 1;
+    TCCR0=(1<<WGM01);               //Clear Timer on Compare Match (CTC) Mode
     TCCR0|=(1<<CS00) | (1<<CS01);   //clk/64 (From prescaler)
-    TIMSK|=(1<<OCIE0);
-
+    TIMSK|=(1<<OCIE0);              //OCIE0: Timer/Counter0 Output Compare Match Interrupt Enable
 }
 
 void Timer::doInterrupt()
