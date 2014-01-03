@@ -1,5 +1,3 @@
-include(${CMAKE_SOURCE_DIR}/arduino/arduino.cmake)
-
 
 set(HEADER_FILES
         Arduino.h
