@@ -44,7 +44,7 @@
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
 
 
-#define CHECKHARDWAREPIDVALIDCALIBRATE
+//#define CHECKHARDWAREPIDVALIDCALIBRATE
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"

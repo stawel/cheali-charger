@@ -435,12 +435,12 @@ void checkCalibrateIcharge()
        state = false;
      }
    
-#ifdef CHECKHARDWAREPIDVALIDCALIBRATE   
+//#ifdef CHECKHARDWAREPIDVALIDCALIBRATE   
     if (!checkCalibrate(MAX_CHARGE_I,AnalogInputs::Ismps))
      {
        state = false;
      }
-#endif   
+//#endif   
      if (!state)
      {
         Screen::displayCalibrationErrorScreen();
@@ -462,12 +462,12 @@ void checkCalibrateIdischarge()
        state = false;
      }
    
-#ifdef CHECKHARDWAREPIDVALIDCALIBRATE   
+//#ifdef CHECKHARDWAREPIDVALIDCALIBRATE   
     if (!checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::Idischarge))
      {
        state = false;
      }
-#endif   
+//#endif   
      if (!state)
      {
         Screen::displayCalibrationErrorScreen();

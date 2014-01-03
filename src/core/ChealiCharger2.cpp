@@ -61,6 +61,9 @@ void setup()
 #endif
 
     Settings::load();
+#ifdef COMMONDISPLAY    
+    hardware::delay(5000);    //waiting common display charger display relase
+#endif
     Screen::displayStrings(PSTR("ChealiCharger"),
                            PSTR("ver: "  CHEALI_CHARGER_VERSION_STRING));
     hardware::delay(1000);

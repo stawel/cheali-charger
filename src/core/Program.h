@@ -48,8 +48,8 @@ public:
     static void printStartInfo(ProgramType prog);
     static bool startInfo();
 
-    static Strategy::statusType runStorage(bool balance);
-    static Strategy::statusType runTheveninCharge(int minChargeC);
+    static Strategy::statusType runStorage(bool balance, bool immediately);
+    static Strategy::statusType runTheveninCharge(int minChargeC, bool immediately);
     static Strategy::statusType runDischarge(bool immediately);
     static Strategy::statusType runNiXXDischarge(bool immediately);
     static Strategy::statusType runWasteTime();

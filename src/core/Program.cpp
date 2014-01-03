@@ -163,7 +163,7 @@ bool Program::startInfo()
     return doStrategy(startInfoBalanceScreens, true) == Strategy::COMPLETE;
 }
 
-Strategy::statusType Program::runStorage(bool balance)
+Strategy::statusType Program::runStorage(bool balance, bool immediately = false)
 {
     StorageStrategy::setDoBalance(balance);
     StorageStrategy::setVII(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage),
@@ -173,14 +173,15 @@ Strategy::statusType Program::runStorage(bool balance)
 }
 
 
-Strategy::statusType Program::runTheveninCharge(int minChargeC)
+Strategy::statusType Program::runTheveninCharge(int minChargeC,  bool immediately = false)
 {
     TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
             ProgramData::currentProgramData.battery.Ic, false);
     TheveninChargeStrategy::setMinI(ProgramData::currentProgramData.battery.Ic/minChargeC);
     Strategy::strategy_ = &TheveninChargeStrategy::vtable;
-    return doStrategy(theveninScreens);
+    return doStrategy(theveninScreens, immediately);
 }
+
 
 Strategy::statusType Program::runTheveninChargeBalance( bool immediately = false)
 {
@@ -239,13 +240,11 @@ Strategy::statusType Program::runDCcycle(bool prog1)
           if(status != Strategy::COMPLETE) {break;} 
  
           //waiting after discharge
-          //status = Strategy::RUNNING;
           cycleMode='W';
           status = runWasteTime();
           if(status != Strategy::COMPLETE) { break; } 
           
           //charge
-          //status = Strategy::RUNNING;
           Screen::resetETA();
           AnalogInputs::resetAccumulatedMeasurements();
           cycleMode='C';
@@ -253,7 +252,7 @@ Strategy::statusType Program::runDCcycle(bool prog1)
           //lastcharge? (no need wait at end?)
           if (tempCDcycles_ != settings.CDcycles_)
            {
-              status = runCycleChargeCommon(prog1, true);
+              status = runCycleChargeCommon(prog1, true); //independent exit
            } 
            else 
            {
@@ -262,7 +261,6 @@ Strategy::statusType Program::runDCcycle(bool prog1)
            if(status != Strategy::COMPLETE) {break;} 
           
           //waiting after charge
-          //status = Strategy::RUNNING;
           cycleMode='W';
           if (tempCDcycles_ != settings.CDcycles_)
            {
@@ -280,15 +278,11 @@ Strategy::statusType Program::runDCcycle(bool prog1)
 Strategy::statusType Program::runCycleDischargeCommon(bool prog1)
 {
   Strategy::statusType status;
-  
+
   if(prog1)  //1 is lixx
-  {
-    status = runDischarge(true);
-  }
+  { status = runDischarge(true);}
   else
-  {
-    status = runNiXXDischarge(true);
-  }
+  { status = runNiXXDischarge(true);}
   return status;
 }
 
@@ -299,27 +293,18 @@ Strategy::statusType Program::runCycleChargeCommon(bool prog1, bool mode)
           //lastcharge? (no need wait at end?)
           if (tempCDcycles_ != settings.CDcycles_)
            {
-
-              if(prog1)  //1 is lixx
-               {
-                 status =  runTheveninChargeBalance(mode); //independent exit
-               }
-               else
-               {
-                 status =  runDeltaCharge(mode);  //independent exit
-               }
+              if(prog1)  //1 is lixx  //0 is nixx
+              { status =  runTheveninChargeBalance(mode); } //independent exit
+              else
+              { status =  runDeltaCharge(mode); } //independent exit  
            } 
            else 
            {
-              if(prog1)  //0 is nixx
-              {
-                 status = runTheveninChargeBalance();  //normal exit point
-              }
+              if(prog1) 
+              { status = runTheveninChargeBalance(); } //normal exit point
+              
               else
-              {
-                 status = runDeltaCharge();  //normal exit point
-              }           
-
+              { status = runDeltaCharge();  } //normal exit point
            }
 
  return status;
@@ -395,7 +380,8 @@ void Program::run(ProgramType prog)
 
         switch(prog) {
         case Program::ChargeLiXX:
-            runTheveninCharge(10);
+        case Program::ChargePb:
+            runTheveninCharge(10);   //(end current = start current / 10)
             break;
         case Program::Balance:
             runBalance();
@@ -404,10 +390,6 @@ void Program::run(ProgramType prog)
         case Program::DischargePb:
             runDischarge();
             break;
-        case Program::ChargePb:
-            runTheveninCharge(5); //(end current = start current / 5)
-            break;
-
         case Program::FastChargeLiXX:
             runTheveninCharge(5);
             break;
