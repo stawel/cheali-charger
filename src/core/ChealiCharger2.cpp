@@ -55,15 +55,16 @@ void loop()
 void setup()
 {
     hardware::initialize();
-   // hardware::delay(100); //waiting for internal-PS stabilized (EEPROM protect)
 #ifdef ENABLE_STACK_INFO
     StackInfo::initialize();
 #endif
 
     Settings::load();
-#ifdef COMMONDISPLAY    
-    hardware::delay(5000);    //waiting common display charger display relase
+
+#ifdef START_DELAY_MS
+    hardware::delay(START_DELAY_MS); //waiting common display charger display relase
 #endif
+
     Screen::displayStrings(PSTR("ChealiCharger"),
                            PSTR("ver: "  CHEALI_CHARGER_VERSION_STRING));
     hardware::delay(1000);
@@ -75,11 +76,13 @@ void setup()
     eeprom::restoreDefault();
     
 #ifdef RAM_CG
-    lcdCreateCGRam();
+#ifndef START_DELAY_MS
+    lcdCreateCGRam();  
+#endif  
 #endif  
 
 
-    if (settings.calibratedState_ <7)
+    if (settings.calibratedState_ < 7)
     {
     Screen::runCalibrateBeforeUse();
     }

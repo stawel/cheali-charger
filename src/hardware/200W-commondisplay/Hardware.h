@@ -20,4 +20,7 @@
 
 #include "200W-commondisplay.h"
 
+//waiting common  display relase
+#define START_DELAY_MS 5000
+
 #endif /* HARDWARE_H_ */

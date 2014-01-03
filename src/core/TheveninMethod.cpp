@@ -113,7 +113,6 @@ void TheveninMethod::setVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueTyp
     Vend_ = Vend;
     maxValue_ = i;
     minValue_ = i/20;
-    if (minValue_ < 100) {minValue_ = 100;}
     balance_ = balance;
 }
 

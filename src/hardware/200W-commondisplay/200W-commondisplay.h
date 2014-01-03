@@ -58,10 +58,8 @@
 //knightrider effect is ADC working
 //#define KNIGHTRIDEREFFECT
 
-//use RAMCG battery icons for hitachi HD44780  (disable with common display)
+//use RAMCG battery icons for hitachi HD44780  (disable the common-display chargers)
 //#define RAM_CG
 
-//delayed start (wait common display message)    
-#define COMMONDISPLAY
 
 #endif /* 200W_H_ */
