@@ -76,9 +76,7 @@ void setup()
     eeprom::restoreDefault();
     
 #ifdef RAM_CG
-#ifndef START_DELAY_MS
-    lcdCreateCGRam();  
-#endif  
+    lcdCreateCGRam();
 #endif  
 
 
