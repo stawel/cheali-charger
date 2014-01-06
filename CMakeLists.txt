@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 2.6)
 
+SET(CMAKE_SYSTEM_NAME Generic)
+SET(CMAKE_C_COMPILER avr-gcc)
+SET(CMAKE_CXX_COMPILER avr-g++)
+
 Project(cheali-charger-mod)
+
+include(avr-compiler.cmake)
 
 set(cheali-charger-version 0.32m)
 set(cheali-charger-eeprom-calibration-version 52)
