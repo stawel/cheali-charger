@@ -40,9 +40,6 @@
 
 #define CALIBRATION_SPEED                   10
 
-//start warning-text
-//#define TESTINGALERT
-
 //loudness programcomplete
 //#define LOUDSOUND
 

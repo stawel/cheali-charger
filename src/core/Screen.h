@@ -63,7 +63,7 @@ namespace Screen {
     void displayScreenEnergy();
     void displayScreenCycles();
     //void displayWarningScreen();
-    void displayCalibrationErrorScreen();
+    void displayCalibrationErrorScreen(uint8_t errNo);
     void displayWaitScreen();
 
     void displayAnimation();

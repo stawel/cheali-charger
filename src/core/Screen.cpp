@@ -631,17 +631,17 @@ void Screen::displayWarningScreen()
 }
 */
 
-void Screen::displayCalibrationErrorScreen()
+void Screen::displayCalibrationErrorScreen(uint8_t errNo)
 {
 //                                 1234567890123456
-      Screen::displayStrings(PSTR("Cal."),
-                             PSTR("ERR."));
+      lcdSetCursor0_0();
+      lcdPrint_P(PSTR("Cal.err.  F:"));
+      lcdPrintUnsigned(errNo, 1);
       hardware::delay(8000);
 }
 
 void Screen::displayWaitScreen()
 {
-//                                 1234567890123456
       displayStrings(PSTR("wait"),NULL);
       hardware::delay(2000);
 }

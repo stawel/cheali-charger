@@ -40,9 +40,6 @@
 #define DISCHARGER_P1_TEXT           "1A" 
 #define SPMS_P1_TEXT                 "2A" 
 
-//start warning-text
-//#define TESTINGALERT
-
 //loudness programcomplete
 #define LOUDSOUND
 

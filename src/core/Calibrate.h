@@ -32,6 +32,8 @@ namespace Calibrate {
     bool checkCalibrate(AnalogInputs::ValueType);
     void checkCalibrateIdischarge();
     void checkCalibrateIcharge();
+    void saveCalibrateValueIcharge(uint16_t value);
+    void saveCalibrateValueIdisCharge(uint16_t value);
 };
 
 #endif /* CALIBRATE_H_ */

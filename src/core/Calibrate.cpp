@@ -115,6 +115,7 @@ const char ct2[] PROGMEM = "value:";
 
 const char * const tempMenu[] PROGMEM = {ct1,ct2, NULL};
 
+uint16_t x1=0;  //lastGood calibrationcurrent.
 
 class VoltageMenu: public EditMenu {
 public:
@@ -408,17 +409,17 @@ void calibrateIdischarge()
 }
 
 bool checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name1)
-{
-    //return true;
-    
-    uint16_t x1,x2=0;
+{   
+    uint16_t x2=0;
     bool r=true;
     for(uint16_t i=0; i < testCurrent; i=i++){
         x1 = AnalogInputs::reverseCalibrateValue(name1, i);
-        if (x1 < x2)  r=false;
+        if (x1 < x2)  r=false; break;
         x2=x1;
     }
      if(x1==0) r=false;
+
+    x1=x2;    //x1 return maxcharge/discharge value before overflow
     return r;
 }
 
@@ -429,29 +430,31 @@ void checkCalibrateIcharge()
     
     //check 'overflow" ismps (protect hardware PID ctrl chargers)
         //if r53-54 failure, then calibration value too high. Protect the SMPS circiuit the overflow value.
-   bool state = true;
+   //bool state = true;
     if (!checkCalibrate(MAX_CHARGE_I,AnalogInputs::IsmpsValue))
      {
-       state = false;
-     }
-   
-//#ifdef CHECKHARDWAREPIDVALIDCALIBRATE   
-    if (!checkCalibrate(MAX_CHARGE_I,AnalogInputs::Ismps))
-     {
-       state = false;
-     }
-//#endif   
-     if (!state)
-     {
-        Screen::displayCalibrationErrorScreen();
-        settings.SMPS_Upperbound_Value_ = 0; Settings::save(); 
-        return;
+       //state = false;
+       Screen::displayCalibrationErrorScreen(1);
      }
 
- 
-        settings.SMPS_Upperbound_Value_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, MAX_CHARGE_I);
-        //save calib status
-        settings.calibratedState_ = settings.calibratedState_ | 2;   Settings::save();    
+   //save largest current value
+    saveCalibrateValueIcharge( x1); 
+  
+    //info only
+    if (!checkCalibrate(MAX_CHARGE_I,AnalogInputs::Ismps))
+     {
+       //state = false;
+       Screen::displayCalibrationErrorScreen(2);
+     }
+     
+}
+
+void saveCalibrateValueIcharge(uint16_t value)
+{
+    //settings.SMPS_Upperbound_Value_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, value);
+    settings.SMPS_Upperbound_Value_ = value;
+    //save calib status
+    settings.calibratedState_ = settings.calibratedState_ | 2;   Settings::save();    
 }
 
 void checkCalibrateIdischarge()
@@ -459,23 +462,28 @@ void checkCalibrateIdischarge()
       bool state = true;
     if (!checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::IdischargeValue))
      {
-       state = false;
+       //state = false;
+        Screen::displayCalibrationErrorScreen(3);
      }
    
-//#ifdef CHECKHARDWAREPIDVALIDCALIBRATE   
+   //save largest current value
+   saveCalibrateValueIdisCharge( x1); 
+   
+   //info only
     if (!checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::Idischarge))
      {
-       state = false;
+       //state = false;
+       Screen::displayCalibrationErrorScreen(4);
      }
-//#endif   
-     if (!state)
-     {
-        Screen::displayCalibrationErrorScreen();
-       settings.DISCHARGER_Upperbound_Value_ = 0;  Settings::save(); 
-        return;
-     }  
   
-      settings.DISCHARGER_Upperbound_Value_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, MAX_DISCHARGE_I); 
+}
+
+
+
+void saveCalibrateValueIdisCharge(uint16_t value)
+{
+      //settings.DISCHARGER_Upperbound_Value_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, value); 
+      settings.DISCHARGER_Upperbound_Value_ = value;
       //save calib status
       settings.calibratedState_ = settings.calibratedState_  | 4; ;  Settings::save();   
 }

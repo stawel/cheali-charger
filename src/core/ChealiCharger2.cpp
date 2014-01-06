@@ -62,17 +62,12 @@ void setup()
     Settings::load();
 
 #ifdef START_DELAY_MS
-    hardware::delay(START_DELAY_MS); //waiting common display charger display relase
+    hardware::delay(START_DELAY_MS); //waiting common display charger for display relase
 #endif
 
     Screen::displayStrings(PSTR("ChealiCharger"),
                            PSTR("ver: "  CHEALI_CHARGER_VERSION_STRING));
-    hardware::delay(1000);
-#ifdef TESTINGALERT
-    Screen::displayStrings(PSTR(" Modded version"),
-                           PSTR("  FOR TESTING"));
-    hardware::delay(1000);
-#endif 
+    hardware::delay(1000); 
     eeprom::restoreDefault();
     
 #ifdef RAM_CG

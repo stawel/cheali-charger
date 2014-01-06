@@ -42,11 +42,7 @@
 #define DISCHARGER_P1_TEXT           "1A" 
 #define SPMS_P1_TEXT                 "5A" 
 
-
 #define CALIBRATION_SPEED                   10
-
-//start warning-text
-//#define TESTINGALERT
 
 //loudness programcomplete
 //#define LOUDSOUND
