@@ -634,9 +634,10 @@ void Screen::displayWarningScreen()
 void Screen::displayCalibrationErrorScreen(uint8_t errNo)
 {
 //                                 1234567890123456
+      lcdClear();
       lcdSetCursor0_0();
       lcdPrint_P(PSTR("Cal.err.  F:"));
-      lcdPrintUnsigned(errNo, 1);
+      lcdPrintUnsigned(errNo, 2);
       hardware::delay(8000);
 }
 
