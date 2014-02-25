@@ -24,19 +24,19 @@
 #define MAX_CHARGE_I            ANALOG_AMP(10.005)  //10A
 #define MAX_CHARGE_P            ANALOG_WATT(200.005)              //200W
 
-#define MAX_DISCHARGE_P         ANALOG_WATT(40.005)               //25W
-#define MAX_DISCHARGE_I         ANALOG_AMP(5.005)   //5A
+#define MAX_DISCHARGE_P         ANALOG_WATT(150.005)               //25W
+#define MAX_DISCHARGE_I         ANALOG_AMP(10.005)   //5A
 
 //#define SMPS_UPPERBOUND_VALUE               8192
 //#define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/8)
 //#define DISCHARGER_UPPERBOUND_VALUE         8192
 //#define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/8)
 
-#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.100) 
+#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.200) 
 #define DISCHARGER_P1_POINT          ANALOG_AMP(1.000) 
 #define SPMS_P1_POINT                ANALOG_AMP(2.000) 
 
-#define SPMS_DISCHARGER_P0_TEXT      "100mA" 
+#define SPMS_DISCHARGER_P0_TEXT      "200mA" 
 #define DISCHARGER_P1_TEXT           "1A" 
 #define SPMS_P1_TEXT                 "2A" 
 
@@ -55,8 +55,7 @@
 //knightrider effect is ADC working
 //#define KNIGHTRIDEREFFECT
 
-//use RAMCG battery icons for hitachi HD44780  (disable the common-display chargers)
-//#define RAM_CG
+//use RAMCG battery icons for hitachi HD44780
+#define RAM_CG
 
-
-#endif /* 200W_H_ */
+#endif /* GTPOWERA610_ORIGINAL_H_ */
