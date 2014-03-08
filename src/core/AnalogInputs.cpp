@@ -167,11 +167,14 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
     AnalogInputs::ValueType out = real_[Vout];
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-    //when balance port is not connected then
-    //it may happen that Vb0_pin > Vb1_pin or Vb1_pin > Vb2_pin
-    //that's why we use "absDiff"
-    setReal(Vb1, absDiff(getRealValue(Vb1_pin), getRealValue(Vb0_pin)));
-    setReal(Vb2, absDiff(getRealValue(Vb2_pin), getRealValue(Vb1_pin)));
+    AnalogInputs::ValueType vb0_p = getRealValue(Vb0_pin);
+    AnalogInputs::ValueType vb1_p = getRealValue(Vb1_pin);
+    AnalogInputs::ValueType vb2_p = getRealValue(Vb2_pin);
+    AnalogInputs::ValueType balance1 = 0, balance2 =0;
+    if(vb1_p > vb0_p) balance1 = vb1_p - vb0_p;
+    if(vb2_p > vb1_p) balance2 = vb2_p - vb1_p;
+    setReal(Vb1, balance1);
+    setReal(Vb2, balance2);
     for(uint8_t i=2; i < 6; i++) {
         setReal(Name(Vb1+i), getRealValue(Name(Vb1_pin+i)));
     }
