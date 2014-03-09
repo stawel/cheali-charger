@@ -39,7 +39,7 @@ struct adc_correlation {
 };
 
 const adc_correlation order_analogInputs_on[] PROGMEM = {
-    {-1,                    OUTPUT_VOLATAGE_PIN,    AnalogInputs::Vout,             0},
+    {-1,                    OUTPUT_VOLTAGE_PIN,     AnalogInputs::Vout,             0},
     {MADDR_V_OUTMUX,        MUX0_Z_A_PIN ,          AnalogInputs::VoutMux,          0},
     {MADDR_V_BALANSER1,     MUX1_Z_A_PIN,           AnalogInputs::Vb1_pin,         0},
     {-1,                    REVERSE_POLARITY_PIN,   AnalogInputs::VreversePolarity, 0},
@@ -48,7 +48,7 @@ const adc_correlation order_analogInputs_on[] PROGMEM = {
     {-1,                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0},
     {MADDR_V_IN,            MUX0_Z_A_PIN,           AnalogInputs::Vin,              0},
     {MADDR_V_BALANSER3,     MUX1_Z_A_PIN,           AnalogInputs::Vb3_pin,         0},
-    {-1,                    OUTPUT_VOLATAGE_PIN,    AnalogInputs::Vout,             0},
+    {-1,                    OUTPUT_VOLTAGE_PIN,     AnalogInputs::Vout,             0},
     {MADDR_T_EXTERN,        MUX0_Z_A_PIN,           AnalogInputs::Textern,          0},
     {MADDR_V_BALANSER4,     MUX1_Z_A_PIN,           AnalogInputs::Vb4_pin,         0},
     {-1,                    DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       0},

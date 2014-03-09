@@ -67,7 +67,7 @@
 //pin 36
 #define REVERSE_POLARITY_PIN    A1
 //pin 37
-#define OUTPUT_VOLATAGE_PIN     A0
+#define OUTPUT_VOLTAGE_PIN      A0
 
 // pin 38,39 - Vcc, GND
 

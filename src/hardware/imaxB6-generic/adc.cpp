@@ -74,7 +74,7 @@ const adc_correlation order_analogInputs_on[] PROGMEM = {
     {MADDR_V_BALANSER1,             MUX0_Z_A_PIN,           AnalogInputs::Vb1_pin,         false, true},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
     {MADDR_V_BALANSER2,             MUX0_Z_A_PIN,           AnalogInputs::Vb2_pin,         false, true},
-    {-1,                            OUTPUT_VOLATAGE_PIN,    AnalogInputs::Vout ,           false, false},
+    {-1,                            OUTPUT_VOLTAGE_PIN,     AnalogInputs::Vout ,           false, false},
     {MADDR_V_BALANSER6,             MUX0_Z_A_PIN,           AnalogInputs::Vb6_pin,         false, false},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
     {MADDR_V_BALANSER5,             MUX0_Z_A_PIN,           AnalogInputs::Vb5_pin,         false, false},
