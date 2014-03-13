@@ -23,9 +23,6 @@ set(CORE_SOURCE
         EditMenu.cpp
         Menu.h
         Menu.cpp
-        memory.h
-#        Multiplexer.cpp
-#        Multiplexer.h
         ProgramData.cpp
         ProgramData.h
         ProgramDataMenu.cpp
@@ -58,8 +55,6 @@ set(CORE_SOURCE
         Thevenin.h
         TheveninMethod.cpp
         TheveninMethod.h
-        Timer.cpp
-        Timer.h
         Utils.cpp
         Utils.h
         Blink.cpp
@@ -86,14 +81,8 @@ set(CORE_SOURCE
         Version.h
         Version.cpp
 
-        StackInfo.cpp
-        StackInfo.h
-
         SerialLog.h
         SerialLog.cpp
-
-        Serial.h
-        Serial.cpp
 
         eeprom.h
         eeprom.cpp
@@ -104,7 +93,6 @@ foreach (SOURCE ${CORE_SOURCE})
     set(THIS_FILE THIS_FILE-NOTFOUND)
     find_file(THIS_FILE ${SOURCE} PATHS ${CMAKE_SOURCE_DIR}/src/core NO_DEFAULT_PATH)
 #    message("append ${THIS_FILE}, ${SOURCE}")
-    unset(SFILE)
     list (APPEND CORE_SOURCE_FILES ${THIS_FILE})
 endforeach()
 
