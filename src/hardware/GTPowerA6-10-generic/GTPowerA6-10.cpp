@@ -80,7 +80,8 @@ void hardware::setFan(bool enable)
 }
 void hardware::setBuzzer(uint16_t val)
 {
-    analogWrite(BUZZER_PIN, val);
+//TODO: this uses Timer2 - should be rewritten
+//    analogWrite(BUZZER_PIN, val);
 }
 
 void hardware::setBatteryOutput(bool enable)
