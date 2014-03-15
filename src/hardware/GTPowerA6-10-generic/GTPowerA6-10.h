@@ -47,6 +47,7 @@
 #include "Discharger.h"
 #include "Balancer.h"
 #include "TimerOne.h"
+#include "adc.h"
 
 
 extern LiquidCrystal lcd;

@@ -59,7 +59,7 @@ uint8_t Keyboard::keyChanged(uint8_t key)
 
     key2 = getPressed();
     while(key2 != key) {
-        hardware::delay(BUTTON_CHANGE_DELAY);
+        Timer::delayIdle(BUTTON_CHANGE_DELAY);
         key = key2;
         key2 = getPressed();
     }
@@ -68,8 +68,9 @@ uint8_t Keyboard::keyChanged(uint8_t key)
     this_speed_ = 0;
     last_key_ = key;
 
-    if(key != BUTTON_NONE)
+    if(key != BUTTON_NONE) {
         Buzzer::soundKeyboard();
+    }
 
     return last_key_;
 }
@@ -79,7 +80,7 @@ uint8_t Keyboard::getPressedWithSpeed()
     uint8_t key = BUTTON_NONE;
     for(uint16_t i = 0; i < (BUTTON_DELAY_TIMES / pgm::read(&speedTable[speed_])) + 1; i++) {
         key = getPressed();
-        hardware::delay(BUTTON_DELAY);
+        Timer::delayIdle(BUTTON_DELAY);
         if(key == last_key_)
             continue;
 

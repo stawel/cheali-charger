@@ -21,6 +21,7 @@
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
 #include "adc.h"
+#include "SerialLog.h"
 
 
 uint8_t hardware::getKeyPressed()
@@ -65,20 +66,10 @@ void hardware::initialize()
     setBuzzer(0);
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
-    Timer::initialize();
-    SMPS::initialize();
-    Discharger::initialize();
 
     TimerOne::initialize();
     adc::initialize();
-    AnalogInputs::initialize();
 }
-
-void hardware::doInterrupt()
-{
-
-}
-
 
 
 namespace {

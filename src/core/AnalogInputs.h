@@ -126,59 +126,46 @@ namespace AnalogInputs {
     //get the ADC (measured) value - in this particular moment
     ValueType getADCValue(Name name);
 
-    ValueType calibrateValue(Name name, ValueType x);
-    ValueType reverseCalibrateValue(Name name, ValueType y);
-
     ValueType getVout();
     ValueType getIout();
+    ValueType getDeltaLastT();
+    ValueType getDeltaCount();
+    uint16_t getCharge();
+
+    uint8_t getConnectedBalancePorts();
+
+    uint16_t getFullMeasurementCount();
+    uint16_t getStableCount(Name name);
+
+    Type getType(Name name);
+
     bool isOutStable();
+    bool isStable(Name name);
+    bool isConnected(Name name);
+    bool isReversePolarity();
+    bool isPowerOn();
+
 
     void doFullMeasurement();
 
-    void finalizeMeasurement();
-    void finalizeDeltaMeasurement();
-    void finalizeFullMeasurement();
-    void finalizeFullVirtualMeasurement();
-
-    void clearAvr();
-    void resetADC();
-    void reset();
     void resetMeasurement();
-    void resetDelta();
     void powerOn();
     void powerOff();
-    bool isPowerOn();
 
-    void initialize();
-    void doSlowInterrupt();
-    uint16_t getCharge();
 
+//calibration
     void restoreDefault();
     void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);
     void setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &p);
 
-    uint8_t getConnectedBalancePorts();
-    bool isConnected(Name name);
+    ValueType calibrateValue(Name name, ValueType x);
+    ValueType reverseCalibrateValue(Name name, ValueType y);
 
-    uint16_t getFullMeasurementCount();
+//init
+    void initialize();
+    void doSlowInterrupt();
+
     void printRealValue(Name name, uint8_t dig);
-    static Type getType(Name name);
-    uint16_t getStableCount(Name name);
-    bool isStable(Name name);
-    void resetStable();
-    bool isReversePolarity();
-
-
-    extern const DefaultValues inputsP_[AnalogInputs::PHYSICAL_INPUTS];
-    extern ValueType real_[ALL_INPUTS];
-    extern ValueType adc_[PHYSICAL_INPUTS];
-
-    extern bool on_;
-    extern uint16_t calculationCount_;
-    extern uint16_t avrCount_;
-    extern ValueType   deltaLastT_;
-    extern uint16_t    deltaCount_;
-
 };
 
 template<class T>

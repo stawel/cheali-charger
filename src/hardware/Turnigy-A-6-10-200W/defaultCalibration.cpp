@@ -17,7 +17,7 @@
 */
 
 #include <Arduino.h>
-#include "AnalogInputs.h"
+#include "AnalogInputsPrivate.h"
 
 
 //file provided by: Jozsef N.

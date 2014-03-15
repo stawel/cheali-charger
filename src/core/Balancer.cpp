@@ -20,6 +20,7 @@
 #include "Balancer.h"
 #include "Screen.h"
 #include "Settings.h"
+#include "AnalogInputsPrivate.h"
 
 
 

@@ -18,16 +18,13 @@
 #ifndef ADC_H_
 #define ADC_H_
 
-class adc
-{
-public:
-    static void initialize();
-    static void processConversion(bool finalize = true);
-    static void startConversion();
-    static void reset();
-    static void doMeasurement();
-protected:
-    static void finalizeMeasurement();
+namespace adc {
+
+    void initialize();
+    void reset();
+
+    void conversionDone();
+    void timerInterrupt();
 };
 
 #endif /* ADC_H_ */

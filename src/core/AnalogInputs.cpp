@@ -16,11 +16,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "Hardware.h"
-#include "AnalogInputs.h"
+#include "AnalogInputsPrivate.h"
 #include "memory.h"
 #include "LcdPrint.h"
 #include "SerialLog.h"
 #include "eeprom.h"
+#include <util/atomic.h>
+
+
+#define RETURN_ATOMIC(x)  \
+    ValueType v; \
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {\
+        v = x;\
+    }\
+    return v;\
+
 
 
 namespace AnalogInputs {
@@ -44,17 +54,46 @@ namespace AnalogInputs {
 
     uint32_t    charge_;
 
-    ValueType getAvrADCValue(Name name)     { return avrAdc_[name]; }
-    ValueType getRealValue(Name name)       { return real_[name]; }
-    ValueType getADCValue(Name name)        { return adc_[name]; }
+    void clearAvr();
+    void resetADC();
+    void reset();
+    void resetDelta();
+
+
+    ValueType getAvrADCValue(Name name)     { RETURN_ATOMIC(avrAdc_[name])   }
+    ValueType getRealValue(Name name)       { RETURN_ATOMIC(real_[name]) }
+    ValueType getADCValue(Name name)        { RETURN_ATOMIC(adc_[name]) }
     bool isPowerOn() { return on_; }
-    uint16_t getFullMeasurementCount()  { return calculationCount_; }
-    uint16_t getStableCount(Name name)   { return stableCount_[name]; };
-    bool isStable(Name name)     { return stableCount_[name] >= STABLE_MIN_VALUE; };
+    uint16_t getFullMeasurementCount()      { RETURN_ATOMIC(calculationCount_) }
+    ValueType getDeltaLastT()               { RETURN_ATOMIC(deltaLastT_)}
+    ValueType getDeltaCount()               {RETURN_ATOMIC(deltaCount_)}
+
+    uint16_t getStableCount(Name name)      { RETURN_ATOMIC(stableCount_[name]) };
+    bool isStable(Name name)                { return getStableCount(name) >= STABLE_MIN_VALUE; };
     void setReal(Name name, ValueType real);
+
+    void finalizeDeltaMeasurement();
+    void finalizeFullMeasurement();
+    void finalizeFullVirtualMeasurement();
+    void resetStable();
 
 
 } // namespace AnalogInputs
+
+//this method depends on the ADC implementation
+void AnalogInputs::resetADC()
+{
+    adc::reset();
+}
+
+//this method depends on the ADC implementation
+void AnalogInputs::doFullMeasurement()
+{
+    clearAvr();
+    uint16_t c = getFullMeasurementCount();
+    while(c == getFullMeasurementCount())
+        Timer::delay(10);
+}
 
 
 void AnalogInputs::restoreDefault()
@@ -234,7 +273,10 @@ void AnalogInputs::doSlowInterrupt()
 
 uint16_t AnalogInputs::getCharge()
 {
-    uint32_t retu = charge_;
+    uint32_t retu;
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        retu = charge_;
+    }
 #if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 500
     retu /= 1000000/TIMER_INTERRUPT_PERIOD_MICROSECONDS/16;
     retu /= 3600/TIMER_SLOW_INTERRUPT_INTERVAL*16;
@@ -272,9 +314,6 @@ void AnalogInputs::finalizeFullMeasurement()
         setReal(name, real);
     }
     finalizeFullVirtualMeasurement();
-#ifdef ENABLE_SERIAL_LOG
-    SerialLog::send();
-#endif //ENABLE_SERIAL_LOG
     clearAvr();
 }
 
@@ -290,9 +329,11 @@ void AnalogInputs::setReal(Name name, ValueType real)
 
 void AnalogInputs::clearAvr()
 {
-    avrCount_ = 0;
-    FOR_ALL_PHY_INPUTS(name) {
-        avrSum_[name] = 0;
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        avrCount_ = 0;
+        FOR_ALL_PHY_INPUTS(name) {
+            avrSum_[name] = 0;
+        }
     }
 }
 
@@ -317,20 +358,23 @@ void AnalogInputs::resetStable()
 
 void AnalogInputs::resetMeasurement()
 {
-    clearAvr();
-    resetStable();
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        clearAvr();
+        resetStable();
+    }
 }
 
 void AnalogInputs::reset()
 {
-
-    calculationCount_ = 0;
-    charge_ = 0;
-    resetADC();
-    resetMeasurement();
-    resetDelta();
-    FOR_ALL_INPUTS(name){
-        real_[name] = 0;
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        calculationCount_ = 0;
+        charge_ = 0;
+        resetADC();
+        resetMeasurement();
+        resetDelta();
+        FOR_ALL_INPUTS(name){
+            real_[name] = 0;
+        }
     }
 }
 

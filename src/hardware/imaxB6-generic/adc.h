@@ -22,7 +22,9 @@ namespace adc
 {
     void initialize();
     void reset();
-    void doMeasurement();
+
+    void conversionDone();
+    void timerInterrupt();
 };
 
 #endif /* ADC_H_ */

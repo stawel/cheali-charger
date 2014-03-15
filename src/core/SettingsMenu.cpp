@@ -145,7 +145,7 @@ void SettingsMenu::run() {
 
         if(index < 0) return;
         switch(index) {
-        case sizeOfArray(SettingsStaticMenu) - 1:  //reset
+        case sizeOfArray(SettingsStaticMenu) - 2:  //reset
             p_.setDefault();
             Buzzer::soundSelect();
             break;

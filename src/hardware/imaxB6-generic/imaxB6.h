@@ -47,6 +47,7 @@
 #include "SMPS.h"
 #include "Discharger.h"
 #include "Balancer.h"
+#include "adc.h"
 
 
 extern LiquidCrystal lcd;

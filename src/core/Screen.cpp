@@ -358,7 +358,7 @@ void Screen::displayDeltaTextern()
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("Text="));
     if(settings.externT_) {
-        lcdPrintTemperature(AnalogInputs::deltaLastT_, 9);
+        lcdPrintTemperature(AnalogInputs::getDeltaLastT(), 9);
     } else {
         lcdPrint_P(PSTR("not used"));
     }

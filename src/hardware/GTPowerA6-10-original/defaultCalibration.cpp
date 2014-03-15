@@ -17,7 +17,7 @@
 */
 
 #include <Arduino.h>
-#include "AnalogInputs.h"
+#include "AnalogInputsPrivate.h"
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
     {{0,0},                         {50816, ANALOG_VOLT(23.118)}},  //Vout

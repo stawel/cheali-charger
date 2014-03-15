@@ -104,11 +104,11 @@ void Discharger::powerOff(STATE reason)
     state_ = reason;
 }
 
-void Discharger::doSlowInterrupt()
+void Discharger::doIdle()
 {
-    if(isPowerOn()) {
 #ifdef ENABLE_T_INTERNAL
+    if(isPowerOn()) {
         finalizeValueTintern(false);
-#endif
     }
+#endif
 }

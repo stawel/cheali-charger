@@ -15,31 +15,16 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef DISCHARGER_H
-#define DISCHARGER_H
-
-#include "Hardware.h"
-
-namespace Discharger {
-    enum STATE { DISCHARGING, DISCHARGING_COMPLETE, ERROR};
+#ifndef TIMER_0_H_
+#define TIMER_0_H_
 
 
+#define TIMER0_INTERRUPT_PERIOD_MICROSECONDS     400
+#define TIMER0_FROM_MICROSECONDS(x) ((x)/4-1)
+
+namespace Timer0 {
     void initialize();
-
-    STATE getState();
-    bool isPowerOn();
-    bool isWorking();
-
-
-    uint16_t getValue();
-    void setValue(uint16_t value);
-    void setRealValue(uint16_t I);
-
-    void powerOn();
-    void powerOff(STATE reason = DISCHARGING_COMPLETE);
-
-    void doIdle();
 };
 
 
-#endif //DISCHARGER_H
+#endif /* TIMER_H_ */

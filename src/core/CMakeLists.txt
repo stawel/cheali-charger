@@ -1,6 +1,7 @@
 set(CORE_SOURCE
         AnalogInputs.cpp
         AnalogInputs.h
+        AnalogInputsPrivate.h
         Balancer.cpp
         Balancer.h
         Strategy.cpp

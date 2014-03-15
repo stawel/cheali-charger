@@ -15,31 +15,20 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef DISCHARGER_H
-#define DISCHARGER_H
-
+#include "Timer0.h"
 #include "Hardware.h"
 
-namespace Discharger {
-    enum STATE { DISCHARGING, DISCHARGING_COMPLETE, ERROR};
+// ADC measurement interval
 
 
-    void initialize();
-
-    STATE getState();
-    bool isPowerOn();
-    bool isWorking();
-
-
-    uint16_t getValue();
-    void setValue(uint16_t value);
-    void setRealValue(uint16_t I);
-
-    void powerOn();
-    void powerOff(STATE reason = DISCHARGING_COMPLETE);
-
-    void doIdle();
-};
-
-
-#endif //DISCHARGER_H
+void Timer0::initialize()
+{
+#if F_CPU != 16000000
+#error "F_CPU != 16000000 - not implemented"
+#endif
+    TCNT0=0;
+    OCR0=TIMER0_FROM_MICROSECONDS(TIMER0_INTERRUPT_PERIOD_MICROSECONDS);
+    TCCR0=(1<<WGM01);               //Clear Timer on Compare Match (CTC) Mode
+    TCCR0|=(1<<CS00) | (1<<CS01);   //clk/64 (From prescaler)
+    TIMSK|=(1<<OCIE0);              //OCIE0: Timer/Counter0 Output Compare Match Interrupt Enable
+}

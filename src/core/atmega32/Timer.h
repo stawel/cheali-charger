@@ -25,11 +25,11 @@
 #define SLOW_INTERRUPT_PERIOD_MILISECONDS ((long)TIMER_INTERRUPT_PERIOD_MICROSECONDS*TIMER_SLOW_INTERRUPT_INTERVAL/1000)
 
 namespace Timer {
-    uint32_t getInterrupts();
     void initialize();
-    void doInterrupt();
+    uint32_t getInterrupts();
     uint32_t getMiliseconds();
     void delay(uint16_t ms);
+    void delayIdle(uint16_t ms);
 };
 
 

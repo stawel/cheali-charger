@@ -15,31 +15,23 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef DISCHARGER_H
-#define DISCHARGER_H
+#ifndef ANALOGINPUTSPRIVATE_H_
+#define ANALOGINPUTSPRIVATE_H_
 
-#include "Hardware.h"
-
-namespace Discharger {
-    enum STATE { DISCHARGING, DISCHARGING_COMPLETE, ERROR};
+#include "AnalogInputs.h"
 
 
-    void initialize();
+namespace AnalogInputs {
 
-    STATE getState();
-    bool isPowerOn();
-    bool isWorking();
+    extern const DefaultValues inputsP_[AnalogInputs::PHYSICAL_INPUTS];
+    extern ValueType real_[ALL_INPUTS];
+    extern ValueType adc_[PHYSICAL_INPUTS];
 
+    extern bool on_;
 
-    uint16_t getValue();
-    void setValue(uint16_t value);
-    void setRealValue(uint16_t I);
-
-    void powerOn();
-    void powerOff(STATE reason = DISCHARGING_COMPLETE);
-
-    void doIdle();
+    void finalizeMeasurement();
+    void resetStable();
 };
 
 
-#endif //DISCHARGER_H
+#endif /* ANALOGINPUTSPRIVATE_H_ */

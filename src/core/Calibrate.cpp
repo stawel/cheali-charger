@@ -27,6 +27,7 @@
 #include "EditMenu.h"
 #include "SerialLog.h"
 #include "Program.h"
+#include "AnalogInputsPrivate.h"
 
 namespace Calibrate {
 
@@ -167,6 +168,7 @@ void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
 
 bool testVout()
 {
+    return true;
     Screen::displayStrings(PSTR("Connect Battery!"),NULL);
     do {
         if(AnalogInputs::isConnected(AnalogInputs::Vout))

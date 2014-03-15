@@ -17,7 +17,7 @@
 */
 
 #include <Arduino.h>
-#include "AnalogInputs.h"
+#include "AnalogInputsPrivate.h"
 
 //file provided by: Jozsef N.
 //TODO: calibrate Vb6_pin, Textern

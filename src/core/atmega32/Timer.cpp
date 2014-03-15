@@ -20,6 +20,7 @@
 #include "Monitor.h"
 #include "Buzzer.h"
 #include "Screen.h"
+#include "SerialLog.h"
 #include <util/atomic.h>
 
 
@@ -29,18 +30,28 @@ namespace Timer {
     volatile uint32_t interrupts_ = 0;
 
     uint32_t getInterrupts() {
-        return interrupts_;
+        uint32_t v;
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+            v = interrupts_;
+        }
+        return v;
+    }
+    inline void doInterrupt() {
+        interrupts_++;
+    }
+
+    void doIdle() {
+        Monitor::doIdle();
+        SerialLog::doIdle();
+        Discharger::doIdle();
+        Buzzer::doIdle();
     }
 
     void callback() {
         static uint8_t slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
         Timer::doInterrupt();
-        Buzzer::doInterrupt();
-        Monitor::doInterrupt();
-        hardware::doInterrupt();
         if(--slowInterval == 0){
             slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
-            Discharger::doSlowInterrupt();
             AnalogInputs::doSlowInterrupt();
             Screen::doSlowInterrupt();
         }
@@ -71,16 +82,9 @@ void Timer::initialize()
     TIMSK|=(1<<OCIE2);              //OCIE2: Timer/Counter2 Output Compare Match Interrupt Enable
 }
 
-void Timer::doInterrupt()
-{
-    interrupts_++;
-}
 uint32_t Timer::getMiliseconds()
 {
-    uint32_t retu;
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        retu = interrupts_;
-    }
+    uint32_t retu = getInterrupts();
 #if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 500
     retu /= 2;
 #else
@@ -98,5 +102,15 @@ void Timer::delay(uint16_t ms)
     end = getMiliseconds() + ms;
 
     while(getMiliseconds() < end) {};
+}
+
+void Timer::delayIdle(uint16_t ms)
+{
+    uint32_t end;
+    end = getMiliseconds() + ms;
+
+    while(getMiliseconds() < end) {
+        doIdle();
+    };
 }
 

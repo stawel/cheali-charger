@@ -39,7 +39,7 @@ uint16_t VoutMaxMesured_;
 
 
 
-void Monitor::doInterrupt()
+void Monitor::doIdle()
 {
 #ifdef ENABLE_FAN
 #ifdef ENABLE_T_INTERNAL

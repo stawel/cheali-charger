@@ -34,7 +34,7 @@ namespace Buzzer {
     inline void soundOff()                  {sound(Off); }
     void begin();
 
-    void doInterrupt();
+    void doIdle();
 };
 
 #endif /* BUZZER_H_ */

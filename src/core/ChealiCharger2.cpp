@@ -55,6 +55,11 @@ void loop()
 void setup()
 {
     hardware::initialize();
+    Timer::initialize();
+    SMPS::initialize();
+    Discharger::initialize();
+    AnalogInputs::initialize();
+
 #ifdef ENABLE_STACK_INFO
     StackInfo::initialize();
 #endif
@@ -62,6 +67,6 @@ void setup()
     Settings::load();
     Screen::displayStrings(PSTR("  ChealiCharger"),
                            PSTR("    ver: "  CHEALI_CHARGER_VERSION_STRING));
-    hardware::delay(1000);
+    Timer::delay(1000);
     eeprom::restoreDefault();
 }

@@ -49,6 +49,7 @@ void Buzzer::sound(Buzzer::SoundType s)
           return;
       sound_ = s;
       begin();
+      Timer::delayIdle(50);
 }
 
 void Buzzer::soundIfSilence(Buzzer::SoundType s)
@@ -64,7 +65,7 @@ void Buzzer::begin()
 }
 
 
-void Buzzer::doInterrupt()
+void Buzzer::doIdle()
 {
     uint16_t v2 = getSound(Timer::getInterrupts() - begin_time_);
     if(v2 != last_value_) {

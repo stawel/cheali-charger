@@ -5,6 +5,10 @@ set(ATMEGA32_SOURCE
         memory.h
         Timer.cpp
         Timer.h
+
+        Timer0.cpp
+        Timer0.h
+
         Serial.h
         Serial.cpp
         StackInfo.cpp
