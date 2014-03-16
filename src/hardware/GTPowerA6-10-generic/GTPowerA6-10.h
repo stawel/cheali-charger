@@ -57,7 +57,7 @@ namespace hardware {
     uint8_t getKeyPressed();
     void delay(uint16_t t);
     void setLCDBacklight(uint8_t val);
-    void setBuzzer(uint16_t val);
+    void setBuzzer(uint8_t val);
     void setBatteryOutput(bool enable);
     void setChargerOutput(bool enable);
     void setBalancerOutput(bool enable);
@@ -67,6 +67,8 @@ namespace hardware {
     void setFan(bool enable);
     void setBalancer(uint8_t balance);
     inline void doInterrupt(){}
+
+    void soundInterrupt();
 }
 
 

@@ -73,28 +73,28 @@ void hardware::initialize()
 
 
 namespace {
-    volatile uint8_t sound = 0;
+    volatile uint8_t sound_ = 0;
 }
 void hardware::soundInterrupt()
 {
     static uint8_t on = 0;
 
     uint8_t f = 0;
-    if(sound > 0) {
+    if(sound_ > 0) {
         on++;
     } else {
         on = 0;
     }
-    if(sound >= 10) f=8;
-    if(sound >= 20) f=4;
-    if(sound >= 30) f=2;
+    if(sound_ >= 10) f=8;
+    if(sound_ >= 20) f=4;
+    if(sound_ >= 30) f=2;
 
     digitalWrite(BUZZER_PIN, on&f);
 }
 
-void hardware::setBuzzer(uint16_t val)
+void hardware::setBuzzer(uint8_t val)
 {
-    sound = val;
+    sound_ = val;
 }
 
 void hardware::setBatteryOutput(bool enable)

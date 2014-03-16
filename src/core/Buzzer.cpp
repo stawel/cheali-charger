@@ -26,18 +26,18 @@ namespace Buzzer {
     SoundType sound_;
 
 
-    uint16_t getKeyboard(uint16_t time);
-    uint16_t getInfo(uint16_t time);
-    uint16_t getSave(uint16_t time);
-    uint16_t getSelect(uint16_t time);
-    uint16_t getStartProgram(uint16_t time);
-    uint16_t getProgramComplete(uint16_t time);
-    uint16_t getReversedPolarity(uint16_t time);
-    uint16_t getError(uint16_t time);
-    uint16_t getOff(uint16_t time);
+    uint8_t getKeyboard(uint16_t time);
+    uint8_t getInfo(uint16_t time);
+    uint8_t getSave(uint16_t time);
+    uint8_t getSelect(uint16_t time);
+    uint8_t getStartProgram(uint16_t time);
+    uint8_t getProgramComplete(uint16_t time);
+    uint8_t getReversedPolarity(uint16_t time);
+    uint8_t getError(uint16_t time);
+    uint8_t getOff(uint16_t time);
 
-    uint16_t getSound(uint16_t time);
-    uint16_t setOff();
+    uint8_t getSound(uint16_t time);
+    uint8_t setOff();
 
 
 } // namespace Buzzer
@@ -67,14 +67,14 @@ void Buzzer::begin()
 
 void Buzzer::doIdle()
 {
-    uint16_t v2 = getSound(Timer::getInterrupts() - begin_time_);
+    uint8_t v2 = getSound(Timer::getInterrupts() - begin_time_);
     if(v2 != last_value_) {
         last_value_ = v2;
         hardware::setBuzzer(last_value_);
     }
 }
 
-uint16_t Buzzer::getSound(uint16_t time)
+uint8_t Buzzer::getSound(uint16_t time)
 {
     switch(sound_) {
     case Keyboard:             return getKeyboard(time);
@@ -92,7 +92,7 @@ uint16_t Buzzer::getSound(uint16_t time)
 }
 
 
-uint16_t wave(int time, int size)
+uint8_t wave(int time, uint8_t size)
 {
     if(time > 2*size)
         return 0;
@@ -105,18 +105,18 @@ uint16_t wave(int time, int size)
 
 
 
-uint16_t Buzzer::getOff(uint16_t time)
+uint8_t Buzzer::getOff(uint16_t time)
 {
     return 0;
 }
-uint16_t Buzzer::setOff()
+uint8_t Buzzer::setOff()
 {
     soundOff();
     return 0;
 }
 
 
-uint16_t Buzzer::getKeyboard(uint16_t time)
+uint8_t Buzzer::getKeyboard(uint16_t time)
 {
     time/=2;
     if(time > 20)
@@ -125,7 +125,7 @@ uint16_t Buzzer::getKeyboard(uint16_t time)
 }
 
 
-uint16_t Buzzer::getSelect(uint16_t time)
+uint8_t Buzzer::getSelect(uint16_t time)
 {
     int v = time/4;
     if(v > 200)
@@ -134,13 +134,13 @@ uint16_t Buzzer::getSelect(uint16_t time)
 }
 
 
-uint16_t Buzzer::getInfo(uint16_t time)
+uint8_t Buzzer::getInfo(uint16_t time)
 {
     uint16_t v = time%2000;
     return wave(v, 10);
 }
 
-uint16_t Buzzer::getSave(uint16_t time)
+uint8_t Buzzer::getSave(uint16_t time)
 {
     uint16_t v = time/10;
 
@@ -150,13 +150,13 @@ uint16_t Buzzer::getSave(uint16_t time)
     return wave(v, 20);
 }
 
-uint16_t Buzzer::getStartProgram(uint16_t time)
+uint8_t Buzzer::getStartProgram(uint16_t time)
 {
     return getSelect(time);
 }
 
 
-uint16_t Buzzer::getProgramComplete(uint16_t time)
+uint8_t Buzzer::getProgramComplete(uint16_t time)
 {
     uint16_t val = time/10;
     uint16_t v = val%40;
@@ -167,7 +167,7 @@ uint16_t Buzzer::getProgramComplete(uint16_t time)
     return wave(v, 20);
 }
 
-uint16_t Buzzer::getReversedPolarity(uint16_t time)
+uint8_t Buzzer::getReversedPolarity(uint16_t time)
 {
     uint16_t val = time/10;
     uint16_t v = val%40;
@@ -177,7 +177,7 @@ uint16_t Buzzer::getReversedPolarity(uint16_t time)
     return wave(v, 20);
 }
 
-uint16_t Buzzer::getError(uint16_t time)
+uint8_t Buzzer::getError(uint16_t time)
 {
     uint16_t val = time/10;
     uint16_t v = val%40;

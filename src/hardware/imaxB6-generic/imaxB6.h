@@ -56,7 +56,7 @@ namespace hardware {
     void initialize();
     uint8_t getKeyPressed();
     void delay(uint16_t t);
-    void setBuzzer(uint16_t val);
+    void setBuzzer(uint8_t val);
     void setBatteryOutput(bool enable);
     void setChargerOutput(bool enable);
     void setDischargerOutput(bool enable);

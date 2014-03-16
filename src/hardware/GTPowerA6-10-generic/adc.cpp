@@ -68,10 +68,10 @@ static uint8_t adc_keyboard_;
 void initialize()
 {
 
-    digitalWrite(MUX0_Z_D_PIN, 0);
-    digitalWrite(MUX1_Z_D_PIN, 0);
     pinMode(MUX0_Z_D_PIN, INPUT);
     pinMode(MUX1_Z_D_PIN, INPUT);
+    digitalWrite(MUX0_Z_D_PIN, 0);
+    digitalWrite(MUX1_Z_D_PIN, 0);
 
     pinMode(MUX_ADR0_PIN, OUTPUT);
     pinMode(MUX_ADR1_PIN, OUTPUT);

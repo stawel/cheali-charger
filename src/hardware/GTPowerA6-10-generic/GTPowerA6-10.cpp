@@ -41,25 +41,14 @@ void hardware::initialize()
     pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
     pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
-    pinMode(MUX_ADR0_PIN, OUTPUT);
-    pinMode(MUX_ADR1_PIN, OUTPUT);
-    pinMode(MUX_ADR2_PIN, OUTPUT);
-    pinMode(MUX0_Z_D_PIN, INPUT);
-    pinMode(MUX1_Z_D_PIN, INPUT);
-
     setBatteryOutput(false);
     setFan(false);
     setBuzzer(0);
     setBalancer(0);
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
-    Timer::initialize();
-    SMPS::initialize();
-    Discharger::initialize();
-
     Timer1.initialize(TIMER1_PERIOD_MICROSECONDS);         // initialize timer1, and set a 1/2 second period
     adc::initialize();
-    AnalogInputs::initialize();
 }
 
 void hardware::setLCDBacklight(uint8_t val)
@@ -78,10 +67,11 @@ void hardware::setFan(bool enable)
 {
     digitalWrite(FAN_PIN, enable);
 }
-void hardware::setBuzzer(uint16_t val)
+void hardware::setBuzzer(uint8_t val)
 {
-//TODO: this uses Timer2 - should be rewritten
-//    analogWrite(BUZZER_PIN, val);
+    //TODO: this should be rewritten, sorry for that :D
+    //Timer2 is now used by the Timer.cpp implementation
+    digitalWrite(BUZZER_PIN, !(val&1));
 }
 
 void hardware::setBatteryOutput(bool enable)
