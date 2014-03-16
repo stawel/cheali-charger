@@ -39,6 +39,7 @@ struct Settings {
     uint16_t capCutoff_;
     AnalogInputs::ValueType inputVoltageLow_;
     AnalogInputs::ValueType dischargeOffset_LiXX_;
+    AnalogInputs::ValueType dischargeAggressive_LiXX_;
     AnalogInputs::ValueType balancerError_;
     uint16_t UART_;
     uint16_t UARTspeed_;

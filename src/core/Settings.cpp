@@ -27,6 +27,10 @@
 #define DEFAULT_SETTINGS_EXTERNAL_T 1
 #endif
 
+#ifndef DEFAULT_SETTINGS_DISCHARGE_AGGRESSIVE_LIXX
+#define DEFAULT_SETTINGS_DISCHARGE_AGGRESSIVE_LIXX 1
+#endif
+
 Settings settings;
 
 const Settings defaultSettings PROGMEM = {
@@ -42,6 +46,7 @@ const Settings defaultSettings PROGMEM = {
         120,                //"%" capCutoff_
         ANALOG_VOLT(7),     //inputVoltageLow_
         ANALOG_VOLT(0),     //dischargeOffset_LiXX_
+        DEFAULT_SETTINGS_DISCHARGE_AGGRESSIVE_LIXX,  //dischargeAggressive_LiXX_;
         ANALOG_VOLT(0.008), //balancerError_
         Settings::Disabled, //UART_ - disabled
         3                   //57600
