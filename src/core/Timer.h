@@ -30,6 +30,9 @@ namespace Timer {
     uint32_t getMiliseconds();
     void delay(uint16_t ms);
     void delayIdle(uint16_t ms);
+
+    //private
+    void callback();
 };
 
 

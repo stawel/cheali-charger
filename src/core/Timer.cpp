@@ -24,7 +24,7 @@
 #include <util/atomic.h>
 
 
-// time measurement - It uses atmega32/Timer2 to measure TIMER_INTERRUPT_PERIOD_MICROSECONDS
+// time measurement
 
 namespace Timer {
     volatile uint32_t interrupts_ = 0;
@@ -56,30 +56,6 @@ namespace Timer {
             Screen::doSlowInterrupt();
         }
     }
-}
-
-ISR(TIMER2_COMP_vect)
-{
-    Timer::callback();
-}
-
-
-void Timer::initialize()
-{
-#if F_CPU != 16000000
-#error "F_CPU != 16000000 - not implemented"
-#endif
-#if TIMER_INTERRUPT_PERIOD_MICROSECONDS != 500
-#error "TIMER_INTERRUPT_PERIOD_MICROSECONDS != 500 - not implemented"
-#endif
-
-    TCCR2=(1<<WGM21);               //Clear Timer on Compare Match (CTC) Mode
-    TCCR2|=(1 << CS22);             //clk/64 (From prescaler)
-
-    TCNT2=0;
-    OCR2=TIMER_INTERRUPT_PERIOD_MICROSECONDS/4 - 1;
-
-    TIMSK|=(1<<OCIE2);              //OCIE2: Timer/Counter2 Output Compare Match Interrupt Enable
 }
 
 uint32_t Timer::getMiliseconds()

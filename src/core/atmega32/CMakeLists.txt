@@ -3,8 +3,7 @@ include(${CMAKE_SOURCE_DIR}/src/core/CMakeLists.txt)
 
 set(ATMEGA32_SOURCE
         memory.h
-        Timer.cpp
-        Timer.h
+        Timer2.cpp
 
         Timer0.cpp
         Timer0.h
