@@ -20,26 +20,27 @@
 #include "GTPowerA6-10-pins.h"
 #include "GTPowerA6-10.h"
 #include "adc.h"
+#include "IO.h"
 
 void hardware::initialize()
 {
-    pinMode(BACKLIGHT_PIN, OUTPUT);
-    pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
-    pinMode(FAN_PIN, OUTPUT);
-    pinMode(BUZZER_PIN, OUTPUT);
+    IO::pinMode(BACKLIGHT_PIN, OUTPUT);
+    IO::pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
+    IO::pinMode(FAN_PIN, OUTPUT);
+    IO::pinMode(BUZZER_PIN, OUTPUT);
 
-    pinMode(BALANCER1_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER2_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER3_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER4_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER5_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER6_LOAD_PIN, OUTPUT);
+    IO::pinMode(BALANCER1_LOAD_PIN, OUTPUT);
+    IO::pinMode(BALANCER2_LOAD_PIN, OUTPUT);
+    IO::pinMode(BALANCER3_LOAD_PIN, OUTPUT);
+    IO::pinMode(BALANCER4_LOAD_PIN, OUTPUT);
+    IO::pinMode(BALANCER5_LOAD_PIN, OUTPUT);
+    IO::pinMode(BALANCER6_LOAD_PIN, OUTPUT);
 
 
-    pinMode(SMPS_VALUE_PIN, OUTPUT);
-    pinMode(SMPS_DISABLE_PIN, OUTPUT);
-    pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
-    pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
+    IO::pinMode(SMPS_VALUE_PIN, OUTPUT);
+    IO::pinMode(SMPS_DISABLE_PIN, OUTPUT);
+    IO::pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
+    IO::pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
     setBatteryOutput(false);
     setFan(false);
@@ -65,26 +66,26 @@ void hardware::setLCDBacklight(uint8_t val)
 
 void hardware::setFan(bool enable)
 {
-    digitalWrite(FAN_PIN, enable);
+    IO::digitalWrite(FAN_PIN, enable);
 }
 void hardware::setBuzzer(uint8_t val)
 {
     //TODO: this should be rewritten, sorry for that :D
     //Timer2 is now used by the Timer.cpp implementation
-    digitalWrite(BUZZER_PIN, !(val&1));
+    IO::digitalWrite(BUZZER_PIN, !(val&1));
 }
 
 void hardware::setBatteryOutput(bool enable)
 {
-    digitalWrite(OUTPUT_DISABLE_PIN, !enable);
+    IO::digitalWrite(OUTPUT_DISABLE_PIN, !enable);
 }
 void hardware::setChargerOutput(bool enable)
 {
-    digitalWrite(SMPS_DISABLE_PIN, !enable);
+    IO::digitalWrite(SMPS_DISABLE_PIN, !enable);
 }
 void hardware::setDischargerOutput(bool enable)
 {
-    digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
+    IO::digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
 }
 
 void hardware::setChargerValue(uint16_t value)
@@ -98,12 +99,12 @@ void hardware::setDischargerValue(uint16_t value)
 
 void hardware::setBalancer(uint8_t v)
 {
-    digitalWrite(BALANCER1_LOAD_PIN, v&1);
-    digitalWrite(BALANCER2_LOAD_PIN, v&2);
-    digitalWrite(BALANCER3_LOAD_PIN, v&4);
-    digitalWrite(BALANCER4_LOAD_PIN, v&8);
-    digitalWrite(BALANCER5_LOAD_PIN, v&16);
-    digitalWrite(BALANCER6_LOAD_PIN, v&32);
+    IO::digitalWrite(BALANCER1_LOAD_PIN, v&1);
+    IO::digitalWrite(BALANCER2_LOAD_PIN, v&2);
+    IO::digitalWrite(BALANCER3_LOAD_PIN, v&4);
+    IO::digitalWrite(BALANCER4_LOAD_PIN, v&8);
+    IO::digitalWrite(BALANCER5_LOAD_PIN, v&16);
+    IO::digitalWrite(BALANCER6_LOAD_PIN, v&32);
 }
 
 void hardware::setBalancerOutput(bool enable)

@@ -90,6 +90,8 @@ set(CORE_SOURCE
 
         eeprom.h
         eeprom.cpp
+		
+		IO.h
 )
 
 set (CORE_SOURCE_FILES "")

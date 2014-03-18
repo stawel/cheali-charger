@@ -3,6 +3,7 @@
 #include "TimerOne.h"
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
+#include "IO.h"
 
 
 namespace {
@@ -61,15 +62,15 @@ void SMPS_PID::init(uint16_t Vin, uint16_t Vout)
 namespace {
     void enableChargerBuck() {
         TimerOne::disablePWM(SMPS_VALUE_BUCK_PIN);
-        digitalWrite(SMPS_VALUE_BUCK_PIN, 1);
+        IO::digitalWrite(SMPS_VALUE_BUCK_PIN, 1);
     }
     void disableChargerBuck() {
         TimerOne::disablePWM(SMPS_VALUE_BUCK_PIN);
-        digitalWrite(SMPS_VALUE_BUCK_PIN, 0);
+        IO::digitalWrite(SMPS_VALUE_BUCK_PIN, 0);
     }
     void disableChargerBoost() {
         TimerOne::disablePWM(SMPS_VALUE_BOOST_PIN);
-        digitalWrite(SMPS_VALUE_BOOST_PIN, 0);
+        IO::digitalWrite(SMPS_VALUE_BOOST_PIN, 0);
     }
 }
 
@@ -100,7 +101,7 @@ void hardware::setChargerOutput(bool enable)
     disableChargerBuck();
     disableChargerBoost();
     PID_enable = false;
-    digitalWrite(SMPS_DISABLE_PIN, !enable);
+    IO::digitalWrite(SMPS_DISABLE_PIN, !enable);
     if(enable) {
         SMPS_PID::init(AnalogInputs::getRealValue(AnalogInputs::Vin), AnalogInputs::getRealValue(AnalogInputs::Vout));
     }
@@ -110,7 +111,7 @@ void hardware::setChargerOutput(bool enable)
 void hardware::setDischargerOutput(bool enable)
 {
     if(enable) setChargerOutput(false);
-    digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
+    IO::digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
 }
 
 void hardware::setDischargerValue(uint16_t value)

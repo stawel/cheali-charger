@@ -12,6 +12,8 @@ set(ATMEGA32_SOURCE
         Serial.cpp
         StackInfo.cpp
         StackInfo.h
+
+		IO.cpp
 )
 
 foreach (SOURCE ${ATMEGA32_SOURCE})

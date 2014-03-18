@@ -28,6 +28,7 @@
 #include "Version.h"
 #include "TheveninMethod.h"
 #include "StackInfo.h"
+#include "IO.h"
 
 namespace SerialLog {
     enum State { On, Off, Starting };
@@ -65,7 +66,7 @@ void serialEnd()
 {
     Serial.flush();
     Serial.end();
-    pinMode(10, INPUT);
+    IO::pinMode(10, INPUT);
 }
 
 void powerOn()

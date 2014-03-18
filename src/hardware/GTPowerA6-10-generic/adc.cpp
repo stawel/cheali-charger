@@ -25,6 +25,7 @@
 #include "adc.h"
 #include "Utils.h"
 #include "memory.h"
+#include "IO.h"
 
 #include "Timer0.h"
 #include "AnalogInputsPrivate.h"
@@ -68,14 +69,14 @@ static uint8_t adc_keyboard_;
 void initialize()
 {
 
-    pinMode(MUX0_Z_D_PIN, INPUT);
-    pinMode(MUX1_Z_D_PIN, INPUT);
-    digitalWrite(MUX0_Z_D_PIN, 0);
-    digitalWrite(MUX1_Z_D_PIN, 0);
+    IO::pinMode(MUX0_Z_D_PIN, INPUT);
+    IO::pinMode(MUX1_Z_D_PIN, INPUT);
+    IO::digitalWrite(MUX0_Z_D_PIN, 0);
+    IO::digitalWrite(MUX1_Z_D_PIN, 0);
 
-    pinMode(MUX_ADR0_PIN, OUTPUT);
-    pinMode(MUX_ADR1_PIN, OUTPUT);
-    pinMode(MUX_ADR2_PIN, OUTPUT);
+    IO::pinMode(MUX_ADR0_PIN, OUTPUT);
+    IO::pinMode(MUX_ADR1_PIN, OUTPUT);
+    IO::pinMode(MUX_ADR2_PIN, OUTPUT);
 
     //ADC Auto Trigger Source - Timer/Counter0 Compare Match
     SFIOR |= _BV(ADTS1) | _BV(ADTS0);
@@ -147,9 +148,9 @@ void setMuxAddress(int8_t address)
         return;
     if(address != last) {
         last = address;
-//        digitalWrite(MUX_ADR0_PIN, address&1);
-//        digitalWrite(MUX_ADR1_PIN, address&2);
-//        digitalWrite(MUX_ADR2_PIN, address&4);
+//        IO::digitalWrite(MUX_ADR0_PIN, address&1);
+//        IO::digitalWrite(MUX_ADR1_PIN, address&2);
+//        IO::digitalWrite(MUX_ADR2_PIN, address&4);
         uint8_t port_adr =  ((address&1) << 2) | (address&2) | ((address&4) >>2);
         PORTB = (PORTB & 0x1f) | (port_adr) << 5;
     }

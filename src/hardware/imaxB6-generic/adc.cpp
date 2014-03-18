@@ -30,6 +30,7 @@
 #include "Settings.h"
 #include "Timer0.h"
 #include "AnalogInputsPrivate.h"
+#include "IO.h"
 
 /* ADC - measurement:
  * uses Timer0 to trigger conversion
@@ -71,12 +72,12 @@ static uint8_t current_input_;
 
 void initialize()
 {
-    digitalWrite(MUX0_Z_D_PIN, 0);
-    pinMode(MUX0_Z_D_PIN, INPUT);
+    IO::digitalWrite(MUX0_Z_D_PIN, 0);
+    IO::pinMode(MUX0_Z_D_PIN, INPUT);
 
-    pinMode(MUX_ADR0_PIN, OUTPUT);
-    pinMode(MUX_ADR1_PIN, OUTPUT);
-    pinMode(MUX_ADR2_PIN, OUTPUT);
+    IO::pinMode(MUX_ADR0_PIN, OUTPUT);
+    IO::pinMode(MUX_ADR1_PIN, OUTPUT);
+    IO::pinMode(MUX_ADR2_PIN, OUTPUT);
 
 
     //ADC Auto Trigger Source - Timer/Counter0 Compare Match
@@ -153,7 +154,7 @@ void setMuxAddress(int8_t address)
 
     //discharge ADC capacitor first
     PORTB = disc_adr;
-    //pinMode(MUX0_Z_D_PIN, OUTPUT);
+    //IO::pinMode(MUX0_Z_D_PIN, OUTPUT);
     DDRA |= pin_bit;
     delayMicroseconds(ADC_CAPACITOR_DISCHARGE_DELAY_US);
 
@@ -161,7 +162,7 @@ void setMuxAddress(int8_t address)
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
         PORTB = new_portb;
-        //pinMode(MUX0_Z_D_PIN, INPUT);
+        //IO::pinMode(MUX0_Z_D_PIN, INPUT);
         DDRA &= ~pin_bit;
     }
 }
