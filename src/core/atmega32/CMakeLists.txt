@@ -13,8 +13,8 @@ set(ATMEGA32_SOURCE
         StackInfo.cpp
         StackInfo.h
 
-	IO.cpp
-	Utils.cpp
+        IO.h
+        Utils.cpp
 )
 
 foreach (SOURCE ${ATMEGA32_SOURCE})

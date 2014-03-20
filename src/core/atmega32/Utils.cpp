@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2013  Tucker Kern. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,33 +25,28 @@ namespace Utils
     // Accuracy of this is probably low but does that matter for us?
     void delayTenMicroseconds(uint16_t value)
     {
-	if (value >= 100)
-	{
-	    Utils::delayMilliseconds(value/100);
-	}
-	else
-	{
-	    while (value--)
-	    {
-		_delay_us(10);
-	    }
-	}
-	return;
+        if (value >= 100) {
+            Utils::delayMilliseconds(value/100);
+        } else {
+            while (value--) {
+                _delay_us(10);
+            }
+        }
+        return;
     }
 
     void delayMicroseconds(uint16_t value)
     {
-	Utils::delayTenMicroseconds(value/10);
-	return;
+        Utils::delayTenMicroseconds(value/10);
+        return;
     }
     
     void delayMilliseconds(uint16_t value)
     {
-	while (value--)
-	{
-	    // Delay function can't accept variables
-	    _delay_ms(1);
-	}
-	return;
+        while (value--) {
+            // Delay function can't accept variables
+            _delay_ms(1);
+        }
+        return;
     }
 }
