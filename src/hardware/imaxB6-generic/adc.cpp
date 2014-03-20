@@ -20,7 +20,6 @@
 #include <avr/io.h>
 #include <util/atomic.h>
 #include <Arduino.h>
-
 #include "Hardware.h"
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
@@ -156,7 +155,7 @@ void setMuxAddress(int8_t address)
     PORTB = disc_adr;
     //IO::pinMode(MUX0_Z_D_PIN, OUTPUT);
     DDRA |= pin_bit;
-    delayMicroseconds(ADC_CAPACITOR_DISCHARGE_DELAY_US);
+    Utils::delayMicroseconds(ADC_CAPACITOR_DISCHARGE_DELAY_US); // Is the accuracy of this delay super important?!
 
     //switch to the desired address
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)

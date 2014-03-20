@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include "Hardware.h"
 #include "TimerOne.h"
 #include "imaxB6-pins.h"

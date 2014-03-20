@@ -15,33 +15,43 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef IO_H_
-#define IO_H_
 
-#include <stdint.h>
+#include "Utils.h"
+// Need F_CPU to be defined. Which is done elsewhere
+#include <util/delay.h>
 
-// Hopefully these aren't invalid for other platforms
-#ifndef Arduino_h
-#define OUTPUT 1
-#define INPUT 0
-#define HIGH 1
-#define LOW 0
-#endif
-
-namespace IO
+namespace Utils
 {
-	// Core IO functions to be implemented in proper target folder
-	void digitalWrite(uint8_t pinNumber, uint8_t value);
-	uint8_t digitalRead(uint8_t pinNumber);
-	void pinMode(uint8_t pinNumber, uint8_t mode);
+    // Accuracy of this is probably low but does that matter for us?
+    void delayTenMicroseconds(uint16_t value)
+    {
+	if (value >= 100)
+	{
+	    Utils::delayMilliseconds(value/100);
+	}
+	else
+	{
+	    while (value--)
+	    {
+		_delay_us(10);
+	    }
+	}
+	return;
+    }
 
-	// Auxillery functions utilized for pin to port mapping
-	volatile uint8_t* pinToPort(uint8_t pinNumber);
-	uint8_t pinBitmask(uint8_t pinNumber);
-	volatile uint8_t* pinToInputPort(uint8_t pinNumber);
-	volatile uint8_t* pinToDDR(uint8_t pinNumber);
-
+    void delayMicroseconds(uint16_t value)
+    {
+	Utils::delayTenMicroseconds(value/10);
+	return;
+    }
+    
+    void delayMilliseconds(uint16_t value)
+    {
+	while (value--)
+	{
+	    // Delay function can't accept variables
+	    _delay_ms(1);
+	}
+	return;
+    }
 }
-
-
-#endif /* IO_H_ */

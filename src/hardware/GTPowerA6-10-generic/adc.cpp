@@ -186,7 +186,7 @@ void processConversion(bool finalize)
         finalizeMeasurement();
     else {
         //info:improves the precision
-        delayMicroseconds(ADC_DELAY_MS);
+	Utils::delayMicroseconds(ADC_DELAY_MS);
     }*/
 }
 
