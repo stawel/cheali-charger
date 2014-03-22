@@ -47,7 +47,7 @@
 #define LCD_D1_PIN              21
 #define LCD_D0_PIN              22
 #define LCD_ENABLE_PIN          23
-#define LCD_ENABLE_RS           24
+#define LCD_RS_PIN              24
 
 #define BALANCER1_LOAD_PIN      25
 #define BALANCER2_LOAD_PIN      26

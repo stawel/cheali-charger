@@ -45,7 +45,7 @@
 #define LCD_D1_PIN              21
 #define LCD_D0_PIN              22
 #define LCD_ENABLE_PIN          23
-#define LCD_ENABLE_RS           24
+#define LCD_RS_PIN              24
 
 #define UNKNOWN0_PIN            25
 #define UNKNOWN1_PIN            26
