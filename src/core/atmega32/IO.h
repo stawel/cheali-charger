@@ -33,7 +33,7 @@ namespace IO
         // Core IO functions to be implemented in proper target folder
         inline void digitalWrite(uint8_t pinNumber, uint8_t value);
         inline uint8_t digitalRead(uint8_t pinNumber);
-        inline void pinMode(uint8_t pinNumber, uint8_t mode);
+        inline void pinMode(uint8_t pinNumber, uint8_t mode)__attribute__((always_inline));
 
         // Auxillery functions utilized for pin to port mapping
         inline volatile uint8_t* pinToPort(uint8_t pinNumber);
