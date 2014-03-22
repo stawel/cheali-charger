@@ -22,9 +22,14 @@
 
 
 bool PolarityCheck::isReversedPolarity_ = false;
+bool PolarityCheck::checkReversedPolarity_ = true;
+
 
 bool PolarityCheck::runReversedPolarityInfo()
 {
+    if(!checkReversedPolarity_)
+        return false;
+
     bool reversed = AnalogInputs::isReversePolarity();
     if(reversed) {
         if(!isReversedPolarity_)

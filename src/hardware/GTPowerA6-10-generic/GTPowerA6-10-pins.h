@@ -65,9 +65,9 @@
 //pin 35 - ??
 #define SMPS_CURRENT_PIN        A2
 //pin 36
-#define REVERSE_POLARITY_PIN    A1
+#define OUTPUT_VOLTAGE_MINUS_PIN    A1
 //pin 37
-#define OUTPUT_VOLTAGE_PIN      A0
+#define OUTPUT_VOLTAGE_PLUS_PIN     A0
 
 // pin 38,39 - Vcc, GND
 

@@ -138,9 +138,11 @@ public:
 void copyVbalVout()
 {
     AnalogInputs::CalibrationPoint p;
-    p.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vout);
+    p.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vout_plus_pin);
     p.y = AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout, 1, p);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout_plus_pin, 1, p);
+    //info: we assume that Vout_plus_pin and Vout_minus_pin have the same voltage dividers
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout_minus_pin, 1, p);
 }
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
@@ -168,7 +170,6 @@ void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
 
 bool testVout()
 {
-    return true;
     Screen::displayStrings(PSTR("Connect Battery!"),NULL);
     do {
         if(AnalogInputs::isConnected(AnalogInputs::Vout))
@@ -196,50 +197,53 @@ void saveVoltage(AnalogInputs::Name name1, AnalogInputs::Name name2, AnalogInput
 #endif
 }
 
-void saveVoltage(int8_t index, bool copyVbal2Vout, AnalogInputs::Name name1,  AnalogInputs::Name name2)
+void saveVoltage(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInputs::Name name2)
 {
     Buzzer::soundSelect();
     AnalogInputs::ValueType newValue = AnalogInputs::getRealValue(name1);
+    saveVoltage(name1, name2, AnalogInputs::getAvrADCValue(name2), newValue);
     AnalogInputs::on_ = true;
     AnalogInputs::doFullMeasurement();
-    saveVoltage(name1, name2, AnalogInputs::getAvrADCValue(name2), newValue);
-    AnalogInputs::doFullMeasurement();
-    if(copyVbal2Vout)
+    if(doCopyVbalVout)
         copyVbalVout();
 }
 
 
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
 
-const char cev0[] PROGMEM = "Vb0pin: ";
-const char cev1[] PROGMEM = "Vb1pin: ";
-const char cev2[] PROGMEM = "Vb2pin: ";
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+const char cev0[] PROGMEM = "Vb0pin:";
+const char cev1[] PROGMEM = "Vb1pin:";
+const char cev2[] PROGMEM = "Vb2pin:";
+#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
 
-const char * const expertVoltageMenu[] PROGMEM = {cev0, cev1,cev2, NULL};
+const char cevp[] PROGMEM = "Vplus: ";
+const char cevm[] PROGMEM = "Vminus:";
 
-/* TODO: implement?
-const char string_cv10[] PROGMEM = "Vreversed";
-const char string_cv11[] PROGMEM = "Vunknown";
-*/
+const char * const expertVoltageMenu[] PROGMEM = {
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+        cev0,cev1,cev2,
+#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+        cevp,
+        cevm,
+        NULL};
 
 const AnalogInputs::Name expertVoltageName[] PROGMEM = {
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
         AnalogInputs::Vb0_pin,
         AnalogInputs::Vb1_pin,
         AnalogInputs::Vb2_pin,
-};
-const AnalogInputs::Name expertVoltageName2[] PROGMEM = {
-        AnalogInputs::Vb0_pin,
-        AnalogInputs::Vb1_pin,
-        AnalogInputs::Vb2_pin,
+#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+        AnalogInputs::Vout_plus_pin,
+        AnalogInputs::Vout_minus_pin
 };
 
 
 void expertCalibrateVoltage()
 {
-    Discharger::powerOn();
-
+    PolarityCheck::checkReversedPolarity_ = false;
     //TODO: optimization: this method should be merged with calibrateVoltage
-    VoltageMenu v(expertVoltageMenu, expertVoltageName, 6);
+    VoltageMenu v(expertVoltageMenu, expertVoltageName, 7);
     int8_t index;
     do {
         index = v.runSimple(true);
@@ -250,10 +254,11 @@ void expertCalibrateVoltage()
         AnalogInputs::doFullMeasurement();
         AnalogInputs::on_ = false;
         if(v.runEdit(index))
-            saveVoltage(index, false, Vinput, pgm::read(&expertVoltageName2[index]));
+            saveVoltage(false, Vinput, Vinput);
         AnalogInputs::on_ = true;
     } while(true);
-    Discharger::powerOff();
+
+    PolarityCheck::checkReversedPolarity_ = true;
 }
 #endif
 
@@ -273,7 +278,7 @@ void calibrateVoltage()
                 AnalogInputs::doFullMeasurement();
                 AnalogInputs::on_ = false;
                 if(v.runEdit(index))
-                    saveVoltage(index, true, Vinput,pgm::read(&voltageName2[index]));
+                    saveVoltage(true, Vinput,pgm::read(&voltageName2[index]));
                 AnalogInputs::on_ = true;
             }
         } while(true);

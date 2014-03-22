@@ -104,11 +104,11 @@ struct adc_correlation {
 
 const adc_correlation order_analogInputs_on[] PROGMEM = {
     {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_A_PIN,           AnalogInputs::Vb0_pin,         false, true},
-    {-1,                            REVERSE_POLARITY_PIN,   AnalogInputs::VreversePolarity,false, false},
+    {-1,                            OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin,  false, false},
     {MADDR_V_BALANSER1,             MUX0_Z_A_PIN,           AnalogInputs::Vb1_pin,         false, true},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
     {MADDR_V_BALANSER2,             MUX0_Z_A_PIN,           AnalogInputs::Vb2_pin,         false, true},
-    {-1,                            OUTPUT_VOLTAGE_PIN,     AnalogInputs::Vout ,           false, false},
+    {-1,                            OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,   false, false},
     {MADDR_V_BALANSER6,             MUX0_Z_A_PIN,           AnalogInputs::Vb6_pin,         false, false},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
     {MADDR_V_BALANSER5,             MUX0_Z_A_PIN,           AnalogInputs::Vb5_pin,         false, false},

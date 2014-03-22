@@ -61,8 +61,8 @@ namespace AnalogInputs {
         Unknown
     };
     enum Name {
-        Vout,
-        VreversePolarity,
+        Vout_plus_pin,
+        Vout_minus_pin,
         Ismps,
         Idischarge,
 
@@ -88,6 +88,7 @@ namespace AnalogInputs {
 #endif
 
         VirtualInputs,
+        Vout,
         Vbalancer,
         VoutBalancer,
         VobInfo,
@@ -112,8 +113,8 @@ namespace AnalogInputs {
 
         LastInput,
     };
-    static const uint8_t    PHYSICAL_INPUTS     = VirtualInputs - Vout;
-    static const uint8_t    ALL_INPUTS          = LastInput - Vout;
+    static const uint8_t    PHYSICAL_INPUTS     = VirtualInputs - Vout_plus_pin;
+    static const uint8_t    ALL_INPUTS          = LastInput - Vout_plus_pin;
     static const uint16_t   AVR_MAX_COUNT       = 100;
     static const ValueType  STABLE_VALUE_ERROR  = 6;
     static const uint16_t   STABLE_MIN_VALUE    = 3;
