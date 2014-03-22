@@ -18,9 +18,9 @@
 #ifndef IMAXB6_H_
 #define IMAXB6_H_
 
+#include <avr/pgmspace.h>
 #include "AnalogInputs.h"
 #include "TimerOne.h"
-
 #include "imaxB6-pins.h"
 
 #define LCD_LINES               2

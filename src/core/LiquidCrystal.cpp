@@ -247,7 +247,7 @@ inline void LiquidCrystal::command(uint8_t value) {
   send(value, LOW);
 }
 
-inline size_t LiquidCrystal::write(uint8_t value) {
+inline uint8_t LiquidCrystal::write(uint8_t value) {
   send(value, HIGH);
   return 1; // assume sucess
 }
@@ -314,5 +314,23 @@ void LiquidCrystal::write8bits(uint8_t value) {
 #endif //LCD_ENABLE_8BITMODE
 }
 
+uint8_t LiquidCrystal::print(const char str[])
+{
+  return write(str);
+}
+
+uint8_t LiquidCrystal::print(char c)
+{
+  return write((uint8_t) c);
+}
+
+uint8_t LiquidCrystal::write(const uint8_t *buffer, uint8_t size)
+{
+  uint8_t n = 0;
+  while (size--) {
+    n += write(*buffer++);
+  }
+  return n;
+}
 
 #endif

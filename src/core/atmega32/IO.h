@@ -19,6 +19,7 @@
 #define IO_H_
 
 #include <stdint.h>
+#include <avr/io.h>
 
 // Hopefully these aren't invalid for other platforms
 #ifndef Arduino_h
