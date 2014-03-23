@@ -20,12 +20,11 @@
 
 #include "LcdPrint.h"
 #include "Screen.h"
-
 #include "Settings.h"
 
 namespace SMPS {
     STATE state_;
-    uint16_t value_ = 0;
+    uint16_t value_;
 #ifdef MAX_CURRENT_RISING    
     uint16_t oldI, newI,stepValue;
 #endif
@@ -59,14 +58,41 @@ void SMPS::setValue(uint16_t value)
     AnalogInputs::resetMeasurement();
 }
 
+void SMPS::setRealValue(uint16_t I)
+{
+    uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, I);
+    setValue(value);
+}
+
+void SMPS::powerOn()
+{
+    if(isPowerOn())
+        return;
+    //reset rising value
+    value_ = 0;
+    setValue(0);
+    hardware::setChargerOutput(true);
+    state_ = CHARGING;
+}
+
+
+void SMPS::powerOff(STATE reason)
+{
+    if(!isPowerOn() || reason == CHARGING)
+        return;
+
+    setValue(0);
+    //reset rising value
+    value_ = 0;
+    hardware::setChargerOutput(false);
+    state_ = reason;
+}
 
 uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
 {
 #ifdef MAX_CURRENT_RISING 
  if (settings.calibratedState_ >= 7) //enabled if  calibrated.
     {
-
-
             oldI = calibrateValue(AnalogInputs::IsmpsValue, oldValue);
             stepValue = (AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, MAX_CURRENT_RISING))/2;
             newI = calibrateValue(AnalogInputs::IsmpsValue, value);
@@ -83,7 +109,7 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
                      i=value; 
                    }
                    hardware::setChargerValue(i);
-                   hardware::delay(500);
+                   Timer::delay(500);
               }
               AnalogInputs::isOutStable();    //resistance measure? 
             }
@@ -100,49 +126,11 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
                      i=oldValue;  
                    } 
                    hardware::setChargerValue(oldValue-i);
-                   hardware::delay(500);
+                   Timer::delay(500);
               }
               AnalogInputs::isOutStable();    //resistance measure? 
             }
-
-  }
-
-
-            
+  }          
 #endif 
   return value;
-}
-
-
-
-void SMPS::setRealValue(uint16_t I)
-{
-    uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, I);
-    setValue(value);
-}
-
-void SMPS::powerOn()
-{
-    if(isPowerOn())
-        return;
-    
-    //reset rising value
-    value_ = 0;
-    setValue(0);
-    hardware::setChargerOutput(true);
-    state_ = CHARGING;
-}
-
-
-void SMPS::powerOff(STATE reason)
-{
-    if(!isPowerOn() || reason == CHARGING)
-        return;
-    
-    setValue(0);
-    //reset rising value
-    value_ = 0;
-    
-    hardware::setChargerOutput(false);
-    state_ = reason;
 }

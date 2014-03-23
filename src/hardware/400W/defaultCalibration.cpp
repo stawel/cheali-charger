@@ -17,7 +17,7 @@
 */
 
 #include <Arduino.h>
-#include "AnalogInputs.h"
+#include "AnalogInputsPrivate.h"
 #include "400W.h"
 
 //file provided by: Jozsef N.

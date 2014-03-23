@@ -11,7 +11,6 @@ namespace {
     void setOCR() {
         //modulate the PWM - we modulate the PWM signal to get more precision.
         //(the PWM frequency stays at about 31kHz)
-        uint8_t oldSREG;
         uint16_t v;
         TimerOne_sumValue+=TimerOne_value;
         v=(TimerOne_sumValue>>TIMERONE_PRECISION);

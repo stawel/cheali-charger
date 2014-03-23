@@ -21,6 +21,8 @@
 #include "AnalogInputs.h"
 #include "TimerOne.h"
 
+#include "imaxB6-pins.h"
+
 #define LCD_LINES               2
 #define LCD_COLUMNS             16
 
@@ -41,13 +43,14 @@
 // I not used external temp sensor
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
 
+
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
 #include "Timer.h"
 #include "SMPS.h"
 #include "Discharger.h"
 #include "Balancer.h"
-
+#include "adc.h"
 
 
 extern LiquidCrystal lcd;
@@ -56,8 +59,7 @@ namespace hardware {
     void initialize();
     uint8_t getKeyPressed();
     void delay(uint16_t t);
-    void setBuzzer(uint16_t val);
-    void beepLoud(uint16_t dur);
+    void setBuzzer(uint8_t val);
     void setBatteryOutput(bool enable);
     void setChargerOutput(bool enable);
     void setDischargerOutput(bool enable);

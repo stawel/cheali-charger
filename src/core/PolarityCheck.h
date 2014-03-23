@@ -25,6 +25,8 @@ public:
     static const uint8_t REVERSED_POLARITY = 127;
 
     static bool isReversedPolarity_;
+    static bool checkReversedPolarity_;
+
     static bool runReversedPolarityInfo();
 };
 

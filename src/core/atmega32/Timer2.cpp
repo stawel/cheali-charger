@@ -15,31 +15,33 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef DISCHARGER_H
-#define DISCHARGER_H
-
+#include "Timer.h"
 #include "Hardware.h"
-
-namespace Discharger {
-    enum STATE { DISCHARGING, DISCHARGING_COMPLETE, ERROR};
+#include <util/atomic.h>
 
 
-    void initialize();
+// time measurement - It uses atmega32/Timer2 to measure TIMER_INTERRUPT_PERIOD_MICROSECONDS
 
-    STATE getState();
-    bool isPowerOn();
-    bool isWorking();
-
-
-    uint16_t getValue();
-    void setValue(uint16_t value);
-    void setRealValue(uint16_t I);
-
-    void powerOn();
-    void powerOff(STATE reason = DISCHARGING_COMPLETE);
-
-    void doIdle();
-};
+ISR(TIMER2_COMP_vect)
+{
+    Timer::callback();
+}
 
 
-#endif //DISCHARGER_H
+void Timer::initialize()
+{
+#if F_CPU != 16000000
+#error "F_CPU != 16000000 - not implemented"
+#endif
+#if TIMER_INTERRUPT_PERIOD_MICROSECONDS != 500
+#error "TIMER_INTERRUPT_PERIOD_MICROSECONDS != 500 - not implemented"
+#endif
+
+    TCCR2=(1<<WGM21);               //Clear Timer on Compare Match (CTC) Mode
+    TCCR2|=(1 << CS22);             //clk/64 (From prescaler)
+
+    TCNT2=0;
+    OCR2=TIMER_INTERRUPT_PERIOD_MICROSECONDS/4 - 1;
+
+    TIMSK|=(1<<OCIE2);              //OCIE2: Timer/Counter2 Output Compare Match Interrupt Enable
+}

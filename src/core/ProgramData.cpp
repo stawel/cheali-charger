@@ -138,12 +138,6 @@ uint16_t ProgramData::getCapacityLimit() const
     return cap;
 }
 
-uint16_t ProgramData::getTimeLimit() const
-{
-    uint16_t tim = battery.Time;
-    return tim;
-}
-
 int16_t ProgramData::getDeltaVLimit() const
 {
     int16_t v = 0;
@@ -201,17 +195,6 @@ uint8_t ProgramData::printIcString() const
 uint8_t ProgramData::printIdString() const
 {
     lcdPrintCurrent(battery.Id, 6);
-    return 6;
-}
-
-uint8_t ProgramData::printTimeString() const
-{
-    if(battery.Time == 1000) {
-        lcdPrint_P(PSTR("unlimited"));
-    } else {
-        lcdPrintUInt(battery.Time);
-        lcdPrint_P(PSTR("min."));
-    }
     return 6;
 }
 
@@ -276,10 +259,10 @@ uint16_t ProgramData::getMaxIc() const
     v = getVoltage(VCharge);
     i = MAX_CHARGE_P;
     i *= ANALOG_VOLT(1);
-    i /= v;                 
+    i /= v;
 
-    if(i > MAX_CHARGE_I)  
-        i = MAX_CHARGE_I; 
+    if(i > MAX_CHARGE_I)
+        i = MAX_CHARGE_I;
     return i;
 }
 
@@ -292,7 +275,7 @@ uint16_t ProgramData::getMaxId() const
     i *= ANALOG_VOLT(1);
     i /= v;
 
-    if(i > MAX_DISCHARGE_I) 
+    if(i > MAX_DISCHARGE_I)
         i = MAX_DISCHARGE_I;
     return i;
 }
@@ -304,11 +287,6 @@ void ProgramData::changeIc(int direction)
 void ProgramData::changeId(int direction)
 {
     changeMaxSmart(battery.Id, direction, getMaxId(),false,100);
-}
-
-void ProgramData::changeTime(int direction)
-{
-    changeMaxStep10(battery.Time, direction, 1000);
 }
 
 uint16_t ProgramData::getMaxCells() const
@@ -331,3 +309,27 @@ void ProgramData::check()
     if(battery.Id > v) battery.Id = v;
 }
 
+uint16_t ProgramData::getTimeLimit() const
+{
+    uint16_t tim = battery.Time;
+    return tim;
+
+
+}
+
+uint8_t ProgramData::printTimeString() const
+{
+    if(battery.Time == 1000) {
+        lcdPrint_P(PSTR("unlimited"));
+    } else {
+        lcdPrintUInt(battery.Time);
+        lcdPrint_P(PSTR("min."));
+    }
+    return 6;
+}
+
+void ProgramData::changeTime(int direction)
+{
+    changeMaxStep10(battery.Time, direction, 1000);
+
+}

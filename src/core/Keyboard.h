@@ -22,14 +22,14 @@
 
 #define BUTTON_NONE        0
 
-#define BUTTON_STOP        1
-#define BUTTON_DEC        2
-#define BUTTON_INC        4
-#define BUTTON_START    8
+#define BUTTON_STOP         1
+#define BUTTON_DEC          2
+#define BUTTON_INC          4
+#define BUTTON_START        8
 
-#define BUTTON_DELAY_TIMES    250
-#define BUTTON_DELAY    1
-#define BUTTON_CHANGE_DELAY        50
+#define BUTTON_DELAY_TIMES          250
+#define BUTTON_DELAY                1
+#define BUTTON_CHANGE_DELAY         50
 
 
 namespace Keyboard {

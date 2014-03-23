@@ -44,9 +44,9 @@ uint8_t Keyboard::getPressed()
     return hardware::getKeyPressed();
 }
 
-static const uint16_t speedTable[]  PROGMEM = {1, 2, 4, 6, 8, 10, 12};//, 4096, 16384, 65535};
-static const uint16_t thisSpeedT[]  PROGMEM = {1, 3, 8, 9,10, 11, 12};//,    7,     7,     7};
-static const uint16_t speedFactor[] PROGMEM = {1, 1, 1, 1, 1,  2,  5};//,   16,    64,   256};
+static const uint16_t speedTable[]  PROGMEM = {1, 2, 4, 6,  8, 10, 12};//, 4096, 16384, 65535};
+static const uint16_t thisSpeedT[]  PROGMEM = {1, 3, 8, 9, 10, 11, 12};//,    7,     7,     7};
+static const uint16_t speedFactor[] PROGMEM = {1, 1, 1, 1,  1,  2,  5};//,   16,    64,   256};
 
 uint16_t Keyboard::getSpeedFactor()
 {
@@ -59,7 +59,7 @@ uint8_t Keyboard::keyChanged(uint8_t key)
 
     key2 = getPressed();
     while(key2 != key) {
-        hardware::delay(BUTTON_CHANGE_DELAY);
+        Timer::delayIdle(BUTTON_CHANGE_DELAY);
         key = key2;
         key2 = getPressed();
     }
@@ -79,7 +79,7 @@ uint8_t Keyboard::getPressedWithSpeed()
     uint8_t key = BUTTON_NONE;
     for(uint16_t i = 0; i < (BUTTON_DELAY_TIMES / pgm::read(&speedTable[speed_])) + 1; i++) {
         key = getPressed();
-        hardware::delay(BUTTON_DELAY);
+        Timer::delayIdle(BUTTON_DELAY);
         if(key == last_key_)
             continue;
 

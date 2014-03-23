@@ -33,10 +33,8 @@ namespace Buzzer {
     inline void soundError()                {sound(Error); }
     inline void soundOff()                  {sound(Off); }
     void begin();
-    void loudSound1();
 
-
-    void doInterrupt();
+    void doIdle();
 };
 
 #endif /* BUZZER_H_ */

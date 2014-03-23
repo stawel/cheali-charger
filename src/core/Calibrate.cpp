@@ -27,15 +27,9 @@
 #include "EditMenu.h"
 #include "SerialLog.h"
 #include "Program.h"
-
-//for checkcalibration
+#include "AnalogInputsPrivate.h"
 #include "Hardware.h"
-
-
-//for calib state
 #include "Settings.h"
-
-
 namespace Calibrate {
 
 uint16_t x1=0;  //lastGood calibrationcurrent.
@@ -118,7 +112,6 @@ const char ct2[] PROGMEM = "value:";
 const char * const tempMenu[] PROGMEM = {ct1,ct2, NULL};
 
 
-
 class VoltageMenu: public EditMenu {
 public:
     VoltageMenu(const char * const* vMenu,
@@ -148,9 +141,11 @@ public:
 void copyVbalVout()
 {
     AnalogInputs::CalibrationPoint p;
-    p.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vout);
+    p.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vout_plus_pin);
     p.y = AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout, 1, p);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout_plus_pin, 1, p);
+    //info: we assume that Vout_plus_pin and Vout_minus_pin have the same voltage dividers
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout_minus_pin, 1, p);
 }
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
@@ -205,52 +200,54 @@ void saveVoltage(AnalogInputs::Name name1, AnalogInputs::Name name2, AnalogInput
 #endif
 }
 
-void saveVoltage(int8_t index, bool copyVbal2Vout, AnalogInputs::Name name1,  AnalogInputs::Name name2)
+void saveVoltage(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInputs::Name name2)
 {
     Buzzer::soundSelect();
-    //wait for stabilizing
-    Screen::displayWaitScreen();
     AnalogInputs::ValueType newValue = AnalogInputs::getRealValue(name1);
+    saveVoltage(name1, name2, AnalogInputs::getAvrADCValue(name2), newValue);
     AnalogInputs::on_ = true;
     AnalogInputs::doFullMeasurement();
-    saveVoltage(name1, name2, AnalogInputs::getAvrADCValue(name2), newValue);
-    AnalogInputs::doFullMeasurement();
-    if(copyVbal2Vout)
+    if(doCopyVbalVout)
         copyVbalVout();
 }
 
 
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
 
-const char cev0[] PROGMEM = "Vb0pin: ";
-const char cev1[] PROGMEM = "Vb1pin: ";
-const char cev2[] PROGMEM = "Vb2pin: ";
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+const char cev0[] PROGMEM = "Vb0pin:";
+const char cev1[] PROGMEM = "Vb1pin:";
+const char cev2[] PROGMEM = "Vb2pin:";
+#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
 
-const char * const expertVoltageMenu[] PROGMEM = {cev0, cev1,cev2, NULL};
+const char cevp[] PROGMEM = "Vplus: ";
+const char cevm[] PROGMEM = "Vminus:";
 
-/* TODO: implement?
-const char string_cv10[] PROGMEM = "Vreversed";
-const char string_cv11[] PROGMEM = "Vunknown";
-*/
+const char * const expertVoltageMenu[] PROGMEM = {
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+        cev0,cev1,cev2,
+#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+        cevp,
+        cevm,
+        NULL};
 
 const AnalogInputs::Name expertVoltageName[] PROGMEM = {
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
         AnalogInputs::Vb0_pin,
         AnalogInputs::Vb1_pin,
         AnalogInputs::Vb2_pin,
-};
-const AnalogInputs::Name expertVoltageName2[] PROGMEM = {
-        AnalogInputs::Vb0_pin,
-        AnalogInputs::Vb1_pin,
-        AnalogInputs::Vb2_pin,
+#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+        AnalogInputs::Vout_plus_pin,
+        AnalogInputs::Vout_minus_pin
 };
 
 
 void expertCalibrateVoltage()
 {
-    Discharger::powerOn();
+    PolarityCheck::checkReversedPolarity_ = false;
 
     //TODO: optimization: this method should be merged with calibrateVoltage
-    VoltageMenu v(expertVoltageMenu, expertVoltageName, 6);
+    VoltageMenu v(expertVoltageMenu, expertVoltageName, 7);
     int8_t index;
     do {
         index = v.runSimple(true);
@@ -261,10 +258,11 @@ void expertCalibrateVoltage()
         AnalogInputs::doFullMeasurement();
         AnalogInputs::on_ = false;
         if(v.runEdit(index))
-            saveVoltage(index, false, Vinput, pgm::read(&expertVoltageName2[index]));
+            saveVoltage(false, Vinput, Vinput);
         AnalogInputs::on_ = true;
     } while(true);
-    Discharger::powerOff();
+
+    PolarityCheck::checkReversedPolarity_ = true;
 }
 #endif
 
@@ -284,9 +282,7 @@ void calibrateVoltage()
                 AnalogInputs::doFullMeasurement();
                 AnalogInputs::on_ = false;
                 if(v.runEdit(index))
-                    saveVoltage(index, true, Vinput,pgm::read(&voltageName2[index]));
-                    //save calib status
-                   settings.calibratedState_ |= 1;  Settings::save();
+                    saveVoltage(true, Vinput,pgm::read(&voltageName2[index]));
                 AnalogInputs::on_ = true;
             }
         } while(true);
@@ -303,11 +299,10 @@ void printCalibrate()
     lcdPrint_P(PSTR("value: "));
     lcdPrintUnsigned(value_, 5);
     lcdPrintSpaces();
-    
-    //TODO_NJ deceptive data.
+   
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR("d:"));
-    AnalogInputs::printData(AnalogInputs::Iout);
+    lcdPrint_P(PSTR("Iout:  "));
+    AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
     lcdPrintSpaces();
 }
 
@@ -353,8 +348,6 @@ bool calibrateI(calibrateType p)
             }
 
             if(key == BUTTON_START && released) {
-                //wait for stabilizing
-                Screen::displayWaitScreen();
                 retu = true;
                 break;
             }
@@ -377,13 +370,13 @@ void calibrateI(calibrateType t, uint8_t point, AnalogInputs::ValueType current,
         p.x = AnalogInputs::getAvrADCValue(name1);
         AnalogInputs::setCalibrationPoint(name1, point, p);
         p.x = AnalogInputs::getAvrADCValue(name2);
-        AnalogInputs::setCalibrationPoint(name2, point, p); 
+        AnalogInputs::setCalibrationPoint(name2, point, p);
     }
 }
 
 
 void calibrateIcharge()
-{   
+{
     StaticMenu menu(chargeIMenu);
     int8_t i;
     AnalogInputs::ValueType current;
@@ -408,78 +401,6 @@ void calibrateIdischarge()
         else     current = DISCHARGER_P1_POINT;
         calibrateI(CDischarger, i, current, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue);      
     } while(true);
-}
-
-bool checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name1)
-{   
-    uint16_t x2=0;
-    bool r=true;
-    for(uint16_t i=0; i < testCurrent; i=i++){
-        x1 = AnalogInputs::reverseCalibrateValue(name1, i);
-        if (x1 < x2)  {r=false; break;}
-        x2=x1;
-    }
-     if(x1==0) r=false;
-
-    x1=x2;    //x1 return maxcharge/discharge value before overflow
-    return r;
-}
-
-void checkCalibrateIcharge()
-{
-    //CHECKHARDWAREPIDVALIDCALIBRATE
-    //check 'overflow" ismpsvalue
-    
-    //check 'overflow" ismps (protect hardware PID ctrl chargers)
-        //if r53-54 failure, then calibration value too high. Protect the SMPS circiuit the overflow value.
-
-    if (!checkCalibrate(MAX_CHARGE_I,AnalogInputs::IsmpsValue))
-     {
-       Screen::displayCalibrationErrorScreen(1);
-     }
-
-   //save largest current value
-    saveCalibrateValueIcharge(x1); 
-  
-    //info only
-    if (!checkCalibrate(MAX_CHARGE_I,AnalogInputs::Ismps))
-     {
-       Screen::displayCalibrationErrorScreen(2);
-     }
-}
-
-void saveCalibrateValueIcharge(uint16_t value)
-{
-    settings.SMPS_Upperbound_Value_ = value;
-    //save calib status
-    settings.calibratedState_ = settings.calibratedState_ | 2;   Settings::save();    
-}
-
-void checkCalibrateIdischarge()
-{
-      bool state = true;
-    if (!checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::IdischargeValue))
-     {
-       Screen::displayCalibrationErrorScreen(3);
-     }
-   
-   //save largest current value
-   saveCalibrateValueIdisCharge(x1); 
-   
-   //info only
-    if (!checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::Idischarge))
-     {
-       Screen::displayCalibrationErrorScreen(4);
-     }
-}
-
-
-
-void saveCalibrateValueIdisCharge(uint16_t value)
-{
-      settings.DISCHARGER_Upperbound_Value_ = value;
-      //save calib status
-      settings.calibratedState_ = settings.calibratedState_  | 4; ;  Settings::save();   
 }
 
 
@@ -576,6 +497,82 @@ void run()
     } while(true);
     Program::programState_ = Program::Done;
 }
+
+
+bool checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name1)
+{   
+    uint16_t x2=0;
+    bool r=true;
+    for(uint16_t i=0; i < testCurrent; i=i++)
+    {
+        x1 = AnalogInputs::reverseCalibrateValue(name1, i);
+        if (x1 < x2)  {r=false; break;}
+        x2=x1;
+    }
+     if(x1==0) r=false;
+
+    x1=x2;    //x1 return maxcharge/discharge value before overflow
+    return r;
+}
+
+void checkCalibrateIcharge()
+{
+    //CHECKHARDWAREPIDVALIDCALIBRATE
+    //check 'overflow" ismpsvalue
+    
+    //check 'overflow" ismps (protect hardware PID ctrl chargers)
+        //if r53-54 failure, then calibration value too high. Protect the SMPS circiuit the overflow value.
+
+    if (!checkCalibrate(MAX_CHARGE_I,AnalogInputs::IsmpsValue))
+     {
+       Screen::displayCalibrationErrorScreen(1);
+     }
+
+   //save largest current value
+    saveCalibrateValueIcharge(x1); 
+  
+    //info only
+    if (!checkCalibrate(MAX_CHARGE_I,AnalogInputs::Ismps))
+     {
+       Screen::displayCalibrationErrorScreen(2);
+     }
+}
+
+void saveCalibrateValueIcharge(uint16_t value)
+
+{
+    settings.SMPS_Upperbound_Value_ = value;
+    //save calib status
+    settings.calibratedState_ = settings.calibratedState_ | 2;   Settings::save();    
+}
+
+void checkCalibrateIdischarge()
+{
+      bool state = true;
+    if (!checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::IdischargeValue))
+     {
+       Screen::displayCalibrationErrorScreen(3);
+     }
+   
+   //save largest current value
+   saveCalibrateValueIdisCharge(x1); 
+   
+   //info only
+    if (!checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::Idischarge))
+     {
+       Screen::displayCalibrationErrorScreen(4);
+     }
+}
+
+
+
+void saveCalibrateValueIdisCharge(uint16_t value)
+{
+      settings.DISCHARGER_Upperbound_Value_ = value;
+      //save calib status
+      settings.calibratedState_ = settings.calibratedState_  | 4; ;  Settings::save();   
+}
+
 
 } // namespace Calibrate
 

@@ -153,7 +153,7 @@ bool Program::startInfo()
 {
     bool balancer = false;
     const Screen::ScreenType * screen = startInfoScreens;
-    Strategy::strategy_ = &StartInfoStrategy::vtable; 
+    Strategy::strategy_ = &StartInfoStrategy::vtable;
     if(ProgramData::currentProgramData.isLiXX()) {
         //usues balance port
         balancer = true;
@@ -171,8 +171,6 @@ Strategy::statusType Program::runStorage(bool balance, bool immediately = false)
     Strategy::strategy_ = &StorageStrategy::vtable;
     return doStrategy(storageScreens);
 }
-
-
 Strategy::statusType Program::runTheveninCharge(int minChargeC,  bool immediately = false)
 {
     TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
@@ -182,7 +180,6 @@ Strategy::statusType Program::runTheveninCharge(int minChargeC,  bool immediatel
     return doStrategy(theveninScreens, immediately);
 }
 
-
 Strategy::statusType Program::runTheveninChargeBalance( bool immediately = false)
 {
     TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
@@ -190,6 +187,7 @@ Strategy::statusType Program::runTheveninChargeBalance( bool immediately = false
     Strategy::strategy_ = &TheveninChargeStrategy::vtable;
     return doStrategy(theveninScreens, immediately);
 }
+
 
 Strategy::statusType Program::runDeltaCharge(bool immediately = false)
 {
@@ -214,108 +212,17 @@ Strategy::statusType Program::runNiXXDischarge(bool immediately = false)
     return doStrategy(NiXXDischargeScreens, immediately);
 }
 
+Strategy::statusType Program::runBalance()
+{
+    Strategy::strategy_ = &Balancer::vtable;
+    return doStrategy(balanceScreens);
+}
+
 Strategy::statusType Program::runWasteTime()
 {    
     DelayStrategy::setDelay(settings.WasteTime_);
     Strategy::strategy_ = &DelayStrategy::vtable;
     return doStrategy(dischargeScreens, true);	
-}
-
-
-
-uint8_t Program::currentCycle() { return tempCDcycles_;}
-
-char Program::currentCycleMode() { return cycleMode;}
-
-Strategy::statusType Program::runDCcycle(bool prog1)
-{ //TODO_NJ
-    Strategy::statusType status;
-    
-    for(tempCDcycles_=1; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
-
-          //discharge
-          AnalogInputs::resetAccumulatedMeasurements();
-          cycleMode='D';
-          status = runCycleDischargeCommon(prog1);
-          if(status != Strategy::COMPLETE) {break;} 
- 
-          //waiting after discharge
-          cycleMode='W';
-          status = runWasteTime();
-          if(status != Strategy::COMPLETE) { break; } 
-          
-          //charge
-          Screen::resetETA();
-          AnalogInputs::resetAccumulatedMeasurements();
-          cycleMode='C';
-              
-          //lastcharge? (no need wait at end?)
-          if (tempCDcycles_ != settings.CDcycles_)
-           {
-              status = runCycleChargeCommon(prog1, true); //independent exit
-           } 
-           else 
-           {
-              status = runCycleChargeCommon(prog1, false);
-           }  
-           if(status != Strategy::COMPLETE) {break;} 
-          
-          //waiting after charge
-          cycleMode='W';
-          if (tempCDcycles_ != settings.CDcycles_)
-           {
-            status = runWasteTime();
-            if(status != Strategy::COMPLETE) { break; }
-            else {status = Strategy::COMPLETE;}
-          }
-          
-    } 
-    return status;
-
-}
-
-
-Strategy::statusType Program::runCycleDischargeCommon(bool prog1)
-{
-  Strategy::statusType status;
-
-  if(prog1)  //1 is lixx
-  { status = runDischarge(true);}
-  else
-  { status = runNiXXDischarge(true);}
-  return status;
-}
-
-Strategy::statusType Program::runCycleChargeCommon(bool prog1, bool mode)
-{
- Strategy::statusType status;
- 
-          //lastcharge? (no need wait at end?)
-          if (tempCDcycles_ != settings.CDcycles_)
-           {
-              if(prog1)  //1 is lixx  //0 is nixx
-              { status =  runTheveninChargeBalance(mode); } //independent exit
-              else
-              { status =  runDeltaCharge(mode); } //independent exit  
-           } 
-           else 
-           {
-              if(prog1) 
-              { status = runTheveninChargeBalance(); } //normal exit point
-              
-              else
-              { status = runDeltaCharge();  } //normal exit point
-           }
-
- return status;
-}
-
-
-
-Strategy::statusType Program::runBalance()
-{
-    Strategy::strategy_ = &Balancer::vtable;
-    return doStrategy(balanceScreens);
 }
 
 Program::ProgramState getProgramState(Program::ProgramType prog)
@@ -339,12 +246,9 @@ Program::ProgramState getProgramState(Program::ProgramType prog)
     case Program::DCcycleLiXX:
          retu = Program::DischargingCharging;
         break;
-   
     case Program::DCcycleNiXX:
          retu = Program::DischargingCharging;
-        break;
-    
-    
+        break; 
     case Program::StorageLiXX:
     case Program::StorageLiXX_Balance:
         retu = Program::Storage;
@@ -427,6 +331,91 @@ void Program::run(ProgramType prog)
     SerialLog::powerOff();
 }
 
+
+uint8_t Program::currentCycle() { return tempCDcycles_;}
+
+char Program::currentCycleMode() { return cycleMode;}
+
+Strategy::statusType Program::runDCcycle(bool prog1)
+{ //TODO_NJ
+    Strategy::statusType status;
+    
+    for(tempCDcycles_=1; tempCDcycles_ <= settings.CDcycles_; tempCDcycles_++) {
+
+          //discharge
+          AnalogInputs::resetAccumulatedMeasurements();
+          cycleMode='D';
+          status = runCycleDischargeCommon(prog1);
+          if(status != Strategy::COMPLETE) {break;} 
+ 
+          //waiting after discharge
+          cycleMode='W';
+          status = runWasteTime();
+          if(status != Strategy::COMPLETE) { break; } 
+          
+          //charge
+          Screen::resetETA();
+          AnalogInputs::resetAccumulatedMeasurements();
+          cycleMode='C';
+              
+          //lastcharge? (no need wait at end?)
+          if (tempCDcycles_ != settings.CDcycles_)
+           {
+              status = runCycleChargeCommon(prog1, true); //independent exit
+           } 
+           else 
+           {
+              status = runCycleChargeCommon(prog1, false);
+           }  
+           if(status != Strategy::COMPLETE) {break;} 
+          
+          //waiting after charge
+          cycleMode='W';
+          if (tempCDcycles_ != settings.CDcycles_)
+           {
+            status = runWasteTime();
+            if(status != Strategy::COMPLETE) { break; }
+            else {status = Strategy::COMPLETE;}
+          }      
+    } 
+    return status;
+}
+
+
+Strategy::statusType Program::runCycleDischargeCommon(bool prog1)
+{
+  Strategy::statusType status;
+
+  if(prog1)  //1 is lixx
+  { status = runDischarge(true);}
+  else
+  { status = runNiXXDischarge(true);}
+  return status;
+}
+
+Strategy::statusType Program::runCycleChargeCommon(bool prog1, bool mode)
+{
+ Strategy::statusType status;
+ 
+          //lastcharge? (no need wait at end?)
+          if (tempCDcycles_ != settings.CDcycles_)
+           {
+              if(prog1)  //1 is lixx  //0 is nixx
+              { status =  runTheveninChargeBalance(mode); } //independent exit
+              else
+              { status =  runDeltaCharge(mode); } //independent exit  
+           } 
+           else 
+           {
+              if(prog1) 
+              { status = runTheveninChargeBalance(); } //normal exit point
+              
+              else
+              { status = runDeltaCharge();  } //normal exit point
+           }
+
+ return status;
+}
 
 
 // Program selection depending on the battery type

@@ -7,7 +7,6 @@ Plus Features
  - Simple Estimated Time for Accomplishment (TESTING)
  - Powerscren (Watt and Watthour)
  - Valid charge-percent meter
- - loudness sound for end-program (compiler optionnally)
  - Calibration error checking***
  - cycle discharge/wait/charge program for Nixx and Lixx
  - cyclehistory screen

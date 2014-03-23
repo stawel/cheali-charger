@@ -15,31 +15,38 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef DISCHARGER_H
-#define DISCHARGER_H
 
-#include "Hardware.h"
+#include "StackInfo.h"
 
-namespace Discharger {
-    enum STATE { DISCHARGING, DISCHARGING_COMPLETE, ERROR};
+#ifdef ENABLE_STACK_INFO
 
+extern int __heap_start, *__brkval;
 
-    void initialize();
-
-    STATE getState();
-    bool isPowerOn();
-    bool isWorking();
-
-
-    uint16_t getValue();
-    void setValue(uint16_t value);
-    void setRealValue(uint16_t I);
-
-    void powerOn();
-    void powerOff(STATE reason = DISCHARGING_COMPLETE);
-
-    void doIdle();
-};
+void StackInfo::initialize()
+{
+    volatile uint8_t * v = (uint8_t *)(__brkval == 0 ?  &__heap_start : __brkval);
+    volatile uint8_t data;
+    for( ; v <= &data; v++ ) {
+        *v = STACK_INFO_MAGIC_NUMBER;
+    }
+}
 
 
-#endif //DISCHARGER_H
+uint16_t StackInfo::getFreeStackSize()
+{
+    int v;
+    return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+}
+
+uint16_t StackInfo::getNeverUsedStackSize()
+{
+    volatile uint8_t * v = (uint8_t*)(__brkval == 0 ?  &__heap_start : __brkval);
+    volatile uint8_t data;
+    uint16_t size = 0;
+    for(; v <= &data && *v == STACK_INFO_MAGIC_NUMBER; v++ ) {
+        size++;
+    }
+    return size;
+}
+
+#endif

@@ -15,31 +15,22 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef DISCHARGER_H
-#define DISCHARGER_H
+#ifndef STACKINFO_H_
+#define STACKINFO_H_
 
 #include "Hardware.h"
 
-namespace Discharger {
-    enum STATE { DISCHARGING, DISCHARGING_COMPLETE, ERROR};
+#define STACK_INFO_MAGIC_NUMBER 0xbe
 
+#ifdef ENABLE_STACK_INFO
+
+namespace StackInfo {
 
     void initialize();
+    uint16_t getFreeStackSize();
+    uint16_t getNeverUsedStackSize();
 
-    STATE getState();
-    bool isPowerOn();
-    bool isWorking();
+}
+#endif //ENABLE_STACK_INFO
 
-
-    uint16_t getValue();
-    void setValue(uint16_t value);
-    void setRealValue(uint16_t I);
-
-    void powerOn();
-    void powerOff(STATE reason = DISCHARGING_COMPLETE);
-
-    void doIdle();
-};
-
-
-#endif //DISCHARGER_H
+#endif /* STACKINFO_H_ */

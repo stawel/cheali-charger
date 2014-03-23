@@ -21,6 +21,7 @@
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
 #include "adc.h"
+#include "SerialLog.h"
 #include "Settings.h"
 
 
@@ -66,62 +67,35 @@ void hardware::initialize()
     setBuzzer(0);
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
-    Timer::initialize();
-    SMPS::initialize();
-    Discharger::initialize();
 
     TimerOne::initialize();
     adc::initialize();
-    AnalogInputs::initialize();
 }
-
-void hardware::beepLoud(uint16_t dur) //dur is milisec
-{
-     if (!settings.AudioBeep_) return;
-     //only use the "program complete" status. Dont use charging status.
-     // good param: 140/40
-     
-     for( dur <= dur; dur--;) {
-       digitalWrite(BUZZER_PIN,HIGH);
-      delayMicroseconds(140);
-       digitalWrite(BUZZER_PIN,LOW);
-      delayMicroseconds(40);     
-       } 
-}
-
-void hardware::doInterrupt()
-{
-
-}
-
 
 
 namespace {
-    volatile uint8_t sound = 0;
+    volatile uint8_t sound_ = 0;
 }
 void hardware::soundInterrupt()
 {
-    
-    
     static uint8_t on = 0;
 
     uint8_t f = 0;
-    if(sound > 0) {
+    if(sound_ > 0) {
         on++;
     } else {
         on = 0;
     }
-    if(sound >= 10) f=8;
-    if(sound >= 20) f=4;
-    if(sound >= 30) f=2;
+    if(sound_ >= 10) f=8;
+    if(sound_ >= 20) f=4;
+    if(sound_ >= 30) f=2;
 
-    if (!settings.AudioBeep_) return;
     digitalWrite(BUZZER_PIN, on&f);
 }
 
-void hardware::setBuzzer(uint16_t val)
+void hardware::setBuzzer(uint8_t val)
 {
-    sound = val;
+    sound_ = val;
 }
 
 void hardware::setBatteryOutput(bool enable)
@@ -139,6 +113,5 @@ void hardware::setBalancer(uint8_t v)
     digitalWrite(BALANCER6_LOAD_PIN, v&32);
 }
 
-LiquidCrystal lcd(LCD_ENABLE_RS, LCD_ENABLE_PIN,
-        LCD_D0_PIN, LCD_D1_PIN, LCD_D2_PIN, LCD_D3_PIN);
+LiquidCrystal lcd;
 

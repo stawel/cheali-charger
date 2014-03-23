@@ -1,8 +1,8 @@
 
 
-include(${CMAKE_SOURCE_DIR}/src/core/CMakeLists.txt)
+include(${CMAKE_SOURCE_DIR}/src/core/atmega32/CMakeLists.txt)
 
-set(THIS_FILE_PATH ${CMAKE_SOURCE_DIR}/src/hardware/200W-generic/)
+set(CURRENT_PATH ${CMAKE_SOURCE_DIR}/src/hardware/200W-generic/)
 
 set(GTPOWERA6_SOURCE
     GTPowerA6-10.cpp
@@ -17,12 +17,12 @@ set(GTPOWERA6_SOURCE
 set (GTPOWERA6_SOURCE_FILES "")
 foreach (SOURCE ${GTPOWERA6_SOURCE})
     set(THIS_FILE THIS_FILE-NOTFOUND)
-    find_file(THIS_FILE ${SOURCE} PATHS ${THIS_FILE_PATH} NO_DEFAULT_PATH)
+    find_file(THIS_FILE ${SOURCE} PATHS ${CURRENT_PATH} NO_DEFAULT_PATH)
 #    message("append ${THIS_FILE}, ${SOURCE}")
     list (APPEND GTPOWERA6_SOURCE_FILES ${THIS_FILE})
 endforeach()
 
-include_directories(${THIS_FILE_PATH})
+include_directories(${CURRENT_PATH})
 
 SET(ALL_SOURCE_FILES
     ${SOURCE_FILES}
@@ -30,5 +30,5 @@ SET(ALL_SOURCE_FILES
     ${CORE_SOURCE_FILES}
 )
 
-include(${CMAKE_SOURCE_DIR}/src/core/CMakeListsPost.txt)
+include(${CMAKE_SOURCE_DIR}/src/core/atmega32/CMakeListsPost.txt)
 

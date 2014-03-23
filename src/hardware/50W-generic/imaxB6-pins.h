@@ -47,7 +47,7 @@
 #define LCD_D1_PIN              21
 #define LCD_D0_PIN              22
 #define LCD_ENABLE_PIN          23
-#define LCD_ENABLE_RS           24
+#define LCD_RS_PIN              24
 
 #define BALANCER1_LOAD_PIN      25
 #define BALANCER2_LOAD_PIN      26
@@ -68,9 +68,9 @@
 //pin 35 - A2
 #define DISCHARGE_CURRENT_PIN   A2
 //pin 36 - A1
-#define REVERSE_POLARITY_PIN    A1
+#define OUTPUT_VOLTAGE_MINUS_PIN    A1
 //pin 37 - A0
-#define OUTPUT_VOLATAGE_PIN     A0
+#define OUTPUT_VOLTAGE_PLUS_PIN     A0
 
 // pin 38,39 - Vcc, GND
 

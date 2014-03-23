@@ -30,9 +30,8 @@ namespace TheveninMethod {
     AnalogInputs::ValueType Vend_;
     AnalogInputs::ValueType valueTh_;
     uint16_t lastBallancingEnded_;
-    uint16_t getReadableRth_ = 65535;
+    uint16_t getReadableRth_;
     uint16_t tempRth = 0;
-
 
     Thevenin tVout_;
     Thevenin tBal_[MAX_BANANCE_CELLS];
@@ -43,7 +42,8 @@ namespace TheveninMethod {
     bool balance_;
     Strategy::statusType bstatus_;
     AnalogInputs::ValueType idebug_;
-    
+
+
     void setMinI(AnalogInputs::ValueType i) {    minValue_ = i; };
 
     uint16_t getMinValueB() {
@@ -53,7 +53,7 @@ namespace TheveninMethod {
     }
     AnalogInputs::ValueType getImax()
     {
-       return AnalogInputs::calibrateValue(iName_, maxValue_);
+        return AnalogInputs::calibrateValue(iName_, maxValue_);
     }
 
     bool isBelowMin(AnalogInputs::ValueType value)
@@ -115,7 +115,6 @@ void TheveninMethod::setVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueTyp
     minValue_ = i/20;
     balance_ = balance;
 }
-
 
 void TheveninMethod::initialize(AnalogInputs::Name iName)
 {
@@ -223,11 +222,11 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value
     valueTh_ = value;
     if(value > maxValue_) {
         value = maxValue_;
-    }  
+    }
     if(value < getMinValueB()) {
         value = getMinValueB();
     }
- 
+
     if(oldValue != value) {
         if(Ifalling_ != Falling
             || value < oldValue
@@ -237,7 +236,6 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value
             return value;
         }
     }
- 
     return oldValue;
 }
 

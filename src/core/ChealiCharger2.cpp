@@ -30,6 +30,7 @@
 #include "Hardware.h"
 #include "SerialLog.h"
 #include "eeprom.h"
+#include "Timer.h"
 
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
@@ -55,6 +56,11 @@ void loop()
 void setup()
 {
     hardware::initialize();
+    Timer::initialize();
+    SMPS::initialize();
+    Discharger::initialize();
+    AnalogInputs::initialize();
+
 #ifdef ENABLE_STACK_INFO
     StackInfo::initialize();
 #endif
@@ -62,18 +68,17 @@ void setup()
     Settings::load();
 
 #ifdef START_DELAY_MS
-    hardware::delay(START_DELAY_MS); //waiting common display charger for display relase
+    Timer::delay(START_DELAY_MS); //waiting common display charger for display relase
 #endif
 
     Screen::displayStrings(PSTR("ChealiCharger"),
                            PSTR("ver: "  CHEALI_CHARGER_VERSION_STRING));
-    hardware::delay(1000); 
+    Timer::delay(1000); 
     eeprom::restoreDefault();
     
 #ifdef RAM_CG
     lcdCreateCGRam();
 #endif  
-
 
     if (settings.calibratedState_ < 7)
     {

@@ -21,6 +21,8 @@
 #include "AnalogInputs.h"
 #include "Timer.h"
 
+#include "GTPowerA6-10-pins.h"
+
 #define LCD_LINES               2
 #define LCD_COLUMNS             16
 #define LCD_BACKLIGHT_MIN       100
@@ -39,12 +41,9 @@
 #define ENABLE_T_INTERNAL
 #define ENABLE_STACK_INFO
 #define ENABLE_SERIAL_LOG
-
+#define ENABLE_EXPERT_VOLTAGE_CALIBRATION
 // I not used external temp sensor
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
-
-
-//#define CHECKHARDWAREPIDVALIDCALIBRATE
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
@@ -52,6 +51,7 @@
 #include "Discharger.h"
 #include "Balancer.h"
 #include "TimerOne.h"
+#include "adc.h"
 
 
 extern LiquidCrystal lcd;
@@ -61,7 +61,7 @@ namespace hardware {
     uint8_t getKeyPressed();
     void delay(uint16_t t);
     void setLCDBacklight(uint8_t val);
-    void setBuzzer(uint16_t val);
+    void setBuzzer(uint8_t val);
     void beepLoud(uint16_t dur);
     void setBatteryOutput(bool enable);
     void setChargerOutput(bool enable);
@@ -72,6 +72,8 @@ namespace hardware {
     void setFan(bool enable);
     void setBalancer(uint8_t balance);
     inline void doInterrupt(){}
+
+    void soundInterrupt();
 }
 
 

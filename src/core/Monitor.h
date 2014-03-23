@@ -21,7 +21,7 @@
 
 namespace Monitor {
     Strategy::statusType run();
-    void doInterrupt();
+    void doIdle();
     void powerOn();
     void update();
 };

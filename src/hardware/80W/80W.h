@@ -40,8 +40,6 @@
 
 #define CALIBRATION_SPEED                   10
 
-//loudness programcomplete
-//#define LOUDSOUND
 
 //Lixx withoutbalancer
 #define CHARGE_LIXX_WITHOUT_BALANCER

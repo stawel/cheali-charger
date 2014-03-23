@@ -45,7 +45,7 @@
 #define LCD_D1_PIN              21
 #define LCD_D0_PIN              22
 #define LCD_ENABLE_PIN          23
-#define LCD_ENABLE_RS           24
+#define LCD_RS_PIN              24
 
 #define UNKNOWN0_PIN            25
 #define UNKNOWN1_PIN            26
@@ -65,9 +65,9 @@
 //pin 35 - ??
 #define SMPS_CURRENT_PIN        A2
 //pin 36
-#define REVERSE_POLARITY_PIN    A1
+#define OUTPUT_VOLTAGE_MINUS_PIN    A1
 //pin 37
-#define OUTPUT_VOLATAGE_PIN     A0
+#define OUTPUT_VOLTAGE_PLUS_PIN     A0
 
 // pin 38,39 - Vcc, GND
 

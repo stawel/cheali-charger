@@ -15,7 +15,23 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <Arduino.h>
-#include <avr/pgmspace.h>
-#include "Multiplexer.h"
+#ifndef ANALOGINPUTSPRIVATE_H_
+#define ANALOGINPUTSPRIVATE_H_
+
 #include "AnalogInputs.h"
+
+
+namespace AnalogInputs {
+
+    extern const DefaultValues inputsP_[AnalogInputs::PHYSICAL_INPUTS];
+    extern ValueType real_[ALL_INPUTS];
+    extern ValueType adc_[PHYSICAL_INPUTS];
+
+    extern bool on_;
+
+    void finalizeMeasurement();
+    void resetStable();
+};
+
+
+#endif /* ANALOGINPUTSPRIVATE_H_ */

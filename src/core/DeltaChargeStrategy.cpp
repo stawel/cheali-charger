@@ -70,7 +70,7 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
         return Strategy::COMPLETE;
     }
 
-    if(AnalogInputs::deltaCount_ <= 1)
+    if(AnalogInputs::getDeltaCount() <= 1)
         return Strategy::RUNNING;
 
     if(testDeltaV_) {

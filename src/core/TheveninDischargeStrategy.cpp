@@ -19,7 +19,7 @@
 #include "ProgramData.h"
 #include "Screen.h"
 #include "TheveninDischargeStrategy.h"
-
+#include "Settings.h"
 
 namespace TheveninDischargeStrategy {
     const Strategy::VTable vtable PROGMEM = {
@@ -44,8 +44,8 @@ void TheveninDischargeStrategy::powerOn()
 {
     Discharger::powerOn();
     Balancer::powerOn();
-    //end on Voltage reached
-    endOnTheveninMethodComplete_ = false;
+    //end on minimum Voltage reached or TheveninMethodComplete
+    endOnTheveninMethodComplete_ = settings.dischargeAggressive_LiXX_;
     TheveninMethod::initialize(AnalogInputs::IdischargeValue);
 }
 

@@ -117,6 +117,23 @@ void send()
 #endif //ENABLE_SERIAL_LOG
 }
 
+void doIdle()
+{
+#ifdef ENABLE_SERIAL_LOG
+    static int16_t analogCount;
+    uint16_t getFullMeasurementCount();
+    if(!AnalogInputs::isPowerOn()) {
+        analogCount = -1;
+    } else {
+        uint16_t c = AnalogInputs::getFullMeasurementCount();
+        if(analogCount != c) {
+            analogCount = c;
+            send();
+        }
+    }
+#endif //ENABLE_SERIAL_LOG
+}
+
 
 void printChar(char c)
 {
@@ -170,6 +187,7 @@ void sendHeader(uint16_t channel)
     printUInt((currentTime/100)%10);   //timestamp
     printD();
 }
+
 
 void printNL()
 {

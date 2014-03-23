@@ -22,7 +22,6 @@
 #include "Strategy.h"
 
 class Program {
-
 public:
     enum ProgramType {
         ChargeLiXX, ChargeLiXX_Balance, Balance, DischargeLiXX, FastChargeLiXX, StorageLiXX, StorageLiXX_Balance,
@@ -53,14 +52,11 @@ public:
     static Strategy::statusType runDischarge(bool immediately);
     static Strategy::statusType runNiXXDischarge(bool immediately);
     static Strategy::statusType runWasteTime();
-    
     static Strategy::statusType runDCcycle(bool prog1);
     static Strategy::statusType runCycleDischargeCommon(bool prog1); 
-    static Strategy::statusType runCycleChargeCommon(bool prog1, bool mode);  
-
+    static Strategy::statusType runCycleChargeCommon(bool prog1, bool mode);
     static uint8_t currentCycle();
     static char currentCycleMode();
-
     static Strategy::statusType runTheveninChargeBalance( bool immediately);
     static Strategy::statusType runBalance();
     static Strategy::statusType runDeltaCharge( bool immediately);

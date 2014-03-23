@@ -21,8 +21,9 @@
 #include "ProgramData.h"
 #include "TheveninMethod.h"
 #include "Settings.h"
-#include "Hardware.h"
+//#include "Hardware.h"
 #include "Program.h"
+#include "Timer.h"
 #include "DelayStrategy.h"
 
 
@@ -76,13 +77,12 @@ namespace Screen{
         lcdPrint_P(programString+prog*2, 2);
     }
    
-    uint8_t getChargeProcent()
-    {
+    uint8_t getChargeProcent(){
         uint16_t v1,v2, v;
         v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
         v1 = ProgramData::currentProgramData.getVoltage(ProgramData::ValidEmpty);
         v =  AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
-        
+
         if(v >= v2) return 99;
         if(v <= v1) return 0;
         v-=v1;
@@ -92,7 +92,7 @@ namespace Screen{
         if(v >= 100) v=99; //not 101% with isCharge
         return v;
     }
-    
+
     AnalogInputs::ValueType getBalanceValue(uint8_t cell, AnalogInputs::Type type)
     {
         if(type == AnalogInputs::Voltage)
@@ -125,9 +125,6 @@ namespace Screen{
         if (knightRiderCounter>5) knightRiderDir=false;
         if (knightRiderCounter<=1) knightRiderDir=true;
 #endif
-        
-        
-        
         char c = ' ';
         if(!Balancer::isWorking()) {
             if(!Balancer::isStable())
@@ -140,10 +137,6 @@ namespace Screen{
         }
 
         lcdPrintChar(c);
-
-
-
-
 
         if(Balancer::balance_ != 0) {
             uint8_t  j = 1;
@@ -176,8 +169,6 @@ namespace Screen{
         }
         else 
         {
-   
-     
 #ifdef KNIGHTRIDEREFFECT        
            char knightRiderArrow;
            if (knightRiderDir==true) knightRiderArrow='>'; else knightRiderArrow='<';
@@ -197,9 +188,7 @@ namespace Screen{
 #ifndef KNIGHTRIDEREFFECT  
         lcdPrintSpaces(7);
 #endif
-        }
-        
-
+        }        
         lcdPrintDigit(from+1);
         lcdPrintChar(':');
 #ifdef ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
@@ -213,7 +202,6 @@ namespace Screen{
         printBalancer(from++, type);
 #endif
         lcdPrintSpaces();
-
         lcdSetCursor0_1();
         lcdPrintDigit(from+1);
         lcdPrintChar(':');
@@ -242,12 +230,10 @@ void Screen::printChar_Time() {
         c = 'B';
     }
 
-
    if(DelayStrategy::isDelay() == true )
     {
         c = 'W';
     }
-
     lcdPrintChar(c);
     lcdPrintChar(' ');
     lcdPrintTime(getTimeSec());
@@ -314,12 +300,6 @@ void Screen::doSlowInterrupt()
    Screen::storeCycleHistoryInfo();     //actualisation values
 
 }
-
-uint16_t Screen::getTotalChargDischargeTime()
-{
-    return (totalChargDischargeTime_/1000/60);
-}
-
 
 void Screen::displayScreenTime()
 {
@@ -454,7 +434,132 @@ void Screen::displayDeltaFirst()
     deltaV();
 }
 
+
+void Screen::displayDeltaVout()
+{
+    lcdSetCursor0_0();
+    lcdPrint_P(PSTR("maxVout="));
+    AnalogInputs::printRealValue(AnalogInputs::deltaVoutMax, 7);
+    lcdPrintSpaces();
+
+    lcdSetCursor0_1();
+    lcdPrint_P(PSTR("delta V= "));
+    deltaV();
+}
+
+void Screen::displayDeltaTextern()
+{
+    lcdSetCursor0_0();
+    lcdPrint_P(PSTR("Text="));
+    if(settings.externT_) {
+        lcdPrintTemperature(AnalogInputs::getDeltaLastT(), 9);
+    } else {
+        lcdPrint_P(PSTR("N/A"));
+    }
+    lcdPrintSpaces();
+
+    lcdSetCursor0_1();
+    lcdPrint_P(PSTR("delta T= "));
+    deltaT();
+}
+
+
+void Screen::displayNotImplemented()
+{
+  //  displayStrings(PSTR("Function not"), PSTR("implemented yet"));
+      displayStrings(PSTR("N/A"),NULL);
+}
+
+
+void Screen::runNotImplemented()
+{
+    displayNotImplemented();
+    waitButtonPressed();
+}
+
+void Screen::runCalibrateBeforeUse()
+{
+    displayStrings(PSTR("please cal."),NULL);
+    Timer::delay(5000);
+}
+
+
+void Screen::displayScreenReversedPolarity()
+{
+    lcdSetCursor0_0();
+    lcdPrint_P(PSTR("REV. POLARITY"));
+}
+
+void Screen::displayStartInfo()
+{   
+    resetETA();
+    resetCycleHistory();
+    lcdSetCursor0_0();
+    ProgramData::currentProgramData.printBatteryString(4);
+    lcdPrintChar(' ');
+    ProgramData::currentProgramData.printVoltageString();
+    lcdPrintChar(' ');
+    printProgram2chars(Program::programType_);
+
+    lcdSetCursor0_1();
+    procent = getChargeProcent();
+    lcdPrintUnsigned(procent, 2);
+    lcdPrint_P(PSTR("% "));  
+
+    int bindex = blink.getBlinkIndex();
+    if(bindex & 1) AnalogInputs::printRealValue(AnalogInputs::Vout, 5);
+    else lcdPrintSpaces(5);
+
+    lcdPrintChar(' ');
+    if(ProgramData::currentProgramData.isLiXX()) {
+        //display balance port
+        if(bindex & 2) AnalogInputs::printRealValue(AnalogInputs::Vbalancer, 5);
+        else lcdPrintSpaces(5);
+
+        if(bindex & 4) lcdPrintDigit(AnalogInputs::getConnectedBalancePorts());
+        else lcdPrintChar(' ');
+    } else {
+
+        lcdPrintCharge(ProgramData::currentProgramData.battery.C, 6);
+        lcdPrintSpaces();
+    }
+}
+
+
+
+void Screen::display(ScreenType screen)
+{
+    blink.incBlinkTime();
+    switch(screen) {
+    case ScreenFirst:                   return displayScreenFirst();
+    case ScreenCIVlimits:               return displayScreenCIVlimits();
+    case ScreenTime:                    return displayScreenTime();
+    case ScreenTemperature:             return displayScreenTemperature();
+    case ScreenBalancer1_3:             return displayBalanceInfo(0, AnalogInputs::Voltage);
+    case ScreenBalancer4_6:             return displayBalanceInfo(3, AnalogInputs::Voltage);
+    case ScreenBalancer1_3Rth:          return displayBalanceInfo(0, AnalogInputs::Resistance);
+    case ScreenBalancer4_6Rth:          return displayBalanceInfo(3, AnalogInputs::Resistance);
+    case ScreenStartInfo:               return displayStartInfo();
+    case ScreenR:                       return displayScreenR();
+    case ScreenVout:                    return displayScreenVout();
+    case ScreenVinput:                  return displayScreenVinput();
+    case ScreenEnergy:                  return displayScreenEnergy();
+    case ScreenDeltaVout:               return displayDeltaVout();
+    case ScreenDeltaTextern:            return displayDeltaTextern();
+    case ScreenDeltaFirst:              return displayDeltaFirst();
+    case ScreenCycles:                  return displayScreenCycles();
+    }
+}
+
+
+uint16_t Screen::getTotalChargDischargeTime()
+{
+    return (totalChargDischargeTime_/1000/60);
+}
+
+
 void Screen::displayScreenCycles()
+
 {
    uint8_t c;
    //multiscreen (5x2 cyclenumber, D/C, timeD/timeC, mAhDC/mAhC)
@@ -480,18 +585,6 @@ void Screen::displayScreenCycles()
    lcdPrintCharge(cyclesHistoryDcCapacity[c],8);
    lcdPrintCharge(cyclesHistoryChCapacity[c],8);
    lcdPrintSpaces();  
-}
-
-void Screen::displayDeltaVout()
-{
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("maxVout="));
-    AnalogInputs::printRealValue(AnalogInputs::deltaVoutMax, 7);
-    lcdPrintSpaces();
-
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("delta V= "));
-    deltaV();
 }
 
 void Screen::displayScreenEnergy()
@@ -566,68 +659,25 @@ void Screen::displayAnimation()
       lcdPrintChar(255);
       lcdSetCursor(i,0);
       lcdPrintChar(255);
-      hardware::delay(10); 
+      TimerIdle::delay(10); 
     }
-     hardware::delay(10);
+     TimerIdle::delay(10);
 
 }
 #endif
 
-void Screen::displayDeltaTextern()
-{
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("Text="));
-    if(settings.externT_) {
-        lcdPrintTemperature(AnalogInputs::deltaLastT_, 9);
-    } else {
-        lcdPrint_P(PSTR("N/A"));
-    }
-    lcdPrintSpaces();
-
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("delta T= "));
-    deltaT();
-}
-
-
-void Screen::displayNotImplemented()
-{
-  //  displayStrings(PSTR("Function not"), PSTR("implemented yet"));
-      displayStrings(PSTR("N/A"),NULL);
-}
-
-
-void Screen::runNotImplemented()
-{
-    displayNotImplemented();
-    waitButtonPressed();
-}
-
-void Screen::runCalibrateBeforeUse()
-{
-    displayStrings(PSTR("please cal."),NULL);
-    Timer::delay(5000);
-}
-
-
-void Screen::displayScreenReversedPolarity()
-{
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("REV. POLARITY"));
-}
-
 /*
 void Screen::displayWarningScreen()
 {
-   hardware::delay(500);
+   Timer::delay(500);
 //                               1234567890123456
     Screen::displayStrings(PSTR("    WARNING"),
                            PSTR("Balancer not.con"));
    
-    hardware::delay(900);
+    Timer::delay(900);
     Screen::displayStrings(PSTR("  hold button"),
                            PSTR(" to Start/stop"));
-    hardware::delay(900);                       
+    Timer::delay(900);                       
 }
 */
 
@@ -638,64 +688,38 @@ void Screen::displayCalibrationErrorScreen(uint8_t errNo)
       lcdSetCursor0_0();
       lcdPrint_P(PSTR("Cal.err.  F:"));
       lcdPrintUnsigned(errNo, 2);
-      hardware::delay(8000);
+      Timer::delay(8000);
 }
 
+/*
 void Screen::displayWaitScreen()
 {
       displayStrings(PSTR("wait"),NULL);
-      hardware::delay(2000);
+      Timer::delay(2000);
 }
-
-
-void Screen::displayStartInfo()
-{   
-    
-    resetETA();
-    resetCycleHistory();
-    
-    
-    lcdSetCursor0_0();
-    ProgramData::currentProgramData.printBatteryString(4);
-    lcdPrintChar(' ');
-    ProgramData::currentProgramData.printVoltageString();
-    lcdPrintChar(' ');
-    printProgram2chars(Program::programType_);
-
-    lcdSetCursor0_1();
-    procent = getChargeProcent();
-    lcdPrintUnsigned(procent, 2);
-    lcdPrint_P(PSTR("% "));
-    
-    
-    
-
-    int bindex = blink.getBlinkIndex();
-    if(bindex & 1) AnalogInputs::printRealValue(AnalogInputs::Vout, 5);
-    else lcdPrintSpaces(5);
-
-    lcdPrintChar(' ');
-    if(ProgramData::currentProgramData.isLiXX()) {
-        //display balance port
-        if(bindex & 2) AnalogInputs::printRealValue(AnalogInputs::Vbalancer, 5);
-        else lcdPrintSpaces(5);
-
-        if(bindex & 4) lcdPrintDigit(AnalogInputs::getConnectedBalancePorts());
-        else lcdPrintChar(' ');
-    } else {
-
-        lcdPrintCharge(ProgramData::currentProgramData.battery.C, 6);
-        lcdPrintSpaces();
-    }
-}
+*/
 
 void Screen::resetETA()
+
+
 {
 //reset ETA
     etaSec=0;
     timeSecOldETACalc=0;
     procent_=procent;
     etaSecLarge = 0;
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
@@ -761,29 +785,4 @@ void Screen::storeCycleHistoryInfo()
    }
    
   
-}
-
-
-void Screen::display(ScreenType screen)
-{
-    blink.incBlinkTime();
-    switch(screen) {
-    case ScreenFirst:                   return displayScreenFirst();
-    case ScreenCIVlimits:               return displayScreenCIVlimits();
-    case ScreenTime:                    return displayScreenTime();
-    case ScreenTemperature:             return displayScreenTemperature();
-    case ScreenBalancer1_3:             return displayBalanceInfo(0, AnalogInputs::Voltage);
-    case ScreenBalancer4_6:             return displayBalanceInfo(3, AnalogInputs::Voltage);
-    case ScreenBalancer1_3Rth:          return displayBalanceInfo(0, AnalogInputs::Resistance);
-    case ScreenBalancer4_6Rth:          return displayBalanceInfo(3, AnalogInputs::Resistance);
-    case ScreenStartInfo:               return displayStartInfo();
-    case ScreenR:                       return displayScreenR();
-    case ScreenVout:                    return displayScreenVout();
-    case ScreenVinput:                  return displayScreenVinput();
-    case ScreenEnergy:                  return displayScreenEnergy();
-    case ScreenDeltaVout:               return displayDeltaVout();
-    case ScreenDeltaTextern:            return displayDeltaTextern();
-    case ScreenDeltaFirst:              return displayDeltaFirst();
-    case ScreenCycles:                  return displayScreenCycles();
-    }
 }

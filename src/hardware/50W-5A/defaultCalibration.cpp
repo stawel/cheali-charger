@@ -17,7 +17,7 @@
 */
 
 #include <Arduino.h>
-#include "AnalogInputs.h"
+#include "AnalogInputsPrivate.h"
 #include "50W-5A.h"
 
 

@@ -20,63 +20,47 @@
 #include "Monitor.h"
 #include "Buzzer.h"
 #include "Screen.h"
+#include "SerialLog.h"
 #include <util/atomic.h>
 
+
+// time measurement
 
 namespace Timer {
     volatile uint32_t interrupts_ = 0;
 
     uint32_t getInterrupts() {
-        return interrupts_;
+        uint32_t v;
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+            v = interrupts_;
+        }
+        return v;
+    }
+    inline void doInterrupt() {
+        interrupts_++;
+    }
+
+    void doIdle() {
+        Monitor::doIdle();
+        SerialLog::doIdle();
+        Discharger::doIdle();
+        Buzzer::doIdle();
     }
 
     void callback() {
         static uint8_t slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
         Timer::doInterrupt();
-        Buzzer::doInterrupt();
-        Monitor::doInterrupt();
-        hardware::doInterrupt();
         if(--slowInterval == 0){
             slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
-            Discharger::doSlowInterrupt();
             AnalogInputs::doSlowInterrupt();
             Screen::doSlowInterrupt();
         }
     }
 }
 
-ISR(TIMER0_COMP_vect)
-{
-    Timer::callback();
-}
-
-
-void Timer::initialize()
-{
-#if F_CPU != 16000000
-#error "F_CPU != 16000000 - not implemented"
-#endif
-#if TIMER_INTERRUPT_PERIOD_MICROSECONDS != 500
-#error "TIMER_INTERRUPT_PERIOD_MICROSECONDS != 500 - not implemented"
-#endif
-
-    TCNT0=0;
-    OCR0=TIMER_INTERRUPT_PERIOD_MICROSECONDS/4 - 1;
-    TCCR0=(1<<WGM01);               //Clear Timer on Compare Match (CTC) Mode
-    TCCR0|=(1<<CS00) | (1<<CS01);   //clk/64 (From prescaler)
-    TIMSK|=(1<<OCIE0);              //OCIE0: Timer/Counter0 Output Compare Match Interrupt Enable
-}
-
-void Timer::doInterrupt()
-{
-    interrupts_++;
-}
 uint32_t Timer::getMiliseconds()
 {
-    uint32_t retu;
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        retu = interrupts_;
-    }
+    uint32_t retu = getInterrupts();
 #if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 500
     retu /= 2;
 #else
@@ -94,5 +78,15 @@ void Timer::delay(uint16_t ms)
     end = getMiliseconds() + ms;
 
     while(getMiliseconds() < end) {};
+}
+
+void Timer::delayIdle(uint16_t ms)
+{
+    uint32_t end;
+    end = getMiliseconds() + ms;
+
+    while(getMiliseconds() < end) {
+        doIdle();
+    };
 }
 

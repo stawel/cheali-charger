@@ -40,8 +40,6 @@
 #define DISCHARGER_P1_TEXT           "1A" 
 #define SPMS_P1_TEXT                 "5A" 
 
-//loudness programcomplete
-#define LOUDSOUND
 
 //Lixx withoutbalancer
 #define CHARGE_LIXX_WITHOUT_BALANCER

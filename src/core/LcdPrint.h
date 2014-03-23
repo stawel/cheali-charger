@@ -55,7 +55,7 @@ void lcdPrintYesNo(uint8_t yes);
 void lcdPrintEValue(uint16_t x, int8_t dig, bool dot);
 
 void lcdPrintTemperature(AnalogInputs::ValueType c, int8_t dig);
-void lcdPrintPower(AnalogInputs::ValueType c, int8_t dig);
+void lcdPrintPower(AnalogInputs::ValueType c, char u1, char u2);
 void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig);
 void lcdPrintCurrent(AnalogInputs::ValueType i, int8_t dig);
 void lcdPrintVoltage(AnalogInputs::ValueType v, int8_t dig);

@@ -59,7 +59,6 @@ void EditName::selectLetter()
 {
     uint8_t key, begin=-1;
     lcd.blink();
-
     do {
         if(begin != beginSL_) {
             selectLetterScreen();

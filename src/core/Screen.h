@@ -64,18 +64,13 @@ namespace Screen {
     void displayScreenCycles();
     //void displayWarningScreen();
     void displayCalibrationErrorScreen(uint8_t errNo);
-    void displayWaitScreen();
-
+    //void displayWaitScreen();
     void displayAnimation();
-
     void getDeltaProcentTimeSec();
     uint16_t getETATime();
     void resetETA();
     void resetCycleHistory();
     void storeCycleHistoryInfo();
-    
-    
-    
 
     void displayScreenProgramCompleted();
 

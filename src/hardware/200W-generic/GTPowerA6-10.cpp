@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <Arduino.h>
+
 #include "GTPowerA6-10-pins.h"
 #include "GTPowerA6-10.h"
 #include "adc.h"
@@ -41,41 +42,14 @@ void hardware::initialize()
     pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
     pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
-    pinMode(MUX_ADR0_PIN, OUTPUT);
-    pinMode(MUX_ADR1_PIN, OUTPUT);
-    pinMode(MUX_ADR2_PIN, OUTPUT);
-    pinMode(MUX0_Z_D_PIN, INPUT);
-    pinMode(MUX1_Z_D_PIN, INPUT);
-
     setBatteryOutput(false);
     setFan(false);
     setBuzzer(0);
     setBalancer(0);
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
-    Timer::initialize();
-    SMPS::initialize();
-    Discharger::initialize();
-
     Timer1.initialize(TIMER1_PERIOD_MICROSECONDS);         // initialize timer1, and set a 1/2 second period
     adc::initialize();
-    AnalogInputs::initialize();
-}
-
-void hardware::beepLoud(uint16_t dur) //dur is milisec
-{
-     
-     //only use the "program complete" status. Dont use charging status.
-     // good param: 140/40
-     
-     if (!settings.AudioBeep_) return;
-     
-     for( dur <= dur; dur--;) {
-       digitalWrite(BUZZER_PIN,HIGH);
-      delayMicroseconds(140);
-       digitalWrite(BUZZER_PIN,LOW);
-      delayMicroseconds(40);     
-       } 
 }
 
 void hardware::setLCDBacklight(uint8_t val)
@@ -94,10 +68,11 @@ void hardware::setFan(bool enable)
 {
     digitalWrite(FAN_PIN, enable);
 }
-void hardware::setBuzzer(uint16_t val)
+void hardware::setBuzzer(uint8_t val)
 {
     if (!settings.AudioBeep_) return;
-    analogWrite(BUZZER_PIN, val);
+    //analogWrite(BUZZER_PIN, val);
+   digitalWrite(BUZZER_PIN, (val&1));
 }
 
 void hardware::setBatteryOutput(bool enable)
@@ -136,6 +111,5 @@ void hardware::setBalancerOutput(bool enable)
 {
 }
 
-LiquidCrystal lcd(LCD_ENABLE_RS, LCD_ENABLE_PIN,
-        LCD_D0_PIN, LCD_D1_PIN, LCD_D2_PIN, LCD_D3_PIN);
+LiquidCrystal lcd;
 
