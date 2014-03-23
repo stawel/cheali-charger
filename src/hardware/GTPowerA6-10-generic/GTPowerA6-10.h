@@ -41,6 +41,7 @@
 #define ENABLE_T_INTERNAL
 #define ENABLE_STACK_INFO
 #define ENABLE_SERIAL_LOG
+#define ENABLE_EXPERT_VOLTAGE_CALIBRATION
 
 
 #include "LiquidCrystal.h"

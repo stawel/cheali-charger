@@ -100,24 +100,24 @@ struct adc_correlation {
 };
 
 const adc_correlation order_analogInputs_on[] PROGMEM = {
-    {-1,                    OUTPUT_VOLTAGE_PIN,     AnalogInputs::Vout,             0},
+    {-1,                    OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,    0},
     {MADDR_V_OUTMUX,        MUX0_Z_A_PIN ,          AnalogInputs::VoutMux,          0},
-    {MADDR_V_BALANSER1,     MUX1_Z_A_PIN,           AnalogInputs::Vb1_pin,         0},
-    {-1,                    REVERSE_POLARITY_PIN,   AnalogInputs::VreversePolarity, 0},
+    {MADDR_V_BALANSER1,     MUX1_Z_A_PIN,           AnalogInputs::Vb1_pin,          0},
+    {-1,                    OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin,  0},
     {MADDR_T_INTERN,        MUX0_Z_A_PIN,           AnalogInputs::Tintern,          0},
-    {MADDR_V_BALANSER2,     MUX1_Z_A_PIN,           AnalogInputs::Vb2_pin,         0},
+    {MADDR_V_BALANSER2,     MUX1_Z_A_PIN,           AnalogInputs::Vb2_pin,          0},
     {-1,                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0},
     {MADDR_V_IN,            MUX0_Z_A_PIN,           AnalogInputs::Vin,              0},
-    {MADDR_V_BALANSER3,     MUX1_Z_A_PIN,           AnalogInputs::Vb3_pin,         0},
-    {-1,                    OUTPUT_VOLTAGE_PIN,     AnalogInputs::Vout,             0},
+    {MADDR_V_BALANSER3,     MUX1_Z_A_PIN,           AnalogInputs::Vb3_pin,          0},
+    {-1,                    OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,    0},
     {MADDR_T_EXTERN,        MUX0_Z_A_PIN,           AnalogInputs::Textern,          0},
-    {MADDR_V_BALANSER4,     MUX1_Z_A_PIN,           AnalogInputs::Vb4_pin,         0},
+    {MADDR_V_BALANSER4,     MUX1_Z_A_PIN,           AnalogInputs::Vb4_pin,          0},
     {-1,                    DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       0},
     {MADDR_BUTTON_DEC,      MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_DEC},
-    {MADDR_V_BALANSER5,     MUX1_Z_A_PIN,           AnalogInputs::Vb5_pin,         0},
+    {MADDR_V_BALANSER5,     MUX1_Z_A_PIN,           AnalogInputs::Vb5_pin,          0},
     {-1,                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0},
     {MADDR_BUTTON_INC,      MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_INC},
-    {MADDR_V_BALANSER6,     MUX1_Z_A_PIN,           AnalogInputs::Vb6_pin,         0},
+    {MADDR_V_BALANSER6,     MUX1_Z_A_PIN,           AnalogInputs::Vb6_pin,          0},
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {MADDR_V_UNKNOWN0,      MUX1_Z_A_PIN,           AnalogInputs::Vunknown0,        0},
     {MADDR_V_UNKNOWN1,      MUX1_Z_A_PIN,           AnalogInputs::Vunknown1,        0},
@@ -176,18 +176,6 @@ void processConversion(bool finalize)
             adc_keyboard_ &= ~key;
         }
     }
-
-    /*
-    current_input = nextInput(current_input);
-    setMuxAddress(getMUX(current_input));
-    setADC(getADC(current_input));
-
-    if(finalize && current_input == 0)
-        finalizeMeasurement();
-    else {
-        //info:improves the precision
-        Utils::delayMicroseconds(ADC_DELAY_MS);
-    }*/
 }
 
 void reset() {

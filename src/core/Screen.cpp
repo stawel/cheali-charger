@@ -391,8 +391,7 @@ void Screen::runCalibrateBeforeUse()
 
 void Screen::displayScreenReversedPolarity()
 {
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("REVERSE POLARITY"));
+    displayStrings(PSTR("REVERSE POLARITY"), NULL);
 }
 
 void Screen::displayStartInfo()

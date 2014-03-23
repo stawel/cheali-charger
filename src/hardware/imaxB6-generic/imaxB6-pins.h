@@ -68,9 +68,9 @@
 //pin 35 - A2
 #define DISCHARGE_CURRENT_PIN   A2
 //pin 36 - A1
-#define REVERSE_POLARITY_PIN    A1
+#define OUTPUT_VOLTAGE_MINUS_PIN    A1
 //pin 37 - A0
-#define OUTPUT_VOLTAGE_PIN      A0
+#define OUTPUT_VOLTAGE_PLUS_PIN     A0
 
 // pin 38,39 - Vcc, GND
 

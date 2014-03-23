@@ -71,7 +71,7 @@ void hardware::setBuzzer(uint8_t val)
 {
     //TODO: this should be rewritten, sorry for that :D
     //Timer2 is now used by the Timer.cpp implementation
-    IO::digitalWrite(BUZZER_PIN, !(val&1));
+    IO::digitalWrite(BUZZER_PIN, (val&1));
 }
 
 void hardware::setBatteryOutput(bool enable)

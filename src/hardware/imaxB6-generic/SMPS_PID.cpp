@@ -25,7 +25,7 @@ void SMPS_PID::update()
 {
     if(!PID_enable) return;
     //if Vout is too high disable PID
-    if(AnalogInputs::getADCValue(AnalogInputs::Vout) > PID_CutOff) {
+    if(AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin) > PID_CutOff) {
         hardware::setChargerOutput(false);
         PID_enable = false;
         return;
@@ -91,7 +91,7 @@ void hardware::setChargerValue(uint16_t value)
 {
 
     PID_setpoint = value;
-    PID_CutOff = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout, PID_CUTOFF_VOLTAGE);
+    PID_CutOff = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, PID_CUTOFF_VOLTAGE);
 }
 
 void hardware::setChargerOutput(bool enable)
@@ -102,7 +102,7 @@ void hardware::setChargerOutput(bool enable)
     PID_enable = false;
     IO::digitalWrite(SMPS_DISABLE_PIN, !enable);
     if(enable) {
-        SMPS_PID::init(AnalogInputs::getRealValue(AnalogInputs::Vin), AnalogInputs::getRealValue(AnalogInputs::Vout));
+        SMPS_PID::init(AnalogInputs::getRealValue(AnalogInputs::Vin), AnalogInputs::getRealValue(AnalogInputs::Vout_plus_pin));
     }
 }
 

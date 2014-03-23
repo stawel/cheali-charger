@@ -58,6 +58,7 @@ namespace AnalogInputs {
     void resetADC();
     void reset();
     void resetDelta();
+    void resetStable();
 
 
     ValueType getAvrADCValue(Name name)     { RETURN_ATOMIC(avrAdc_[name])   }
@@ -75,7 +76,6 @@ namespace AnalogInputs {
     void finalizeDeltaMeasurement();
     void finalizeFullMeasurement();
     void finalizeFullVirtualMeasurement();
-    void resetStable();
 
 
 } // namespace AnalogInputs
@@ -143,14 +143,7 @@ bool AnalogInputs::isConnected(Name name)
 
 void AnalogInputs::finalizeDeltaMeasurement()
 {
-    bool useVBalancer = real_[VobInfo] == Vbalancer;
-    if(useVBalancer) {
-        //when the balancer is connected use
-        //its "real" voltage to calculate deltaVout
-        deltaAvrSumVout_ += real_[VoutBalancer];
-    } else {
-        deltaAvrSumVout_ += adc_[Vout];
-    }
+    deltaAvrSumVout_ += getVout();
     deltaAvrSumTextern_ += adc_[Textern];
     deltaAvrCount_++;
     if(Timer::getMiliseconds() - deltaStartTime_ > DELTA_TIME_MILISECONDS) {
@@ -161,14 +154,8 @@ void AnalogInputs::finalizeDeltaMeasurement()
 
         //calculate deltaVout
         deltaAvrSumVout_ /= deltaAvrCount_;
-        x = deltaAvrSumVout_;
+        real = deltaAvrSumVout_;
         deltaAvrSumVout_ = 0;
-        if(useVBalancer) {
-            //we don't need to calibrate a "real" value
-            real = x;
-        } else {
-            real = calibrateValue(Vout, x);
-        }
         old = getRealValue(deltaVoutMax);
         if(real >= old)
             setReal(deltaVoutMax, real);
@@ -203,7 +190,12 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
 {
     AnalogInputs::ValueType oneVolt = ANALOG_VOLT(1);
     AnalogInputs::ValueType balancer = 0;
-    AnalogInputs::ValueType out = real_[Vout];
+    AnalogInputs::ValueType out_p = real_[Vout_plus_pin];
+    AnalogInputs::ValueType out_m = real_[Vout_minus_pin];
+    AnalogInputs::ValueType out = 0;
+    if(out_m < out_p)
+        out = out_p - out_m;
+    setReal(Vout, out);
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
     AnalogInputs::ValueType vb0_p = getRealValue(Vb0_pin);
@@ -231,7 +223,7 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
 
     setReal(Vbalancer, balancer);
     AnalogInputs::Name obInfo;
-    if(balancer == 0 || (out > balancer && out - balancer > oneVolt)) {
+    if(balancer == 0 || absDiff(out, balancer) > oneVolt) {
         //balancer not connected or big error in calibration
         obInfo = Vout;
         ports = 0;
@@ -396,12 +388,12 @@ void AnalogInputs::powerOff()
 
 bool AnalogInputs::isReversePolarity()
 {
-    AnalogInputs::ValueType vr = getADCValue(VreversePolarity);
-    AnalogInputs::ValueType vo = getADCValue(Vout);
-    if(vr > vo) vr -=  vo;
-    else vr = 0;
+    AnalogInputs::ValueType vm = getADCValue(Vout_minus_pin);
+    AnalogInputs::ValueType vp = getADCValue(Vout_plus_pin);
+    if(vm > vp) vm -=  vp;
+    else vm = 0;
 
-    return vr > REVERSE_POLARITY_MIN_VALUE;
+    return vm > REVERSE_POLARITY_MIN_VALUE;
 }
 
 void AnalogInputs::finalizeMeasurement()
@@ -418,7 +410,7 @@ void AnalogInputs::finalizeMeasurement()
 
 AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
 {
-    //TODO: do it with more points
+    //TODO: do this with more points
     CalibrationPoint p0, p1;
     getCalibrationPoint(p0, name, 0);
     getCalibrationPoint(p1, name, 1);
@@ -435,7 +427,7 @@ AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
 }
 AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType y)
 {
-    //TODO: do it with more points
+    //TODO: do this with more points
     CalibrationPoint p0, p1;
     getCalibrationPoint(p0, name, 0);
     getCalibrationPoint(p1, name, 1);

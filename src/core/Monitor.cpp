@@ -67,7 +67,7 @@ void Monitor::update()
 }
 
 void Monitor::powerOn() {
-    VoutMaxMesured_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout, MAX_CHARGE_V+ANALOG_VOLT(3.000));
+    VoutMaxMesured_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, MAX_CHARGE_V+ANALOG_VOLT(3.000));
 }
 
 
@@ -82,7 +82,7 @@ Strategy::statusType Monitor::run()
     }
 #endif
 
-    AnalogInputs::ValueType VMout = AnalogInputs::getADCValue(AnalogInputs::Vout);
+    AnalogInputs::ValueType VMout = AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin);
     if(VMout > VoutMaxMesured_) {
         Program::stopReason_ = PSTR("bat disc");
         return Strategy::ERROR;

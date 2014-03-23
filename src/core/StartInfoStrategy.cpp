@@ -56,7 +56,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
     bool cell_nr, v_balance, v_out;
 
     cell_nr = v_balance = false;
-    v_out = (!AnalogInputs::isConnected(AnalogInputs::Vout));
+    v_out = ! AnalogInputs::isConnected(AnalogInputs::Vout);
 
     if(balancePort_) {
         uint8_t is_cells, should_be_cells;
