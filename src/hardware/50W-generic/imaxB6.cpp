@@ -90,6 +90,8 @@ void hardware::soundInterrupt()
     if(sound_ >= 20) f=4;
     if(sound_ >= 30) f=2;
 
+
+    if (!settings.AudioBeep_) return;
     digitalWrite(BUZZER_PIN, on&f);
 }
 
