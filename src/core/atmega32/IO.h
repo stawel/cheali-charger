@@ -27,6 +27,7 @@
 #define INPUT 0
 #define HIGH 1
 #define LOW 0
+#define EXTERNAL 0
 #endif
 
 namespace IO
@@ -35,6 +36,7 @@ namespace IO
         inline void digitalWrite(uint8_t pinNumber, uint8_t value);
         inline uint8_t digitalRead(uint8_t pinNumber);
         inline void pinMode(uint8_t pinNumber, uint8_t mode)__attribute__((always_inline));
+        inline void analogReference(uint8_t mode);
 
         // Auxillery functions utilized for pin to port mapping
         inline volatile uint8_t* pinToPort(uint8_t pinNumber);
@@ -78,6 +80,16 @@ namespace IO
                         // Set pin to input
                         *port &= ~bitmask;
                 }
+        }
+
+        inline void analogReference(uint8_t mode)
+        {
+            if (mode == 0){
+                // External reference - Clear bits 6 & 7
+                ADMUX &= ~(0b11000000);
+            } else {
+                // Implement other modes?
+            }
         }
 
         // Convert physical pin number to logical port address

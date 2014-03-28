@@ -19,7 +19,6 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <util/atomic.h>
-#include <Arduino.h>
 #include "Hardware.h"
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
@@ -64,6 +63,15 @@
 #define DEFAULT 1
 #define EXTERNAL 0
 
+// A0-7 definitions
+#define A0 0
+#define A1 1
+#define A2 2
+#define A3 3
+#define A4 4
+#define A5 5
+#define A6 6
+#define A7 7
 
 namespace adc {
 
@@ -149,7 +157,7 @@ void setMuxAddress(int8_t address)
         return;
     uint8_t new_portb = getPortBAddress(address);
     uint8_t disc_adr = getPortBAddress(ADC_CAPACITOR_DISCHARGE_ADDRESS);
-    uint8_t pin_bit = digitalPinToBitMask(MUX0_Z_D_PIN);
+    uint8_t pin_bit = IO::pinBitmask(MUX0_Z_D_PIN);
 
     //discharge ADC capacitor first
     PORTB = disc_adr;

@@ -19,7 +19,6 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <util/atomic.h>
-#include <Arduino.h>
 #include "Hardware.h"
 #include "GTPowerA6-10-pins.h"
 #include "adc.h"
@@ -60,6 +59,15 @@
 #define DEFAULT 1
 #define EXTERNAL 0
 
+// A0-7 definitions
+#define A0 0
+#define A1 1
+#define A2 2
+#define A3 3
+#define A4 4
+#define A5 5
+#define A6 6
+#define A7 7
 
 namespace adc {
 
