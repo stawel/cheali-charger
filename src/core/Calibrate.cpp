@@ -283,6 +283,8 @@ void calibrateVoltage()
                 AnalogInputs::on_ = false;
                 if(v.runEdit(index))
                     saveVoltage(true, Vinput,pgm::read(&voltageName2[index]));
+                    //save calib status
+                   settings.calibratedState_ |= 1;  Settings::save();
                 AnalogInputs::on_ = true;
             }
         } while(true);
@@ -570,7 +572,7 @@ void saveCalibrateValueIdisCharge(uint16_t value)
 {
       settings.DISCHARGER_Upperbound_Value_ = value;
       //save calib status
-      settings.calibratedState_ = settings.calibratedState_  | 4; ;  Settings::save();   
+      settings.calibratedState_ = settings.calibratedState_  | 4;   Settings::save();   
 }
 
 

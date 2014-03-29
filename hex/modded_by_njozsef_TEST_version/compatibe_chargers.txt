@@ -2,7 +2,7 @@ Tested chargers
 ---------------
 
 200W-commondisplay
-Turnigy_Mega_200Wx2 V2
+Turnigy_Mega_200Wx2 V2  (current control not 100% accurate)
 
 200W
 Turnigy MAX200 A6-10
@@ -17,7 +17,7 @@ Turnigy Acucell 5A
 Turnigy Acucell 6A (old PCB)
 
 400W
-Turnigy MEGA400x2
+Turnigy MEGA400x2  (current control not 100% accurate)
 
 imaxB6Chalus
 only Chalus modded ImaxB6 (do not use stock hardware)

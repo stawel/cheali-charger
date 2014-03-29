@@ -21,24 +21,24 @@
 #include "GTPowerA6-10.h"
 
 #define MAX_CHARGE_V            ANALOG_VOLT(26.100) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(10.005)  //10A
-#define MAX_CHARGE_P            ANALOG_WATT(200.005)              //200W
+#define MAX_CHARGE_I            ANALOG_AMP(10.000)  //10A
+#define MAX_CHARGE_P            ANALOG_WATT(200.000)              //200W
 
-#define MAX_DISCHARGE_P         ANALOG_WATT(40.005)               //25W
-#define MAX_DISCHARGE_I         ANALOG_AMP(5.005)   //5A
+#define MAX_DISCHARGE_P         ANALOG_WATT(40.000)               //25W
+#define MAX_DISCHARGE_I         ANALOG_AMP(5.000)   //5A
 
 //#define SMPS_UPPERBOUND_VALUE               8192
 //#define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/8)
 //#define DISCHARGER_UPPERBOUND_VALUE         8192
 //#define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/8)
 
-#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.100) 
-#define DISCHARGER_P1_POINT          ANALOG_AMP(1.000) 
-#define SPMS_P1_POINT                ANALOG_AMP(2.000) 
+#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.050) 
+#define DISCHARGER_P1_POINT          ANALOG_AMP(0.300) 
+#define SPMS_P1_POINT                ANALOG_AMP(1.000) 
 
-#define SPMS_DISCHARGER_P0_TEXT      "100mA" 
-#define DISCHARGER_P1_TEXT           "1A" 
-#define SPMS_P1_TEXT                 "2A" 
+#define SPMS_DISCHARGER_P0_TEXT      "50mA" 
+#define DISCHARGER_P1_TEXT           "300mA" 
+#define SPMS_P1_TEXT                 "1A" 
 
 
 //Lixx withoutbalancer

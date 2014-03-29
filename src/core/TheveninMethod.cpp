@@ -30,8 +30,6 @@ namespace TheveninMethod {
     AnalogInputs::ValueType Vend_;
     AnalogInputs::ValueType valueTh_;
     uint16_t lastBallancingEnded_;
-    uint16_t getReadableRth_;
-    uint16_t tempRth = 0;
 
     Thevenin tVout_;
     Thevenin tBal_[MAX_BANANCE_CELLS];
@@ -77,33 +75,12 @@ AnalogInputs::ValueType TheveninMethod::getReadableBattRth()
 
 AnalogInputs::ValueType TheveninMethod::getReadableWiresRth()
 {
-    //only is poweron
-    if (!SMPS::isPowerOn() && !Discharger::isPowerOn()) 
-    {
-    getReadableRth_ = 65535;
-    return tempRth;
-    }
     Resistance R;
     R.iV_ =  AnalogInputs::getRealValue(AnalogInputs::Vout);
     R.iV_ -= AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
     R.uI_ = AnalogInputs::getRealValue(AnalogInputs::Iout);
-    
-    if (R.uI_ > 0)
-    {
-      if (getReadableRth_ > R.getReadableRth()) 
-      {
-       //return smallest value
-       getReadableRth_ = R.getReadableRth();
-      }
-    } 
-    
-    if (getReadableRth_ == 65535) 
-    { 
-      return tempRth;
-    }
-    
-    tempRth = getReadableRth_;
-    return tempRth;
+    return R.getReadableRth();
+
 }
 
 
@@ -112,7 +89,12 @@ void TheveninMethod::setVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueTyp
 {
     Vend_ = Vend;
     maxValue_ = i;
-    minValue_ = i/20;
+    minValue_ = i/10;
+    //low current
+    if (i < 800) { minValue_ = i/5; }
+    if (i < 400) { minValue_ = i/4; }
+    if (i < 200) { minValue_ = i/2; }
+    if (i <= 100) { minValue_ = i; }
     balance_ = balance;
 }
 
