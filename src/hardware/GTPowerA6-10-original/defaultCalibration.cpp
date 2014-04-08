@@ -17,7 +17,7 @@
 */
 
 #include "AnalogInputsPrivate.h"
-#include <avr/pgmspace.h>
+#include "memory.h"
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
     {{0,0},                         {50816, ANALOG_VOLT(23.118)}},  //Vout

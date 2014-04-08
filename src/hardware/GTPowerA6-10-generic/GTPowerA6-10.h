@@ -18,7 +18,7 @@
 #ifndef GTPOWERA610_H_
 #define GTPOWERA610_H_
 
-#include <avr/pgmspace.h>
+#include "memory.h"
 #include "AnalogInputs.h"
 #include "Timer.h"
 #include "GTPowerA6-10-pins.h"
