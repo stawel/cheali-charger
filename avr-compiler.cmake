@@ -4,12 +4,12 @@ SET(CDEBUG "-g -gdwarf-2")
 SET(CWARN "-Wall")
 SET(CTUNING "-funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums")
 SET(COPT "-Os")
-SET(CINCS "-I${CMAKE_SOURCE_DIR}/arduino/cores/arduino -I${CMAKE_SOURCE_DIR}/arduino/variants/atmega32")
+SET(CINCS "")
 SET(CMCU "-mmcu=atmega32")
 SET(CDEFS "-DF_CPU=16000000")
 
-SET(CXXEXTRA "-DARDUINO=100 -ffunction-sections -fdata-sections -fno-exceptions")
-#-D__IN_ECLIPSE__=1 -DARDUINO=100 -Wall -Os -ffunction-sections -fdata-sections -fno-exceptions -g -mmcu=atmega32 -DF_CPU=16000000UL -MMD -MP -MF"AnalogInputs.d" -MT"AnalogInputs.d" -c -o "AnalogInputs.o" -x c++ "../AnalogInputs.cpp"
+SET(CXXEXTRA "-ffunction-sections -fdata-sections -fno-exceptions")
+#-D__IN_ECLIPSE__=1 -Wall -Os -ffunction-sections -fdata-sections -fno-exceptions -g -mmcu=atmega32 -DF_CPU=16000000UL -MMD -MP -MF"AnalogInputs.d" -MT"AnalogInputs.d" -c -o "AnalogInputs.o" -x c++ "../AnalogInputs.cpp"
 
 
 

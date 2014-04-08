@@ -70,3 +70,12 @@ void setup()
     Timer::delay(1000);
     eeprom::restoreDefault();
 }
+
+
+int main()
+{
+    setup();
+    while(true) {
+        loop();
+    }
+}
