@@ -24,12 +24,12 @@
 #define HardwareSerial_h
 
 #include <inttypes.h>
-
-#include "Stream.h"
+#include <stddef.h>
+#include <avr/io.h>
 
 struct ring_buffer;
 
-class HardwareSerial : public Stream
+class HardwareSerial
 {
   private:
     ring_buffer *_rx_buffer;
@@ -55,16 +55,16 @@ class HardwareSerial : public Stream
     void begin(unsigned long);
     void begin(unsigned long, uint8_t);
     void end();
-    virtual int available(void);
-    virtual int peek(void);
-    virtual int read(void);
-    virtual void flush(void);
-    virtual size_t write(uint8_t);
+    int available(void);
+    int peek(void);
+    int read(void);
+    void flush(void);
+    size_t write(uint8_t);
     inline size_t write(unsigned long n) { return write((uint8_t)n); }
     inline size_t write(long n) { return write((uint8_t)n); }
     inline size_t write(unsigned int n) { return write((uint8_t)n); }
     inline size_t write(int n) { return write((uint8_t)n); }
-    using Print::write; // pull in write(str) and write(buf, size) from Print
+//    using Print::write; // pull in write(str) and write(buf, size) from Print
     operator bool();
 };
 

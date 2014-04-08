@@ -133,7 +133,7 @@ void doIdle()
 
 void printChar(char c)
 {
-    Serial.print(c);
+    Serial.write(c);
     CRC^=c;
 }
 void printD()
