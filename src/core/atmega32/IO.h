@@ -22,21 +22,32 @@
 #include <avr/io.h>
 
 // Hopefully these aren't invalid for other platforms
-#ifndef Arduino_h
 #define OUTPUT 1
 #define INPUT 0
 #define HIGH 1
 #define LOW 0
 #define EXTERNAL 0
-#endif
+
+// A0-7 definitions
+#define A0 0
+#define A1 1
+#define A2 2
+#define A3 3
+#define A4 4
+#define A5 5
+#define A6 6
+#define A7 7
+
+#define INLINE_ATTR __attribute__((always_inline))
+//#define INLINE_ATTR
 
 namespace IO
 {
         // Core IO functions to be implemented in proper target folder
-        inline void digitalWrite(uint8_t pinNumber, uint8_t value);
-        inline uint8_t digitalRead(uint8_t pinNumber);
-        inline void pinMode(uint8_t pinNumber, uint8_t mode)__attribute__((always_inline));
-        inline void analogReference(uint8_t mode);
+        inline void digitalWrite(uint8_t pinNumber, uint8_t value) INLINE_ATTR;
+        inline uint8_t digitalRead(uint8_t pinNumber) INLINE_ATTR;
+        inline void pinMode(uint8_t pinNumber, uint8_t mode) INLINE_ATTR;
+        inline void analogReference(uint8_t mode) INLINE_ATTR;
 
         // Auxillery functions utilized for pin to port mapping
         inline volatile uint8_t* pinToPort(uint8_t pinNumber);

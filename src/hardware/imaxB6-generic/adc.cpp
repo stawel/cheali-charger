@@ -60,19 +60,6 @@
 #define ADC_CAPACITOR_DISCHARGE_ADDRESS MADDR_V_BALANSER6
 #define ADC_CAPACITOR_DISCHARGE_DELAY_US 10
 
-#define DEFAULT 1
-#define EXTERNAL 0
-
-// A0-7 definitions
-#define A0 0
-#define A1 1
-#define A2 2
-#define A3 3
-#define A4 4
-#define A5 5
-#define A6 6
-#define A7 7
-
 namespace adc {
 
 static uint8_t current_input_;

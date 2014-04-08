@@ -20,15 +20,8 @@
 
 #include "Hardware.h"
 
-#ifndef Arduino_h
-#ifndef MATH
-#define MATH
-// Grabbed min, max, & abs definitions from Arduino.h
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
-#define abs(x) ((x)>0?(x):-(x))
-#endif
-#endif
 
 #define sizeOfArray(x) (sizeof(x)/sizeof((x)[0]))
 
