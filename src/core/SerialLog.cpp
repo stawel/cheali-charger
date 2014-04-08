@@ -15,8 +15,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <Arduino.h>
-
 #include "Serial.h"
 #include "SerialLog.h"
 #include "Hardware.h"
@@ -28,6 +26,7 @@
 #include "Version.h"
 #include "TheveninMethod.h"
 #include "StackInfo.h"
+#include "IO.h"
 
 namespace SerialLog {
     enum State { On, Off, Starting };
@@ -65,7 +64,7 @@ void serialEnd()
 {
     Serial.flush();
     Serial.end();
-    pinMode(10, INPUT);
+    IO::pinMode(10, INPUT);
 }
 
 void powerOn()

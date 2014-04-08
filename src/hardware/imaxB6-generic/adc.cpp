@@ -19,8 +19,6 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <util/atomic.h>
-#include <Arduino.h>
-
 #include "Hardware.h"
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
@@ -30,6 +28,7 @@
 #include "Settings.h"
 #include "Timer0.h"
 #include "AnalogInputsPrivate.h"
+#include "IO.h"
 
 /* ADC - measurement:
  * uses Timer0 to trigger conversion
@@ -64,6 +63,15 @@
 #define DEFAULT 1
 #define EXTERNAL 0
 
+// A0-7 definitions
+#define A0 0
+#define A1 1
+#define A2 2
+#define A3 3
+#define A4 4
+#define A5 5
+#define A6 6
+#define A7 7
 
 namespace adc {
 
@@ -71,12 +79,12 @@ static uint8_t current_input_;
 
 void initialize()
 {
-    digitalWrite(MUX0_Z_D_PIN, 0);
-    pinMode(MUX0_Z_D_PIN, INPUT);
+    IO::digitalWrite(MUX0_Z_D_PIN, 0);
+    IO::pinMode(MUX0_Z_D_PIN, INPUT);
 
-    pinMode(MUX_ADR0_PIN, OUTPUT);
-    pinMode(MUX_ADR1_PIN, OUTPUT);
-    pinMode(MUX_ADR2_PIN, OUTPUT);
+    IO::pinMode(MUX_ADR0_PIN, OUTPUT);
+    IO::pinMode(MUX_ADR1_PIN, OUTPUT);
+    IO::pinMode(MUX_ADR2_PIN, OUTPUT);
 
 
     //ADC Auto Trigger Source - Timer/Counter0 Compare Match
@@ -149,19 +157,19 @@ void setMuxAddress(int8_t address)
         return;
     uint8_t new_portb = getPortBAddress(address);
     uint8_t disc_adr = getPortBAddress(ADC_CAPACITOR_DISCHARGE_ADDRESS);
-    uint8_t pin_bit = digitalPinToBitMask(MUX0_Z_D_PIN);
+    uint8_t pin_bit = IO::pinBitmask(MUX0_Z_D_PIN);
 
     //discharge ADC capacitor first
     PORTB = disc_adr;
-    //pinMode(MUX0_Z_D_PIN, OUTPUT);
+    //IO::pinMode(MUX0_Z_D_PIN, OUTPUT);
     DDRA |= pin_bit;
-    delayMicroseconds(ADC_CAPACITOR_DISCHARGE_DELAY_US);
+    Utils::delayMicroseconds(ADC_CAPACITOR_DISCHARGE_DELAY_US); // Is the accuracy of this delay super important?!
 
     //switch to the desired address
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
         PORTB = new_portb;
-        //pinMode(MUX0_Z_D_PIN, INPUT);
+        //IO::pinMode(MUX0_Z_D_PIN, INPUT);
         DDRA &= ~pin_bit;
     }
 }

@@ -6,7 +6,6 @@
 
 #ifndef ChealiCharger2_H_
 #define ChealiCharger2_H_
-#include "Arduino.h"
 //add your includes for the project ChealiCharger2 here
 
 
