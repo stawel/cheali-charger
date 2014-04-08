@@ -21,7 +21,7 @@
 #include "LcdPrint.h"
 #include "SerialLog.h"
 #include "eeprom.h"
-#include <util/atomic.h>
+#include "atomic.h"
 
 
 #define RETURN_ATOMIC(x)  \

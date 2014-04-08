@@ -18,7 +18,7 @@
 
 #include <avr/interrupt.h>
 #include <avr/io.h>
-#include <util/atomic.h>
+#include "atomic.h"
 #include "Hardware.h"
 #include "GTPowerA6-10-pins.h"
 #include "adc.h"

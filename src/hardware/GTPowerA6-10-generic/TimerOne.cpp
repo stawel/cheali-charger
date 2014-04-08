@@ -36,7 +36,7 @@
 #ifndef TIMERONE_cpp
 #define TIMERONE_cpp
 
-#include <util/atomic.h>
+#include "atomic.h"
 #include "TimerOne.h"
 
 TimerOne Timer1;              // preinstatiate

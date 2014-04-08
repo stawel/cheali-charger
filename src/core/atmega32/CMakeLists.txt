@@ -15,6 +15,7 @@ set(ATMEGA32_SOURCE
 
         IO.h
         Utils.cpp
+        atomic.h
 )
 
 foreach (SOURCE ${ATMEGA32_SOURCE})
