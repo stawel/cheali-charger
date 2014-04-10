@@ -36,21 +36,3 @@ namespace DelayStrategy {
 
 
 #endif /* DELAYSTRATEGY_H_ */
-
-
-
-/*
-#ifndef ADC_H_
-#define ADC_H_
-
-namespace adc {
-
-    void initialize();
-    void reset();
-
-    void conversionDone();
-    void timerInterrupt();
-};
-
-#endif /* ADC_H_ */
-*/

@@ -16,14 +16,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-<<<<<<< HEAD:src/hardware/400W/defaultCalibration.cpp
-#include <Arduino.h>
 #include "AnalogInputsPrivate.h"
 #include "400W.h"
-=======
-#include "AnalogInputsPrivate.h"
 #include "memory.h"
->>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/Turnigy-MEGA-400Wx2/defaultCalibration.cpp
 
 //file provided by: Jozsef N.
 //TODO: calibrate Vb6_pin, Textern

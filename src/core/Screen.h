@@ -62,9 +62,7 @@ namespace Screen {
     void displayDeltaFirst();
     void displayScreenEnergy();
     void displayScreenCycles();
-    //void displayWarningScreen();
     void displayCalibrationErrorScreen(uint8_t errNo);
-    //void displayWaitScreen();
     void displayAnimation();
     void getDeltaProcentTimeSec();
     uint16_t getETATime();

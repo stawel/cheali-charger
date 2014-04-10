@@ -21,11 +21,7 @@
 #include "SMPS_PID.h"
 #include "adc.h"
 #include "SerialLog.h"
-<<<<<<< HEAD:src/hardware/50W-generic/imaxB6.cpp
-#include "Settings.h"
-=======
 #include "IO.h"
->>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/imaxB6-generic/imaxB6.cpp
 
 
 uint8_t hardware::getKeyPressed()
@@ -92,15 +88,8 @@ void hardware::soundInterrupt()
     if(sound_ >= 10) f=8;
     if(sound_ >= 20) f=4;
     if(sound_ >= 30) f=2;
-<<<<<<< HEAD:src/hardware/50W-generic/imaxB6.cpp
-
-
-    if (!settings.AudioBeep_) return;
-    digitalWrite(BUZZER_PIN, on&f);
-=======
 
     IO::digitalWrite(BUZZER_PIN, on&f);
->>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/imaxB6-generic/imaxB6.cpp
 }
 
 void hardware::setBuzzer(uint8_t val)

@@ -21,7 +21,7 @@
 #include "ProgramData.h"
 #include "TheveninMethod.h"
 #include "Settings.h"
-//#include "Hardware.h"
+#include "Hardware.h"
 #include "Program.h"
 #include "Timer.h"
 #include "DelayStrategy.h"

@@ -54,69 +54,8 @@
  * note: 1. is in setMuxAddress()
  */
 
-#include "Timer0.h"
-#include "AnalogInputsPrivate.h"
-
-/* ADC - measurement:
- * uses Timer0 to trigger conversion
- * program flow:
- *     ADC routine                          |  multiplexer routine
- * -----------------------------------------------------------------------------
- * Timer0: start ADC (no MUX) conversion    |  1. switch to MUX desired output
- *                                          |
- *                                          |
- *                                          |
- *                                          |
- * ADC_vect:   switch ADC to MUX            |                             |
- *                                          |
- * Timer0: start ADC (MUX) conversion       |
- *                                          |
- *                                          |
- *                                          |
- *                                          |
- * ADC_vect:   switch ADC to no MUX         |
- *                                          |
- * Timer0: start ADC (MUX) conversion       |  repeat 1.
- * ...
- *
- * note: 1. is in setMuxAddress()
- */
 
 #define ADC_KEY_BORDER 128
-#define DEFAULT 1
-#define EXTERNAL 0
-
-
-namespace adc {
-
-static uint8_t current_input_;
-static uint8_t adc_keyboard_;
-
-void initialize()
-{
-
-    pinMode(MUX0_Z_D_PIN, INPUT);
-    pinMode(MUX1_Z_D_PIN, INPUT);
-    digitalWrite(MUX0_Z_D_PIN, 0);
-    digitalWrite(MUX1_Z_D_PIN, 0);
-
-    pinMode(MUX_ADR0_PIN, OUTPUT);
-    pinMode(MUX_ADR1_PIN, OUTPUT);
-    pinMode(MUX_ADR2_PIN, OUTPUT);
-
-    //ADC Auto Trigger Source - Timer/Counter0 Compare Match
-    SFIOR |= _BV(ADTS1) | _BV(ADTS0);
-
-    //ADEN: ADC Enable
-    //ADATE: ADC Auto Trigger Enable
-    //ADIE: ADC Interrupt Enable
-    //ADPS2:0: ADC Prescaler Select Bits = 16MHz/ 128 = 125kHz
-    ADCSRA = _BV(ADEN) | _BV(ADATE) | _BV(ADIE) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0);
-
-    adc::reset();
-    Timer0::initialize();
-}
-
 
 namespace adc {
 

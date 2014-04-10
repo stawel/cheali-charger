@@ -29,30 +29,30 @@ The CXX compiler identification is GNU, found in "/home/njozsef/cheali-git/cheal
 Determining if the C compiler works passed with the following output:
 Change Dir: /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec3350765070/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec3350765070.dir/build.make CMakeFiles/cmTryCompileExec3350765070.dir/build
+Run Build Command:/usr/bin/make "cmTryCompileExec1300155331/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec1300155331.dir/build.make CMakeFiles/cmTryCompileExec1300155331.dir/build
 make[1]: Entering directory `/home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building C object CMakeFiles/cmTryCompileExec3350765070.dir/testCCompiler.c.obj
-/usr/bin/avr-gcc    -o CMakeFiles/cmTryCompileExec3350765070.dir/testCCompiler.c.obj   -c /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTryCompileExec3350765070
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3350765070.dir/link.txt --verbose=1
-/usr/bin/avr-gcc         CMakeFiles/cmTryCompileExec3350765070.dir/testCCompiler.c.obj  -o cmTryCompileExec3350765070  
+Building C object CMakeFiles/cmTryCompileExec1300155331.dir/testCCompiler.c.obj
+/usr/bin/avr-gcc    -o CMakeFiles/cmTryCompileExec1300155331.dir/testCCompiler.c.obj   -c /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTryCompileExec1300155331
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1300155331.dir/link.txt --verbose=1
+/usr/bin/avr-gcc         CMakeFiles/cmTryCompileExec1300155331.dir/testCCompiler.c.obj  -o cmTryCompileExec1300155331  
 make[1]: Leaving directory `/home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec4177090329/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec4177090329.dir/build.make CMakeFiles/cmTryCompileExec4177090329.dir/build
+Run Build Command:/usr/bin/make "cmTryCompileExec689161469/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec689161469.dir/build.make CMakeFiles/cmTryCompileExec689161469.dir/build
 make[1]: Entering directory `/home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building C object CMakeFiles/cmTryCompileExec4177090329.dir/CMakeCCompilerABI.c.obj
-/usr/bin/avr-gcc    -o CMakeFiles/cmTryCompileExec4177090329.dir/CMakeCCompilerABI.c.obj   -c /usr/share/cmake-2.8/Modules/CMakeCCompilerABI.c
-Linking C executable cmTryCompileExec4177090329
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec4177090329.dir/link.txt --verbose=1
-/usr/bin/avr-gcc       -v CMakeFiles/cmTryCompileExec4177090329.dir/CMakeCCompilerABI.c.obj  -o cmTryCompileExec4177090329   
+Building C object CMakeFiles/cmTryCompileExec689161469.dir/CMakeCCompilerABI.c.obj
+/usr/bin/avr-gcc    -o CMakeFiles/cmTryCompileExec689161469.dir/CMakeCCompilerABI.c.obj   -c /usr/share/cmake-2.8/Modules/CMakeCCompilerABI.c
+Linking C executable cmTryCompileExec689161469
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec689161469.dir/link.txt --verbose=1
+/usr/bin/avr-gcc       -v CMakeFiles/cmTryCompileExec689161469.dir/CMakeCCompilerABI.c.obj  -o cmTryCompileExec689161469   
 Using built-in specs.
 COLLECT_GCC=/usr/bin/avr-gcc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/avr/4.7.2/lto-wrapper
@@ -62,8 +62,8 @@ Thread model: single
 gcc version 4.7.2 (GCC) 
 COMPILER_PATH=/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/:/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/:/usr/lib/gcc/avr/4.7.2/../../../avr/bin/
 LIBRARY_PATH=/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/4.7.2/../../../avr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec4177090329'
- /usr/lib/gcc/avr/4.7.2/collect2 -o cmTryCompileExec4177090329 -L/usr/lib/gcc/avr/4.7.2 -L/usr/lib/gcc/avr/4.7.2/../../../avr/lib CMakeFiles/cmTryCompileExec4177090329.dir/CMakeCCompilerABI.c.obj -lgcc -lc -lgcc
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec689161469'
+ /usr/lib/gcc/avr/4.7.2/collect2 -o cmTryCompileExec689161469 -L/usr/lib/gcc/avr/4.7.2 -L/usr/lib/gcc/avr/4.7.2/../../../avr/lib CMakeFiles/cmTryCompileExec689161469.dir/CMakeCCompilerABI.c.obj -lgcc -lc -lgcc
 make[1]: Leaving directory `/home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp'
 
 
@@ -71,15 +71,15 @@ Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(avr-ld|ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:/usr/bin/make "cmTryCompileExec4177090329/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTryCompileExec4177090329.dir/build.make CMakeFiles/cmTryCompileExec4177090329.dir/build]
+  ignore line: [Run Build Command:/usr/bin/make "cmTryCompileExec689161469/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTryCompileExec689161469.dir/build.make CMakeFiles/cmTryCompileExec689161469.dir/build]
   ignore line: [make[1]: Entering directory `/home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp']
   ignore line: [/usr/bin/cmake -E cmake_progress_report /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp/CMakeFiles 1]
-  ignore line: [Building C object CMakeFiles/cmTryCompileExec4177090329.dir/CMakeCCompilerABI.c.obj]
-  ignore line: [/usr/bin/avr-gcc    -o CMakeFiles/cmTryCompileExec4177090329.dir/CMakeCCompilerABI.c.obj   -c /usr/share/cmake-2.8/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTryCompileExec4177090329]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec4177090329.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/avr-gcc       -v CMakeFiles/cmTryCompileExec4177090329.dir/CMakeCCompilerABI.c.obj  -o cmTryCompileExec4177090329   ]
+  ignore line: [Building C object CMakeFiles/cmTryCompileExec689161469.dir/CMakeCCompilerABI.c.obj]
+  ignore line: [/usr/bin/avr-gcc    -o CMakeFiles/cmTryCompileExec689161469.dir/CMakeCCompilerABI.c.obj   -c /usr/share/cmake-2.8/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTryCompileExec689161469]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec689161469.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/avr-gcc       -v CMakeFiles/cmTryCompileExec689161469.dir/CMakeCCompilerABI.c.obj  -o cmTryCompileExec689161469   ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/avr-gcc]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/avr/4.7.2/lto-wrapper]
@@ -89,14 +89,14 @@ Parsed C implicit link information from above output:
   ignore line: [gcc version 4.7.2 (GCC) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/:/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/:/usr/lib/gcc/avr/4.7.2/../../../avr/bin/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/4.7.2/../../../avr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec4177090329']
-  link line: [ /usr/lib/gcc/avr/4.7.2/collect2 -o cmTryCompileExec4177090329 -L/usr/lib/gcc/avr/4.7.2 -L/usr/lib/gcc/avr/4.7.2/../../../avr/lib CMakeFiles/cmTryCompileExec4177090329.dir/CMakeCCompilerABI.c.obj -lgcc -lc -lgcc]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec689161469']
+  link line: [ /usr/lib/gcc/avr/4.7.2/collect2 -o cmTryCompileExec689161469 -L/usr/lib/gcc/avr/4.7.2 -L/usr/lib/gcc/avr/4.7.2/../../../avr/lib CMakeFiles/cmTryCompileExec689161469.dir/CMakeCCompilerABI.c.obj -lgcc -lc -lgcc]
     arg [/usr/lib/gcc/avr/4.7.2/collect2] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTryCompileExec4177090329] ==> ignore
+    arg [cmTryCompileExec689161469] ==> ignore
     arg [-L/usr/lib/gcc/avr/4.7.2] ==> dir [/usr/lib/gcc/avr/4.7.2]
     arg [-L/usr/lib/gcc/avr/4.7.2/../../../avr/lib] ==> dir [/usr/lib/gcc/avr/4.7.2/../../../avr/lib]
-    arg [CMakeFiles/cmTryCompileExec4177090329.dir/CMakeCCompilerABI.c.obj] ==> ignore
+    arg [CMakeFiles/cmTryCompileExec689161469.dir/CMakeCCompilerABI.c.obj] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [-lc] ==> lib [c]
     arg [-lgcc] ==> lib [gcc]
@@ -112,30 +112,30 @@ Parsed C implicit link information from above output:
 Determining if the CXX compiler works passed with the following output:
 Change Dir: /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec2466066599/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec2466066599.dir/build.make CMakeFiles/cmTryCompileExec2466066599.dir/build
+Run Build Command:/usr/bin/make "cmTryCompileExec1825958787/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec1825958787.dir/build.make CMakeFiles/cmTryCompileExec1825958787.dir/build
 make[1]: Entering directory `/home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building CXX object CMakeFiles/cmTryCompileExec2466066599.dir/testCXXCompiler.cxx.obj
-/usr/bin/avr-g++     -o CMakeFiles/cmTryCompileExec2466066599.dir/testCXXCompiler.cxx.obj -c /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX executable cmTryCompileExec2466066599
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2466066599.dir/link.txt --verbose=1
-/usr/bin/avr-g++          CMakeFiles/cmTryCompileExec2466066599.dir/testCXXCompiler.cxx.obj  -o cmTryCompileExec2466066599  
+Building CXX object CMakeFiles/cmTryCompileExec1825958787.dir/testCXXCompiler.cxx.obj
+/usr/bin/avr-g++     -o CMakeFiles/cmTryCompileExec1825958787.dir/testCXXCompiler.cxx.obj -c /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTryCompileExec1825958787
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1825958787.dir/link.txt --verbose=1
+/usr/bin/avr-g++          CMakeFiles/cmTryCompileExec1825958787.dir/testCXXCompiler.cxx.obj  -o cmTryCompileExec1825958787  
 make[1]: Leaving directory `/home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp'
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec626390952/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec626390952.dir/build.make CMakeFiles/cmTryCompileExec626390952.dir/build
+Run Build Command:/usr/bin/make "cmTryCompileExec1237998414/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec1237998414.dir/build.make CMakeFiles/cmTryCompileExec1237998414.dir/build
 make[1]: Entering directory `/home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp'
 /usr/bin/cmake -E cmake_progress_report /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building CXX object CMakeFiles/cmTryCompileExec626390952.dir/CMakeCXXCompilerABI.cpp.obj
-/usr/bin/avr-g++     -o CMakeFiles/cmTryCompileExec626390952.dir/CMakeCXXCompilerABI.cpp.obj -c /usr/share/cmake-2.8/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTryCompileExec626390952
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec626390952.dir/link.txt --verbose=1
-/usr/bin/avr-g++        -v CMakeFiles/cmTryCompileExec626390952.dir/CMakeCXXCompilerABI.cpp.obj  -o cmTryCompileExec626390952   
+Building CXX object CMakeFiles/cmTryCompileExec1237998414.dir/CMakeCXXCompilerABI.cpp.obj
+/usr/bin/avr-g++     -o CMakeFiles/cmTryCompileExec1237998414.dir/CMakeCXXCompilerABI.cpp.obj -c /usr/share/cmake-2.8/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTryCompileExec1237998414
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1237998414.dir/link.txt --verbose=1
+/usr/bin/avr-g++        -v CMakeFiles/cmTryCompileExec1237998414.dir/CMakeCXXCompilerABI.cpp.obj  -o cmTryCompileExec1237998414   
 Using built-in specs.
 COLLECT_GCC=/usr/bin/avr-g++
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/avr/4.7.2/lto-wrapper
@@ -145,8 +145,8 @@ Thread model: single
 gcc version 4.7.2 (GCC) 
 COMPILER_PATH=/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/:/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/:/usr/lib/gcc/avr/4.7.2/../../../avr/bin/
 LIBRARY_PATH=/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/4.7.2/../../../avr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec626390952'
- /usr/lib/gcc/avr/4.7.2/collect2 -o cmTryCompileExec626390952 -L/usr/lib/gcc/avr/4.7.2 -L/usr/lib/gcc/avr/4.7.2/../../../avr/lib CMakeFiles/cmTryCompileExec626390952.dir/CMakeCXXCompilerABI.cpp.obj -lgcc -lm -lgcc -lc -lgcc
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec1237998414'
+ /usr/lib/gcc/avr/4.7.2/collect2 -o cmTryCompileExec1237998414 -L/usr/lib/gcc/avr/4.7.2 -L/usr/lib/gcc/avr/4.7.2/../../../avr/lib CMakeFiles/cmTryCompileExec1237998414.dir/CMakeCXXCompilerABI.cpp.obj -lgcc -lm -lgcc -lc -lgcc
 make[1]: Leaving directory `/home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp'
 
 
@@ -154,15 +154,15 @@ Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(avr-ld|ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:/usr/bin/make "cmTryCompileExec626390952/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTryCompileExec626390952.dir/build.make CMakeFiles/cmTryCompileExec626390952.dir/build]
+  ignore line: [Run Build Command:/usr/bin/make "cmTryCompileExec1237998414/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTryCompileExec1237998414.dir/build.make CMakeFiles/cmTryCompileExec1237998414.dir/build]
   ignore line: [make[1]: Entering directory `/home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp']
   ignore line: [/usr/bin/cmake -E cmake_progress_report /home/njozsef/cheali-git/cheali-charger-test1/CMakeFiles/CMakeTmp/CMakeFiles 1]
-  ignore line: [Building CXX object CMakeFiles/cmTryCompileExec626390952.dir/CMakeCXXCompilerABI.cpp.obj]
-  ignore line: [/usr/bin/avr-g++     -o CMakeFiles/cmTryCompileExec626390952.dir/CMakeCXXCompilerABI.cpp.obj -c /usr/share/cmake-2.8/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTryCompileExec626390952]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec626390952.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/avr-g++        -v CMakeFiles/cmTryCompileExec626390952.dir/CMakeCXXCompilerABI.cpp.obj  -o cmTryCompileExec626390952   ]
+  ignore line: [Building CXX object CMakeFiles/cmTryCompileExec1237998414.dir/CMakeCXXCompilerABI.cpp.obj]
+  ignore line: [/usr/bin/avr-g++     -o CMakeFiles/cmTryCompileExec1237998414.dir/CMakeCXXCompilerABI.cpp.obj -c /usr/share/cmake-2.8/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTryCompileExec1237998414]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1237998414.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/avr-g++        -v CMakeFiles/cmTryCompileExec1237998414.dir/CMakeCXXCompilerABI.cpp.obj  -o cmTryCompileExec1237998414   ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/avr-g++]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/avr/4.7.2/lto-wrapper]
@@ -172,14 +172,14 @@ Parsed CXX implicit link information from above output:
   ignore line: [gcc version 4.7.2 (GCC) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/:/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/:/usr/lib/gcc/avr/4.7.2/../../../avr/bin/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/avr/4.7.2/:/usr/lib/gcc/avr/4.7.2/../../../avr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec626390952']
-  link line: [ /usr/lib/gcc/avr/4.7.2/collect2 -o cmTryCompileExec626390952 -L/usr/lib/gcc/avr/4.7.2 -L/usr/lib/gcc/avr/4.7.2/../../../avr/lib CMakeFiles/cmTryCompileExec626390952.dir/CMakeCXXCompilerABI.cpp.obj -lgcc -lm -lgcc -lc -lgcc]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec1237998414']
+  link line: [ /usr/lib/gcc/avr/4.7.2/collect2 -o cmTryCompileExec1237998414 -L/usr/lib/gcc/avr/4.7.2 -L/usr/lib/gcc/avr/4.7.2/../../../avr/lib CMakeFiles/cmTryCompileExec1237998414.dir/CMakeCXXCompilerABI.cpp.obj -lgcc -lm -lgcc -lc -lgcc]
     arg [/usr/lib/gcc/avr/4.7.2/collect2] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTryCompileExec626390952] ==> ignore
+    arg [cmTryCompileExec1237998414] ==> ignore
     arg [-L/usr/lib/gcc/avr/4.7.2] ==> dir [/usr/lib/gcc/avr/4.7.2]
     arg [-L/usr/lib/gcc/avr/4.7.2/../../../avr/lib] ==> dir [/usr/lib/gcc/avr/4.7.2/../../../avr/lib]
-    arg [CMakeFiles/cmTryCompileExec626390952.dir/CMakeCXXCompilerABI.cpp.obj] ==> ignore
+    arg [CMakeFiles/cmTryCompileExec1237998414.dir/CMakeCXXCompilerABI.cpp.obj] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [-lm] ==> lib [m]
     arg [-lgcc] ==> lib [gcc]
