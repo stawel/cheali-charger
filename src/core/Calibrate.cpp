@@ -28,12 +28,8 @@
 #include "SerialLog.h"
 #include "Program.h"
 #include "AnalogInputsPrivate.h"
-<<<<<<< HEAD
 #include "Hardware.h"
 #include "Settings.h"
-=======
-
->>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
 namespace Calibrate {
 
 uint16_t x1=0;  //lastGood calibrationcurrent.
@@ -249,10 +245,6 @@ const AnalogInputs::Name expertVoltageName[] PROGMEM = {
 void expertCalibrateVoltage()
 {
     PolarityCheck::checkReversedPolarity_ = false;
-<<<<<<< HEAD
-
-=======
->>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
     //TODO: optimization: this method should be merged with calibrateVoltage
     VoltageMenu v(expertVoltageMenu, expertVoltageName, 7);
     int8_t index;
@@ -290,11 +282,8 @@ void calibrateVoltage()
                 AnalogInputs::on_ = false;
                 if(v.runEdit(index))
                     saveVoltage(true, Vinput,pgm::read(&voltageName2[index]));
-<<<<<<< HEAD
                     //save calib status
                    settings.calibratedState_ |= 1;  Settings::save();
-=======
->>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
                 AnalogInputs::on_ = true;
             }
         } while(true);

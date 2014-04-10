@@ -1,11 +1,7 @@
 
 include(${CMAKE_SOURCE_DIR}/src/core/atmega32/CMakeLists.txt)
 
-<<<<<<< HEAD:src/hardware/50W-generic/CMakeLists.txt
 set(CURRENT_PATH ${CMAKE_SOURCE_DIR}/src/hardware/50W-generic/)
-=======
-set(CURRENT_PATH ${CMAKE_SOURCE_DIR}/src/hardware/imaxB6-generic/)
->>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/imaxB6-generic/CMakeLists.txt
 
 set(IMAXB6_SOURCE
     imaxB6.cpp

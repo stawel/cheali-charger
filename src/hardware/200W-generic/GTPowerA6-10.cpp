@@ -19,29 +19,6 @@
 #include "GTPowerA6-10-pins.h"
 #include "GTPowerA6-10.h"
 #include "adc.h"
-<<<<<<< HEAD:src/hardware/200W-generic/GTPowerA6-10.cpp
-#include "Settings.h"
-
-void hardware::initialize()
-{
-    pinMode(BACKLIGHT_PIN, OUTPUT);
-    pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
-    pinMode(FAN_PIN, OUTPUT);
-    pinMode(BUZZER_PIN, OUTPUT);
-
-    pinMode(BALANCER1_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER2_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER3_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER4_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER5_LOAD_PIN, OUTPUT);
-    pinMode(BALANCER6_LOAD_PIN, OUTPUT);
-
-
-    pinMode(SMPS_VALUE_PIN, OUTPUT);
-    pinMode(SMPS_DISABLE_PIN, OUTPUT);
-    pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
-    pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
-=======
 #include "IO.h"
 
 void hardware::initialize()
@@ -63,7 +40,6 @@ void hardware::initialize()
     IO::pinMode(SMPS_DISABLE_PIN, OUTPUT);
     IO::pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
     IO::pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
->>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/GTPowerA6-10-generic/GTPowerA6-10.cpp
 
     setBatteryOutput(false);
     setFan(false);
@@ -93,15 +69,10 @@ void hardware::setFan(bool enable)
 }
 void hardware::setBuzzer(uint8_t val)
 {
-<<<<<<< HEAD:src/hardware/200W-generic/GTPowerA6-10.cpp
-    if (!settings.AudioBeep_) return;
-    //analogWrite(BUZZER_PIN, val);
-   digitalWrite(BUZZER_PIN, (val&1));
-=======
+
     //TODO: this should be rewritten, sorry for that :D
     //Timer2 is now used by the Timer.cpp implementation
     IO::digitalWrite(BUZZER_PIN, (val&1));
->>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/GTPowerA6-10-generic/GTPowerA6-10.cpp
 }
 
 void hardware::setBatteryOutput(bool enable)

@@ -1,0 +1,16 @@
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/200W/CMakeFiles/cheali-charger-200W-0.32m.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/200W/CMakeFiles/cheali-charger-200W-0.32m.size.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/200W-commondisplay/CMakeFiles/cheali-charger-200W-commondisplay-0.32m.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/200W-commondisplay/CMakeFiles/cheali-charger-200W-commondisplay-0.32m.size.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/200W-high-discharge-indus-mod/CMakeFiles/cheali-charger-200W-indus-0.32m.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/200W-high-discharge-indus-mod/CMakeFiles/cheali-charger-200W-indus-0.32m.size.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/400W/CMakeFiles/cheali-charger-400W-0.32m.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/400W/CMakeFiles/cheali-charger-400W-0.32m.size.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/50W-5A/CMakeFiles/cheali-charger-50W-5A-0.32m.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/50W-5A/CMakeFiles/cheali-charger-50W-5A-0.32m.size.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/50W-6A/CMakeFiles/cheali-charger-50W-6A-0.32m.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/50W-6A/CMakeFiles/cheali-charger-50W-6A-0.32m.size.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/80W/CMakeFiles/cheali-charger-80W-0.32m.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/80W/CMakeFiles/cheali-charger-80W-0.32m.size.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6ChalusBomod/CMakeFiles/cheali-charger-imaxB6Chalus-0.32m.dir
+/home/njozsef/cheali-git/cheali-charger-test1/src/hardware/imaxB6ChalusBomod/CMakeFiles/cheali-charger-imaxB6Chalus-0.32m.size.dir

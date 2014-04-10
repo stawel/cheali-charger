@@ -21,11 +21,7 @@
 #include "Buzzer.h"
 #include "Screen.h"
 #include "SerialLog.h"
-<<<<<<< HEAD
-#include <util/atomic.h>
-=======
 #include "atomic.h"
->>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
 
 
 // time measurement

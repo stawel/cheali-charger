@@ -16,16 +16,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-<<<<<<< HEAD:src/hardware/200W/defaultCalibration.cpp
-#include <Arduino.h>
 #include "AnalogInputsPrivate.h"
 #include "200W.h"
-
-
-=======
-#include "AnalogInputsPrivate.h"
 #include "memory.h"
->>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/GTPowerA6-10-original/defaultCalibration.cpp
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
     {{0,0},                         {50816, ANALOG_VOLT(23.118)}},  //Vout
