@@ -20,7 +20,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
+<<<<<<< HEAD
 #include "Arduino.h"
+=======
+#include "IO.h"
+#include "Utils.h"
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
 #include "Hardware.h"
 
 #ifndef DummyLiquidCrystal_h
@@ -53,6 +58,7 @@ LiquidCrystal::LiquidCrystal()
 void LiquidCrystal::init()
 {
 
+<<<<<<< HEAD
   pinMode(LCD_RS_PIN, OUTPUT);
   // we can save 1 pin by not using RW. Indicate by passing 255 instead of pin#
 #ifdef LCD_RW_PIN
@@ -60,6 +66,15 @@ void LiquidCrystal::init()
 #endif  //LCD_RW_PIN
 
   pinMode(LCD_ENABLE_PIN, OUTPUT);
+=======
+  IO::pinMode(LCD_RS_PIN, OUTPUT);
+  // we can save 1 pin by not using RW. Indicate by passing 255 instead of pin#
+#ifdef LCD_RW_PIN
+  IO::pinMode(LCD_RW_PIN, OUTPUT);
+#endif  //LCD_RW_PIN
+
+  IO::pinMode(LCD_ENABLE_PIN, OUTPUT);
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
   
 #ifndef LCD_ENABLE_8BITMODE
     _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
@@ -85,12 +100,19 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
   // SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
   // according to datasheet, we need at least 40ms after power rises above 2.7V
   // before sending commands. Arduino can turn on way befer 4.5V so we'll wait 50
-  delayMicroseconds(50000); 
+  Utils::delayMicroseconds(50000); 
   // Now we pull both RS and R/W low to begin commands
+<<<<<<< HEAD
   digitalWrite(LCD_RS_PIN, LOW);
   digitalWrite(LCD_ENABLE_PIN, LOW);
 #ifdef LCD_RW_PIN
     digitalWrite(_rw_pin, LOW);
+=======
+  IO::digitalWrite(LCD_RS_PIN, LOW);
+  IO::digitalWrite(LCD_ENABLE_PIN, LOW);
+#ifdef LCD_RW_PIN
+    IO::digitalWrite(_rw_pin, LOW);
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
 #endif //LCD_RW_PIN
   
   //put the LCD into 4 bit or 8 bit mode
@@ -100,15 +122,15 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
 
     // we start in 8bit mode, try to set 4 bit mode
     write4bits(0x03);
-    delayMicroseconds(4500); // wait min 4.1ms
+    Utils::delayMicroseconds(4500); // wait min 4.1ms
 
     // second try
     write4bits(0x03);
-    delayMicroseconds(4500); // wait min 4.1ms
+    Utils::delayMicroseconds(4500); // wait min 4.1ms
     
     // third go!
     write4bits(0x03); 
-    delayMicroseconds(150);
+    Utils::delayMicroseconds(150);
 
     // finally, set to 4-bit interface
     write4bits(0x02); 
@@ -118,11 +140,11 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
 
     // Send function set command sequence
     command(LCD_FUNCTIONSET | _displayfunction);
-    delayMicroseconds(4500);  // wait more than 4.1ms
+    Utils::delayMicroseconds(4500);  // wait more than 4.1ms
 
     // second try
     command(LCD_FUNCTIONSET | _displayfunction);
-    delayMicroseconds(150);
+    Utils::delayMicroseconds(150);
 
     // third go
     command(LCD_FUNCTIONSET | _displayfunction);
@@ -149,13 +171,13 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
 void LiquidCrystal::clear()
 {
   command(LCD_CLEARDISPLAY);  // clear display, set cursor position to zero
-  delayMicroseconds(2000);  // this command takes a long time!
+  Utils::delayMicroseconds(2000);  // this command takes a long time!
 }
 
 void LiquidCrystal::home()
 {
   command(LCD_RETURNHOME);  // set cursor position to zero
-  delayMicroseconds(2000);  // this command takes a long time!
+  Utils::delayMicroseconds(2000);  // this command takes a long time!
 }
 
 void LiquidCrystal::setCursor(uint8_t col, uint8_t row)
@@ -246,7 +268,7 @@ inline void LiquidCrystal::command(uint8_t value) {
   send(value, LOW);
 }
 
-inline size_t LiquidCrystal::write(uint8_t value) {
+inline uint8_t LiquidCrystal::write(uint8_t value) {
   send(value, HIGH);
   return 1; // assume sucess
 }
@@ -255,11 +277,19 @@ inline size_t LiquidCrystal::write(uint8_t value) {
 
 // write either command or data, with automatic 4/8-bit selection
 void LiquidCrystal::send(uint8_t value, uint8_t mode) {
+<<<<<<< HEAD
   digitalWrite(LCD_RS_PIN, mode);
 
   // if there is a RW pin indicated, set it low to Write
 #ifdef LCD_RW_PIN
     digitalWrite(LCD_RW_PIN, LOW);
+=======
+  IO::digitalWrite(LCD_RS_PIN, mode);
+
+  // if there is a RW pin indicated, set it low to Write
+#ifdef LCD_RW_PIN
+    IO::digitalWrite(LCD_RW_PIN, LOW);
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
 #endif
   
 #ifdef LCD_ENABLE_8BITMODE
@@ -271,6 +301,7 @@ void LiquidCrystal::send(uint8_t value, uint8_t mode) {
 }
 
 void LiquidCrystal::pulseEnable(void) {
+<<<<<<< HEAD
   digitalWrite(LCD_ENABLE_PIN, LOW);
   delayMicroseconds(1);    
   digitalWrite(LCD_ENABLE_PIN, HIGH);
@@ -288,11 +319,31 @@ void LiquidCrystal::write4bits(uint8_t value) {
   digitalWrite(LCD_D1_PIN, value & 2);
   digitalWrite(LCD_D2_PIN, value & 4);
   digitalWrite(LCD_D3_PIN, value & 8);
+=======
+  IO::digitalWrite(LCD_ENABLE_PIN, LOW);
+  Utils::delayMicroseconds(1);    
+  IO::digitalWrite(LCD_ENABLE_PIN, HIGH);
+  Utils::delayMicroseconds(1);    // enable pulse must be >450ns
+  IO::digitalWrite(LCD_ENABLE_PIN, LOW);
+  Utils::delayMicroseconds(100);   // commands need > 37us to settle
+}
+
+void LiquidCrystal::write4bits(uint8_t value) {
+  IO::pinMode(LCD_D0_PIN, OUTPUT);
+  IO::pinMode(LCD_D1_PIN, OUTPUT);
+  IO::pinMode(LCD_D2_PIN, OUTPUT);
+  IO::pinMode(LCD_D3_PIN, OUTPUT);
+  IO::digitalWrite(LCD_D0_PIN, value & 1);
+  IO::digitalWrite(LCD_D1_PIN, value & 2);
+  IO::digitalWrite(LCD_D2_PIN, value & 4);
+  IO::digitalWrite(LCD_D3_PIN, value & 8);
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
   pulseEnable();
 }
 
 void LiquidCrystal::write8bits(uint8_t value) {
 #ifdef LCD_ENABLE_8BITMODE
+<<<<<<< HEAD
   pinMode(LCD_D0_PIN, OUTPUT);
   pinMode(LCD_D1_PIN, OUTPUT);
   pinMode(LCD_D2_PIN, OUTPUT);
@@ -309,9 +360,45 @@ void LiquidCrystal::write8bits(uint8_t value) {
   digitalWrite(LCD_D1_PIN, value & 32);
   digitalWrite(LCD_D2_PIN, value & 64);
   digitalWrite(LCD_D3_PIN, value & 128);
+=======
+  IO::pinMode(LCD_D0_PIN, OUTPUT);
+  IO::pinMode(LCD_D1_PIN, OUTPUT);
+  IO::pinMode(LCD_D2_PIN, OUTPUT);
+  IO::pinMode(LCD_D3_PIN, OUTPUT);
+  IO::pinMode(LCD_D4_PIN, OUTPUT);
+  IO::pinMode(LCD_D5_PIN, OUTPUT);
+  IO::pinMode(LCD_D6_PIN, OUTPUT);
+  IO::pinMode(LCD_D7_PIN, OUTPUT);
+  IO::digitalWrite(LCD_D0_PIN, value & 1);
+  IO::digitalWrite(LCD_D1_PIN, value & 2);
+  IO::digitalWrite(LCD_D2_PIN, value & 4);
+  IO::digitalWrite(LCD_D3_PIN, value & 8);
+  IO::digitalWrite(LCD_D0_PIN, value & 16);
+  IO::digitalWrite(LCD_D1_PIN, value & 32);
+  IO::digitalWrite(LCD_D2_PIN, value & 64);
+  IO::digitalWrite(LCD_D3_PIN, value & 128);
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
   pulseEnable();
 #endif //LCD_ENABLE_8BITMODE
 }
 
+uint8_t LiquidCrystal::print(const char str[])
+{
+  return write(str);
+}
+
+uint8_t LiquidCrystal::print(char c)
+{
+  return write((uint8_t) c);
+}
+
+uint8_t LiquidCrystal::write(const uint8_t *buffer, uint8_t size)
+{
+  uint8_t n = 0;
+  while (size--) {
+    n += write(*buffer++);
+  }
+  return n;
+}
 
 #endif

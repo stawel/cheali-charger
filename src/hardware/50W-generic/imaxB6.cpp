@@ -15,22 +15,25 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <Arduino.h>
 #include "imaxB6.h"
 #include "TimerOne.h"
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
 #include "adc.h"
 #include "SerialLog.h"
+<<<<<<< HEAD:src/hardware/50W-generic/imaxB6.cpp
 #include "Settings.h"
+=======
+#include "IO.h"
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/imaxB6-generic/imaxB6.cpp
 
 
 uint8_t hardware::getKeyPressed()
 {
-    return   (digitalRead(BUTTON_STOP_PIN) ? 0 : BUTTON_STOP)
-            | (digitalRead(BUTTON_DEC_PIN)  ? 0 : BUTTON_DEC)
-            | (digitalRead(BUTTON_INC_PIN)  ? 0 : BUTTON_INC)
-            | (digitalRead(BUTTON_START_PIN)? 0 : BUTTON_START);
+    return   (IO::digitalRead(BUTTON_STOP_PIN) ? 0 : BUTTON_STOP)
+            | (IO::digitalRead(BUTTON_DEC_PIN)  ? 0 : BUTTON_DEC)
+            | (IO::digitalRead(BUTTON_INC_PIN)  ? 0 : BUTTON_INC)
+            | (IO::digitalRead(BUTTON_START_PIN)? 0 : BUTTON_START);
 }
 
 
@@ -39,29 +42,29 @@ void hardware::setBalancerOutput(bool enable)
     uint8_t mode = INPUT;
     if(enable)
         mode = OUTPUT;
-    pinMode(BALANCER1_LOAD_PIN, mode);
-    pinMode(BALANCER2_LOAD_PIN, mode);
-    pinMode(BALANCER3_LOAD_PIN, mode);
-    pinMode(BALANCER4_LOAD_PIN, mode);
-    pinMode(BALANCER5_LOAD_PIN, mode);
-    pinMode(BALANCER6_LOAD_PIN, mode);
+    IO::pinMode(BALANCER1_LOAD_PIN, mode);
+    IO::pinMode(BALANCER2_LOAD_PIN, mode);
+    IO::pinMode(BALANCER3_LOAD_PIN, mode);
+    IO::pinMode(BALANCER4_LOAD_PIN, mode);
+    IO::pinMode(BALANCER5_LOAD_PIN, mode);
+    IO::pinMode(BALANCER6_LOAD_PIN, mode);
 
 }
 
 
 void hardware::initialize()
 {
-    analogReference(EXTERNAL);
-    pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
+    IO::analogReference(EXTERNAL);
+    IO::pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
 
-    pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
-    pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
+    IO::pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
+    IO::pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
-    pinMode(BUZZER_PIN, OUTPUT);
+    IO::pinMode(BUZZER_PIN, OUTPUT);
 
-    pinMode(SMPS_VALUE_BUCK_PIN, OUTPUT);
-    pinMode(SMPS_VALUE_BOOST_PIN, OUTPUT);
-    pinMode(SMPS_DISABLE_PIN, OUTPUT);
+    IO::pinMode(SMPS_VALUE_BUCK_PIN, OUTPUT);
+    IO::pinMode(SMPS_VALUE_BOOST_PIN, OUTPUT);
+    IO::pinMode(SMPS_DISABLE_PIN, OUTPUT);
 
     setBatteryOutput(false);
     setBuzzer(0);
@@ -89,10 +92,15 @@ void hardware::soundInterrupt()
     if(sound_ >= 10) f=8;
     if(sound_ >= 20) f=4;
     if(sound_ >= 30) f=2;
+<<<<<<< HEAD:src/hardware/50W-generic/imaxB6.cpp
 
 
     if (!settings.AudioBeep_) return;
     digitalWrite(BUZZER_PIN, on&f);
+=======
+
+    IO::digitalWrite(BUZZER_PIN, on&f);
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/imaxB6-generic/imaxB6.cpp
 }
 
 void hardware::setBuzzer(uint8_t val)
@@ -102,17 +110,17 @@ void hardware::setBuzzer(uint8_t val)
 
 void hardware::setBatteryOutput(bool enable)
 {
-    digitalWrite(OUTPUT_DISABLE_PIN, !enable);
+    IO::digitalWrite(OUTPUT_DISABLE_PIN, !enable);
 }
 
 void hardware::setBalancer(uint8_t v)
 {
-    digitalWrite(BALANCER1_LOAD_PIN, v&1);
-    digitalWrite(BALANCER2_LOAD_PIN, v&2);
-    digitalWrite(BALANCER3_LOAD_PIN, v&4);
-    digitalWrite(BALANCER4_LOAD_PIN, v&8);
-    digitalWrite(BALANCER5_LOAD_PIN, v&16);
-    digitalWrite(BALANCER6_LOAD_PIN, v&32);
+    IO::digitalWrite(BALANCER1_LOAD_PIN, v&1);
+    IO::digitalWrite(BALANCER2_LOAD_PIN, v&2);
+    IO::digitalWrite(BALANCER3_LOAD_PIN, v&4);
+    IO::digitalWrite(BALANCER4_LOAD_PIN, v&8);
+    IO::digitalWrite(BALANCER5_LOAD_PIN, v&16);
+    IO::digitalWrite(BALANCER6_LOAD_PIN, v&32);
 }
 
 LiquidCrystal lcd;

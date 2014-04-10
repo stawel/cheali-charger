@@ -16,9 +16,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+<<<<<<< HEAD:src/hardware/imaxB6ChalusBomod/defaultCalibration.cpp
 #include <Arduino.h>
 #include "AnalogInputsPrivate.h"
 #include "imaxB6ChalusBomod.h"
+=======
+#include "AnalogInputsPrivate.h"
+#include "memory.h"
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/imaxB6-clone/defaultCalibration.cpp
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
     {{0, 0},                        {54592, 25094}},    //Vout

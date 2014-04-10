@@ -18,8 +18,10 @@
 #ifndef GTPOWERA610_H_
 #define GTPOWERA610_H_
 
+#include "memory.h"
 #include "AnalogInputs.h"
 #include "Timer.h"
+#include "GTPowerA6-10-pins.h"
 
 #include "GTPowerA6-10-pins.h"
 
@@ -42,8 +44,12 @@
 #define ENABLE_STACK_INFO
 #define ENABLE_SERIAL_LOG
 #define ENABLE_EXPERT_VOLTAGE_CALIBRATION
+<<<<<<< HEAD:src/hardware/200W-generic/GTPowerA6-10.h
 // I not used external temp sensor
 #define DEFAULT_SETTINGS_EXTERNAL_T 0
+=======
+
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/GTPowerA6-10-generic/GTPowerA6-10.h
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
@@ -62,7 +68,10 @@ namespace hardware {
     void delay(uint16_t t);
     void setLCDBacklight(uint8_t val);
     void setBuzzer(uint8_t val);
+<<<<<<< HEAD:src/hardware/200W-generic/GTPowerA6-10.h
     void beepLoud(uint16_t dur);
+=======
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/GTPowerA6-10-generic/GTPowerA6-10.h
     void setBatteryOutput(bool enable);
     void setChargerOutput(bool enable);
     void setBalancerOutput(bool enable);

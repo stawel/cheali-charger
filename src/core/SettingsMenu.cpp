@@ -142,7 +142,11 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     changeMax(p_.AudioBeep_, dir, 1);           break;
         case NEXT_CASE:     change1Max(p_.capCutoff_, dir, 250);        break;
         case NEXT_CASE:     changeInputVolt(p_.inputVoltageLow_, dir);  break;
+<<<<<<< HEAD
         case NEXT_CASE:     changeMaxSmart(p_.dischargeOffset_LiXX_, dir, Settings::MaxDischargeOffset_LiXX,false,0);  break;
+=======
+        case NEXT_CASE:     changeMaxSmart(p_.dischargeOffset_LiXX_, dir, Settings::MaxDischargeOffset_LiXX);  break;
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
         case NEXT_CASE:     changeMax(p_.dischargeAggressive_LiXX_, dir, 1);  break;
         case NEXT_CASE:     changeBalanceError(p_.balancerError_, dir); break;
         case NEXT_CASE:     changeMax(p_.UART_, dir, Settings::ExtDebugAdc); break;

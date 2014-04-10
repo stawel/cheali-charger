@@ -16,8 +16,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+<<<<<<< HEAD:src/hardware/200W-commondisplay/defaultCalibration_orig.cpp
 #include "AnalogInputs.h"
 
+=======
+#include "AnalogInputsPrivate.h"
+#include "memory.h"
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/Turnigy-A-6-10-200W/defaultCalibration.cpp
 
 //file provided by: Jozsef N.
 //TODO: calibrate Vb6_pin, Textern

@@ -18,5 +18,4 @@ low priority:
  - rewrite TheveninMethod.cpp
  - optimisation: remove AnalogInputs::stableCount_
  - optimisation: rewrite Screen, remove switch..case
- - optimisation: remove arduino
  - optimisation: display methods like sprintf?

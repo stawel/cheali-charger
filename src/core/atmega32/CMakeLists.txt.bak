@@ -12,9 +12,13 @@ set(ATMEGA32_SOURCE
         Serial.cpp
         StackInfo.cpp
         StackInfo.h
+<<<<<<< HEAD
+=======
+
         IO.h
         Utils.cpp
         atomic.h
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
 )
 
 foreach (SOURCE ${ATMEGA32_SOURCE})

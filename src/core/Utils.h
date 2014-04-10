@@ -20,6 +20,9 @@
 
 #include "Hardware.h"
 
+#define min(a,b) ((a)<(b)?(a):(b))
+#define max(a,b) ((a)>(b)?(a):(b))
+
 #define sizeOfArray(x) (sizeof(x)/sizeof((x)[0]))
 
 #define ADD_MAX(x,v,max) (x) = (x)<(max)-(v)? (x)+(v) : (max)
@@ -44,5 +47,13 @@ uint8_t countElements(const char * const* staticMenu);
 #define NEXT_CASE (__COUNTER__ - _case_counter - 1)
 
 #define STATIC_ASSERT( x ) typedef char __STATIC_ASSERT__[( x )?1:-1]
+
+// Platform specific delays. Implemented in Utils.cpp located in platform folder
+namespace Utils
+{
+    void delayTenMicroseconds(uint16_t value);
+    void delayMicroseconds(uint16_t value);
+    void delayMilliseconds(uint16_t value);
+}
 
 #endif /* UTILS_H_ */

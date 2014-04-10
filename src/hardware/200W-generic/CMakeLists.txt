@@ -2,7 +2,11 @@
 
 include(${CMAKE_SOURCE_DIR}/src/core/atmega32/CMakeLists.txt)
 
+<<<<<<< HEAD:src/hardware/200W-generic/CMakeLists.txt
 set(CURRENT_PATH ${CMAKE_SOURCE_DIR}/src/hardware/200W-generic/)
+=======
+set(CURRENT_PATH ${CMAKE_SOURCE_DIR}/src/hardware/GTPowerA6-10-generic/)
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/GTPowerA6-10-generic/CMakeLists.txt
 
 set(GTPOWERA6_SOURCE
     GTPowerA6-10.cpp

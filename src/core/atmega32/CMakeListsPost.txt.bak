@@ -2,7 +2,10 @@
 set(execName "cheali-charger-${hardware}-${cheali-charger-version}")
 set(sizeName "cheali-charger-${hardware}")
 
+<<<<<<< HEAD:src/core/atmega32/CMakeListsPost.txt
 include_directories(${CMAKE_SOURCE_DIR}/arduino/cores/arduino ${CMAKE_SOURCE_DIR}/arduino/variants/atmega32)
+=======
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/core/atmega32/CMakeListsPost.txt
 include_directories(${CMAKE_SOURCE_DIR}/src/core/atmega32)
 include_directories(${CMAKE_SOURCE_DIR}/src/core)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})

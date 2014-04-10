@@ -1,7 +1,7 @@
 #include "TimerOne.h"
 #include "Hardware.h"
 #include <avr/interrupt.h>
-#include <util/atomic.h>
+#include "atomic.h"
 
 namespace {
     volatile unsigned int TimerOne_value=0;

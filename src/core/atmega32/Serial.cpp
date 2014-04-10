@@ -25,10 +25,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
-#include "Arduino.h"
-#include "wiring_private.h"
+#include <avr/interrupt.h>
 
 #define DISABLE_RX
+
+#ifndef cbi
+#define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
+#endif
+#ifndef sbi
+#define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
+#endif
 
 // this next line disables the entire HardwareSerial.cpp, 
 // this is so I can support Attiny series and any other chip without a uart
@@ -372,7 +378,7 @@ try_again:
   cbi(*_ucsrb, _udrie);
 }
 
-void HardwareSerial::begin(unsigned long baud, byte config)
+void HardwareSerial::begin(unsigned long baud, uint8_t config)
 {
   uint16_t baud_setting;
   uint8_t current_config;

@@ -15,13 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <Arduino.h>
 #include "TheveninChargeStrategy.h"
 #include "SMPS.h"
 #include "Hardware.h"
 #include "ProgramData.h"
 #include "Screen.h"
-
+#include "Utils.h"
 
 namespace TheveninMethod {
     uint16_t minValue_;

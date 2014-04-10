@@ -18,13 +18,13 @@
 
 #include <avr/interrupt.h>
 #include <avr/io.h>
-#include <util/atomic.h>
-#include <Arduino.h>
+#include "atomic.h"
 #include "Hardware.h"
 #include "GTPowerA6-10-pins.h"
 #include "adc.h"
 #include "Utils.h"
 #include "memory.h"
+#include "IO.h"
 
 #include "Timer0.h"
 #include "AnalogInputsPrivate.h"
@@ -54,7 +54,38 @@
  * note: 1. is in setMuxAddress()
  */
 
+#include "Timer0.h"
+#include "AnalogInputsPrivate.h"
 
+/* ADC - measurement:
+ * uses Timer0 to trigger conversion
+ * program flow:
+ *     ADC routine                          |  multiplexer routine
+ * -----------------------------------------------------------------------------
+ * Timer0: start ADC (no MUX) conversion    |  1. switch to MUX desired output
+ *                                          |
+ *                                          |
+ *                                          |
+ *                                          |
+ * ADC_vect:   switch ADC to MUX            |                             |
+ *                                          |
+ * Timer0: start ADC (MUX) conversion       |
+ *                                          |
+ *                                          |
+ *                                          |
+ *                                          |
+ * ADC_vect:   switch ADC to no MUX         |
+ *                                          |
+ * Timer0: start ADC (MUX) conversion       |  repeat 1.
+ * ...
+ *
+ * note: 1. is in setMuxAddress()
+ */
+
+<<<<<<< HEAD:src/hardware/200W-generic/adc.cpp
+
+=======
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/GTPowerA6-10-generic/adc.cpp
 #define ADC_KEY_BORDER 128
 #define DEFAULT 1
 #define EXTERNAL 0
@@ -76,6 +107,37 @@ void initialize()
     pinMode(MUX_ADR0_PIN, OUTPUT);
     pinMode(MUX_ADR1_PIN, OUTPUT);
     pinMode(MUX_ADR2_PIN, OUTPUT);
+
+    //ADC Auto Trigger Source - Timer/Counter0 Compare Match
+    SFIOR |= _BV(ADTS1) | _BV(ADTS0);
+
+    //ADEN: ADC Enable
+    //ADATE: ADC Auto Trigger Enable
+    //ADIE: ADC Interrupt Enable
+    //ADPS2:0: ADC Prescaler Select Bits = 16MHz/ 128 = 125kHz
+    ADCSRA = _BV(ADEN) | _BV(ADATE) | _BV(ADIE) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0);
+
+    adc::reset();
+    Timer0::initialize();
+}
+
+
+namespace adc {
+
+static uint8_t current_input_;
+static uint8_t adc_keyboard_;
+
+void initialize()
+{
+
+    IO::pinMode(MUX0_Z_D_PIN, INPUT);
+    IO::pinMode(MUX1_Z_D_PIN, INPUT);
+    IO::digitalWrite(MUX0_Z_D_PIN, 0);
+    IO::digitalWrite(MUX1_Z_D_PIN, 0);
+
+    IO::pinMode(MUX_ADR0_PIN, OUTPUT);
+    IO::pinMode(MUX_ADR1_PIN, OUTPUT);
+    IO::pinMode(MUX_ADR2_PIN, OUTPUT);
 
     //ADC Auto Trigger Source - Timer/Counter0 Compare Match
     SFIOR |= _BV(ADTS1) | _BV(ADTS0);
@@ -147,9 +209,9 @@ void setMuxAddress(int8_t address)
         return;
     if(address != last) {
         last = address;
-//        digitalWrite(MUX_ADR0_PIN, address&1);
-//        digitalWrite(MUX_ADR1_PIN, address&2);
-//        digitalWrite(MUX_ADR2_PIN, address&4);
+//        IO::digitalWrite(MUX_ADR0_PIN, address&1);
+//        IO::digitalWrite(MUX_ADR1_PIN, address&2);
+//        IO::digitalWrite(MUX_ADR2_PIN, address&4);
         uint8_t port_adr =  ((address&1) << 2) | (address&2) | ((address&4) >>2);
         PORTB = (PORTB & 0x1f) | (port_adr) << 5;
     }
@@ -175,12 +237,21 @@ void processConversion(bool finalize)
             adc_keyboard_ &= ~key;
         }
     }
+<<<<<<< HEAD:src/hardware/200W-generic/adc.cpp
 }
 
 void reset() {
     current_input_ = 0;
 }
 
+=======
+}
+
+void reset() {
+    current_input_ = 0;
+}
+
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7:src/hardware/GTPowerA6-10-generic/adc.cpp
 void finalizeMeasurement()
 {
     AnalogInputs::adc_[AnalogInputs::IsmpsValue]        = SMPS::getValue();

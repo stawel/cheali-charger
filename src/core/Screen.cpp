@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <avr/pgmspace.h>
+#include "memory.h"
 #include "Screen.h"
 #include "LcdPrint.h"
 #include "ProgramData.h"
@@ -486,8 +486,12 @@ void Screen::runCalibrateBeforeUse()
 
 void Screen::displayScreenReversedPolarity()
 {
+<<<<<<< HEAD
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("REV. POLARITY"));
+=======
+    displayStrings(PSTR("REVERSE POLARITY"), NULL);
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
 }
 
 void Screen::displayStartInfo()

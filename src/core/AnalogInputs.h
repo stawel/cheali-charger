@@ -129,9 +129,12 @@ namespace AnalogInputs {
     //get the ADC (measured) value - in this particular moment
     ValueType getADCValue(Name name);
 
+<<<<<<< HEAD
     //ValueType calibrateValue(Name name, ValueType x);
     //ValueType reverseCalibrateValue(Name name, ValueType y);
 
+=======
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
     ValueType getVout();
     ValueType getIout();
     ValueType getDeltaLastT();
@@ -155,7 +158,10 @@ namespace AnalogInputs {
     void doFullMeasurement();
 
     void resetMeasurement();
+<<<<<<< HEAD
     void resetAccumulatedMeasurements();
+=======
+>>>>>>> d478938aba1843b84172d5e9c789a40f899c8fc7
     void powerOn();
     void powerOff();
 

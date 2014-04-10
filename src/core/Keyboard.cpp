@@ -15,7 +15,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <Arduino.h>
 #include "Hardware.h"
 #include "Keyboard.h"
 #include "Buzzer.h"
@@ -68,8 +67,9 @@ uint8_t Keyboard::keyChanged(uint8_t key)
     this_speed_ = 0;
     last_key_ = key;
 
-    if(key != BUTTON_NONE)
+    if(key != BUTTON_NONE) {
         Buzzer::soundKeyboard();
+    }
 
     return last_key_;
 }

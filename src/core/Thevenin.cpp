@@ -18,11 +18,10 @@
 
 #define __STDC_LIMIT_MACROS
 #include <stdint.h>
-#include <Arduino.h>
+#include <stdlib.h>
 
 #include "Thevenin.h"
 #include "Utils.h"
-
 
 AnalogInputs::ValueType Resistance::getReadableRth()
 {
