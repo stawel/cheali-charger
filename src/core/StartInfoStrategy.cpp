@@ -19,7 +19,7 @@
 #include "StartInfoStrategy.h"
 #include "ProgramData.h"
 #include "Screen.h"
-#include "Buzzer.h"
+#include "memory.h"
 
 
 namespace StartInfoStrategy {

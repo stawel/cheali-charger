@@ -39,8 +39,8 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                        {50752, ANALOG_VOLT(3.865)}},   //Vb5_pin
     {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb6_pin
 
-    {{22, ANALOG_AMP(0.051)},       {744, ANALOG_AMP(2.000)}},      //IsmpsValue
-    {{32, ANALOG_AMP(0.051)},       {657, ANALOG_AMP(1.000)}},      //IdischargeValue
+    {{176, ANALOG_AMP(0.050)},       {2926, ANALOG_AMP(1.000)}},      //IsmpsValue
+    {{335, ANALOG_AMP(0.050)},       {1894, ANALOG_AMP(0.300)}},      //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {{0,0},                         {1, 1}},                        //UNKNOWN0
     {{0,0},                         {1, 1}},                        //UNKNOWN1

@@ -1,8 +1,8 @@
 #include "Hardware.h"
-#include "TimerOne.h"
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
 #include "IO.h"
+#include "AnalogInputs.h"
 
 
 namespace {
@@ -12,7 +12,7 @@ namespace {
     volatile bool PID_enable;
 }
 
-#define A 16
+#define A 4
 
 uint16_t hardware::getPIDValue()
 {
@@ -50,7 +50,7 @@ void SMPS_PID::init(uint16_t Vin, uint16_t Vout)
 
     PID_setpoint = 0;
     if(Vout>Vin) {
-        PID_MV = TIMERONE_PRECISION_PERIOD;
+        PID_MV = TIMER1_PRECISION_PERIOD;
     } else {
         PID_MV = 0;
     }
@@ -60,15 +60,15 @@ void SMPS_PID::init(uint16_t Vin, uint16_t Vout)
 
 namespace {
     void enableChargerBuck() {
-        TimerOne::disablePWM(SMPS_VALUE_BUCK_PIN);
+        Timer1::disablePWM(SMPS_VALUE_BUCK_PIN);
         IO::digitalWrite(SMPS_VALUE_BUCK_PIN, 1);
     }
     void disableChargerBuck() {
-        TimerOne::disablePWM(SMPS_VALUE_BUCK_PIN);
+        Timer1::disablePWM(SMPS_VALUE_BUCK_PIN);
         IO::digitalWrite(SMPS_VALUE_BUCK_PIN, 0);
     }
     void disableChargerBoost() {
-        TimerOne::disablePWM(SMPS_VALUE_BOOST_PIN);
+        Timer1::disablePWM(SMPS_VALUE_BOOST_PIN);
         IO::digitalWrite(SMPS_VALUE_BOOST_PIN, 0);
     }
 }
@@ -77,13 +77,13 @@ void SMPS_PID::setPID_MV(uint16_t value) {
     if(value > MAX_PID_MV)
         value = MAX_PID_MV;
 
-    if(value <= TIMERONE_PRECISION_PERIOD) {
+    if(value <= TIMER1_PRECISION_PERIOD) {
         disableChargerBoost();
-        TimerOne::setPWM(SMPS_VALUE_BUCK_PIN, value);
+        Timer1::setPWM(SMPS_VALUE_BUCK_PIN, value);
     } else {
         enableChargerBuck();
-        uint16_t v2 = value - TIMERONE_PRECISION_PERIOD;
-        TimerOne::setPWM(SMPS_VALUE_BOOST_PIN, v2);
+        uint16_t v2 = value - TIMER1_PRECISION_PERIOD;
+        Timer1::setPWM(SMPS_VALUE_BOOST_PIN, v2);
     }
 }
 
@@ -115,6 +115,6 @@ void hardware::setDischargerOutput(bool enable)
 
 void hardware::setDischargerValue(uint16_t value)
 {
-    TimerOne::setPWM(DISCHARGE_VALUE_PIN, value);
+    Timer1::setPWM(DISCHARGE_VALUE_PIN, value);
 }
 

@@ -18,8 +18,6 @@
 #ifndef BALANCER_H_
 #define BALANCER_H_
 
-#include "Hardware.h"
-#include "Thevenin.h"
 #include "Strategy.h"
 
 namespace Balancer {

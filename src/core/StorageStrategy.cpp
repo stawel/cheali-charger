@@ -19,7 +19,7 @@
 #include "StorageStrategy.h"
 #include "TheveninChargeStrategy.h"
 #include "TheveninDischargeStrategy.h"
-
+#include "memory.h"
 
 namespace StorageStrategy {
 

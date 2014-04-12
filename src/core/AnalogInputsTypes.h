@@ -15,9 +15,31 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef HARDWARE_H_
-#define HARDWARE_H_
+#ifndef ANALOGINPUTSTYPES_H_
+#define ANALOGINPUTSTYPES_H_
 
-#include "Turnigy-MEGA-400Wx2.h"
+#include <inttypes.h>
 
-#endif /* HARDWARE_H_ */
+#define ANALOG_CELCIUS(x) ((AnalogInputs::ValueType)((x)*100))
+#define ANALOG_CHARGE(x) ((AnalogInputs::ValueType)((x)*1000))
+#define ANALOG_VOLT(x) ((AnalogInputs::ValueType)((x)*1000))
+#define ANALOG_AMP(x) ((AnalogInputs::ValueType)((x)*1000))
+#define ANALOG_WATT(x) ((unsigned long)((x)*1000L))
+
+namespace AnalogInputs {
+    typedef uint16_t ValueType;
+
+    enum Type {
+        Current,
+        Voltage,
+        Temperature,
+        Charge,
+        Resistance,
+        Unknown
+    };
+
+    static const ValueType  STABLE_VALUE_ERROR  = 6;
+    static const uint16_t   STABLE_MIN_VALUE    = 3;
+};
+
+#endif /* ANALOGINPUTSTYPES_H_ */

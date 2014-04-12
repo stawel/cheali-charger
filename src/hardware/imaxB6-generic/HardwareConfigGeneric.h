@@ -15,9 +15,32 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef HARDWARE_H_
-#define HARDWARE_H_
+#ifndef HARDWARE_CONFIG_GENERIC_H_
+#define HARDWARE_CONFIG_GENERIC_H_
 
-#include "imaxB6-original.h"
 
-#endif /* HARDWARE_H_ */
+#include "AnalogInputsTypes.h"
+
+#define LCD_LINES               2
+#define LCD_COLUMNS             16
+
+#define MAX_BANANCE_CELLS       6
+#define CALIBRATION_SPEED       1
+#define TIMER1_PERIOD           256
+
+#define ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+//TODO: should be implemented!
+//when the imaxB6 discharges, the voltage on Vb0_pin
+//(Vb0_pin = VBATT- on the balance port)
+//drops below 0V so the ADC doesn't see it.
+//This is why we see a bigger Vb1 resistance.
+#define ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
+#define ENABLE_STACK_INFO
+#define ENABLE_SERIAL_LOG
+#define ENABLE_GET_PID_VALUE
+#define ENABLE_EXPERT_VOLTAGE_CALIBRATION
+
+#define DEFAULT_SETTINGS_EXTERNAL_T 0
+
+
+#endif /* HARDWARE_CONFIG_GENERIC_H_ */

@@ -15,10 +15,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef imaxB6_original_H_
-#define imaxB6_original_H_
+#ifndef HARDWARE_CONFIG_H_
+#define HARDWARE_CONFIG_H_
 
-#include "imaxB6.h"
+#include "HardwareConfigGeneric.h"
 
 #define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
 #define MAX_CHARGE_I            ANALOG_AMP(5.000)   //5A
@@ -31,9 +31,8 @@
 //1-13? correlation
 #define SMPS_UPPERBOUND_VALUE               (MAX_CHARGE_I*13)
 #define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/4)
-#define DISCHARGER_UPPERBOUND_VALUE         TIMERONE_PRECISION_PERIOD
+#define DISCHARGER_UPPERBOUND_VALUE         TIMER1_PRECISION_PERIOD
 #define MAX_CALIBRATION_DISCHARGER_VALUE    DISCHARGER_UPPERBOUND_VALUE
-#define CALIBRATION_SPEED                   10
 
 
-#endif /* imaxB6_original_H_ */
+#endif /* HARDWARE_CONFIG_H_ */

@@ -7,12 +7,13 @@ set(IMAXB6_SOURCE
     imaxB6.cpp
     imaxB6.h
     imaxB6-pins.h
-    TimerOne.cpp
-    TimerOne.h
     SMPS_PID.h
     SMPS_PID.cpp
     adc.cpp
     adc.h
+
+    Hardware.h
+    HardwareConfigGeneric.h
 )
 
 set (IMAXB6_SOURCE_FILES "")

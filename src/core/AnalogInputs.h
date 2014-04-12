@@ -18,7 +18,8 @@
 #ifndef ANALOGINPUTS_H_
 #define ANALOGINPUTS_H_
 
-#include <inttypes.h>
+#include "AnalogInputsTypes.h"
+#include "HardwareConfig.h"
 
 #define MAX_CALIBRATION_POINTS 2
 #define DELTA_TIME_MILISECONDS 60000
@@ -31,14 +32,7 @@
 #define FOR_ALL_PHY_INPUTS(iterator) for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::PHYSICAL_INPUTS; iterator = AnalogInputs::Name(iterator + 1) )
 #define FOR_ALL_INPUTS(iterator)     for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::ALL_INPUTS;      iterator = AnalogInputs::Name(iterator + 1) )
 
-#define ANALOG_CELCIUS(x) ((AnalogInputs::ValueType)((x)*100))
-#define ANALOG_CHARGE(x) ((AnalogInputs::ValueType)((x)*1000))
-#define ANALOG_VOLT(x) ((AnalogInputs::ValueType)((x)*1000))
-#define ANALOG_AMP(x) ((AnalogInputs::ValueType)((x)*1000))
-#define ANALOG_WATT(x) ((unsigned long)((x)*1000L))
-
 namespace AnalogInputs {
-    typedef uint16_t ValueType;
 
     struct CalibrationPoint {
         ValueType x;
@@ -52,14 +46,6 @@ namespace AnalogInputs {
         CalibrationPoint p[MAX_CALIBRATION_POINTS];
     };
 
-    enum Type {
-        Current,
-        Voltage,
-        Temperature,
-        Charge,
-        Resistance,
-        Unknown
-    };
     enum Name {
         Vout_plus_pin,
         Vout_minus_pin,
@@ -116,8 +102,6 @@ namespace AnalogInputs {
     static const uint8_t    PHYSICAL_INPUTS     = VirtualInputs - Vout_plus_pin;
     static const uint8_t    ALL_INPUTS          = LastInput - Vout_plus_pin;
     static const uint16_t   AVR_MAX_COUNT       = 100;
-    static const ValueType  STABLE_VALUE_ERROR  = 6;
-    static const uint16_t   STABLE_MIN_VALUE    = 3;
     static const ValueType  REVERSE_POLARITY_MIN_VALUE = ANALOG_VOLT(1.000);
 
     //get the average ADC value

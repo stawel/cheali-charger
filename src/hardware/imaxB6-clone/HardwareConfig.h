@@ -15,9 +15,23 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef HARDWARE_H_
-#define HARDWARE_H_
+#ifndef HARDWARE_CONFIG_H_
+#define HARDWARE_CONFIG_H_
 
-#include "Turnigy-Accucel-6-50W-5A.h"
+#include "HardwareConfigGeneric.h"
 
-#endif /* HARDWARE_H_ */
+#define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
+#define MAX_CHARGE_I            ANALOG_AMP(5.000)   //5A
+#define MAX_CHARGE_P            ANALOG_WATT(50.000)               //50W
+
+#define MAX_DISCHARGE_P         ANALOG_WATT(5.000)                //5W
+#define MAX_DISCHARGE_I         ANALOG_AMP(2.000)   //should be 1A
+
+
+//1-13? correlation
+#define SMPS_UPPERBOUND_VALUE               (MAX_CHARGE_I*13)
+#define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/4)
+#define DISCHARGER_UPPERBOUND_VALUE         TIMER1_PRECISION_PERIOD
+#define MAX_CALIBRATION_DISCHARGER_VALUE    DISCHARGER_UPPERBOUND_VALUE
+
+#endif /* HARDWARE_CONFIG_H_ */

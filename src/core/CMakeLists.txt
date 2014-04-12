@@ -2,6 +2,7 @@ set(CORE_SOURCE
         Timer.cpp
         Timer.h
 
+        AnalogInputsTypes.h
         AnalogInputs.cpp
         AnalogInputs.h
         AnalogInputsPrivate.h

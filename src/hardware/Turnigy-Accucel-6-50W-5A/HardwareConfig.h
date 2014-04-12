@@ -15,22 +15,24 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef Turnigy_A_6_10_200W_H_
-#define Turnigy_A_6_10_200W_H_
+#ifndef HARDWARE_CONFIG_H_
+#define HARDWARE_CONFIG_H_
 
-#include "GTPowerA6-10.h"
+#include "HardwareConfigGeneric.h"
 
 #define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(10.000)  //10A
-#define MAX_CHARGE_P            ANALOG_WATT(200.000)              //200W
+#define MAX_CHARGE_I            ANALOG_AMP(5.000)   //5A
+#define MAX_CHARGE_P            ANALOG_WATT(50.000)               //50W
 
-#define MAX_DISCHARGE_P         ANALOG_WATT(25.000)               //25W
-#define MAX_DISCHARGE_I         ANALOG_AMP(5.000)   //5A
-
-#define SMPS_UPPERBOUND_VALUE               4096
-#define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/8)
-#define DISCHARGER_UPPERBOUND_VALUE         4096
-#define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/14)
+#define MAX_DISCHARGE_P         ANALOG_WATT(5.000)                //5W
+#define MAX_DISCHARGE_I         ANALOG_AMP(2.000)   //should be 1A
 
 
-#endif /* Turnigy_A_6_10_200W_H_ */
+//1-13? correlation
+#define SMPS_UPPERBOUND_VALUE               (MAX_CHARGE_I*13)
+#define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/4)
+#define DISCHARGER_UPPERBOUND_VALUE         TIMER1_PRECISION_PERIOD
+#define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/6)
+
+
+#endif /* HARDWARE_CONFIG_H_ */

@@ -21,7 +21,7 @@
 #include "Screen.h"
 #include "TheveninMethod.h"
 #include "Program.h"
-
+#include "memory.h"
 
 namespace DeltaChargeStrategy {
     enum StateType {PreCharge, RapidCharge};

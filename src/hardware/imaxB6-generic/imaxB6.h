@@ -18,30 +18,7 @@
 #ifndef IMAXB6_H_
 #define IMAXB6_H_
 
-#include "memory.h"
-#include "AnalogInputs.h"
-#include "TimerOne.h"
-#include "imaxB6-pins.h"
-
-#define LCD_LINES               2
-#define LCD_COLUMNS             16
-
-#define MAX_BANANCE_CELLS       6
-
-#define ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-//TODO: should be implemented!
-//when the imaxB6 discharges, the voltage on Vb0_pin
-//(Vb0_pin = VBATT- on the balance port)
-//drops below 0V so the ADC doesn't see it.
-//This is why we see a bigger Vb1 resistance.
-#define ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
-#define ENABLE_STACK_INFO
-#define ENABLE_SERIAL_LOG
-#define ENABLE_GET_PID_VALUE
-#define ENABLE_EXPERT_VOLTAGE_CALIBRATION
-
-#define DEFAULT_SETTINGS_EXTERNAL_T 0
-
+#include "HardwareConfig.h"
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
@@ -49,8 +26,11 @@
 #include "SMPS.h"
 #include "Discharger.h"
 #include "Balancer.h"
+#include "Buzzer.h"
 #include "adc.h"
 
+#include "Timer1.h"
+#include "imaxB6-pins.h"
 
 extern LiquidCrystal lcd;
 

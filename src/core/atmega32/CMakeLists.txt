@@ -8,6 +8,9 @@ set(ATMEGA32_SOURCE
         Timer0.cpp
         Timer0.h
 
+        Timer1.cpp
+        Timer1.h
+
         Serial.h
         Serial.cpp
         StackInfo.cpp

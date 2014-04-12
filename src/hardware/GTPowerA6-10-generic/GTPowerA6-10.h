@@ -18,39 +18,19 @@
 #ifndef GTPOWERA610_H_
 #define GTPOWERA610_H_
 
-#include "memory.h"
-#include "AnalogInputs.h"
-#include "Timer.h"
-#include "GTPowerA6-10-pins.h"
-
-#define LCD_LINES               2
-#define LCD_COLUMNS             16
-#define LCD_BACKLIGHT_MIN       100
-#define LCD_BACKLIGHT_MAX       3000
-
-#define MAX_BANANCE_CELLS       6
-
-//use unknown mux values
-//#define ANALOG_INPUTS_V_UNKNOWN
-#define TIMER1_PERIOD_MICROSECONDS          512
-#define CALIBRATION_SPEED                   1
-
-
-#define ENABLE_LCD_BACKLIGHT
-#define ENABLE_FAN
-#define ENABLE_T_INTERNAL
-#define ENABLE_STACK_INFO
-#define ENABLE_SERIAL_LOG
-#define ENABLE_EXPERT_VOLTAGE_CALIBRATION
-
+#include "HardwareConfig.h"
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
 #include "SMPS.h"
 #include "Discharger.h"
 #include "Balancer.h"
-#include "TimerOne.h"
+#include "Timer1.h"
+#include "Timer.h"
+#include "Buzzer.h"
 #include "adc.h"
+
+#include "GTPowerA6-10-pins.h"
 
 
 extern LiquidCrystal lcd;

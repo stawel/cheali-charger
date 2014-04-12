@@ -43,8 +43,8 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                      {50871, 3904}},  //Vb6_pin??
 
     //1-1 correlation
-    {{3, 50},                      {86, 1000}},  //IsmpsValue
-    {{9, 50},                      {26, 300}},  //IdischargeValue
+    {{3*8, 50},                      {86*8, 1000}},  //IsmpsValue
+    {{9*8, 50},                      {26*8, 300}},  //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {{0, 0},                         {1, 1}},           //UNKNOWN0
     {{0, 0},                         {1, 1}},           //UNKNOWN1

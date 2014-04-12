@@ -21,6 +21,8 @@
 #include "ProgramData.h"
 #include "Screen.h"
 #include "TheveninMethod.h"
+#include "memory.h"
+
 
 
 namespace TheveninChargeStrategy {

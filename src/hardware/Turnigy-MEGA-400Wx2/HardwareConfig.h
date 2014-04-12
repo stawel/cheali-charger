@@ -15,9 +15,23 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef HARDWARE_H_
-#define HARDWARE_H_
+#ifndef HARDWARE_CONFIG_H_
+#define HARDWARE_CONFIG_H_
 
-#include "GTPowerA6-10-original.h"
+#include "HardwareConfigGeneric.h"
 
-#endif /* HARDWARE_H_ */
+#define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
+#define MAX_CHARGE_I            ANALOG_AMP(20.000)  //20A
+#define MAX_CHARGE_P            ANALOG_WATT(400.000)              //400W
+
+#define MAX_DISCHARGE_P         ANALOG_WATT(25.000)               //25W
+#define MAX_DISCHARGE_I         ANALOG_AMP(5.000)   //5A
+
+
+#define SMPS_UPPERBOUND_VALUE               (TIMER1_PRECISION_PERIOD/2)
+#define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/16)
+#define DISCHARGER_UPPERBOUND_VALUE         4096
+#define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/14)
+
+
+#endif /* HARDWARE_CONFIG_H_ */

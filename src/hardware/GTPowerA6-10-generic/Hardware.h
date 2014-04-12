@@ -15,23 +15,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef Turnigy_MEGA_400Wx2_H_
-#define Turnigy_MEGA_400Wx2_H_
+#ifndef HARDWARE_H_
+#define HARDWARE_H_
 
 #include "GTPowerA6-10.h"
 
-#define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(20.000)  //20A
-#define MAX_CHARGE_P            ANALOG_WATT(400.000)              //400W
-
-#define MAX_DISCHARGE_P         ANALOG_WATT(25.000)               //25W
-#define MAX_DISCHARGE_I         ANALOG_AMP(5.000)   //5A
-
-
-#define SMPS_UPPERBOUND_VALUE               2048
-#define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/16)
-#define DISCHARGER_UPPERBOUND_VALUE         512
-#define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/14)
-
-
-#endif /* Turnigy_MEGA_400Wx2_H_ */
+#endif /* HARDWARE_H_ */

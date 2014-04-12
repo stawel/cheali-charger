@@ -15,22 +15,31 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef GTPOWERA610_ORIGINAL_H_
-#define GTPOWERA610_ORIGINAL_H_
+#ifndef HARDWARE_CONFIG_GENERIC_H_
+#define HARDWARE_CONFIG_GENERIC_H_
 
-#include "GTPowerA6-10.h"
+#include "AnalogInputsTypes.h"
 
-#define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(10.000)  //10A
-#define MAX_CHARGE_P            ANALOG_WATT(200.000)  //200W
+#define LCD_LINES               2
+#define LCD_COLUMNS             16
+#define LCD_BACKLIGHT_MIN       100
+#define LCD_BACKLIGHT_MAX       32000
 
-#define MAX_DISCHARGE_P         ANALOG_WATT(25.000)   //25W
-#define MAX_DISCHARGE_I         ANALOG_AMP(5.000)   //5A
+#define MAX_BANANCE_CELLS       6
 
-#define SMPS_UPPERBOUND_VALUE               4096
-#define MAX_CALIBRATION_SMPS_VALUE          (SMPS_UPPERBOUND_VALUE/8)
-#define DISCHARGER_UPPERBOUND_VALUE         4096
-#define MAX_CALIBRATION_DISCHARGER_VALUE    (DISCHARGER_UPPERBOUND_VALUE/14)
+#define CALIBRATION_SPEED       1
+
+//use unknown mux values
+//#define ANALOG_INPUTS_V_UNKNOWN
+#define TIMER1_PERIOD           512
 
 
-#endif /* GTPOWERA610_ORIGINAL_H_ */
+#define ENABLE_LCD_BACKLIGHT
+#define ENABLE_FAN
+#define ENABLE_T_INTERNAL
+#define ENABLE_STACK_INFO
+#define ENABLE_SERIAL_LOG
+#define ENABLE_EXPERT_VOLTAGE_CALIBRATION
+
+
+#endif /* HARDWARE_CONFIG_GENERIC_H_ */
