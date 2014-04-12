@@ -22,12 +22,6 @@
 #include "TheveninMethod.h"
 
 
-namespace SimpleChargeStrategy {
-    bool testVout_;
-}
-
-
-
 void SimpleChargeStrategy::powerOn()
 {
     SMPS::powerOn();

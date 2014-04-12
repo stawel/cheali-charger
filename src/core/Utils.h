@@ -34,9 +34,11 @@ uint8_t digits(uint16_t x);
 uint8_t digits(uint32_t x);
 int8_t sign(int16_t x);
 
-void changeMaxSmart(uint16_t &v, int direc, uint16_t max);
-void changeMax(uint16_t &v, int direc, uint8_t max);
-void change1Max(uint16_t &v, int direc, uint8_t max);
+
+void change0ToMaxSmart(uint16_t &v, int direc, uint16_t max);
+void change0ToMaxSmart(uint16_t &v, int direc, uint16_t max, int16_t step);
+void change0ToMax(uint16_t &v, int direc, uint8_t max);
+void change1ToMax(uint16_t &v, int direc, uint8_t max);
 
 void waitButtonPressed();
 uint8_t countElements(const char * const* staticMenu);

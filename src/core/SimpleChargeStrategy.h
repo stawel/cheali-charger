@@ -25,7 +25,6 @@ namespace SimpleChargeStrategy {
     void powerOn();
     void powerOff();
     void calculateThevenin();
-    static bool isLCDRunning();
 };
 
 #endif /* SIMPLECHARGESTRATEGY_H_ */

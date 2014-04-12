@@ -73,37 +73,42 @@ uint8_t digits(uint32_t x)
     return retu;
 }
 
-void changeMax(uint16_t &v, int dir, uint8_t max)
+void change0ToMax(uint16_t &v, int dir, uint8_t max)
 {
     if( ((int)v) + dir< 0) v = 0;
     else if(((int)v)+dir > max) v = max;
     else v+=dir;
 }
 
-void change1Max(uint16_t &v, int dir, uint8_t max)
+void change1ToMax(uint16_t &v, int dir, uint8_t max)
 {
     if( ((int)v) + dir< 1) v = 1;
     else if(((int)v)+dir > max) v = max;
     else v+=dir;
 }
 
+void change0ToMaxSmart(uint16_t &v, int dir, uint16_t max)
+{
+    return change0ToMaxSmart(v, dir, max, 0);
+}
 
-void changeMaxSmart(uint16_t &v, int direc, uint16_t max)
+void change0ToMaxSmart(uint16_t &v, int dir, uint16_t max, int16_t step)
 {
     uint16_t r;
-    int step = 1;
-    bool direction = direc > 0;
 
     uint8_t dv = digits(v);
-    if(dv>1) step = pow10(dv-2);
+    if(step == 0) {
+        step = 1;
+        if(dv>1) step = pow10(dv-2);
+    }
 
     r = v%step;
 
     if(r) {
-        if(direction) step -=r;
+        if(dir > 0) step -=r;
         else step = r;
     }
-    if(direction) ADD_MAX(v, step, max);
+    if(dir > 0) ADD_MAX(v, step, max);
     else SUB_MIN(v, step ,0);
 }
 
