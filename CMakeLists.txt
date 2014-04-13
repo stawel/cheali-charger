@@ -11,7 +11,7 @@ include(avr-compiler.cmake)
 set(cheali-charger-version 0.33)
 set(cheali-charger-eeprom-calibration-version 8)
 set(cheali-charger-eeprom-programdata-version 1)
-set(cheali-charger-eeprom-settings-version 3)
+set(cheali-charger-eeprom-settings-version 4)
 
 configure_file(src/core/Version.h.in src/core/Version.h)
 
