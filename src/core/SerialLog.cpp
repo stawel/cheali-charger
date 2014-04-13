@@ -15,8 +15,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Serial.h"
-#include "SerialLog.h"
 #include "Hardware.h"
 #include "Timer.h"
 #include "LcdPrint.h"
@@ -27,6 +25,11 @@
 #include "TheveninMethod.h"
 #include "StackInfo.h"
 #include "IO.h"
+#include "SerialLog.h"
+
+#ifdef ENABLE_SERIAL_LOG
+#include "Serial.h"
+#endif //ENABLE_SERIAL_LOG
 
 namespace SerialLog {
     enum State { On, Off, Starting };
@@ -56,6 +59,8 @@ namespace SerialLog {
 
 void sendTime();
 
+#ifdef ENABLE_SERIAL_LOG
+
 void serialBegin()
 {
     Serial.begin(settings.getUARTspeed());
@@ -67,10 +72,14 @@ void serialEnd()
     IO::pinMode(10, INPUT);
 }
 
+void printChar(char c)
+{
+    Serial.write(c);
+    CRC^=c;
+}
+
 void powerOn()
 {
-
-#ifdef ENABLE_SERIAL_LOG
     if(state != Off)
         return;
     if(settings.UART_ == Settings::Disabled)
@@ -79,25 +88,19 @@ void powerOn()
     serialBegin();
 
     state = Starting;
-#endif //ENABLE_SERIAL_LOG
 }
 
 void powerOff()
 {
-#ifdef ENABLE_SERIAL_LOG
-
     if(state == Off)
         return;
 
     serialEnd();
     state = Off;
-#endif //ENABLE_SERIAL_LOG
 }
 
 void send()
 {
-#ifdef ENABLE_SERIAL_LOG
-
     if(state == Off)
         return;
 
@@ -110,12 +113,10 @@ void send()
 
     currentTime -= startTime;
     sendTime();
-#endif //ENABLE_SERIAL_LOG
 }
 
 void doIdle()
 {
-#ifdef ENABLE_SERIAL_LOG
     static int16_t analogCount;
     uint16_t getFullMeasurementCount();
     if(!AnalogInputs::isPowerOn()) {
@@ -127,15 +128,23 @@ void doIdle()
             send();
         }
     }
-#endif //ENABLE_SERIAL_LOG
 }
 
+#else //ENABLE_SERIAL_LOG
 
-void printChar(char c)
-{
-    Serial.write(c);
-    CRC^=c;
-}
+void serialBegin(){}
+void serialEnd(){}
+
+void printChar(char c){}
+void powerOn(){}
+void powerOff(){}
+void send(){}
+void doIdle(){}
+
+
+#endif
+
+
 void printD()
 {
     printChar(';');
@@ -248,10 +257,12 @@ void sendChannel2(bool adc)
 void sendChannel3()
 {
     sendHeader(3);
+#ifdef ENABLE_SERIAL_LOG
     printUInt(StackInfo::getNeverUsedStackSize());
     printD();
     printUInt(StackInfo::getFreeStackSize());
     printD();
+#endif
     sendEnd();
 }
 

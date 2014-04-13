@@ -45,7 +45,7 @@ namespace Balancer {
     void setBalance(uint8_t v);
     uint8_t getCellMinV();
     uint8_t getCells();
-    static AnalogInputs::ValueType getV(uint8_t cell);
+    AnalogInputs::ValueType getV(uint8_t cell);
     AnalogInputs::ValueType getPresumedV(uint8_t cell);
     inline AnalogInputs::ValueType getRealV(uint8_t cell) { return getPresumedV(cell); }
     bool isWorking();

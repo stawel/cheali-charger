@@ -289,7 +289,7 @@ namespace {
         lcdSetCursor0_0();
         lcdPrint_P(firstLine);
         lcdSetCursor0_1();
-        if(strlen_P(Program::stopReason_)>0) {
+        if(pgm::strlen(Program::stopReason_)>0) {
             lcdPrint_P(PSTR("reason: "));
             lcdPrint_P(Program::stopReason_);
         }

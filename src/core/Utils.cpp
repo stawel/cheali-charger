@@ -60,10 +60,6 @@ int8_t sign(int16_t x)
     return -1;
 }
 
-uint8_t digits(uint16_t x)
-{
-    return digits((uint32_t)x);
-}
 uint8_t digits(uint32_t x)
 {
     uint8_t retu = 0;

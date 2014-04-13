@@ -64,9 +64,9 @@ void printChar(char * &buf, uint8_t &maxSize, char chr)
 void print_P(char * &buf, uint8_t &maxSize, const char *str)
 {
     if(str) {
-        uint8_t s = strlen_P(str);
+        uint8_t s = pgm::strlen(str);
         if(s>maxSize) s = maxSize;
-        strncpy_P(buf, str, s);
+        pgm::strncpy(buf, str, s);
         buf+=s;
         maxSize-=s;
         if(maxSize>0)
@@ -164,7 +164,7 @@ uint8_t lcdPrint_P(const char *str, uint8_t n)
     if(str) {
         char buffer[LCD_COLUMNS + 1];
         if (n > LCD_COLUMNS) n = LCD_COLUMNS;
-        strncpy_P(buffer, str, n);
+        pgm::strncpy(buffer, str, n);
         buffer[n] = 0;
         return lcd.print(buffer);
     }
