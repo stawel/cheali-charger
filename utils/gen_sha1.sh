@@ -1,6 +1,10 @@
 #!/bin/bash
 
 
+OUTPUT=$1
+
+[ -d $OUTPUT ] && cd $OUTPUT
+
 for FILE in *.hex
 do
     echo "file: $FILE"
@@ -9,3 +13,5 @@ do
     sha1sum $FILE > $SHA1_FILE
     cat $SHA1_FILE
 done
+
+[ -d $OUTPUT ] && cd -
