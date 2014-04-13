@@ -18,7 +18,7 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
-#include "Hardware.h"
+#include "AnalogInputsTypes.h"
 
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
@@ -27,6 +27,19 @@
 
 #define ADD_MAX(x,v,max) (x) = (x)<(max)-(v)? (x)+(v) : (max)
 #define SUB_MIN(x,v,min) (x) = (x)>(min)+(v)? (x)-(v) : (min)
+
+//info: I use __ COUNTER__ which is not supported by some compilers
+#define START_CASE_COUNTER const uint8_t _case_counter = __COUNTER__
+#define NEXT_CASE (__COUNTER__ - _case_counter - 1)
+
+//assert
+#define STATIC_ASSERT(x) typedef char __STATIC_ASSERT__[( x )?1:-1]
+
+//Preprocessor: concatenate int to string
+#define CHEALI_CHARGER_STRING2(x)   #x
+#define CHEALI_CHARGER_STRING(x)    CHEALI_CHARGER_STRING2(x)
+
+
 
 bool testTintern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on);
 uint16_t pow10(uint8_t n);
@@ -43,11 +56,6 @@ void change1ToMax(uint16_t &v, int direc, uint8_t max);
 void waitButtonPressed();
 uint8_t countElements(const char * const* staticMenu);
 
-//info: I use __ COUNTER__ which is not supported by some compilers
-#define START_CASE_COUNTER const uint8_t _case_counter = __COUNTER__
-#define NEXT_CASE (__COUNTER__ - _case_counter - 1)
-
-#define STATIC_ASSERT( x ) typedef char __STATIC_ASSERT__[( x )?1:-1]
 
 // Platform specific delays. Implemented in Utils.cpp located in platform folder
 namespace Utils

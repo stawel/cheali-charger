@@ -17,6 +17,7 @@
 */
 
 #include "Utils.h"
+#include "Hardware.h"
 #include "memory.h"
 
 uint8_t countElements(const char * const* staticMenu)
