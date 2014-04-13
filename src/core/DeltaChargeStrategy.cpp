@@ -66,7 +66,7 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
     if(AnalogInputs::getDeltaCount() <= 1)
         return Strategy::RUNNING;
 
-    if(/*testDeltaV_*/true) {
+    if(settings.enable_deltaV_) {
         int x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
         x=-x;
         if(x > ProgramData::currentProgramData.getDeltaVLimit()) {

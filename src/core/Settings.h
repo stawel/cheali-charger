@@ -34,6 +34,7 @@ struct Settings {
     uint16_t externT_;
     AnalogInputs::ValueType externTCO_;
     AnalogInputs::ValueType deltaT_;
+    uint16_t enable_deltaV_;
     AnalogInputs::ValueType deltaV_NiMH_, deltaV_NiCd_;
     uint16_t CDcycles_;
     uint16_t capCutoff_;
