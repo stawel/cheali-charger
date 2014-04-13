@@ -174,6 +174,12 @@ If the measured resistance is much more than 1k Ohm you can proceed as follows:
 Troubleshooting
 ---------------
 - After flashing charger doesn't work (display shows squares):
+  - download the *.hex again, use the "RAW" button in github
+  - check the sha1 sum of the file, compare it with *.sha1:
+    - linux: $sha1sum cheali-charger*.hex
+    - windows: install http://www.microsoft.com/en-us/download/details.aspx?id=11533
+      - in cmd.exe: fciv.exe -sha1 -add cheali-charger-*.hex
+- The sha1 sum is correct and the charger still doesn't work (display shows squares):
   - check if the BOOTRST bit from "Fuse High byte" is unprogrammed (set to 1) and change it if needed
   - You may also want to program (set to 0) the EESAVE bit
 
