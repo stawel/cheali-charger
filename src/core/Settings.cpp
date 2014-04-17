@@ -35,6 +35,10 @@
 #define SETTINGS_DELTA_V_ENABLE_DEFAULT 1
 #endif
 
+#ifndef SETTINGS_FORCE_BALANCE_PORT_DEFAULT
+#define SETTINGS_FORCE_BALANCE_PORT_DEFAULT 1
+#endif
+
 Settings settings;
 
 const Settings defaultSettings PROGMEM = {
@@ -51,7 +55,8 @@ const Settings defaultSettings PROGMEM = {
         120,                //"%" capCutoff_
         ANALOG_VOLT(7),     //inputVoltageLow_
         ANALOG_VOLT(0),     //dischargeOffset_LiXX_
-        SETTINGS_DISCHARGE_AGGRESSIVE_LIXX_DEFAULT,  //dischargeAggressive_LiXX_;
+        SETTINGS_DISCHARGE_AGGRESSIVE_LIXX_DEFAULT,     //dischargeAggressive_LiXX_
+        SETTINGS_FORCE_BALANCE_PORT_DEFAULT,            //forceBalancePort_
         ANALOG_VOLT(0.008), //balancerError_
         Settings::Disabled, //UART_ - disabled
         3                   //57600
