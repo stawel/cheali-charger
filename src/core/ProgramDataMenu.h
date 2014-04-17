@@ -31,6 +31,9 @@ public:
 
     void editName();
     void createName();
+    void resetName();
+
+    void waitName();
 
     ProgramData p_;
     int programIndex_;

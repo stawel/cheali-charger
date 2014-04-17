@@ -28,6 +28,7 @@ const char string_PDMM3[] PROGMEM = "Ic: ";
 const char string_PDMM4[] PROGMEM = "Id: ";
 const char string_PDMM5[] PROGMEM = "  create name";
 const char string_PDMM6[] PROGMEM = "   edit name";
+const char string_PDMM7[] PROGMEM = "   reset name";
 
 
 const char * const ProgramDataStaticMenu[] PROGMEM =
@@ -39,6 +40,7 @@ const char * const ProgramDataStaticMenu[] PROGMEM =
         string_PDMM4,
         string_PDMM5,
         string_PDMM6,
+        string_PDMM7,
         NULL
 };
 
@@ -57,7 +59,16 @@ void ProgramDataMenu::editName()
 void ProgramDataMenu::createName()
 {
     p_.createName(programIndex_+1);
+    waitName();
+}
 
+void ProgramDataMenu::resetName()
+{
+    p_.resetName(programIndex_+1);
+    waitName();
+}
+void ProgramDataMenu::waitName()
+{
     lcdClear();
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("Name:"));
@@ -107,6 +118,7 @@ void ProgramDataMenu::run() {
         switch(index) {
         case 5: createName(); break;
         case 6: editName(); break;
+        case 7: resetName(); break;
         default:
             ProgramData undo(p_);
             if(!runEdit(index)) {
