@@ -26,8 +26,6 @@
 #define LCD_BACKLIGHT_MAX       32000
 
 #define MAX_BANANCE_CELLS       6
-//use unknown mux values
-//#define ANALOG_INPUTS_V_UNKNOWN
 #define TIMER1_PERIOD           512
 
 #define CALIBRATION_CHARGE_POINT0_mA    50

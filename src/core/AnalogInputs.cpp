@@ -123,10 +123,10 @@ void AnalogInputs::setCalibrationPoint(Name name, uint8_t i, const CalibrationPo
 
 uint8_t AnalogInputs::getConnectedBalancePorts()
 {
-    for(uint8_t i=0; i < 6; i++){
+    for(uint8_t i=0; i < MAX_BANANCE_CELLS; i++){
         if(!isConnected(Name(Vb1+i))) return i;
     }
-    return 6;
+    return MAX_BANANCE_CELLS;
 }
 bool AnalogInputs::isConnected(Name name)
 {
@@ -206,11 +206,11 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
     if(vb2_p > vb1_p) balance2 = vb2_p - vb1_p;
     setReal(Vb1, balance1);
     setReal(Vb2, balance2);
-    for(uint8_t i=2; i < 6; i++) {
+    for(uint8_t i=2; i < MAX_BANANCE_CELLS; i++) {
         setReal(Name(Vb1+i), getRealValue(Name(Vb1_pin+i)));
     }
 #else
-    for(uint8_t i=0; i < 6; i++) {
+    for(uint8_t i=0; i < MAX_BANANCE_CELLS; i++) {
         setReal(Name(Vb1+i), getRealValue(Name(Vb1_pin+i)));
     }
 #endif

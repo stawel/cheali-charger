@@ -53,6 +53,7 @@ namespace SerialLog {
             AnalogInputs::Vb4,
             AnalogInputs::Vb5,
             AnalogInputs::Vb6,
+            BALANCER_PORTS_GT_6(AnalogInputs::Vb7,AnalogInputs::Vb8,)
     };
 
 

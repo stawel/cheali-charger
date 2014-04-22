@@ -88,16 +88,23 @@ namespace Screen{
         lcdPrintChar(c);
 
         if(Balancer::balance_ != 0) {
-            uint8_t  j = 1;
-            for(uint8_t i = 0; i < 6; i++) {
+            uint8_t  j = 1, start = 0;
+            if(from >= 6) {
+               j = 64;
+               start = 6;
+            }
+            for(uint8_t i = start; i < start + 6; i++) {
                 if(i == Balancer::minCell_) {
                     c = '_';
                 } else {
-                    if(Balancer::balance_&j) c = '1';
-                    else c = '0';
+                    if(j) {
+                        if(Balancer::balance_&j) c = '1';
+                        else c = '0';
+                    } else c = ' ';
                 }
                 lcdPrintChar(c);
-                j<<=1;
+                if(j!=128)  j <<= 1;
+                else        j = 0;
             }
             lcdPrintChar(' ');
         } else lcdPrintSpaces(7);
@@ -117,12 +124,16 @@ namespace Screen{
         lcdPrintSpaces();
 
         lcdSetCursor0_1();
-        lcdPrintDigit(from+1);
-        lcdPrintChar(':');
-        printBalancer(from++, type);
-        lcdPrintDigit(from+1);
-        lcdPrintChar(':');
-        printBalancer(from, type);
+        if(from < MAX_BANANCE_CELLS) {
+            lcdPrintDigit(from+1);
+            lcdPrintChar(':');
+            printBalancer(from++, type);
+        }
+        if(from < MAX_BANANCE_CELLS) {
+            lcdPrintDigit(from+1);
+            lcdPrintChar(':');
+            printBalancer(from, type);
+        }
         lcdPrintSpaces();
     }
 
@@ -446,8 +457,10 @@ void Screen::display(ScreenType screen)
     case ScreenTemperature:             return displayScreenTemperature();
     case ScreenBalancer1_3:             return displayBalanceInfo(0, AnalogInputs::Voltage);
     case ScreenBalancer4_6:             return displayBalanceInfo(3, AnalogInputs::Voltage);
+    case ScreenBalancer7_9:             return displayBalanceInfo(6, AnalogInputs::Voltage);
     case ScreenBalancer1_3Rth:          return displayBalanceInfo(0, AnalogInputs::Resistance);
     case ScreenBalancer4_6Rth:          return displayBalanceInfo(3, AnalogInputs::Resistance);
+    case ScreenBalancer7_9Rth:          return displayBalanceInfo(6, AnalogInputs::Resistance);
     case ScreenStartInfo:               return displayStartInfo();
     case ScreenR:                       return displayScreenR();
     case ScreenVout:                    return displayScreenVout();

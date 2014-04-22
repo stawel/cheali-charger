@@ -67,8 +67,8 @@ namespace {
 
     const Screen::ScreenType theveninScreens[] PROGMEM = {
       Screen::ScreenFirst,
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
-      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
+      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,   BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9Rth,)
       Screen::ScreenR,
       Screen::ScreenVout,
       Screen::ScreenVinput,
@@ -79,15 +79,15 @@ namespace {
 
     };
     const Screen::ScreenType balanceScreens[] PROGMEM = {
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
       Screen::ScreenTime,
       Screen::ScreenTemperature,
       Screen::ScreenEnd
     };
     const Screen::ScreenType dischargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
-      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
+      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,   BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9Rth,)
       Screen::ScreenR,
       Screen::ScreenVout,
       Screen::ScreenVinput,
@@ -99,8 +99,8 @@ namespace {
     };
     const Screen::ScreenType storageScreens[] PROGMEM = {
       Screen::ScreenFirst,
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
-      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
+      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,   BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9Rth,)
       Screen::ScreenR,
       Screen::ScreenVout,
       Screen::ScreenVinput,
@@ -113,7 +113,7 @@ namespace {
 
     const Screen::ScreenType startInfoBalanceScreens[] PROGMEM = {
       Screen::ScreenStartInfo,
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
       Screen::ScreenTemperature,
       Screen::ScreenEnd
     };

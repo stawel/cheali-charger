@@ -39,6 +39,7 @@
 #define BUZZER_PIN              16
 
 // pin 17,18 - VCC, GND
+#ifndef LCD_ENABLE_PIN
 
 #define LCD_D3_PIN              19
 #define LCD_D2_PIN              20
@@ -47,8 +48,10 @@
 #define LCD_ENABLE_PIN          23
 #define LCD_RS_PIN              24
 
-#define UNKNOWN0_PIN            25
-#define UNKNOWN1_PIN            26
+#endif //LCD_ENABLE_PIN
+
+#define BALANCER7_LOAD_PIN      25
+#define BALANCER8_LOAD_PIN      26
 
 // pin 27 - 29 - AVcc, GND, AREF
 
@@ -76,7 +79,7 @@
 #define BALANCER3_LOAD_PIN      42
 #define BALANCER4_LOAD_PIN      43
 
-#define UNKNOWN3_PIN            44
+#define BALANCER_PWR_ENABLE_PIN        44
 
 
 
@@ -99,8 +102,8 @@
 #define MADDR_V_BALANSER4       (3 + MUXINPUT1)
 #define MADDR_V_BALANSER5       (4 + MUXINPUT1)
 #define MADDR_V_BALANSER6       (5 + MUXINPUT1)
-#define MADDR_V_UNKNOWN0        (6 + MUXINPUT1)
-#define MADDR_V_UNKNOWN1        (7 + MUXINPUT1)
+#define MADDR_V_BALANSER7       (6 + MUXINPUT1)
+#define MADDR_V_BALANSER8       (7 + MUXINPUT1)
 
 
 #endif /* GTPOWERA610_PINS_H_ */

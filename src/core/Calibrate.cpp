@@ -28,6 +28,7 @@
 #include "SerialLog.h"
 #include "Program.h"
 #include "AnalogInputsPrivate.h"
+#include "Hardware.h"
 
 namespace Calibrate {
 
@@ -58,17 +59,25 @@ const char * const calibrateMenu[] PROGMEM = {c1,c2,c3,c4
   ,NULL
 };
 
-const char cv1[] PROGMEM = "Vin: ";
-const char cv2[] PROGMEM = "Vb1: ";
-const char cv3[] PROGMEM = "Vb2: ";
-const char cv4[] PROGMEM = "Vb3: ";
-const char cv5[] PROGMEM = "Vb4: ";
-const char cv6[] PROGMEM = "Vb5: ";
-const char cv7[] PROGMEM = "Vb6: ";
-const char cv8[] PROGMEM = "V1-6:";
-const char cv9[] PROGMEM = "Vout:";
+const char cvin[]   PROGMEM = "Vin: ";
+const char cvb1[]   PROGMEM = "Vb1: ";
+const char cvb2[]   PROGMEM = "Vb2: ";
+const char cvb3[]   PROGMEM = "Vb3: ";
+const char cvb4[]   PROGMEM = "Vb4: ";
+const char cvb5[]   PROGMEM = "Vb5: ";
+const char cvb6[]   PROGMEM = "Vb6: ";
+#if MAX_BANANCE_CELLS > 6
+const char cvb7[]   PROGMEM = "Vb7: ";
+const char cvb8[]   PROGMEM = "Vb8: ";
+const char cvbsum[] PROGMEM = "V1-8:";
+#else
+const char cvbsum[] PROGMEM = "V1-6:";
+#endif
+const char cvo[]    PROGMEM = "Vout:";
 
-const char * const voltageMenu[] PROGMEM = {cv1, cv2,cv3,cv4,cv5,cv6,cv7,cv8, cv9, NULL};
+const char * const voltageMenu[] PROGMEM = {cvin, cvb1, cvb2, cvb3, cvb4, cvb5, cvb6,
+        BALANCER_PORTS_GT_6(cvb7, cvb8,)
+        cvbsum, cvo, NULL};
 
 const AnalogInputs::Name voltageName[] PROGMEM = {
        AnalogInputs::Vin,
@@ -78,6 +87,7 @@ const AnalogInputs::Name voltageName[] PROGMEM = {
        AnalogInputs::Vb4,
        AnalogInputs::Vb5,
        AnalogInputs::Vb6,
+       BALANCER_PORTS_GT_6(AnalogInputs::Vb7, AnalogInputs::Vb8,)
        AnalogInputs::Vbalancer,
        AnalogInputs::Vout,
 };
@@ -89,6 +99,7 @@ const AnalogInputs::Name voltageName2[] PROGMEM = {
        AnalogInputs::Vb4_pin,
        AnalogInputs::Vb5_pin,
        AnalogInputs::Vb6_pin,
+       BALANCER_PORTS_GT_6(AnalogInputs::Vb7_pin, AnalogInputs::Vb8_pin)
 };
 
 

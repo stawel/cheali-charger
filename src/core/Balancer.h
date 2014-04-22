@@ -18,6 +18,12 @@
 #ifndef BALANCER_H_
 #define BALANCER_H_
 
+#if MAX_BANANCE_CELLS > 6
+#define BALANCER_PORTS_GT_6(x...) x
+#else
+#define BALANCER_PORTS_GT_6(x...)
+#endif
+
 #include "Strategy.h"
 
 namespace Balancer {

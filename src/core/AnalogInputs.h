@@ -65,13 +65,13 @@ namespace AnalogInputs {
         Vb5_pin,
         Vb6_pin,
 
+#if MAX_BANANCE_CELLS > 6
+        Vb7_pin,
+        Vb8_pin,
+#endif
+
         IsmpsValue,
         IdischargeValue,
-
-#ifdef ANALOG_INPUTS_V_UNKNOWN
-        Vunknown0,
-        Vunknown1,
-#endif
 
         VirtualInputs,
         Vout,
@@ -96,6 +96,11 @@ namespace AnalogInputs {
         Vb4,
         Vb5,
         Vb6,
+
+#if MAX_BANANCE_CELLS > 6
+        Vb7,
+        Vb8,
+#endif
 
         LastInput,
     };
