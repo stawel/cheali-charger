@@ -18,6 +18,7 @@
 #ifndef MONITOR_H_
 #define MONITOR_H_
 
+#include "Strategy.h"
 
 namespace Monitor {
     Strategy::statusType run();

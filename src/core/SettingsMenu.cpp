@@ -33,6 +33,7 @@ const char string_dischOff[]    PROGMEM = "disch off:";
 const char string_externT[]     PROGMEM = "extrn T:   ";
 const char string_externTCO[]   PROGMEM = "extrn TCO:";
 const char string_dTdt[]        PROGMEM = "dT/dt:";
+const char string_enabledV[]    PROGMEM = "enab -dV:  ";
 const char string_NiMHdV[]      PROGMEM = "NiMH -dV:";
 const char string_NiCddV[]      PROGMEM = "NiCd -dV:";
 const char string_CDcycles[]    PROGMEM = "D/C cycles:";
@@ -61,6 +62,7 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_externT,
         string_externTCO,
         string_dTdt,
+        string_enabledV,
         string_NiMHdV,
         string_NiCddV,
         string_CDcycles,
@@ -100,6 +102,7 @@ uint8_t SettingsMenu::printItem(uint8_t index)
             case NEXT_CASE:     lcdPrintYesNo(p_.externT_);             break;
             case NEXT_CASE:     printTemp(p_.externTCO_);               break;
             case NEXT_CASE:     printDeltaT(p_.deltaT_);                break;
+            case NEXT_CASE:     lcdPrintYesNo(p_.enable_deltaV_);       break;
             case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiMH_, 5);        break;
             case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiCd_, 5);        break;
             case NEXT_CASE:     lcdPrintUnsigned(p_.CDcycles_, 3);      break;
@@ -124,29 +127,30 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
     START_CASE_COUNTER;
     switch(index) {
 #ifdef ENABLE_LCD_BACKLIGHT
-        case NEXT_CASE:     changeBacklight(dir);                       break;
+        case NEXT_CASE:     changeBacklight(dir);                                   break;
 #endif
 #ifdef ENABLE_FAN
-        case NEXT_CASE:     changeTemp(p_.fanTempOn_, dir);             break;
+        case NEXT_CASE:     changeTemp(p_.fanTempOn_, dir);                         break;
 #endif
 #ifdef ENABLE_T_INTERNAL
-        case NEXT_CASE:     changeTemp(p_.dischargeTempOff_, dir);      break;
+        case NEXT_CASE:     changeTemp(p_.dischargeTempOff_, dir);                  break;
 #endif
-        case NEXT_CASE:     changeMax(p_.externT_, dir, 1);             break;
-        case NEXT_CASE:     changeTemp(p_.externTCO_,dir);              break;
-        case NEXT_CASE:     changeDeltaTemp(p_.deltaT_,dir);            break;
-        case NEXT_CASE:     changeMax(p_.deltaV_NiMH_, dir, 20);        break;
-        case NEXT_CASE:     changeMax(p_.deltaV_NiCd_, dir, 20);        break;
-        case NEXT_CASE:     change1Max(p_.CDcycles_, dir, 5);           break;
-        case NEXT_CASE:     change1Max(p_.WasteTime_, dir, 99);         break;
-        case NEXT_CASE:     changeMax(p_.AudioBeep_, dir, 1);           break;
-        case NEXT_CASE:     change1Max(p_.capCutoff_, dir, 250);        break;
-        case NEXT_CASE:     changeInputVolt(p_.inputVoltageLow_, dir);  break;
-        case NEXT_CASE:     changeMaxSmart(p_.dischargeOffset_LiXX_, dir, Settings::MaxDischargeOffset_LiXX,false,0);  break;
-        case NEXT_CASE:     changeMax(p_.dischargeAggressive_LiXX_, dir, 1);  break;
+        case NEXT_CASE:     change0ToMax(p_.externT_, dir, 1);                      break;
+        case NEXT_CASE:     changeTemp(p_.externTCO_,dir);                          break;
+        case NEXT_CASE:     changeDeltaTemp(p_.deltaT_,dir);                        break;
+        case NEXT_CASE:     change0ToMax(p_.enable_deltaV_, dir, 1);                break;
+        case NEXT_CASE:     change0ToMax(p_.deltaV_NiMH_, dir, 20);                 break;
+        case NEXT_CASE:     change0ToMax(p_.deltaV_NiCd_, dir, 20);                 break;
+        case NEXT_CASE:     change1ToMax(p_.CDcycles_, dir, 5);                     break;
+        case NEXT_CASE:     change1ToMax(p_.WasteTime_, dir, 99);         break;
+        case NEXT_CASE:     change0ToMax(p_.AudioBeep_, dir, 1);           break;
+        case NEXT_CASE:     change1ToMax(p_.capCutoff_, dir, 250);                  break;
+        case NEXT_CASE:     changeInputVolt(p_.inputVoltageLow_, dir);              break;
+        case NEXT_CASE:     change0ToMaxSmart(p_.dischargeOffset_LiXX_, dir, Settings::MaxDischargeOffset_LiXX);  break;
+        case NEXT_CASE:     change0ToMax(p_.dischargeAggressive_LiXX_, dir, 1);  break;
         case NEXT_CASE:     changeBalanceError(p_.balancerError_, dir); break;
-        case NEXT_CASE:     changeMax(p_.UART_, dir, Settings::ExtDebugAdc); break;
-        case NEXT_CASE:     changeMax(p_.UARTspeed_, dir, Settings::UARTSpeeds-1); break;
+        case NEXT_CASE:     change0ToMax(p_.UART_, dir, Settings::ExtDebugAdc); break;
+        case NEXT_CASE:     change0ToMax(p_.UARTspeed_, dir, Settings::UARTSpeeds-1); break;
     }
 }
 
@@ -196,7 +200,7 @@ void SettingsMenu::printDeltaT(AnalogInputs::ValueType dt)
 
 #ifdef ENABLE_LCD_BACKLIGHT
 void SettingsMenu::changeBacklight(int dir) {
-    changeMaxSmart(p_.backlight_, dir, 99,false,1);
+    change0ToMax(p_.backlight_, dir, 99);
     p_.apply();
 }
 #endif

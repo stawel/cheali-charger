@@ -23,16 +23,16 @@
 #include "Monitor.h"
 #include "eeprom.h"
 
-#ifndef DEFAULT_SETTINGS_EXTERNAL_T
-#define DEFAULT_SETTINGS_EXTERNAL_T 0
+#ifndef SETTINGS_EXTERNAL_T_DEFAULT
+#define SETTINGS_EXTERNAL_T_DEFAULT 0
 #endif
 
-#ifndef DEFAULT_SETTINGS_DISCHARGE_AGGRESSIVE_LIXX
-#define DEFAULT_SETTINGS_DISCHARGE_AGGRESSIVE_LIXX 1
+#ifndef SETTINGS_DISCHARGE_AGGRESSIVE_LIXX_DEFAULT
+#define SETTINGS_DISCHARGE_AGGRESSIVE_LIXX_DEFAULT 1
 #endif
 
-#ifndef DEFAULT_SETTINGS_DISCHARGE_AGGRESSIVE_LIXX
-#define DEFAULT_SETTINGS_DISCHARGE_AGGRESSIVE_LIXX 1
+#ifndef SETTINGS_DELTA_V_ENABLE_DEFAULT
+#define SETTINGS_DELTA_V_ENABLE_DEFAULT 1
 #endif
 
 Settings settings;
@@ -41,9 +41,10 @@ const Settings defaultSettings PROGMEM = {
         70,                 //backlight_
         ANALOG_CELCIUS(50), //fanTempOn_
         ANALOG_CELCIUS(60), //dischargeTempOff_
-        DEFAULT_SETTINGS_EXTERNAL_T, //externT_
+        SETTINGS_EXTERNAL_T_DEFAULT, //externT_
         ANALOG_CELCIUS(60), //externTCO_
         ANALOG_CELCIUS(1),  //deltaT_
+        SETTINGS_DELTA_V_ENABLE_DEFAULT, //enable_deltaV_
         ANALOG_VOLT(0.007), //deltaV_NiMH_
         ANALOG_VOLT(0.012), //deltaV_NiCd_
         5,                  //CDcycles_
@@ -52,7 +53,7 @@ const Settings defaultSettings PROGMEM = {
         120,                //"%" capCutoff_
         ANALOG_VOLT(7),     //inputVoltageLow_
         ANALOG_VOLT(0),     //dischargeOffset_LiXX_
-        DEFAULT_SETTINGS_DISCHARGE_AGGRESSIVE_LIXX,  //dischargeAggressive_LiXX_;
+        SETTINGS_DISCHARGE_AGGRESSIVE_LIXX_DEFAULT,  //dischargeAggressive_LiXX_;
         ANALOG_VOLT(0.008), //balancerError_
         Settings::Disabled, //UART_ - disabled
         0,                   //9600

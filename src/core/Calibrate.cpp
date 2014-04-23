@@ -94,12 +94,20 @@ const AnalogInputs::Name voltageName2[] PROGMEM = {
        AnalogInputs::Vb6_pin,
 };
 
-const char cI0[] PROGMEM = SPMS_DISCHARGER_P0_TEXT;
-const char cI1[] PROGMEM = SPMS_P1_TEXT;
-const char cID1[] PROGMEM = DISCHARGER_P1_TEXT;
+const char cIC0[] PROGMEM = CHEALI_CHARGER_STRING(CALIBRATION_CHARGE_POINT0_mA)    "mA";
+const char cIC1[] PROGMEM = CHEALI_CHARGER_STRING(CALIBRATION_CHARGE_POINT1_mA)    "mA";
+const char cID0[] PROGMEM = CHEALI_CHARGER_STRING(CALIBRATION_DISCHARGE_POINT0_mA) "mA";
+const char cID1[] PROGMEM = CHEALI_CHARGER_STRING(CALIBRATION_DISCHARGE_POINT1_mA) "mA";
 
-const char * const chargeIMenu[] PROGMEM = { cI0, cI1, NULL};
-const char * const dischargeIMenu[] PROGMEM = { cI0, cID1, NULL};
+const char * const chargeIMenu[]    PROGMEM = { cIC0, cIC1, NULL};
+const char * const dischargeIMenu[] PROGMEM = { cID0, cID1, NULL};
+const AnalogInputs::ValueType chargeIValues[]     PROGMEM = {CALIBRATION_CHARGE_POINT0_mA,    CALIBRATION_CHARGE_POINT1_mA};
+const AnalogInputs::ValueType dischargeIValues[]  PROGMEM = {CALIBRATION_DISCHARGE_POINT0_mA, CALIBRATION_DISCHARGE_POINT1_mA};
+
+const char cc1[] PROGMEM = "value: ";
+const char cc2[] PROGMEM = "Iout:  ";
+
+const char * const currentMenu[] PROGMEM = {cc1,cc2, NULL};
 
 const char cp1[] PROGMEM = "point 1.";
 const char cp2[] PROGMEM = "point 2.";
@@ -112,6 +120,38 @@ const char ct2[] PROGMEM = "value:";
 const char * const tempMenu[] PROGMEM = {ct1,ct2, NULL};
 
 
+#ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
+
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+const char cev0[] PROGMEM = "Vb0pin:";
+const char cev1[] PROGMEM = "Vb1pin:";
+const char cev2[] PROGMEM = "Vb2pin:";
+#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+
+const char cevp[] PROGMEM = "Vplus: ";
+const char cevm[] PROGMEM = "Vminus:";
+
+const char * const expertVoltageMenu[] PROGMEM = {
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+        cev0,cev1,cev2,
+#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+        cevp,
+        cevm,
+        NULL};
+
+const AnalogInputs::Name expertVoltageName[] PROGMEM = {
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+        AnalogInputs::Vb0_pin,
+        AnalogInputs::Vb1_pin,
+        AnalogInputs::Vb2_pin,
+#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+        AnalogInputs::Vout_plus_pin,
+        AnalogInputs::Vout_minus_pin
+};
+
+#endif //ENABLE_EXPERT_VOLTAGE_CALIBRATION
+
+/* voltage calibration */
 class VoltageMenu: public EditMenu {
 public:
     VoltageMenu(const char * const* vMenu,
@@ -211,36 +251,36 @@ void saveVoltage(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInputs::N
         copyVbalVout();
 }
 
+void calibrateVoltage()
+{
+    Discharger::powerOn();
+
+    if(testVout()) {
+        VoltageMenu v(voltageMenu, voltageName, 9);
+        int8_t index;
+        do {
+            index = v.runSimple(true);
+            if(index < 0) break;
+            AnalogInputs::Name Vinput = pgm::read(&voltageName[index]);
+            if(index < 7 && AnalogInputs::isConnected(Vinput)) {
+                AnalogInputs::doFullMeasurement();
+                AnalogInputs::on_ = false;
+                if(v.runEdit(index))
+                    saveVoltage(true, Vinput,pgm::read(&voltageName2[index]));
+                    //save calib status
+                    settings.calibratedState_ |= 1;  Settings::save();
+                AnalogInputs::on_ = true;
+            }
+        } while(true);
+    }
+    Discharger::powerOff();
+}
+
+
+/* expert voltage calibration */
+
 
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
-
-#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-const char cev0[] PROGMEM = "Vb0pin:";
-const char cev1[] PROGMEM = "Vb1pin:";
-const char cev2[] PROGMEM = "Vb2pin:";
-#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-
-const char cevp[] PROGMEM = "Vplus: ";
-const char cevm[] PROGMEM = "Vminus:";
-
-const char * const expertVoltageMenu[] PROGMEM = {
-#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-        cev0,cev1,cev2,
-#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-        cevp,
-        cevm,
-        NULL};
-
-const AnalogInputs::Name expertVoltageName[] PROGMEM = {
-#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-        AnalogInputs::Vb0_pin,
-        AnalogInputs::Vb1_pin,
-        AnalogInputs::Vb2_pin,
-#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-        AnalogInputs::Vout_plus_pin,
-        AnalogInputs::Vout_minus_pin
-};
-
 
 void expertCalibrateVoltage()
 {
@@ -266,30 +306,15 @@ void expertCalibrateVoltage()
 #endif
 
 
-void calibrateVoltage()
-{
-    Discharger::powerOn();
+/* current calibration */
 
-    if(testVout()) {
-        VoltageMenu v(voltageMenu, voltageName, 9);
-        int8_t index;
-        do {
-            index = v.runSimple(true);
-            if(index < 0) break;
-            AnalogInputs::Name Vinput = pgm::read(&voltageName[index]);
-            if(index < 7 && AnalogInputs::isConnected(Vinput)) {
-                AnalogInputs::doFullMeasurement();
-                AnalogInputs::on_ = false;
-                if(v.runEdit(index))
-                    saveVoltage(true, Vinput,pgm::read(&voltageName2[index]));
-                    //save calib status
-                   settings.calibratedState_ |= 1;  Settings::save();
-                AnalogInputs::on_ = true;
-            }
-        } while(true);
-    }
-    Discharger::powerOff();
+
+void setCurrentValue(AnalogInputs::Name name, AnalogInputs::ValueType value)
+{
+    if(name == AnalogInputs::IsmpsValue)    SMPS::setValue(value);
+    else                                    Discharger::setValue(value);
 }
+
 
 enum calibrateType {CCharger, CDischarger};
 AnalogInputs::ValueType value_;
@@ -464,6 +489,9 @@ void calibrateTemp(AnalogInputs::Name name)
         calibrateTemp(name, i);
     } while(true);
 }
+
+
+/* calibration menu*/
 
 
 void run()

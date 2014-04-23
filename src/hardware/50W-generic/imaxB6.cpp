@@ -16,12 +16,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "imaxB6.h"
-#include "TimerOne.h"
+#include "Timer1.h"
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
 #include "adc.h"
 #include "SerialLog.h"
 #include "IO.h"
+#include "Keyboard.h"
 
 
 uint8_t hardware::getKeyPressed()
@@ -67,7 +68,7 @@ void hardware::initialize()
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
 
-    TimerOne::initialize();
+    Timer1::initialize();
     adc::initialize();
 }
 

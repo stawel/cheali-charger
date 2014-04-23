@@ -44,8 +44,13 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                      {50871, 3904}},  //Vb6_pin??
 
     //1-1 correlation
+<<<<<<< HEAD:src/hardware/400W/defaultCalibration.cpp
     {{1, SPMS_DISCHARGER_P0_POINT},                      {2, SPMS_P1_POINT}},  //IsmpsValue
     {{1, SPMS_DISCHARGER_P0_POINT},                      {2, DISCHARGER_P1_POINT}},  //IdischargeValue
+=======
+    {{3*8, 50},                      {86*8, 1000}},  //IsmpsValue
+    {{9*8, 50},                      {26*8, 300}},  //IdischargeValue
+>>>>>>> 402c7b69b2177c5f4aefbb1cba43d504ff7f7b23:src/hardware/Turnigy-MEGA-400Wx2/defaultCalibration.cpp
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {{0, 0},                         {1, 1}},           //UNKNOWN0
     {{0, 0},                         {1, 1}},           //UNKNOWN1

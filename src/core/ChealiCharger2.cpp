@@ -30,7 +30,7 @@
 #include "Hardware.h"
 #include "SerialLog.h"
 #include "eeprom.h"
-#include "Timer.h"
+#include "cpu.h"
 
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
@@ -55,6 +55,7 @@ void loop()
 
 void setup()
 {
+    cpu::init();
     hardware::initialize();
     Timer::initialize();
     SMPS::initialize();

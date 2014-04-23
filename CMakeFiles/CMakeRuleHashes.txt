@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+9457b366cec73cb5ce12b53c6c36e831 src/hardware/200W-commondisplay/CMakeFiles/cheali-charger-200W-commondisplay-0.33m.size
+4bbc36aa8c3e71ec14f7c23dfde7c8d0 src/hardware/200W/CMakeFiles/cheali-charger-200W-0.33m.size
+72db11b33322c26310eb75ff61767ea2 src/hardware/50W-5A/CMakeFiles/cheali-charger-50W-5A-0.33m.size

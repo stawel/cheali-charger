@@ -20,6 +20,7 @@
 #include "Screen.h"
 #include "TheveninDischargeStrategy.h"
 #include "Settings.h"
+#include "memory.h"
 
 namespace TheveninDischargeStrategy {
     const Strategy::VTable vtable PROGMEM = {

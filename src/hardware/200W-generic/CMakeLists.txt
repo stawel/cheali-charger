@@ -7,10 +7,11 @@ set(CURRENT_PATH ${CMAKE_SOURCE_DIR}/src/hardware/200W-generic/)
 set(GTPOWERA6_SOURCE
     GTPowerA6-10.cpp
     GTPowerA6-10.h
-    TimerOne.cpp
-    TimerOne.h
     adc.cpp
     adc.h
+
+    Hardware.h
+    HardwareConfigGeneric.h
 )
 
 

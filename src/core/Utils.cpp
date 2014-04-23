@@ -17,6 +17,7 @@
 */
 
 #include "Utils.h"
+#include "Hardware.h"
 #include "memory.h"
 
 uint8_t countElements(const char * const* staticMenu)
@@ -59,10 +60,6 @@ int8_t sign(int16_t x)
     return -1;
 }
 
-uint8_t digits(uint16_t x)
-{
-    return digits((uint32_t)x);
-}
 uint8_t digits(uint32_t x)
 {
     uint8_t retu = 0;
@@ -73,62 +70,47 @@ uint8_t digits(uint32_t x)
     return retu;
 }
 
-void changeMax(uint16_t &v, int dir, uint8_t max)
+void change0ToMax(uint16_t &v, int dir, uint8_t max)
 {
     if( ((int)v) + dir< 0) v = 0;
     else if(((int)v)+dir > max) v = max;
     else v+=dir;
 }
 
-void change1Max(uint16_t &v, int dir, uint8_t max)
+void change1ToMax(uint16_t &v, int dir, uint8_t max)
 {
     if( ((int)v) + dir< 1) v = 1;
     else if(((int)v)+dir > max) v = max;
     else v+=dir;
 }
 
+void change0ToMaxSmart(uint16_t &v, int dir, uint16_t max)
+{
+    return change0ToMaxSmart(v, dir, max, 0);
+}
 
-void changeMaxSmart(uint16_t &v, int direc, uint16_t max, bool noPow10, uint8_t min)
+void change0ToMaxSmart(uint16_t &v, int dir, uint16_t max, int16_t step)
 {
     uint16_t r;
-    int step = 1;
-    bool direction = direc > 0;
 
     uint8_t dv = digits(v);
-    
-    //unknown battery type voltage /10 stepping
-    if (noPow10==false)
-    {
-      if(dv>1) step = pow10(dv-2);
+    if(step == 0) {
+        step = 1;
+        if(dv>1) step = pow10(dv-2);
     }
-    else
-    {
-      step = 100;
-    }
-    
+
     r = v%step;
 
     if(r) {
-        if(direction) step -=r;
+        if(dir > 0) step -=r;
         else step = r;
     }
-    if(direction) ADD_MAX(v, step, max);
-    else SUB_MIN(v, step ,min);
+    if(dir > 0) ADD_MAX(v, step, max);
+    else SUB_MIN(v, step ,0);
 }
 
 void waitButtonPressed()
 {
     while(Keyboard::getPressedWithSpeed() != BUTTON_NONE);
     while(Keyboard::getPressedWithSpeed() == BUTTON_NONE);
-}
-
-void changeMaxStep10(uint16_t &v, int dir, uint16_t max)
-
-{
-    if (dir<0) dir=-10;
-    if (dir>0) dir=10;
-    
-    if( ((int)v) + dir< 0) v = 0;
-    else if(((int)v)+dir > max) v = max;
-    else v+=dir;
 }

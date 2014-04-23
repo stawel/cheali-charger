@@ -17,6 +17,7 @@
 */
 #include "Timer0.h"
 #include "Hardware.h"
+#include "IO.h"
 
 // ADC measurement interval
 

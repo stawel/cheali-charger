@@ -15,15 +15,15 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 #include "AnalogInputsPrivate.h"
-#include "50W-5A.h"
 #include "memory.h"
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
     {{0, 0},                        {55102, 25141}},    //Vout
     {{0, 0},                        {26613, 12518}},    //VreversePolarity
-    {{1, SPMS_DISCHARGER_P0_POINT},                        {2, SPMS_P1_POINT}},    //Ismps
-    {{1, SPMS_DISCHARGER_P0_POINT},                        {2,  DISCHARGER_P1_POINT}},    //Idischarge
+    {{775, 50},                        {11080, 1000}},    //Ismps
+    {{2017, 50},                        {11971, 300}},    //Idischarge
 
     {{0, 0},                        {0, 0}},    //VoutMux
     {{0, 0},                        {0, 0}},    //Tintern
@@ -40,8 +40,8 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                      {55808, 4193}},  //Vb6_pin
 
     //1-1 correlation
-    {{1, SPMS_DISCHARGER_P0_POINT},                      {2, SPMS_P1_POINT}},  //IsmpsValue
-    {{1, SPMS_DISCHARGER_P0_POINT},                      {2,  DISCHARGER_P1_POINT}},  //IdischargeValue
+    {{780, 50},                      {11080, 1000}},  //IsmpsValue
+    {{730, 50},                      {4410, 300}},  //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {{0, 0},                         {1, 1}},           //UNKNOWN0
     {{0, 0},                         {1, 1}},           //UNKNOWN1

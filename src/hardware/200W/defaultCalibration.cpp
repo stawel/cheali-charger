@@ -17,14 +17,13 @@
 */
 
 #include "AnalogInputsPrivate.h"
-#include "200W.h"
 #include "memory.h"
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
     {{0,0},                         {50816, ANALOG_VOLT(23.118)}},  //Vout
     {{0,0},                         {27516, ANALOG_VOLT(12.552)}},  //VreversePolarity
-    {{1, SPMS_DISCHARGER_P0_POINT},                        {2, SPMS_P1_POINT}},    //Ismps
-    {{1, SPMS_DISCHARGER_P0_POINT},                        {2, DISCHARGER_P1_POINT}},    //Idischarge
+    {{256,   ANALOG_AMP(0.051)},    {10240, ANALOG_AMP(2.000)}},    //Ismps
+    {{384,   ANALOG_AMP(0.051)},    { 9024, ANALOG_AMP(1.000)}},    //Idischarge
 
     {{0, 0},                        {44736, ANALOG_VOLT(23.118)}},  //VoutMux
     {{21500, ANALOG_CELCIUS(52)},   {41023, ANALOG_CELCIUS(29)}},   //Tintern
@@ -40,8 +39,8 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                        {50752, ANALOG_VOLT(3.865)}},   //Vb5_pin
     {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb6_pin
 
-    {{1, SPMS_DISCHARGER_P0_POINT},                      {2, SPMS_P1_POINT}},  //IsmpsValue
-    {{1, SPMS_DISCHARGER_P0_POINT},                      {2, DISCHARGER_P1_POINT}},  //IdischargeValue
+    {{176, ANALOG_AMP(0.050)},       {2926, ANALOG_AMP(1.000)}},      //IsmpsValue
+    {{335, ANALOG_AMP(0.050)},       {1894, ANALOG_AMP(0.300)}},      //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {{0,0},                         {1, 1}},                        //UNKNOWN0
     {{0,0},                         {1, 1}},                        //UNKNOWN1

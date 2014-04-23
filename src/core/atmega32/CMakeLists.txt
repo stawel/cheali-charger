@@ -8,13 +8,18 @@ set(ATMEGA32_SOURCE
         Timer0.cpp
         Timer0.h
 
+        Timer1.cpp
+        Timer1.h
+
         Serial.h
         Serial.cpp
+
         StackInfo.cpp
-        StackInfo.h
+
         IO.h
         Utils.cpp
         atomic.h
+        cpu.h
 )
 
 foreach (SOURCE ${ATMEGA32_SOURCE})

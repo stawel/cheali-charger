@@ -29,6 +29,9 @@
 #include "Timer0.h"
 #include "AnalogInputsPrivate.h"
 #include "IO.h"
+#include "SMPS.h"
+#include "Discharger.h"
+
 
 /* ADC - measurement:
  * uses Timer0 to trigger conversion

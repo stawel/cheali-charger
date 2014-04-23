@@ -21,20 +21,13 @@
 #include "Screen.h"
 #include "TheveninMethod.h"
 #include "Program.h"
-
+#include "memory.h"
+#include "Settings.h"
 
 namespace DeltaChargeStrategy {
     enum StateType {PreCharge, RapidCharge};
 
-    bool testDeltaT_;
-    bool testDeltaV_;
-
     StateType state_;
-
-    void setTestTV(bool t, bool v) {
-        testDeltaT_ = t;
-        testDeltaV_ = v;
-    }
 
     const Strategy::VTable vtable PROGMEM = {
         powerOn,
@@ -73,7 +66,7 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
     if(AnalogInputs::getDeltaCount() <= 1)
         return Strategy::RUNNING;
 
-    if(testDeltaV_) {
+    if(settings.enable_deltaV_) {
         int x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
         x=-x;
         if(x > ProgramData::currentProgramData.getDeltaVLimit()) {
@@ -81,7 +74,7 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
             return Strategy::COMPLETE;
         }
     }
-    if(testDeltaT_) {
+    if(settings.externT_) {
         int x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
         if(x > ProgramData::currentProgramData.getDeltaTLimit()) {
             Program::stopReason_ = PSTR("dT/dt");

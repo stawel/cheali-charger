@@ -50,10 +50,10 @@ namespace IO
         inline void analogReference(uint8_t mode) INLINE_ATTR;
 
         // Auxillery functions utilized for pin to port mapping
-        inline volatile uint8_t* pinToPort(uint8_t pinNumber);
-        inline uint8_t pinBitmask(uint8_t pinNumber);
-        inline volatile uint8_t* pinToInputPort(uint8_t pinNumber);
-        inline volatile uint8_t* pinToDDR(uint8_t pinNumber);
+        inline volatile uint8_t* pinToPort(uint8_t pinNumber) INLINE_ATTR;
+        inline uint8_t pinBitmask(uint8_t pinNumber) INLINE_ATTR;
+        inline volatile uint8_t* pinToInputPort(uint8_t pinNumber) INLINE_ATTR;
+        inline volatile uint8_t* pinToDDR(uint8_t pinNumber) INLINE_ATTR;
 
         inline void digitalWrite(uint8_t pinNumber, uint8_t value)
         {

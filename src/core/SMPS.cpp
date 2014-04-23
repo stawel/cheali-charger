@@ -100,9 +100,9 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
           //rising
             if ((newI > oldI) && ((newI-oldI) > MAX_CURRENT_RISING))
             {
-              lcdClear();
-              lcdSetCursor0_0();
-              Screen::displayStrings(PSTR("SMPS up"), NULL);
+              //lcdClear();
+              //lcdSetCursor0_0();
+              //Screen::displayStrings(PSTR("SMPS up"), NULL);
               for(uint16_t i=oldValue; i <= value; i=i+stepValue){
                    if (i> value) //safety
                    {
@@ -117,9 +117,9 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
           //falling
             if ((oldI > newI) && ((oldI-newI) > MAX_CURRENT_RISING))
             {
-              lcdClear();
-              lcdSetCursor0_0();
-              Screen::displayStrings(PSTR("SMPS down"), NULL);
+              //lcdClear();
+              //lcdSetCursor0_0();
+              //Screen::displayStrings(PSTR("SMPS down"), NULL);
               for(uint16_t i=value; i <= oldValue; i=i+stepValue){
                    if (i> oldValue)   //safety
                    {

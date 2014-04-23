@@ -24,6 +24,7 @@
 #include "Settings.h"
 #include "ProgramData.h"
 #include "Program.h"
+#include "memory.h"
 
 //TODO_NJ
 #include "Screen.h"

@@ -47,7 +47,8 @@ void hardware::initialize()
     setBalancer(0);
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
-    Timer1.initialize(TIMER1_PERIOD_MICROSECONDS);         // initialize timer1, and set a 1/2 second period
+//    Timer1.initialize(TIMER1_PERIOD_MICROSECONDS);         // initialize timer1, and set a 1/2 second period
+    Timer1::initialize();
     adc::initialize();
 }
 
@@ -60,13 +61,18 @@ void hardware::setLCDBacklight(uint8_t val)
     v2 *= 100 - val;
     v1+=v2;
     v1/=100;
-    Timer1.pwm(BACKLIGHT_PIN, v1);
+    Timer1::setPWM(BACKLIGHT_PIN, v1);
 }
 
 void hardware::setFan(bool enable)
 {
     IO::digitalWrite(FAN_PIN, enable);
 }
+
+void hardware::soundInterrupt()
+{
+}
+
 void hardware::setBuzzer(uint8_t val)
 {
     //TODO: this should be rewritten, sorry for that :D
@@ -89,11 +95,11 @@ void hardware::setDischargerOutput(bool enable)
 
 void hardware::setChargerValue(uint16_t value)
 {
-    Timer1.pwm(SMPS_VALUE_PIN, value);
+    Timer1::setPWM(SMPS_VALUE_PIN, value);
 }
 void hardware::setDischargerValue(uint16_t value)
 {
-    Timer1.pwm(DISCHARGE_VALUE_PIN, value);
+    Timer1::setPWM(DISCHARGE_VALUE_PIN, value);
 }
 
 void hardware::setBalancer(uint8_t v)

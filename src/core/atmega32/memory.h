@@ -21,8 +21,16 @@
 #include <avr/pgmspace.h>
 #include <avr/eeprom.h>
 
-
 namespace pgm {
+
+    inline char *strncpy(char * buf, const char *str, size_t s) {
+        return strncpy_P(buf, str, s);
+    }
+
+    inline size_t strlen(const char *s) {
+        return strlen_P(s);
+    }
+
     template<class Type, int n>
     struct read_impl{
         inline Type operator()(const Type * addressP) {

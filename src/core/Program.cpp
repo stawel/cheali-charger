@@ -191,7 +191,6 @@ Strategy::statusType Program::runTheveninChargeBalance( bool immediately = false
 
 Strategy::statusType Program::runDeltaCharge(bool immediately = false)
 {
-    DeltaChargeStrategy::setTestTV(settings.externT_, true);
     Strategy::strategy_ = &DeltaChargeStrategy::vtable;
     return doStrategy(deltaChargeScreens, immediately);
 }

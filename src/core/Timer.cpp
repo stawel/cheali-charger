@@ -21,6 +21,8 @@
 #include "Buzzer.h"
 #include "Screen.h"
 #include "SerialLog.h"
+#include "Discharger.h"
+#include "AnalogInputs.h"
 #include "atomic.h"
 
 

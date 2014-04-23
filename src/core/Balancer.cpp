@@ -20,7 +20,8 @@
 #include "Screen.h"
 #include "Settings.h"
 #include "AnalogInputsPrivate.h"
-
+#include "Hardware.h"
+#include "memory.h"
 
 
 namespace Balancer {

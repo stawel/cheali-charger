@@ -49,10 +49,12 @@ const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][Progr
 /*Life*/{ ANALOG_VOLT(3.300), ANALOG_VOLT(3.600), ANALOG_VOLT(2.000),   ANALOG_VOLT(3.300) /*??*/, 0, ANALOG_VOLT(3.000)},
 /*Lilo*/{ ANALOG_VOLT(3.600), ANALOG_VOLT(4.100), ANALOG_VOLT(2.500),   ANALOG_VOLT(3.750) /*??*/, 0, ANALOG_VOLT(3.500)},
 /*LiPo*/{ ANALOG_VOLT(3.700), ANALOG_VOLT(4.200), ANALOG_VOLT(3.000),   ANALOG_VOLT(3.850) /*??*/, 0, ANALOG_VOLT(3.209)},
-/*Li43*/{ ANALOG_VOLT(3.700), ANALOG_VOLT(4.350), ANALOG_VOLT(3.000),   ANALOG_VOLT(3.850) /*??*/, 0, ANALOG_VOLT(3.309)},
+/*Li430*/{ ANALOG_VOLT(3.700), ANALOG_VOLT(4.300), ANALOG_VOLT(3.000),   ANALOG_VOLT(3.850) /*??*/, 0,  ANALOG_VOLT(3.209)},
+/*Li435*/{ ANALOG_VOLT(3.700), ANALOG_VOLT(4.350), ANALOG_VOLT(3.000),   ANALOG_VOLT(3.850) /*??*/, 0,  ANALOG_VOLT(3.209)},
 
 //based on "mars" settings - not tested
 /*NiZn*/{ ANALOG_VOLT(1.600), ANALOG_VOLT(1.900), ANALOG_VOLT(1.300),   ANALOG_VOLT(1.600) /*Probably not??*/, 0, ANALOG_VOLT(1.400)},
+
 };
 
 //                              def. capacity          chargei             dischargei       cell   tlimit                               
@@ -64,8 +66,10 @@ const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PR
         {ProgramData::Life,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
         {ProgramData::Lilo,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
         {ProgramData::Lipo,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
-        {ProgramData::Li43,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
+        {ProgramData::Li430,    ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
+        {ProgramData::Li435,    ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
         {ProgramData::NiZn,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120}
+
 };
 
 const char batteryString_Unknown[]  PROGMEM = "Unknown";
@@ -75,7 +79,8 @@ const char batteryString_Pb[]       PROGMEM = "Pb";
 const char batteryString_Life[]     PROGMEM = "Life";
 const char batteryString_Lilo[]     PROGMEM = "Lilo";
 const char batteryString_Lipo[]     PROGMEM = "Lipo";
-const char batteryString_Li43[]     PROGMEM = "Li43";
+const char batteryString_Li430[]    PROGMEM = "Li430";
+const char batteryString_Li435[]    PROGMEM = "Li435";
 const char batteryString_NiZn[]     PROGMEM = "NiZn";
 
 const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
@@ -86,7 +91,8 @@ const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
         batteryString_Life,
         batteryString_Lilo,
         batteryString_Lipo,
-        batteryString_Li43,
+        batteryString_Li430,
+        batteryString_Li435,
         batteryString_NiZn
 };
 
@@ -230,21 +236,25 @@ void ProgramData::changeBattery(int direction)
 {
     battery.type+=direction;
     if(battery.type>=LAST_BATTERY_TYPE)
-        battery.type=Unknown;
+        if(direction > 0) battery.type=Unknown;
+        else battery.type=LAST_BATTERY_TYPE-1;
     loadDefault();
 }
 
 void ProgramData::changeVoltage(int direction)
 {
     uint16_t max = getMaxCells();
-    bool noPow10=false;
-    if (battery.type == Unknown) noPow10=true;
-    changeMaxSmart(battery.cells, direction, max, noPow10, 1);
+//    bool noPow10=false;
+//    if (battery.type == Unknown) noPow10=true;
+//    changeMaxSmart(battery.cells, direction, max, noPow10, 1);
+    change0ToMaxSmart(battery.cells, direction, max, battery.type == Unknown ? 50: 0);
 }
 
 void ProgramData::changeCharge(int direction)
 {
-    changeMaxSmart(battery.C, direction, PROGRAM_DATA_MAX_CHARGE,false,100);
+//    changeMaxSmart(battery.C, direction, PROGRAM_DATA_MAX_CHARGE,false,100);
+
+    change0ToMaxSmart(battery.C, direction, PROGRAM_DATA_MAX_CHARGE);
     battery.Ic = battery.C;
     if(isPb())
         battery.Ic/=4; //0.25C
@@ -282,11 +292,11 @@ uint16_t ProgramData::getMaxId() const
 
 void ProgramData::changeIc(int direction)
 {
-    changeMaxSmart(battery.Ic, direction, getMaxIc(),false,100);
+    change0ToMaxSmart(battery.Ic, direction, getMaxIc());
 }
 void ProgramData::changeId(int direction)
 {
-    changeMaxSmart(battery.Id, direction, getMaxId(),false,100);
+    change0ToMaxSmart(battery.Id, direction, getMaxId());
 }
 
 uint16_t ProgramData::getMaxCells() const
@@ -330,6 +340,6 @@ uint8_t ProgramData::printTimeString() const
 
 void ProgramData::changeTime(int direction)
 {
-    changeMaxStep10(battery.Time, direction, 1000);
-
+    //changeMaxStep10(battery.Time, direction, 1000);
+    change0ToMaxSmart(battery.Time, direction, 1000);
 }

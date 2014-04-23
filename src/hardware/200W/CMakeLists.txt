@@ -2,8 +2,7 @@ set(hardware 200W)
 
 set(SOURCE_FILES
     defaultCalibration.cpp
-    200W.h
-    Hardware.h
+    HardwareConfig.h
 )
 
 include(${CMAKE_SOURCE_DIR}/src/hardware/200W-generic/CMakeLists.txt)
