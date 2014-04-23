@@ -19,6 +19,7 @@ echo "/*
 #include "AnalogInputsPrivate.h"
 #include "memory.h"
 
+
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
     {{$a0, $r0},                        {$A0, $R0}},    //Vout
     {{$a1, $r1},                        {$A1, $R1}},    //VreversePolarity
@@ -40,12 +41,13 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{$a14, $r14},                      {$A14, $R14}},  //Vb6_pin
 
 #if MAX_BANANCE_CELLS > 6
-    {{0, 0},                        {50752, ANALOG_VOLT(3.865)}},   //Vb7_pin
-    {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb8_pin
+    {{$a15, $r15},                      {$A15, $R15}},  //Vb7_pin
+    {{$a16, $r16},                      {$A16, $R16}},  //Vb8_pin
 #endif
+
     //1-1 correlation
-    {{$a15, $r15},                      {$A15, $R15}},  //IsmpsValue
-    {{$a16, $r16},                      {$A16, $R16}},  //IdischargeValue
+    {{$a17, $r17},                      {$A17, $R17}},  //IsmpsValue
+    {{$a18, $r18},                      {$A18, $R18}},  //IdischargeValue
 };
 
 "

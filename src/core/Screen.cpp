@@ -161,8 +161,10 @@ namespace Screen{
                      c = BALANCE_AVR_CELL_CHAR; //average cells
                     }
                  }    
+
                 lcdPrintChar(c);
-                j<<=1;
+                if(j!=128)  j <<= 1;
+                else        j = 0;
             }
             lcdPrintSpaces(7 - Balancer::getCells());
         }
@@ -202,12 +204,16 @@ namespace Screen{
 #endif
         lcdPrintSpaces();
         lcdSetCursor0_1();
-        lcdPrintDigit(from+1);
-        lcdPrintChar(':');
-        printBalancer(from++, type);
-        lcdPrintDigit(from+1);
-        lcdPrintChar(':');
-        printBalancer(from, type);
+        if(from < MAX_BANANCE_CELLS) {
+            lcdPrintDigit(from+1);
+            lcdPrintChar(':');
+            printBalancer(from++, type);
+        }
+        if(from < MAX_BANANCE_CELLS) {
+            lcdPrintDigit(from+1);
+            lcdPrintChar(':');
+            printBalancer(from, type);
+        }
         lcdPrintSpaces();
     }
 
@@ -535,8 +541,10 @@ void Screen::display(ScreenType screen)
     case ScreenTemperature:             return displayScreenTemperature();
     case ScreenBalancer1_3:             return displayBalanceInfo(0, AnalogInputs::Voltage);
     case ScreenBalancer4_6:             return displayBalanceInfo(3, AnalogInputs::Voltage);
+    case ScreenBalancer7_9:             return displayBalanceInfo(6, AnalogInputs::Voltage);
     case ScreenBalancer1_3Rth:          return displayBalanceInfo(0, AnalogInputs::Resistance);
     case ScreenBalancer4_6Rth:          return displayBalanceInfo(3, AnalogInputs::Resistance);
+    case ScreenBalancer7_9Rth:          return displayBalanceInfo(6, AnalogInputs::Resistance);
     case ScreenStartInfo:               return displayStartInfo();
     case ScreenR:                       return displayScreenR();
     case ScreenVout:                    return displayScreenVout();

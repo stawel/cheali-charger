@@ -39,13 +39,13 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                      {55070, 4196}},  //Vb5_pin
     {{0, 0},                      {55808, 4193}},  //Vb6_pin
 
+#if MAX_BANANCE_CELLS > 6
+    {{0, 0},                        {50752, ANALOG_VOLT(3.865)}},   //Vb7_pin
+    {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb8_pin
+#endif
     //1-1 correlation
     {{780, 50},                      {11080, 1000}},  //IsmpsValue
     {{730, 50},                      {4410, 300}},  //IdischargeValue
-#ifdef ANALOG_INPUTS_V_UNKNOWN
-    {{0, 0},                         {1, 1}},           //UNKNOWN0
-    {{0, 0},                         {1, 1}},           //UNKNOWN1
-#endif
 };
 
 

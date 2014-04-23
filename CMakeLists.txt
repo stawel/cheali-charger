@@ -13,6 +13,7 @@ set(cheali-charger-eeprom-programdata-version 56)
 set(cheali-charger-eeprom-settings-version 56)
 
 
+
 configure_file(src/core/Version.h.in src/core/Version.h)
 
 
@@ -34,6 +35,7 @@ else(ARM-Cortex-M0)
     #add_subdirectory(src/hardware/80W)
     #add_subdirectory(src/hardware/400W)
     #add_subdirectory(src/hardware/imaxB6ChalusBomod)
+    add_subdirectory(src/hardware/Turnigy-Accucel-8-150W-7A)
 endif(ARM-Cortex-M0)
 
 

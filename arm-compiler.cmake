@@ -11,7 +11,7 @@ SET(CMAKE_CXX_COMPILER ${TOOLCHAIN}-g++)
 #add_definitions(-DSTM32F4XX)
 #add_definitions(-DHSE_VALUE=8000000)
 
-SET(CFLAGS "-mthumb -mcpu=cortex-m0 -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -Os  -Wall -g")
+SET(CFLAGS "-mthumb -mcpu=cortex-m0  -Os  -Wall -g")
 SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   ${CFLAGS} -ffunction-sections -fdata-sections")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CFLAGS} -ffunction-sections -fdata-sections")
 

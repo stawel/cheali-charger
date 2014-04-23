@@ -115,6 +115,14 @@ void ProgramData::createName(int index)
     printUInt(buf, maxSize, battery.cells);
 }
 
+void ProgramData::resetName(int index)
+{
+    uint8_t maxSize = PROGRAM_DATA_MAX_NAME;
+    char *buf = name;
+    printIndex(buf, maxSize, index);
+}
+
+
 void ProgramData::loadProgramData(int index)
 {
     eeprom::read<ProgramData>(currentProgramData, &eeprom::data.programData[index]);
@@ -162,9 +170,7 @@ void ProgramData::restoreDefault()
     pgm::read(currentProgramData.battery, &defaultProgram[Lipo]);
     currentProgramData.check();
     for(int i=0;i< MAX_PROGRAMS;i++) {
-        uint8_t maxSize = PROGRAM_DATA_MAX_NAME;
-        char *buf = currentProgramData.name;
-        printIndex(buf, maxSize, i+1);
+        currentProgramData.resetName(i+1);
         saveProgramData(i);
     }
 }

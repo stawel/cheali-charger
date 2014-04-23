@@ -73,9 +73,10 @@ namespace {
 
     const Screen::ScreenType theveninScreens[] PROGMEM = {
       Screen::ScreenFirst,
+
       Screen::ScreenEnergy,
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
-      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
+      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,   BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9Rth,)
       Screen::ScreenR,
       Screen::ScreenVout,
       Screen::ScreenVinput,
@@ -87,7 +88,7 @@ namespace {
 
     };
     const Screen::ScreenType balanceScreens[] PROGMEM = {
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
       Screen::ScreenTime,
       Screen::ScreenVinput,
       Screen::ScreenTemperature,
@@ -96,8 +97,8 @@ namespace {
     const Screen::ScreenType dischargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenEnergy,
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
-      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
+      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,   BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9Rth,)
       Screen::ScreenR,
       Screen::ScreenVout,
       Screen::ScreenVinput,
@@ -111,8 +112,8 @@ namespace {
     const Screen::ScreenType storageScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenEnergy,
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
-      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
+      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,   BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9Rth,)
       Screen::ScreenR,
       Screen::ScreenVout,
       Screen::ScreenVinput,
@@ -125,7 +126,7 @@ namespace {
 
     const Screen::ScreenType startInfoBalanceScreens[] PROGMEM = {
       Screen::ScreenStartInfo,
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,
+      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
       Screen::ScreenVinput,
       Screen::ScreenTemperature,
       Screen::ScreenEnd
@@ -429,7 +430,6 @@ namespace {
     const char storag_str[] PROGMEM = "storage";
     const char stoBal_str[] PROGMEM = "storage+balanc";
     const char dccycl_str[] PROGMEM = "D>C format";       
-    const char DCcycl_str[] PROGMEM = "D>C cycle";
     const char edBatt_str[] PROGMEM = "edit battery";
 
     const char * const programLiXXMenu[] PROGMEM =
@@ -480,7 +480,6 @@ namespace {
     const char * const programNiXXMenu[] PROGMEM =
     { charge_str,
       discha_str,
-      DCcycl_str,
       edBatt_str,
       NULL
     };

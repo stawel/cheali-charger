@@ -34,7 +34,14 @@ void hardware::initialize()
     IO::pinMode(BALANCER4_LOAD_PIN, OUTPUT);
     IO::pinMode(BALANCER5_LOAD_PIN, OUTPUT);
     IO::pinMode(BALANCER6_LOAD_PIN, OUTPUT);
+#if MAX_BANANCE_CELLS > 6
+    IO::pinMode(BALANCER7_LOAD_PIN, OUTPUT);
+    IO::pinMode(BALANCER8_LOAD_PIN, OUTPUT);
+#endif
 
+#ifdef ENABLE_BALANCER_PWR
+    IO::pinMode(BALANCER_PWR_ENABLE_PIN, OUTPUT);
+#endif
 
     IO::pinMode(SMPS_VALUE_PIN, OUTPUT);
     IO::pinMode(SMPS_DISABLE_PIN, OUTPUT);
@@ -83,6 +90,9 @@ void hardware::setBuzzer(uint8_t val)
 void hardware::setBatteryOutput(bool enable)
 {
     IO::digitalWrite(OUTPUT_DISABLE_PIN, !enable);
+#ifdef ENABLE_BALANCER_PWR
+    IO::digitalWrite(BALANCER_PWR_ENABLE_PIN, enable);
+#endif
 }
 void hardware::setChargerOutput(bool enable)
 {
@@ -110,6 +120,10 @@ void hardware::setBalancer(uint8_t v)
     IO::digitalWrite(BALANCER4_LOAD_PIN, v&8);
     IO::digitalWrite(BALANCER5_LOAD_PIN, v&16);
     IO::digitalWrite(BALANCER6_LOAD_PIN, v&32);
+#if MAX_BANANCE_CELLS > 6
+    IO::digitalWrite(BALANCER7_LOAD_PIN, v&64);
+    IO::digitalWrite(BALANCER8_LOAD_PIN, v&128);
+#endif
 }
 
 void hardware::setBalancerOutput(bool enable)

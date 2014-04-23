@@ -20,6 +20,7 @@
 #include "ProgramData.h"
 #include "Screen.h"
 #include "memory.h"
+#include "Settings.h"
 
 //for LAST_PROGRAMTYPE const ???? (charge without balancer)
 #include "Program.h"
@@ -55,7 +56,7 @@ void StartInfoStrategy::powerOff()
 
 Strategy::statusType StartInfoStrategy::doStrategy()
 {
-    bool cell_nr, v_balance, v_out;
+    bool cell_nr, v_balance, v_out, balance;
 
     cell_nr = v_balance = false;
     v_out = ! AnalogInputs::isConnected(AnalogInputs::Vout);
@@ -112,9 +113,11 @@ Strategy::statusType StartInfoStrategy::doStrategy()
         Buzzer::soundOff();
     }
 
+    balance = (v_balance || cell_nr) && settings.forceBalancePort_;
+
     if(Keyboard::getPressed() == BUTTON_NONE)
         ok_ = 0;
-    if(!cell_nr && !v_balance && !v_out && Keyboard::getPressed() == BUTTON_START) {
+    if(!balance && !v_out && Keyboard::getPressed() == BUTTON_START) {
         ok_++;
     }
     if(ok_ == 2) {

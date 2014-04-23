@@ -43,6 +43,11 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                      {50871, 3904}},  //Vb5_pin
     {{0, 0},                      {50871, 3904}},  //Vb6_pin??
 
+#if MAX_BANANCE_CELLS > 6
+    {{0, 0},                        {50752, ANALOG_VOLT(3.865)}},   //Vb7_pin
+    {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb8_pin
+#endif
+
     //1-1 correlation
 <<<<<<< HEAD:src/hardware/400W/defaultCalibration.cpp
     {{1, SPMS_DISCHARGER_P0_POINT},                      {2, SPMS_P1_POINT}},  //IsmpsValue
@@ -50,11 +55,14 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
 =======
     {{3*8, 50},                      {86*8, 1000}},  //IsmpsValue
     {{9*8, 50},                      {26*8, 300}},  //IdischargeValue
+<<<<<<< HEAD:src/hardware/400W/defaultCalibration.cpp
 >>>>>>> 402c7b69b2177c5f4aefbb1cba43d504ff7f7b23:src/hardware/Turnigy-MEGA-400Wx2/defaultCalibration.cpp
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {{0, 0},                         {1, 1}},           //UNKNOWN0
     {{0, 0},                         {1, 1}},           //UNKNOWN1
 #endif
+=======
+>>>>>>> 8e4b3f57d668bf4596cc5b608bef463bef246448:src/hardware/Turnigy-MEGA-400Wx2/defaultCalibration.cpp
 };
 
 

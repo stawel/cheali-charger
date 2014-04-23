@@ -50,6 +50,7 @@ struct ProgramData {
 
     void edit(int index);
     void createName(int index);
+    void resetName(int index);
 
     uint8_t printBatteryString(int n) const;
     uint8_t printBatteryString() const;

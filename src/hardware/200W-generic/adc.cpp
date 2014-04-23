@@ -105,22 +105,27 @@ const adc_correlation order_analogInputs_on[] PROGMEM = {
     {-1,                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0},
     {MADDR_V_IN,            MUX0_Z_A_PIN,           AnalogInputs::Vin,              0},
     {MADDR_V_BALANSER3,     MUX1_Z_A_PIN,           AnalogInputs::Vb3_pin,          0},
-    {-1,                    OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,    0},
+    {-1,                    DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       0},
     {MADDR_T_EXTERN,        MUX0_Z_A_PIN,           AnalogInputs::Textern,          0},
     {MADDR_V_BALANSER4,     MUX1_Z_A_PIN,           AnalogInputs::Vb4_pin,          0},
-    {-1,                    DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       0},
+    {-1,                    OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,    0},
     {MADDR_BUTTON_DEC,      MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_DEC},
     {MADDR_V_BALANSER5,     MUX1_Z_A_PIN,           AnalogInputs::Vb5_pin,          0},
-    {-1,                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0},
+    {-1,                    OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin,  0},
     {MADDR_BUTTON_INC,      MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_INC},
     {MADDR_V_BALANSER6,     MUX1_Z_A_PIN,           AnalogInputs::Vb6_pin,          0},
-#ifdef ANALOG_INPUTS_V_UNKNOWN
-    {MADDR_V_UNKNOWN0,      MUX1_Z_A_PIN,           AnalogInputs::Vunknown0,        0},
-    {MADDR_V_UNKNOWN1,      MUX1_Z_A_PIN,           AnalogInputs::Vunknown1,        0},
-#endif
+#if MAX_BANANCE_CELLS > 6
+    {-1,                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0},
+    {MADDR_BUTTON_STOP,     MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_STOP},
+    {MADDR_V_BALANSER7,     MUX1_Z_A_PIN,           AnalogInputs::Vb7_pin,          0},
+    {-1,                    DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       0},
+    {MADDR_BUTTON_START,    MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_START},
+    {MADDR_V_BALANSER8,     MUX1_Z_A_PIN,           AnalogInputs::Vb8_pin,          0},
+#else
     {MADDR_BUTTON_STOP,     MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_STOP},
     {-1,                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0},
     {MADDR_BUTTON_START,    MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_START},
+#endif
 };
 
 AnalogInputs::Name getAIName(uint8_t input){ return pgm::read(&order_analogInputs_on[input].ai_name_); }

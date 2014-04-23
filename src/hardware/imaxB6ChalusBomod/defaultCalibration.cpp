@@ -40,13 +40,22 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                      {55360, 4191}},  //Vb5_pin
     {{0, 0},                      {53157, 4184}},  //Vb6_pin
 
+#if MAX_BANANCE_CELLS > 6
+    {{0, 0},                        {50752, ANALOG_VOLT(3.865)}},   //Vb7_pin
+    {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb8_pin
+#endif
     //1-1 correlation
+<<<<<<< HEAD:src/hardware/imaxB6ChalusBomod/defaultCalibration.cpp
     {{1, SPMS_DISCHARGER_P0_POINT},                      {2, SPMS_P1_POINT}},  //IsmpsValue
     {{1, SPMS_DISCHARGER_P0_POINT},                      {2, DISCHARGER_P1_POINT}},  //IdischargeValue
 #ifdef ANALOG_INPUTS_V_UNKNOWN
     {{0, 0},                         {1, 1}},           //UNKNOWN0
     {{0, 0},                         {1, 1}},           //UNKNOWN1
 #endif
+=======
+    {{380, 50},                      {10920, 1000}},  //IsmpsValue
+    {{2610, 50},                      {15850, 300}},  //IdischargeValue
+>>>>>>> 8e4b3f57d668bf4596cc5b608bef463bef246448:src/hardware/imaxB6-clone/defaultCalibration.cpp
 };
 
 
