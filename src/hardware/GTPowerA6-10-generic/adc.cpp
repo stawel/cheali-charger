@@ -59,7 +59,7 @@
 
 namespace adc {
 
-static uint8_t current_input_;
+static uint8_t input_;
 static uint8_t adc_keyboard_;
 
 void initialize()
@@ -164,13 +164,13 @@ void processConversion(bool finalize)
     low  = ADCL;
     high = ADCH;
 
-    AnalogInputs::Name name = getAIName(current_input_);
+    AnalogInputs::Name name = getAIName(input_);
     if(name != AnalogInputs::VirtualInputs) {
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-            AnalogInputs::adc_[name] = (high << 8) | low;
+            AnalogInputs::i_adc_[name] = (high << 8) | low;
         }
     } else {
-        key = getKey(current_input_);
+        key = getKey(input_);
         if(high < ADC_KEY_BORDER) {
             adc_keyboard_ |= key;
         } else {
@@ -180,19 +180,19 @@ void processConversion(bool finalize)
 }
 
 void reset() {
-    current_input_ = 0;
+    input_ = 0;
 }
 
 void finalizeMeasurement()
 {
-    AnalogInputs::adc_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
-    AnalogInputs::adc_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
-    AnalogInputs::finalizeMeasurement();
+    AnalogInputs::i_adc_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
+    AnalogInputs::i_adc_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
+    AnalogInputs::intterruptFinalizeMeasurement();
 }
 
 void setNextMuxAddress()
 {
-    uint8_t input = nextInput(current_input_);
+    uint8_t input = nextInput(input_);
     int8_t mux = getMUX(input);
     setMuxAddress(mux);
 }
@@ -204,11 +204,11 @@ void timerInterrupt()
 
 void conversionDone()
 {
-    processConversion(current_input_);
-    current_input_ = nextInput(current_input_);
-    setADC(getADC(current_input_));
+    processConversion(input_);
+    input_ = nextInput(input_);
+    setADC(getADC(input_));
 
-    if(AnalogInputs::isPowerOn() && current_input_ == 0)
+    if(input_ == 0)
         finalizeMeasurement();
 }
 

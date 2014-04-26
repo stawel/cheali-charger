@@ -334,7 +334,7 @@ namespace {
             lcdPrintChar('m');
             lcdPrintChar('C');
         } else {
-            lcdPrint_P(PSTR("not used"));
+            lcdPrint_P(PSTR("no dT/t"));
         }
         lcdPrintSpaces();
     }

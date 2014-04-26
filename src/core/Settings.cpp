@@ -49,7 +49,7 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_CELCIUS(60), //externTCO_
         ANALOG_CELCIUS(1),  //deltaT_
         SETTINGS_DELTA_V_ENABLE_DEFAULT, //enable_deltaV_
-        ANALOG_VOLT(0.007), //deltaV_NiMH_
+        ANALOG_VOLT(0.005), //deltaV_NiMH_
         ANALOG_VOLT(0.012), //deltaV_NiCd_
         5,                  //CDcycles_
         120,                //"%" capCutoff_

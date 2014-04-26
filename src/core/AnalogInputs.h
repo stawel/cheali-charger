@@ -22,7 +22,7 @@
 #include "HardwareConfig.h"
 
 #define MAX_CALIBRATION_POINTS 2
-#define DELTA_TIME_MILISECONDS 60000
+#define DELTA_TIME_MILISECONDS 30000
 
 
 #define ANALOG_INPUTS_RESOLUTION         16  // bits
@@ -135,7 +135,6 @@ namespace AnalogInputs {
     bool isReversePolarity();
     bool isPowerOn();
 
-
     void doFullMeasurement();
 
     void resetMeasurement();
@@ -145,15 +144,12 @@ namespace AnalogInputs {
 
 //calibration
     void restoreDefault();
-    void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);
-    void setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &p);
 
     ValueType calibrateValue(Name name, ValueType x);
     ValueType reverseCalibrateValue(Name name, ValueType y);
 
 //init
     void initialize();
-    void doSlowInterrupt();
 
     void printRealValue(Name name, uint8_t dig);
 };
