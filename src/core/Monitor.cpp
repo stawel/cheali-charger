@@ -28,13 +28,15 @@
 
 namespace Monitor {
 
+#if defined(ENABLE_FAN) && defined(ENABLE_T_INTERNAL)
+#define MONITOR_T_INTERNAL_FAN
+#endif
+
 uint16_t VoutMaxMesured_;
 
-#ifdef ENABLE_FAN
-#ifdef ENABLE_T_INTERNAL
+#ifdef MONITOR_T_INTERNAL_FAN
     AnalogInputs::ValueType monitor_on_T;
     AnalogInputs::ValueType monitor_off_T;
-#endif
 #endif
 } // namespace Monitor
 
@@ -42,8 +44,7 @@ uint16_t VoutMaxMesured_;
 
 void Monitor::doIdle()
 {
-#ifdef ENABLE_FAN
-#ifdef ENABLE_T_INTERNAL
+#ifdef MONITOR_T_INTERNAL_FAN
 
     AnalogInputs::ValueType t = AnalogInputs::getADCValue(AnalogInputs::Tintern);
     bool retu = false;
@@ -53,22 +54,18 @@ void Monitor::doIdle()
         hardware::setFan(true);
     }
 #endif
-#endif
 }
 void Monitor::update()
 {
-#ifdef ENABLE_FAN
-#ifdef ENABLE_T_INTERNAL
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        monitor_off_T = AnalogInputs::reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_ - Settings::TempDifference);
-        monitor_on_T  = AnalogInputs::reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_);
-    }
-#endif
+#ifdef MONITOR_T_INTERNAL_FAN
+    monitor_off_T = AnalogInputs::reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_ - Settings::TempDifference);
+    monitor_on_T  = AnalogInputs::reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_);
 #endif
 }
 
 void Monitor::powerOn() {
     VoutMaxMesured_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, MAX_CHARGE_V+ANALOG_VOLT(3.000));
+    update();
 }
 
 
