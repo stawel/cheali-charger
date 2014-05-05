@@ -277,7 +277,7 @@ void calibrateVoltage()
             index = v.runSimple(true);
             if(index < 0) break;
             AnalogInputs::Name Vinput = pgm::read(&voltageName[index]);
-            if(index < 7 && AnalogInputs::isConnected(Vinput)) {
+            if(index <= MAX_BANANCE_CELLS && AnalogInputs::isConnected(Vinput)) {
                 AnalogInputs::doFullMeasurement();
                 AnalogInputs::on_ = false;
                 if(v.runEdit(index))
