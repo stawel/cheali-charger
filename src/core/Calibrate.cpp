@@ -268,8 +268,6 @@ void saveVoltage(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInputs::N
 
 void calibrateVoltage()
 {
-    Discharger::powerOn();
-
     if(testVout()) {
         VoltageMenu v(voltageMenu, voltageName, 9);
         int8_t index;
@@ -286,7 +284,6 @@ void calibrateVoltage()
             }
         } while(true);
     }
-    Discharger::powerOff();
 }
 
 
@@ -367,19 +364,20 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
     AnalogInputs::Name name1;
     AnalogInputs::Name name2;
 
-    if(charging){
-        maxValue = SMPS_UPPERBOUND_VALUE;
-        name1 = AnalogInputs::IsmpsValue;
-        name2 = AnalogInputs::Ismps;
-        SMPS::powerOn();
-    } else {
-        name1 = AnalogInputs::IdischargeValue;
-        name2 = AnalogInputs::Idischarge;
-        maxValue = DISCHARGER_UPPERBOUND_VALUE;
-        Discharger::powerOn();
-    }
-
     if(testVout()) {
+
+        if(charging) {
+            maxValue = SMPS_UPPERBOUND_VALUE;
+            name1 = AnalogInputs::IsmpsValue;
+            name2 = AnalogInputs::Ismps;
+            SMPS::powerOn();
+        } else {
+            name1 = AnalogInputs::IdischargeValue;
+            name2 = AnalogInputs::Idischarge;
+            maxValue = DISCHARGER_UPPERBOUND_VALUE;
+            Discharger::powerOn();
+        }
+
         CurrentMenu menu(name1, point, maxValue);
         int8_t index;
         do {
@@ -400,10 +398,10 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
                 setCurrentValue(name1, 0);
             }
         } while(true);
-    }
 
-    if(charging)   SMPS::powerOff();
-    else           Discharger::powerOff();
+        if(charging)   SMPS::powerOff();
+        else           Discharger::powerOff();
+    }
 }
 
 void calibrateI(const char * const textMenu[], const AnalogInputs::ValueType  values[])
