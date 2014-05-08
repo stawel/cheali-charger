@@ -29,7 +29,7 @@ else(ARM-Cortex-M0)
 
     add_subdirectory(src/hardware/200W)
     add_subdirectory(src/hardware/200W-commondisplay)
-    #add_subdirectory(src/hardware/200W-high-discharge-indus-mod)
+    add_subdirectory(src/hardware/200W-high-discharge-indus-mod)
     add_subdirectory(src/hardware/50W-5A)
     #add_subdirectory(src/hardware/50W-6A)
     #add_subdirectory(src/hardware/80W)
