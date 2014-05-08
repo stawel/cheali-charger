@@ -6,8 +6,6 @@ Plus Features
 
  - Simple Estimated Time for Accomplishment (TESTING)
  - Powerscren (Watt and Watthour)
- - Valid charge-percent meter
- - Calibration error checking***
  - cycle discharge/wait/charge program for Nixx and Lixx
  - cyclehistory screen
  - Lixx charge without balancer-port
@@ -15,25 +13,10 @@ Plus Features
  - Unknown battery voltage stepping 0.1V always.
  - smooth current rising/falling (protect the power supply voltage-breakdown) (limited current riseing/falling speed: 3A/sec(>50W chargers))
  - graphical balance status (compiler optionnally)
- - wire resistance minimize value
  - Li-Ion 4.35V supported
  - simple charging-percent meter
 
 sample screens: http://www.youtube.com/watch?v=YQxE5fpoIbU
-
-Calibrate checking
-------------------
- - calibrate check is running always at the exit calibrate. This function protect your charger the overcurrent control.
- - checking-calibration testing the charger for maximal capable currents. If routine failed state therefore not available start charge programs.
- 
-cal.err. possible errors:
--------------------------
-cal.err displayed and not start charge programs:
- - hardware failure. current-measure resistor too high value or 'little' blowed and/or charger/SMPS FETs failure 
-   ( sample pic: https://lh6.googleusercontent.com/-ud2qL8a4v0c/UryC6duOUBI/AAAAAAAAGMo/6fdGKEyUFpo/w656-h497-no/GTPower_A6_CloseUp_2.jpg )
- - calibration failure. check again the good measured currents.
- - wrong default EEPROM datas. Please select 'reset default'
- - wrong flashed firmware. (accucel6-5A charger not compatible 50W-6A version firmware)
 
 
 

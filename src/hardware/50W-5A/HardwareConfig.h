@@ -28,14 +28,6 @@
 #define MAX_DISCHARGE_I         ANALOG_AMP(2.000)   //should be 1A
 
 
-#define SPMS_DISCHARGER_P0_POINT     ANALOG_AMP(0.050) 
-#define DISCHARGER_P1_POINT          ANALOG_AMP(0.300) 
-#define SPMS_P1_POINT                ANALOG_AMP(1.000) 
-
-#define SPMS_DISCHARGER_P0_TEXT      "50mA" 
-#define DISCHARGER_P1_TEXT           "300mA" 
-#define SPMS_P1_TEXT                 "1A" 
-
 #define CALIBRATION_SPEED                   10
 
 

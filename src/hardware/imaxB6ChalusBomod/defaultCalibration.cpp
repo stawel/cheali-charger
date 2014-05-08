@@ -17,45 +17,35 @@
 */
 
 #include "AnalogInputsPrivate.h"
-#include "imaxB6ChalusBomod.h"
 #include "memory.h"
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
-    {{0, 0},                        {54592, 25094}},    //Vout
+    {{0, 0},                        {55102, 25141}},    //Vout
     {{0, 0},                        {26613, 12518}},    //VreversePolarity
-    {{1, SPMS_DISCHARGER_P0_POINT},                        {2, SPMS_P1_POINT}},    //Ismps
-    {{1, SPMS_DISCHARGER_P0_POINT},                        {2, DISCHARGER_P1_POINT}},    //Idischarge
+    {{775, 50},                        {11080, 1000}},    //Ismps
+    {{2017, 50},                        {11971, 300}},    //Idischarge
 
     {{0, 0},                        {0, 0}},    //VoutMux
     {{0, 0},                        {0, 0}},    //Tintern
-    {{0, 0},                        {48013, 14038}},    //Vin
+    {{0, 0},                        {48061, 14047}},    //Vin
     {{19650, 2980},                        {18700, 6000}},    //Textern
 
     {{0, 0},                        {48963, 3752}},    //Vb0_pin
-    {{0, 0},                        {54805, 4177}},    //Vb1_pin
-    {{0, 0},                      {55707, 8392}},  //Vb2_pin
-    {{0, 0},                      {55498, 4195}},  //Vb3_pin
+    {{0, 0},                        {55048, 4187}},    //Vb1_pin
+    {{0, 0},                      {56248, 8378}},  //Vb2_pin
+    {{0, 0},                      {56067, 4191}},  //Vb3_pin
 
-    {{0, 0},                      {55303, 4183}},  //Vb4_pin
-    {{0, 0},                      {55360, 4191}},  //Vb5_pin
-    {{0, 0},                      {53157, 4184}},  //Vb6_pin
+    {{0, 0},                      {54784, 4193}},  //Vb4_pin
+    {{0, 0},                      {55070, 4196}},  //Vb5_pin
+    {{0, 0},                      {55808, 4193}},  //Vb6_pin
 
 #if MAX_BANANCE_CELLS > 6
     {{0, 0},                        {50752, ANALOG_VOLT(3.865)}},   //Vb7_pin
     {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb8_pin
 #endif
     //1-1 correlation
-<<<<<<< HEAD:src/hardware/imaxB6ChalusBomod/defaultCalibration.cpp
-    {{1, SPMS_DISCHARGER_P0_POINT},                      {2, SPMS_P1_POINT}},  //IsmpsValue
-    {{1, SPMS_DISCHARGER_P0_POINT},                      {2, DISCHARGER_P1_POINT}},  //IdischargeValue
-#ifdef ANALOG_INPUTS_V_UNKNOWN
-    {{0, 0},                         {1, 1}},           //UNKNOWN0
-    {{0, 0},                         {1, 1}},           //UNKNOWN1
-#endif
-=======
-    {{380, 50},                      {10920, 1000}},  //IsmpsValue
-    {{2610, 50},                      {15850, 300}},  //IdischargeValue
->>>>>>> 8e4b3f57d668bf4596cc5b608bef463bef246448:src/hardware/imaxB6-clone/defaultCalibration.cpp
+    {{780, 50},                      {11080, 1000}},  //IsmpsValue
+    {{730, 50},                      {4410, 300}},  //IdischargeValue
 };
 
 

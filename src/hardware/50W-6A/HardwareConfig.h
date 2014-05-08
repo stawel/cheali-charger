@@ -21,23 +21,21 @@
 #include "HardwareConfigGeneric.h"
 
 #define MAX_CHARGE_V            ANALOG_VOLT(26.100) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(10.000)  //10A
-#define MAX_CHARGE_P            ANALOG_WATT(200.000)  //200W
+#define MAX_CHARGE_I            ANALOG_AMP(5.000)   //5A
+#define MAX_CHARGE_P            ANALOG_WATT(50.000)               //50W
 
-#define MAX_DISCHARGE_P         ANALOG_WATT(25.000)   //25W
-#define MAX_DISCHARGE_I         ANALOG_AMP(5.000)   //5A
-
-//#define SMPS_UPPERBOUND_VALUE               TIMER1_PRECISION_PERIOD
-//#define DISCHARGER_UPPERBOUND_VALUE         TIMER1_PRECISION_PERIOD
+#define MAX_DISCHARGE_P         ANALOG_WATT(6.000)                //5W
+#define MAX_DISCHARGE_I         ANALOG_AMP(2.000)   //should be 1A
 
 
-#define CALIBRATION_SPEED           1
+#define CALIBRATION_SPEED                   10
+
 
 //Lixx withoutbalancer
 #define CHARGE_LIXX_WITHOUT_BALANCER
 
 //prevent power supply
-#define MAX_CURRENT_RISING ANALOG_AMP(3.000)
+//#define MAX_CURRENT_RISING ANALOG_AMP(1.000)
 
 //screenanimation
 //#define SCREENANIMATION
@@ -48,10 +46,10 @@
 //use RAMCG battery icons for hitachi HD44780
 #define RAM_CG
 
+
 //temporary
 #define SMPS_UPPERBOUND_VALUE               65535
 #define DISCHARGER_UPPERBOUND_VALUE         65535
-
 
 
 #endif /* HARDWARE_CONFIG_H_ */
