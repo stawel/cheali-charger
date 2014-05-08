@@ -150,7 +150,7 @@ void finalizeMeasurement()
 {
     AnalogInputs::adc_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
     AnalogInputs::adc_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
-    AnalogInputs::finalizeMeasurement();
+    AnalogInputs::intterruptFinalizeMeasurement();
 }
 
 void setNextMuxAddress()

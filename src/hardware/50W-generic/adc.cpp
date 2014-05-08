@@ -65,7 +65,7 @@
 
 namespace adc {
 
-static uint8_t current_input_;
+static uint8_t input_;
 
 void initialize()
 {
@@ -171,25 +171,25 @@ void processConversion(uint8_t input)
     high = ADCH;
 
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        AnalogInputs::adc_[getAIName(input)] = (high << 8) | low;
+        AnalogInputs::i_adc_[getAIName(input)] = (high << 8) | low;
     }
 }
 
 void reset() {
-    current_input_ = 0;
+    input_ = 0;
 }
 
 
 void finalizeMeasurement()
 {
-    AnalogInputs::adc_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
-    AnalogInputs::adc_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
-    AnalogInputs::finalizeMeasurement();
+    AnalogInputs::i_adc_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
+    AnalogInputs::i_adc_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
+    AnalogInputs::intterruptFinalizeMeasurement();
 }
 
 void setNextMuxAddress()
 {
-    uint8_t input = nextInput(current_input_);
+    uint8_t input = nextInput(input_);
     int8_t mux = getMUX(input);
     //TODO: disable temperature
     if(settings.UART_ != Settings::Disabled && mux == MADDR_T_EXTERN)
@@ -206,13 +206,13 @@ void timerInterrupt()
 
 void conversionDone()
 {
-    processConversion(current_input_);
-    current_input_ = nextInput(current_input_);
-    setADC(getADC(current_input_));
-    if(getTriggerPID(current_input_))
+    processConversion(input_);
+    input_ = nextInput(input_);
+    setADC(getADC(input_));
+    if(getTriggerPID(input_))
         SMPS_PID::update();
 
-    if(AnalogInputs::isPowerOn() && current_input_ == 0)
+    if(input_ == 0)
         finalizeMeasurement();
 }
 

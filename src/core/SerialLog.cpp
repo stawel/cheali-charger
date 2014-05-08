@@ -26,6 +26,7 @@
 #include "StackInfo.h"
 #include "IO.h"
 #include "SerialLog.h"
+#include "AnalogInputsPrivate.h"
 
 #ifdef ENABLE_SERIAL_LOG
 #include "Serial.h"

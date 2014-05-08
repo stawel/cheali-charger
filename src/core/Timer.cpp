@@ -22,7 +22,7 @@
 #include "Screen.h"
 #include "SerialLog.h"
 #include "Discharger.h"
-#include "AnalogInputs.h"
+#include "AnalogInputsPrivate.h"
 #include "atomic.h"
 
 
@@ -47,6 +47,7 @@ namespace Timer {
         SerialLog::doIdle();
         Discharger::doIdle();
         Buzzer::doIdle();
+        AnalogInputs::doIdle();
     }
 
     void callback() {

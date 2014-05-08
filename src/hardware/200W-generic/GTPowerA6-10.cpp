@@ -16,8 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "GTPowerA6-10-pins.h"
-#include "GTPowerA6-10.h"
+#include "Hardware.h"
 #include "adc.h"
 #include "IO.h"
 

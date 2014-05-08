@@ -191,17 +191,16 @@ namespace Screen{
 #endif
         }        
         lcdPrintDigit(from+1);
-        lcdPrintChar(':');
 #ifdef ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
         if(from == 0 && Discharger::isPowerOn() && Discharger::getValue()>0) {
-            lcdPrint_P(PSTR("n.a."));
-            from++;
+            lcdPrintChar('?');
         } else {
-            printBalancer(from++, type);
+            lcdPrintChar(':');
         }
 #else
-        printBalancer(from++, type);
+        lcdPrintChar(':');
 #endif
+        printBalancer(from++, type);
         lcdPrintSpaces();
         lcdSetCursor0_1();
         if(from < MAX_BANANCE_CELLS) {
@@ -422,7 +421,8 @@ namespace {
             lcdPrintChar('m');
             lcdPrintChar('C');
         } else {
-            lcdPrint_P(PSTR("N/A"));
+
+            lcdPrint_P(PSTR("no dT/t"));
         }
         lcdPrintSpaces();
     }

@@ -43,6 +43,7 @@ const char * const ProgramDataStaticMenu[] PROGMEM =
         string_PDMM5,
         string_PDMM6,
         string_PDMM7,
+        string_PDMM8,
         NULL
 };
 

@@ -81,10 +81,6 @@ void setup()
     lcdCreateCGRam();
 #endif  
 
-    if (settings.calibratedState_ < 7)
-    {
-    Screen::runCalibrateBeforeUse();
-    }
 }
 
 

@@ -270,11 +270,6 @@ void Program::run(ProgramType prog)
 
     programState_ = getProgramState(prog);
     
-    if(settings.calibratedState_ <7) {
-      Screen::runCalibrateBeforeUse();
-      return;
-    }
-    
     SerialLog::powerOn();
     AnalogInputs::powerOn();
 

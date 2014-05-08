@@ -45,10 +45,7 @@ void Discharger::initialize()
 
 void Discharger::setValue(uint16_t value)
 {
-    if (settings.calibratedState_ >= 7)
-    {
-      if(value > settings.DISCHARGER_Upperbound_Value_) value = settings.DISCHARGER_Upperbound_Value_;
-    }
+    //  if(value > settings.DISCHARGER_Upperbound_Value_) value = settings.DISCHARGER_Upperbound_Value_;
     valueSet_ = value;
     finalizeValueTintern(true);
 }

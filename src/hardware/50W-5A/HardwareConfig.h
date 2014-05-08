@@ -54,4 +54,10 @@
 //use RAMCG battery icons for hitachi HD44780
 #define RAM_CG
 
+
+//temporary
+#define SMPS_UPPERBOUND_VALUE               65535
+#define DISCHARGER_UPPERBOUND_VALUE         65535
+
+
 #endif /* HARDWARE_CONFIG_H_ */

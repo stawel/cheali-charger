@@ -49,7 +49,7 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_CELCIUS(60), //externTCO_
         ANALOG_CELCIUS(1),  //deltaT_
         SETTINGS_DELTA_V_ENABLE_DEFAULT, //enable_deltaV_
-        ANALOG_VOLT(0.007), //deltaV_NiMH_
+        ANALOG_VOLT(0.005), //deltaV_NiMH_
         ANALOG_VOLT(0.012), //deltaV_NiCd_
         5,                  //CDcycles_
         30,                 //WasteTime_
@@ -62,9 +62,6 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_VOLT(0.008), //balancerError_
         Settings::Disabled, //UART_ - disabled
         0,                   //9600
-        0,                   //calibratedState_
-        0,                   //SMPS_Upperbound_Value_
-        0                    //DISCHARGER_Upperbound_Value_
 };
 
 

@@ -29,15 +29,17 @@
 #include "Program.h"
 #include "AnalogInputsPrivate.h"
 #include "Hardware.h"
-
+#include "Settings.h"
 namespace Calibrate {
 
-const char c1[] PROGMEM = "voltage";
+uint16_t x1=0;  //lastGood calibrationcurrent.
+
+const char c1[] PROGMEM = "volt";
 const char c2[] PROGMEM = "I charge";
 const char c3[] PROGMEM = "I discharge";
-const char c4[] PROGMEM = "temp extern";
+const char c4[] PROGMEM = "temp ext";
 #ifdef ENABLE_T_INTERNAL
-const char c5[] PROGMEM = "temp intern";
+const char c5[] PROGMEM = "temp int";
 #endif
 #ifdef ENABLE_SERIAL_LOG
 const char c6[] PROGMEM = "calib->UART";
@@ -102,8 +104,6 @@ const AnalogInputs::Name voltageName2[] PROGMEM = {
        BALANCER_PORTS_GT_6(AnalogInputs::Vb7_pin, AnalogInputs::Vb8_pin)
 };
 
-
-
 const char cIC0[] PROGMEM = CHEALI_CHARGER_STRING(CALIBRATION_CHARGE_POINT0_mA)    "mA";
 const char cIC1[] PROGMEM = CHEALI_CHARGER_STRING(CALIBRATION_CHARGE_POINT1_mA)    "mA";
 const char cID0[] PROGMEM = CHEALI_CHARGER_STRING(CALIBRATION_DISCHARGE_POINT0_mA) "mA";
@@ -119,8 +119,6 @@ const char cc2[] PROGMEM = "Iout:  ";
 
 const char * const currentMenu[] PROGMEM = {cc1,cc2, NULL};
 
-
-
 const char cp1[] PROGMEM = "point 1.";
 const char cp2[] PROGMEM = "point 2.";
 
@@ -130,7 +128,6 @@ const char ct1[] PROGMEM = "temp: ";
 const char ct2[] PROGMEM = "value:";
 
 const char * const tempMenu[] PROGMEM = {ct1,ct2, NULL};
-
 
 
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
@@ -165,8 +162,6 @@ const AnalogInputs::Name expertVoltageName[] PROGMEM = {
 #endif //ENABLE_EXPERT_VOLTAGE_CALIBRATION
 
 /* voltage calibration */
-
-
 class VoltageMenu: public EditMenu {
 public:
     VoltageMenu(const char * const* vMenu,
@@ -228,7 +223,7 @@ void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
 
 bool testVout()
 {
-    Screen::displayStrings(PSTR("Connect Battery!"),NULL);
+    Screen::displayStrings(PSTR("Connect Batt!"),NULL);
     do {
         if(AnalogInputs::isConnected(AnalogInputs::Vout))
             return true;
@@ -268,8 +263,6 @@ void saveVoltage(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInputs::N
 
 void calibrateVoltage()
 {
-    Discharger::powerOn();
-
     if(testVout()) {
         VoltageMenu v(voltageMenu, voltageName, 9);
         int8_t index;
@@ -277,16 +270,17 @@ void calibrateVoltage()
             index = v.runSimple(true);
             if(index < 0) break;
             AnalogInputs::Name Vinput = pgm::read(&voltageName[index]);
-            if(index < 7 && AnalogInputs::isConnected(Vinput)) {
+            if(index <= MAX_BANANCE_CELLS && AnalogInputs::isConnected(Vinput)) {
                 AnalogInputs::doFullMeasurement();
                 AnalogInputs::on_ = false;
                 if(v.runEdit(index))
                     saveVoltage(true, Vinput,pgm::read(&voltageName2[index]));
+                    //save calib status
+                    settings.calibratedState_ |= 1;  Settings::save();
                 AnalogInputs::on_ = true;
             }
         } while(true);
     }
-    Discharger::powerOff();
 }
 
 
@@ -328,99 +322,123 @@ void setCurrentValue(AnalogInputs::Name name, AnalogInputs::ValueType value)
     else                                    Discharger::setValue(value);
 }
 
-class CurrentMenu: public EditMenu {
-public:
-    AnalogInputs::Name cName_;
-    uint8_t point_;
-    AnalogInputs::ValueType value_;
-    AnalogInputs::ValueType maxValue_;
 
-    CurrentMenu(AnalogInputs::Name name, uint8_t point, AnalogInputs::ValueType maxValue)
-            : EditMenu(currentMenu), cName_(name), point_(point), maxValue_(maxValue) {}
-    void refreshValue() {
-        AnalogInputs::CalibrationPoint p;
-        AnalogInputs::getCalibrationPoint(p, cName_, point_);
-        value_ = p.x;
-    };
-    virtual uint8_t printItem(uint8_t index) {
-        StaticMenu::printItem(index);
-        if(getBlinkIndex() != index) {
-            if(index == 0) {
-                lcdPrintUnsigned(value_, 5);
-            } else {
-                lcdPrintCurrent(AnalogInputs::getIout(), 7);
-            }
-        }
-    }
-    virtual void editItem(uint8_t index, uint8_t key) {
-        int dir = -1;
-        if(key == BUTTON_INC) dir = 1;
-//        dir *= Keyboard::getSpeedFactor();
-        change0ToMaxSmart(value_, dir, maxValue_, 1);
-        setCurrentValue(cName_, value_);
-    }
-};
+enum calibrateType {CCharger, CDischarger};
+AnalogInputs::ValueType value_;
 
-void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
+void printCalibrate()
 {
-    AnalogInputs::ValueType maxValue;
-    AnalogInputs::Name name1;
-    AnalogInputs::Name name2;
+    lcdSetCursor0_0();
+    lcdPrint_P(PSTR("value: "));
+    lcdPrintUnsigned(value_, 5);
+    lcdPrintSpaces();
+   
+    lcdSetCursor0_1();
+    lcdPrint_P(PSTR("Iout:  "));
+    AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+    lcdPrintSpaces();
+}
 
-    if(charging){
-        maxValue = SMPS_UPPERBOUND_VALUE;
-        name1 = AnalogInputs::IsmpsValue;
-        name2 = AnalogInputs::Ismps;
-        SMPS::powerOn();
+bool calibrateI(calibrateType p)
+{
+    bool retu = false;
+    bool released = false;
+    value_ = 0;
+    //disables SMPS_UPPERBOUND_VALUE  DISCHARGER_UPPERBOUND_VALUE 
+    //MAX_CALIBRATION_SMPS_VALUE MAX_CALIBRATION_DISCHARGER_VALUE
+    AnalogInputs::ValueType maxValue = 65535;
+
+    if(p == CCharger){
+        settings.calibratedState_   &= ~(1 << 1);  Settings::save();  //relase calibrationlimit
+        SMPS::powerOn(); 
     } else {
-        name1 = AnalogInputs::IdischargeValue;
-        name2 = AnalogInputs::Idischarge;
-        maxValue = DISCHARGER_UPPERBOUND_VALUE;
+        settings.calibratedState_   &= ~(1 << 2);  Settings::save();  //relase calibrationlimit
         Discharger::powerOn();
     }
 
-    if(testVout()) {
-        CurrentMenu menu(name1, point, maxValue);
-        int8_t index;
+   // if(testVout()) {
+        uint8_t key, val_changed;
         do {
-            menu.refreshValue();
-            index = menu.runSimple(true);
-            if(index < 0) break;
-            if(index == 0) {
-                setCurrentValue(name1, menu.value_);
-                if(menu.runEdit(index)) {
-                    AnalogInputs::doFullMeasurement();
-                    AnalogInputs::CalibrationPoint p;
-                    p.y = current;
-                    p.x = menu.value_;
-                    AnalogInputs::setCalibrationPoint(name1, point, p);
-                    p.x = AnalogInputs::getAvrADCValue(name2);
-                    AnalogInputs::setCalibrationPoint(name2, point, p);
-                }
-                setCurrentValue(name1, 0);
+            printCalibrate();
+            key = Keyboard::getPressedWithSpeed();
+            val_changed = 0;
+            uint16_t speed = CALIBRATION_SPEED;
+#if CALIBRATION_SPEED > 1
+            speed *= Keyboard::getSpeedFactor();
+#endif
+            if(key == BUTTON_INC && value_ < maxValue) {
+                value_ += speed;
+                val_changed++;
             }
-        } while(true);
-    }
 
-    if(charging)   SMPS::powerOff();
-    else           Discharger::powerOff();
+            if(key == BUTTON_DEC && value_ >= speed) {
+                value_ -= speed;
+                val_changed++;
+            }
+            if(val_changed) {
+                if(p == CCharger)   SMPS::setValue(value_);
+                else                Discharger::setValue(value_);
+            }
+
+            if(key == BUTTON_START && released) {
+                retu = true;
+                break;
+            }
+
+            if(key == BUTTON_NONE) released = true;
+        } while(key != BUTTON_STOP);
+   // }
+    if(p == CCharger)   SMPS::powerOff();
+    else                Discharger::powerOff();
+    return retu;
 }
 
-void calibrateI(const char * const textMenu[], const AnalogInputs::ValueType  values[])
+
+void calibrateI(calibrateType t, uint8_t point, AnalogInputs::ValueType current, AnalogInputs::Name name1, AnalogInputs::Name name2)
 {
-    StaticMenu menu(textMenu);
+    AnalogInputs::CalibrationPoint p;
+    if(calibrateI(t)) {
+        Buzzer::soundSelect();
+        p.y = current;
+        p.x = AnalogInputs::getAvrADCValue(name1);
+        AnalogInputs::setCalibrationPoint(name1, point, p);
+        p.x = AnalogInputs::getAvrADCValue(name2);
+        AnalogInputs::setCalibrationPoint(name2, point, p);
+
+        } while(true);
+
+
+    }
+}
+
+
+void calibrateIcharge()
+{
+    StaticMenu menu(chargeIMenu);
     int8_t i;
     AnalogInputs::ValueType current;
     do {
         i = menu.runSimple();
         if(i<0) break;
-        current = pgm::read(&values[i]);
-        calibrateI(textMenu == chargeIMenu, i, current);
+        if(i==0) current = SPMS_DISCHARGER_P0_POINT;
+        else     current = SPMS_P1_POINT;
+        calibrateI(CCharger, i, current, AnalogInputs::Ismps, AnalogInputs::IsmpsValue);
     } while(true);
 }
 
-
-/* temperature calibration */
+void calibrateIdischarge()
+{
+    StaticMenu menu(dischargeIMenu);
+    int8_t i;
+    AnalogInputs::ValueType current;
+    do {
+        i = menu.runSimple();
+        if(i<0) break;
+        if(i==0) current = SPMS_DISCHARGER_P0_POINT;
+        else     current = DISCHARGER_P1_POINT;
+        calibrateI(CDischarger, i, current, AnalogInputs::Idischarge, AnalogInputs::IdischargeValue);      
+    } while(true);
+}
 
 
 class TempMenu: public EditMenu {
@@ -445,6 +463,8 @@ public:
     }
 };
 
+
+
 void saveTemp(AnalogInputs::Name name, uint8_t point)
 {
     AnalogInputs::CalibrationPoint p;
@@ -452,6 +472,7 @@ void saveTemp(AnalogInputs::Name name, uint8_t point)
     p.y = AnalogInputs::getRealValue(name);
     AnalogInputs::setCalibrationPoint(name, point, p);
 }
+
 
 void calibrateTemp(AnalogInputs::Name name, uint8_t point)
 {
@@ -497,8 +518,8 @@ void run()
         START_CASE_COUNTER;
         switch(i) {
         case NEXT_CASE: calibrateVoltage(); break;
-        case NEXT_CASE: calibrateI(chargeIMenu, chargeIValues); break;
-        case NEXT_CASE: calibrateI(dischargeIMenu, dischargeIValues); break;
+        case NEXT_CASE: calibrateIcharge(); checkCalibrateIcharge(); break;
+        case NEXT_CASE: calibrateIdischarge(); checkCalibrateIdischarge(); break;
         case NEXT_CASE: calibrateTemp(AnalogInputs::Textern); break;
 #ifdef ENABLE_T_INTERNAL
         case NEXT_CASE: calibrateTemp(AnalogInputs::Tintern); break;
@@ -516,6 +537,82 @@ void run()
     } while(true);
     Program::programState_ = Program::Done;
 }
+
+
+bool checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name1)
+{   
+    uint16_t x2=0;
+    bool r=true;
+    for(uint16_t i=0; i < testCurrent; i=i++)
+    {
+        x1 = AnalogInputs::reverseCalibrateValue(name1, i);
+        if (x1 < x2)  {r=false; break;}
+        x2=x1;
+    }
+     if(x1==0) r=false;
+
+    x1=x2;    //x1 return maxcharge/discharge value before overflow
+    return r;
+}
+
+void checkCalibrateIcharge()
+{
+    //CHECKHARDWAREPIDVALIDCALIBRATE
+    //check 'overflow" ismpsvalue
+    
+    //check 'overflow" ismps (protect hardware PID ctrl chargers)
+        //if r53-54 failure, then calibration value too high. Protect the SMPS circiuit the overflow value.
+
+    if (!checkCalibrate(MAX_CHARGE_I,AnalogInputs::IsmpsValue))
+     {
+       Screen::displayCalibrationErrorScreen(1);
+     }
+
+   //save largest current value
+    saveCalibrateValueIcharge(x1); 
+  
+    //info only
+    if (!checkCalibrate(MAX_CHARGE_I,AnalogInputs::Ismps))
+     {
+       Screen::displayCalibrationErrorScreen(2);
+     }
+}
+
+void saveCalibrateValueIcharge(uint16_t value)
+
+{
+    settings.SMPS_Upperbound_Value_ = value;
+    //save calib status
+    settings.calibratedState_ = settings.calibratedState_ | 2;   Settings::save();    
+}
+
+void checkCalibrateIdischarge()
+{
+      bool state = true;
+    if (!checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::IdischargeValue))
+     {
+       Screen::displayCalibrationErrorScreen(3);
+     }
+   
+   //save largest current value
+   saveCalibrateValueIdisCharge(x1); 
+   
+   //info only
+    if (!checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::Idischarge))
+     {
+       Screen::displayCalibrationErrorScreen(4);
+     }
+}
+
+
+
+void saveCalibrateValueIdisCharge(uint16_t value)
+{
+      settings.DISCHARGER_Upperbound_Value_ = value;
+      //save calib status
+      settings.calibratedState_ = settings.calibratedState_  | 4;   Settings::save();   
+}
+
 
 } // namespace Calibrate
 

@@ -60,5 +60,9 @@
 //waiting common  display relase
 #define START_DELAY_MS 5000
 
+
+//temporary
+#define SMPS_UPPERBOUND_VALUE               65535
+#define DISCHARGER_UPPERBOUND_VALUE         65535
     
 #endif /* HARDWARE_CONFIG_H_ */
