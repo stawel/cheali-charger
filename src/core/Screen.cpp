@@ -64,8 +64,8 @@ namespace Screen{
     uint16_t cyclesHistoryDcTime[5]       = {0,0,0,0,0};
     char     cyclesHistoryMode[5]         = {'-','-','-','-','-'}; //C=charge   D=discharge '-' = none
 
-
-
+    //fix
+    uint16_t ETATime_ ;
     bool on_;
 
     const char programString[] PROGMEM = "ChCBBlDiFCStSBChDiCYcyChDiEB";
@@ -173,7 +173,7 @@ namespace Screen{
 #ifdef KNIGHTRIDEREFFECT        
            char knightRiderArrow;
            if (knightRiderDir==true) knightRiderArrow='>'; else knightRiderArrow='<';
-           if (c == 'm')
+           if ((c == 'm') || (c == ' '))
            {
              for (uint8_t i=1; i<7; i++ )
              {
@@ -302,6 +302,9 @@ void Screen::doSlowInterrupt()
        totalBalanceTime_ += SLOW_INTERRUPT_PERIOD_MILISECONDS;
        
    Screen::storeCycleHistoryInfo();     //actualisation values
+
+   ETATime_ = getETATime();
+
 
 }
 
@@ -627,7 +630,8 @@ void Screen::displayScreenEnergy()
     }
  
 
- 
+
+
  
     if (toggleTextCounter<10 && SMPS::isPowerOn() )
     { //display calculated simple ETA
@@ -635,7 +639,7 @@ void Screen::displayScreenEnergy()
    
       if(etaSecLarge>20)  //bigger 20sec for ETA calc (is 1C)
       {
-        lcdPrintTime(getETATime()); //TODO_NJ (not accurate for balancing time)
+        lcdPrintTime(ETATime_); //TODO_NJ (not accurate for balancing time)
       }
       else 
       {
@@ -665,9 +669,9 @@ void Screen::displayAnimation()
       lcdPrintChar(255);
       lcdSetCursor(i,0);
       lcdPrintChar(255);
-      TimerIdle::delay(10); 
+      Timer::delay(10); 
     }
-     TimerIdle::delay(10);
+     Timer::delay(10);
 
 }
 #endif

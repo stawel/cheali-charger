@@ -34,7 +34,7 @@
 #define CALIBRATION_SPEED           1
 
 //Lixx withoutbalancer
-#define CHARGE_LIXX_WITHOUT_BALANCER
+//#define CHARGE_LIXX_WITHOUT_BALANCER
 
 //prevent power supply
 #define MAX_CURRENT_RISING ANALOG_AMP(3.000)
@@ -43,7 +43,7 @@
 //#define SCREENANIMATION
 
 //knightrider effect is ADC working
-//#define KNIGHTRIDEREFFECT
+#define KNIGHTRIDEREFFECT
 
 //use RAMCG battery icons for hitachi HD44780
 #define RAM_CG
