@@ -19,6 +19,7 @@
 #include "Hardware.h"
 #include "adc.h"
 #include "IO.h"
+#include "Settings.h"
 
 void hardware::initialize()
 {
@@ -83,6 +84,7 @@ void hardware::setBuzzer(uint8_t val)
 {
     //TODO: this should be rewritten, sorry for that :D
     //Timer2 is now used by the Timer.cpp implementation
+    if (!settings.AudioBeep_) return;
     IO::digitalWrite(BUZZER_PIN, (val&1));
 }
 

@@ -23,6 +23,7 @@
 #include "SerialLog.h"
 #include "IO.h"
 #include "Keyboard.h"
+#include "Settings.h"
 
 
 uint8_t hardware::getKeyPressed()
@@ -95,6 +96,7 @@ void hardware::soundInterrupt()
 
 void hardware::setBuzzer(uint8_t val)
 {
+    if (!settings.AudioBeep_) return;
     sound_ = val;
 }
 

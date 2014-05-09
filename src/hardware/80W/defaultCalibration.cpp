@@ -19,33 +19,36 @@
 #include "AnalogInputsPrivate.h"
 #include "memory.h"
 
+//file provided by: Jozsef N.
+//TODO: calibrate Vb6_pin, Textern
+
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
-    {{0, 0},                        {55102, 25141}},    //Vout
+    {{0, 0},                        {26368, 12120}},    //Vout
     {{0, 0},                        {26613, 12518}},    //VreversePolarity
-    {{775, 50},                        {11080, 1000}},    //Ismps
-    {{2017, 50},                        {11971, 300}},    //Idischarge
+    {{1, 50},                        {2, 1000}},    //Ismps
+    {{1, 50},                        {2, 300}},    //Idischarge
 
     {{0, 0},                        {0, 0}},    //VoutMux
     {{0, 0},                        {0, 0}},    //Tintern
-    {{0, 0},                        {48061, 14047}},    //Vin
-    {{19650, 2980},                        {18700, 6000}},    //Textern
+    {{0, 0},                        {51758, 15230}},    //Vin
+    {{19650, 2980},                        {18700, 6000}},    //Textern??
 
     {{0, 0},                        {48963, 3752}},    //Vb0_pin
-    {{0, 0},                        {55048, 4187}},    //Vb1_pin
-    {{0, 0},                      {56248, 8378}},  //Vb2_pin
-    {{0, 0},                      {56067, 4191}},  //Vb3_pin
+    {{0, 0},                        {54656, 4198}},    //Vb1_pin
+    {{0, 0},                      {53376, 8068}},  //Vb2_pin
+    {{0, 0},                      {54577, 4193}},  //Vb3_pin
 
-    {{0, 0},                      {54784, 4193}},  //Vb4_pin
-    {{0, 0},                      {55070, 4196}},  //Vb5_pin
-    {{0, 0},                      {55808, 4193}},  //Vb6_pin
+    {{0, 0},                      {54976, 4197}},  //Vb4_pin
+    {{0, 0},                      {54400, 4197}},  //Vb5_pin
+    {{0, 0},                      {54400, 4197}},  //Vb6_pin??
 
 #if MAX_BANANCE_CELLS > 6
     {{0, 0},                        {50752, ANALOG_VOLT(3.865)}},   //Vb7_pin
     {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb8_pin
 #endif
     //1-1 correlation
-    {{780, 50},                      {11080, 1000}},  //IsmpsValue
-    {{730, 50},                      {4410, 300}},  //IdischargeValue
+    {{1, 50},                      {2, 1000}},  //IsmpsValue
+    {{1, 50},                      {2, 300}},  //IdischargeValue
 };
 
 

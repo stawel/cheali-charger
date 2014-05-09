@@ -16,38 +16,39 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "AnalogInputsPrivate.h"
-#include "200W-high-discharge-indus-mod.h"
 #include "memory.h"
 
+//file provided by: Jozsef N.
+//TODO: calibrate Vb6_pin, Textern
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
-    {{0,0},                         {50816, ANALOG_VOLT(23.118)}},  //Vout
-    {{0,0},                         {27516, ANALOG_VOLT(12.552)}},  //VreversePolarity
-    {{1, SPMS_DISCHARGER_P0_POINT},                        {2, SPMS_P1_POINT}},    //Ismps
-    {{1, SPMS_DISCHARGER_P0_POINT},                        {2, DISCHARGER_P1_POINT}},    //Idischarge
+    {{0, 0},                        {26368, 12120}},    //Vout
+    {{0, 0},                        {26613, 12518}},    //VreversePolarity
+    {{1, 50},                        {2, 1000}},    //Ismps
+    {{1, 50},                        {2, 300}},    //Idischarge
 
-    {{0, 0},                        {44736, ANALOG_VOLT(23.118)}},  //VoutMux
-    {{21500, ANALOG_CELCIUS(52)},   {41023, ANALOG_CELCIUS(29)}},   //Tintern
-    {{0, 0},                        {47872, ANALOG_VOLT(14.020)}},  //Vin
-    {{6272,  ANALOG_CELCIUS(24)},   {14300, ANALOG_CELCIUS(60)}},   //Textern
+    {{0, 0},                        {0, 0}},    //VoutMux
+    {{0, 0},                        {0, 0}},    //Tintern
+    {{0, 0},                        {51758, 15230}},    //Vin
+    {{19650, 2980},                        {18700, 6000}},    //Textern??
 
-    {{0, 0},                        {0, ANALOG_VOLT(0)}},           //Vb0_pin -??
-    {{0, 0},                        {50244, ANALOG_VOLT(3.834)}},   //Vb1_pin
-    {{0, 0},                        {50176, ANALOG_VOLT(3.835)}},   //Vb2_pin
-    {{0, 0},                        {50280, ANALOG_VOLT(3.837)}},   //Vb3_pin
+    {{0, 0},                        {48963, 3752}},    //Vb0_pin
+    {{0, 0},                        {54656, 4198}},    //Vb1_pin
+    {{0, 0},                      {53376, 8068}},  //Vb2_pin
+    {{0, 0},                      {54577, 4193}},  //Vb3_pin
 
-    {{0, 0},                        {50602, ANALOG_VOLT(3.862)}},   //Vb4_pin
-    {{0, 0},                        {50752, ANALOG_VOLT(3.865)}},   //Vb5_pin
-    {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb6_pin
+    {{0, 0},                      {54976, 4197}},  //Vb4_pin
+    {{0, 0},                      {54400, 4197}},  //Vb5_pin
+    {{0, 0},                      {54400, 4197}},  //Vb6_pin??
 
-    {{1, SPMS_DISCHARGER_P0_POINT},                      {2, SPMS_P1_POINT}},  //IsmpsValue
-    {{1, SPMS_DISCHARGER_P0_POINT},                      {2, DISCHARGER_P1_POINT}},  //IdischargeValue
-#ifdef ANALOG_INPUTS_V_UNKNOWN
-    {{0,0},                         {1, 1}},                        //UNKNOWN0
-    {{0,0},                         {1, 1}},                        //UNKNOWN1
+#if MAX_BANANCE_CELLS > 6
+    {{0, 0},                        {50752, ANALOG_VOLT(3.865)}},   //Vb7_pin
+    {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb8_pin
 #endif
+    //1-1 correlation
+    {{1, 50},                      {2, 1000}},  //IsmpsValue
+    {{1, 50},                      {2, 300}},  //IdischargeValue
 };
 
 
