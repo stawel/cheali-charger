@@ -18,8 +18,9 @@
 
 #include "AnalogInputsPrivate.h"
 #include "memory.h"
+#include "Utils.h"
 
-const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
+const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
     {{0,0},                         {50816, ANALOG_VOLT(23.118)}},  //Vout
     {{0,0},                         {27516, ANALOG_VOLT(12.552)}},  //VreversePolarity
     {{256,   ANALOG_AMP(0.051)},    {10240, ANALOG_AMP(2.000)}},    //Ismps
@@ -47,5 +48,12 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{176, ANALOG_AMP(0.050)},       {2926, ANALOG_AMP(1.000)}},      //IsmpsValue
     {{335, ANALOG_AMP(0.050)},       {1894, ANALOG_AMP(0.300)}},      //IdischargeValue
 };
+
+namespace {
+    void assert() {
+        STATIC_ASSERT(sizeOfArray(AnalogInputs::inputsP_) == AnalogInputs::PHYSICAL_INPUTS);
+    }
+}
+
 
 

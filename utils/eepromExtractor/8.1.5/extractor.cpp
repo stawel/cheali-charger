@@ -18,6 +18,7 @@
 
 #include <cstring>
 #include <sstream>
+#include <iomanip>
 
 #include "extractor.h"
 #include "../extractor.h"
@@ -48,10 +49,13 @@ Extractor * CREATE_GET(8, 1, 5)
 //////toString
 #define SETT(name) << "s_" CHEALI_CHARGER_STRING(name) "="<< d.settings.name << "\n"
 
-#define CALIB_P(name, nr) \
-    << "c_" CHEALI_CHARGER_STRING(name)  "__p" CHEALI_CHARGER_STRING(nr) "_x=" << d.calibration[name].p[nr].x << "\n" \
-    << "c_" CHEALI_CHARGER_STRING(name)  "__p" CHEALI_CHARGER_STRING(nr) "_y=" << d.calibration[name].p[nr].y << "\n"
-#define CALIB(name) CALIB_P(name, 0) CALIB_P(name, 1)
+#define CALIB_P(name, nr, str, div) \
+    << "c_p" CHEALI_CHARGER_STRING(nr) "_x__" CHEALI_CHARGER_STRING(name) "=" << d.calibration[name].p[nr].x << "\n" \
+    << "c_p" CHEALI_CHARGER_STRING(nr) "_y__" CHEALI_CHARGER_STRING(name) "='ANALOG_" str "("<< ((float)d.calibration[name].p[nr].y)/1000 << ")'\n"
+#define CALIB_ALL(name, str, div) CALIB_P(name, 0, str, div) CALIB_P(name, 1, str, div)
+#define CALIB_V(name) CALIB_ALL(name, "VOLT", 1000)
+#define CALIB_I(name) CALIB_ALL(name, "AMP", 1000)
+#define CALIB_T(name) CALIB_ALL(name, "CELCIUS", 100)
 
 using namespace AnalogInputs;
 
@@ -59,7 +63,7 @@ using namespace AnalogInputs;
 std::string EEPROM::toString() const
 {
     std::stringstream s;
-    s 
+    s << std::setprecision(3) << std::fixed
     << "magicString=" << std::string((char *) d.magicString, MAGIC_STRING_LEN) <<"\n"
     << "calibrationVersion=" << d.calibrationVersion << "\n"
     << "programDataVersion=" << d.programDataVersion << "\n"
@@ -73,31 +77,31 @@ std::string EEPROM::toString() const
     << "c_Vout_plus_pin__p1_x="<<d.calibration[Vout_plus_pin][1].x << "\n"
     << "c_Vout_plus_pin__p1_y="<<d.calibration[Vout_plus_pin][1].y << "\n"
 */
-    CALIB(Vout_plus_pin)
-    CALIB(Vout_minus_pin)
-    CALIB(Ismps)
-    CALIB(Idischarge)
+    CALIB_V(Vout_plus_pin)
+    CALIB_V(Vout_minus_pin)
+    CALIB_I(Ismps)
+    CALIB_I(Idischarge)
 
-    CALIB(VoutMux)
-    CALIB(Tintern)
-    CALIB(Vin)
-    CALIB(Textern)
+    CALIB_V(VoutMux)
+    CALIB_T(Tintern)
+    CALIB_V(Vin)
+    CALIB_T(Textern)
 
-    CALIB(Vb0_pin)
-    CALIB(Vb1_pin)
-    CALIB(Vb2_pin)
-    CALIB(Vb3_pin)
-    CALIB(Vb4_pin)
-    CALIB(Vb5_pin)
-    CALIB(Vb6_pin)
+    CALIB_V(Vb0_pin)
+    CALIB_V(Vb1_pin)
+    CALIB_V(Vb2_pin)
+    CALIB_V(Vb3_pin)
+    CALIB_V(Vb4_pin)
+    CALIB_V(Vb5_pin)
+    CALIB_V(Vb6_pin)
 
 #if MAX_BANANCE_CELLS > 6
-    CALIB(Vb7_pin)
-    CALIB(Vb8_pin)
+    CALIB_V(Vb7_pin)
+    CALIB_V(Vb8_pin)
 #endif
 
-    CALIB(IsmpsValue)
-    CALIB(IdischargeValue)
+    CALIB_I(IsmpsValue)
+    CALIB_I(IdischargeValue)
 
     << "\n"
 //settings
