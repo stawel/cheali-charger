@@ -40,7 +40,7 @@
 #define MAX_CURRENT_RISING ANALOG_AMP(3.000)
 
 //screenanimation
-//#define SCREENANIMATION
+#define SCREENANIMATION
 
 //knightrider effect is ADC working
 #define KNIGHTRIDEREFFECT
