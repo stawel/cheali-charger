@@ -138,9 +138,9 @@ bool AnalogInputs::isConnected(Name name)
     AnalogInputs::ValueType x = getRealValue(name);
     switch(getType(name)) {
     case Current:
-        return x > ANALOG_AMP(0.050);
+        return x > CONNECTED_MIN_CURRENT;
     case Voltage:
-        return x > ANALOG_VOLT(0.6);
+        return x > CONNECTED_MIN_VOLTAGE;
     default:
         return true;
     }
@@ -241,7 +241,7 @@ bool AnalogInputs::isReversePolarity()
     if(vm > vp) vm -=  vp;
     else vm = 0;
 
-    return vm > REVERSE_POLARITY_MIN_VALUE;
+    return vm > REVERSE_POLARITY_MIN_VOLTAGE;
 }
 
 AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
