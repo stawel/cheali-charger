@@ -31,6 +31,9 @@ int main(int argc, char * argv[])
         cerr << "size: " << result << "\n";
         for(std::vector<Extractor*>::iterator i=e.begin();i != e.end(); i++) {
             cerr << "testing: " << (*i)->getName() << " size: "<< (*i)->getSize() << "\n";
+            if(result < (*i)->getSize()) {
+                cerr << "ERROR: epprom size to small \n";
+            }
             (*i)->load(buf, result);
             if((*i)->isValid()) {
                 cerr << "epprom found!\ntoString:\n";
