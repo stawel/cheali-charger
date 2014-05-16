@@ -268,8 +268,7 @@ void Program::run(ProgramType prog)
     programType_ = prog;
     stopReason_ = PSTR("");
 
-    programState_ = getProgramState(prog);
-    
+    programState_ = getProgramState(prog);  
     SerialLog::powerOn();
     AnalogInputs::powerOn();
 

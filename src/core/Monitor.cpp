@@ -36,6 +36,7 @@ namespace Monitor {
 #endif
 
 uint16_t VoutMaxMesured_;
+uint16_t VoutMinMesured_;
 
 #ifdef MONITOR_T_INTERNAL_FAN
     AnalogInputs::ValueType monitor_on_T;
@@ -68,6 +69,7 @@ void Monitor::update()
 
 void Monitor::powerOn() {
     VoutMaxMesured_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, MAX_CHARGE_V+ANALOG_VOLT(3.000));
+    VoutMinMesured_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, AnalogInputs::CONNECTED_MIN_VOLTAGE);
     update();
 }
 
@@ -84,10 +86,11 @@ Strategy::statusType Monitor::run()
 #endif
 
     AnalogInputs::ValueType VMout = AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin);
-    if(VMout > VoutMaxMesured_) {
+    if(VoutMaxMesured_ < VMout || (VMout < VoutMinMesured_ && Discharger::isPowerOn())) {
         Program::stopReason_ = PSTR("bat disc");
         return Strategy::ERROR;
     }
+
 
     AnalogInputs::ValueType Vin = AnalogInputs::getRealValue(AnalogInputs::Vin);
     if(AnalogInputs::isConnected(AnalogInputs::Vin) && Vin < settings.inputVoltageLow_) {

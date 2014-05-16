@@ -15,27 +15,31 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef HARDWARE_CONFIG_GENERIC_H_
-#define HARDWARE_CONFIG_GENERIC_H_
+#ifndef ANALOGINPUTSTYPES_H_
+#define ANALOGINPUTSTYPES_H_
 
-#include "AnalogInputsTypes.h"
+#include <inttypes.h>
 
-#define LCD_LINES               2
-#define LCD_COLUMNS             16
-#define LCD_BACKLIGHT_MIN       100
-#define LCD_BACKLIGHT_MAX       32000
+#define ANALOG_CELCIUS(x) ((AnalogInputs::ValueType)((x)*100))
+#define ANALOG_CHARGE(x) ((AnalogInputs::ValueType)((x)*1000))
+#define ANALOG_VOLT(x) ((AnalogInputs::ValueType)((x)*1000))
+#define ANALOG_AMP(x) ((AnalogInputs::ValueType)((x)*1000))
+#define ANALOG_WATT(x) ((unsigned long)((x)*1000L))
 
-#define MAX_BANANCE_CELLS       6
-#define TIMER1_PERIOD           512
+namespace AnalogInputs {
+    typedef uint16_t ValueType;
 
+    enum Type {
+        Current,
+        Voltage,
+        Temperature,
+        Charge,
+        Resistance,
+        Unknown
+    };
 
+    static const ValueType  STABLE_VALUE_ERROR  = 6;
+    static const uint16_t   STABLE_MIN_VALUE    = 3;
+};
 
-#define ENABLE_LCD_BACKLIGHT
-#define ENABLE_FAN
-#define ENABLE_T_INTERNAL
-#define ENABLE_STACK_INFO
-#define ENABLE_SERIAL_LOG
-#define ENABLE_EXPERT_VOLTAGE_CALIBRATION
-
-
-#endif /* HARDWARE_CONFIG_GENERIC_H_ */
+#endif /* ANALOGINPUTSTYPES_H_ */

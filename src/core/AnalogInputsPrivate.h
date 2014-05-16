@@ -23,7 +23,7 @@
 
 namespace AnalogInputs {
 
-    extern const DefaultValues inputsP_[AnalogInputs::PHYSICAL_INPUTS];
+    extern const DefaultValues inputsP_[];//AnalogInputs::PHYSICAL_INPUTS];
     extern ValueType real_[ALL_INPUTS];
     extern ValueType i_adc_[PHYSICAL_INPUTS];
 

@@ -41,7 +41,6 @@ namespace StartInfoStrategy {
 
 void StartInfoStrategy::powerOn()
 {
-    Discharger::powerOn();
     Screen::blink.startBlinkOn(7);
     Buzzer::begin();
     ok_ = 3;
@@ -49,7 +48,6 @@ void StartInfoStrategy::powerOn()
 
 void StartInfoStrategy::powerOff()
 {
-    Discharger::powerOff();
     Screen::blink.stopBlink();
     Buzzer::soundOff();
 }

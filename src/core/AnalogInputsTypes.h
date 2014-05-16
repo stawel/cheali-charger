@@ -29,7 +29,6 @@
 namespace AnalogInputs {
     typedef uint16_t ValueType;
 
-
     enum Type {
         Current,
         Voltage,

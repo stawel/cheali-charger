@@ -66,6 +66,7 @@ namespace Screen{
 
     //fix
     uint16_t ETATime_ ;
+    bool balance_on;
     bool on_;
 
     const char programString[] PROGMEM = "ChCBBlDiFCStSBChDiCYcyChDiEB";
@@ -125,19 +126,25 @@ namespace Screen{
         if (knightRiderCounter<=1) knightRiderDir=true;
 #endif
         char c = ' ';
+         balance_on=false;
         if(!Balancer::isWorking()) {
             if(!Balancer::isStable())
-                c = 'm';
+               c = 'm';
         } else {
-            if(Balancer::savedVon_)
+            if(Balancer::savedVon_)  
                 c = 'B';
             else
                 c = 'b';
         }
 
-        lcdPrintChar(c);
+        if (Balancer::balance_ == 0)
+        {
+                lcdPrintChar(c);
+        }
+       
 
-        if(Balancer::balance_ != 0) {
+        if (Balancer::balance_ != 0)
+        {
             uint8_t  j = 1;
             for(uint8_t i = 0; i < Balancer::getCells(); i++) {
                 if(i == Balancer::minCell_) 
@@ -166,7 +173,7 @@ namespace Screen{
                 if(j!=128)  j <<= 1;
                 else        j = 0;
             }
-            lcdPrintSpaces(7 - Balancer::getCells());
+            lcdPrintSpaces(8 - Balancer::getCells());
         }
         else 
         {
@@ -202,6 +209,7 @@ namespace Screen{
 #endif
         printBalancer(from++, type);
         lcdPrintSpaces();
+
         lcdSetCursor0_1();
         if(from < MAX_BANANCE_CELLS) {
             lcdPrintDigit(from+1);
@@ -399,8 +407,8 @@ namespace {
 void Screen::displayScreenProgramCompleted()
 {
     screenEnd(PSTR("program complete"));
-//    lcdSetCursor0_1();
-//    lcdPrint_P(PSTR("Time: ")); lcdPrintTime(getTimeSec());
+    lcdSetCursor0_1();
+    lcdPrint_P(PSTR("Time: ")); lcdPrintTime(getTimeSec());
 }
 
 void Screen::displayMonitorError()

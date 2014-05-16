@@ -107,9 +107,7 @@ namespace AnalogInputs {
     static const uint8_t    PHYSICAL_INPUTS     = VirtualInputs - Vout_plus_pin;
     static const uint8_t    ALL_INPUTS          = LastInput - Vout_plus_pin;
     static const uint16_t   AVR_MAX_COUNT       = 100;
-    static const ValueType  REVERSE_POLARITY_MIN_VOLTAGE = ANALOG_VOLT(1.000);
-    static const ValueType  CONNECTED_MIN_VOLTAGE = ANALOG_VOLT(0.600);
-    static const ValueType  CONNECTED_MIN_CURRENT = ANALOG_AMP(0.050);
+    static const ValueType  REVERSE_POLARITY_MIN_VALUE = ANALOG_VOLT(1.000);
 
     //get the average ADC value
     ValueType getAvrADCValue(Name name);
@@ -117,6 +115,7 @@ namespace AnalogInputs {
     ValueType getRealValue(Name name);
     //get the ADC (measured) value - in this particular moment
     ValueType getADCValue(Name name);
+
     ValueType getVout();
     ValueType getIout();
     ValueType getDeltaLastT();
@@ -139,7 +138,6 @@ namespace AnalogInputs {
     void doFullMeasurement();
 
     void resetMeasurement();
-    void resetAccumulatedMeasurements();
     void powerOn();
     void powerOff();
 

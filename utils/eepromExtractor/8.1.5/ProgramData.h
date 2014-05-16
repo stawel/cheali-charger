@@ -20,7 +20,7 @@
 
 #include <inttypes.h>
 #include "AnalogInputs.h"
-#include "Hardware.h"
+//#include "Hardware.h"
 
 
 #define MAX_PROGRAMS 32
@@ -28,17 +28,13 @@
 #define PROGRAM_DATA_MAX_CHARGE ANALOG_CHARGE(65.000)
 
 struct ProgramData {
-
     enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo, Li430, Li435, NiZn,    LAST_BATTERY_TYPE};
-    enum VoltageType {VIdle,VCharge,VDischarge,VStorage, VUpperLimit, ValidEmpty,       LAST_VOLTAGE_TYPE};
-
+    enum VoltageType {VIdle,VCharge,VDischarge,VStorage, VUpperLimit,                   LAST_VOLTAGE_TYPE};
 
     struct BatteryData {
         uint8_t type;
-
-        uint16_t C,Ic,Id,cells,Time;
+        uint16_t C,Ic,Id,cells;
     } __attribute__((packed));
-
 
     BatteryData battery;
     char name[PROGRAM_DATA_MAX_NAME];
@@ -46,7 +42,6 @@ struct ProgramData {
     uint16_t getVoltagePerCell(VoltageType type = VIdle) const;
     uint16_t getVoltage(VoltageType type = VIdle) const;
     uint16_t getCapacityLimit() const;
-    uint16_t getTimeLimit() const;
     int16_t getDeltaVLimit() const;
     int16_t getDeltaTLimit() const;
 
@@ -60,7 +55,6 @@ struct ProgramData {
     uint8_t printVoltageString() const;
     uint8_t printIcString() const;
     uint8_t printIdString() const;
-    uint8_t printTimeString() const;
     uint8_t printChargeString() const;
 
     void changeBattery(int direction);
@@ -68,7 +62,6 @@ struct ProgramData {
     void changeCharge(int direction);
     void changeIc(int direction);
     void changeId(int direction);
-    void changeTime(int direction);
 
     uint16_t getMaxCells() const;
     uint16_t getMaxIc() const;

@@ -15,27 +15,20 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef HARDWARE_CONFIG_GENERIC_H_
-#define HARDWARE_CONFIG_GENERIC_H_
+#ifndef VERSION_H_
+#define VERSION_H_
 
-#include "AnalogInputsTypes.h"
+#include "Utils.h"
 
-#define LCD_LINES               2
-#define LCD_COLUMNS             16
-#define LCD_BACKLIGHT_MIN       100
-#define LCD_BACKLIGHT_MAX       32000
+#define CHEALI_CHARGER_VERSION                          0.33
+#define CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION       8
+#define CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION       1
+#define CHEALI_CHARGER_EEPROM_SETTINGS_VERSION          5
 
-#define MAX_BANANCE_CELLS       6
-#define TIMER1_PERIOD           512
+#define CHEALI_CHARGER_VERSION_STRING           CHEALI_CHARGER_STRING(CHEALI_CHARGER_VERSION)
+#define CHEALI_CHARGER_EPPROM_VERSION_STRING    \
+                CHEALI_CHARGER_STRING(CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION) "."\
+                CHEALI_CHARGER_STRING(CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION) "."\
+                CHEALI_CHARGER_STRING(CHEALI_CHARGER_EEPROM_SETTINGS_VERSION) \
 
-
-
-#define ENABLE_LCD_BACKLIGHT
-#define ENABLE_FAN
-#define ENABLE_T_INTERNAL
-#define ENABLE_STACK_INFO
-#define ENABLE_SERIAL_LOG
-#define ENABLE_EXPERT_VOLTAGE_CALIBRATION
-
-
-#endif /* HARDWARE_CONFIG_GENERIC_H_ */
+#endif /* VERSION_H_ */

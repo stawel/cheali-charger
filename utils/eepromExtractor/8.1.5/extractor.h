@@ -15,27 +15,15 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef HARDWARE_CONFIG_GENERIC_H_
-#define HARDWARE_CONFIG_GENERIC_H_
+#ifndef EXTRACTOR_H_
+#define EXTRACTOR_H_
 
-#include "AnalogInputsTypes.h"
+#include "Version.h"
+#define CREATE_GET(nr1,nr2,nr3) get_ ## nr1 ## _ ## nr2 ## _ ## nr3()
 
-#define LCD_LINES               2
-#define LCD_COLUMNS             16
-#define LCD_BACKLIGHT_MIN       100
-#define LCD_BACKLIGHT_MAX       32000
-
-#define MAX_BANANCE_CELLS       6
-#define TIMER1_PERIOD           512
+//TODO:!!!
+class Extractor;
+Extractor * CREATE_GET(8, 1, 5);
 
 
-
-#define ENABLE_LCD_BACKLIGHT
-#define ENABLE_FAN
-#define ENABLE_T_INTERNAL
-#define ENABLE_STACK_INFO
-#define ENABLE_SERIAL_LOG
-#define ENABLE_EXPERT_VOLTAGE_CALIBRATION
-
-
-#endif /* HARDWARE_CONFIG_GENERIC_H_ */
+#endif //EXTRACTOR_H_

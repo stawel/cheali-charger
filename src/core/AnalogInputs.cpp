@@ -138,9 +138,9 @@ bool AnalogInputs::isConnected(Name name)
     AnalogInputs::ValueType x = getRealValue(name);
     switch(getType(name)) {
     case Current:
-        return x > ANALOG_AMP(0.050);
+        return x > CONNECTED_MIN_CURRENT;
     case Voltage:
-        return x > ANALOG_VOLT(0.6);
+        return x > CONNECTED_MIN_VOLTAGE;
     default:
         return true;
     }
@@ -241,11 +241,13 @@ bool AnalogInputs::isReversePolarity()
     if(vm > vp) vm -=  vp;
     else vm = 0;
 
-    return vm > REVERSE_POLARITY_MIN_VALUE;
+    return vm > REVERSE_POLARITY_MIN_VOLTAGE;
 }
 
 AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
 {
+    //make zero point is zero (protect false display lowest mA)
+    if (x==0) return 0;
     //TODO: do this with more points
     CalibrationPoint p0, p1;
     getCalibrationPoint(p0, name, 0);
@@ -263,6 +265,8 @@ AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
 }
 AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType y)
 {
+    //make zero point is zero
+    if (y==0) return 0;
     //TODO: do this with more points
     CalibrationPoint p0, p1;
     getCalibrationPoint(p0, name, 0);
@@ -316,9 +320,6 @@ void AnalogInputs::printRealValue(Name name, uint8_t dig)
     Type t = getType(name);
     lcdPrintAnalog(x, t, dig);
 }
-
-
-
 
 uint16_t AnalogInputs::getCharge()
 {
@@ -530,7 +531,7 @@ void AnalogInputs::setReal(Name name, ValueType real)
 
 void AnalogInputs::resetAccumulatedMeasurements()
 {
-    i_charge_ = 0;
+    //i_charge_ = 0;
     resetMeasurement();
 }
 

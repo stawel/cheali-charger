@@ -340,12 +340,20 @@ public:
         value_ = p.x;
     };
     virtual uint8_t printItem(uint8_t index) {
-        StaticMenu::printItem(index);
-        if(getBlinkIndex() != index) {
-            if(index == 0) {
-                lcdPrintUnsigned(value_, 5);
-            } else {
-                lcdPrintCurrent(AnalogInputs::getIout(), 7);
+        //TODO: hack, should be improved ... Gyuri: R138 burned.
+        if(!AnalogInputs::isConnected(AnalogInputs::Vout)) {
+            Screen::displayStrings(PSTR(" Connect Battery"),NULL);
+            if(cName_ == AnalogInputs::IdischargeValue) {
+                Discharger::powerOff();
+            }
+        } else {
+            StaticMenu::printItem(index);
+            if(getBlinkIndex() != index) {
+                if(index == 0) {
+                    lcdPrintUnsigned(value_, 5);
+                } else {
+                    lcdPrintCurrent(AnalogInputs::getIout(), 7);
+                }
             }
         }
     }
