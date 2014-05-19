@@ -64,6 +64,14 @@
 //use RAMCG battery icons for hitachi HD44780
 #define RAM_CG
 
+#define ENABLE_TIME_LIMIT
+//#define ENABLE_SCREENANIMATION
+//#define ENABLE_KNIGHTRIDEREFFECT
+//#define ENABLE_RAM_CG
+//#define ENABLE_SMOOTHCURRENTANALOG_AMP(3.000)
+//#define ENABLE_CYCLING
+//#define ENABLE_MUTEAUDIO
+
 
 //temporary
 #define SMPS_UPPERBOUND_VALUE               65535

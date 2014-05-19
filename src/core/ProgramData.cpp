@@ -324,14 +324,13 @@ void ProgramData::check()
     v = getMaxId();
     if(battery.Id > v) battery.Id = v;
 }
-
+ 
 uint16_t ProgramData::getTimeLimit() const
 {
     uint16_t tim = battery.Time;
     return tim;
-
-
 }
+
 
 uint8_t ProgramData::printTimeString() const
 {

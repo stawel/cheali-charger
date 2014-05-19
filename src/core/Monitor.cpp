@@ -105,7 +105,7 @@ Strategy::statusType Monitor::run()
         return Strategy::ERROR;
     }
     
-//TODO_NJ timelimit        
+//TODO_NJ timelimit     
     uint16_t chargeMin = Screen::getTotalChargDischargeTime();
     if (ProgramData::currentProgramData.getTimeLimit() < 1000)  //unlimited
     {
