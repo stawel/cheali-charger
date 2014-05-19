@@ -1,5 +1,5 @@
 
-set(execName "cheali-charger-${hardware}-${cheali-charger-version}")
+set(execName "${hardware}-${cheali-charger-version}-cheali-charger")
 set(sizeName "cheali-charger-${hardware}")
 
 include_directories(${CMAKE_SOURCE_DIR}/src/core/atmega32)

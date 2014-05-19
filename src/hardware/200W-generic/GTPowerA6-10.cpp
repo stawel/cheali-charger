@@ -76,16 +76,32 @@ void hardware::setFan(bool enable)
     IO::digitalWrite(FAN_PIN, enable);
 }
 
+namespace {
+    volatile uint8_t sound_ = 0;
+}
+
 void hardware::soundInterrupt()
 {
+    static uint8_t on = 0;
+    
+    uint8_t f = 0;
+    if(sound_ > 0) {
+        on++;
+    } else {
+        on = 0;
+    }
+    if(sound_ >= 10) f=4; //in imaxB6: f=8 
+    if(sound_ >= 20) f=2; //in imaxB6:f=4
+    if(sound_ >= 30) f=1; //in imaxB6:f=2
+    
+    
+    IO::digitalWrite(BUZZER_PIN, on&f);
 }
 
 void hardware::setBuzzer(uint8_t val)
 {
-    //TODO: this should be rewritten, sorry for that :D
-    //Timer2 is now used by the Timer.cpp implementation
     if (!settings.AudioBeep_) return;
-    IO::digitalWrite(BUZZER_PIN, (val&1));
+    sound_ = val;
 }
 
 void hardware::setBatteryOutput(bool enable)

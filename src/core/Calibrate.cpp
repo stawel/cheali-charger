@@ -115,7 +115,7 @@ const AnalogInputs::ValueType chargeIValues[]     PROGMEM = {CALIBRATION_CHARGE_
 const AnalogInputs::ValueType dischargeIValues[]  PROGMEM = {CALIBRATION_DISCHARGE_POINT0_mA, CALIBRATION_DISCHARGE_POINT1_mA};
 
 const char cc1[] PROGMEM = "value: ";
-const char cc2[] PROGMEM = "Iout:  ";
+const char cc2[] PROGMEM = "DATA:  ";
 
 const char * const currentMenu[] PROGMEM = {cc1,cc2, NULL};
 
@@ -352,7 +352,7 @@ public:
                 if(index == 0) {
                     lcdPrintUnsigned(value_, 5);
                 } else {
-                    lcdPrintCurrent(AnalogInputs::getIout(), 7);
+                    lcdPrintUnsigned(AnalogInputs::getIout(), 5);
                 }
             }
         }
@@ -360,8 +360,8 @@ public:
     virtual void editItem(uint8_t index, uint8_t key) {
         int dir = -1;
         if(key == BUTTON_INC) dir = 1;
-//        dir *= Keyboard::getSpeedFactor();
-        change0ToMaxSmart(value_, dir, maxValue_, 1);
+        dir *= Keyboard::getSpeedFactor();
+        change0ToMaxSmart(value_, dir, maxValue_, dir);
         setCurrentValue(cName_, value_);
     }
 };
@@ -380,9 +380,9 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
             name2 = AnalogInputs::Ismps;
             SMPS::powerOn();
         } else {
+            maxValue = DISCHARGER_UPPERBOUND_VALUE;
             name1 = AnalogInputs::IdischargeValue;
             name2 = AnalogInputs::Idischarge;
-            maxValue = DISCHARGER_UPPERBOUND_VALUE;
             Discharger::powerOn();
         }
 

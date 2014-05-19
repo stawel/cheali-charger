@@ -64,7 +64,6 @@ void lcdPrintPercentage(AnalogInputs::ValueType p, int8_t dig);
 void lcdPrint_mV(AnalogInputs::ValueType p, int8_t dig);
 void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t dig);
 
-
 void lcdPrintTime(uint16_t timeSec);
 
 #endif /* LCDPRINT_H_ */
