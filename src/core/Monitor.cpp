@@ -92,7 +92,7 @@ Strategy::statusType Monitor::run()
     }
 
     //TODO: NJ if disconnected balancer
-    if (settings.forceBalancePort_ && SMPS::isPowerOn) 
+    if (settings.forceBalancePort_ && SMPS::isPowerOn && ProgramData::currentProgramData.isLiXX()) 
         {
         bool checkBal = AnalogInputs::isConnected(AnalogInputs::Name(AnalogInputs::Vb1));
         if(!checkBal) 

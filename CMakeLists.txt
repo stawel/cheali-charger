@@ -7,10 +7,10 @@ SET(CMAKE_CXX_COMPILER avr-g++)
 Project(cheali-charger-mod)
 
 
-set(cheali-charger-version 0.33m)
+set(cheali-charger-version 0.33m_20140520)
 set(cheali-charger-eeprom-calibration-version 57)
 set(cheali-charger-eeprom-programdata-version 57)
-set(cheali-charger-eeprom-settings-version 57)
+set(cheali-charger-eeprom-settings-version 58)
 
 
 

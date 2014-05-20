@@ -39,7 +39,7 @@ const char string_NiCddV[]      PROGMEM = "NiCd -dV:";
 const char string_CDcycles[]    PROGMEM = "D/C cycles:";
 const char string_WasteTime[]   PROGMEM = "waste T.:  ";
 const char string_AudioBeep[]   PROGMEM = "beep:      ";
-const char string_Lixx_Imin[]  PROGMEM =  "Li min I/x:";
+const char string_Lixx_Imin[]  PROGMEM =  "LIx  minI=I/";
 const char string_capCoff[]     PROGMEM = "cap COff:";
 const char string_inputLow[]    PROGMEM = "input low:";
 const char string_dichLiXX[]    PROGMEM = "disch +:";
