@@ -81,16 +81,7 @@ namespace Screen{
         uint16_t v1,v2, v;
         v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
         v1 = ProgramData::currentProgramData.getVoltage(ProgramData::ValidEmpty);
-        
-        if (ProgramData::currentProgramData.isLiXX())
-        {
-            v =  AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
-        }
-        else
-        {
-            v =  AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
-        }
-
+        v =  AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
 
         if(v >= v2) return 99;
         if(v <= v1) return 0;
@@ -709,6 +700,8 @@ void Screen::displayWarningScreen()
 }
 */
 
+
+/*
 void Screen::displayCalibrationErrorScreen(uint8_t errNo)
 {
 //                                 1234567890123456
@@ -718,6 +711,7 @@ void Screen::displayCalibrationErrorScreen(uint8_t errNo)
       lcdPrintUnsigned(errNo, 2);
       Timer::delay(8000);
 }
+*/
 
 /*
 void Screen::displayWaitScreen()
@@ -792,7 +786,7 @@ uint16_t Screen::getETATime()
              kx=105; //plus 5% for balancing time (not accurate the oldiest lipo battery)
              }
 
-    if (getChargeProcent()==99) {return (0);} //no avail more calc
+    if (getChargeProcent()==99) {return (0);} //no avail more calc (or call secondary calculator)
     return (etaSecLarge*(kx-procent_));
 }
 
