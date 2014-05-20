@@ -91,6 +91,16 @@ Strategy::statusType Monitor::run()
         return Strategy::ERROR;
     }
 
+    //TODO: NJ if disconnected balancer
+    if (settings.forceBalancePort_ && SMPS::isPowerOn) 
+        {
+        bool checkBal = AnalogInputs::isConnected(AnalogInputs::Name(AnalogInputs::Vb1));
+        if(!checkBal) 
+        {
+            Program::stopReason_ = PSTR("bal disc");
+            return Strategy::ERROR;
+        }
+    }
 
     AnalogInputs::ValueType Vin = AnalogInputs::getRealValue(AnalogInputs::Vin);
     if(AnalogInputs::isConnected(AnalogInputs::Vin) && Vin < settings.inputVoltageLow_) {
