@@ -81,7 +81,7 @@ namespace Screen{
         uint16_t v1,v2, v;
         v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
         v1 = ProgramData::currentProgramData.getVoltage(ProgramData::ValidEmpty);
-        v =  AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
+        v =  AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
 
         if(v >= v2) return 99;
         if(v <= v1) return 0;
@@ -193,6 +193,7 @@ namespace Screen{
            lcdPrintSpaces(7);
            }
 #endif
+           
 #ifndef KNIGHTRIDEREFFECT  
         lcdPrintSpaces(7);
 #endif
