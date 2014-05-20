@@ -39,6 +39,7 @@ struct Settings {
     uint16_t CDcycles_;
     uint16_t WasteTime_;
     uint16_t AudioBeep_;
+    uint16_t Lixx_Imin_;
     uint16_t capCutoff_;
     AnalogInputs::ValueType inputVoltageLow_;
     AnalogInputs::ValueType dischargeOffset_LiXX_;

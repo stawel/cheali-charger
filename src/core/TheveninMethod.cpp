@@ -21,6 +21,7 @@
 #include "ProgramData.h"
 #include "Screen.h"
 #include "Utils.h"
+#include "Settings.h"
 
 namespace TheveninMethod {
     uint16_t minValue_;
@@ -88,12 +89,9 @@ void TheveninMethod::setVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueTyp
 {
     Vend_ = Vend;
     maxValue_ = i;
-    minValue_ = i/10;
+    minValue_ = i /settings.Lixx_Imin_;    //procent default=10
     //low current
-    if (i < 800) { minValue_ = i/5; }
-    if (i < 400) { minValue_ = i/4; }
-    if (i < 200) { minValue_ = i/2; }
-    if (i <= 100) { minValue_ = i; }
+    if (i < 50) { minValue_ = 50; }
     balance_ = balance;
 }
 

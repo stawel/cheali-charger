@@ -73,6 +73,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
         }
      }
 
+/*
 #ifdef CHARGE_LIXX_WITHOUT_BALANCER
     if( (AnalogInputs::getConnectedBalancePorts() == 0) && (v_balance == true) &&
           (absDiff(AnalogInputs::getRealValue(AnalogInputs::Vout),
@@ -94,7 +95,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
                   }
               }
 #endif    
-    
+*/    
     
     if(AnalogInputs::isConnected(AnalogInputs::Vbalancer) &&
             absDiff(AnalogInputs::getRealValue(AnalogInputs::Vout),

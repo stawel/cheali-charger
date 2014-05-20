@@ -39,6 +39,7 @@ const char string_NiCddV[]      PROGMEM = "NiCd -dV:";
 const char string_CDcycles[]    PROGMEM = "D/C cycles:";
 const char string_WasteTime[]   PROGMEM = "waste T.:  ";
 const char string_AudioBeep[]   PROGMEM = "beep:      ";
+const char string_Lixx_Imin[]  PROGMEM = "Li min cur%:";
 const char string_capCoff[]     PROGMEM = "cap COff:";
 const char string_inputLow[]    PROGMEM = "input low:";
 const char string_dichLiXX[]    PROGMEM = "disch +:";
@@ -69,6 +70,7 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_CDcycles,
         string_WasteTime,
         string_AudioBeep,
+        string_Lixx_Imin,
         string_capCoff,
         string_inputLow,
         string_dichLiXX,
@@ -110,7 +112,8 @@ uint8_t SettingsMenu::printItem(uint8_t index)
             case NEXT_CASE:     lcdPrintUnsigned(p_.CDcycles_, 3);      break;
             case NEXT_CASE:     lcdPrintUnsigned(p_.WasteTime_, 3);     break;
             case NEXT_CASE:     lcdPrintYesNo(p_.AudioBeep_);           break;
-            case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff_, 5);   break;
+            case NEXT_CASE:     lcdPrintPercentage(p_.Lixx_Imin_, 2);     break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.capCutoff_, 2);   break;
             case NEXT_CASE:     printVolt(p_.inputVoltageLow_);         break;
             case NEXT_CASE:     lcdPrint_mV(p_.dischargeOffset_LiXX_,6);break;
             case NEXT_CASE:     lcdPrintYesNo(p_.dischargeAggressive_LiXX_);break;
@@ -147,6 +150,7 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     change1ToMax(p_.CDcycles_, dir, 5);                     break;
         case NEXT_CASE:     change1ToMax(p_.WasteTime_, dir, 99);         break;
         case NEXT_CASE:     change0ToMax(p_.AudioBeep_, dir, 1);           break;
+        case NEXT_CASE:     changeMinI(p_.Lixx_Imin_, dir);           break;
         case NEXT_CASE:     change1ToMax(p_.capCutoff_, dir, 250);                  break;
         case NEXT_CASE:     changeInputVolt(p_.inputVoltageLow_, dir);              break;
         case NEXT_CASE:     change0ToMaxSmart(p_.dischargeOffset_LiXX_, dir, Settings::MaxDischargeOffset_LiXX);  break;
@@ -278,3 +282,10 @@ void SettingsMenu::changeBalanceError(AnalogInputs::ValueType &v, int step) {
     if(v > max) v = max;
 }
 
+void SettingsMenu::changeMinI(AnalogInputs::ValueType &v, int step) {
+    const AnalogInputs::ValueType min = 5;
+    const AnalogInputs::ValueType max = 40;
+    v+=step;
+    if(v < min) v = min;
+    if(v > max) v = max;
+}

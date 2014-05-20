@@ -279,7 +279,7 @@ void Program::run(ProgramType prog)
         switch(prog) {
         case Program::ChargeLiXX:
         case Program::ChargePb:
-            runTheveninCharge(10);   //(end current = start current / 10)
+            runTheveninCharge(settings.Lixx_Imin_);   //(end current = start current / 10)
             break;
         case Program::Balance:
             runBalance();
@@ -289,7 +289,7 @@ void Program::run(ProgramType prog)
             runDischarge();
             break;
         case Program::FastChargeLiXX:
-            runTheveninCharge(5);
+            runTheveninCharge(settings.Lixx_Imin_ / 2);
             break;
         case Program::StorageLiXX:
             runStorage(false);
