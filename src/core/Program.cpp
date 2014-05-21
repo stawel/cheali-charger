@@ -474,6 +474,7 @@ namespace {
     const char * const programNiXXMenu[] PROGMEM =
     { charge_str,
       discha_str,
+      dccycl_str,
       edBatt_str,
       NULL
     };
