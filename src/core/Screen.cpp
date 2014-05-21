@@ -271,7 +271,8 @@ void Screen::displayScreenCIVlimits()
     lcdSetCursor0_0();
     lcdPrintCharge(ProgramData::currentProgramData.getCapacityLimit(), 8);
     lcdPrintChar(' ');
-    lcdPrintCurrent(TheveninMethod::getImax(), 7);
+    //lcdPrintCurrent(TheveninMethod::getImax(), 7);  //failed value on Nixx
+    ProgramData::currentProgramData.printIcString();
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
