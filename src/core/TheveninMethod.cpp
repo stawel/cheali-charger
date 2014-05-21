@@ -89,7 +89,11 @@ void TheveninMethod::setVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueTyp
 {
     Vend_ = Vend;
     maxValue_ = i;
-    minValue_ = i /settings.Lixx_Imin_;    //procent default=10
+    //minValue_ = i /settings.Lixx_Imin_;    //default=10
+
+   //experimental  Capacity/10    
+    minValue_ = ProgramData::currentProgramData.battery.C /settings.Lixx_Imin_;
+
     //low current
     if (i < 50) { minValue_ = 50; }
     balance_ = balance;
