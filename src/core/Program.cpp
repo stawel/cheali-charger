@@ -289,7 +289,7 @@ void Program::run(ProgramType prog)
             runDischarge();
             break;
         case Program::FastChargeLiXX:
-            runTheveninCharge(settings.Lixx_Imin_ / 2);
+            runTheveninCharge(5);
             break;
         case Program::StorageLiXX:
             runStorage(false);

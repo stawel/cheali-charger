@@ -1,5 +1,14 @@
 cmake_minimum_required(VERSION 2.6)
 
+MACRO (TODAY RESULT) 
+        EXECUTE_PROCESS(COMMAND "date" "+%Y%m%d" OUTPUT_VARIABLE ${RESULT}) 
+        string(REGEX REPLACE "(..)/(..)/..(..).*" "\\1\\2\\3" ${RESULT} ${${RESULT}}) 
+ENDMACRO (TODAY) 
+
+
+
+
+
 SET(CMAKE_SYSTEM_NAME Generic)
 SET(CMAKE_C_COMPILER avr-gcc)
 SET(CMAKE_CXX_COMPILER avr-g++)
@@ -7,7 +16,11 @@ SET(CMAKE_CXX_COMPILER avr-g++)
 Project(cheali-charger-mod)
 
 
-set(cheali-charger-version 0.33m_20140520)
+  
+
+TODAY(RESULT)
+set(cheali-charger-buildnumber ${RESULT})
+set(cheali-charger-version 0.33m)
 set(cheali-charger-eeprom-calibration-version 57)
 set(cheali-charger-eeprom-programdata-version 57)
 set(cheali-charger-eeprom-settings-version 58)
@@ -24,6 +37,8 @@ if(ARM-Cortex-M0)
     add_subdirectory(src/hardware/imaxB6-clone-ARM-Cortex-M0)
 else(ARM-Cortex-M0)
     message(STATUS "target: avr")
+    message(STATUS "Compilation date = ${RESULT}") 
+
     include(avr-compiler.cmake)
     add_subdirectory(src/core/atmega32)
 
