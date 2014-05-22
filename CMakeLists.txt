@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.6)
 MACRO (TODAY RESULT) 
         EXECUTE_PROCESS(COMMAND "date" "+%Y%m%d" OUTPUT_VARIABLE ${RESULT}) 
         string(REGEX REPLACE "(..)/(..)/..(..).*" "\\1\\2\\3" ${RESULT} ${${RESULT}}) 
+        string(REGEX REPLACE "(\r?\n)+$" "" ${RESULT} ${${RESULT}}) 
 ENDMACRO (TODAY) 
 
 

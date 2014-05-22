@@ -1,5 +1,5 @@
 
-set(execName "${hardware}-${cheali-charger-version}-cheali-charger")
+set(execName "${hardware}-${cheali-charger-buildnumber}-${cheali-charger-version}")
 set(sizeName "cheali-charger-${hardware}")
 
 include_directories(${CMAKE_SOURCE_DIR}/src/core/ARM-Cortex-M0)
