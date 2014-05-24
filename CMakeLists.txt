@@ -30,6 +30,7 @@ else(ARM-Cortex-M0)
     add_subdirectory(src/hardware/Turnigy-A-6-10-200W)
     add_subdirectory(src/hardware/Turnigy-Accucel-6-50W-5A)
     add_subdirectory(src/hardware/Turnigy-Accucel-8-150W-7A)
+    add_subdirectory(src/hardware//Dual-Power-B6AC-80W-RC)
 endif(ARM-Cortex-M0)
 
 
