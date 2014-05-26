@@ -63,6 +63,9 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_VOLT(0.008), //balancerError_
         Settings::Disabled, //UART_ - disabled
         0,                   //9600
+        0,                   //calibratedState_
+        0,                   //SMPS_Upperbound_Value_
+        0                    //DISCHARGER_Upperbound_Value_
 };
 
 

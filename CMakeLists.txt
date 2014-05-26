@@ -22,9 +22,9 @@ Project(cheali-charger-mod)
 TODAY(RESULT)
 set(cheali-charger-buildnumber ${RESULT})
 set(cheali-charger-version 0.33m)
-set(cheali-charger-eeprom-calibration-version 57)
-set(cheali-charger-eeprom-programdata-version 57)
-set(cheali-charger-eeprom-settings-version 58)
+set(cheali-charger-eeprom-calibration-version 8)
+set(cheali-charger-eeprom-programdata-version 51)
+set(cheali-charger-eeprom-settings-version 56)
 
 
 

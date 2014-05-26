@@ -702,7 +702,7 @@ void Screen::displayWarningScreen()
 */
 
 
-/*
+
 void Screen::displayCalibrationErrorScreen(uint8_t errNo)
 {
 //                                 1234567890123456
@@ -712,7 +712,7 @@ void Screen::displayCalibrationErrorScreen(uint8_t errNo)
       lcdPrintUnsigned(errNo, 2);
       Timer::delay(8000);
 }
-*/
+
 
 /*
 void Screen::displayWaitScreen()

@@ -269,6 +269,11 @@ void Program::run(ProgramType prog)
     stopReason_ = PSTR("");
 
     programState_ = getProgramState(prog);  
+
+    if(settings.calibratedState_ <7) {
+      Screen::runCalibrateBeforeUse();
+    }
+
     SerialLog::powerOn();
     AnalogInputs::powerOn();
 

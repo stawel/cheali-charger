@@ -48,9 +48,11 @@ void SMPS::initialize()
 
 void SMPS::setValue(uint16_t value)
 {
-   
-   //   if(value > settings.SMPS_Upperbound_Value_) value = settings.SMPS_Upperbound_Value_;     
-    
+    if (settings.calibratedState_ >= 7) //disable limit if uncalibrated.
+    {
+      if(value > settings.SMPS_Upperbound_Value_) value = settings.SMPS_Upperbound_Value_;     
+    }
+
     value_ = SMPS::setSmoothI(value, value_);
     hardware::setChargerValue(value_);
     AnalogInputs::resetMeasurement();
@@ -89,7 +91,8 @@ void SMPS::powerOff(STATE reason)
 uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
 {
 #ifdef MAX_CURRENT_RISING 
-
+ if (settings.calibratedState_ >= 7) //enabled if  calibrated.
+    {
             oldI = calibrateValue(AnalogInputs::IsmpsValue, oldValue);
             stepValue = (AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, MAX_CURRENT_RISING))/2;
             newI = calibrateValue(AnalogInputs::IsmpsValue, value);
@@ -127,7 +130,7 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
               }
               AnalogInputs::isOutStable();    //resistance measure? 
             }
-            
+    }        
 #endif 
   return value;
 }

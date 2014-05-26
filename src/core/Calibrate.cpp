@@ -29,7 +29,7 @@
 #include "Program.h"
 #include "AnalogInputsPrivate.h"
 #include "Hardware.h"
-
+#include "Settings.h"
 namespace Calibrate {
 
 const char c1[] PROGMEM = "voltage";
@@ -164,6 +164,12 @@ const AnalogInputs::Name expertVoltageName[] PROGMEM = {
 
 #endif //ENABLE_EXPERT_VOLTAGE_CALIBRATION
 
+
+uint16_t x1=0;  //lastGood calibrationcurrent.
+
+
+
+
 /* voltage calibration */
 
 
@@ -280,6 +286,8 @@ void calibrateVoltage()
                 AnalogInputs::on_ = false;
                 if(v.runEdit(index))
                     saveVoltage(true, Vinput,pgm::read(&voltageName2[index]));
+                    //save calib status
+                    settings.calibratedState_ |= 1;  Settings::save();
                 AnalogInputs::on_ = true;
             }
         } while(true);
@@ -368,21 +376,20 @@ public:
 
 void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
 {
-    AnalogInputs::ValueType maxValue;
+    AnalogInputs::ValueType maxValue = 65535 ;
     AnalogInputs::Name name1;
     AnalogInputs::Name name2;
 
     if(testVout()) {
-
         if(charging) {
-            maxValue = SMPS_UPPERBOUND_VALUE;
             name1 = AnalogInputs::IsmpsValue;
             name2 = AnalogInputs::Ismps;
+            settings.calibratedState_   &= ~(1 << 1);  Settings::save();  //relase calibrationlimit
             SMPS::powerOn();
         } else {
-            maxValue = DISCHARGER_UPPERBOUND_VALUE;
             name1 = AnalogInputs::IdischargeValue;
             name2 = AnalogInputs::Idischarge;
+            settings.calibratedState_   &= ~(1 << 2);  Settings::save();  //relase calibrationlimit
             Discharger::powerOn();
         }
 
@@ -503,8 +510,8 @@ void run()
         START_CASE_COUNTER;
         switch(i) {
         case NEXT_CASE: calibrateVoltage(); break;
-        case NEXT_CASE: calibrateI(chargeIMenu, chargeIValues); break;
-        case NEXT_CASE: calibrateI(dischargeIMenu, dischargeIValues); break;
+        case NEXT_CASE: calibrateI(chargeIMenu, chargeIValues);  checkCalibrateIcharge(); break;
+        case NEXT_CASE: calibrateI(dischargeIMenu, dischargeIValues); checkCalibrateIdischarge(); break;
         case NEXT_CASE: calibrateTemp(AnalogInputs::Textern); break;
 #ifdef ENABLE_T_INTERNAL
         case NEXT_CASE: calibrateTemp(AnalogInputs::Tintern); break;
@@ -522,6 +529,98 @@ void run()
     } while(true);
     Program::programState_ = Program::Done;
 }
+
+
+
+
+/* Check calibrate and set .SMPS_Upperbound_Value_ */
+
+
+
+
+void checkCalibrateIcharge()
+{
+    //CHECKHARDWAREPIDVALIDCALIBRATE
+    //check 'overflow" ismpsvalue
+    
+    //check 'overflow" ismps (protect hardware PID ctrl chargers)
+        //if r53-54 failure, then calibration value too high. Protect the SMPS circiuit the overflow value.
+
+    if (!checkCalibrate(MAX_CHARGE_I,AnalogInputs::IsmpsValue))
+     {
+       Screen::displayCalibrationErrorScreen(1);
+     }
+
+    settings.SMPS_Upperbound_Value_ = x1;
+    //save calib status
+    settings.calibratedState_ = settings.calibratedState_ | 2; 
+    Settings::save();   
+
+
+    //info only
+    if (!checkCalibrate(MAX_CHARGE_I,AnalogInputs::Ismps))
+     {
+       Screen::displayCalibrationErrorScreen(2);
+     }
+}
+
+
+
+void checkCalibrateIdischarge()
+{
+    if (!checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::IdischargeValue))
+     {
+       Screen::displayCalibrationErrorScreen(3);
+     }
+   
+   settings.DISCHARGER_Upperbound_Value_ = x1;
+   //save calib status
+   settings.calibratedState_ = settings.calibratedState_  | 4;
+   Settings::save(); 
+   
+   //info only
+    if (!checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::Idischarge))
+     {
+       Screen::displayCalibrationErrorScreen(4);
+     }
+}
+
+
+
+bool checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name1)
+{   
+    uint16_t x2=0;
+    bool r=true;
+    for(uint16_t i=0; i < testCurrent; i=i++)
+    {
+        x1 = AnalogInputs::reverseCalibrateValue(name1, i);
+        if (x1 < x2)  {r=false; break;}
+        x2=x1;
+    }
+     if(x1==0) r=false;
+
+    x1=x2;    //x1 return maxcharge/discharge value before overflow
+    return r;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 } // namespace Calibrate
 
