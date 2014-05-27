@@ -80,14 +80,14 @@ Strategy::statusType Monitor::run()
     AnalogInputs::ValueType t = AnalogInputs::getRealValue(AnalogInputs::Tintern);
 
     if(t > settings.dischargeTempOff_+Settings::TempDifference) {
-        Program::stopReason_ = PSTR("intern T");
+        Program::stopReason_ = PSTR("INT T");
         return Strategy::ERROR;
     }
 #endif
 
     AnalogInputs::ValueType VMout = AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin);
     if(VoutMaxMesured_ < VMout || (VMout < VoutMinMesured_ && Discharger::isPowerOn())) {
-        Program::stopReason_ = PSTR("bat disc");
+        Program::stopReason_ = PSTR("BAT disc");
         return Strategy::ERROR;
     }
 
@@ -97,31 +97,44 @@ Strategy::statusType Monitor::run()
         bool checkBal = AnalogInputs::isConnected(AnalogInputs::Name(AnalogInputs::Vb1));
         if(!checkBal) 
         {
-            Program::stopReason_ = PSTR("bal disc");
+            Program::stopReason_ = PSTR("BAL disc.");
             return Strategy::ERROR;
         }
     }
 
+
+    //charger hardware failure (smps q2 short)
+    if (ProgramData::currentProgramData.getMaxIc() >  AnalogInputs::getRealValue(AnalogInputs::Iout)+1000) 
+    {
+        Program::stopReason_ = PSTR("HW FAILURE");
+        AnalogInputs::powerOff();   //disconnect the battery (pin12 off)
+        return Strategy::ERROR;               
+    }
+
+
+
+
     AnalogInputs::ValueType Vin = AnalogInputs::getRealValue(AnalogInputs::Vin);
     if(AnalogInputs::isConnected(AnalogInputs::Vin) && Vin < settings.inputVoltageLow_) {
-        Program::stopReason_ = PSTR("input V");
+        Program::stopReason_ = PSTR("INPUT V");
         return Strategy::ERROR;
     }
 
     AnalogInputs::ValueType c = AnalogInputs::getRealValue(AnalogInputs::Cout);
     AnalogInputs::ValueType c_limit  = ProgramData::currentProgramData.getCapacityLimit();
     if(c_limit != PROGRAM_DATA_MAX_CHARGE && c > c_limit) {
-        Program::stopReason_ = PSTR("cap COFF");
+        Program::stopReason_ = PSTR("CAP COFF");
         return Strategy::ERROR;
     }
     
 //TODO_NJ timelimit     
-    uint16_t chargeMin = Screen::getTotalChargDischargeTime();
+
     if (ProgramData::currentProgramData.getTimeLimit() < 1000)  //unlimited
     {
+        uint16_t chargeMin = Screen::getTotalChargDischargeTime();
         uint16_t time_limit  = ProgramData::currentProgramData.getTimeLimit();
         if(chargeMin >= time_limit) {
-            Program::stopReason_ = PSTR("T. limit");
+            Program::stopReason_ = PSTR("T limit");
             return Strategy::ERROR;
         }               
     }
@@ -130,7 +143,7 @@ Strategy::statusType Monitor::run()
     if(settings.externT_) {
         AnalogInputs::ValueType Textern = AnalogInputs::getRealValue(AnalogInputs::Textern);
         if(Textern > settings.externTCO_) {
-            Program::stopReason_ = PSTR("ext TCOF");
+            Program::stopReason_ = PSTR("EXT TCOF");
             return Strategy::ERROR;
         }
     }

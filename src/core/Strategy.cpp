@@ -22,6 +22,7 @@
 #include "memory.h"
 #include "Monitor.h"
 #include "PolarityCheck.h"
+#include "AnalogInputs.h"    
 
 namespace Strategy {
 
@@ -63,6 +64,7 @@ namespace Strategy {
         if(status == Strategy::ERROR) {
             Screen::powerOff();
             strategyPowerOff();
+            AnalogInputs::powerOff();   //disconnect the battery (pin12 off)
             chargingMonitorError();
             run = false;
         }
