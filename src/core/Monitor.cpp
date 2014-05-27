@@ -102,7 +102,7 @@ Strategy::statusType Monitor::run()
         }
     }
 
-
+/*
     //charger hardware failure (smps q2 short)
     if (ProgramData::currentProgramData.getMaxIc() >  AnalogInputs::getRealValue(AnalogInputs::Iout)+1000) 
     {
@@ -110,7 +110,7 @@ Strategy::statusType Monitor::run()
         AnalogInputs::powerOff();   //disconnect the battery (pin12 off)
         return Strategy::ERROR;               
     }
-
+*/
 
 
 
