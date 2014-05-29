@@ -408,7 +408,7 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
     if(type == AnalogInputs::Charge)     lcdPrintChar('h');
 }
 
-#ifdef RAM_CG
+#ifdef ENABLE_RAM_CG
 void lcdCreateCGRam()
 {
    uint8_t CGRAM[8];

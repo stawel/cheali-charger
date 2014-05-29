@@ -59,9 +59,9 @@ void ProgramDataMenu::editName()
 }
 
 void ProgramDataMenu::createName()
-{
+{ 
     p_.createName(programIndex_+1);
-    waitName();
+    waitName();   
 }
 
 void ProgramDataMenu::resetName()
@@ -91,7 +91,9 @@ uint8_t ProgramDataMenu::printItem(uint8_t index)
             case 2:    p_.printChargeString();  break;
             case 3:    p_.printIcString();      break;
             case 4:    p_.printIdString();      break;
+#ifdef ENABLE_TIME_LIMIT               
             case 5:    p_.printTimeString();    break;
+#endif            
         }
     }
     return 0;
@@ -109,9 +111,12 @@ void ProgramDataMenu::editItem(uint8_t index, uint8_t key)
     case 2: p_.changeCharge(dir);     break;
     case 3: p_.changeIc(dir);         break;
     case 4: p_.changeId(dir);         break;
-    case 5: p_.changeTime(dir);         break; 
+#ifdef ENABLE_TIME_LIMIT      
+    case 5: p_.changeTime(dir);         break;
+#endif     
     }
 }
+
 
 void ProgramDataMenu::run() {
     int8_t index;
@@ -120,9 +125,15 @@ void ProgramDataMenu::run() {
 
         if(index < 0) return;
         switch(index) {
+#ifdef ENABLE_TIME_LIMIT              
         case 6: createName(); break;
         case 7: editName(); break;
         case 8: resetName(); break;
+#else
+        case 5: createName(); break;
+        case 6: editName(); break;
+        case 7: resetName(); break;    
+#endif
         default:
             ProgramData undo(p_);
             if(!runEdit(index)) {

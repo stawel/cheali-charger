@@ -77,7 +77,7 @@ void setup()
     Timer::delay(1000); 
     eeprom::restoreDefault();
     
-#ifdef RAM_CG
+#ifdef ENABLE_RAM_CG
     lcdCreateCGRam();
 #endif  
 

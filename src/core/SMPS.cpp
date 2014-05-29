@@ -25,7 +25,7 @@
 namespace SMPS {
     STATE state_;
     uint16_t value_;
-#ifdef MAX_CURRENT_RISING    
+#ifdef ENABLE_SMOOTHCURRENT  
     uint16_t oldI, newI,stepValue;
 #endif
 
@@ -90,15 +90,15 @@ void SMPS::powerOff(STATE reason)
 
 uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
 {
-#ifdef MAX_CURRENT_RISING 
+#ifdef ENABLE_SMOOTHCURRENT 
  if (settings.calibratedState_ >= 7) //enabled if  calibrated.
     {
             oldI = calibrateValue(AnalogInputs::IsmpsValue, oldValue);
-            stepValue = (AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, MAX_CURRENT_RISING))/2;
+            stepValue = (AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, ENABLE_SMOOTHCURRENT))/2;
             newI = calibrateValue(AnalogInputs::IsmpsValue, value);
             
           //rising
-            if ((newI > oldI) && ((newI-oldI) > MAX_CURRENT_RISING))
+            if ((newI > oldI) && ((newI-oldI) > ENABLE_SMOOTHCURRENT))
             {
               lcdClear();
               lcdSetCursor0_0();
@@ -115,7 +115,7 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
             }
             
           //falling
-            if ((oldI > newI) && ((oldI-newI) > MAX_CURRENT_RISING))
+            if ((oldI > newI) && ((oldI-newI) > ENABLE_SMOOTHCURRENT))
             {
               lcdClear();
               lcdSetCursor0_0();

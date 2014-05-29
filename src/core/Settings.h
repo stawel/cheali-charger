@@ -38,7 +38,9 @@ struct Settings {
     AnalogInputs::ValueType deltaV_NiMH_, deltaV_NiCd_;
     uint16_t CDcycles_;
     uint16_t WasteTime_;
+ #ifdef ENABLE_MUTEAUDIO   
     uint16_t AudioBeep_;
+ #endif   
     uint16_t Lixx_Imin_;
     uint16_t capCutoff_;
     AnalogInputs::ValueType inputVoltageLow_;

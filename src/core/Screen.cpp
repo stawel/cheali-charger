@@ -26,7 +26,7 @@
 #include "DelayStrategy.h"
 
 
- #ifdef RAM_CG
+ #ifdef ENABLE_RAM_CG
    #define BALANCE_FULL_CELL_CHAR   2
    #define BALANCE_AVR_CELL_CHAR    1
    #define BALANCE_EMPTY_CELL_CHAR  0
@@ -44,7 +44,7 @@ namespace Screen{
     uint32_t totalChargDischargeTime_;
     Blink blink;
     bool blinkIcon;
-#ifdef  KNIGHTRIDEREFFECT   
+#ifdef  ENABLE_KNIGHTRIDEREFFECT   
     int8_t knightRiderCounter = 0;
     bool knightRiderDir;
 #endif
@@ -120,7 +120,7 @@ namespace Screen{
          blinkIcon = true;
         }
         
-#ifdef KNIGHTRIDEREFFECT        
+#ifdef ENABLE_KNIGHTRIDEREFFECT        
         if ( knightRiderDir==true) knightRiderCounter++; else knightRiderCounter--;
         if (knightRiderCounter>5) knightRiderDir=false;
         if (knightRiderCounter<=1) knightRiderDir=true;
@@ -177,7 +177,7 @@ namespace Screen{
         }
         else 
         {
-#ifdef KNIGHTRIDEREFFECT        
+#ifdef ENABLE_KNIGHTRIDEREFFECT        
            char knightRiderArrow;
            if (knightRiderDir==true) knightRiderArrow='>'; else knightRiderArrow='<';
            if ((c == 'm') || (c == ' '))
@@ -194,7 +194,7 @@ namespace Screen{
            }
 #endif
            
-#ifndef KNIGHTRIDEREFFECT  
+#ifndef ENABLE_KNIGHTRIDEREFFECT  
         lcdPrintSpaces(7);
 #endif
         }        
@@ -668,7 +668,7 @@ void Screen::displayScreenEnergy()
     
 }
 
-#ifdef SCREENANIMATION
+#ifdef ENABLE_SCREENANIMATION
 void Screen::displayAnimation()
 {
 

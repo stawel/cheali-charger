@@ -30,9 +30,8 @@ public:
     void run();
 
     void editName();
-    void createName();
+    void createName();  
     void resetName();
-
     void waitName();
 
     ProgramData p_;

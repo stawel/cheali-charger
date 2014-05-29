@@ -100,14 +100,14 @@ namespace Strategy {
                 key =  Keyboard::getPressedWithSpeed();
                 if(key == BUTTON_INC && pgm::read(&chargeScreens[screen_nr+1]) != Screen::ScreenEnd)
                     { 
-#ifdef SCREENANIMATION
+#ifdef ENABLE_SCREENANIMATION
                       Screen::displayAnimation(); 
 #endif                     
                       screen_nr++;
                     }
                 if(key == BUTTON_DEC && screen_nr > 0) 
                     {
-#ifdef SCREENANIMATION
+#ifdef ENABLE_SCREENANIMATION
                       Screen::displayAnimation();
 #endif
                       screen_nr--;

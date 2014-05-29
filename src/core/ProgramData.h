@@ -36,7 +36,10 @@ struct ProgramData {
     struct BatteryData {
         uint8_t type;
 
-        uint16_t C,Ic,Id,cells,Time;
+        uint16_t C,Ic,Id,cells;
+#ifdef ENABLE_TIME_LIMIT  
+        uint16_t Time;
+#endif
     } __attribute__((packed));
 
 
@@ -46,12 +49,17 @@ struct ProgramData {
     uint16_t getVoltagePerCell(VoltageType type = VIdle) const;
     uint16_t getVoltage(VoltageType type = VIdle) const;
     uint16_t getCapacityLimit() const;
+#ifdef ENABLE_TIME_LIMIT    
     uint16_t getTimeLimit() const;
+    uint8_t printTimeString() const;
+#endif
     int16_t getDeltaVLimit() const;
     int16_t getDeltaTLimit() const;
 
     void edit(int index);
+ 
     void createName(int index);
+
     void resetName(int index);
 
     uint8_t printBatteryString(int n) const;
@@ -60,7 +68,6 @@ struct ProgramData {
     uint8_t printVoltageString() const;
     uint8_t printIcString() const;
     uint8_t printIdString() const;
-    uint8_t printTimeString() const;
     uint8_t printChargeString() const;
 
     void changeBattery(int direction);
@@ -68,7 +75,9 @@ struct ProgramData {
     void changeCharge(int direction);
     void changeIc(int direction);
     void changeId(int direction);
+#ifdef ENABLE_TIME_LIMIT  
     void changeTime(int direction);
+#endif
 
     uint16_t getMaxCells() const;
     uint16_t getMaxIc() const;

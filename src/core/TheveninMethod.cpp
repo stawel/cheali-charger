@@ -42,13 +42,24 @@ namespace TheveninMethod {
     AnalogInputs::ValueType idebug_;
 
 
-    void setMinI(AnalogInputs::ValueType i) {    minValue_ = i; };
+    void setMinI(AnalogInputs::ValueType i) 
+    {    
+        if (i>50)   // smps lower limit is 50mA.
+        {
+            minValue_ = i; 
+        }
+        else
+        {
+            minValue_ = 50;
+        }    
+    }
 
     uint16_t getMinValueB() {
         if(bstatus_ != Strategy::COMPLETE)
             return 0;
         else return minValue_;
     }
+
     AnalogInputs::ValueType getImax()
     {
         return AnalogInputs::calibrateValue(iName_, maxValue_);

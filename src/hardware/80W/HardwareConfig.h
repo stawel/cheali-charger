@@ -30,37 +30,30 @@
 
 #define CALIBRATION_SPEED                   10
 
-
-//Lixx withoutbalancer
-//#define CHARGE_LIXX_WITHOUT_BALANCER
-
-//prevent power supply
-//#define MAX_CURRENT_RISING ANALOG_AMP(1.000)
+//prevent power supply (>50W chargers)
+//#define ENABLE_SMOOTHCURRENT ANALOG_AMP(3.000)
 
 //screenanimation
-#define SCREENANIMATION
+#define ENABLE_SCREENANIMATION
 
 //knightrider effect is ADC working
-#define KNIGHTRIDEREFFECT
+#define ENABLE_KNIGHTRIDEREFFECT
 
 //use RAMCG battery icons for hitachi HD44780
-#define RAM_CG
+#define ENABLE_RAM_CG
+
+//audio mute function
+#define ENABLE_MUTEAUDIO
+
+//extended battery info (charge time limit)
+#define ENABLE_TIME_LIMIT    
+
+//alternative battery name
+#define ENABLE_ALTERNATIVE_BATTERY_NAME
 
 
-
-
-#define ENABLE_TIME_LIMIT
-//#define ENABLE_SCREENANIMATION
-//#define ENABLE_KNIGHTRIDEREFFECT
-//#define ENABLE_RAM_CG
-//#define ENABLE_SMOOTHCURRENTANALOG_AMP(3.000)
 //#define ENABLE_CYCLING
-//#define ENABLE_MUTEAUDIO
 
-    
-//temporary
-#define SMPS_UPPERBOUND_VALUE               65535
-#define DISCHARGER_UPPERBOUND_VALUE         65535
 
 
 #endif /* HARDWARE_CONFIG_H_ */

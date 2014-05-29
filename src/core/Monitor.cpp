@@ -27,7 +27,10 @@
 #include "memory.h"
 
 //TODO_NJ
+#include "LcdPrint.h"     
 #include "Screen.h"
+#include "TheveninMethod.h"
+   
 
 namespace Monitor {
 
@@ -91,16 +94,29 @@ Strategy::statusType Monitor::run()
         return Strategy::ERROR;
     }
 
+
     //TODO: NJ if disconnected balancer
     if (settings.forceBalancePort_ && SMPS::isPowerOn && ProgramData::currentProgramData.isLiXX()) 
         {
         bool checkBal = AnalogInputs::isConnected(AnalogInputs::Name(AnalogInputs::Vb1));
         if(!checkBal) 
-        {
-            Program::stopReason_ = PSTR("BAL disc.");
+        {  
+          Program::stopReason_ =   PSTR("bal break");
             return Strategy::ERROR;
         }
     }
+
+
+    if (SMPS::isPowerOn()) 
+        {
+        
+        if(TheveninMethod::Vend_ < AnalogInputs::VoutBalancer) 
+        {  
+          Program::stopReason_ =   PSTR("OVERLOAD err");
+            return Strategy::ERROR;
+        }
+    }
+
 
 /*
     //charger hardware failure (smps q2 short)
@@ -127,8 +143,8 @@ Strategy::statusType Monitor::run()
         return Strategy::ERROR;
     }
     
+#ifdef ENABLE_TIME_LIMIT      
 //TODO_NJ timelimit     
-
     if (ProgramData::currentProgramData.getTimeLimit() < 1000)  //unlimited
     {
         uint16_t chargeMin = Screen::getTotalChargDischargeTime();
@@ -139,6 +155,7 @@ Strategy::statusType Monitor::run()
         }               
     }
 //timelimit end      
+#endif
     
     if(settings.externT_) {
         AnalogInputs::ValueType Textern = AnalogInputs::getRealValue(AnalogInputs::Textern);
