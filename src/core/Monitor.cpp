@@ -110,7 +110,7 @@ Strategy::statusType Monitor::run()
     if (SMPS::isPowerOn()) 
         {
         
-        if(TheveninMethod::Vend_ < AnalogInputs::VoutBalancer) 
+        if((TheveninMethod::Vend_ + ANALOG_VOLT(0.5)) < AnalogInputs::VoutBalancer) 
         {  
           Program::stopReason_ =   PSTR("OVERLOAD err");
             return Strategy::ERROR;

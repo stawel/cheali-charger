@@ -399,7 +399,7 @@ namespace {
         lcdPrint_P(firstLine);
         lcdSetCursor0_1();
         if(pgm::strlen(Program::stopReason_)>0) {
-            lcdPrint_P(PSTR("reason: "));
+            //lcdPrint_P(PSTR("reason: "));
             lcdPrint_P(Program::stopReason_);
         }
         lcdPrintSpaces();
@@ -415,7 +415,7 @@ void Screen::displayScreenProgramCompleted()
 
 void Screen::displayMonitorError()
 {
-    screenEnd(PSTR("Err."));
+    screenEnd(PSTR("Error:"));
 }
 
 namespace {
