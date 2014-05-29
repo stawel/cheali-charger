@@ -101,7 +101,7 @@ Strategy::statusType Monitor::run()
         bool checkBal = AnalogInputs::isConnected(AnalogInputs::Name(AnalogInputs::Vb1));
         if(!checkBal) 
         {  
-          Program::stopReason_ =   PSTR("bal break");
+          Program::stopReason_ =   PSTR("BAT break");
             return Strategy::ERROR;
         }
     }
@@ -110,7 +110,7 @@ Strategy::statusType Monitor::run()
     if (SMPS::isPowerOn()) 
         {
         
-        if((TheveninMethod::Vend_ + ANALOG_VOLT(0.5)) < AnalogInputs::VoutBalancer) 
+        if((TheveninMethod::Vend_ + ANALOG_VOLT(0.500)) < AnalogInputs::Vout) 
         {  
           Program::stopReason_ =   PSTR("OVERLOAD err");
             return Strategy::ERROR;
@@ -118,15 +118,18 @@ Strategy::statusType Monitor::run()
     }
 
 
-/*
+
     //charger hardware failure (smps q2 short)
-    if (ProgramData::currentProgramData.getMaxIc() >  AnalogInputs::getRealValue(AnalogInputs::Iout)+1000) 
+    AnalogInputs::ValueType v = ANALOG_AMP(0.000);
+    if (SMPS::isPowerOn()) {v = ProgramData::currentProgramData.getMaxIc();}
+    if (Discharger::isPowerOn()) {v = ProgramData::currentProgramData.getMaxId();}
+    if (v + ANALOG_AMP(1.000) <  AnalogInputs::Iout ) 
     {
         Program::stopReason_ = PSTR("HW FAILURE");
         AnalogInputs::powerOff();   //disconnect the battery (pin12 off)
         return Strategy::ERROR;               
     }
-*/
+
 
 
 

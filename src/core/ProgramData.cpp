@@ -130,19 +130,28 @@ void ProgramData::createName(int index)
     printChar(buf, maxSize, '/');
     printUInt(buf, maxSize, battery.cells);
 #else
- char *buf = name;
+    char *buf = name;
     uint8_t maxSize = PROGRAM_DATA_MAX_NAME;
-    //const char * type = pgm::read(&batteryString[battery.type]);
-    //printIndex(buf,maxSize, index);
-    //print_P  (buf, maxSize, type);
-    //printChar(buf, maxSize, ' ');
-    printUInt(buf, maxSize, battery.C);
-    printChar(buf, maxSize, '/');
-    printUInt(buf, maxSize, battery.cells);
-    printChar(buf, maxSize, ' ');
-    printUInt(buf, maxSize, battery.Ic);
+    const char * type = pgm::read(&batteryString[battery.type]);
+    if(ProgramData::currentProgramData.isLiXX())
+    {
+        printUInt(buf, maxSize, battery.C);
+        printChar(buf, maxSize, '/');
+        printUInt(buf, maxSize, battery.cells);
+        printChar(buf, maxSize, ' ');
+        printUInt(buf, maxSize, battery.Ic);
         printChar(buf, maxSize, 'm');
-            printChar(buf, maxSize, 'A');
+        printChar(buf, maxSize, 'A');
+    }
+    else
+    {
+        printIndex(buf,maxSize, index);
+        print_P  (buf, maxSize, type);
+        printChar(buf, maxSize, ' ');
+        printUInt(buf, maxSize, battery.C);
+        printChar(buf, maxSize, '/');
+        printUInt(buf, maxSize, battery.cells);
+}
 #endif
 }
 
