@@ -51,7 +51,8 @@ namespace TheveninMethod {
         else
         {
             minValue_ = 50;
-        }    
+        }
+        if (i == 0) minValue_ =0;    
     }
 
     uint16_t getMinValueB() {
@@ -204,6 +205,7 @@ AnalogInputs::ValueType TheveninMethod::calculateI()
     for(uint8_t c = 0; c < cells_; c++) {
         i = min(i, tBal_[c].calculateI(Vend_per_cell));
     }
+    if(i < 50) i=0;
     return i;
 }
 
