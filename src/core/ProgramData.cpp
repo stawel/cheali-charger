@@ -133,15 +133,18 @@ void ProgramData::createName(int index)
     char *buf = name;
     uint8_t maxSize = PROGRAM_DATA_MAX_NAME;
     const char * type = pgm::read(&batteryString[battery.type]);
-    if(ProgramData::currentProgramData.isLiXX())
+    if(ProgramData::currentProgramData.isLiXX())      //all lixx types
     {
         printUInt(buf, maxSize, battery.C);
         printChar(buf, maxSize, '/');
         printUInt(buf, maxSize, battery.cells);
         printChar(buf, maxSize, ' ');
         printUInt(buf, maxSize, battery.Ic);
-        printChar(buf, maxSize, 'm');
-        printChar(buf, maxSize, 'A');
+        if (battery.Ic < ANALOG_AMP(10.000))
+        {
+            printChar(buf, maxSize, 'm');
+            printChar(buf, maxSize, 'A');
+        }    
     }
     else
     {
@@ -256,7 +259,7 @@ uint8_t ProgramData::printIdString() const
 uint8_t ProgramData::printChargeString() const
 {
     if(battery.C == PROGRAM_DATA_MAX_CHARGE)
-        lcdPrint_P(PSTR("unlimit  "));
+        lcdPrint_P(PSTR("unlimited"));
     else
         lcdPrintCharge(battery.C, 7);
     return 8;
