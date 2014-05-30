@@ -1,1 +1,0 @@
-objcopy.exe -I binary %1 -O ihex %1.hex
