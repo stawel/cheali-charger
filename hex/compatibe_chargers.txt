@@ -2,7 +2,7 @@ Tested chargers
 ---------------
 
 200W-commondisplay
-Turnigy_Mega_200Wx2 V2  (need hardware modify)
+Turnigy_Mega_200Wx2 V2  (need hardware modify (two shottky diodes))
 
 200W
 Turnigy MAX200 A6-10
@@ -17,7 +17,15 @@ Turnigy Acucell 5A
 Turnigy Acucell 6A (old and new PCB)
 
 400W
-Turnigy MEGA400x2  (current control not 100% accurate)
+Turnigy MEGA400x2  (current control error:1%)
 
-imaxB6Chalus
-only Chalus modded ImaxB6 (do not use stock hardware)
+
+
+
+strong_balancer version:
+------------------------
+http://file.emiter.hu/file/Modellezes/Cheali/Tuning/HK_es_TURNIGY_TOLTO_BALANSZ_tuning_javitott.pdf
+
+http://rc-miskolc.emiter.hu/rc-miskolc/index.php?option=com_content&view=article&id=278&Itemid=205
+
+
