@@ -30,11 +30,13 @@
 
 #define CALIBRATION_SPEED           1
 
+// http://rc-miskolc.emiter.hu/rc-miskolc/index.php?option=com_content&view=article&id=278&Itemid=205
+#define IBALANCE ANALOG_AMP(0.350)  //strong balance mod by idnus
+
 #define CALIBRATION_CHARGE_POINT0_mA    50
 #define CALIBRATION_CHARGE_POINT1_mA    1000
 #define CALIBRATION_DISCHARGE_POINT0_mA 50
 #define CALIBRATION_DISCHARGE_POINT1_mA 300
-
 
 //prevent power supply (>50W chargers)
 #define ENABLE_SMOOTHCURRENT ANALOG_AMP(1.000)
@@ -46,10 +48,7 @@
 #define ENABLE_KNIGHTRIDEREFFECT
 
 //use RAMCG battery icons for hitachi HD44780
-//#define ENABLE_RAM_CG
-
-//waiting common  display relase
-#define START_DELAY_MS 5000    
+#define ENABLE_RAM_CG
 
 //audio mute function
 #define ENABLE_MUTEAUDIO
@@ -63,5 +62,6 @@
 
 //#define ENABLE_CYCLING
 
-    
+
+
 #endif /* HARDWARE_CONFIG_H_ */

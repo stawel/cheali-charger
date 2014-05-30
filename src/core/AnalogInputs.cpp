@@ -532,7 +532,7 @@ void AnalogInputs::setReal(Name name, ValueType real)
 
 void AnalogInputs::resetAccumulatedMeasurements()
 {
-    //i_charge_ = 0;
+    i_charge_ = 0;
     resetMeasurement();
 }
 

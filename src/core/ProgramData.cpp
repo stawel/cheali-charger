@@ -359,7 +359,7 @@ uint16_t ProgramData::getMaxCells() const
 
 void ProgramData::check()
 {
-    uint32_t v;
+    uint16_t v;
 
     v = getMaxCells();
     if(battery.cells > v) battery.cells = v;

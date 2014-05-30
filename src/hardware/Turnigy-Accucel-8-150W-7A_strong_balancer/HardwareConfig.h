@@ -20,13 +20,24 @@
 
 #include "HardwareConfigGeneric.h"
 
-#define MAX_CHARGE_V            ANALOG_VOLT(26.100) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(10.000)  //10A
-#define MAX_CHARGE_P            ANALOG_WATT(200.000)  //200W
+#undef  MAX_BANANCE_CELLS
+#define MAX_BANANCE_CELLS 8
 
-#define MAX_DISCHARGE_P         ANALOG_WATT(25.000)   //25W
-#define MAX_DISCHARGE_I         ANALOG_AMP(5.000)   //5A
+#define LCD_D3_PIN              22
+#define LCD_D2_PIN              21
+#define LCD_D1_PIN              20
+#define LCD_D0_PIN              19
+#define LCD_ENABLE_PIN          23
+#define LCD_RS_PIN              24
 
+#define MAX_CHARGE_V            ANALOG_VOLT(36.300)
+#define MAX_CHARGE_I            ANALOG_AMP(7.000)
+#define MAX_CHARGE_P            ANALOG_WATT(150.000)
+
+#define MAX_DISCHARGE_P         ANALOG_WATT(25.000)
+#define MAX_DISCHARGE_I         ANALOG_AMP(5.000)
+
+#define ENABLE_BALANCER_PWR
 
 #define CALIBRATION_SPEED           1
 
@@ -35,6 +46,9 @@
 #define CALIBRATION_DISCHARGE_POINT0_mA 50
 #define CALIBRATION_DISCHARGE_POINT1_mA 300
 
+
+// http://rc-miskolc.emiter.hu/rc-miskolc/index.php?option=com_content&view=article&id=278&Itemid=205
+#define IBALANCE ANALOG_AMP(0.350)  //strong balance mod by idnus
 
 //prevent power supply (>50W chargers)
 #define ENABLE_SMOOTHCURRENT ANALOG_AMP(1.000)
@@ -46,10 +60,7 @@
 #define ENABLE_KNIGHTRIDEREFFECT
 
 //use RAMCG battery icons for hitachi HD44780
-//#define ENABLE_RAM_CG
-
-//waiting common  display relase
-#define START_DELAY_MS 5000    
+#define ENABLE_RAM_CG
 
 //audio mute function
 #define ENABLE_MUTEAUDIO
@@ -63,5 +74,6 @@
 
 //#define ENABLE_CYCLING
 
-    
+
+
 #endif /* HARDWARE_CONFIG_H_ */

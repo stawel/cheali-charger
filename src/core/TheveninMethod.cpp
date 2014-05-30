@@ -52,7 +52,7 @@ namespace TheveninMethod {
         {
             minValue_ = 50;
         }
-        if (i == 0) minValue_ =0;    
+        //if (i == 0) minValue_ =0;    
     }
 
     uint16_t getMinValueB() {
@@ -113,7 +113,7 @@ void TheveninMethod::initialize(AnalogInputs::Name iName)
     bool charge = (iName == AnalogInputs::IsmpsValue);
 
     iName_ = iName;
-    minBalanceValue_ = AnalogInputs::reverseCalibrateValue(iName_, Balancer::Ibalance);
+    minBalanceValue_ = AnalogInputs::reverseCalibrateValue(iName_, IBALANCE);
     AnalogInputs::ValueType Vout = AnalogInputs::getVout();
     tVout_.init(Vout, Vend_, minValue_, charge);
 

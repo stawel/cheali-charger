@@ -36,6 +36,10 @@
 #define CALIBRATION_DISCHARGE_POINT1_mA 300
 
 
+// http://rc-miskolc.emiter.hu/rc-miskolc/index.php?option=com_content&view=article&id=278&Itemid=205
+#define IBALANCE ANALOG_AMP(0.350)  //strong balance mod by idnus
+
+
 //prevent power supply (>50W chargers)
 #define ENABLE_SMOOTHCURRENT ANALOG_AMP(1.000)
 

@@ -643,7 +643,7 @@ void Screen::displayScreenEnergy()
 
 
  
-    if (toggleTextCounter<10 && SMPS::isPowerOn() )
+    if (toggleTextCounter<10 && SMPS::isPowerOn() && procent<99 )
     { //display calculated simple ETA
        
    
@@ -787,7 +787,7 @@ uint16_t Screen::getETATime()
              kx=105; //plus 5% for balancing time (not accurate the oldiest lipo battery)
              }
 
-    if (getChargeProcent()==99) {return (0);} //no avail more calc (or call secondary calculator)
+    //if (getChargeProcent()==99) {return (0);} //no avail more calc (or call secondary calculator)
     return (etaSecLarge*(kx-procent_));
 }
 
