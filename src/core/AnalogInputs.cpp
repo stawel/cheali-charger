@@ -246,10 +246,9 @@ bool AnalogInputs::isReversePolarity()
 
 AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
 {
-    //make zero point is zero (protect false display lowest mA)
-    if (x<50) return 0;
     
     //TODO: do this with more points
+    if (x==0) return 0;
     CalibrationPoint p0, p1;
     getCalibrationPoint(p0, name, 0);
     getCalibrationPoint(p1, name, 1);
@@ -264,9 +263,9 @@ AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
     if(y < 0) y = 0;
     return y;
 }
+
 AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType y)
 {
-    //make zero point is zero
     if (y==0) return 0;
     //TODO: do this with more points
     CalibrationPoint p0, p1;
@@ -280,7 +279,7 @@ AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType
     x /= a;
     x += p0.x;
 
-    if(x < 50) x = 0;
+    if(x < 0) x = 0;
     return x;
 }
 
