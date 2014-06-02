@@ -384,12 +384,12 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
         if(charging) {
             name1 = AnalogInputs::IsmpsValue;
             name2 = AnalogInputs::Ismps;
-            settings.calibratedState_   &= ~(1 << 1);  Settings::save();  //relase calibrationlimit
+            //settings.calibratedState_   &= ~(1 << 1);  Settings::save();  //relase calibrationlimit
             SMPS::powerOn();
         } else {
             name1 = AnalogInputs::IdischargeValue;
             name2 = AnalogInputs::Idischarge;
-            settings.calibratedState_   &= ~(1 << 2);  Settings::save();  //relase calibrationlimit
+            //settings.calibratedState_   &= ~(1 << 2);  Settings::save();  //relase calibrationlimit
             Discharger::powerOn();
         }
 

@@ -17,6 +17,7 @@
 */
 #include "Hardware.h"
 #include "SMPS.h"
+#include "Program.h"    
 #include "EditMenu.h"
 #include "LcdPrint.h"
 #include "Screen.h"
@@ -48,7 +49,8 @@ void SMPS::initialize()
 
 void SMPS::setValue(uint16_t value)
 {
-    if (settings.calibratedState_ >= 7) //disable limit if uncalibrated.
+    //if (settings.calibratedState_ >= 7) //disable limit if uncalibrated.
+    if (Program::programState_ != Program::Calibration)
     {
       if(value > settings.SMPS_Upperbound_Value_) value = settings.SMPS_Upperbound_Value_;     
     }
@@ -91,7 +93,8 @@ void SMPS::powerOff(STATE reason)
 uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
 {
 #ifdef ENABLE_SMOOTHCURRENT 
- if (settings.calibratedState_ >= 7) //enabled if  calibrated.
+ //if (settings.calibratedState_ >= 7) //enabled if  calibrated.
+   if (Program::programState_ != Program::Calibration)
     {
             oldI = calibrateValue(AnalogInputs::IsmpsValue, oldValue);
             stepValue = (AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, ENABLE_SMOOTHCURRENT))/2;

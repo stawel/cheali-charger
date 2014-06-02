@@ -119,7 +119,6 @@ void ProgramData::printIndex(char *&buf, uint8_t &maxSize, uint8_t index)
 
 void ProgramData::createName(int index)
 {
-#ifndef ENABLE_ALTERNATIVE_BATTERY_NAME    
     char *buf = name;
     uint8_t maxSize = PROGRAM_DATA_MAX_NAME;
     const char * type = pgm::read(&batteryString[battery.type]);
@@ -129,33 +128,6 @@ void ProgramData::createName(int index)
     printUInt(buf, maxSize, battery.C);
     printChar(buf, maxSize, '/');
     printUInt(buf, maxSize, battery.cells);
-#else
-    char *buf = name;
-    uint8_t maxSize = PROGRAM_DATA_MAX_NAME;
-    const char * type = pgm::read(&batteryString[battery.type]);
-    if(ProgramData::currentProgramData.isLiXX())      //all lixx types
-    {
-        printUInt(buf, maxSize, battery.C);
-        printChar(buf, maxSize, '/');
-        printUInt(buf, maxSize, battery.cells);
-        printChar(buf, maxSize, ' ');
-        printUInt(buf, maxSize, battery.Ic);
-        if (battery.Ic < ANALOG_AMP(10.000))
-        {
-            printChar(buf, maxSize, 'm');
-            printChar(buf, maxSize, 'A');
-        }    
-    }
-    else
-    {
-        printIndex(buf,maxSize, index);
-        print_P  (buf, maxSize, type);
-        printChar(buf, maxSize, ' ');
-        printUInt(buf, maxSize, battery.C);
-        printChar(buf, maxSize, '/');
-        printUInt(buf, maxSize, battery.cells);
-}
-#endif
 }
 
 

@@ -16,6 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "Discharger.h"
+#include "Program.h"    
 #include "Utils.h"
 #include "Settings.h"
 
@@ -45,7 +46,8 @@ void Discharger::initialize()
 
 void Discharger::setValue(uint16_t value)
 {
-    if (settings.calibratedState_ >= 7)
+    //if (settings.calibratedState_ >= 7)
+    if (Program::programState_ != Program::Calibration)
     {
         if(value > settings.DISCHARGER_Upperbound_Value_) value = settings.DISCHARGER_Upperbound_Value_;
     }

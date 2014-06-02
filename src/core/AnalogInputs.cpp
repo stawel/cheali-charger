@@ -280,7 +280,7 @@ AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType
     x /= a;
     x += p0.x;
 
-    if(x < 0) x = 0;
+    if(x < 50) x = 0;
     return x;
 }
 

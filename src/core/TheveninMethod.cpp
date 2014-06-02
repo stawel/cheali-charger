@@ -42,18 +42,7 @@ namespace TheveninMethod {
     AnalogInputs::ValueType idebug_;
 
 
-    void setMinI(AnalogInputs::ValueType i) 
-    {    
-        if (i>50)   // smps lower limit is 50mA.
-        {
-            minValue_ = i; 
-        }
-        else
-        {
-            minValue_ = 50;
-        }
-        //if (i == 0) minValue_ =0;    
-    }
+ void setMinI(AnalogInputs::ValueType i) {    minValue_ = i; };
 
     uint16_t getMinValueB() {
         if(bstatus_ != Strategy::COMPLETE)
@@ -205,7 +194,6 @@ AnalogInputs::ValueType TheveninMethod::calculateI()
     for(uint8_t c = 0; c < cells_; c++) {
         i = min(i, tBal_[c].calculateI(Vend_per_cell));
     }
-    if(i < 50) i=0;
     return i;
 }
 
