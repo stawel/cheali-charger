@@ -271,8 +271,8 @@ void Screen::displayScreenCIVlimits()
     lcdSetCursor0_0();
     lcdPrintCharge(ProgramData::currentProgramData.getCapacityLimit(), 8);
     lcdPrintChar(' ');
-    //lcdPrintCurrent(TheveninMethod::getImax(), 7);  //failed value on Nixx
-    ProgramData::currentProgramData.printIcString();
+    lcdPrintCurrent(TheveninMethod::getImax(), 7);  //failed value on Nixx
+    //ProgramData::currentProgramData.printIcString();
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
@@ -315,7 +315,9 @@ void Screen::doSlowInterrupt()
 
    ETATime_ = getETATime();
 
-
+      //TODO_NJ
+    //for multiscreen
+    toggleTextCounter++; if (toggleTextCounter>40) toggleTextCounter=0;
 }
 
 void Screen::displayScreenTime()
@@ -607,17 +609,13 @@ void Screen::displayScreenCycles()
 }
 
 void Screen::displayScreenEnergy()
-{   //TODO_NJ
-    //this is multiscreen
-    toggleTextCounter++; if (toggleTextCounter>20) toggleTextCounter=0;
-    
+    {
     //get procent increment time
     getDeltaProcentTimeSec();
-    //TODO_NJ_end  
-    
-     
-    if (toggleTextCounter<10)
-    {
+    bool displayBlink_ = displayBlink();
+
+    if (displayBlink_ == true)
+  {
       lcdSetCursor0_0();
       printCharge();
       AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
@@ -643,7 +641,7 @@ void Screen::displayScreenEnergy()
 
 
  
-    if (toggleTextCounter<10 && SMPS::isPowerOn() && procent<99 )
+    if (displayBlink_ == true && SMPS::isPowerOn() && procent<99 )
     { //display calculated simple ETA
        
    
@@ -665,7 +663,7 @@ void Screen::displayScreenEnergy()
       lcdPrint_P(PSTR("%"));  
       lcdPrintSpaces();
     }
-    
+  
 }
 
 #ifdef ENABLE_SCREENANIMATION
@@ -808,4 +806,10 @@ void Screen::storeCycleHistoryInfo()
    }
    
   
+}
+
+
+bool Screen::displayBlink()
+{
+    if (toggleTextCounter>20) {return false;} else {return true;}
 }

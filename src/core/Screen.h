@@ -69,6 +69,7 @@ namespace Screen {
     void resetETA();
     void resetCycleHistory();
     void storeCycleHistoryInfo();
+    bool displayBlink();
 
     void displayScreenProgramCompleted();
 

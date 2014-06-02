@@ -87,15 +87,15 @@ const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PR
 
 };
 
-const char batteryString_Unknown[]  PROGMEM = "Un";
+const char batteryString_Unknown[]  PROGMEM = "Unkn";
 const char batteryString_NiCd[]     PROGMEM = "NiCd";
 const char batteryString_NiMH[]     PROGMEM = "NiMH";
-const char batteryString_Pb[]       PROGMEM = "Pb";
+const char batteryString_Pb[]       PROGMEM = "Pb  ";
 const char batteryString_Life[]     PROGMEM = "Life";
 const char batteryString_Lilo[]     PROGMEM = "Lilo";
 const char batteryString_Lipo[]     PROGMEM = "Lipo";
-const char batteryString_Li430[]    PROGMEM = "Li430";
-const char batteryString_Li435[]    PROGMEM = "Li435";
+const char batteryString_Li430[]    PROGMEM = "L430";
+const char batteryString_Li435[]    PROGMEM = "L435";
 const char batteryString_NiZn[]     PROGMEM = "NiZn";
 
 const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
@@ -128,6 +128,9 @@ void ProgramData::createName(int index)
     printUInt(buf, maxSize, battery.C);
     printChar(buf, maxSize, '/');
     printUInt(buf, maxSize, battery.cells);
+    //printChar(buf, maxSize, '-');
+    //printUInt(buf, maxSize, battery.Ic/1000);
+
 }
 
 
