@@ -319,11 +319,19 @@ uint16_t ProgramData::getMaxId() const
 
 void ProgramData::changeIc(int direction)
 {
+#ifdef ENABLE_ZERO_AMP
+    change0ToMaxSmart(battery.Ic, direction, getMaxIc());
+#else
     change100ToMaxSmart(battery.Ic, direction, getMaxIc());
+#endif    
 }
 void ProgramData::changeId(int direction)
 {
-    change100ToMaxSmart(battery.Id, direction, getMaxId());
+#ifdef ENABLE_ZERO_AMP    
+    change0ToMaxSmart(battery.Id, direction, getMaxId());
+#else
+    change100ToMaxSmart(battery.Ic, direction, getMaxId());
+#endif 
 }
 
 uint16_t ProgramData::getMaxCells() const
