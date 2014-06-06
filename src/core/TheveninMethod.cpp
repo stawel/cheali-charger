@@ -23,6 +23,7 @@
 #include "Utils.h"
 #include "Settings.h"
 
+
 namespace TheveninMethod {
     uint16_t minValue_;
     uint16_t minBalanceValue_;
@@ -42,7 +43,17 @@ namespace TheveninMethod {
     AnalogInputs::ValueType idebug_;
 
 
- void setMinI(AnalogInputs::ValueType i) {    minValue_ = i; };
+ void setMinI(AnalogInputs::ValueType i) 
+    {    
+     if (i < 50) 
+        { 
+            minValue_ = 50; 
+        }
+        else
+        {
+            minValue_ = i; 
+        }
+    }
 
     uint16_t getMinValueB() {
         if(bstatus_ != Strategy::COMPLETE)
@@ -88,11 +99,14 @@ AnalogInputs::ValueType TheveninMethod::getReadableWiresRth()
 
 void TheveninMethod::setVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueType i, bool balance)
 {
+
+     
     Vend_ = Vend;
     maxValue_ = i;
     minValue_ = i /settings.Lixx_Imin_;    //default=10
-    //low current
-    if (i < 50) { minValue_ = 50; }
+        //low current
+    if (maxValue_ < 50) { maxValue_ = 50; }
+    if (minValue_ < 50) { minValue_ = 50; }
     balance_ = balance;
 }
 
@@ -207,6 +221,8 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value
         value = getMinValueB();
     }
 
+
+
     if(oldValue != value) {
         if(Ifalling_ != Falling
             || value < oldValue
@@ -228,3 +244,4 @@ void TheveninMethod::storeOldValue(AnalogInputs::ValueType oldValue)
         tBal_[i].storeLast(vi, oldValue);
     }
 }
+

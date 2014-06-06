@@ -1,5 +1,6 @@
 #!/bin/sh
 
+cp CMakeListsall.txt CMakeLists.txt
 ./clean
 ./bootstrap
 make

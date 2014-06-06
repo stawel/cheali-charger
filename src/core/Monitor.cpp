@@ -96,12 +96,12 @@ Strategy::statusType Monitor::run()
 
 
     //TODO: NJ if disconnected balancer
-    if (settings.forceBalancePort_ && SMPS::isPowerOn && ProgramData::currentProgramData.isLiXX()) 
+    if (settings.forceBalancePort_ && SMPS::isPowerOn() && ProgramData::currentProgramData.isLiXX()) 
         {
         bool checkBal = AnalogInputs::isConnected(AnalogInputs::Name(AnalogInputs::Vb1));
         if(!checkBal) 
         {  
-          Program::stopReason_ =   PSTR("BAT break");
+          Program::stopReason_ =   PSTR("BAL break");
             return Strategy::ERROR;
         }
     }
@@ -113,7 +113,8 @@ Strategy::statusType Monitor::run()
         if((TheveninMethod::Vend_ + ANALOG_VOLT(0.500)) < AnalogInputs::Vout) 
         {  
           Program::stopReason_ =   PSTR("OVERLOAD err");
-            return Strategy::ERROR;
+          AnalogInputs::powerOff();   //disconnect the battery (pin12 off)
+          return Strategy::ERROR;
         }
     }
 

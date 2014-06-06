@@ -119,7 +119,6 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
-      Screen::ScreenCIVlimits,
       Screen::ScreenEnd
 
     };
@@ -135,7 +134,7 @@ namespace {
     const Screen::ScreenType startInfoScreens[] PROGMEM = {
       Screen::ScreenStartInfo,
       Screen::ScreenVinput,
-      Screen::ScreenTemperature,
+      Screen::ScreenTemperature,   
       Screen::ScreenEnd
     };
 
@@ -270,10 +269,6 @@ void Program::run(ProgramType prog)
 
     programState_ = getProgramState(prog);  
 
-    if(settings.calibratedState_ <7) {
-      Screen::runCalibrateBeforeUse();
-    }
-
     SerialLog::powerOn();
     AnalogInputs::powerOn();
 
@@ -284,7 +279,7 @@ void Program::run(ProgramType prog)
         switch(prog) {
         case Program::ChargeLiXX:
         case Program::ChargePb:
-            runTheveninCharge(settings.Lixx_Imin_);   //(end current = start current / 10)
+            runTheveninCharge(settings.Lixx_Imin_);   //(default end current = start current / 10)
             break;
         case Program::Balance:
             runBalance();

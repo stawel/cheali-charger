@@ -291,12 +291,14 @@ void ProgramData::changeCharge(int direction)
 
 uint16_t ProgramData::getMaxIc() const
 {
+
     uint32_t i;
-    uint16_t v;
+    uint16_t v;   
     v = getVoltage(VCharge);
     i = MAX_CHARGE_P;
     i *= ANALOG_VOLT(1);
     i /= v;
+   
 
     if(i > MAX_CHARGE_I)
         i = MAX_CHARGE_I;
@@ -306,11 +308,13 @@ uint16_t ProgramData::getMaxIc() const
 uint16_t ProgramData::getMaxId() const
 {
     uint32_t i;
+
     uint16_t v;
     v = getVoltage(VCharge);
     i = MAX_DISCHARGE_P;
     i *= ANALOG_VOLT(1);
     i /= v;
+
 
     if(i > MAX_DISCHARGE_I)
         i = MAX_DISCHARGE_I;
@@ -330,7 +334,7 @@ void ProgramData::changeId(int direction)
 #ifdef ENABLE_ZERO_AMP    
     change0ToMaxSmart(battery.Id, direction, getMaxId());
 #else
-    change100ToMaxSmart(battery.Ic, direction, getMaxId());
+    change100ToMaxSmart(battery.Id, direction, getMaxId());
 #endif 
 }
 
@@ -347,11 +351,15 @@ void ProgramData::check()
     v = getMaxCells();
     if(battery.cells > v) battery.cells = v;
 
+
+
     v = getMaxIc();
     if(battery.Ic > v) battery.Ic = v;
 
     v = getMaxId();
     if(battery.Id > v) battery.Id = v;
+
+
 }
 
 #ifdef ENABLE_TIME_LIMIT
