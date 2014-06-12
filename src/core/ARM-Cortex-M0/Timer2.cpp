@@ -18,17 +18,27 @@
 #include "Timer.h"
 #include "Hardware.h"
 
-
+extern "C" {
+#include "DrvTIMER.h"
+}
 // time measurement - measure TIMER_INTERRUPT_PERIOD_MICROSECONDS
 
-//TODO: implement
-/*ISR(TIMER2_COMP_vect)
+extern "C" {
+void TMR0_IRQHandler(void)
 {
+    TIMER0->TISR.TIF = 1;
     Timer::callback();
-}*/
+}
+}
 
 
 void Timer::initialize()
 {
     //TODO: implement
+
+    DrvTIMER_Init();
+    DrvTIMER_Open(E_TMR0, 1000000/TIMER_INTERRUPT_PERIOD_MICROSECONDS, E_PERIODIC_MODE);
+    DrvTIMER_EnableInt(E_TMR0);
+    DrvTIMER_Start(E_TMR0);             /* Start counting */
+
 }

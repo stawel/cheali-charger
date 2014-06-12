@@ -34,7 +34,7 @@ struct ProgramData {
     struct BatteryData {
         uint8_t type;
         uint16_t C,Ic,Id,cells;
-    } __attribute__((packed));
+    } ;//__attribute__((packed));
 
     BatteryData battery;
     char name[PROGRAM_DATA_MAX_NAME];

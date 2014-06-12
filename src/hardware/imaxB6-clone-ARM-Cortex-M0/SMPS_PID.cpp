@@ -62,15 +62,15 @@ void SMPS_PID::init(uint16_t Vin, uint16_t Vout)
 namespace {
     void enableChargerBuck() {
 //        Timer1::disablePWM(SMPS_VALUE_BUCK_PIN);
-        IO::digitalWrite(SMPS_VALUE_BUCK_PIN, 1);
+ //       IO::digitalWrite(SMPS_VALUE_BUCK_PIN, 1);
     }
     void disableChargerBuck() {
 //        Timer1::disablePWM(SMPS_VALUE_BUCK_PIN);
-        IO::digitalWrite(SMPS_VALUE_BUCK_PIN, 0);
+   //     IO::digitalWrite(SMPS_VALUE_BUCK_PIN, 0);
     }
     void disableChargerBoost() {
 //        Timer1::disablePWM(SMPS_VALUE_BOOST_PIN);
-        IO::digitalWrite(SMPS_VALUE_BOOST_PIN, 0);
+     //   IO::digitalWrite(SMPS_VALUE_BOOST_PIN, 0);
     }
 }
 
@@ -103,7 +103,7 @@ void hardware::setChargerOutput(bool enable)
     disableChargerBuck();
     disableChargerBoost();
     PID_enable = false;
-    IO::digitalWrite(SMPS_DISABLE_PIN, !enable);
+//    IO::digitalWrite(SMPS_DISABLE_PIN, !enable);
     if(enable) {
         SMPS_PID::init(AnalogInputs::getRealValue(AnalogInputs::Vin), AnalogInputs::getRealValue(AnalogInputs::Vout_plus_pin));
     }
@@ -113,7 +113,7 @@ void hardware::setChargerOutput(bool enable)
 void hardware::setDischargerOutput(bool enable)
 {
     if(enable) setChargerOutput(false);
-    IO::digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
+//    IO::digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
 }
 
 void hardware::setDischargerValue(uint16_t value)

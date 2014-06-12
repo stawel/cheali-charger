@@ -228,6 +228,7 @@ void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
 
 bool testVout()
 {
+	return true;
     Screen::displayStrings(PSTR("Connect Battery!"),NULL);
     do {
         if(AnalogInputs::isConnected(AnalogInputs::Vout))
@@ -341,7 +342,7 @@ public:
     };
     virtual uint8_t printItem(uint8_t index) {
         //TODO: hack, should be improved ... Gyuri: R138 burned.
-        if(!AnalogInputs::isConnected(AnalogInputs::Vout)) {
+        if(false/*!AnalogInputs::isConnected(AnalogInputs::Vout)*/) {
             Screen::displayStrings(PSTR(" Connect Battery"),NULL);
             if(cName_ == AnalogInputs::IdischargeValue) {
                 Discharger::powerOff();

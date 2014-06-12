@@ -15,27 +15,22 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef CPU_H_
-#define CPU_H_
 
+#include "Utils.h"
 extern "C" {
 #include "DrvSYS.h"
 }
+namespace Utils
+{
+    //TODO: implement, used by LCD
 
-
-
-//TODO: implement
-namespace cpu {
-    inline void init() {
-        UNLOCKREG();
-        SYSCLK->PWRCON.XTL12M_EN = 1;
-        /* Waiting for 12M Xtal stable */
-        while (DrvSYS_GetChipClockSourceStatus(E_SYS_XTL12M) != 1);
-
-        DrvSYS_SelectHCLKSource(0);
-        /* HCLK clock frequency = HCLK clock source / (HCLK_N + 1) */
-        DrvSYS_SetClockDivider(E_SYS_HCLK_DIV, 0);
+    void delayMicroseconds(uint16_t value)
+    {
+    	DrvSYS_Delay(value);
     }
-}
 
-#endif /* CPU_H_ */
+/*    void delayMilliseconds(uint16_t value)
+    {
+    }
+    */
+}

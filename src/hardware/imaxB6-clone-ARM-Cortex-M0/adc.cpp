@@ -29,6 +29,9 @@
 #include "SMPS.h"
 #include "Discharger.h"
 
+extern "C" {
+#include "DrvADC.h"
+}
 
 /* ADC - measurement:
  * uses Timer0 to trigger conversion
@@ -64,11 +67,9 @@ namespace adc {
 
 static uint8_t current_input_;
 
-void initialize()
-{
-    //TODO:implement
-    adc::reset();
-}
+void startConversion();
+
+
 
 
 
@@ -81,21 +82,21 @@ struct adc_correlation {
 };
 
 const adc_correlation order_analogInputs_on[] PROGMEM = {
-    {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_A_PIN,           AnalogInputs::Vb0_pin,         false, true},
-    {-1,                            OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin,  false, false},
-    {MADDR_V_BALANSER1,             MUX0_Z_A_PIN,           AnalogInputs::Vb1_pin,         false, true},
+    {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_D_PIN,           AnalogInputs::Vb0_pin,         false, true},
+    {-1,                            OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin, false, false},
+    {MADDR_V_BALANSER1,             MUX0_Z_D_PIN,           AnalogInputs::Vb1_pin,         false, true},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
-    {MADDR_V_BALANSER2,             MUX0_Z_A_PIN,           AnalogInputs::Vb2_pin,         false, true},
+    {MADDR_V_BALANSER2,             MUX0_Z_D_PIN,           AnalogInputs::Vb2_pin,         false, true},
     {-1,                            OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,   false, false},
-    {MADDR_V_BALANSER6,             MUX0_Z_A_PIN,           AnalogInputs::Vb6_pin,         false, false},
+    {MADDR_V_BALANSER6,             MUX0_Z_D_PIN,           AnalogInputs::Vb6_pin,         false, false},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
-    {MADDR_V_BALANSER5,             MUX0_Z_A_PIN,           AnalogInputs::Vb5_pin,         false, false},
+    {MADDR_V_BALANSER5,             MUX0_Z_D_PIN,           AnalogInputs::Vb5_pin,         false, false},
     {-1,                            DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,      false, false},
-    {MADDR_V_BALANSER4,             MUX0_Z_A_PIN,           AnalogInputs::Vb4_pin,         false, false},
+    {MADDR_V_BALANSER4,             MUX0_Z_D_PIN,           AnalogInputs::Vb4_pin,         false, false},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
-    {MADDR_V_BALANSER3,             MUX0_Z_A_PIN,           AnalogInputs::Vb3_pin,         false, false},
+    {MADDR_V_BALANSER3,             MUX0_Z_D_PIN,           AnalogInputs::Vb3_pin,         false, false},
     {-1,                            V_IN_PIN,               AnalogInputs::Vin,             false, false},
-    {MADDR_T_EXTERN,                MUX0_Z_A_PIN,           AnalogInputs::Textern,         false, false},
+    {MADDR_T_EXTERN,                MUX0_Z_D_PIN,           AnalogInputs::Textern,         false, false},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true,  false},
 };
 
@@ -112,32 +113,24 @@ inline uint8_t nextInput(uint8_t i) {
 
 
 void setADC(uint8_t pin) {
-    //TODO:implement
-}
-
-inline uint8_t getPortBAddress(int8_t address)
-{
-    //TODO:implement
-//    return (PORTB & 0x1f) | (address & 7) << 5;
+    DrvADC_SetADCChannel(1<<IO::getADCChannel(pin));
 }
 
 void setMuxAddress(int8_t address)
 {
     if(address < 0)
         return;
-    //TODO:implement
+    IO::digitalWrite(MUX_ADR0_PIN, address&1);
+    IO::digitalWrite(MUX_ADR1_PIN, address&2);
+    IO::digitalWrite(MUX_ADR2_PIN, address&4);
 }
 
 void processConversion(uint8_t input)
 {
-    uint8_t low, high;
 
-    //TODO:implement
-    //low  = ADCL;
-    //high = ADCH;
-
+	uint8_t pin = getADC(input);
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        AnalogInputs::adc_[getAIName(input)] = (high << 8) | low;
+        AnalogInputs::i_adc_[getAIName(input)] = (uint16_t)DrvADC_GetConversionData(IO::getADCChannel(pin));
     }
 }
 
@@ -146,10 +139,39 @@ void reset() {
 }
 
 
+void initialize()
+{
+
+    IO::pinMode(MUX_ADR0_PIN, OUTPUT);
+    IO::pinMode(MUX_ADR1_PIN, OUTPUT);
+    IO::pinMode(MUX_ADR2_PIN, OUTPUT);
+
+    IO::pinMode(V_IN_PIN, ANALOG_INPUT);
+    IO::pinMode(OUTPUT_VOLTAGE_MINUS_PIN, ANALOG_INPUT);
+    IO::pinMode(SMPS_CURRENT_PIN, ANALOG_INPUT);
+    IO::pinMode(OUTPUT_VOLTAGE_PLUS_PIN, ANALOG_INPUT);
+    IO::pinMode(DISCHARGE_CURRENT_PIN, ANALOG_INPUT);
+//    IO::pinMode(UART_TX_PIN, ANALOG_INPUT);
+    IO::pinMode(MUX0_Z_D_PIN, ANALOG_INPUT);
+
+
+    //TODO:rewrite!
+    DrvADC_Open(ADC_SINGLE_END, ADC_SINGLE_OP, 0, EXTERNAL_12MHZ, 25);
+
+    // enable IRQ
+    _DRVADC_CLEAR_ADC_INT_FLAG();
+    ADC->ADCR.ADIE = 1;
+    NVIC_SetPriority(ADC_IRQn, (1<<__NVIC_PRIO_BITS) - 2);
+    NVIC_EnableIRQ(ADC_IRQn);
+
+    adc::reset();
+    startConversion();
+}
+
 void finalizeMeasurement()
 {
-    AnalogInputs::adc_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
-    AnalogInputs::adc_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
+    AnalogInputs::i_adc_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
+    AnalogInputs::i_adc_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
     AnalogInputs::intterruptFinalizeMeasurement();
 }
 
@@ -167,7 +189,12 @@ void setNextMuxAddress()
 
 void timerInterrupt()
 {
+}
+
+void startConversion()
+{
     setNextMuxAddress();
+    DrvADC_StartConvert();
 }
 
 void conversionDone()
@@ -175,6 +202,8 @@ void conversionDone()
     processConversion(current_input_);
     current_input_ = nextInput(current_input_);
     setADC(getADC(current_input_));
+    startConversion();
+
     if(getTriggerPID(current_input_))
         SMPS_PID::update();
 
@@ -190,7 +219,22 @@ void conversionDone()
 {
     adc::timerInterrupt();
 }
-
+*/
+extern "C" {
+void ADC_IRQHandler(void)
+{
+    if(ADC->ADSR.ADF==1)
+    {
+        //
+        // clear the A/D conversion flag "ADC->ADSR.ADF = 1;" is not recommended.
+        //  It may clear CMPF0 and CMPF1.
+        //
+        outpw(ADC_ADSR, (inpw(ADC_ADSR)&(~0x7))|0x1);
+        adc::conversionDone();
+    }
+}
+}
+/*
 ISR(ADC_vect)
 {
     adc::conversionDone();

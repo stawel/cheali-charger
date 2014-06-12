@@ -19,70 +19,69 @@
 #define IMAXB6_PINS_H_
 
 // pin configuration
-#define MUX_ADR0_PIN            1
-#define MUX_ADR1_PIN            2
-#define MUX_ADR2_PIN            3
 
-//pin 4 - 8 - reset, Vcc, GND, XTAL2, XTAL1
+#define OUTPUT_VOLTAGE_MINUS_PIN    1 //??
+#define OUTPUT_VOLTAGE_PLUS_PIN     2 //??
 
-//pin 9 - rs232 RX
-#define BALANCER4_LOAD_PIN      9
-//pin 10 - rs232 TX
-#define UART_TX                 10
-
-#define BALANCER5_LOAD_PIN      11
-//?? fan not present - not tested
-#define FAN_PIN                 12
-#define OUTPUT_DISABLE_PIN      12
-#define SMPS_VALUE_BUCK_PIN     13
-// pin 14 - the same pin for charge and discharge
-#define DISCHARGE_VALUE_PIN     14
-#define SMPS_VALUE_BOOST_PIN    14
-#define SMPS_DISABLE_PIN        15
-#define BALANCER6_LOAD_PIN      16
-
-// pin 17,18 - VCC, GND
-#define LCD_D3_PIN              19
-#define LCD_D2_PIN              20
-#define LCD_D1_PIN              21
-#define LCD_D0_PIN              22
-#define LCD_ENABLE_PIN          23
-#define LCD_RS_PIN              24
-
-#define BALANCER1_LOAD_PIN      25
-#define BALANCER2_LOAD_PIN      26
-
-// pin 27 - 29 - AVcc, GND, AREF
-
-//pin 30 - A7
-#define DISCHARGE_DISABLE_PIN   30
-//pin 31 - A6
-#define MUX0_Z_A_PIN            A6
-#define MUX0_Z_D_PIN            31
-//pin 32 - A5
-#define BALANCER3_LOAD_PIN      32
-//pin 33 - A4
-#define V_IN_PIN                A4
-//pin 34 - A3
-#define SMPS_CURRENT_PIN        A3
-//pin 35 - A2
-#define DISCHARGE_CURRENT_PIN   A2
-//pin 36 - A1
-#define OUTPUT_VOLTAGE_MINUS_PIN    A1
-//pin 37 - A0
-#define OUTPUT_VOLTAGE_PLUS_PIN     A0
-
-// pin 38,39 - Vcc, GND
-
-#define BUTTON_STOP_PIN         40
-#define BUTTON_DEC_PIN          41
-#define BUTTON_INC_PIN          42
-#define BUTTON_START_PIN        43
-#define BUZZER_PIN              44
+#define DISCHARGE_CURRENT_PIN   3 //??
+//pin 4 - nRST (debug wire)
+//pin 5 - ACMP1_N, RXD, P3.0 - UNKNOWN
+//pin 6 - AVSS
+//pin 7 - ACMP1_P, TXD, P3.1 - UNKNOWN
+#define BUTTON_STOP_PIN         8
+#define BUTTON_DEC_PIN          9
+#define BUTTON_INC_PIN          10
+#define BUTTON_START_PIN        11
+#define BUZZER_PIN              12
 
 
+#define BALANCER5_LOAD_PIN      13 //(1+12)
+#define BALANCER4_LOAD_PIN      14 //(2+12)
+//pin 15 - XTAL2
+//pin 16 - XTAL1
+//pin 17 - VSS
+//pin 18 - LDO_CAP - (internal voltage regulator CAP)
+#define OUTPUT_DISABLE_PIN      19 //?? (7+12)
+// pin 20 - the same pin for charge and discharge
+#define DISCHARGE_VALUE_PIN     20 //(8+12)
+#define SMPS_VALUE_BOOST_PIN    20 //(8+12)
+#define BALANCER3_LOAD_PIN      21 //(9+12)
+#define BALANCER2_LOAD_PIN      22 //(10+12)
+#define BALANCER6_LOAD_PIN      23 //(11+12)
+#define BALANCER1_LOAD_PIN      24 //(12+12)
 
-//Multiplexer addresses
+
+#define MUX_ADR2_PIN            25 //(1+12+12)
+#define SMPS_VALUE_BUCK_PIN     26 //(2+12+12)
+#define SMPS_DISABLE_PIN        27//??(3+12+12)
+#define MUX_ADR1_PIN            28 //(4+12+12)
+#define MUX_ADR0_PIN            29 //(5+12+12)
+//pin 30 - P4.6, ICE_CLK (debug wire)
+//pin 31 - P4.7, ICE_DAT (debug wire)
+#define LCD_D3_PIN              32 //(8+12+12)
+#define LCD_D2_PIN              33 //(9+12+12)
+#define LCD_D1_PIN              34 //(10+12+12)
+#define LCD_D0_PIN              35 //(11+12+12)
+#define LCD_ENABLE_PIN          36 //(12+12+12)
+
+
+#define LCD_RS_PIN              37 //(1+12+12+12)
+//pin 38 - TXD, CTS0, AD2, P0.2 - UNKNOWN
+//pin 39 - ACMP3_N, RXD1, RTS1, AD1, P0.1 - UNKNOWN
+//pin 40 - ACMP3_P, TXD1, CTS1, AD0, P0.0 - UNKNOWN
+//pin 41 - VDD
+//pin 42 - AVDD
+//#define MUX0_Z_A_PIN
+#define MUX0_Z_D_PIN            43 //(7+12+12+12)
+#define DISCHARGE_DISABLE_PIN   44 //(8+12+12+12)
+#define UART_TX_PIN             45 //(9+12+12+12)
+#define V_IN_PIN                46 //(10+12+12+12)
+#define SMPS_CURRENT_PIN        47  //?? (11+12+12+12)
+//pin 48 - PWM2, P4.2 - UNKNOWN
+
+
+
+//Multiplexer addresses ??? TODO:
 #define MADDR_V_BALANSER_BATT_MINUS     0
 #define MADDR_V_BALANSER1               1
 #define MADDR_V_BALANSER2               2
@@ -91,5 +90,6 @@
 #define MADDR_V_BALANSER5               5
 #define MADDR_V_BALANSER6               6
 #define MADDR_T_EXTERN                  7
+
 
 #endif /* IMAXB6_PINS_H_ */

@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2014 Paweł Stawicki. All right reserved.
+    Copyright (C) 2013  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,21 +15,20 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#ifndef VERSION_H_
+#define VERSION_H_
 
 #include "Utils.h"
 
-namespace Utils
-{
-    //TODO: implement, used by LCD
-    void delayTenMicroseconds(uint16_t value)
-    {
-    }
+#define CHEALI_CHARGER_VERSION                          0.33
+#define CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION       1
+#define CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION       2
+#define CHEALI_CHARGER_EEPROM_SETTINGS_VERSION          3
 
-    void delayMicroseconds(uint16_t value)
-    {
-    }
+#define CHEALI_CHARGER_VERSION_STRING           CHEALI_CHARGER_STRING(CHEALI_CHARGER_VERSION)
+#define CHEALI_CHARGER_EPPROM_VERSION_STRING    \
+                CHEALI_CHARGER_STRING(CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION) "."\
+                CHEALI_CHARGER_STRING(CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION) "."\
+                CHEALI_CHARGER_STRING(CHEALI_CHARGER_EEPROM_SETTINGS_VERSION) \
 
-    void delayMilliseconds(uint16_t value)
-    {
-    }
-}
+#endif /* VERSION_H_ */
