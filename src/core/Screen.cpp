@@ -772,18 +772,14 @@ void Screen::getDeltaProcentTimeSec()
 uint16_t Screen::getETATime()
 {
     getDeltaProcentTimeSec();
-    uint8_t kx;
+    uint8_t kx=105;
  if( (AnalogInputs::getConnectedBalancePorts() == 0) && (absDiff(AnalogInputs::getRealValue(AnalogInputs::Vout),
              AnalogInputs::getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)  ))
              {
              //balancer not connected
              kx=100;
              }
-             else
-             {
-             //balancer connected
-             kx=105; //plus 5% for balancing time (not accurate the oldiest lipo battery)
-             }
+            
 
     //if (getChargeProcent()==99) {return (0);} //no avail more calc (or call secondary calculator)
     return (etaSecLarge*(kx-procent_));

@@ -315,21 +315,21 @@ void Program::run(ProgramType prog)
            }
            else
            {
-             Program::stopReason_ = PSTR("NEED BALANCER");
+            // Program::stopReason_ = PSTR("NEED BALANCER");
+            Screen::displayStrings(PSTR("NEED force bal."),  PSTR("set. --> YES"));
+            Timer::delay(2000);
              break;
            }
-          
         case Program::DCcycleNiXX:
             runDCcycle(0);   //0 = nixx
             break;
-
         case Program::DCcyclePb:
             runDCcycle(2);   //2= pb
-            break;
-            
+            break;   
         case Program::ChargeLiXX_Balance:
             runTheveninChargeBalance();
-            break;           
+            break;
+
         default:
             //TODO:
             Screen::runNotImplemented();
@@ -396,11 +396,20 @@ Strategy::statusType Program::runCycleDischargeCommon(uint8_t prog1)
   Strategy::statusType status;
 
   if(prog1 == 1)  //1 is lixx
-  { status = runDischarge(true);}
-  return status;
+  { 
+    status = runDischarge(true);
+  }
 
   if(prog1 == 0)  //0 nixx
-  { status = runNiXXDischarge(true);}
+  { 
+    status = runNiXXDischarge(true);
+  }
+
+  if(prog1 == 2)  //2 pb
+  { 
+    status = runDischarge(true);
+  }
+
   return status;
 }
 
@@ -416,18 +425,16 @@ Strategy::statusType Program::runCycleChargeCommon(uint8_t prog1, bool mode)
              if(prog1 == 0)     //nixx
               { status =  runDeltaCharge(mode); } //independent exit  
              if(prog1 == 2)  //pb
-              { status =  runTheveninCharge(settings.Lixx_Imin_,mode);}
+              { status =  runTheveninCharge(settings.Lixx_Imin_, mode); }  //independent exit  
            } 
            else 
            {
               if(prog1 == 1)
               { status = runTheveninChargeBalance(); } //normal exit point
-              
                if(prog1 == 0)   //nixx
               { status = runDeltaCharge();  } //normal exit point
-
               if(prog1 == 2)  //pb
-              { status =  runTheveninCharge(settings.Lixx_Imin_);}
+              { status =  runTheveninCharge(settings.Lixx_Imin_); }   //normal exit point
            }
 
  return status;
@@ -522,8 +529,8 @@ namespace {
     const Program::ProgramType programPbMenuType[] PROGMEM =
     { Program::ChargePb,
       Program::DischargePb,
-      Program::FastChargeLiXX,   //TODO: check
-      Program::DCcycleLiXX,      //TODO: check
+      Program::FastChargePb,   //TODO: check
+      Program::DCcyclePb,      //TODO: check
       Program::EditBattery
     };
 
