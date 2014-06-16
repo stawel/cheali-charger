@@ -32,9 +32,12 @@ namespace Strategy {
     void chargingComplete() {
         lcdClear();
         Screen::displayScreenProgramCompleted();
+#ifndef ENABLE_T_INTERNAL
+        hardware::setBatteryOutput(false); // ADD THIS LINE TO TURN OFF THE FAN
+#endif
         Buzzer::soundProgramComplete();
         waitButtonPressed();
-        Buzzer::soundOff();
+        Buzzer::soundOff(); 
     }
 
     void chargingMonitorError() {

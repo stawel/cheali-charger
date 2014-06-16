@@ -230,6 +230,7 @@ Program::ProgramState getProgramState(Program::ProgramType prog)
     switch(prog) {
     case Program::ChargeLiXX:
     case Program::ChargePb:
+    case Program::FastChargePb:
     case Program::FastChargeLiXX:
     case Program::ChargeNiXX:
         retu = Program::Charging;
@@ -243,6 +244,7 @@ Program::ProgramState getProgramState(Program::ProgramType prog)
         retu = Program::Discharging;
         break;
     case Program::DCcycleLiXX:
+    case Program::DCcyclePb:
          retu = Program::DischargingCharging;
         break;
     case Program::DCcycleNiXX:
@@ -289,6 +291,7 @@ void Program::run(ProgramType prog)
             runDischarge();
             break;
         case Program::FastChargeLiXX:
+        case Program::FastChargePb:
             runTheveninCharge(5);
             break;
         case Program::StorageLiXX:
@@ -305,11 +308,23 @@ void Program::run(ProgramType prog)
             break;
            
         case Program::DCcycleLiXX:
-            runDCcycle(true);
-            break;
+            if (settings.forceBalancePort_)
+            {
+              runDCcycle(1);  //1= lixx
+              break;
+           }
+           else
+           {
+             Program::stopReason_ = PSTR("NEED BALANCER");
+             break;
+           }
           
         case Program::DCcycleNiXX:
-            runDCcycle(false);
+            runDCcycle(0);   //0 = nixx
+            break;
+
+        case Program::DCcyclePb:
+            runDCcycle(2);   //2= pb
             break;
             
         case Program::ChargeLiXX_Balance:
@@ -330,7 +345,7 @@ uint8_t Program::currentCycle() { return tempCDcycles_;}
 
 char Program::currentCycleMode() { return cycleMode;}
 
-Strategy::statusType Program::runDCcycle(bool prog1)
+Strategy::statusType Program::runDCcycle(uint8_t prog1)
 { //TODO_NJ
     Strategy::statusType status;
     
@@ -376,36 +391,43 @@ Strategy::statusType Program::runDCcycle(bool prog1)
 }
 
 
-Strategy::statusType Program::runCycleDischargeCommon(bool prog1)
+Strategy::statusType Program::runCycleDischargeCommon(uint8_t prog1)
 {
   Strategy::statusType status;
 
-  if(prog1)  //1 is lixx
+  if(prog1 == 1)  //1 is lixx
   { status = runDischarge(true);}
-  else
+  return status;
+
+  if(prog1 == 0)  //0 nixx
   { status = runNiXXDischarge(true);}
   return status;
 }
 
-Strategy::statusType Program::runCycleChargeCommon(bool prog1, bool mode)
+Strategy::statusType Program::runCycleChargeCommon(uint8_t prog1, bool mode)
 {
  Strategy::statusType status;
  
-          //lastcharge? (no need wait at end?)
+ //lastcharge? (no need wait at end?)
           if (tempCDcycles_ != settings.CDcycles_)
            {
-              if(prog1)  //1 is lixx  //0 is nixx
+              if(prog1 == 1)  //1 is lixx  //0 is nixx
               { status =  runTheveninChargeBalance(mode); } //independent exit
-              else
+             if(prog1 == 0)     //nixx
               { status =  runDeltaCharge(mode); } //independent exit  
+             if(prog1 == 2)  //pb
+              { status =  runTheveninCharge(settings.Lixx_Imin_,mode);}
            } 
            else 
            {
-              if(prog1) 
+              if(prog1 == 1)
               { status = runTheveninChargeBalance(); } //normal exit point
               
-              else
+               if(prog1 == 0)   //nixx
               { status = runDeltaCharge();  } //normal exit point
+
+              if(prog1 == 2)  //pb
+              { status =  runTheveninCharge(settings.Lixx_Imin_);}
            }
 
  return status;
@@ -467,8 +489,8 @@ namespace {
       Program::ChargeLiXX_Balance,
       Program::Balance,
       Program::DischargeLiXX,
-      Program::FastChargeLiXX,
-      Program::DCcycleLiXX,  
+      Program::FastChargeLiXX,   //TODO: check
+      Program::DCcycleLiXX,      //TODO: check
       Program::EditBattery
     };
 

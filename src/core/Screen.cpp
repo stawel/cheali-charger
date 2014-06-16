@@ -69,7 +69,7 @@ namespace Screen{
     bool balance_on;
     bool on_;
 
-    const char programString[] PROGMEM = "ChCBBlDiFCStSBChDiCYcyChDiEB";
+    const char programString[] PROGMEM = "ChCBBlDiFCStSBChDiCYcyChDiFPCPEB";
     void printProgram2chars(Program::ProgramType prog)
     {
         STATIC_ASSERT(sizeOfArray(programString)-1 == Program::LAST_PROGRAM_TYPE*2);
