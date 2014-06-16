@@ -57,7 +57,7 @@
 #define ENABLE_TIME_LIMIT    
 
 //alternative battery name
-#define ENABLE_ALTERNATIVE_BATTERY_NAME
+//#define ENABLE_ALTERNATIVE_BATTERY_NAME
 
 
 //#define ENABLE_CYCLING

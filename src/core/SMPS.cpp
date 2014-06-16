@@ -87,6 +87,9 @@ void SMPS::powerOff(STATE reason)
     //reset rising value
     value_ = 0;
     hardware::setChargerOutput(false);
+#ifndef ENABLE_FAN
+    hardware::setBatteryOutput(false); // ADD THIS LINE TO TURN OFF THE FAN
+#endif
     state_ = reason;
 }
 

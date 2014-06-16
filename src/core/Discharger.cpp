@@ -104,6 +104,9 @@ void Discharger::powerOff(STATE reason)
 
     setValue(0);
     hardware::setDischargerOutput(false);
+#ifndef ENABLE_FAN
+    hardware::setBatteryOutput(false); // ADD THIS LINE TO TURN OFF THE FAN
+#endif 
     state_ = reason;
 }
 

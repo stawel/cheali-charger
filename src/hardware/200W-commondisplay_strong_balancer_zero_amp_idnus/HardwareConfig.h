@@ -62,7 +62,7 @@
 #define ENABLE_TIME_LIMIT    
 
 //alternative battery name
-#define ENABLE_ALTERNATIVE_BATTERY_NAME
+//#define ENABLE_ALTERNATIVE_BATTERY_NAME
 
 //enable Ic and Id from 0
 #define ENABLE_ZERO_AMP

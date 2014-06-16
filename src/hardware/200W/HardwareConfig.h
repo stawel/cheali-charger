@@ -57,7 +57,10 @@
 #define ENABLE_TIME_LIMIT    
 
 //alternative battery name
-#define ENABLE_ALTERNATIVE_BATTERY_NAME
+//#define ENABLE_ALTERNATIVE_BATTERY_NAME
+
+//common external-temp and TX pin.
+//#define ENABLE_COMMON_UART_EXT_TEMP_PIN
 
 
 //#define ENABLE_CYCLING

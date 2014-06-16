@@ -20,8 +20,8 @@
 
 #include "Utils.h"
 
-//#define CHEALI_CHARGER_BUILDNUMBER                      20140606
-#define CHEALI_CHARGER_VERSION                          0.33m_20140606
+//#define CHEALI_CHARGER_BUILDNUMBER                      20140616
+#define CHEALI_CHARGER_VERSION                          0.33m_20140616
 #define CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION       8
 #define CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION       51
 #define CHEALI_CHARGER_EEPROM_SETTINGS_VERSION          56

@@ -52,8 +52,8 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
-      Screen::ScreenCIVlimits,
       Screen::ScreenCycles,
+      Screen::ScreenCIVlimits,
       Screen::ScreenEnd
     };
 
@@ -66,8 +66,8 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
-      Screen::ScreenCIVlimits,
       Screen::ScreenCycles,
+      Screen::ScreenCIVlimits,
       Screen::ScreenEnd
     };
 
@@ -82,8 +82,8 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
-      Screen::ScreenCIVlimits,
       Screen::ScreenCycles,
+      Screen::ScreenCIVlimits,
       Screen::ScreenEnd
 
     };
@@ -104,8 +104,8 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
-      Screen::ScreenCIVlimits,
       Screen::ScreenCycles,
+      Screen::ScreenCIVlimits,
       Screen::ScreenEnd
 
     };
@@ -457,6 +457,7 @@ namespace {
       balanc_str,
       discha_str,
       fastCh_str,
+      dccycl_str,
       edBatt_str,
       NULL
     };
@@ -467,6 +468,7 @@ namespace {
       Program::Balance,
       Program::DischargeLiXX,
       Program::FastChargeLiXX,
+      Program::DCcycleLiXX,  
       Program::EditBattery
     };
 
@@ -489,6 +491,8 @@ namespace {
     const char * const programPbMenu[] PROGMEM =
     { charge_str,
       discha_str,
+      fastCh_str,
+      dccycl_str,
       edBatt_str,
       NULL
     };
@@ -496,6 +500,8 @@ namespace {
     const Program::ProgramType programPbMenuType[] PROGMEM =
     { Program::ChargePb,
       Program::DischargePb,
+      Program::FastChargeLiXX,   //TODO: check
+      Program::DCcycleLiXX,      //TODO: check
       Program::EditBattery
     };
 
