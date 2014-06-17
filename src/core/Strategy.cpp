@@ -103,6 +103,10 @@ namespace Strategy {
                 key =  Keyboard::getPressedWithSpeed();
                 if(key == BUTTON_INC && pgm::read(&chargeScreens[screen_nr+1]) != Screen::ScreenEnd)
                     { 
+#ifndef ENABLE_T_INTERNAL //TODO: after program complete, reconnect battery but wrong cell measurement if disconnected
+        if(status == Strategy::COMPLETE) {hardware::setBatteryOutput(true); }  // ADD THIS LINE TO TURN OFF THE FAN
+#endif
+
 #ifdef ENABLE_SCREENANIMATION
                       Screen::displayAnimation(); 
 #endif                     
