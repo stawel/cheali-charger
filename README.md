@@ -6,20 +6,42 @@ Plus Features
 
  - Simple Estimated Time for Accomplishment (TESTING)
  - Powerscren (Watt and Watthour)
- - cycle discharge/wait/charge program for Nixx and Lixx
+ - cycle discharge/wait/charge program for Nixx and Lixx etc.
  - cyclehistory screen
  - Lixx charge without balancer-port
  - time limit per battery plus Unlimited time.
  - Unknown battery voltage stepping 0.1V always.
  - smooth current rising/falling (protect the power supply voltage-breakdown) (limited current riseing/falling speed: 3A/sec(>50W chargers))
  - graphical balance status (compiler optionnally)
- - Li-Ion 4.35V supported
+ - Li-Ion 4.30V and 4.35V supported
  - simple charging-percent meter
+  - beep on/off
+  - fan off this program end (50W chargers). (Thanks Pawel)
+  - discharge-charge cycle Pb, NiZn, Lixx and Nixx batteries. (1S lixx not working without balancer connect, sorry)
+  - minimal I adjustable: 1/5*Ic to 1/50*Ic (higher value, longer charging time, but fully charged battery)
+  - overload prevent hadware failure (partially protect for failure pump-charge FETs)
+  -  > 200W uart-mode disable ext-temperature (for common wire ext-temp and serial Tx. NOT TESTED)
+  - minimal adjustable current 100mA
+  - Minimal internal current is 50mA (hardware limit)
+  - sense balancer connector breaking
+  - balancer battery icons is one screen for 6 and 8 cell chargers
+  - restore calibration overflow routines.
+  - calculated and stored maxvalue limits.
+  - Hex-name and startup-name with current date.
+  - update logview ini file
+
+
+
+manuals:
+--------
+
+English:   https://docs.google.com/document/d/1Nv2vBXbWo6qE2U9rXZfzVDTfWu3j778flImbFJp74tk/edit
+Hungarian: https://drive.google.com/?authuser=0&usp=docs_web#folders/0B1tSgWAfLbkBT0NIMWJYSnoxVVE
 
 sample screens: http://www.youtube.com/watch?v=YQxE5fpoIbU
 
 
-stong_balancer modding info: 
+strong_balancer modding info: 
 ----------------------------
 http://file.emiter.hu/file/Modellezes/Cheali/Tuning/HK_es_TURNIGY_TOLTO_BALANSZ_tuning_javitott.pdf
 

@@ -4,9 +4,7 @@ high priority:
   
 
 low priority:
-- power current-supply
-- hot-wire support (foam cutter).
-- Pb battery desulfator.
+
 
 
 
@@ -16,12 +14,23 @@ ready:
 
 -time limit per battery plus Unlimited time.   
 -Powerscreen
--loudness sound at the program complete
 -valid chargeprercent
 -lipo charge/discharge without balancer port
 -Unknown battery voltage stepping 0.1V always.
 -smooth current rising (protect the power supply voltage-breakdown) (limited current rise speed: +1A/s  (2x500msec)
 -graphical balance status
--wire resistance minimize value
 -simply ETA
--audio off
+-beep on/off
+-fan off this program end (50W chargers). (Thanks Pawel)
+-discharge-charge cycle Pb, NiZn, Lixx and Nixx batteries. (1S lixx not working without balancer connect, sorry)
+-minimal I adjustable: 1/5*Ic to 1/50*Ic (higher value, longer charging time, but fully charged battery)
+-overload prevent hadware failure (partially protect for failure pump-charge FETs)
+- > 200W uart-mode disable ext-temperature (for common wire ext-temp and serial Tx. NOT TESTED)
+-minimal adjustable current 100mA
+-Minimal internal current is 50mA (hardware limit)
+-sense balancer connector breaking
+-balancer battery icons is one screen for 6 and 8 cell chargers
+-restore calibration overflow routines.
+-calculated and stored maxvalue limits.
+-Hex-name and startup-name with current date.
+-update logview ini file

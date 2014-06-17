@@ -584,9 +584,9 @@ void Screen::displayScreenCycles()
 {
    uint8_t c;
    //multiscreen (5x2 cyclenumber, D/C, timeD/timeC, mAhDC/mAhC)
-   toggleTextCounter++; if (toggleTextCounter>5) toggleTextCounter=0;
+   toggleTextCounter++; if (toggleTextCounter>3) toggleTextCounter=0;
   
-   if ( toggleTextCounter==5)
+   if ( toggleTextCounter==3)
    { 
       toggleTextCycleCounter_++ ;
      if (toggleTextCycleCounter_ >  Program::currentCycle()) toggleTextCycleCounter_ = 1;  
