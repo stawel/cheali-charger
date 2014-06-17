@@ -41,18 +41,23 @@ Hungarian: https://drive.google.com/?authuser=0&usp=docs_web#folders/0B1tSgWAfLb
 sample screens: http://www.youtube.com/watch?v=YQxE5fpoIbU
 
 
+
+hex/idnus folder for testing. NOT BURN YOUR CHARGER,
 strong_balancer modding info: 
 ----------------------------
 http://file.emiter.hu/file/Modellezes/Cheali/Tuning/HK_es_TURNIGY_TOLTO_BALANSZ_tuning_javitott.pdf
-
 http://rc-miskolc.emiter.hu/rc-miskolc/index.php?option=com_content&view=article&id=278&Itemid=205
-
-
-
 
 plus zero_amp option: 
 --------------------
 adjustable current from 0 (for testing)
+
+
+
+
+
+
+
 
 
 
