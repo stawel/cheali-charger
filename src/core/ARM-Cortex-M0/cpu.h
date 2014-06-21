@@ -22,11 +22,13 @@ extern "C" {
 #include "DrvSYS.h"
 }
 
-
+//TODO: move to cpu.cpp
+uint8_t __iCliRetVal_count;
 
 //TODO: implement
 namespace cpu {
     inline void init() {
+    	__iCliRetVal_count = 0;
         UNLOCKREG();
         SYSCLK->PWRCON.XTL12M_EN = 1;
         /* Waiting for 12M Xtal stable */
