@@ -23,7 +23,9 @@ extern "C" {
 #include "DrvGPIO.h"
 }
 
-#define OUTPUT E_IO_OUTPUT
+//#define OUTPUT E_IO_OUTPUT
+#define OUTPUT E_IO_QUASI
+//#define OUTPUT_QUASI E_IO_QUASI
 #define INPUT E_IO_QUASI
 #define ANALOG_INPUT 200
 #define HIGH 1

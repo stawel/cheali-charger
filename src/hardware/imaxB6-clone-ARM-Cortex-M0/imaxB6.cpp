@@ -58,18 +58,18 @@ void hardware::initialize()
 	IO::pinMode(BUTTON_INC_PIN, INPUT);
 	IO::pinMode(BUTTON_START_PIN, INPUT);
     IO::pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
+    IO::pinMode(BUZZER_PIN, OUTPUT);
 
 /*    IO::pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
     IO::pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
-    IO::pinMode(BUZZER_PIN, OUTPUT);
 
     IO::pinMode(SMPS_VALUE_BUCK_PIN, OUTPUT);
     IO::pinMode(SMPS_VALUE_BOOST_PIN, OUTPUT);
     IO::pinMode(SMPS_DISABLE_PIN, OUTPUT);
 */
     setBatteryOutput(false);
-//    setBuzzer(0);
+    setBuzzer(0);
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
     adc::initialize();
@@ -81,7 +81,9 @@ void hardware::soundInterrupt()
 {}
 
 void hardware::setBuzzer(uint8_t val)
-{}
+{
+	IO::digitalWrite(BUZZER_PIN, (val&1));
+}
 
 void hardware::setBatteryOutput(bool enable)
 {
