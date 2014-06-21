@@ -51,6 +51,7 @@ void write_impl_less(void * addressE, const void * data, int size)
 
 void write_impl(void * addressE, const void * data, int size)
 {
+    UNLOCKREG();
 	DrvFMC_EnableISP();
 
 	while(size > 0) {
@@ -70,7 +71,7 @@ void write_impl(void * addressE, const void * data, int size)
 
 	/* Disable ISP function */
 	DrvFMC_DisableISP();
-
+	LOCKREG();
 }
 
 } // namespace eeprom

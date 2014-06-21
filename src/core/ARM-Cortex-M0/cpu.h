@@ -39,7 +39,8 @@ namespace cpu {
         DrvSYS_SetClockDivider(E_SYS_HCLK_DIV, 0);
         DrvSYS_SetPLLMode(0);
         while (DrvSYS_GetChipClockSourceStatus(E_SYS_PLL) != 1);
-        DrvSYS_SelectHCLKSource(2); //2 - PLL
+//        DrvSYS_SelectHCLKSource(2); //2 - PLL
+        DrvSYS_SelectHCLKSource(0); //0 - External 12M clock
         /* HCLK clock frequency = HCLK clock source / (HCLK_N + 1) */
 
         LOCKREG(x)
