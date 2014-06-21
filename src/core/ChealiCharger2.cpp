@@ -31,12 +31,24 @@
 #include "SerialLog.h"
 #include "eeprom.h"
 #include "cpu.h"
+#include "Timer.h"
 
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
 {string_options, NULL };
 
 MainMenu mainMenu(progmemMainMenu, 1);
+
+void clkInfo() {
+	while(1) {
+		lcdSetCursor0_0();
+		lcdPrintUnsigned(Timer::getMiliseconds()/1000,8);
+		lcdPrintUnsigned(SYSCLK->CLKSEL0.HCLK_S, 8);
+		lcdSetCursor0_1();
+		lcdPrintUnsigned(DrvSYS_GetPLLClockFreq()/10000,8);
+		lcdPrintUnsigned(DrvSYS_GetHCLKFreq()/10000, 8);
+	}
+}
 
 void loop()
 {
@@ -71,6 +83,8 @@ void setup()
                            PSTR("    ver: "  CHEALI_CHARGER_VERSION_STRING));
     Timer::delay(1000);
     eeprom::restoreDefault();
+
+    //	clkInfo();
 }
 
 

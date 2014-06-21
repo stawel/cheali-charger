@@ -50,16 +50,16 @@ void hardware::initialize()
     IO::pinMode(BALANCER4_LOAD_PIN, OUTPUT);
     IO::pinMode(BALANCER5_LOAD_PIN, OUTPUT);
     IO::pinMode(BALANCER6_LOAD_PIN, OUTPUT);
-    setBalancer(1);
+    setBalancer(0);
 
 
 	IO::pinMode(BUTTON_STOP_PIN, INPUT);
 	IO::pinMode(BUTTON_DEC_PIN, INPUT);
 	IO::pinMode(BUTTON_INC_PIN, INPUT);
 	IO::pinMode(BUTTON_START_PIN, INPUT);
- /*   IO::pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
+    IO::pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
 
-    IO::pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
+/*    IO::pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
     IO::pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
     IO::pinMode(BUZZER_PIN, OUTPUT);
@@ -68,7 +68,7 @@ void hardware::initialize()
     IO::pinMode(SMPS_VALUE_BOOST_PIN, OUTPUT);
     IO::pinMode(SMPS_DISABLE_PIN, OUTPUT);
 */
-//    setBatteryOutput(false);
+    setBatteryOutput(false);
 //    setBuzzer(0);
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
@@ -85,7 +85,7 @@ void hardware::setBuzzer(uint8_t val)
 
 void hardware::setBatteryOutput(bool enable)
 {
-//    IO::digitalWrite(OUTPUT_DISABLE_PIN, !enable);
+    IO::digitalWrite(OUTPUT_DISABLE_PIN, !enable);
 }
 
 void hardware::setBalancer(uint8_t v)

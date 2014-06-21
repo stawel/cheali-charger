@@ -163,9 +163,9 @@
     <File name="cmsis_lib/Source/Driver" path="" type="2"/>
     <File name="core/Version.cpp" path="../src/core/Version.cpp" type="1"/>
     <File name="core/Utils.h" path="../src/core/Utils.h" type="1"/>
+    <File name="core/StaticMenu.h" path="../src/core/StaticMenu.h" type="1"/>
     <File name="core/Blink.h" path="../src/core/Blink.h" type="1"/>
     <File name="core/SimpleChargeStrategy.h" path="../src/core/SimpleChargeStrategy.h" type="1"/>
-    <File name="core/StaticMenu.h" path="../src/core/StaticMenu.h" type="1"/>
     <File name="core/AnalogInputsTypes.h" path="../src/core/AnalogInputsTypes.h" type="1"/>
     <File name="core/eeprom.h" path="../src/core/eeprom.h" type="1"/>
     <File name="hardware/adc.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/adc.h" type="1"/>

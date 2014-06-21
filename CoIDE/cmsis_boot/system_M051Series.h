@@ -23,7 +23,8 @@
 //! Define SYSCLK
 //
 //*****************************************************************************
-#define __XTAL      (12000000UL)
+//TODO: stawel _XTAL set somewhere else
+#define __XTAL      (16000000UL)
 #define __IRC22M    (22118400UL)
 #define __IRC10K    (10000UL)
 
