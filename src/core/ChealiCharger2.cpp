@@ -31,7 +31,10 @@
 #include "SerialLog.h"
 #include "eeprom.h"
 #include "cpu.h"
-#include "Timer.h"
+
+extern "C" {
+#include "M051Series.h"
+}
 
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
@@ -39,14 +42,21 @@ const char * const progmemMainMenu[] PROGMEM =
 
 MainMenu mainMenu(progmemMainMenu, 1);
 
+namespace Utils {
+void Delay(uint32_t x);
+}
+
 void clkInfo() {
 	while(1) {
 		lcdSetCursor0_0();
+		uint32_t t = Timer::getMiliseconds();
+		Utils::Delay(10000000);
+		t = Timer::getMiliseconds() - t;
 		lcdPrintUnsigned(Timer::getMiliseconds()/1000,8);
-		lcdPrintUnsigned(SYSCLK->CLKSEL0.HCLK_S, 8);
+		lcdPrintUnsigned(t, 8);
 		lcdSetCursor0_1();
-		lcdPrintUnsigned(DrvSYS_GetPLLClockFreq()/10000,8);
-		lcdPrintUnsigned(DrvSYS_GetHCLKFreq()/10000, 8);
+		lcdPrintUnsigned(CLK_GetCPUFreq()/10000,8);
+		lcdPrintUnsigned(CLK_GetHXTFreq()/10000, 8);
 	}
 }
 
@@ -68,6 +78,7 @@ void loop()
 void setup()
 {
     cpu::init();
+
     hardware::initialize();
     Timer::initialize();
     SMPS::initialize();
@@ -82,9 +93,9 @@ void setup()
     Screen::displayStrings(PSTR("  ChealiCharger"),
                            PSTR("    ver: "  CHEALI_CHARGER_VERSION_STRING));
     Timer::delay(1000);
-    eeprom::restoreDefault();
 
-    //	clkInfo();
+    eeprom::restoreDefault();
+    //clkInfo();
 }
 
 

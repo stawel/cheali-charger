@@ -18,33 +18,8 @@
 #ifndef CPU_H_
 #define CPU_H_
 
-extern "C" {
-#include "DrvSYS.h"
-}
-
-//TODO: move to cpu.cpp
-uint8_t __iCliRetVal_count;
-
-//TODO: implement
 namespace cpu {
-    inline void init() {
-    	__iCliRetVal_count = 0;
-        UNLOCKREG();
-        SYSCLK->PWRCON.XTL12M_EN = 1;
-        /* Waiting for 12M Xtal stable */
-        while (DrvSYS_GetChipClockSourceStatus(E_SYS_XTL12M) != 1);
-
-        DrvSYS_SelectPLLSource(E_SYS_EXTERNAL_12M);
-        DrvSYS_SetPLLContent(DrvSYS_GetPLLContent(E_SYS_EXTERNAL_12M, 50000000));
-        DrvSYS_SetClockDivider(E_SYS_HCLK_DIV, 0);
-        DrvSYS_SetPLLMode(0);
-        while (DrvSYS_GetChipClockSourceStatus(E_SYS_PLL) != 1);
-//        DrvSYS_SelectHCLKSource(2); //2 - PLL
-        DrvSYS_SelectHCLKSource(0); //0 - External 12M clock
-        /* HCLK clock frequency = HCLK clock source / (HCLK_N + 1) */
-
-        LOCKREG(x)
-    }
+    void init();
 }
 
 #endif /* CPU_H_ */

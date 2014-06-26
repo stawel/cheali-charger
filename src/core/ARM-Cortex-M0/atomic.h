@@ -22,25 +22,19 @@
 extern "C" {
 #include "M051Series.h"
 }
-/*static __inline__ uint8_t __iSeiRetVal(void)
-{
-//TODO: implement
-//    sei();
-    return 1;
-}*/
 
-extern uint8_t __iCliRetVal_count;
+extern uint8_t __atomic_h_irq_count;
 static __inline__ uint8_t __iCliRetVal(void)
 {
 	__disable_irq();
-	__iCliRetVal_count++;
-    return __iCliRetVal_count;
+	__atomic_h_irq_count++;
+    return __atomic_h_irq_count;
 }
 
 static __inline__ void __iRestore(uint8_t *__s)
 {
-	__iCliRetVal_count --;
-    if(__iCliRetVal_count == 0) {
+	__atomic_h_irq_count --;
+    if(__atomic_h_irq_count == 0) {
     	__enable_irq();
     }
 }
@@ -49,7 +43,6 @@ static __inline__ void __iRestore(uint8_t *__s)
 #define ATOMIC_BLOCK(type) for ( type = __iCliRetVal(), __ToDo =1; \
                            __ToDo ; __ToDo = 0 )
 
-//TODO: implement
 #define ATOMIC_RESTORESTATE uint8_t sreg_save \
     __attribute__((__cleanup__(__iRestore)))
 

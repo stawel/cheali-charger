@@ -18,7 +18,7 @@
 #include "imaxB6.h"
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
-#include "adc.h"
+#include "AnalogInputsADC.h"
 #include "SerialLog.h"
 #include "IO.h"
 #include "Keyboard.h"

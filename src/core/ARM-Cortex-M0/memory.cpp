@@ -17,10 +17,7 @@
 */
 #include "memory.h"
 
-extern "C" {
-#include "DrvFMC.h"
-#include "DrvSYS.h"
-}
+#include "M051Series.h"
 
 #define PAGE_SIZE         512
 #define PAGE_SIZE_32B     128
@@ -42,17 +39,20 @@ void write_impl_less(void * addressE, const void * data, int size)
 		p_adr_pos[i] = ((uint8_t*)data)[i];
 
 
-	DrvFMC_Erase((uint32_t)p_adr_start);
+    // Erase page
+    FMC_Erase((uint32_t)p_adr_start);
 
 	for(i = 0; i < PAGE_SIZE_32B; i++)
-		DrvFMC_Write((uint32_t)&p_adr_start[i], buf[i]);
+		 FMC_Write((uint32_t)&p_adr_start[i], buf[i]);
 
 }
 
 void write_impl(void * addressE, const void * data, int size)
 {
-    UNLOCKREG();
-	DrvFMC_EnableISP();
+	SYS_UnlockReg();
+
+	/* Enable FMC ISP function */
+	FMC_Open();
 
 	while(size > 0) {
 		int adr = (int) addressE & (PAGE_SIZE - 1);
@@ -68,10 +68,10 @@ void write_impl(void * addressE, const void * data, int size)
 		size -= less_size;
 	}
 
+    /* Disable FMC ISP function */
+    FMC_Close();
 
-	/* Disable ISP function */
-	DrvFMC_DisableISP();
-	LOCKREG();
+    SYS_LockReg();
 }
 
 } // namespace eeprom

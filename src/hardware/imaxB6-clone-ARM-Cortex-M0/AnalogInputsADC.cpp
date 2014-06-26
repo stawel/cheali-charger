@@ -29,9 +29,7 @@
 #include "SMPS.h"
 #include "Discharger.h"
 
-extern "C" {
-#include "DrvADC.h"
-}
+#include "adc.h"
 
 /* ADC - measurement:
  * uses Timer0 to trigger conversion
@@ -113,7 +111,7 @@ inline uint8_t nextInput(uint8_t i) {
 
 
 void setADC(uint8_t pin) {
-    DrvADC_SetADCChannel(1<<IO::getADCChannel(pin));
+	ADC_SET_INPUT_CHANNEL(ADC, 1 << IO::getADCChannel(pin));
 }
 
 void setMuxAddress(int8_t address)
@@ -130,7 +128,7 @@ void processConversion(uint8_t input)
 
 	uint8_t pin = getADC(input);
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        AnalogInputs::i_adc_[getAIName(input)] = (uint16_t)DrvADC_GetConversionData(IO::getADCChannel(pin));
+        AnalogInputs::i_adc_[getAIName(input)] = (uint16_t)ADC_GET_CONVERSION_DATA(ADC, IO::getADCChannel(pin));
     }
 }
 
@@ -141,7 +139,6 @@ void reset() {
 
 void initialize()
 {
-
     IO::pinMode(MUX_ADR0_PIN, OUTPUT);
     IO::pinMode(MUX_ADR1_PIN, OUTPUT);
     IO::pinMode(MUX_ADR2_PIN, OUTPUT);
@@ -151,18 +148,28 @@ void initialize()
     IO::pinMode(SMPS_CURRENT_PIN, ANALOG_INPUT);
     IO::pinMode(OUTPUT_VOLTAGE_PLUS_PIN, ANALOG_INPUT);
     IO::pinMode(DISCHARGE_CURRENT_PIN, ANALOG_INPUT);
-//    IO::pinMode(UART_TX_PIN, ANALOG_INPUT);
+    IO::pinMode(UART_TX_PIN, ANALOG_INPUT);
     IO::pinMode(MUX0_Z_D_PIN, ANALOG_INPUT);
 
 
-    //TODO:rewrite!
-    DrvADC_Open(ADC_SINGLE_END, ADC_SINGLE_OP, 0, EXTERNAL_12MHZ, 25);
+    //init clock
+    CLK_EnableModuleClock(ADC_MODULE);
+    CLK_SetModuleClock(ADC_MODULE, CLK_CLKSEL1_ADC_S_HXT, CLK_CLKDIV_ADC(24));
 
-    // enable IRQ
-    _DRVADC_CLEAR_ADC_INT_FLAG();
-    ADC->ADCR.ADIE = 1;
-    NVIC_SetPriority(ADC_IRQn, (1<<__NVIC_PRIO_BITS) - 2);
+    /* Set the ADC operation mode as single, input mode as single-end and enable the analog input channel 2 */
+    ADC_Open(ADC, ADC_ADCR_DIFFEN_SINGLE_END, ADC_ADCR_ADMD_SINGLE, 0x1 << 2);
+
+    /* Power on ADC module */
+    ADC_POWER_ON(ADC);
+
+    /* clear the A/D interrupt flag for safe */
+
+    ADC_CLR_INT_FLAG(ADC, ADC_ADF_INT);
+
+    /* Enable the ADC interrupt */
+    ADC_EnableInt(ADC, ADC_ADF_INT);
     NVIC_EnableIRQ(ADC_IRQn);
+    NVIC_SetPriority(ADC_IRQn, (1<<__NVIC_PRIO_BITS) - 2);
 
     adc::reset();
     startConversion();
@@ -194,7 +201,7 @@ void timerInterrupt()
 void startConversion()
 {
     setNextMuxAddress();
-    DrvADC_StartConvert();
+	ADC_START_CONV(ADC);
 }
 
 void conversionDone()
@@ -221,19 +228,12 @@ void conversionDone()
 }
 */
 extern "C" {
-void ADC_IRQHandler(void)
-{
-    if(ADC->ADSR.ADF==1)
-    {
-        //
-        // clear the A/D conversion flag "ADC->ADSR.ADF = 1;" is not recommended.
-        //  It may clear CMPF0 and CMPF1.
-        //
-        outpw(ADC_ADSR, (inpw(ADC_ADSR)&(~0x7))|0x1);
-        adc::conversionDone();
-    }
-}
-}
+	void ADC_IRQHandler(void)
+	{
+		ADC_CLR_INT_FLAG(ADC0, ADC_ADF_INT);
+		adc::conversionDone();
+	}
+} //extern "C"
 /*
 ISR(ADC_vect)
 {

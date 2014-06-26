@@ -15,18 +15,19 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Timer.h"
+#include "Time.h"
 #include "Hardware.h"
 
 extern "C" {
-#include "DrvTIMER.h"
+#include "M051Series.h"
 }
 // time measurement - measure TIMER_INTERRUPT_PERIOD_MICROSECONDS
 
 extern "C" {
 void TMR0_IRQHandler(void)
 {
-    TIMER0->TISR.TIF = 1;
+    /* Clear Timer0 time-out interrupt flag */
+    TIMER_ClearIntFlag(TIMER0);
     Timer::callback();
 }
 }
@@ -34,11 +35,11 @@ void TMR0_IRQHandler(void)
 
 void Timer::initialize()
 {
-    //TODO: implement
-
-    DrvTIMER_Init();
-    DrvTIMER_Open(E_TMR0, 1000000/TIMER_INTERRUPT_PERIOD_MICROSECONDS, E_PERIODIC_MODE);
-    DrvTIMER_EnableInt(E_TMR0);
-    DrvTIMER_Start(E_TMR0);             /* Start counting */
+	CLK_EnableModuleClock(TMR0_MODULE);
+	CLK_SetModuleClock(TMR0_MODULE,CLK_CLKSEL1_TMR0_S_HCLK,CLK_CLKDIV_UART(1));
+    TIMER_Open(TIMER0, TIMER_PERIODIC_MODE, 1000000/TIMER_INTERRUPT_PERIOD_MICROSECONDS);
+    TIMER_EnableInt(TIMER0);
+    NVIC_EnableIRQ(TMR0_IRQn);
+    TIMER_Start(TIMER0);             /* Start counting */
 
 }
