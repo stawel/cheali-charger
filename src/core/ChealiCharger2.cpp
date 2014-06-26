@@ -46,14 +46,17 @@ namespace Utils {
 void Delay(uint32_t x);
 }
 
+extern uint32_t pwm_n;
+
 void clkInfo() {
 	while(1) {
 		lcdSetCursor0_0();
 		uint32_t t = Timer::getMiliseconds();
-		Utils::Delay(10000000);
+//		Utils::Delay(10000000);
 		t = Timer::getMiliseconds() - t;
 		lcdPrintUnsigned(Timer::getMiliseconds()/1000,8);
-		lcdPrintUnsigned(t, 8);
+		lcdPrintUnsigned(pwm_n, 8);
+
 		lcdSetCursor0_1();
 		lcdPrintUnsigned(CLK_GetCPUFreq()/10000,8);
 		lcdPrintUnsigned(CLK_GetHXTFreq()/10000, 8);
@@ -95,7 +98,7 @@ void setup()
     Timer::delay(1000);
 
     eeprom::restoreDefault();
-    //clkInfo();
+//    clkInfo();
 }
 
 

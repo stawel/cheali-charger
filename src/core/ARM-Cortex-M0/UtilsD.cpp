@@ -32,20 +32,13 @@ namespace Utils
 		}
 	}
 
-
     void delayMicroseconds(uint16_t value)
     {
     	//CLK_SysTickDelay(4*((uint32_t)value));
-    	//DrvSYS_Delay(value);
 
     	uint32_t x = value;
     	x*=10000;
     	x/=2592;
     	Delay(x);
      }
-
-/*    void delayMilliseconds(uint16_t value)
-    {
-    }
-    */
 }

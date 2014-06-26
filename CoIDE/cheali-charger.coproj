@@ -91,11 +91,13 @@
     <File name="core/eeprom.cpp" path="../src/core/eeprom.cpp" type="1"/>
     <File name="core/AnalogInputsPrivate.h" path="../src/core/AnalogInputsPrivate.h" type="1"/>
     <File name="core/ARM/memory.h" path="../src/core/ARM-Cortex-M0/memory.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/src/sys.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/sys.c" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/src/gpio.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/gpio.c" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/src/timer.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/timer.c" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/inc/ebi.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/ebi.h" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver" path="" type="2"/>
     <File name="hardware/Hardware.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/Hardware.h" type="1"/>
+    <File name="hardware/outputPWM.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/outputPWM.h" type="1"/>
     <File name="core/StorageStrategy.h" path="../src/core/StorageStrategy.h" type="1"/>
     <File name="core/Options.cpp" path="../src/core/Options.cpp" type="1"/>
     <File name="core/LcdPrint.cpp" path="../src/core/LcdPrint.cpp" type="1"/>
@@ -126,8 +128,8 @@
     <File name="core/Keyboard.h" path="../src/core/Keyboard.h" type="1"/>
     <File name="core/Program.cpp" path="../src/core/Program.cpp" type="1"/>
     <File name="core/Blink.cpp" path="../src/core/Blink.cpp" type="1"/>
-    <File name="core/Time.cpp" path="../src/core/Time.cpp" type="1"/>
     <File name="hardware/HardwareConfig.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/HardwareConfig.h" type="1"/>
+    <File name="core/Time.cpp" path="../src/core/Time.cpp" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/inc/adc.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/adc.h" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/inc/clk.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/clk.h" type="1"/>
     <File name="core/Balancer.h" path="../src/core/Balancer.h" type="1"/>
@@ -162,6 +164,7 @@
     <File name="core/ARM/CMSIS/StdDriver/inc/spi.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/spi.h" type="1"/>
     <File name="core" path="" type="2"/>
     <File name="core/ARM/CMSIS/CMSIS/core_cmFunc.h" path="../src/core/ARM-Cortex-M0/CMSIS/CMSIS/Include/core_cmFunc.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/src/pwm.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/pwm.c" type="1"/>
     <File name="core/SimpleChargeStrategy.cpp" path="../src/core/SimpleChargeStrategy.cpp" type="1"/>
     <File name="core/Version.cpp" path="../src/core/Version.cpp" type="1"/>
     <File name="core/Utils.h" path="../src/core/Utils.h" type="1"/>
@@ -195,6 +198,7 @@
     <File name="core/LiquidCrystal.h" path="../src/core/LiquidCrystal.h" type="1"/>
     <File name="core/Utils.cpp" path="../src/core/Utils.cpp" type="1"/>
     <File name="core/ARM/UtilsD.cpp" path="../src/core/ARM-Cortex-M0/UtilsD.cpp" type="1"/>
+    <File name="hardware/outputPWM.cpp" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/outputPWM.cpp" type="1"/>
     <File name="core/Strategy.h" path="../src/core/Strategy.h" type="1"/>
     <File name="core/Strategy.cpp" path="../src/core/Strategy.cpp" type="1"/>
     <File name="hardware/SMPS_PID.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/SMPS_PID.h" type="1"/>

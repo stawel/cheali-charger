@@ -3,7 +3,7 @@
 #include "SMPS_PID.h"
 #include "IO.h"
 #include "AnalogInputs.h"
-
+#include "outputPWM.h"
 
 namespace {
     volatile uint16_t PID_setpoint;
@@ -113,11 +113,11 @@ void hardware::setChargerOutput(bool enable)
 void hardware::setDischargerOutput(bool enable)
 {
     if(enable) setChargerOutput(false);
-//    IO::digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
+    IO::digitalWrite(DISCHARGE_DISABLE_PIN, !enable);
 }
 
 void hardware::setDischargerValue(uint16_t value)
 {
-//    Timer1::setPWM(DISCHARGE_VALUE_PIN, value);
+    outputPWM::setPWM(DISCHARGE_VALUE_PIN, value);
 }
 
