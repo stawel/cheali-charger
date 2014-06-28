@@ -18,34 +18,41 @@
 
 #include "AnalogInputsPrivate.h"
 #include "memory.h"
+#include "Utils.h"
 
-const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
-    {{0, 0},                        {54592, 25094}},    //Vout
-    {{0, 0},                        {26613, 12518}},    //VreversePolarity
-    {{378, 50},                        {10916, 1000}},    //Ismps
-    {{7095, 50},                        {43070, 300}},    //Idischarge
+const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
 
-    {{0, 0},                        {0, 0}},    //VoutMux
-    {{0, 0},                        {0, 0}},    //Tintern
-    {{0, 0},                        {48013, 14038}},    //Vin
-    {{19650, 2980},                        {18700, 6000}},    //Textern
+  {{0, ANALOG_VOLT (0.000)}, {25914, ANALOG_VOLT (11.973)}},    //Vout_plus_pin
+  {{0, ANALOG_VOLT (0.000)}, {25914, ANALOG_VOLT (11.973)}},    //Vout_minus_pin
+  {{504, ANALOG_AMP (0.050)}, {11132, ANALOG_AMP (1.000)}},     //Ismps
+  {{1152, ANALOG_AMP (0.050)}, {7936, ANALOG_AMP (0.300)}},     //Idischarge
 
-    {{0, 0},                        {48963, 3752}},    //Vb0_pin
-    {{0, 0},                        {54805, 4177}},    //Vb1_pin
-    {{0, 0},                      {55707, 8392}},  //Vb2_pin
-    {{0, 0},                      {55498, 4195}},  //Vb3_pin
 
-    {{0, 0},                      {55303, 4183}},  //Vb4_pin
-    {{0, 0},                      {55360, 4191}},  //Vb5_pin
-    {{0, 0},                      {53157, 4184}},  //Vb6_pin
+  {{0, ANALOG_VOLT (0.000)}, {0, ANALOG_VOLT (0.000)}}, //VoutMux
+  {{0, ANALOG_CELCIUS (0.000)}, {0, ANALOG_CELCIUS (0.000)}},   //Tintern
+  {{0, ANALOG_VOLT (0.000)}, {42624, ANALOG_VOLT (12.490)}},    //Vin
+  {{19650, ANALOG_CELCIUS (2.980)}, {18700, ANALOG_CELCIUS (6.000)}},   //Textern
 
+  {{0, ANALOG_VOLT (0.000)}, {48963, ANALOG_VOLT (3.752)}},     //Vb0_pin
+  {{0, ANALOG_VOLT (0.000)}, {55409, ANALOG_VOLT (4.200)}},     //Vb1_pin
+  {{0, ANALOG_VOLT (0.000)}, {55727, ANALOG_VOLT (4.200)}},     //Vb2_pin
+  {{0, ANALOG_VOLT (0.000)}, {26432, ANALOG_VOLT (2.000)}},     //Vb3_pin
+  {{0, ANALOG_VOLT (0.000)}, {54799, ANALOG_VOLT (4.200)}},     //Vb4_pin
+  {{0, ANALOG_VOLT (0.000)}, {55496, ANALOG_VOLT (4.200)}},     //Vb5_pin
+  {{0, ANALOG_VOLT (0.000)}, {55434, ANALOG_VOLT (4.200)}},     //Vb6_pin
 #if MAX_BANANCE_CELLS > 6
-    {{0, 0},                        {50752, ANALOG_VOLT(3.865)}},   //Vb7_pin
-    {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb8_pin
+  {{,}, {,}},                   //Vb7_pin
+  {{,}, {,}},                   //Vb8_pin
 #endif
-    //1-1 correlation
-    {{380, 50},                      {10920, 1000}},  //IsmpsValue
-    {{2610, 50},                      {15850, 300}},  //IdischargeValue
+
+  {{504, ANALOG_AMP (0.050)}, {11131, ANALOG_AMP (1.000)}},     //IsmpsValue
+  {{410, ANALOG_AMP (0.050)}, {2938, ANALOG_AMP (0.300)}},      //IdischargeValue
 };
 
-
+namespace
+{
+  void assert ()
+  {
+    STATIC_ASSERT (sizeOfArray (AnalogInputs::inputsP_) == AnalogInputs::PHYSICAL_INPUTS);
+  }
+}

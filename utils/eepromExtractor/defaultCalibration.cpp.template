@@ -33,7 +33,7 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
     {{$c_p0_x__Vin,              $c_p0_y__Vin},                   {$c_p1_x__Vin,           $c_p1_y__Vin}},       //Vin
     {{$c_p0_x__Textern,          $c_p0_y__Textern},               {$c_p1_x__Textern,       $c_p1_y__Textern}},   //Textern
 
-    {{$c_p0_x__Vb0_pin,          $c_p0_y__Vb0_pin},               {$c_p1_x__Vb0_pin,       $c_p1_y__Vb0_pin}},   //Vb0_pin 
+    {{$c_p0_x__Vb0_pin,          $c_p0_y__Vb0_pin},               {$c_p1_x__Vb0_pin,       $c_p1_y__Vb0_pin}},   //Vb0_pin
     {{$c_p0_x__Vb1_pin,          $c_p0_y__Vb1_pin},               {$c_p1_x__Vb1_pin,       $c_p1_y__Vb1_pin}},   //Vb1_pin
     {{$c_p0_x__Vb2_pin,          $c_p0_y__Vb2_pin},               {$c_p1_x__Vb2_pin,       $c_p1_y__Vb2_pin}},   //Vb2_pin
     {{$c_p0_x__Vb3_pin,          $c_p0_y__Vb3_pin},               {$c_p1_x__Vb3_pin,       $c_p1_y__Vb3_pin}},   //Vb3_pin
