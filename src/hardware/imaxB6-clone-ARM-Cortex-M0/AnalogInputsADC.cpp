@@ -128,7 +128,8 @@ void processConversion(uint8_t input)
 
 	uint8_t pin = getADC(input);
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        AnalogInputs::i_adc_[getAIName(input)] = (uint16_t)ADC_GET_CONVERSION_DATA(ADC, IO::getADCChannel(pin));
+    	//pretend 16bit adc
+        AnalogInputs::i_adc_[getAIName(input)] = (uint16_t)ADC_GET_CONVERSION_DATA(ADC, IO::getADCChannel(pin)) << 4;
     }
 }
 
@@ -154,7 +155,7 @@ void initialize()
 
     //init clock
     CLK_EnableModuleClock(ADC_MODULE);
-    CLK_SetModuleClock(ADC_MODULE, CLK_CLKSEL1_ADC_S_HXT, CLK_CLKDIV_ADC(24));
+    CLK_SetModuleClock(ADC_MODULE, CLK_CLKSEL1_ADC_S_HXT, CLK_CLKDIV_ADC(100));
 
     /* Set the ADC operation mode as single, input mode as single-end and enable the analog input channel 2 */
     ADC_Open(ADC, ADC_ADCR_DIFFEN_SINGLE_END, ADC_ADCR_ADMD_SINGLE, 0x1 << 2);

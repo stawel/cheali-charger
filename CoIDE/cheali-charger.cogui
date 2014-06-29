@@ -20,60 +20,130 @@
 <part id="7"/>
 <part id="8"/>
 <part id="9"/>
+<part id="10"/>
+<part id="11"/>
+<part id="12"/>
+<part id="13"/>
+<part id="14"/>
+<part id="15"/>
+<part id="16"/>
+<part id="17"/>
+<part id="18"/>
+<part id="19"/>
+<part id="20"/>
+<part id="21"/>
+<part id="22"/>
+<part id="23"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
 <editor id="org.eclipse.cdt.ui.editor.CEditor" name="AnalogInputsADC.cpp" partName="AnalogInputsADC.cpp" path="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/AnalogInputsADC.cpp" title="AnalogInputsADC.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/AnalogInputsADC.cpp" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/AnalogInputsADC.cpp"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="6142" selectionTopPixel="2085"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="7327" selectionTopPixel="2610"/>
 </editor>
 <editor id="org.eclipse.cdt.ui.editor.CEditor" name="imaxB6.cpp" partName="imaxB6.cpp" path="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/imaxB6.cpp" title="imaxB6.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/imaxB6.cpp" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/imaxB6.cpp"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1931" selectionTopPixel="840"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2188" selectionTopPixel="1033"/>
 </editor>
 <editor id="org.eclipse.cdt.ui.editor.CEditor" name="ChealiCharger2.cpp" partName="ChealiCharger2.cpp" path="C:/Users/stawel/git/cheali-charger/src/core/ChealiCharger2.cpp" title="ChealiCharger2.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ChealiCharger2.cpp" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ChealiCharger2.cpp"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2342" selectionTopPixel="1200"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2465" selectionTopPixel="1288"/>
 </editor>
 <editor id="org.eclipse.cdt.ui.editor.CEditor" name="startup_M051Series.c" partName="startup_M051Series.c" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/startup_M051Series.c" title="startup_M051Series.c" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/startup_M051Series.c" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ARM/startup_M051Series.c"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="6556" selectionTopPixel="3660"/>
 </editor>
-<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="IO.h" partName="IO.h" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/IO.h" title="IO.h" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/IO.h" workbook="DefaultEditorWorkbook">
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="IO.h" partName="IO.h" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/IO.h" title="IO.h" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/IO.h" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ARM/IO.h"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="868" selectionTopPixel="225"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3758" selectionTopPixel="1723"/>
 </editor>
 <editor id="org.eclipse.cdt.ui.editor.CEditor" name="gpio.c" partName="gpio.c" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/gpio.c" title="gpio.c" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/gpio.c" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ARM/CMSIS/StdDriver/src/gpio.c"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1101" selectionTopPixel="420"/>
+<editorState selectionHorizontalPixel="0" selectionLength="14" selectionOffset="893" selectionTopPixel="330"/>
 </editor>
 <editor id="org.eclipse.cdt.ui.editor.CEditor" name="imaxB6-pins.h" partName="imaxB6-pins.h" path="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/imaxB6-pins.h" title="imaxB6-pins.h" tooltip="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/imaxB6-pins.h" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/imaxB6-pins.h"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1997" selectionTopPixel="735"/>
+<editorState selectionHorizontalPixel="0" selectionLength="19" selectionOffset="1896" selectionTopPixel="600"/>
 </editor>
 <editor id="org.eclipse.cdt.ui.editor.CEditor" name="gpio.h" partName="gpio.h" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/gpio.h" title="gpio.h" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/gpio.h" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/gpio.h"/>
-<editorState selectionHorizontalPixel="203" selectionLength="18" selectionOffset="5577" selectionTopPixel="1245"/>
+<editorState selectionHorizontalPixel="0" selectionLength="25" selectionOffset="11007" selectionTopPixel="3000"/>
 </editor>
 <editor id="org.eclipse.cdt.ui.editor.CEditor" name="M051Series.h" partName="M051Series.h" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/Device/Nuvoton/M051Series/Include/M051Series.h" title="M051Series.h" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/Device/Nuvoton/M051Series/Include/M051Series.h" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ARM/CMSIS/Device/M051Series.h"/>
-<editorState selectionHorizontalPixel="0" selectionLength="18" selectionOffset="423130" selectionTopPixel="97005"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="24762" selectionTopPixel="6810"/>
 </editor>
 <editor id="org.eclipse.cdt.ui.editor.CEditor" name="clk.c" partName="clk.c" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/clk.c" title="clk.c" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/clk.c" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ARM/CMSIS/StdDriver/src/clk.c"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="12939" selectionTopPixel="4350"/>
+<editorState selectionHorizontalPixel="0" selectionLength="9" selectionOffset="10598" selectionTopPixel="3390"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="outputPWM.cpp" partName="outputPWM.cpp" path="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/outputPWM.cpp" title="outputPWM.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/outputPWM.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/outputPWM.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="857" selectionTopPixel="148"/>
+</editor>
+<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="SMPS_PID.cpp" partName="SMPS_PID.cpp" path="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/SMPS_PID.cpp" title="SMPS_PID.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/SMPS_PID.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/SMPS_PID.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="652" selectionTopPixel="238"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="sys.h" partName="sys.h" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/sys.h" title="sys.h" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/sys.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/sys.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="16" selectionOffset="12026" selectionTopPixel="2565"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="pwm.c" partName="pwm.c" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/pwm.c" title="pwm.c" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/pwm.c" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ARM/CMSIS/StdDriver/src/pwm.c"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="5850" selectionTopPixel="1740"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="pwm.h" partName="pwm.h" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/pwm.h" title="pwm.h" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/pwm.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/pwm.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="7" selectionOffset="2944" selectionTopPixel="645"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="outputPWM.h" partName="outputPWM.h" path="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/outputPWM.h" title="outputPWM.h" tooltip="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/outputPWM.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/outputPWM.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="27" selectionOffset="866" selectionTopPixel="88"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="clk.h" partName="clk.h" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/clk.h" title="clk.h" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/clk.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/clk.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="14" selectionOffset="8988" selectionTopPixel="1740"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="SMPS_PID.h" partName="SMPS_PID.h" path="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/SMPS_PID.h" title="SMPS_PID.h" tooltip="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/SMPS_PID.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/SMPS_PID.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="9" selectionOffset="450" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="HardwareConfig.h" partName="HardwareConfig.h" path="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/HardwareConfig.h" title="HardwareConfig.h" tooltip="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/HardwareConfig.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/HardwareConfig.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1281" selectionTopPixel="163"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="defaultCalibration.cpp" partName="defaultCalibration.cpp" path="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/defaultCalibration.cpp" title="defaultCalibration.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/defaultCalibration.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/defaultCalibration.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="253"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="sys.c" partName="sys.c" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/sys.c" title="sys.c" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/sys.c" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ARM/CMSIS/StdDriver/src/sys.c"/>
+<editorState selectionHorizontalPixel="0" selectionLength="15" selectionOffset="2878" selectionTopPixel="1455"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="adc.h" partName="adc.h" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/adc.h" title="adc.h" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/adc.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/adc.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="9448" selectionTopPixel="1875"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="Hardware.h" partName="Hardware.h" path="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/Hardware.h" title="Hardware.h" tooltip="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/Hardware.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/Hardware.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="Calibrate.cpp" partName="Calibrate.cpp" path="C:/Users/stawel/git/cheali-charger/src/core/Calibrate.cpp" title="Calibrate.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/core/Calibrate.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/Calibrate.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="11405" selectionTopPixel="5070"/>
 </editor>
 </editors>
 <views>
 <view id="org.coocox.builder.ui.views.ProjectView" partName="Project">
-<viewState CommonNavigator.LINKING_ENABLED="0" horizontalPosition="0" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0" verticalPosition="0">
+<viewState CommonNavigator.LINKING_ENABLED="0" horizontalPosition="0" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0" verticalPosition="13">
 <expanded>
 <element path="/cheali-charger"/>
-<element path="/cheali-charger/hardware"/>
+<element path="/cheali-charger/core"/>
 </expanded>
 <selection>
-<element path="/cheali-charger/hardware/imaxB6.cpp"/>
+<element path="/cheali-charger/core/Calibrate.cpp"/>
 </selection>
 </viewState>
 </view>
@@ -100,11 +170,11 @@
 <MemoryBroser ComboItemsValue="0x20000000;0x20000f00;0x6df0;" FocuseTabIndex="0" TabsValue="" TextValue="0x20000fdc" horizontalPosition="0" verticalPosition="0"/>
 </viewState>
 </view>
-<view id="org.eclipse.cdt.dsf.debug.ui.disassembly.view" partName="Disassembly">
-<viewState disassembly.syncActiveContext="true" disassembly.trackExpression="false"/>
-</view>
 <view id="org.eclipse.debug.ui.VariableView" partName="Variables">
 <viewState/>
+</view>
+<view id="org.eclipse.cdt.dsf.debug.ui.disassembly.view" partName="Disassembly">
+<viewState disassembly.syncActiveContext="true" disassembly.trackExpression="false"/>
 </view>
 </views>
 <perspectives activePart="org.eclipse.cdt.ui.editor.CEditor" activePerspective="org.coocox.builder.perspective.CoBuilder">
@@ -238,68 +308,52 @@
 <hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
 <hide_toolbar_item_id id="org.coocox.builder.ui.build"/>
 <hide_toolbar_item_id id="org.coocox.welcome.ui.action.welcome"/>
-<hide_toolbar_item_id id="org.coocox.component.ui.ShowRepositoryAction"/>
 <hide_toolbar_item_id id="org.coocox.codebugger.configuration.coideProgramDownloadAction"/>
+<hide_toolbar_item_id id="org.coocox.component.ui.ShowRepositoryAction"/>
 <view id="org.eclipse.ui.console.ConsoleView"/>
 <view id="org.eclipse.debug.ui.DebugView"/>
 <view id="org.coocox.codebugger.trace.ui.traceview"/>
-<view id="org.eclipse.debug.ui.VariableView"/>
 <view id="org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser"/>
 <view id="org.eclipse.debug.ui.RegisterView"/>
 <view id="org.eclipse.cdt.dsf.debug.ui.disassembly.view"/>
+<view id="org.eclipse.debug.ui.VariableView"/>
 <view id="org.coocox.builder.ui.views.ProjectView"/>
 <fastViewBars/>
 <viewLayoutRec closeable="false" id="org.eclipse.debug.ui.DebugView"/>
-<layout>
-<mainWindow>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@1bbe298">
-<folder activePageID="org.coocox.builder.ui.views.ProjectView" appearance="2" expanded="2">
-<page content="org.coocox.builder.ui.views.ProjectView" label="Project"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<layout>&#x0A;<mainWindow>&#x0A;<info folder="true" part="org.eclipse.ui.internal.ViewStack@1bbe298">&#x0A;<folder activePageID="org.coocox.builder.ui.views.ProjectView" appearance="2" expanded="2">&#x0A;<page content="org.coocox.builder.ui.views.ProjectView" label="Project"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="stickyFolderRight" ratio="0.7496318" ratioLeft="1018" ratioRight="340" relationship="2" relative="org.eclipse.ui.internal.ViewStack@1bbe298">
-<folder appearance="2" expanded="2">
-<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<info folder="true" part="stickyFolderRight" ratio="0.7496318" ratioLeft="1018" ratioRight="340" relationship="2" relative="org.eclipse.ui.internal.ViewStack@1bbe298">&#x0A;<folder appearance="2" expanded="2">&#x0A;<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
 <page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@72b712" ratio="0.6220096" ratioLeft="390" ratioRight="237" relationship="4" relative="org.eclipse.ui.internal.ViewStack@1bbe298">
-<folder activePageID="org.eclipse.debug.ui.DebugView" appearance="2" expanded="2">
-<page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@72b712" ratio="0.6220096" ratioLeft="390" ratioRight="237" relationship="4" relative="org.eclipse.ui.internal.ViewStack@1bbe298">&#x0A;<folder activePageID="org.eclipse.debug.ui.DebugView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
 <page content="org.eclipse.debug.ui.DebugView" label="Debug"/>
 <page content="org.eclipse.debug.ui.BreakpointView" label="LabelNotFound"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 <part id="1"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@15fabb" ratio="0.4295203" ratioLeft="582" ratioRight="773" relationship="2" relative="org.eclipse.ui.internal.ViewStack@72b712">
-<folder activePageID="org.eclipse.debug.ui.RegisterView" appearance="2" expanded="2">
-<page content="org.coocox.codebugger.trace.ui.traceview" label="Semihosting"/>
-<page content="org.eclipse.debug.ui.VariableView" label="Variables"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@15fabb" ratio="0.4295203" ratioLeft="582" ratioRight="773" relationship="2" relative="org.eclipse.ui.internal.ViewStack@72b712">&#x0A;<folder activePageID="org.eclipse.debug.ui.RegisterView" appearance="2" expanded="2">&#x0A;<page content="org.coocox.codebugger.trace.ui.traceview" label="Semihosting"/>
 <page content="org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser" label="Memory Browser"/>
 <page content="org.eclipse.debug.ui.RegisterView" label="Registers"/>
 <page content="org.eclipse.debug.ui.ExpressionView" label="LabelNotFound"/>
 <page content="org.eclipse.debug.ui.MemoryView" label="LabelNotFound"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 <part id="1"/>
 <part id="2"/>
-<part id="3"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@1fe1b72" ratio="0.71955717" ratioLeft="975" ratioRight="380" relationship="2" relative="org.eclipse.ui.internal.ViewStack@1bbe298">
-<folder activePageID="org.eclipse.cdt.dsf.debug.ui.disassembly.view" appearance="2" expanded="2">
-<page content="org.eclipse.cdt.dsf.debug.ui.disassembly.view" label="Disassembly"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@1fe1b72" ratio="0.71955717" ratioLeft="975" ratioRight="380" relationship="2" relative="org.eclipse.ui.internal.ViewStack@1bbe298">&#x0A;<folder activePageID="org.eclipse.debug.ui.VariableView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.cdt.dsf.debug.ui.disassembly.view" label="Disassembly"/>
+<page content="org.eclipse.debug.ui.VariableView" label="Variables"/>
 <page content="org.eclipse.ui.views.ContentOutline" label="LabelNotFound"/>
 <page content="org.coocox.coassistant.view.CoAssistantView_debug" label="LabelNotFound"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+<part id="1"/>
 </presentation>
 </folder>
 </info>
@@ -311,164 +365,171 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/ARM/startup_M051Series.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/ARM/IO.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/ARM/CMSIS/StdDriver/src/gpio.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/gpio.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/LiquidCrystal.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/outputPWM.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/ARM/CMSIS/StdDriver/src/pwm.c"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/ChealiCharger2.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/ARM/startup_M051Series.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/outputPWM.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/HardwareConfig.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/SMPS_PID.cpp"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/AnalogInputsADC.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/adc.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/ARM/CMSIS/Device/M051Series.h"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/ARM/CMSIS/StdDriver/src/clk.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/Hardware.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/HardwareConfig.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/SMPS_PID.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/Calibrate.cpp"/>
 </editors>
-<item historyLabel="gpio.c" index="2">
-<position info="not_deleted" x="1169" y="0"/>
+<item historyLabel="pwm.c" index="1">
+<position info="not_deleted" x="5378" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position/>
+<item historyLabel="pwm.c" index="1">
+<position info="not_deleted" x="5850" y="0"/>
 </item>
-<item historyLabel="startup_M051Series.c" index="0">
+<item historyLabel="pwm.c" index="1">
+<position info="not_deleted" x="5189" y="0"/>
+</item>
+<item historyLabel="pwm.c" index="1">
+<position info="not_deleted" x="5490" y="0"/>
+</item>
+<item historyLabel="startup_M051Series.c" index="3">
 <position info="not_deleted" x="6556" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3980" y="0"/>
+<item historyLabel="ChealiCharger2.cpp" index="2">
+<position info="not_deleted" x="2495" y="0"/>
 </item>
-<item historyLabel="LiquidCrystal.cpp" index="4">
-<position info="not_deleted" x="1627" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="1417" y="0"/>
 </item>
-<item historyLabel="gpio.c" index="2">
-<position info="not_deleted" x="1169" y="0"/>
+<item historyLabel="pwm.c" index="1">
+<position info="not_deleted" x="5189" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3980" y="0"/>
+<item historyLabel="pwm.c" index="1">
+<position info="not_deleted" x="5378" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="2726" y="0"/>
+<item historyLabel="pwm.c" index="1">
+<position info="not_deleted" x="5850" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="2646" y="0"/>
+<item historyLabel="pwm.c" index="1">
+<position info="not_deleted" x="5189" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="2726" y="0"/>
+<item historyLabel="pwm.c" index="1">
+<position info="not_deleted" x="5711" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3980" y="0"/>
+<item historyLabel="pwm.c" index="1">
+<position info="not_deleted" x="5850" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="2726" y="0"/>
+<item historyLabel="ChealiCharger2.cpp" index="2">
+<position info="not_deleted" x="2495" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3980" y="0"/>
-</item>
-<item historyLabel="gpio.c" index="2">
-<position info="not_deleted" x="1147" y="0"/>
-</item>
-<item historyLabel="gpio.c" index="2">
-<position info="not_deleted" x="1169" y="0"/>
-</item>
-<item historyLabel="LiquidCrystal.cpp" index="4">
-<position info="not_deleted" x="1627" y="0"/>
-</item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3980" y="0"/>
-</item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="4006" y="0"/>
-</item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3980" y="0"/>
-</item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="2626" y="0"/>
-</item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="1304" y="0"/>
-</item>
-<item historyLabel="gpio.h" index="3">
-<position info="not_deleted" x="5577" y="18"/>
-</item>
-<item historyLabel="startup_M051Series.c" index="0">
+<item historyLabel="startup_M051Series.c" index="3">
 <position info="not_deleted" x="6556" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="2672" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="2359" y="0"/>
 </item>
-<item historyLabel="startup_M051Series.c" index="0">
+<item historyLabel="outputPWM.h" index="4">
+<position info="not_deleted" x="866" y="27"/>
+</item>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="2525" y="0"/>
+</item>
+<item historyLabel="ChealiCharger2.cpp" index="2">
+<position info="not_deleted" x="2495" y="0"/>
+</item>
+<item historyLabel="startup_M051Series.c" index="3">
 <position info="not_deleted" x="6556" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3980" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="2344" y="0"/>
 </item>
-<item historyLabel="gpio.c" index="2">
-<position info="not_deleted" x="1103" y="0"/>
+<item historyLabel="outputPWM.h" index="4">
+<position info="not_deleted" x="866" y="27"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3980" y="0"/>
+<item historyLabel="HardwareConfig.h" index="5">
+<position info="not_deleted" x="1320" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="2566" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="2300" y="59"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3376" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="857" y="0"/>
 </item>
-<item historyLabel="startup_M051Series.c" index="0">
+<item historyLabel="startup_M051Series.c" index="3">
 <position info="not_deleted" x="6556" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3980" y="0"/>
+<item historyLabel="ChealiCharger2.cpp" index="2">
+<position info="not_deleted" x="2465" y="0"/>
 </item>
-<item historyLabel="gpio.c" index="2">
-<position info="not_deleted" x="1103" y="0"/>
+<item historyLabel="SMPS_PID.cpp" index="6">
+<position info="not_deleted" x="2172" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3980" y="0"/>
+<item historyLabel="AnalogInputsADC.cpp" index="7">
+<position info="not_deleted" x="5551" y="0"/>
 </item>
-<item historyLabel="gpio.c" index="2">
-<position info="not_deleted" x="1148" y="0"/>
+<item historyLabel="adc.h" index="8">
+<position info="not_deleted" x="9378" y="23"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3998" y="0"/>
+<item historyLabel="M051Series.h" index="9">
+<position info="not_deleted" x="338935" y="23"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="4009" y="0"/>
+<item historyLabel="AnalogInputsADC.cpp" index="7">
+<position info="not_deleted" x="5552" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="2802" y="0"/>
+<item historyLabel="adc.h" index="8">
+<position info="not_deleted" x="9448" y="0"/>
 </item>
-<item historyLabel="startup_M051Series.c" index="0">
-<position info="not_deleted" x="6556" y="0"/>
+<item historyLabel="M051Series.h" index="9">
+<position info="not_deleted" x="24620" y="17"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3980" y="0"/>
+<item historyLabel="AnalogInputsADC.cpp" index="7">
+<position info="not_deleted" x="5557" y="0"/>
 </item>
-<item historyLabel="gpio.c" index="2">
-<position info="not_deleted" x="1103" y="0"/>
+<item historyLabel="adc.h" index="8">
+<position info="not_deleted" x="9448" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3980" y="0"/>
+<item historyLabel="M051Series.h" index="9">
+<position info="not_deleted" x="24762" y="0"/>
 </item>
-<item historyLabel="gpio.c" index="2">
-<position info="not_deleted" x="1101" y="0"/>
+<item historyLabel="AnalogInputsADC.cpp" index="7">
+<position info="not_deleted" x="6206" y="0"/>
 </item>
-<item historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3830" y="0"/>
+<item historyLabel="clk.c" index="10">
+<position info="not_deleted" x="10598" y="9"/>
 </item>
-<item historyLabel="gpio.c" index="2">
-<position info="not_deleted" x="1101" y="0"/>
+<item historyLabel="AnalogInputsADC.cpp" index="7">
+<position info="not_deleted" x="7327" y="0"/>
 </item>
-<item historyLabel="startup_M051Series.c" index="0">
-<position info="not_deleted" x="6556" y="0"/>
+<item historyLabel="Hardware.h" index="11">
+<position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="ChealiCharger2.cpp" index="5">
-<position info="not_deleted" x="2342" y="0"/>
+<item historyLabel="HardwareConfig.h" index="12">
+<position info="not_deleted" x="1281" y="0"/>
 </item>
-<item historyLabel="AnalogInputsADC.cpp" index="6">
-<position info="not_deleted" x="6142" y="0"/>
+<item historyLabel="SMPS_PID.cpp" index="6">
+<position info="not_deleted" x="2764" y="0"/>
 </item>
-<item historyLabel="clk.c" index="7">
-<position info="not_deleted" x="12939" y="0"/>
+<item historyLabel="SMPS_PID.h" index="13">
+<position info="not_deleted" x="450" y="9"/>
 </item>
-<item active="true" historyLabel="IO.h" index="1">
-<position info="not_deleted" x="3830" y="0"/>
+<item historyLabel="SMPS_PID.cpp" index="6">
+<position info="not_deleted" x="1040" y="0"/>
+</item>
+<item historyLabel="Calibrate.cpp" index="14">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="Calibrate.cpp" index="14">
+<position info="not_deleted" x="12342" y="0"/>
+</item>
+<item historyLabel="Calibrate.cpp" index="14">
+<position info="not_deleted" x="11405" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="7">
+<position info="not_deleted" x="7327" y="0"/>
+</item>
+<item active="true" historyLabel="SMPS_PID.cpp" index="6">
+<position info="not_deleted" x="1040" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -477,56 +538,50 @@
 <actionBarAdvisor/>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="clk.c" tooltip="cheali-charger/core/ARM/CMSIS/StdDriver/src/clk.c">
-<persistable path="/cheali-charger/core/ARM/CMSIS/StdDriver/src/clk.c"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Calibrate.cpp" tooltip="cheali-charger/core/Calibrate.cpp">
+<persistable path="/cheali-charger/core/Calibrate.cpp"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="M051Series.h" tooltip="cheali-charger/core/ARM/CMSIS/Device/M051Series.h">
-<persistable path="/cheali-charger/core/ARM/CMSIS/Device/M051Series.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="gpio.h" tooltip="cheali-charger/core/ARM/CMSIS/StdDriver/inc/gpio.h">
-<persistable path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/gpio.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="imaxB6-pins.h" tooltip="cheali-charger/hardware/imaxB6-pins.h">
-<persistable path="/cheali-charger/hardware/imaxB6-pins.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="gpio.c" tooltip="cheali-charger/core/ARM/CMSIS/StdDriver/src/gpio.c">
-<persistable path="/cheali-charger/core/ARM/CMSIS/StdDriver/src/gpio.c"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="IO.h" tooltip="cheali-charger/core/ARM/IO.h">
-<persistable path="/cheali-charger/core/ARM/IO.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="startup_M051Series.c" tooltip="cheali-charger/core/ARM/startup_M051Series.c">
-<persistable path="/cheali-charger/core/ARM/startup_M051Series.c"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="imaxB6.cpp" tooltip="cheali-charger/hardware/imaxB6.cpp">
-<persistable path="/cheali-charger/hardware/imaxB6.cpp"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Hardware.h" tooltip="cheali-charger/hardware/Hardware.h">
+<persistable path="/cheali-charger/hardware/Hardware.h"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="adc.h" tooltip="cheali-charger/core/ARM/CMSIS/StdDriver/inc/adc.h">
 <persistable path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/adc.h"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="adc.c" tooltip="cheali-charger/core/ARM/CMSIS/StdDriver/src/adc.c">
-<persistable path="/cheali-charger/core/ARM/CMSIS/StdDriver/src/adc.c"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="sys.c" tooltip="cheali-charger/core/ARM/CMSIS/StdDriver/src/sys.c">
+<persistable path="/cheali-charger/core/ARM/CMSIS/StdDriver/src/sys.c"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Timer2.cpp" tooltip="cheali-charger/core/ARM/Timer2.cpp">
-<persistable path="/cheali-charger/core/ARM/Timer2.cpp"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="defaultCalibration.cpp" tooltip="cheali-charger/hardware/defaultCalibration.cpp">
+<persistable path="/cheali-charger/hardware/defaultCalibration.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="HardwareConfig.h" tooltip="cheali-charger/hardware/HardwareConfig.h">
+<persistable path="/cheali-charger/hardware/HardwareConfig.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="SMPS_PID.h" tooltip="cheali-charger/hardware/SMPS_PID.h">
+<persistable path="/cheali-charger/hardware/SMPS_PID.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="clk.h" tooltip="cheali-charger/core/ARM/CMSIS/StdDriver/inc/clk.h">
+<persistable path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/clk.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="outputPWM.h" tooltip="cheali-charger/hardware/outputPWM.h">
+<persistable path="/cheali-charger/hardware/outputPWM.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="pwm.h" tooltip="cheali-charger/core/ARM/CMSIS/StdDriver/inc/pwm.h">
+<persistable path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/pwm.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="pwm.c" tooltip="cheali-charger/core/ARM/CMSIS/StdDriver/src/pwm.c">
+<persistable path="/cheali-charger/core/ARM/CMSIS/StdDriver/src/pwm.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="sys.h" tooltip="cheali-charger/core/ARM/CMSIS/StdDriver/inc/sys.h">
+<persistable path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/sys.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="SMPS_PID.cpp" tooltip="cheali-charger/hardware/SMPS_PID.cpp">
+<persistable path="/cheali-charger/hardware/SMPS_PID.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="outputPWM.cpp" tooltip="cheali-charger/hardware/outputPWM.cpp">
+<persistable path="/cheali-charger/hardware/outputPWM.cpp"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="AnalogInputsADC.cpp" tooltip="cheali-charger/hardware/AnalogInputsADC.cpp">
 <persistable path="/cheali-charger/hardware/AnalogInputsADC.cpp"/>
-</file>
-<file factoryID="org.coocox.builder.ui.persistent.PersistentElementFactory" id="org.coocox.builder.ui.editors.ConfigEditor" name="" tooltip="">
-<persistable>
-<org.coocox.builder.ui.editors.ConfigEditor/>
-</persistable>
-</file>
-<file factoryID="org.coocox.builder.ui.persistent.PersistentElementFactory" id="org.coocox.builder.ui.editors.ConfigEditor" name="" tooltip="">
-<persistable>
-<org.coocox.builder.ui.editors.ConfigEditor/>
-</persistable>
-</file>
-<file factoryID="org.coocox.builder.ui.persistent.PersistentElementFactory" id="org.coocox.builder.ui.editors.ConfigEditor" name="" tooltip="">
-<persistable>
-<org.coocox.builder.ui.editors.ConfigEditor/>
-</persistable>
 </file>
 </mruList>
 </workbench>

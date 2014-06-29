@@ -18,11 +18,14 @@
 #ifndef OUTPUT_PWM_H_
 #define OUTPUT_PWM_H_
 
+#define OUTPUT_PWM_PRECISION_PERIOD 1561
+
 namespace outputPWM {
 
 
 	void initialize(void);
 	void setPWM(uint8_t pin, uint32_t value);
+	void disablePWM(uint8_t pin);
 
 } //namespace outputPWM
 

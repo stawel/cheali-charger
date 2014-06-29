@@ -121,24 +121,21 @@ namespace IO
         }
 
         //based on coocox DrvGPIO
-        inline void disableDigitalInputBit(uint8_t pinNumber) {
-        	uint8_t port = getPortNr(pinNumber);
-        	uint8_t pin = getPinBit(pinNumber);
-        	volatile uint32_t u32Reg = (uint32_t)&P0->OFFD + (port*PORT_OFFSET);
-        	outpw(u32Reg, inpw(u32Reg) & ~(1 << (pin+16)));
-        }
-
-        //based on coocox DrvGPIO
-        inline void initGpioADC(uint8_t adc) {
+        inline void initFuncADC(uint8_t adc) {
         	outpw(&SYS->P1_MFP, (inpw(&SYS->P1_MFP) & ~(0x1<<((adc) +8))) | (0x1<<(adc)));
         }
+
         inline void pinMode(uint8_t pinNumber, uint8_t mode) {
+        	GPIO_T * port = getPort(pinNumber);
+        	uint8_t pin = getPinBit(pinNumber);
 
         	if(mode == ANALOG_INPUT) {
-            	disableDigitalInputBit(pinNumber);
-            	initGpioADC(getADCChannel(pinNumber));
+        		GPIO_SetMode(port, 1 << pin, GPIO_PMD_INPUT);
+        		GPIO_DISABLE_DIGITAL_PATH(port, 1 << pin);
+            	initFuncADC(pin);
         	} else {
-        		GPIO_SetMode(getPort(pinNumber), 1 << getPinBit(pinNumber), mode);
+        		GPIO_SetMode(port, 1 << pin, mode);
+        		GPIO_ENABLE_DIGITAL_PATH(port, 1 << pin);
         	}
         };
 }
