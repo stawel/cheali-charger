@@ -155,7 +155,9 @@ void initialize()
 
     //init clock
     CLK_EnableModuleClock(ADC_MODULE);
-    CLK_SetModuleClock(ADC_MODULE, CLK_CLKSEL1_ADC_S_HXT, CLK_CLKDIV_ADC(100));
+    //TODO: bug can't set larger then CLK_CLKDIV_ADC(105)
+    //TODO: rewrite so that we can set CLK_CLKDIV_ADC(1)
+    CLK_SetModuleClock(ADC_MODULE, CLK_CLKSEL1_ADC_S_HXT, CLK_CLKDIV_ADC(105));
 
     /* Set the ADC operation mode as single, input mode as single-end and enable the analog input channel 2 */
     ADC_Open(ADC, ADC_ADCR_DIFFEN_SINGLE_END, ADC_ADCR_ADMD_SINGLE, 0x1 << 2);

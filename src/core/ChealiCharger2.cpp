@@ -50,16 +50,20 @@ extern uint32_t pwm_n;
 
 void clkInfo() {
 	while(1) {
+		AnalogInputs::powerOn();
 		lcdSetCursor0_0();
 		uint32_t t = Timer::getMiliseconds();
-//		Utils::Delay(10000000);
+		uint32_t t2 = AnalogInputs::getFullMeasurementCount();
+
+		Timer::delayIdle(10000);
 		t = Timer::getMiliseconds() - t;
+		t2 = AnalogInputs::getFullMeasurementCount() - t2;
 		lcdPrintUnsigned(Timer::getMiliseconds()/1000,8);
 		lcdPrintUnsigned(pwm_n, 8);
 
 		lcdSetCursor0_1();
-		lcdPrintUnsigned(CLK_GetCPUFreq()/10000,8);
-		lcdPrintUnsigned(CLK_GetHXTFreq()/10000, 8);
+		lcdPrintUnsigned(t/100,8);
+		lcdPrintUnsigned(t2, 8);
 	}
 }
 
