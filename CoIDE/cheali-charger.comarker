@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <breakpoints>
 <breakpoint enabled="true" persistant="true" registered="true">
-<resource path="/cheali-charger/hardware/outputPWM.cpp" type="1"/>
-<marker lineNumber="48" type="org.eclipse.cdt.debug.core.cLineBreakpointMarker">
-<attrib name="enabled" value="true"/>
+<resource path="/cheali-charger/core/LiquidCrystal.cpp" type="1"/>
+<marker lineNumber="113" type="org.eclipse.cdt.debug.core.cLineBreakpointMarker">
+<attrib name="message" value="Line breakpoint: LiquidCrystal.cpp [line: 113]"/>
 <attrib name="org.eclipse.cdt.debug.core.condition" value=""/>
 <attrib name="org.eclipse.debug.core.id" value="org.eclipse.cdt.debug.core"/>
-<attrib name="workingset_name" value=""/>
 <attrib name="org.eclipse.cdt.debug.core.installCount" value="0"/>
-<attrib name="type" value="org.eclipse.cdt.debug.core.cLineBreakpointMarker"/>
-<attrib name="persistant" value="true"/>
+<attrib name="org.eclipse.cdt.debug.core.sourceHandle" value="C:\Users\stawel\git\cheali-charger\src\core\LiquidCrystal.cpp"/>
 <attrib name="org.eclipse.cdt.debug.core.breakpointType" value="0"/>
-<attrib name="workingset_id" value="org.eclipse.debug.ui.breakpointWorkingSet"/>
-<attrib name="message" value="Line breakpoint: outputPWM.cpp [line: 47]"/>
-<attrib name="registered" value="true"/>
-<attrib name="path" value="/cheali-charger/hardware/outputPWM.cpp"/>
-<attrib name="org.eclipse.cdt.debug.core.sourceHandle" value="C:\Users\stawel\git\cheali-charger\src\hardware\imaxB6-clone-ARM-Cortex-M0\outputPWM.cpp"/>
 <attrib name="org.eclipse.cdt.debug.core.ignoreCount" value="0"/>
 <attrib name="org.eclipse.debug.core.enabled" value="true"/>
+<attrib name="workingset_name" value=""/>
+<attrib name="workingset_id" value="org.eclipse.debug.ui.breakpointWorkingSet"/>
 </marker>
 </breakpoint>
 </breakpoints>

@@ -88,8 +88,8 @@ void Timer::delayIdle(uint16_t ms)
     uint32_t end;
     end = getMiliseconds() + ms;
 
-    while(getMiliseconds() < end) {
+    do {
         doIdle();
-    };
+    } while (getMiliseconds() < end);
 }
 

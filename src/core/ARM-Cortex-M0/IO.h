@@ -26,6 +26,7 @@
 //#define OUTPUT_QUASI GPIO_PMD_QUASI
 #define INPUT GPIO_PMD_QUASI
 #define ANALOG_INPUT 200
+#define ANALOG_INPUT_DISCHARGE 201
 #define HIGH 1
 #define LOW 0
 
@@ -121,8 +122,11 @@ namespace IO
         }
 
         //based on coocox DrvGPIO
-        inline void initFuncADC(uint8_t adc) {
+        inline void enableFuncADC(uint8_t adc) {
         	outpw(&SYS->P1_MFP, (inpw(&SYS->P1_MFP) & ~(0x1<<((adc) +8))) | (0x1<<(adc)));
+        }
+        inline void disableFuncADC(uint8_t adc) {
+        	outpw(&SYS->P1_MFP, inpw(&SYS->P1_MFP) & ~( (0x1<<(adc+8)) | (0x1<<adc)) );
         }
 
         inline void pinMode(uint8_t pinNumber, uint8_t mode) {
@@ -132,7 +136,11 @@ namespace IO
         	if(mode == ANALOG_INPUT) {
         		GPIO_SetMode(port, 1 << pin, GPIO_PMD_INPUT);
         		GPIO_DISABLE_DIGITAL_PATH(port, 1 << pin);
-            	initFuncADC(pin);
+            	enableFuncADC(pin);
+        	} else if(mode == ANALOG_INPUT_DISCHARGE) {
+        		GPIO_SetMode(port, 1 << pin, GPIO_PMD_OPEN_DRAIN);
+        		GPIO_DISABLE_DIGITAL_PATH(port, 1 << pin);
+            	enableFuncADC(pin);
         	} else {
         		GPIO_SetMode(port, 1 << pin, mode);
         		GPIO_ENABLE_DIGITAL_PATH(port, 1 << pin);

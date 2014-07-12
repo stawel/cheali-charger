@@ -33,6 +33,17 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
   {{0, ANALOG_VOLT (0.000)}, {23508, ANALOG_VOLT (14.012)}},    //Vin
   {{0, ANALOG_CELCIUS (0.000)}, {1, ANALOG_CELCIUS (0.001)}},   //Textern
 
+
+/*
+  {{0, ANALOG_VOLT (0.000)}, {1, 1}}, 	  //Vb0_pin
+  {{0, ANALOG_VOLT (0.000)}, {1, 1}},     //Vb1_pin
+  {{0, ANALOG_VOLT (0.000)}, {1, 1}},     //Vb2_pin
+  {{0, ANALOG_VOLT (0.000)}, {1, 1}},     //Vb3_pin
+  {{0, ANALOG_VOLT (0.000)}, {1, 1}},     //Vb4_pin
+  {{0, ANALOG_VOLT (0.000)}, {1, 1}},     //Vb5_pin
+  {{0, ANALOG_VOLT (0.000)}, {1, 1}},     //Vb6_pin
+*/
+
   {{0, ANALOG_VOLT (0.000)}, {23765, ANALOG_VOLT (3.901)}}, 	//Vb0_pin
   {{0, ANALOG_VOLT (0.000)}, {23765, ANALOG_VOLT (3.901)}},     //Vb1_pin
   {{0, ANALOG_VOLT (0.000)}, {48029, ANALOG_VOLT (7.613)}},     //Vb2_pin
@@ -40,6 +51,7 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
   {{0, ANALOG_VOLT (0.000)}, {25561, ANALOG_VOLT (3.957)}},     //Vb4_pin
   {{0, ANALOG_VOLT (0.000)}, {26409, ANALOG_VOLT (4.092)}},     //Vb5_pin
   {{0, ANALOG_VOLT (0.000)}, {26614, ANALOG_VOLT (4.108)}},     //Vb6_pin
+
 #if MAX_BANANCE_CELLS > 6
   {{,}, {,}},                   //Vb7_pin
   {{,}, {,}},                   //Vb8_pin

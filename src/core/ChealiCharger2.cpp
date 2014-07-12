@@ -64,6 +64,8 @@ void clkInfo() {
 		lcdSetCursor0_1();
 		lcdPrintUnsigned(t/100,8);
 		lcdPrintUnsigned(t2, 8);
+//		AnalogInputs::printRealValue(AnalogInputs::Vout_plus_pin, 8);
+//		AnalogInputs::printRealValue(AnalogInputs::Vout_minus_pin, 8);
 	}
 }
 
@@ -102,6 +104,7 @@ void setup()
     Timer::delay(1000);
 
     eeprom::restoreDefault();
+    AnalogInputs::powerOn();
 //    clkInfo();
 }
 
