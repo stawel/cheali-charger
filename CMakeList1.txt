@@ -43,7 +43,7 @@ else(ARM-Cortex-M0)
     include(avr-compiler.cmake)
     add_subdirectory(src/core/atmega32)
 
-    add_subdirectory(src/hardware/50W-5A)
+    add_subdirectory(src/hardware/200W)
    
 endif(ARM-Cortex-M0)
 

@@ -195,11 +195,6 @@ void setNextMuxAddress()
 {
     uint8_t input = nextInput(input_);
     int8_t mux = getMUX(input);
-    //TODO: disable temperature???
-#ifdef ENABLE_COMMON_UART_EXT_TEMP_PIN
-    if(settings.UART_ != Settings::Disabled && mux == MADDR_T_EXTERN)
-        mux = MADDR_V_BALANSER6;
-#endif
     setMuxAddress(mux);
 }
 

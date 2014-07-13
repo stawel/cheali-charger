@@ -39,7 +39,7 @@
 #define CALIBRATION_DISCHARGE_POINT1_mA 300
 
 //prevent power supply (>50W chargers)
-#define ENABLE_SMOOTHCURRENT ANALOG_AMP(1.000)
+#define ENABLE_SMOOTHCURRENT ANALOG_AMP(3.000)
 
 //screenanimation
 #define ENABLE_SCREENANIMATION

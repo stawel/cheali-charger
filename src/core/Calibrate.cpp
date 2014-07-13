@@ -546,7 +546,8 @@ void checkCalibrateIcharge()
     //check 'overflow" ismps (protect hardware PID ctrl chargers)
         //if r53-54 failure, then calibration value too high. Protect the SMPS circiuit the overflow value.
 
-    if (!checkCalibrate(MAX_CHARGE_I,AnalogInputs::IsmpsValue))
+                                     //need because freeze 'm' state (balancerdiaplay). this value stored the ismps_limit
+    if (!checkCalibrate(MAX_CHARGE_I+ANALOG_AMP(0.100),AnalogInputs::IsmpsValue))
      {
        Screen::displayCalibrationErrorScreen(1);
      }
@@ -568,7 +569,7 @@ void checkCalibrateIcharge()
 
 void checkCalibrateIdischarge()
 {
-    if (!checkCalibrate(MAX_DISCHARGE_I,AnalogInputs::IdischargeValue))
+    if (!checkCalibrate(MAX_DISCHARGE_I+ANALOG_AMP(0.100),AnalogInputs::IdischargeValue))
      {
        Screen::displayCalibrationErrorScreen(3);
      }
