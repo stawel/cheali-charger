@@ -19,35 +19,31 @@
 #define ATOMIC_H_
 
 #include <inttypes.h>
-
-static __inline__ uint8_t __iSeiRetVal(void)
-{
-//TODO: implement
-//    sei();
-    return 1;
+extern "C" {
+#include "M051Series.h"
 }
 
+extern uint8_t __atomic_h_irq_count;
 static __inline__ uint8_t __iCliRetVal(void)
 {
-    //TODO: implement
-//    cli();
-    return 1;
+	__disable_irq();
+	__atomic_h_irq_count++;
+    return __atomic_h_irq_count;
 }
 
-static __inline__ void __iRestore(const  uint8_t *__s)
+static __inline__ void __iRestore(uint8_t *__s)
 {
-    //TODO: implement
-//    SREG = *__s;
-//    __asm__ volatile ("" ::: "memory");
+	__atomic_h_irq_count --;
+    if(__atomic_h_irq_count == 0) {
+    	__enable_irq();
+    }
 }
 
 
-#define ATOMIC_BLOCK(type) for ( type, __ToDo = __iCliRetVal(); \
+#define ATOMIC_BLOCK(type) for ( type = __iCliRetVal(), __ToDo =1; \
                            __ToDo ; __ToDo = 0 )
 
-//TODO: implement
 #define ATOMIC_RESTORESTATE uint8_t sreg_save \
-    __attribute__((__cleanup__(__iRestore))) = 0
-//__attribute__((__cleanup__(__iRestore))) = SREG
+    __attribute__((__cleanup__(__iRestore)))
 
 #endif /* ATOMIC_H_ */

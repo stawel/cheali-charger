@@ -83,6 +83,11 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
     _displayfunction |= LCD_5x10DOTS;
   }
 
+  IO::pinMode(LCD_D0_PIN, OUTPUT);
+  IO::pinMode(LCD_D1_PIN, OUTPUT);
+  IO::pinMode(LCD_D2_PIN, OUTPUT);
+  IO::pinMode(LCD_D3_PIN, OUTPUT);
+
   // SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
   // according to datasheet, we need at least 40ms after power rises above 2.7V
   // before sending commands. Arduino can turn on way befer 4.5V so we'll wait 50
@@ -281,10 +286,6 @@ void LiquidCrystal::pulseEnable(void) {
 }
 
 void LiquidCrystal::write4bits(uint8_t value) {
-  IO::pinMode(LCD_D0_PIN, OUTPUT);
-  IO::pinMode(LCD_D1_PIN, OUTPUT);
-  IO::pinMode(LCD_D2_PIN, OUTPUT);
-  IO::pinMode(LCD_D3_PIN, OUTPUT);
   IO::digitalWrite(LCD_D0_PIN, value & 1);
   IO::digitalWrite(LCD_D1_PIN, value & 2);
   IO::digitalWrite(LCD_D2_PIN, value & 4);

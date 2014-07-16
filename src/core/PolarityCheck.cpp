@@ -19,7 +19,7 @@
 #include "Hardware.h"
 #include "Screen.h"
 #include "Buzzer.h"
-
+#include "AnalogInputs.h"
 
 bool PolarityCheck::isReversedPolarity_ = false;
 bool PolarityCheck::checkReversedPolarity_ = true;

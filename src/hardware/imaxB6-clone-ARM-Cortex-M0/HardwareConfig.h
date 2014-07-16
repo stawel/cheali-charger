@@ -29,7 +29,8 @@
 
 
 //1-13? correlation
-#define SMPS_UPPERBOUND_VALUE               100
-#define DISCHARGER_UPPERBOUND_VALUE         100
+#define SMPS_UPPERBOUND_VALUE               (60000)
+//TODO: ?? pwm_n in outputPWM.cpp
+#define DISCHARGER_UPPERBOUND_VALUE         1561
 
 #endif /* HARDWARE_CONFIG_H_ */

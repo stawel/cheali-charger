@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "Hardware.h"
-#include "Timer.h"
 #include "LcdPrint.h"
 #include "Program.h"
 #include "Settings.h"

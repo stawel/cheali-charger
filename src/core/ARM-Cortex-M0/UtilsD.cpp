@@ -17,19 +17,28 @@
 */
 
 #include "Utils.h"
+#include "clk.h"
 
 namespace Utils
 {
     //TODO: implement, used by LCD
-    void delayTenMicroseconds(uint16_t value)
-    {
-    }
+	//x = 10000 == 2592micro second
+	void Delay(uint32_t x)
+   	{
+		uint32_t i;
+		for(i = 0; i < x; i++) {
+			__NOP();
+			__NOP();
+		}
+	}
 
     void delayMicroseconds(uint16_t value)
     {
-    }
+    	//CLK_SysTickDelay(4*((uint32_t)value));
 
-    void delayMilliseconds(uint16_t value)
-    {
-    }
+    	uint32_t x = value;
+    	x*=10000;
+    	x/=2592;
+    	Delay(x);
+     }
 }

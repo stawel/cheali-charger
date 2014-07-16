@@ -17,6 +17,7 @@
 */
 #include "Hardware.h"
 #include "SMPS.h"
+#include "AnalogInputs.h"
 
 namespace SMPS {
     STATE state_;

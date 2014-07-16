@@ -45,6 +45,7 @@ public:
     uint8_t getMenuSize() const { return size_; }
 
     void display();
+    void debug();
 };
 
 #endif /* MENU_H_ */

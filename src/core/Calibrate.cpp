@@ -211,6 +211,9 @@ void calibrateSimplifiedVb1_pin(AnalogInputs::ValueType real_v)
     p1.y = real_v + AnalogInputs::getRealValue(AnalogInputs::Vb0_pin);
     p2.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vb2_pin);
     p2.y = p1.y + AnalogInputs::getRealValue(AnalogInputs::Vb2);
+    //TODO: ??? Vb0_pin
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb0_pin, 1, p1);
+
     AnalogInputs::setCalibrationPoint(AnalogInputs::Vb1_pin, 1, p1);
     AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, 1, p2);
 }

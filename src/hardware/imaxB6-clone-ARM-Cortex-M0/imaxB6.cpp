@@ -18,10 +18,11 @@
 #include "imaxB6.h"
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
-#include "adc.h"
+#include "AnalogInputsADC.h"
 #include "SerialLog.h"
 #include "IO.h"
 #include "Keyboard.h"
+#include "outputPWM.h"
 
 
 uint8_t hardware::getKeyPressed()
@@ -38,24 +39,31 @@ void hardware::setBalancerOutput(bool enable)
     uint8_t mode = INPUT;
     if(enable)
         mode = OUTPUT;
-    IO::pinMode(BALANCER1_LOAD_PIN, mode);
-    IO::pinMode(BALANCER2_LOAD_PIN, mode);
-    IO::pinMode(BALANCER3_LOAD_PIN, mode);
-    IO::pinMode(BALANCER4_LOAD_PIN, mode);
-    IO::pinMode(BALANCER5_LOAD_PIN, mode);
-    IO::pinMode(BALANCER6_LOAD_PIN, mode);
 
 }
 
 
 void hardware::initialize()
 {
+    IO::pinMode(BALANCER1_LOAD_PIN, OUTPUT);
+    IO::pinMode(BALANCER2_LOAD_PIN, OUTPUT);
+    IO::pinMode(BALANCER3_LOAD_PIN, OUTPUT);
+    IO::pinMode(BALANCER4_LOAD_PIN, OUTPUT);
+    IO::pinMode(BALANCER5_LOAD_PIN, OUTPUT);
+    IO::pinMode(BALANCER6_LOAD_PIN, OUTPUT);
+    setBalancer(0);
+
+
+	IO::pinMode(BUTTON_STOP_PIN, INPUT);
+	IO::pinMode(BUTTON_DEC_PIN, INPUT);
+	IO::pinMode(BUTTON_INC_PIN, INPUT);
+	IO::pinMode(BUTTON_START_PIN, INPUT);
     IO::pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
+    IO::pinMode(BUZZER_PIN, OUTPUT);
 
     IO::pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
     IO::pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
-    IO::pinMode(BUZZER_PIN, OUTPUT);
 
     IO::pinMode(SMPS_VALUE_BUCK_PIN, OUTPUT);
     IO::pinMode(SMPS_VALUE_BOOST_PIN, OUTPUT);
@@ -66,6 +74,8 @@ void hardware::initialize()
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
     adc::initialize();
+    outputPWM::initialize();
+
 }
 
 
@@ -73,7 +83,9 @@ void hardware::soundInterrupt()
 {}
 
 void hardware::setBuzzer(uint8_t val)
-{}
+{
+	IO::digitalWrite(BUZZER_PIN, (val&1));
+}
 
 void hardware::setBatteryOutput(bool enable)
 {

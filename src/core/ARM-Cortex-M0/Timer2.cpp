@@ -15,20 +15,31 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Timer.h"
+#include "Time.h"
 #include "Hardware.h"
 
-
+extern "C" {
+#include "M051Series.h"
+}
 // time measurement - measure TIMER_INTERRUPT_PERIOD_MICROSECONDS
 
-//TODO: implement
-/*ISR(TIMER2_COMP_vect)
+extern "C" {
+void TMR0_IRQHandler(void)
 {
+    /* Clear Timer0 time-out interrupt flag */
+    TIMER_ClearIntFlag(TIMER0);
     Timer::callback();
-}*/
+}
+}
 
 
 void Timer::initialize()
 {
-    //TODO: implement
+	CLK_EnableModuleClock(TMR0_MODULE);
+	CLK_SetModuleClock(TMR0_MODULE,CLK_CLKSEL1_TMR0_S_HCLK,CLK_CLKDIV_UART(1));
+    TIMER_Open(TIMER0, TIMER_PERIODIC_MODE, 1000000/TIMER_INTERRUPT_PERIOD_MICROSECONDS);
+    TIMER_EnableInt(TIMER0);
+    NVIC_EnableIRQ(TMR0_IRQn);
+    TIMER_Start(TIMER0);             /* Start counting */
+
 }

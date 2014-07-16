@@ -22,80 +22,50 @@
 
 #define PSTR(x) x
 #define PROGMEM
-#define EEMEM
+//__attribute__((section(".text")))
+#define EEMEM __attribute__((section(".data_flash")))
 
 namespace pgm {
 
     inline char *strncpy(char * buf, const char *str, size_t s) {
-        return strncpy(buf, str, s);
+        return std::strncpy(buf, str, s);
     }
 
     inline size_t strlen(const char *s) {
-        return strlen(s);
-    }
-
-    template<class Type, int n>
-    struct read_impl{
-        inline Type operator()(const Type * addressP) {
-            Type t;
-            memcpy(&t, addressP, sizeof(Type));
-            return t;
-        }
-        inline void operator()(Type &t, const Type * addressP) {
-            memcpy(&t, addressP, sizeof(Type));
-        }
-    };
-
-    template<class Type>
-    static Type read(const Type * addressP) {
-        return read_impl<Type, sizeof(Type)>() (addressP);
+        return std::strlen(s);
     }
 
     template<class Type>
     static void read(Type &t, const Type * addressP) {
-        read_impl<Type, sizeof(Type)>() (t, addressP);
+        std::memcpy(&t, addressP, sizeof(Type));
     }
+
+    template<class Type>
+    static Type read(const Type * addressP) {
+        Type t;
+        read(t, addressP);
+        return t;
+    }
+
 };
 
 
 namespace eeprom {
 
-    template<class Type, int n>
-    struct read_impl{
-        inline Type operator()(const Type * addressE) {
-            //TODO:implement
-            Type t = *addressE;
-            //eeprom_read_block(&t, addressE, sizeof(Type));
-            return t;
-        }
-        inline void operator()(Type &t, const Type * addressE) {
-            //TODO:implement
-            t = *addressE;
-            //eeprom_read_block(&t, addressE, sizeof(Type));
-        }
-    };
-
-    template<class Type, int n>
-    struct write_impl{
-        inline void operator()(Type * addressE, const Type &t) {
-            //TODO:implement
-            *addressE = t;
-            //eeprom_update_block(&t, addressE, sizeof(Type));
-        }
-    };
+	void write_impl(void * addressE, const void * data, int size);
 
     template<class Type>
     static Type read(const Type * addressE) {
-        return read_impl<Type, sizeof(Type)>() (addressE);
+        return  *addressE;
     }
     template<class Type>
     static void read(Type &t, const Type * addressE) {
-        return read_impl<Type, sizeof(Type)>() (t, addressE);
+        t = read(addressE);
     }
 
     template<class Type>
     static void write(Type * addressE, const Type &t) {
-        return write_impl<Type, sizeof(Type)>() (addressE, t);
+        write_impl(addressE, &t, sizeof(Type));
     }
 };
 

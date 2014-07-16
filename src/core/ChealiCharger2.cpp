@@ -32,11 +32,42 @@
 #include "eeprom.h"
 #include "cpu.h"
 
+extern "C" {
+#include "M051Series.h"
+}
+
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
 {string_options, NULL };
 
 MainMenu mainMenu(progmemMainMenu, 1);
+
+namespace Utils {
+void Delay(uint32_t x);
+}
+
+extern uint32_t pwm_n;
+
+void clkInfo() {
+	while(1) {
+		AnalogInputs::powerOn();
+		lcdSetCursor0_0();
+		uint32_t t = Timer::getMiliseconds();
+		uint32_t t2 = AnalogInputs::getFullMeasurementCount();
+
+		Timer::delayIdle(10000);
+		t = Timer::getMiliseconds() - t;
+		t2 = AnalogInputs::getFullMeasurementCount() - t2;
+		lcdPrintUnsigned(Timer::getMiliseconds()/1000,8);
+		lcdPrintUnsigned(pwm_n, 8);
+
+		lcdSetCursor0_1();
+		lcdPrintUnsigned(t/100,8);
+		lcdPrintUnsigned(t2, 8);
+//		AnalogInputs::printRealValue(AnalogInputs::Vout_plus_pin, 8);
+//		AnalogInputs::printRealValue(AnalogInputs::Vout_minus_pin, 8);
+	}
+}
 
 void loop()
 {
@@ -56,6 +87,7 @@ void loop()
 void setup()
 {
     cpu::init();
+
     hardware::initialize();
     Timer::initialize();
     SMPS::initialize();
@@ -70,7 +102,10 @@ void setup()
     Screen::displayStrings(PSTR("  ChealiCharger"),
                            PSTR("    ver: "  CHEALI_CHARGER_VERSION_STRING));
     Timer::delay(1000);
+
     eeprom::restoreDefault();
+    AnalogInputs::powerOn();
+//    clkInfo();
 }
 
 
