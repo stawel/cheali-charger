@@ -67,7 +67,7 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
         return Strategy::RUNNING;
 
     if(settings.enable_deltaV_) {
-        int x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
+        int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
         x=-x;
         if(x > ProgramData::currentProgramData.getDeltaVLimit()) {
             Program::stopReason_ = PSTR("-dV");
@@ -75,7 +75,7 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
         }
     }
     if(settings.externT_) {
-        int x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
+    	int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
         if(x > ProgramData::currentProgramData.getDeltaTLimit()) {
             Program::stopReason_ = PSTR("dT/dt");
             return Strategy::COMPLETE;

@@ -23,6 +23,18 @@
 #include "eeprom.h"
 #include "atomic.h"
 
+#define ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT (ANALOG_INPUTS_ADC_ROUND_MAX_COUNT*ANALOG_INPUTS_ADC_BURST_COUNT)
+#define UINT32_MAX (1<<32)
+
+#if (1<<ANALOG_INPUTS_RESOLUTION) * ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT > UINT32_MAX
+#error "avr sum don't fit into uint32_t"
+#endif
+
+//TODO: 120?? we take not more then 60 measurements into account
+#if ((1<<ANALOG_INPUTS_RESOLUTION)>>ANALOG_INPUTS_ADC_DELTA_SHIFT) * ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT * 120 > UINT32_MAX
+#error "delta avr sum don't fit into uint32_t"
+#endif
+
 
 #define RETURN_ATOMIC(x)  \
     ValueType v; \
@@ -337,10 +349,6 @@ void AnalogInputs::doSlowInterrupt()
 
 void AnalogInputs::intterruptFinalizeMeasurement()
 {
-    i_deltaAvrSumVoutPlus_    += i_avrSum_[Vout_plus_pin];
-    i_deltaAvrSumVoutMinus_   += i_avrSum_[Vout_minus_pin];
-    i_deltaAvrSumTextern_     += i_avrSum_[Textern];
-    i_deltaAvrCount_ ++;
     if(i_avrCount_>0)
     	i_avrCount_--;
 }
@@ -350,7 +358,6 @@ void AnalogInputs::doIdle()
 {
 	if(isPowerOn()) {
 		finalizeFullMeasurement();
-		finalizeDeltaMeasurement();
 	}
 }
 
@@ -366,8 +373,15 @@ void AnalogInputs::finalizeFullMeasurement()
     	if(!ignoreLastResult_) {
 			tmp_time_ = t - tmp_time_last_;
 			calculationCount_++;
+
+		    i_deltaAvrSumVoutPlus_    += i_avrSum_[Vout_plus_pin] >> ANALOG_INPUTS_ADC_DELTA_SHIFT;
+		    i_deltaAvrSumVoutMinus_   += i_avrSum_[Vout_minus_pin] >> ANALOG_INPUTS_ADC_DELTA_SHIFT;
+		    i_deltaAvrSumTextern_     += i_avrSum_[Textern] >> ANALOG_INPUTS_ADC_DELTA_SHIFT;
+		    i_deltaAvrCount_ ++;
+		    finalizeDeltaMeasurement();
+
 			FOR_ALL_PHY_INPUTS(name) {
-				avrAdc_[name] = i_avrSum_[name] / (ANALOG_INPUTS_ADC_ROUND_MAX_COUNT*ANALOG_INPUTS_ADC_BURST_COUNT);
+				avrAdc_[name] = i_avrSum_[name] / ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT;
 				ValueType real = calibrateValue(name, avrAdc_[name]);
 				setReal(name, real);
 			}
@@ -382,12 +396,13 @@ void AnalogInputs::finalizeFullMeasurement()
 void AnalogInputs::finalizeDeltaMeasurement()
 {
     if(Timer::getMiliseconds() - deltaStartTime_ > DELTA_TIME_MILISECONDS) {
-        uint16_t deltaAvrCount;
+        uint32_t deltaAvrCount;
         uint32_t deltaAvrSumVoutPlus;
         uint32_t deltaAvrSumVoutMinus;
         uint32_t deltaAvrSumTextern;
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-            deltaAvrCount = i_deltaAvrCount_;
+            deltaAvrCount = i_deltaAvrCount_*ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT;
+            deltaAvrCount >>= ANALOG_INPUTS_ADC_DELTA_SHIFT;
             deltaAvrSumVoutPlus  = i_deltaAvrSumVoutPlus_;
             deltaAvrSumVoutMinus = i_deltaAvrSumVoutMinus_;
             deltaAvrSumTextern   = i_deltaAvrSumTextern_;
@@ -415,7 +430,7 @@ void AnalogInputs::finalizeDeltaMeasurement()
         setReal(deltaVout, real - old);
 
         //calculate deltaTextern
-        uint16_t dc = deltaAvrCount/2;
+        uint32_t dc = deltaAvrCount/2;
 #if DELTA_TIME_MILISECONDS != 30000
 #warning "DELTA_TIME_MILISECONDS != 30000"
         uint32_t dx2;
