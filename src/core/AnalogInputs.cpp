@@ -418,21 +418,17 @@ void AnalogInputs::finalizeDeltaMeasurement()
         setReal(deltaVout, real - old);
 
         //calculate deltaTextern
-        uint16_t dc = deltaAvrCount/2;
+        uint16_t dc = 2;
 #if DELTA_TIME_MILISECONDS != 30000
-#warning "DELTA_TIME_MILISECONDS != 30000"
-        uint32_t dx2;
-        dx2 = deltaAvrCount;
-        dx2 /= 60000;
-        dx2 *= DELTA_TIME_MILISECONDS;
-        dc = dx2;
+#error "DELTA_TIME_MILISECONDS != 30000"
 #endif
-        deltaAvrSumTextern /= dc;
+        deltaAvrSumTextern /= deltaAvrCount;
         x = deltaAvrSumTextern;
         real = calibrateValue(Textern, x);
         old = deltaLastT_;
         deltaLastT_ = real;
         real -= old;
+        real *= dc;
         setReal(deltaTextern, real);
         setReal(deltaLastCount, deltaAvrCount);
     }
