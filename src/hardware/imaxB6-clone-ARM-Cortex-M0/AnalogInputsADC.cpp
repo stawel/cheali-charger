@@ -59,10 +59,12 @@
  */
 
 
+#define ADC_I_SMPS_PER_ROUND 4
 //discharge ADC capacitor on Vb6 - there is an operational amplifier
 #define ADC_CAPACITOR_DISCHARGE_ADDRESS MADDR_V_BALANSER6
 #define ADC_CAPACITOR_DISCHARGE_DELAY_US 20
 #define ADC_CLOCK_DIVIDER 4
+
 
 
 volatile uint8_t g_adcBurstCount = 0;
@@ -266,6 +268,10 @@ void finalizeMeasurement()
     if(g_addSumToInput) {
         AnalogInputs::i_avrSum_[AnalogInputs::IsmpsValue]        += SMPS::getValue() * ANALOG_INPUTS_ADC_BURST_COUNT;
         AnalogInputs::i_avrSum_[AnalogInputs::IdischargeValue]   += Discharger::getValue() * ANALOG_INPUTS_ADC_BURST_COUNT;
+        if(AnalogInputs::i_avrCount_ == 1) {
+        	AnalogInputs::i_avrSum_[AnalogInputs::Ismps]          /= ADC_I_SMPS_PER_ROUND;
+        }
+        //TODO: maybe intterruptFinalizeMeasurement should be removed
         AnalogInputs::intterruptFinalizeMeasurement();
     }
 
