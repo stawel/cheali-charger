@@ -75,11 +75,13 @@
 #define MUX0_Z_D_PIN            43 //(7+12+12+12)
 #define DISCHARGE_DISABLE_PIN   44 //(8+12+12+12)
 #define UART_TX_PIN             45 //(9+12+12+12)
+#define T_EXTERNAL_PIN          45 //(9+12+12+12)
 #define V_IN_PIN                46 //(10+12+12+12)
 #define SMPS_CURRENT_PIN        47  //?? (11+12+12+12)
 //pin 48 - PWM2, P4.2 - UNKNOWN
 
-
+//virtual pin
+#define T_INTERNAL_PIN			3+128
 
 //Multiplexer addresses ??? TODO:
 #define MADDR_V_BALANSER_BATT_MINUS     0
@@ -89,7 +91,7 @@
 #define MADDR_V_BALANSER4               4
 #define MADDR_V_BALANSER5               5
 #define MADDR_V_BALANSER6               6
-#define MADDR_T_EXTERN                  7
+//#define MADDR_T_EXTERN                  7
 
 
 #endif /* IMAXB6_PINS_H_ */

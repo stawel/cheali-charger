@@ -84,6 +84,10 @@ namespace IO
 			case 29: return &P45;
 			case 30: return &P46;
 			case 31: return &P47;
+
+			//virtual pins
+			case 3+128: return &P17;
+			case 3+64:  return &P17;
 			}
 			return &P46; //not used
 		}

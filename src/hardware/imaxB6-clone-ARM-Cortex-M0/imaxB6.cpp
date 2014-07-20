@@ -73,7 +73,7 @@ void hardware::initialize()
     setBuzzer(0);
 
     lcd.begin(LCD_COLUMNS, LCD_LINES);
-    adc::initialize();
+    AnalogInputsADC::initialize();
     outputPWM::initialize();
 
 }
