@@ -26,8 +26,6 @@ namespace StorageStrategy {
     enum State  {Charge, Discharge, Balance};
 
     AnalogInputs::ValueType V_;
-    AnalogInputs::ValueType Ic_;
-    AnalogInputs::ValueType Id_;
     State state;
     bool doBalance_;
     void setDoBalance(bool v) { doBalance_ = v; }
@@ -52,11 +50,9 @@ void StorageStrategy::powerOn()
 {
     Balancer::powerOn();
     if(Balancer::isMinVout(Balancer::calculatePerCell(V_))) {
-        TheveninChargeStrategy::setVIB(V_, Ic_, false);
         TheveninChargeStrategy::powerOn();
         state = Charge;
     } else {
-        TheveninDischargeStrategy::setVI(V_, Id_);
         TheveninDischargeStrategy::powerOn();
         TheveninDischargeStrategy::endOnTheveninMethodComplete_ = true;
         state = Discharge;
@@ -96,6 +92,6 @@ Strategy::statusType StorageStrategy::doStrategy()
 void StorageStrategy::setVII(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic, AnalogInputs::ValueType Id)
 {
     V_ = V;
-    Ic_ = Ic;
-    Id_ = Id;
+    TheveninChargeStrategy::setVIB(V, Ic, false);
+    TheveninDischargeStrategy::setVI(V, Id);
 }
