@@ -25,7 +25,7 @@ namespace Utils
 	//x = 10000 == 2592micro second
 	void Delay(uint32_t x)
    	{
-		uint32_t i;
+	volatile uint32_t i;
 		for(i = 0; i < x; i++) {
 			__NOP();
 			__NOP();

@@ -78,7 +78,7 @@
 #define CLK_CLKSEL1_TMR1_S_LIRC         0x00005000UL /*!< Setting Timer 1 clock source as LIRC */
 #define CLK_CLKSEL1_TMR1_S_HIRC         0x00007000UL /*!< Setting Timer 1 clock source as HIRC */
 #define CLK_CLKSEL1_TMR2_S_HXT          0x00000000UL /*!< Setting Timer 2 clock source as HXT */
-#define CLK_CLKSEL1_TMR2_S_S_HCLK       0x00020000UL /*!< Setting Timer 2 clock source as HCLK */
+#define CLK_CLKSEL1_TMR2_S_HCLK         0x00020000UL /*!< Setting Timer 2 clock source as HCLK */
 #define CLK_CLKSEL1_TMR2_S_T2           0x00030000UL /*!< Setting Timer 2 clock source as T2 */
 #define CLK_CLKSEL1_TMR2_S_LIRC         0x00050000UL /*!< Setting Timer 2 clock source as LIRC */
 #define CLK_CLKSEL1_TMR2_S_HIRC         0x00070000UL /*!< Setting Timer 2 clock source as HIRC */
@@ -162,8 +162,8 @@
 #define WDT_MODULE     ((0x0<<31)|(0x1<<29)    |(0x3<<25)         |( 0<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_WDT_EN_Pos )     /*!< WDT Module */
 #define TMR0_MODULE    ((0x0<<31)|(0x1<<29)    |(0x7<<25)         |( 8<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_TMR0_EN_Pos)     /*!< TMR0 Module */
 #define TMR1_MODULE    ((0x0<<31)|(0x1<<29)    |(0x7<<25)         |(12<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_TMR1_EN_Pos)     /*!< TMR1 Module */
-#define TMR2_MODULE    ((0x0<<31)|(0x1<<29)    |(0x7<<25)         |(16<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_TMR0_EN_Pos)     /*!< TMR2 Module */
-#define TMR3_MODULE    ((0x0<<31)|(0x1<<29)    |(0x7<<25)         |(20<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_TMR1_EN_Pos)     /*!< TMR3 Module */
+#define TMR2_MODULE    ((0x0<<31)|(0x1<<29)    |(0x7<<25)         |(16<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_TMR2_EN_Pos)     /*!< TMR2 Module */
+#define TMR3_MODULE    ((0x0<<31)|(0x1<<29)    |(0x7<<25)         |(20<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_TMR3_EN_Pos)     /*!< TMR3 Module */
 #define FDIV_MODULE    ((0x0<<31)|(0x3<<29)    |(0x3<<25)         |( 2<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_FDIV_EN_Pos)     /*!< FDIV Module */
 #define I2C0_MODULE    ((0x0<<31)              |(MODULE_NoMsk<<25)                                |(MODULE_NoMsk<<10)               |CLK_APBCLK_I2C0_EN_Pos)     /*!< I2C0 Module */
 #define I2C1_MODULE    ((0x0<<31)              |(MODULE_NoMsk<<25)                                |(MODULE_NoMsk<<10)               |CLK_APBCLK_I2C1_EN_Pos)     /*!< I2C1 Module */

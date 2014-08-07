@@ -104,3 +104,10 @@ void hardware::setBalancer(uint8_t v)
 
 LiquidCrystal lcd;
 
+void hardware::setExternalTemperatueOutput(bool enable)
+{
+    if(enable) {
+        IO::pinMode(T_EXTERNAL_PIN, ANALOG_INPUT);
+    }
+}
+

@@ -21,6 +21,8 @@
 #include "LcdPrint.h"
 #include "Buzzer.h"
 
+
+
 #ifdef ENABLE_LCD_BACKLIGHT
 const char string_backlight[]   PROGMEM = "backlight:";
 #endif
@@ -132,7 +134,7 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
 #ifdef ENABLE_T_INTERNAL
         case NEXT_CASE:     changeTemp(p_.dischargeTempOff_, dir);                  break;
 #endif
-        case NEXT_CASE:     change0ToMax(p_.externT_, dir, 1);                      break;
+        case NEXT_CASE:     changeExternTemp(dir);                                  break;
         case NEXT_CASE:     changeTemp(p_.externTCO_,dir);                          break;
         case NEXT_CASE:     changeDeltaTemp(p_.deltaT_,dir);                        break;
         case NEXT_CASE:     change0ToMax(p_.enable_deltaV_, dir, 1);                break;
@@ -141,11 +143,12 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     change1ToMax(p_.CDcycles_, dir, 5);                     break;
         case NEXT_CASE:     change1ToMax(p_.capCutoff_, dir, 250);                  break;
         case NEXT_CASE:     changeInputVolt(p_.inputVoltageLow_, dir);              break;
-        case NEXT_CASE:     change0ToMaxSmart(p_.dischargeOffset_LiXX_, dir, Settings::MaxDischargeOffset_LiXX);  break;
+        case NEXT_CASE:     change0ToMaxSmart(p_.dischargeOffset_LiXX_, dir,
+                                               Settings::MaxDischargeOffset_LiXX);  break;
         case NEXT_CASE:     change0ToMax(p_.dischargeAggressive_LiXX_, dir, 1);     break;
         case NEXT_CASE:     change0ToMax(p_.forceBalancePort_, dir, 1);             break;
         case NEXT_CASE:     changeBalanceError(p_.balancerError_, dir);             break;
-        case NEXT_CASE:     change0ToMax(p_.UART_, dir, Settings::ExtDebugAdc);     break;
+        case NEXT_CASE:     changeUART(dir);                                        break;
         case NEXT_CASE:     change0ToMax(p_.UARTspeed_, dir, Settings::UARTSpeeds-1); break;
     }
 }
@@ -201,8 +204,20 @@ void SettingsMenu::changeBacklight(int dir) {
 }
 #endif
 
-void SettingsMenu::changeUART(int dir)
-{
+void SettingsMenu::changeExternTemp(int dir) {
+    change0ToMax(p_.externT_, dir, 1);
+#ifdef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
+    if(p_.externT_)
+        p_.UART_ = Settings::Disabled;
+#endif
+}
+
+void SettingsMenu::changeUART(int dir) {
+    change0ToMax(p_.UART_, dir, Settings::ExtDebugAdc);
+#ifdef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
+    if(p_.UART_ != Settings::Disabled)
+        p_.externT_ = false;
+#endif
 }
 
 const char string_disable[]     PROGMEM = "disabled";
