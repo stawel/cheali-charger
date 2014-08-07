@@ -113,8 +113,15 @@ const adc_correlation order_analogInputs_on[] PROGMEM = {
 };
 
 
+
 inline uint8_t nextInput(uint8_t i) {
-    if(++i >= sizeOfArray(order_analogInputs_on)) i=0;
+//    if(++i >= sizeOfArray(order_analogInputs_on)) i=0;
+    i++;
+#ifdef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
+// disable ExtTemp ADC if UART is active
+    if(!settings.externT_ && ( order_analogInputs_on[i].ai_name_ == AnalogInputs::Textern) ) i++;
+#endif
+    if(i >= sizeOfArray(order_analogInputs_on)) i=0;
     return i;
 }
 
@@ -168,8 +175,6 @@ void initialize()
     IO::pinMode(SMPS_CURRENT_PIN, ANALOG_INPUT);
     IO::pinMode(OUTPUT_VOLTAGE_PLUS_PIN, ANALOG_INPUT);
     IO::pinMode(DISCHARGE_CURRENT_PIN, ANALOG_INPUT);
-    IO::pinMode(T_EXTERNAL_PIN, ANALOG_INPUT);
-
 
     IO::pinMode(MUX0_Z_D_PIN, ANALOG_INPUT_DISCHARGE);
     IO::digitalWrite(MUX0_Z_D_PIN, 0);

@@ -38,6 +38,7 @@ private:
     void changeBacklight(int dir);
 #endif
     void changeUART(int dir);
+    void changeExternTemp(int dir);
 
     static void printTemp(AnalogInputs::ValueType t);
     static void printDeltaT(AnalogInputs::ValueType dt);

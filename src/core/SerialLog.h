@@ -23,7 +23,13 @@ namespace SerialLog {
     void doIdle();
     void powerOff();
     void sendCalibration();
+
+    // TxSoftSerial test; can be removed or commented
+    void dumpCalibration();
+    void printString(const char *s);
+    void printUInt(uint16_t x);
 } //namespace SerialLog
 
 
 #endif /* SERIALLOG_H_ */
+

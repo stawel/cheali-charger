@@ -32,6 +32,8 @@
 #include "eeprom.h"
 #include "cpu.h"
 
+#include "TxSoftSerial.h"
+
 extern "C" {
 #include "M051Series.h"
 }
@@ -47,27 +49,78 @@ void Delay(uint32_t x);
 }
 
 extern uint32_t pwm_n;
+uint32_t timerN=0;
 
 void clkInfo() {
-	while(1) {
-		AnalogInputs::powerOn();
-		lcdSetCursor0_0();
-		uint32_t t = Timer::getMiliseconds();
-		uint32_t t2 = AnalogInputs::getFullMeasurementCount();
+    while(1) {
+        AnalogInputs::powerOn();
+        lcdSetCursor0_0();
+        uint32_t t = Timer::getMiliseconds();
+        uint32_t t2 = AnalogInputs::getFullMeasurementCount();
+        Timer::delayIdle(1000);
+        t2 = AnalogInputs::getFullMeasurementCount() - t;
+        lcdPrintUnsigned(Timer::getMiliseconds()/1000,8);
+        lcdPrintUnsigned(pwm_n, 8);
 
-		Timer::delayIdle(10000);
-		t = Timer::getMiliseconds() - t;
-		t2 = AnalogInputs::getFullMeasurementCount() - t2;
-		lcdPrintUnsigned(Timer::getMiliseconds()/1000,8);
-		lcdPrintUnsigned(pwm_n, 8);
+        lcdSetCursor0_1();
+        lcdPrintUnsigned(t/100,8);
+        lcdPrintUnsigned(t2, 8);
+        lcdPrintUnsigned(settings.getUARTspeed(), 8);
 
-		lcdSetCursor0_1();
-		lcdPrintUnsigned(t/100,8);
-		lcdPrintUnsigned(t2, 8);
-//		AnalogInputs::printRealValue(AnalogInputs::Vout_plus_pin, 8);
-//		AnalogInputs::printRealValue(AnalogInputs::Vout_minus_pin, 8);
-	}
+//        AnalogInputs::printRealValue(AnalogInputs::Vout_plus_pin, 8);
+//        AnalogInputs::printRealValue(AnalogInputs::Vout_minus_pin, 8);
+    }
 }
+
+void Serial_test() {
+    uint8_t c;
+    uint32_t baud=19200; //57600; //9600; //38400; //19200;
+
+    //	Serial::begin(baud);
+    //
+    //	c=0x55;	Serial::write(c);
+    //	c=0x33;	Serial::write(c);
+    //	c=0x71;	Serial::write(c);
+
+    //	uint16_t usTxBufferRead;
+    //	uint16_t usTxBufferWrite;
+    //	uint8_t ucFlags;
+    //	uint8_t ucTxState;
+    //	uint8_t ucTxNext;
+    //	uint8_t ucTxData;
+
+    while(true) {
+        Timer::delayIdle(1000);
+        Serial::begin(baud);
+//
+//        lcdSetCursor0_0();
+//        lcdPrintUnsigned(Timer::getMiliseconds()/1000,4);
+//        lcdPrintUnsigned(Serial::ucTxState, 4);
+//        lcdPrintUnsigned(Serial::usTxBufferWrite, 4);
+//        lcdPrintUnsigned(Serial::usTxBufferRead, 4);
+//
+//        lcdSetCursor0_1();
+//        lcdPrintUnsigned(baud, 8);
+//        lcdPrintUnsigned(Serial::ucTxData, 4);
+//        lcdPrintUnsigned(Serial::ucTxNext, 4);
+//        c++;
+//        Serial::write(c);
+        SerialLog::dumpCalibration();
+        if(Serial::TxBusy()) {
+            SerialLog::printString("----\n\r");
+            SerialLog::printString(" W:");
+            SerialLog::printUInt(Serial::usTxBufferWrite);
+            SerialLog::printString("\n\r R:");
+            SerialLog::printUInt(Serial::usTxBufferRead);
+            SerialLog::printString("\n\r");
+        }
+        SerialLog::printString("----\n\r");
+//        Serial::flush();
+//        Serial::end();
+		Serial::TxEnd();
+    }
+}
+
 
 void loop()
 {
@@ -88,17 +141,20 @@ void setup()
 {
     cpu::init();
 
+    Settings::load();
+
     hardware::initialize();
     Timer::initialize();
     SMPS::initialize();
     Discharger::initialize();
     AnalogInputs::initialize();
+    Serial::initialize();
 
 #ifdef ENABLE_STACK_INFO
     StackInfo::initialize();
 #endif
 
-    Settings::load();
+//    Settings::load();
     Screen::displayStrings(PSTR("  ChealiCharger"),
                            PSTR("    ver: "  CHEALI_CHARGER_VERSION_STRING));
     Timer::delay(1000);
@@ -106,6 +162,7 @@ void setup()
     eeprom::restoreDefault();
     AnalogInputs::powerOn();
 //    clkInfo();
+//    Serial_test();
 }
 
 
