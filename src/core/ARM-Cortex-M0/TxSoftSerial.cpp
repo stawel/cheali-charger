@@ -47,11 +47,10 @@ uint8_t  pucTxBuffer[Tx_BUFFER_SIZE];
 uint16_t usTxBufferLen=Tx_BUFFER_SIZE;
 uint8_t  ucTxNext;
 uint8_t  ucTxData;
-uint8_t *pucTxpin=(uint8_t *)IO::getPinAddress(T_EXTERNAL_PIN);  // ???
+uint8_t *pucTxpin=(uint8_t *)IO::getPinAddress(T_EXTERNAL_PIN);
 
 volatile uint16_t usTxBufferRead;
 volatile uint16_t usTxBufferWrite;
-volatile uint8_t  ucFlags;
 volatile uint8_t  ucTxState;
 
 
@@ -67,7 +66,6 @@ void initialize()
     IO::pinMode(UART_TX_PIN, GPIO_PMD_OUTPUT);
 #endif
 
-//    TxSetTxPin(UART_TX_PIN);
 }
 
 void begin(unsigned long baud)
@@ -87,10 +85,27 @@ void begin(unsigned long baud)
     usTxBufferRead = 0;
     usTxBufferWrite = 0;
 
-    ucFlags |= Tx_FLAG_ENABLE;
     ucTxNext = 1;
     ucTxState = TxSTATE_IDLE;
 }
+
+//void TxPawel() {
+//    if(ucTxData) {
+//    *(pucTxpin) = ucTxData & 1;
+//    ucTxData >>= 1;
+//    } else {
+//    ucTxData = getNewData();
+//    }
+//    }
+//    uint16_t getNewData() {
+//    if(usTxBufferRead == usTxBufferWrite) return 0;
+//    uint16_t v = START_BIT + ((pucTxBuffer[usTxBufferRead] ^ 0xff) << 1) + STOP_BIT;
+//    if (++usTxBufferRead == usTxBufferLen) {
+//    usTxBufferRead = 0;
+//    }
+//    return v;
+//    }
+//}
 
 
 void TxStateMachine()
@@ -98,9 +113,7 @@ void TxStateMachine()
     *(pucTxpin) = ucTxNext; // Write to the Tx data line.
     switch (ucTxState) {
     case TxSTATE_IDLE: {
-        if (!(ucFlags & Tx_FLAG_ENABLE)) {
-            break;
-        } else if (usTxBufferRead != usTxBufferWrite) {
+        if (usTxBufferRead != usTxBufferWrite) {
             ucTxNext = 0; // start bit
             ucTxState = TxSTATE_START;
         }
@@ -133,10 +146,7 @@ void TxStateMachine()
         if (usTxBufferRead == usTxBufferLen) {
             usTxBufferRead = 0;
         }
-        if (!(ucFlags & Tx_FLAG_ENABLE)) {
-            ucTxState = TxSTATE_IDLE;
-        }
-        else if (usTxBufferRead != usTxBufferWrite) { // more Data
+        if (usTxBufferRead != usTxBufferWrite) { // more Data
             ucTxNext = 0;
             ucTxState = TxSTATE_START;
         }
@@ -147,28 +157,6 @@ void TxStateMachine()
     }
     }
 }
-
-//void TxEnable()
-//{
-//    ucFlags |= Tx_FLAG_ENABLE;
-//}
-//
-//void TxSetTxPin(uint8_t pinNumber)
-//{
-//    // Set pointer to Tx pin
-//    pucTxpin=(uint8_t *)IO::getPinAddress(pinNumber);
-//}
-//
-//bool TxBafferSpace()
-//{
-//    uint16_t usTemp;
-//
-//    usTemp = usTxBufferWrite + 1;
-//    if(usTemp == usTxBufferLen)	{
-//        usTemp = 0;
-//    }
-//    return((usTxBufferRead == usTemp) ? false : true);
-//}
 
 void write(uint8_t ucData)
 {
@@ -185,38 +173,17 @@ void write(uint8_t ucData)
     usTxBufferWrite = usTemp;
 }
 
-bool TxBusy()
-{
-    return(((ucTxState == TxSTATE_IDLE) &&
-            (((ucFlags & Tx_FLAG_ENABLE) == 0) ||
-                    (usTxBufferRead == usTxBufferWrite))) ?
-                            false : true);
-}
-
-void TxEnd()
-{
-    while(TxBusy()) {
-    }
-    ucFlags &= ~(Tx_FLAG_ENABLE);
-    TIMER_Stop(TIMER2);
-    TIMER_DisableInt(TIMER2);
-}
 
 void flush()
 {
-    while(TxBusy());
+    while(((ucTxState != TxSTATE_IDLE) || (usTxBufferRead != usTxBufferWrite)));
 }
 
 void end()
 {
-    ucFlags &= ~(Tx_FLAG_ENABLE);
     TIMER_Stop(TIMER2);
     TIMER_DisableInt(TIMER2);
 }
-
-
-} // namespace Serial
-
 
 extern "C"
 {
@@ -225,4 +192,8 @@ void TMR2_IRQHandler(void) {
     Serial::TxStateMachine();
 }
 }
+
+} // namespace Serial
+
+
 
