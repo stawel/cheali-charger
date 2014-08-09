@@ -21,8 +21,7 @@
 #include "LcdPrint.h"
 #include "Buzzer.h"
 
-// ExtTemp & SW Uart select
-#include "IO.h"
+
 
 #ifdef ENABLE_LCD_BACKLIGHT
 const char string_backlight[]   PROGMEM = "backlight:";

@@ -1,6 +1,6 @@
 /*
     TxSoftSerial - Software serial library (transmit only)
-    Copyright (c) 2014 Saša Mihajloviæ.  All right reserved.
+    Copyright (c) 2014 Sasa Mihajlovic.  All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,10 +15,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef TxSOFSERIAL_H__
-#define TxSOFSERIAL_H__
+#ifndef TxSoftSerial_H_
+#define TxSoftSerial_H_
 
-#include <inttypes.h>
+//#include <inttypes.h>
 
 namespace Serial {
     void  begin(unsigned long baud);
@@ -26,17 +26,17 @@ namespace Serial {
     void  flush();
     void  end();
     void  initialize();
-    void  TxStateMachine();
     void  TxEnd();
-    bool  TxBusy();
-    extern volatile uint16_t usTxBufferRead;
-    extern volatile uint16_t usTxBufferWrite;
-    extern volatile uint8_t  ucFlags;
-    extern volatile uint8_t  ucTxState;
-    extern uint8_t  ucTxNext;
-    extern uint8_t  ucTxData;
+//    void  TxStateMachine();
+//    bool  TxBusy();
+//    extern volatile uint16_t usTxBufferRead;
+//    extern volatile uint16_t usTxBufferWrite;
+//    extern volatile uint8_t  ucFlags;
+//    extern volatile uint8_t  ucTxState;
+//    extern uint8_t  ucTxNext;
+//    extern uint8_t  ucTxData;
 
 } // namespace Serial
 
-#endif //  TxSOFSERIAL_H__
+#endif //  TxSoftSerial_H_
 

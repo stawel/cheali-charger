@@ -68,9 +68,9 @@ void serialBegin()
 }
 void serialEnd()
 {
-//    Serial::flush();
-//    Serial::end();
-    Serial::TxEnd();
+    Serial::flush();
+    Serial::end();
+//    Serial::TxEnd();
 //    IO::pinMode(T_EXTERNAL_PIN, ANALOG_INPUT);
 }
 

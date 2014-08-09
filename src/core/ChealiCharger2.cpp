@@ -72,54 +72,54 @@ void clkInfo() {
     }
 }
 
-void Serial_test() {
-    uint8_t c;
-    uint32_t baud=19200; //57600; //9600; //38400; //19200;
-
-    //	Serial::begin(baud);
-    //
-    //	c=0x55;	Serial::write(c);
-    //	c=0x33;	Serial::write(c);
-    //	c=0x71;	Serial::write(c);
-
-    //	uint16_t usTxBufferRead;
-    //	uint16_t usTxBufferWrite;
-    //	uint8_t ucFlags;
-    //	uint8_t ucTxState;
-    //	uint8_t ucTxNext;
-    //	uint8_t ucTxData;
-
-    while(true) {
-        Timer::delayIdle(1000);
-        Serial::begin(baud);
+//void Serial_test() {
+//    uint8_t c;
+//    uint32_t baud=19200; //57600; //9600; //38400; //19200;
 //
-//        lcdSetCursor0_0();
-//        lcdPrintUnsigned(Timer::getMiliseconds()/1000,4);
-//        lcdPrintUnsigned(Serial::ucTxState, 4);
-//        lcdPrintUnsigned(Serial::usTxBufferWrite, 4);
-//        lcdPrintUnsigned(Serial::usTxBufferRead, 4);
+//    //	Serial::begin(baud);
+//    //
+//    //	c=0x55;	Serial::write(c);
+//    //	c=0x33;	Serial::write(c);
+//    //	c=0x71;	Serial::write(c);
 //
-//        lcdSetCursor0_1();
-//        lcdPrintUnsigned(baud, 8);
-//        lcdPrintUnsigned(Serial::ucTxData, 4);
-//        lcdPrintUnsigned(Serial::ucTxNext, 4);
-//        c++;
-//        Serial::write(c);
-        SerialLog::dumpCalibration();
-        if(Serial::TxBusy()) {
-            SerialLog::printString("----\n\r");
-            SerialLog::printString(" W:");
-            SerialLog::printUInt(Serial::usTxBufferWrite);
-            SerialLog::printString("\n\r R:");
-            SerialLog::printUInt(Serial::usTxBufferRead);
-            SerialLog::printString("\n\r");
-        }
-        SerialLog::printString("----\n\r");
-//        Serial::flush();
-//        Serial::end();
-		Serial::TxEnd();
-    }
-}
+//    //	uint16_t usTxBufferRead;
+//    //	uint16_t usTxBufferWrite;
+//    //	uint8_t ucFlags;
+//    //	uint8_t ucTxState;
+//    //	uint8_t ucTxNext;
+//    //	uint8_t ucTxData;
+//
+//    while(true) {
+//        Timer::delayIdle(1000);
+//        Serial::begin(baud);
+////
+////        lcdSetCursor0_0();
+////        lcdPrintUnsigned(Timer::getMiliseconds()/1000,4);
+////        lcdPrintUnsigned(Serial::ucTxState, 4);
+////        lcdPrintUnsigned(Serial::usTxBufferWrite, 4);
+////        lcdPrintUnsigned(Serial::usTxBufferRead, 4);
+////
+////        lcdSetCursor0_1();
+////        lcdPrintUnsigned(baud, 8);
+////        lcdPrintUnsigned(Serial::ucTxData, 4);
+////        lcdPrintUnsigned(Serial::ucTxNext, 4);
+////        c++;
+////        Serial::write(c);
+//        SerialLog::dumpCalibration();
+//        if(Serial::TxBusy()) {
+//            SerialLog::printString("----\n\r");
+//            SerialLog::printString(" W:");
+//            SerialLog::printUInt(Serial::usTxBufferWrite);
+//            SerialLog::printString("\n\r R:");
+//            SerialLog::printUInt(Serial::usTxBufferRead);
+//            SerialLog::printString("\n\r");
+//        }
+//        SerialLog::printString("----\n\r");
+////        Serial::flush();
+////        Serial::end();
+//		Serial::TxEnd();
+//    }
+//}
 
 
 void loop()
