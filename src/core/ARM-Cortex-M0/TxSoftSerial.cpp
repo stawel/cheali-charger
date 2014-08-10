@@ -1,6 +1,6 @@
 /*
-    TxSoftSerial - Software serial library (transmit only)
-    Copyright (c) 2014 Sasa Mihajlovic.  All right reserved.
+    cheali-charger - open source firmware for a variety of LiPo chargers
+    Copyright (C) 2013  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,12 +15,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include "atomic.h"
 #include "Hardware.h"
 #include "TxSoftSerial.h"
-
-extern "C" {
-#include "M051Series.h"
-}
 
 #include "IO.h"
 
@@ -29,29 +26,17 @@ namespace Serial {
 #define Tx_BUFFER_SIZE	256
 #define Tx_FLAG_ENABLE	0x01
 
-enum TxState {
-    TxSTATE_IDLE,
-    TxSTATE_DATA_0,
-    TxSTATE_DATA_1,
-    TxSTATE_DATA_2,
-    TxSTATE_DATA_3,
-    TxSTATE_DATA_4,
-    TxSTATE_DATA_5,
-    TxSTATE_DATA_6,
-    TxSTATE_DATA_7,
-    TxSTATE_START,
-    TxSTATE_STOP
-};
+#define START_BIT 0
+#define STOP_BIT 1024
 
 uint8_t  pucTxBuffer[Tx_BUFFER_SIZE];
 uint16_t usTxBufferLen=Tx_BUFFER_SIZE;
-uint8_t  ucTxNext;
-uint8_t  ucTxData;
+uint16_t usTxData;
+
 uint8_t *pucTxpin=(uint8_t *)IO::getPinAddress(T_EXTERNAL_PIN);
 
 volatile uint16_t usTxBufferRead;
 volatile uint16_t usTxBufferWrite;
-volatile uint8_t  ucTxState;
 
 
 void initialize()
@@ -81,82 +66,11 @@ void begin(unsigned long baud)
 
     // Tx pin high.
     *(pucTxpin) = 1;
-
     usTxBufferRead = 0;
     usTxBufferWrite = 0;
-
-    ucTxNext = 1;
-    ucTxState = TxSTATE_IDLE;
+    usTxData=0;
 }
 
-//void TxPawel() {
-//    if(ucTxData) {
-//    *(pucTxpin) = ucTxData & 1;
-//    ucTxData >>= 1;
-//    } else {
-//    ucTxData = getNewData();
-//    }
-//    }
-//    uint16_t getNewData() {
-//    if(usTxBufferRead == usTxBufferWrite) return 0;
-//    uint16_t v = START_BIT + ((pucTxBuffer[usTxBufferRead] ^ 0xff) << 1) + STOP_BIT;
-//    if (++usTxBufferRead == usTxBufferLen) {
-//    usTxBufferRead = 0;
-//    }
-//    return v;
-//    }
-//}
-
-
-void TxStateMachine()
-{
-    *(pucTxpin) = ucTxNext; // Write to the Tx data line.
-    switch (ucTxState) {
-    case TxSTATE_IDLE: {
-        if (usTxBufferRead != usTxBufferWrite) {
-            ucTxNext = 0; // start bit
-            ucTxState = TxSTATE_START;
-        }
-        break;
-    }
-    case TxSTATE_START: {
-        ucTxData = pucTxBuffer[usTxBufferRead];
-        ucTxNext = (ucTxData & 1) ? 1 : 0;
-        ucTxState = TxSTATE_DATA_0;
-        break;
-    }
-    case TxSTATE_DATA_0:
-    case TxSTATE_DATA_1:
-    case TxSTATE_DATA_2:
-    case TxSTATE_DATA_3:
-    case TxSTATE_DATA_4:
-    case TxSTATE_DATA_5:
-    case TxSTATE_DATA_6: {
-        ucTxNext = (ucTxData & (1 << ucTxState)) ? 1 : 0;
-        ucTxState++;
-        break;
-    }
-    case TxSTATE_DATA_7: {
-        ucTxNext = 1;
-        ucTxState = TxSTATE_STOP;
-        break;
-    }
-    case TxSTATE_STOP: {
-        usTxBufferRead++;
-        if (usTxBufferRead == usTxBufferLen) {
-            usTxBufferRead = 0;
-        }
-        if (usTxBufferRead != usTxBufferWrite) { // more Data
-            ucTxNext = 0;
-            ucTxState = TxSTATE_START;
-        }
-        else {
-            ucTxState = TxSTATE_IDLE;
-        }
-        break;
-    }
-    }
-}
 
 void write(uint8_t ucData)
 {
@@ -166,7 +80,8 @@ void write(uint8_t ucData)
     if(usTemp == usTxBufferLen) {
         usTemp = 0;
     }
-    while(usTemp == *(volatile uint8_t *)(&(usTxBufferRead)))	{
+
+    while(usTemp == *(volatile uint8_t *)(&(usTxBufferRead))) {
     }
 
     pucTxBuffer[usTxBufferWrite] = ucData;
@@ -176,7 +91,7 @@ void write(uint8_t ucData)
 
 void flush()
 {
-    while(((ucTxState != TxSTATE_IDLE) || (usTxBufferRead != usTxBufferWrite)));
+    while(usTxBufferRead != usTxBufferWrite);
 }
 
 void end()
@@ -185,13 +100,30 @@ void end()
     TIMER_DisableInt(TIMER2);
 }
 
+inline uint16_t getNewData() {
+    if(usTxBufferRead == usTxBufferWrite) return 0;
+    uint16_t v = START_BIT + ((pucTxBuffer[usTxBufferRead]) << 1) + STOP_BIT;
+    if (++usTxBufferRead == usTxBufferLen) {
+        usTxBufferRead = 0;
+    }
+    return v;
+}
+
 extern "C"
 {
 void TMR2_IRQHandler(void) {
     TIMER_ClearIntFlag(TIMER2);
-    Serial::TxStateMachine();
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        if(usTxData) {
+            *(pucTxpin) = usTxData & 1;
+            usTxData >>= 1;
+            return;
+        }
+    }
+    usTxData = getNewData();
 }
 }
+
 
 } // namespace Serial
 

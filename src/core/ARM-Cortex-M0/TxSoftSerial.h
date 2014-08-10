@@ -1,6 +1,6 @@
 /*
-    TxSoftSerial - Software serial library (transmit only)
-    Copyright (c) 2014 Sasa Mihajlovic.  All right reserved.
+    cheali-charger - open source firmware for a variety of LiPo chargers
+    Copyright (C) 2013  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 #ifndef TxSoftSerial_H_
 #define TxSoftSerial_H_
 
-//#include <inttypes.h>
 
 namespace Serial {
     void  begin(unsigned long baud);
@@ -26,16 +25,6 @@ namespace Serial {
     void  flush();
     void  end();
     void  initialize();
-    void  TxEnd();
-//    void  TxStateMachine();
-//    bool  TxBusy();
-//    extern volatile uint16_t usTxBufferRead;
-//    extern volatile uint16_t usTxBufferWrite;
-//    extern volatile uint8_t  ucFlags;
-//    extern volatile uint8_t  ucTxState;
-//    extern uint8_t  ucTxNext;
-//    extern uint8_t  ucTxData;
-
 } // namespace Serial
 
 #endif //  TxSoftSerial_H_

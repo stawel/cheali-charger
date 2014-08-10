@@ -90,7 +90,7 @@ void clkInfo() {
 //    //	uint8_t ucTxData;
 //
 //    while(true) {
-//        Timer::delayIdle(1000);
+//        Timer::delayIdle(500);
 //        Serial::begin(baud);
 ////
 ////        lcdSetCursor0_0();
@@ -105,19 +105,18 @@ void clkInfo() {
 ////        lcdPrintUnsigned(Serial::ucTxNext, 4);
 ////        c++;
 ////        Serial::write(c);
-//        SerialLog::dumpCalibration();
-//        if(Serial::TxBusy()) {
-//            SerialLog::printString("----\n\r");
-//            SerialLog::printString(" W:");
-//            SerialLog::printUInt(Serial::usTxBufferWrite);
-//            SerialLog::printString("\n\r R:");
-//            SerialLog::printUInt(Serial::usTxBufferRead);
-//            SerialLog::printString("\n\r");
-//        }
-//        SerialLog::printString("----\n\r");
-////        Serial::flush();
-////        Serial::end();
-//		Serial::TxEnd();
+////        SerialLog::dumpCalibration();
+//
+//            SerialLog::printString("----\r\n");
+//            SerialLog::printString("1234567890");
+////            SerialLog::printUInt(Serial::usTxBufferWrite);
+//            SerialLog::printString("\r\n");
+////            SerialLog::printUInt(Serial::usTxBufferRead);
+////            SerialLog::printString("\n\r");
+//
+//        SerialLog::printString("----\r\n");
+//        Serial::flush();
+//        Serial::end();
 //    }
 //}
 
