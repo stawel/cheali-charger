@@ -70,8 +70,7 @@ void serialEnd()
 {
     Serial::flush();
     Serial::end();
-//    Serial::TxEnd();
-//    IO::pinMode(T_EXTERNAL_PIN, ANALOG_INPUT);
+//    IO::pinMode(T_EXTERNAL_PIN, ANALOG_INPUT); // work OK without this line
 }
 
 void printChar(char c)

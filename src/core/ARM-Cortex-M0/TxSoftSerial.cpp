@@ -1,4 +1,7 @@
 /*
+    TxSoftSerial - Software serial library (transmit only)
+    Copyright (c) 2014 Sasa Mihajlovic.  All right reserved.
+
     cheali-charger - open source firmware for a variety of LiPo chargers
     Copyright (C) 2013  Paweł Stawicki. All right reserved.
 
@@ -45,8 +48,6 @@ void initialize()
     CLK_SetModuleClock(TMR2_MODULE,CLK_CLKSEL1_TMR2_S_HCLK,CLK_CLKDIV_UART(1));
     NVIC_EnableIRQ(TMR2_IRQn);
 
-//    IO::pinMode(UART_TX_PIN, GPIO_PMD_OUTPUT);
-
 #ifndef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
     IO::pinMode(UART_TX_PIN, GPIO_PMD_OUTPUT);
 #endif
@@ -64,11 +65,10 @@ void begin(unsigned long baud)
     TIMER_EnableInt(TIMER2);
     TIMER_Start(TIMER2);
 
-    // Tx pin high.
-    *(pucTxpin) = 1;
+    *(pucTxpin) = 1;     // Tx pin high.
     usTxBufferRead = 0;
     usTxBufferWrite = 0;
-    usTxData=0;
+    usTxData = 0;
 }
 
 
@@ -80,10 +80,8 @@ void write(uint8_t ucData)
     if(usTemp == usTxBufferLen) {
         usTemp = 0;
     }
-
     while(usTemp == *(volatile uint8_t *)(&(usTxBufferRead))) {
     }
-
     pucTxBuffer[usTxBufferWrite] = ucData;
     usTxBufferWrite = usTemp;
 }

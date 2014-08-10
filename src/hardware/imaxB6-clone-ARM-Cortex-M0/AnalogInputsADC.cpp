@@ -207,7 +207,7 @@ void initialize()
     /* Enable the ADC interrupt */
     ADC_EnableInt(ADC, ADC_ADF_INT);
     NVIC_EnableIRQ(ADC_IRQn);
-    NVIC_SetPriority(ADC_IRQn, 0);// (1<<__NVIC_PRIO_BITS) - 1);
+    NVIC_SetPriority(ADC_IRQn, 1);// (1<<__NVIC_PRIO_BITS) - 1);
 
     current_input_ = 0;
     startConversion();
