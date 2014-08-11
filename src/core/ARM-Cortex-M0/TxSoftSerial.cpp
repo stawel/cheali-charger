@@ -35,8 +35,7 @@ namespace Serial {
 uint8_t  pucTxBuffer[Tx_BUFFER_SIZE];
 uint16_t usTxBufferLen=Tx_BUFFER_SIZE;
 uint16_t usTxData;
-
-uint8_t *pucTxpin=(uint8_t *)IO::getPinAddress(T_EXTERNAL_PIN);
+uint8_t *pucTxpin;
 
 volatile uint16_t usTxBufferRead;
 volatile uint16_t usTxBufferWrite;
@@ -47,6 +46,7 @@ void initialize()
     CLK_EnableModuleClock(TMR2_MODULE);
     CLK_SetModuleClock(TMR2_MODULE,CLK_CLKSEL1_TMR2_S_HCLK,CLK_CLKDIV_UART(1));
     NVIC_EnableIRQ(TMR2_IRQn);
+    pucTxpin=(uint8_t *)IO::getPinAddress(UART_TX_PIN);
 
 #ifndef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
     IO::pinMode(UART_TX_PIN, GPIO_PMD_OUTPUT);
@@ -65,7 +65,7 @@ void begin(unsigned long baud)
     TIMER_EnableInt(TIMER2);
     TIMER_Start(TIMER2);
 
-    *(pucTxpin) = 1;     // Tx pin high.
+    *(pucTxpin) = 1;     // Tx pin high (IDLE)
     usTxBufferRead = 0;
     usTxBufferWrite = 0;
     usTxData = 0;
