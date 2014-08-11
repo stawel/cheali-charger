@@ -49,7 +49,7 @@
     <DebugOption>
       <Option name="org.coocox.codebugger.gdbjtag.core.adapter" value="Nu-Link"/>
       <Option name="org.coocox.codebugger.gdbjtag.core.debugMode" value="SWD"/>
-      <Option name="org.coocox.codebugger.gdbjtag.core.clockDiv" value="1M"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.clockDiv" value="2M"/>
       <Option name="org.coocox.codebugger.gdbjtag.corerunToMain" value="1"/>
       <Option name="org.coocox.codebugger.gdbjtag.core.jlinkgdbserver" value=""/>
       <Option name="org.coocox.codebugger.gdbjtag.core.userDefineGDBScript" value=""/>
@@ -124,6 +124,7 @@
     <File name="core/DummyLiquidCrystal.h" path="../src/core/DummyLiquidCrystal.h" type="1"/>
     <File name="core/SMPS.cpp" path="../src/core/SMPS.cpp" type="1"/>
     <File name="core/TheveninMethod.cpp" path="../src/core/TheveninMethod.cpp" type="1"/>
+    <File name="core/ARM/TxSoftSerial.h" path="../src/core/ARM-Cortex-M0/TxSoftSerial.h" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/src" path="" type="2"/>
     <File name="core/Keyboard.h" path="../src/core/Keyboard.h" type="1"/>
     <File name="core/Program.cpp" path="../src/core/Program.cpp" type="1"/>
@@ -144,12 +145,13 @@
     <File name="hardware/SMPS_PID.cpp" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/SMPS_PID.cpp" type="1"/>
     <File name="core/Calibrate.cpp" path="../src/core/Calibrate.cpp" type="1"/>
     <File name="core/StackInfo.h" path="../src/core/StackInfo.h" type="1"/>
-    <File name="hardware/imaxB6-pins.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/imaxB6-pins.h" type="1"/>
     <File name="core/Program.h" path="../src/core/Program.h" type="1"/>
+    <File name="hardware/imaxB6-pins.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/imaxB6-pins.h" type="1"/>
     <File name="core/DeltaChargeStrategy.h" path="../src/core/DeltaChargeStrategy.h" type="1"/>
     <File name="core/Menu.h" path="../src/core/Menu.h" type="1"/>
     <File name="core/LiquidCrystal.cpp" path="../src/core/LiquidCrystal.cpp" type="1"/>
     <File name="core/Keyboard.cpp" path="../src/core/Keyboard.cpp" type="1"/>
+    <File name="core/ARM/TxSoftSerial.cpp" path="../src/core/ARM-Cortex-M0/TxSoftSerial.cpp" type="1"/>
     <File name="core/StaticMenu.cpp" path="../src/core/StaticMenu.cpp" type="1"/>
     <File name="core/Buzzer.cpp" path="../src/core/Buzzer.cpp" type="1"/>
     <File name="core/ARM/CMSIS/Device" path="" type="2"/>

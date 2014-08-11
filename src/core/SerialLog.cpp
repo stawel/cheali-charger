@@ -28,7 +28,7 @@
 #include "AnalogInputsPrivate.h"
 
 #ifdef ENABLE_SERIAL_LOG
-#include "Serial.h"
+#include "TxSoftSerial.h"
 #endif //ENABLE_SERIAL_LOG
 
 namespace SerialLog {
@@ -64,18 +64,18 @@ void sendTime();
 
 void serialBegin()
 {
-    Serial.begin(settings.getUARTspeed());
+    Serial::begin(settings.getUARTspeed());
 }
 void serialEnd()
 {
-    Serial.flush();
-    Serial.end();
-    IO::pinMode(10, INPUT);
+    Serial::flush();
+    Serial::end();
+//    IO::pinMode(T_EXTERNAL_PIN, ANALOG_INPUT); // work OK without this line
 }
 
 void printChar(char c)
 {
-    Serial.write(c);
+    Serial::write(c);
     CRC^=c;
 }
 
@@ -258,7 +258,7 @@ void sendChannel2(bool adc)
 void sendChannel3()
 {
     sendHeader(3);
-#ifdef ENABLE_SERIAL_LOG
+#ifdef    ENABLE_STACK_INFO //ENABLE_SERIAL_LOG
     printUInt(StackInfo::getNeverUsedStackSize());
     printD();
     printUInt(StackInfo::getFreeStackSize());
@@ -316,6 +316,8 @@ void dumpCalibration()
 }
 void sendCalibration()
 {
+    if(state == Off)
+        return;
     serialBegin();
     dumpCalibration();
     printNL();

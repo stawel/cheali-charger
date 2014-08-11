@@ -32,6 +32,8 @@
 #include "eeprom.h"
 #include "cpu.h"
 
+#include "TxSoftSerial.h"
+
 extern "C" {
 #include "M051Series.h"
 }
@@ -47,27 +49,29 @@ void Delay(uint32_t x);
 }
 
 extern uint32_t pwm_n;
+uint32_t timerN=0;
 
 void clkInfo() {
-	while(1) {
-		AnalogInputs::powerOn();
-		lcdSetCursor0_0();
-		uint32_t t = Timer::getMiliseconds();
-		uint32_t t2 = AnalogInputs::getFullMeasurementCount();
+    while(1) {
+        AnalogInputs::powerOn();
+        lcdSetCursor0_0();
+        uint32_t t = Timer::getMiliseconds();
+        uint32_t t2 = AnalogInputs::getFullMeasurementCount();
+        Timer::delayIdle(1000);
+        t2 = AnalogInputs::getFullMeasurementCount() - t;
+        lcdPrintUnsigned(Timer::getMiliseconds()/1000,8);
+        lcdPrintUnsigned(pwm_n, 8);
 
-		Timer::delayIdle(10000);
-		t = Timer::getMiliseconds() - t;
-		t2 = AnalogInputs::getFullMeasurementCount() - t2;
-		lcdPrintUnsigned(Timer::getMiliseconds()/1000,8);
-		lcdPrintUnsigned(pwm_n, 8);
+        lcdSetCursor0_1();
+        lcdPrintUnsigned(t/100,8);
+        lcdPrintUnsigned(t2, 8);
+        lcdPrintUnsigned(settings.getUARTspeed(), 8);
 
-		lcdSetCursor0_1();
-		lcdPrintUnsigned(t/100,8);
-		lcdPrintUnsigned(t2, 8);
-//		AnalogInputs::printRealValue(AnalogInputs::Vout_plus_pin, 8);
-//		AnalogInputs::printRealValue(AnalogInputs::Vout_minus_pin, 8);
-	}
+//        AnalogInputs::printRealValue(AnalogInputs::Vout_plus_pin, 8);
+//        AnalogInputs::printRealValue(AnalogInputs::Vout_minus_pin, 8);
+    }
 }
+
 
 void loop()
 {
@@ -93,6 +97,7 @@ void setup()
     SMPS::initialize();
     Discharger::initialize();
     AnalogInputs::initialize();
+    Serial::initialize();
 
 #ifdef ENABLE_STACK_INFO
     StackInfo::initialize();
