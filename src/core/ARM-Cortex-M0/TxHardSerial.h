@@ -1,5 +1,5 @@
 /*
-    TxSoftSerial - Software serial library (transmit only)
+    TxHwSerial - Hardware serial library (transmit only)
     Copyright (c) 2014 Sasa Mihajlovic.  All right reserved.
 
     cheali-charger - open source firmware for a variety of LiPo chargers
@@ -18,18 +18,16 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef TxSoftSerial_H_
-#define TxSoftSerial_H_
+#ifndef TxHardSerial_H_
+#define TxHardSerial_H_
 
-
-namespace TxSoftSerial {
-//namespace Serial {
+namespace TxHardSerial {
     void  begin(unsigned long baud);
     void  write(uint8_t c);
     void  flush();
     void  end();
     void  initialize();
-} // namespace TxSoftSerial
+} // namespace TxHardSerial
 
-#endif //  TxSoftSerial_H_
+#endif //  TxHardSerial_H_
 

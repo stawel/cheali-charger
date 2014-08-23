@@ -32,7 +32,7 @@
 #include "eeprom.h"
 #include "cpu.h"
 
-#include "TxSoftSerial.h"
+#include "Serial.h"
 
 extern "C" {
 #include "M051Series.h"

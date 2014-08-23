@@ -28,7 +28,8 @@
 #include "AnalogInputsPrivate.h"
 
 #ifdef ENABLE_SERIAL_LOG
-#include "TxSoftSerial.h"
+//#include "TxSoftSerial.h"
+#include "Serial.h"
 #endif //ENABLE_SERIAL_LOG
 
 namespace SerialLog {

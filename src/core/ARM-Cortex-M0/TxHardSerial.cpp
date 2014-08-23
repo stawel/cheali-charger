@@ -1,5 +1,5 @@
 /*
-    TxSoftSerial - Software serial library (transmit only)
+    TxHardSerial - Hardware serial library (transmit only)
     Copyright (c) 2014 Sasa Mihajlovic.  All right reserved.
 
     cheali-charger - open source firmware for a variety of LiPo chargers
@@ -20,12 +20,11 @@
 */
 #include "atomic.h"
 #include "Hardware.h"
-#include "TxSoftSerial.h"
+#include "TxHardSerial.h"
 
 #include "IO.h"
 
-namespace TxSoftSerial {
-//namespace Serial {
+namespace TxHardSerial {
 
 #define Tx_BUFFER_SIZE	256
 #define Tx_FLAG_ENABLE	0x01
@@ -108,23 +107,23 @@ inline uint16_t getNewData() {
     return v;
 }
 
-extern "C"
-{
-void TMR2_IRQHandler(void) {
-    TIMER_ClearIntFlag(TIMER2);
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        if(usTxData) {
-            *(pucTxpin) = usTxData & 1;
-            usTxData >>= 1;
-            return;
-        }
-    }
-    usTxData = getNewData();
-}
-}
+//extern "C"
+//{
+//void TMR2_IRQHandler(void) {
+//    TIMER_ClearIntFlag(TIMER2);
+//    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+//        if(usTxData) {
+//            *(pucTxpin) = usTxData & 1;
+//            usTxData >>= 1;
+//            return;
+//        }
+//    }
+//    usTxData = getNewData();
+//}
+//}
 
 
-} // namespace TxSoftSerial
+} // namespace TxHardSerial
 
 
 
