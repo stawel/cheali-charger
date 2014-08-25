@@ -6,6 +6,8 @@ SET(CMAKE_CXX_COMPILER avr-g++)
 
 Project(cheali-charger)
 
+find_package(UnixCommands)
+
 set(cheali-charger-version 0.33)
 set(cheali-charger-eeprom-calibration-version 8)
 set(cheali-charger-eeprom-programdata-version 1)

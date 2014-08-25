@@ -26,7 +26,8 @@ add_custom_command(
     POST_BUILD
     COMMAND avr-objcopy -j .eeprom --no-change-warnings --change-section-lma .eeprom=0 -O ihex $<TARGET_FILE:${execName}> $<TARGET_FILE:${execName}>.eep)
 
-
-add_custom_target(${execName}.size ALL
-    COMMAND ${CMAKE_SOURCE_DIR}/src/core/avr-size.sh $<TARGET_FILE:${execName}> ${sizeName}.size
-    DEPENDS ${execName})
+if(BASH)
+    add_custom_target(${execName}.size ALL
+        COMMAND ${CMAKE_SOURCE_DIR}/src/core/avr-size.sh $<TARGET_FILE:${execName}> ${sizeName}.size
+        DEPENDS ${execName})
+endif(BASH)
