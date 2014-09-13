@@ -28,10 +28,9 @@ namespace TxSoftSerial {
 //namespace Serial {
 
 #define Tx_BUFFER_SIZE	256
-#define Tx_FLAG_ENABLE	0x01
 
 #define START_BIT 0
-#define STOP_BIT 1024
+#define STOP_BIT 512
 
 uint8_t  pucTxBuffer[Tx_BUFFER_SIZE];
 uint16_t usTxBufferLen=Tx_BUFFER_SIZE;
@@ -112,13 +111,11 @@ extern "C"
 {
 void TMR2_IRQHandler(void) {
     TIMER_ClearIntFlag(TIMER2);
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         if(usTxData) {
             *(pucTxpin) = usTxData & 1;
             usTxData >>= 1;
             return;
         }
-    }
     usTxData = getNewData();
 }
 }

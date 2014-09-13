@@ -115,8 +115,8 @@
     <File name="core/ARM/CMSIS/StdDriver/inc/pwm.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/pwm.h" type="1"/>
     <File name="core/PolarityCheck.h" path="../src/core/PolarityCheck.h" type="1"/>
     <File name="core/SerialLog.cpp" path="../src/core/SerialLog.cpp" type="1"/>
-    <File name="core/ARM/CMSIS" path="" type="2"/>
     <File name="Version.h" path="Version.h" type="1"/>
+    <File name="core/ARM/CMSIS" path="" type="2"/>
     <File name="core/Monitor.cpp" path="../src/core/Monitor.cpp" type="1"/>
     <File name="core/Buzzer.h" path="../src/core/Buzzer.h" type="1"/>
     <File name="core/EditName.h" path="../src/core/EditName.h" type="1"/>
@@ -126,8 +126,8 @@
     <File name="core/DummyLiquidCrystal.h" path="../src/core/DummyLiquidCrystal.h" type="1"/>
     <File name="core/SMPS.cpp" path="../src/core/SMPS.cpp" type="1"/>
     <File name="core/TheveninMethod.cpp" path="../src/core/TheveninMethod.cpp" type="1"/>
-    <File name="core/ARM/TxSoftSerial.h" path="../src/core/ARM-Cortex-M0/TxSoftSerial.h" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/src" path="" type="2"/>
+    <File name="core/ARM/TxSoftSerial.h" path="../src/core/ARM-Cortex-M0/TxSoftSerial.h" type="1"/>
     <File name="core/Keyboard.h" path="../src/core/Keyboard.h" type="1"/>
     <File name="core/Program.cpp" path="../src/core/Program.cpp" type="1"/>
     <File name="core/Blink.cpp" path="../src/core/Blink.cpp" type="1"/>
@@ -172,9 +172,9 @@
     <File name="core/Version.cpp" path="../src/core/Version.cpp" type="1"/>
     <File name="core/Utils.h" path="../src/core/Utils.h" type="1"/>
     <File name="core/ARM/startup_M051Series.c" path="../src/core/ARM-Cortex-M0/startup_M051Series.c" type="1"/>
-    <File name="core/Blink.h" path="../src/core/Blink.h" type="1"/>
     <File name="core/SimpleChargeStrategy.h" path="../src/core/SimpleChargeStrategy.h" type="1"/>
     <File name="core/StaticMenu.h" path="../src/core/StaticMenu.h" type="1"/>
+    <File name="core/Blink.h" path="../src/core/Blink.h" type="1"/>
     <File name="core/AnalogInputsTypes.h" path="../src/core/AnalogInputsTypes.h" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/src/clk.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/clk.c" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/inc/timer.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/timer.h" type="1"/>

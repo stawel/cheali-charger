@@ -63,7 +63,8 @@ void initialize(void)
 
     // Enable PWM channel 1 period interrupt
 //    PWMA->PIER = PWM_PIER_PWMIE1_Msk;
-//   NVIC_EnableIRQ(PWMA_IRQn);
+//    NVIC_EnableIRQ(PWMA_IRQn);
+//    NVIC_SetPriority(PWMA_IRQn,1); // decrease priority to 1, need for TxSoftSerial
 
 	pwm_n = PWM_GET_CNR(PWMB, PWM_CH2);
 	pwm_n = PWM_GET_CNR(PWMA, PWM_CH1);

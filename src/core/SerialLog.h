@@ -24,10 +24,12 @@ namespace SerialLog {
     void powerOff();
     void sendCalibration();
 
-    // TxSoftSerial test; can be removed or commented
+    // for TxSoftSerial test; can be removed or commented
     void dumpCalibration();
     void printString(const char *s);
     void printUInt(uint16_t x);
+    void printULong(uint32_t x);  //
+    // end for TxSoftSerial test; can be removed or commented
 } //namespace SerialLog
 
 

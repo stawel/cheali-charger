@@ -28,6 +28,7 @@
 #include "Settings.h"
 #include "StackInfo.h"
 #include "Hardware.h"
+#include "LcdPrint.h"  // for TxSerial test
 #include "SerialLog.h"
 #include "eeprom.h"
 #include "cpu.h"
@@ -72,6 +73,66 @@ void clkInfo() {
     }
 }
 
+void Serial_test() {
+	uint8_t c;
+	uint32_t baud=115200; //57600; //9600; //38400; //19200;
+	int br_offset, i, j;
+
+	br_offset= 0; //100;
+	// Serial::begin(baud+br_offset);
+	//
+	// c=0x55; Serial::write(c);
+	// c=0x33; Serial::write(c);
+	// c=0x71; Serial::write(c);
+
+	// uint16_t usTxBufferRead;
+	// uint16_t usTxBufferWrite;
+	// uint8_t ucFlags;
+	// uint8_t ucTxState;
+	// uint8_t ucTxNext;
+	// uint8_t ucTxData;
+	lcdClear();
+	while(true) {
+		Timer::delayIdle(2000);
+		Serial::begin(baud);
+		//
+		lcdSetCursor0_0();
+		lcdPrintUnsigned(Timer::getMiliseconds()/1000,4);
+		// lcdPrintUnsigned(Serial::ucTxState, 4);
+		// lcdPrintUnsigned(Serial::usTxBufferWrite, 4);
+		// lcdPrintUnsigned(Serial::usTxBufferRead, 4);
+		//
+		lcdSetCursor0_1();
+		lcdPrintUnsigned(baud/1000, 8);
+		lcdPrintUnsigned(baud-(baud/1000)*1000, 8);
+		// lcdPrintUnsigned(Serial::ucTxData, 4);
+		// lcdPrintUnsigned(Serial::ucTxNext, 4);
+
+		SerialLog::printString("\r\n==<< ");
+		SerialLog::printULong(baud);
+		SerialLog::printString(" >>==\r\n");
+		for(i=0; i<40; i++) {
+			for (c=0x20; c < 0x7f; c++){
+				Serial::write(c);
+			}
+			SerialLog::printString("\r\n");
+		}
+
+		// SerialLog::dumpCalibration();
+		// SerialLog::printString("----\r\n");
+		// SerialLog::printString("1234567890");
+		// SerialLog::printUInt(Serial::usTxBufferWrite);
+		// SerialLog::printString("\r\n");
+		// SerialLog::printUInt(Serial::usTxBufferRead);
+		// SerialLog::printString("\n\r");
+
+		SerialLog::printString("----\r\n");
+		Serial::flush();
+		Serial::end();
+		baud = baud + br_offset;
+	}
+}
+
 
 void loop()
 {
@@ -111,6 +172,7 @@ void setup()
     eeprom::restoreDefault();
     AnalogInputs::powerOn();
 //    clkInfo();
+//    Serial_test();
 }
 
 

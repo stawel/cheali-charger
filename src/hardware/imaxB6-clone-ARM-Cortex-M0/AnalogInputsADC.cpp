@@ -189,6 +189,7 @@ void initialize()
     TIMER_Open(TIMER1, TIMER_ONESHOT_MODE, 1000000 / ADC_CAPACITOR_DISCHARGE_DELAY_US);//50000);//2000);
     TIMER_EnableInt(TIMER1);
     NVIC_EnableIRQ(TMR1_IRQn);
+    NVIC_SetPriority(TMR1_IRQn,1); // decrease priority to 1, need for TxSoftSerial
 
     //initialize ADC
     //init clock
@@ -207,7 +208,7 @@ void initialize()
     /* Enable the ADC interrupt */
     ADC_EnableInt(ADC, ADC_ADF_INT);
     NVIC_EnableIRQ(ADC_IRQn);
-    NVIC_SetPriority(ADC_IRQn, 1);// decrease to 1, need for TxSoftSerial
+    NVIC_SetPriority(ADC_IRQn, 1); // decrease priority to 1, need for TxSoftSerial
 
     current_input_ = 0;
     startConversion();
