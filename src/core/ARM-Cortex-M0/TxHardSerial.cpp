@@ -20,6 +20,7 @@
 */
 #include "atomic.h"
 #include "Hardware.h"
+#include  "uart.h"
 #include "TxHardSerial.h"
 
 #include "IO.h"
@@ -27,15 +28,10 @@
 namespace TxHardSerial {
 
 #define Tx_BUFFER_SIZE	256
-#define Tx_FLAG_ENABLE	0x01
 
-#define START_BIT 0
-#define STOP_BIT 1024
 
 uint8_t  pucTxBuffer[Tx_BUFFER_SIZE];
 uint16_t usTxBufferLen=Tx_BUFFER_SIZE;
-uint16_t usTxData;
-uint8_t *pucTxpin;
 
 volatile uint16_t usTxBufferRead;
 volatile uint16_t usTxBufferWrite;
@@ -43,39 +39,34 @@ volatile uint16_t usTxBufferWrite;
 
 void initialize()
 {
-    CLK_EnableModuleClock(TMR2_MODULE);
-    CLK_SetModuleClock(TMR2_MODULE,CLK_CLKSEL1_TMR2_S_HCLK,CLK_CLKDIV_UART(1));
-    NVIC_EnableIRQ(TMR2_IRQn);
-    pucTxpin=(uint8_t *)IO::getPinAddress(UART_TX_PIN);
-
-#ifndef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
-    IO::pinMode(UART_TX_PIN, GPIO_PMD_OUTPUT);
+    CLK_EnableModuleClock(UART0_MODULE);
+    CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART_S_HXT, CLK_CLKDIV_UART(1));
+//    SystemCoreClockUpdate();
+#if TX_HW_SERIAL_PIN == 7
+    SYS->P3_MFP = SYS->P3_MFP & (~SYS_MFP_P31_Msk) | SYS_MFP_P31_TXD0; //Tx on pin 7
+#else
+    SYS->P0_MFP = SYS->P0_MFP & (~SYS_MFP_P02_Msk) | SYS_MFP_P02_TXD0; //Tx on pin 38
 #endif
-
 }
 
 void begin(unsigned long baud)
 {
-#ifdef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
-    IO::disableFuncADC(IO::getPinBit(UART_TX_PIN));
-    IO::pinMode(UART_TX_PIN, GPIO_PMD_OUTPUT);
-#endif
+    /* Configure UART0 and set UART0 Baudrate */
+    UART0->BAUD = UART_BAUD_MODE2 | UART_BAUD_MODE2_DIVIDER(__HXT, baud);
+    UART0->LCR = UART_WORD_LEN_8 | UART_PARITY_NONE | UART_STOP_BIT_1;
+    UART0->IER = UART_IER_THRE_IEN_Msk;
 
-    TIMER_Open(TIMER2, TIMER_PERIODIC_MODE, baud);
-    TIMER_EnableInt(TIMER2);
-    TIMER_Start(TIMER2);
+//    UART_ENABLE_INT(UART0, UART_IER_THRE_IEN_Msk);
+//    NVIC_SetPriority(UART0_IRQn,1);
 
-    *(pucTxpin) = 1;     // Tx pin high (IDLE)
     usTxBufferRead = 0;
     usTxBufferWrite = 0;
-    usTxData = 0;
 }
 
 
 void write(uint8_t ucData)
 {
     uint16_t usTemp;
-
     usTemp = usTxBufferWrite + 1;
     if(usTemp == usTxBufferLen) {
         usTemp = 0;
@@ -84,46 +75,38 @@ void write(uint8_t ucData)
     }
     pucTxBuffer[usTxBufferWrite] = ucData;
     usTxBufferWrite = usTemp;
+    NVIC_EnableIRQ(UART0_IRQn);
 }
 
 
 void flush()
 {
     while(usTxBufferRead != usTxBufferWrite);
+    while((UART0->FSR & UART_FSR_TE_FLAG_Msk) == 0);
 }
 
 void end()
 {
-    TIMER_Stop(TIMER2);
-    TIMER_DisableInt(TIMER2);
+    NVIC_DisableIRQ(UART0_IRQn);
+    UART0->IER = 0;
 }
 
-inline uint16_t getNewData() {
-    if(usTxBufferRead == usTxBufferWrite) return 0;
-    uint16_t v = START_BIT + ((pucTxBuffer[usTxBufferRead]) << 1) + STOP_BIT;
-    if (++usTxBufferRead == usTxBufferLen) {
-        usTxBufferRead = 0;
+extern "C"
+{
+void UART0_IRQHandler(void) {
+    if(usTxBufferRead == usTxBufferWrite) {
+        if((UART0->FSR & UART_FSR_TE_FLAG_Msk) == 0)
+            NVIC_DisableIRQ(UART0_IRQn);
+        return;
     }
-    return v;
+    while(((UART0->FSR & UART_FSR_TX_FULL_Msk) == 0) && (usTxBufferRead != usTxBufferWrite)) {
+        UART_WRITE(UART0, pucTxBuffer[usTxBufferRead]);
+        if (++usTxBufferRead == usTxBufferLen) {
+            usTxBufferRead = 0;
+        }
+    }
 }
-
-//extern "C"
-//{
-//void TMR2_IRQHandler(void) {
-//    TIMER_ClearIntFlag(TIMER2);
-//    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-//        if(usTxData) {
-//            *(pucTxpin) = usTxData & 1;
-//            usTxData >>= 1;
-//            return;
-//        }
-//    }
-//    usTxData = getNewData();
-//}
-//}
-
+}
 
 } // namespace TxHardSerial
-
-
 

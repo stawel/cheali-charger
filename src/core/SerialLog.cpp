@@ -171,9 +171,11 @@ void printUInt(uint16_t x)
 
 void printULong(uint32_t x)
 {
-    char buf[8];
+//    char buf[8];
+    char buf[15];
     char *str = buf;
-    uint8_t maxSize = 7;
+//    uint8_t maxSize = 7;
+    uint8_t maxSize = 14;
     ::printULong(str, maxSize, x);
     printString(buf);
 }
@@ -333,6 +335,12 @@ void Serial_test() {
         }
         SerialLog::printString("\r\n==<< ");
         SerialLog::printULong(baud);
+        SerialLog::printString(" SystemCoreClock=");
+        SerialLog::printULong(SystemCoreClock);
+        SerialLog::printString(" PllClock=");
+        SerialLog::printULong(PllClock);
+        SerialLog::printString(" CyclesPerUs=");
+        SerialLog::printULong(CyclesPerUs);
         SerialLog::printString(" >>==\r\n");
     }
 }
