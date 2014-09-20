@@ -15,6 +15,10 @@
 
 #include "M051Series.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 /** @addtogroup M051_Device_Driver M051 Device Driver
   @{
@@ -270,6 +274,9 @@ void CLK_WaitClockReady(uint32_t u32ClkMask);
 
 /*@}*/ /* end of group M051_Device_Driver */
 
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif //__CLK_H__

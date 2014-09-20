@@ -18,8 +18,11 @@ set(IMAXB6_SOURCE
     imaxB6-pins.h
     SMPS_PID.h
     SMPS_PID.cpp
-    adc.cpp
-    adc.h
+    AnalogInputsADC.cpp
+    AnalogInputsADC.h
+
+    outputPWM.cpp
+    outputPWM.h
 
     Hardware.h
     HardwareConfigGeneric.h
