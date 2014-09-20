@@ -47,6 +47,9 @@ const char string_forceBalanc[] PROGMEM = "force bal: ";
 const char string_balancErr[]   PROGMEM = "bal. err:";
 const char string_view[]        PROGMEM = "UART: ";
 const char string_speed[]       PROGMEM = "speed: ";
+#ifdef ENABLE_TX_HW_SERIAL
+const char string_uartInput[]   PROGMEM = "UART inp: ";
+#endif
 const char string_reset[]       PROGMEM = "   reset";
 
 const char * const SettingsStaticMenu[] PROGMEM =
@@ -75,6 +78,9 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_balancErr,
         string_view,
         string_speed,
+#ifdef ENABLE_TX_HW_SERIAL
+        string_uartInput,
+#endif
         string_reset,
         NULL
 };
@@ -114,6 +120,9 @@ uint8_t SettingsMenu::printItem(uint8_t index)
             case NEXT_CASE:     lcdPrint_mV(p_.balancerError_, 5);      break;
             case NEXT_CASE:     printUART();                            break;
             case NEXT_CASE:     printUARTSpeed();                       break;
+#ifdef ENABLE_TX_HW_SERIAL
+            case NEXT_CASE:     printUARTinput();                       break;
+#endif
         }
     }
 }
@@ -150,7 +159,10 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     changeBalanceError(p_.balancerError_, dir);             break;
         case NEXT_CASE:     changeUART(dir);                                        break;
         case NEXT_CASE:     change0ToMax(p_.UARTspeed_, dir, Settings::UARTSpeeds-1); break;
-    }
+#ifdef ENABLE_TX_HW_SERIAL
+        case NEXT_CASE:     change0ToMax(p_.UARTinput_, dir, 1);                    break;
+#endif
+     }
 }
 
 void SettingsMenu::run() {
@@ -208,7 +220,10 @@ void SettingsMenu::changeExternTemp(int dir) {
     change0ToMax(p_.externT_, dir, 1);
 #ifdef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
     if(p_.externT_)
-        p_.UART_ = Settings::Disabled;
+#ifdef ENABLE_TX_HW_SERIAL
+        if(p_.UARTinput_ == Settings::Software)
+#endif
+        	p_.UART_ = Settings::Disabled;
 #endif
 }
 
@@ -216,7 +231,10 @@ void SettingsMenu::changeUART(int dir) {
     change0ToMax(p_.UART_, dir, Settings::ExtDebugAdc);
 #ifdef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
     if(p_.UART_ != Settings::Disabled)
-        p_.externT_ = false;
+#ifdef ENABLE_TX_HW_SERIAL
+        if(p_.UARTinput_ == Settings::Software)
+#endif
+            p_.externT_ = false;
 #endif
 }
 
@@ -226,8 +244,7 @@ const char string_debug[]       PROGMEM = "debug";
 const char string_extDebug[]    PROGMEM = "ext. deb";
 const char string_extDebugAdc[] PROGMEM = "ext. Adc";
 
-const char * const SettingsUART[] PROGMEM =
-{
+const char * const SettingsUART[] PROGMEM = {
         string_disable,
         string_normal,
         string_debug,
@@ -235,9 +252,22 @@ const char * const SettingsUART[] PROGMEM =
         string_extDebugAdc
 };
 
+const char string_temp[]    PROGMEM = "temp";
+const char string_pin7[]    PROGMEM = "pin7";
+
+const char * const SettingsUARTinput[] PROGMEM = {
+		string_temp,
+		string_pin7,
+};
+
 void SettingsMenu::printUART() const
 {
     lcdPrint_P(pgm::read(&SettingsUART[p_.UART_]));
+}
+
+void SettingsMenu::printUARTinput() const
+{
+    lcdPrint_P(pgm::read(&SettingsUARTinput[p_.UARTinput_]));
 }
 
 void SettingsMenu::printUARTSpeed() const

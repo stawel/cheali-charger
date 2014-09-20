@@ -21,26 +21,12 @@
 #ifndef Serial_H_
 #define Serial_H_
 
-#ifdef TX_HW_SERIAL
-#include "TxHardSerial.h"
-#else
-#include "TxSoftSerial.h"
-#endif
-
 namespace Serial {
-#ifdef TX_HW_SERIAL
-    inline void  begin(unsigned long baud) { TxHardSerial::begin(baud); };
-    inline void  write(uint8_t c) { TxHardSerial::write(c); }
-    inline void  flush() { TxHardSerial::flush(); }
-    inline void  end() { TxHardSerial::end(); }
-    inline void  initialize() { TxHardSerial::initialize(); }
-#else
-    inline void  begin(unsigned long baud) { TxSoftSerial::begin(baud); };
-    inline void  write(uint8_t c) { TxSoftSerial::write(c); }
-    inline void  flush() { TxSoftSerial::flush(); }
-    inline void  end() { TxSoftSerial::end(); }
-    inline void  initialize() { TxSoftSerial::initialize(); }
-#endif
+    void  begin(unsigned long baud);
+    void  write(uint8_t c);
+    void  flush();
+    void  end();
+    void  initialize();
 	} // namespace Serial
 
 #endif //  Serial_H_

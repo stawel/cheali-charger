@@ -116,12 +116,7 @@ const adc_correlation order_analogInputs_on[] PROGMEM = {
 
 
 inline uint8_t nextInput(uint8_t i) {
-//    if(++i >= sizeOfArray(order_analogInputs_on)) i=0;
     i++;
-#ifdef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
-// disable ExtTemp ADC if UART is active
-    if(!settings.externT_ && ( order_analogInputs_on[i].ai_name_ == AnalogInputs::Textern) ) i++;
-#endif
     if(i >= sizeOfArray(order_analogInputs_on)) i=0;
     return i;
 }

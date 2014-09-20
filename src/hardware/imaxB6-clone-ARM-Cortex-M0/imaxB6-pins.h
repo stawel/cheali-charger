@@ -82,8 +82,6 @@
 #define SMPS_CURRENT_PIN        47  //?? (11+12+12+12)
 //pin 48 - PWM2, P4.2 - UNKNOWN
 
-#define TX_HW_SERIAL_PIN 7  //HW Uart Tx pin: 7(P3.1) or 38(P0.2)
-
 //virtual pin
 #define T_INTERNAL_PIN			3+128
 

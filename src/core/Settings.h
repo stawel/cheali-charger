@@ -25,6 +25,7 @@
 struct Settings {
 
     enum UARTType {Disabled, Normal,  Debug,  ExtDebug, ExtDebugAdc};
+    enum UARTInput {Software, Hardware};
     static const uint8_t UARTSpeeds = 5;
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5);
     static const AnalogInputs::ValueType MaxDischargeOffset_LiXX = ANALOG_VOLT(1.000);
@@ -45,6 +46,7 @@ struct Settings {
     AnalogInputs::ValueType balancerError_;
     uint16_t UART_;
     uint16_t UARTspeed_;
+    uint16_t UARTinput_;
 
     void edit();
     void check();

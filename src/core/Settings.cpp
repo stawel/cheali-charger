@@ -59,7 +59,8 @@ const Settings defaultSettings PROGMEM = {
         SETTINGS_FORCE_BALANCE_PORT_DEFAULT,            //forceBalancePort_
         ANALOG_VOLT(0.008), //balancerError_
         Settings::Disabled, //UART_ - disabled
-        3                   //57600
+        3,                   //57600
+        Settings::Software, //UARTinput_
 };
 
 
