@@ -25,7 +25,7 @@
 
 namespace eeprom {
 
-void write_impl_less(void * addressE, const void * data, int size)
+void write_impl_less(uint8_t * addressE, const uint8_t * data, int size)
 {
 	uint32_t buf[PAGE_SIZE_32B];
 	int i;
@@ -47,7 +47,7 @@ void write_impl_less(void * addressE, const void * data, int size)
 
 }
 
-void write_impl(void * addressE, const void * data, int size)
+void write_impl(uint8_t * addressE, const uint8_t * data, int size)
 {
 	SYS_UnlockReg();
 

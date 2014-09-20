@@ -467,5 +467,7 @@ void Screen::display(ScreenType screen)
     case ScreenDeltaVout:               return displayDeltaVout();
     case ScreenDeltaTextern:            return displayDeltaTextern();
     case ScreenDeltaFirst:              return displayDeltaFirst();
+    default:
+        return;
     }
 }

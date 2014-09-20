@@ -36,10 +36,6 @@ uint8_t hardware::getKeyPressed()
 
 void hardware::setBalancerOutput(bool enable)
 {
-    uint8_t mode = INPUT;
-    if(enable)
-        mode = OUTPUT;
-
 }
 
 
@@ -54,10 +50,10 @@ void hardware::initialize()
     setBalancer(0);
 
 
-	IO::pinMode(BUTTON_STOP_PIN, INPUT);
-	IO::pinMode(BUTTON_DEC_PIN, INPUT);
-	IO::pinMode(BUTTON_INC_PIN, INPUT);
-	IO::pinMode(BUTTON_START_PIN, INPUT);
+    IO::pinMode(BUTTON_STOP_PIN, INPUT);
+    IO::pinMode(BUTTON_DEC_PIN, INPUT);
+    IO::pinMode(BUTTON_INC_PIN, INPUT);
+    IO::pinMode(BUTTON_START_PIN, INPUT);
     IO::pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
     IO::pinMode(BUZZER_PIN, OUTPUT);
 

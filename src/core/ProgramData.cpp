@@ -238,9 +238,10 @@ void change(val_t &v, int direction, uint16_t max)
 void ProgramData::changeBattery(int direction)
 {
     battery.type+=direction;
-    if(battery.type>=LAST_BATTERY_TYPE)
+    if(battery.type>=LAST_BATTERY_TYPE) {
         if(direction > 0) battery.type=Unknown;
         else battery.type=LAST_BATTERY_TYPE-1;
+    }
     loadDefault();
 }
 

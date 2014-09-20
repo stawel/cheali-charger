@@ -25,6 +25,6 @@ StaticMenu::StaticMenu(const char * const* staticMenu):
             Menu(countElements(staticMenu)), staticMenu_(staticMenu){}
 
 
-uint8_t StaticMenu::printItem(uint8_t i) {
-        return lcdPrint_P(pgm::read(&staticMenu_[i]));
+void StaticMenu::printItem(uint8_t i) {
+        lcdPrint_P(pgm::read(&staticMenu_[i]));
 }

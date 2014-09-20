@@ -43,9 +43,9 @@ void initialize()
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART_S_HXT, CLK_CLKDIV_UART(1));
 
 #if TX_HW_SERIAL_PIN == 7
-    SYS->P3_MFP = SYS->P3_MFP & (~SYS_MFP_P31_Msk) | SYS_MFP_P31_TXD0; //Tx on pin 7
+    SYS->P3_MFP = (SYS->P3_MFP & (~SYS_MFP_P31_Msk)) | SYS_MFP_P31_TXD0; //Tx on pin 7
 #else
-    SYS->P0_MFP = SYS->P0_MFP & (~SYS_MFP_P02_Msk) | SYS_MFP_P02_TXD0; //Tx on pin 38
+    SYS->P0_MFP = (SYS->P0_MFP & (~SYS_MFP_P02_Msk)) | SYS_MFP_P02_TXD0; //Tx on pin 38
 #endif
 }
 

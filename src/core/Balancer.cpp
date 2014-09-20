@@ -193,7 +193,6 @@ void Balancer::trySaveVon() {
     if(savedVon_)
         return;
     savedVon_ = true;
-    AnalogInputs::ValueType vmin = getV(minCell_);
     for(uint8_t c = 0; c < cells_; c++) {
         Von_[c] = getV(c);
     }

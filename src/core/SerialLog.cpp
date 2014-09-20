@@ -213,14 +213,14 @@ void sendChannel1()
 {
     sendHeader(1);
     //analog inputs
-    for(int8_t i=0;i < sizeOfArray(channel1);i++) {
+    for(uint8_t i=0;i < sizeOfArray(channel1);i++) {
         AnalogInputs::Name name = pgm::read(&channel1[i]);
         uint16_t v = AnalogInputs::getRealValue(name);
         printUInt(v);
         printD();
     }
 
-    for(int8_t i=0;i<MAX_BANANCE_CELLS;i++) {
+    for(uint8_t i=0;i<MAX_BANANCE_CELLS;i++) {
         printUInt(TheveninMethod::getReadableRthCell(i));
         printD();
     }

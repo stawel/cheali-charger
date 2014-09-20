@@ -43,7 +43,7 @@ void SMPS_PID::update()
     i_PID_MV += error*A;
 
     if(i_PID_MV<0) i_PID_MV = 0;
-    if(i_PID_MV > MAX_PID_MV_PRECISION) {
+    if((uint32_t)i_PID_MV > MAX_PID_MV_PRECISION) {
         i_PID_MV = MAX_PID_MV_PRECISION;
     }
 

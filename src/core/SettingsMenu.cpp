@@ -90,7 +90,7 @@ SettingsMenu::SettingsMenu(const Settings &p):
         EditMenu(SettingsStaticMenu), p_(p){};
 
 
-uint8_t SettingsMenu::printItem(uint8_t index)
+void SettingsMenu::printItem(uint8_t index)
 {
     StaticMenu::printItem(index);
     if(getBlinkIndex() != index) {

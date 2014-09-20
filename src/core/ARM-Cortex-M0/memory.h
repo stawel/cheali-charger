@@ -19,6 +19,7 @@
 #define MEMORY_H_
 
 #include <cstring>
+#include <stdint.h>
 
 #define PSTR(x) x
 #define PROGMEM
@@ -52,7 +53,7 @@ namespace pgm {
 
 namespace eeprom {
 
-	void write_impl(void * addressE, const void * data, int size);
+    void write_impl(uint8_t * addressE, const uint8_t * data, int size);
 
     template<class Type>
     static Type read(const Type * addressE) {
@@ -65,7 +66,7 @@ namespace eeprom {
 
     template<class Type>
     static void write(Type * addressE, const Type &t) {
-        write_impl(addressE, &t, sizeof(Type));
+        write_impl((uint8_t*)addressE, (uint8_t*) &t, sizeof(Type));
     }
 };
 
