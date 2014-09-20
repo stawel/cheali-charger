@@ -1,9 +1,6 @@
 /*
-    TxSoftSerial - Software serial library (transmit only)
-    Copyright (c) 2014 Sasa Mihajlovic.  All right reserved.
-
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2014 Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,17 +15,18 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef TxSoftSerial_H_
-#define TxSoftSerial_H_
+#ifndef IRQ_PRIORITY_H_
+#define IRQ_PRIORITY_H_
 
+#define SOFT_SERIAL_IRQ_PRIORITY        0
+// decrease priority to 1, need for TxSoftSerial
+#define TIMER_IRQ_PRIORITY              1
+#define HARD_SERIAL_IRQ_PRIORITY        1
+#define ADC_IRQ_PRIORITY				1
+#define ADC_C_DISCHARGE_IRQ_PRIORITY    1
 
-namespace TxSoftSerial {
-    void  begin(unsigned long baud);
-    void  write(uint8_t c);
-    void  flush();
-    void  end();
-    void  initialize();
-} // namespace TxSoftSerial
+//currently not used
+//#define OUTPUT_PWM_IRQ_PRIORITY         1
 
-#endif //  TxSoftSerial_H_
+#endif /* IRQ_PRIORITY_H_ */
 

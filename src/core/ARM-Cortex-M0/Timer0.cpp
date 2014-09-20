@@ -17,6 +17,7 @@
 */
 #include "Time.h"
 #include "Hardware.h"
+#include "irq_priority.h"
 
 extern "C" {
 #include "M051Series.h"
@@ -40,7 +41,7 @@ void Timer::initialize()
     TIMER_Open(TIMER0, TIMER_PERIODIC_MODE, 1000000/TIMER_INTERRUPT_PERIOD_MICROSECONDS);
     TIMER_EnableInt(TIMER0);
     NVIC_EnableIRQ(TMR0_IRQn);
-    NVIC_SetPriority(TMR0_IRQn,1); // decrease priority to 1, need for TxSoftSerial
+    NVIC_SetPriority(TMR0_IRQn, TIMER_IRQ_PRIORITY);
     TIMER_Start(TIMER0);             /* Start counting */
 
 }

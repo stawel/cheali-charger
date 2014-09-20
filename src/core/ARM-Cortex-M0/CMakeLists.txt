@@ -3,7 +3,7 @@ include(${CMAKE_SOURCE_DIR}/src/core/CMakeLists.txt)
 
 set(ARM_Cortex_M0_SOURCE
         memory.h
-        Timer2.cpp
+        Timer0.cpp
 
         IO.h
         Utils.cpp

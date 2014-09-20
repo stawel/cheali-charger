@@ -79,12 +79,12 @@
     <Component id="375" name="TIMER" path="" type="2"/>
   </Components>
   <Files>
-    <File name="core/ARM/Timer2.cpp" path="../src/core/ARM-Cortex-M0/Timer2.cpp" type="1"/>
     <File name="core/Screen.cpp" path="../src/core/Screen.cpp" type="1"/>
-    <File name="core/ARM/CMSIS/CMSIS/core_cm0.h" path="../src/core/ARM-Cortex-M0/CMSIS/CMSIS/Include/core_cm0.h" type="1"/>
     <File name="core/SettingsMenu.h" path="../src/core/SettingsMenu.h" type="1"/>
+    <File name="core/ARM/CMSIS/CMSIS/core_cm0.h" path="../src/core/ARM-Cortex-M0/CMSIS/CMSIS/Include/core_cm0.h" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/inc/wdt.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/wdt.h" type="1"/>
     <File name="core/ARM/CMSIS/Device/system_M051Series.h" path="../src/core/ARM-Cortex-M0/CMSIS/Device/Nuvoton/M051Series/Include/system_M051Series.h" type="1"/>
+    <File name="core/ARM/irq_priority.h" path="../src/core/ARM-Cortex-M0/irq_priority.h" type="1"/>
     <File name="hardware/defaultCalibration.cpp" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/defaultCalibration.cpp" type="1"/>
     <File name="core/Screen.h" path="../src/core/Screen.h" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/inc/uart.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/uart.h" type="1"/>
@@ -95,8 +95,8 @@
     <File name="core/ARM/CMSIS/StdDriver/src/timer.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/timer.c" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/src/gpio.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/gpio.c" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/inc/ebi.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/ebi.h" type="1"/>
-    <File name="hardware/Hardware.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/Hardware.h" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver" path="" type="2"/>
+    <File name="hardware/Hardware.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/Hardware.h" type="1"/>
     <File name="core/StorageStrategy.h" path="../src/core/StorageStrategy.h" type="1"/>
     <File name="hardware/outputPWM.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/outputPWM.h" type="1"/>
     <File name="core/Options.cpp" path="../src/core/Options.cpp" type="1"/>
@@ -115,8 +115,8 @@
     <File name="core/ARM/CMSIS/StdDriver/inc/pwm.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/pwm.h" type="1"/>
     <File name="core/PolarityCheck.h" path="../src/core/PolarityCheck.h" type="1"/>
     <File name="core/SerialLog.cpp" path="../src/core/SerialLog.cpp" type="1"/>
-    <File name="core/ARM/CMSIS" path="" type="2"/>
     <File name="Version.h" path="Version.h" type="1"/>
+    <File name="core/ARM/CMSIS" path="" type="2"/>
     <File name="core/Monitor.cpp" path="../src/core/Monitor.cpp" type="1"/>
     <File name="core/Buzzer.h" path="../src/core/Buzzer.h" type="1"/>
     <File name="core/EditName.h" path="../src/core/EditName.h" type="1"/>
@@ -126,8 +126,8 @@
     <File name="core/SMPS.cpp" path="../src/core/SMPS.cpp" type="1"/>
     <File name="core/DummyLiquidCrystal.h" path="../src/core/DummyLiquidCrystal.h" type="1"/>
     <File name="core/TheveninMethod.cpp" path="../src/core/TheveninMethod.cpp" type="1"/>
-    <File name="core/ARM/TxSoftSerial.h" path="../src/core/ARM-Cortex-M0/TxSoftSerial.h" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/src" path="" type="2"/>
+    <File name="core/ARM/TxSoftSerial.h" path="../src/core/ARM-Cortex-M0/TxSoftSerial.h" type="1"/>
     <File name="core/Keyboard.h" path="../src/core/Keyboard.h" type="1"/>
     <File name="core/Program.cpp" path="../src/core/Program.cpp" type="1"/>
     <File name="core/Blink.cpp" path="../src/core/Blink.cpp" type="1"/>
@@ -226,6 +226,7 @@
     <File name="core/ARM/atomic.h" path="../src/core/ARM-Cortex-M0/atomic.h" type="1"/>
     <File name="core/ARM/CMSIS/StdDriver/inc/i2c.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/i2c.h" type="1"/>
     <File name="core/Discharger.cpp" path="../src/core/Discharger.cpp" type="1"/>
+    <File name="core/ARM/Timer0.cpp" path="../src/core/ARM-Cortex-M0/Timer0.cpp" type="1"/>
     <File name="core/ARM/cpu.h" path="../src/core/ARM-Cortex-M0/cpu.h" type="1"/>
     <File name="core/ChealiCharger2.cpp" path="../src/core/ChealiCharger2.cpp" type="1"/>
     <File name="core/SimpleDischargeStrategy.cpp" path="../src/core/SimpleDischargeStrategy.cpp" type="1"/>

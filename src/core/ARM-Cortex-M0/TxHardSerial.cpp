@@ -41,7 +41,7 @@ void initialize()
 {
     CLK_EnableModuleClock(UART0_MODULE);
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART_S_HXT, CLK_CLKDIV_UART(1));
-//    SystemCoreClockUpdate();
+
 #if TX_HW_SERIAL_PIN == 7
     SYS->P3_MFP = SYS->P3_MFP & (~SYS_MFP_P31_Msk) | SYS_MFP_P31_TXD0; //Tx on pin 7
 #else
@@ -57,7 +57,7 @@ void begin(unsigned long baud)
     UART0->IER = UART_IER_THRE_IEN_Msk;
 
 //    UART_ENABLE_INT(UART0, UART_IER_THRE_IEN_Msk);
-//    NVIC_SetPriority(UART0_IRQn,1);
+//    NVIC_SetPriority(UART0_IRQn, HARD_SERIAL_IRQ_PRIORITY);
 
     usTxBufferRead = 0;
     usTxBufferWrite = 0;

@@ -27,7 +27,9 @@
 //pin 4 - nRST (debug wire)
 //pin 5 - ACMP1_N, RXD, P3.0 - UNKNOWN
 //pin 6 - AVSS
-//pin 7 - ACMP1_P, TXD, P3.1 - UNKNOWN
+//pin 7 - ACMP1_P, TXD, P3.1 - not connected
+#define TX_HW_SERIAL_PIN 7  //HW Uart Tx pin: 7(P3.1) or 38(P0.2)
+
 #define BUTTON_STOP_PIN         8
 #define BUTTON_DEC_PIN          9
 #define BUTTON_INC_PIN          10

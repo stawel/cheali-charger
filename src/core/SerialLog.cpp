@@ -28,7 +28,6 @@
 #include "AnalogInputsPrivate.h"
 
 #ifdef ENABLE_SERIAL_LOG
-//#include "TxSoftSerial.h"
 #include "Serial.h"
 #endif //ENABLE_SERIAL_LOG
 
@@ -71,7 +70,6 @@ void serialEnd()
 {
     Serial::flush();
     Serial::end();
-//    IO::pinMode(T_EXTERNAL_PIN, ANALOG_INPUT); // work OK without this line
 }
 
 void printChar(char c)
@@ -318,44 +316,14 @@ void dumpCalibration()
     }
 }
 
-void Serial_test() {
-    uint8_t c;
-    uint32_t baud=settings.getUARTspeed();
-    int br_offset, i, j;
-
-    SerialLog::printString("\r\n==<< ");
-    SerialLog::printULong(baud);
-    SerialLog::printString(" >>==\r\n");
-    for (j=0; j < 10; j++) {
-        for(i=0; i<40; i++) {
-            for (c=0x20; c < 0x7f; c++){
-                Serial::write(c);
-            }
-            SerialLog::printString("\r\n");
-        }
-        SerialLog::printString("\r\n==<< ");
-        SerialLog::printULong(baud);
-        SerialLog::printString(" SystemCoreClock=");
-        SerialLog::printULong(SystemCoreClock);
-        SerialLog::printString(" PllClock=");
-        SerialLog::printULong(PllClock);
-        SerialLog::printString(" CyclesPerUs=");
-        SerialLog::printULong(CyclesPerUs);
-        SerialLog::printString(" >>==\r\n");
-    }
-}
-
 void sendCalibration()
 {
     if(state == Off)
         return;
-    state=Off;
-    Timer::delayIdle(1000);
-//    serialBegin();
-//    dumpCalibration();
-//    printNL();
-//    dumpCalibration();
-    Serial_test();
+    serialBegin();
+    dumpCalibration();
+    printNL();
+    dumpCalibration();
     printNL();
     serialEnd();
 }
