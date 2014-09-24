@@ -10,7 +10,7 @@ MEMORY
 _eram = 0x20000000 + 0x00001000;
 SECTIONS
 {
-	.data_flash :
+	.data_flash (NOLOAD):
 	{
 	    *(.data_flash*)
 	} > rom1
