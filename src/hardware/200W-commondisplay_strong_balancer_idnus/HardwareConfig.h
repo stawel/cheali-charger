@@ -50,10 +50,10 @@
 #define ENABLE_KNIGHTRIDEREFFECT
 
 //use RAMCG battery icons for hitachi HD44780
-//#define ENABLE_RAM_CG
+//#define ENABLE_LCD_RAM_CG
 
 //waiting common  display relase
-#define START_DELAY_MS 5000    
+#define SCREEN_START_DELAY_MS 5000
 
 //audio mute function
 #define ENABLE_MUTEAUDIO

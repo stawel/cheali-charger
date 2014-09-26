@@ -26,15 +26,15 @@
 #include "DelayStrategy.h"
 
 
- #ifdef ENABLE_RAM_CG
+#ifdef ENABLE_LCD_RAM_CG
    #define BALANCE_FULL_CELL_CHAR   2
    #define BALANCE_AVR_CELL_CHAR    1
    #define BALANCE_EMPTY_CELL_CHAR  0
- #else
+#else
    #define BALANCE_FULL_CELL_CHAR   255    //'!'-34 (fulfill char)
    #define BALANCE_AVR_CELL_CHAR    '-'
    #define BALANCE_EMPTY_CELL_CHAR  '_'
- #endif
+#endif
 
 
 namespace Screen{
@@ -44,7 +44,7 @@ namespace Screen{
     uint32_t totalChargDischargeTime_;
     Blink blink;
     bool blinkIcon;
-#ifdef  ENABLE_KNIGHTRIDEREFFECT   
+#ifdef  ENABLE_KNIGHTRIDEREFFECT
     int8_t knightRiderCounter = 0;
     bool knightRiderDir;
 #endif
@@ -200,6 +200,15 @@ namespace Screen{
     }
 
 } // namespace Screen
+
+void Screen::initialize() {
+#ifdef SCREEN_START_DELAY_MS
+    Timer::delay(SCREEN_START_DELAY_MS); //waiting common display charger for display relase
+#endif
+#ifdef ENABLE_LCD_RAM_CG
+    lcdCreateCGRam();
+#endif
+}
 
 void Screen::printCharge() {
     lcdPrintCharge(AnalogInputs::getRealValue(AnalogInputs::Cout), 8);

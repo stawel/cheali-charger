@@ -40,6 +40,8 @@ namespace Screen {
 
     extern Blink blink;
 
+    void initialize();
+
     uint16_t getTimeSec();
     uint16_t getTotalChargDischargeTime();
     uint8_t getChargeProcent();

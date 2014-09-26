@@ -40,7 +40,7 @@
 #define ENABLE_KNIGHTRIDEREFFECT
 
 //use RAMCG battery icons for hitachi HD44780
-#define ENABLE_RAM_CG
+#define ENABLE_LCD_RAM_CG
 
 //audio mute function  (need setting reset-setup  after flashing or change setting version number)
 #define ENABLE_MUTEAUDIO

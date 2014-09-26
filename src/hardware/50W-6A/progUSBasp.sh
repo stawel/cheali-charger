@@ -10,7 +10,7 @@ PROGRAMMER=usbasp
 
 PARTNO=atmega32
 
-HEX=`ls cheali-charger*.hex`
+HEX=`ls *.hex`
 echo "HEX=$HEX"
 echo "TTY=$TTY"
 
