@@ -44,7 +44,7 @@ namespace Screen{
     uint32_t totalChargDischargeTime_;
     Blink blink;
     bool blinkIcon;
-#ifdef  ENABLE_KNIGHTRIDEREFFECT
+#ifdef  ENABLE_SCREEN_KNIGHTRIDEREFFECT
     int8_t knightRiderCounter = 0;
     bool knightRiderDir;
 #endif
@@ -113,7 +113,7 @@ namespace Screen{
         lcdSetCursor0_0();
         blinkIcon = !blinkIcon;
 
-#ifdef ENABLE_KNIGHTRIDEREFFECT
+#ifdef ENABLE_SCREEN_KNIGHTRIDEREFFECT
         if ( knightRiderDir==true) knightRiderCounter++; else knightRiderCounter--;
         if (knightRiderCounter>5) knightRiderDir=false;
         if (knightRiderCounter<=1) knightRiderDir=true;
@@ -157,7 +157,7 @@ namespace Screen{
             lcdPrintSpaces(8 - Balancer::getCells());
 
         } else {
-#ifdef ENABLE_KNIGHTRIDEREFFECT
+#ifdef ENABLE_SCREEN_KNIGHTRIDEREFFECT
             char knightRiderArrow;
             if (knightRiderDir==true) knightRiderArrow='>'; else knightRiderArrow='<';
             if ((c == 'm') || (c == ' ')) {

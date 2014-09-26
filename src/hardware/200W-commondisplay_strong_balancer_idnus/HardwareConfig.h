@@ -47,7 +47,7 @@
 #define ENABLE_SCREENANIMATION
 
 //knightrider effect is ADC working
-#define ENABLE_KNIGHTRIDEREFFECT
+#define ENABLE_SCREEN_KNIGHTRIDEREFFECT
 
 //use RAMCG battery icons for hitachi HD44780
 //#define ENABLE_LCD_RAM_CG
