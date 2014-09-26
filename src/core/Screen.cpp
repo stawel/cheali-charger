@@ -24,7 +24,7 @@
 #include "Hardware.h"
 #include "Program.h"
 #include "DelayStrategy.h"
-
+#include "Version.h"
 
 #ifdef ENABLE_LCD_RAM_CG
    #define BALANCE_FULL_CELL_CHAR   2
@@ -690,7 +690,7 @@ uint16_t Screen::getETATime()
         //balancer not connected
         kx=100;
     }
-        
+
     //if (getChargeProcent()==99) {return (0);} //no avail more calc (or call secondary calculator)
     return (etaSecLarge*(kx-procent_));
 }
@@ -710,8 +710,20 @@ void Screen::storeCycleHistoryInfo()
     }
 }
 
-
 bool Screen::displayBlink()
 {
     return toggleTextCounter<=20;
+}
+
+void Screen::runResettingEeprom()
+{
+    Screen::displayStrings(PSTR("reseting eeprom:"),
+                           PSTR("v: " CHEALI_CHARGER_EPPROM_VERSION_STRING " "));
+    Timer::delay(2000);
+}
+
+void Screen::runWelcomeScreen() {
+    Screen::displayStrings(PSTR("Cheali-Charger m"),
+                           PSTR("v"  CHEALI_CHARGER_VERSION_STRING));
+    Timer::delay(1000);
 }

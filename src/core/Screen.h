@@ -85,8 +85,10 @@ namespace Screen {
     void displayNotImplemented();
     void displayScreenReversedPolarity();
 
+    void runResettingEeprom();
     void runCalibrateBeforeUse();
     void runNotImplemented();
+    void runWelcomeScreen();
 };
 
 #endif /* SCREEN_H_ */

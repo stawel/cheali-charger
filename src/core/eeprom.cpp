@@ -25,26 +25,35 @@
 #include "LcdPrint.h"
 #include "eeprom.h"
 
+#define CHARS_TO_UINT16(x,y) (((y)<< 8) + (x))
+
 namespace eeprom {
     Data data EEMEM;
 
-    bool testWriteVersion(int * adr, int version) {
+    bool testWriteVersion(uint16_t * adr, uint16_t version) {
         if(eeprom::read(adr) == version)
             return false;
         eeprom::write(adr, version);
         return true;
     }
 
+    void calibrationDisplayMessage(bool calib, bool force)
+    {
+        if(force)
+            Screen::runResettingEeprom();
+
+        if(calib)
+            Screen::runCalibrateBeforeUse();
+    }
+
     void restoreDefault(bool force) {
         bool calib = false;
 
-        if(testWriteVersion( &data.EEPROMidentification1, 67) || force)  {  //C char
+        if(testWriteVersion((uint16_t*) &data.magicString[0], CHARS_TO_UINT16('c','h')))  {
             calib = force = true;
-            restoreDefaultAll();
         }
-        if(testWriteVersion( &data.EEPROMidentification2, 72) || force)  {  // H char
+        if(testWriteVersion((uint16_t*) &data.magicString[2], CHARS_TO_UINT16('l','i')))  {
             calib = force = true;
-            restoreDefaultAll();
         }
 
         if(testWriteVersion(&data.calibrationVersion, CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION) || force)  {
@@ -60,34 +69,6 @@ namespace eeprom {
             Settings::restoreDefault();
         }
 
-      calibrationDisplaymessage(calib, force);
-        
+        calibrationDisplayMessage(calib, force);
     }
-
-void restoreDefaultAll()
-    {
-           resetDisplay();
-           AnalogInputs::restoreDefault();
-           ProgramData::restoreDefault();
-           Settings::restoreDefault();
-    }
-    
-    void calibrationDisplaymessage(bool calib, bool force)
-    {
-        if(force)
-            resetDisplay();
-            Timer::delay(2000);
-
-        if(calib)
-            Screen::runCalibrateBeforeUse();
-    }
-    
-    void resetDisplay()
-    {
-        Screen::displayStrings(PSTR("reseting eeprom:"),
-                               PSTR("v: " CHEALI_CHARGER_EPPROM_VERSION_STRING " "));
-        
-    }
-
-
 }

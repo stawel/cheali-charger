@@ -69,18 +69,13 @@ void setup()
     Settings::load();
     Screen::initialize();
 
-    Screen::displayStrings(PSTR("Cheali-Charger m"),
-                           PSTR("v"  CHEALI_CHARGER_VERSION_STRING));
-    Timer::delay(1000); 
+    Screen::runWelcomeScreen();
+
     eeprom::restoreDefault();
 
-    if (settings.calibratedState_ < 7)
-    {
-    Screen::runCalibrateBeforeUse();
+    if (settings.calibratedState_ < 7) {
+        Screen::runCalibrateBeforeUse();
     }
-
-
-
 }
 
 
