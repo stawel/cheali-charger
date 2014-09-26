@@ -34,13 +34,10 @@ namespace eeprom {
         eeprom::write(adr, version);
         return true;
     }
-    
 
     void restoreDefault(bool force) {
         bool calib = false;
 
-        
-        
         if(testWriteVersion( &data.EEPROMidentification1, 67) || force)  {  //C char
             calib = force = true;
             restoreDefaultAll();
@@ -49,7 +46,7 @@ namespace eeprom {
             calib = force = true;
             restoreDefaultAll();
         }
-        
+
         if(testWriteVersion(&data.calibrationVersion, CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION) || force)  {
             calib = force = true;
             AnalogInputs::restoreDefault();
@@ -67,8 +64,6 @@ namespace eeprom {
         
     }
 
-
-
 void restoreDefaultAll()
     {
            resetDisplay();
@@ -85,7 +80,6 @@ void restoreDefaultAll()
 
         if(calib)
             Screen::runCalibrateBeforeUse();
-    
     }
     
     void resetDisplay()

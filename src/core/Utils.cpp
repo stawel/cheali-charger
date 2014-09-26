@@ -84,19 +84,15 @@ void change1ToMax(uint16_t &v, int dir, uint8_t max)
     else v+=dir;
 }
 
-
 void change0ToMaxSmart(uint16_t &v, int dir, uint16_t max)
 {
     return change0ToMaxSmart(v, dir, max, 0, 0);
 }
 
-
-
 void change100ToMaxSmart(uint16_t &v, int dir, uint16_t max)
 {
     return change0ToMaxSmart(v, dir, max, 0, 100);
 }
-
 
 void change0ToMaxSmart(uint16_t &v, int dir, uint16_t max, int16_t step, uint8_t starting)
 {

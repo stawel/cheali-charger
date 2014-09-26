@@ -128,13 +128,7 @@ void ProgramData::createName(int index)
     printUInt(buf, maxSize, battery.C);
     printChar(buf, maxSize, '/');
     printUInt(buf, maxSize, battery.cells);
-    //printChar(buf, maxSize, '-');
-    //printUInt(buf, maxSize, battery.Ic/1000);
-
 }
-
-
-
 
 void ProgramData::resetName(int index)
 {
@@ -271,16 +265,11 @@ void ProgramData::changeBattery(int direction)
 void ProgramData::changeVoltage(int direction)
 {
     uint16_t max = getMaxCells();
-//    bool noPow10=false;
-//    if (battery.type == Unknown) noPow10=true;
-//    changeMaxSmart(battery.cells, direction, max, noPow10, 1);
     change0ToMaxSmart(battery.cells, direction, max, battery.type == Unknown ? 50: 0,1);
 }
 
 void ProgramData::changeCharge(int direction)
 {
-//    changeMaxSmart(battery.C, direction, PROGRAM_DATA_MAX_CHARGE,false,100);
-
     change0ToMaxSmart(battery.C, direction, PROGRAM_DATA_MAX_CHARGE,0,100);
     battery.Ic = battery.C;
     if(isPb())
@@ -291,14 +280,12 @@ void ProgramData::changeCharge(int direction)
 
 uint16_t ProgramData::getMaxIc() const
 {
-
     uint32_t i;
-    uint16_t v;   
+    uint16_t v;
     v = getVoltage(VCharge);
     i = MAX_CHARGE_P;
     i *= ANALOG_VOLT(1);
     i /= v;
-   
 
     if(i > MAX_CHARGE_I)
         i = MAX_CHARGE_I;
@@ -308,13 +295,11 @@ uint16_t ProgramData::getMaxIc() const
 uint16_t ProgramData::getMaxId() const
 {
     uint32_t i;
-
     uint16_t v;
     v = getVoltage(VCharge);
     i = MAX_DISCHARGE_P;
     i *= ANALOG_VOLT(1);
     i /= v;
-
 
     if(i > MAX_DISCHARGE_I)
         i = MAX_DISCHARGE_I;
@@ -351,15 +336,11 @@ void ProgramData::check()
     v = getMaxCells();
     if(battery.cells > v) battery.cells = v;
 
-
-
     v = getMaxIc();
     if(battery.Ic > v) battery.Ic = v;
 
     v = getMaxId();
     if(battery.Id > v) battery.Id = v;
-
-
 }
 
 #ifdef ENABLE_TIME_LIMIT
@@ -369,7 +350,6 @@ uint16_t ProgramData::getTimeLimit() const
     return tim;
 }
 #endif
-
 
 #ifdef ENABLE_TIME_LIMIT
 uint8_t ProgramData::printTimeString() const
@@ -384,11 +364,9 @@ uint8_t ProgramData::printTimeString() const
 }
 #endif
 
-
 #ifdef ENABLE_TIME_LIMIT
 void ProgramData::changeTime(int direction)
 {
-    //changeMaxStep10(battery.Time, direction, 1000);
     change0ToMaxSmart(battery.Time, direction, 1000,0,1);
 }
 #endif

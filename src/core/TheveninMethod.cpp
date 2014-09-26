@@ -23,7 +23,6 @@
 #include "Utils.h"
 #include "Settings.h"
 
-
 namespace TheveninMethod {
     uint16_t minValue_;
     uint16_t minBalanceValue_;
@@ -43,16 +42,10 @@ namespace TheveninMethod {
     AnalogInputs::ValueType idebug_;
 
 
- void setMinI(AnalogInputs::ValueType i) 
+    void setMinI(AnalogInputs::ValueType i) 
     {    
-     if (i < 50) 
-        { 
-            minValue_ = 50; 
-        }
-        else
-        {
-            minValue_ = i; 
-        }
+        if (i < 50) i = 50;
+        minValue_ = i; 
     }
 
     uint16_t getMinValueB() {
@@ -99,11 +92,9 @@ AnalogInputs::ValueType TheveninMethod::getReadableWiresRth()
 
 void TheveninMethod::setVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueType i, bool balance)
 {
-
-     
     Vend_ = Vend;
     maxValue_ = i;
-    minValue_ = i /settings.Lixx_Imin_;    //default=10
+    minValue_ = i / settings.Lixx_Imin_;    //default=10
         //low current
     if (maxValue_ < 50) { maxValue_ = 50; }
     if (minValue_ < 50) { minValue_ = 50; }
@@ -242,4 +233,3 @@ void TheveninMethod::storeOldValue(AnalogInputs::ValueType oldValue)
         tBal_[i].storeLast(vi, oldValue);
     }
 }
-

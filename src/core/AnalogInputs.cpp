@@ -246,7 +246,6 @@ bool AnalogInputs::isReversePolarity()
 
 AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
 {
-    
     //TODO: do this with more points
     if (x==0) return 0;
     CalibrationPoint p0, p1;
@@ -523,7 +522,6 @@ void AnalogInputs::setReal(Name name, ValueType real)
 
     real_[name] = real;
 }
-
 
 void AnalogInputs::resetAccumulatedMeasurements()
 {

@@ -42,7 +42,6 @@ struct ProgramData {
 #endif
     } __attribute__((packed));
 
-
     BatteryData battery;
     char name[PROGRAM_DATA_MAX_NAME];
 
@@ -57,9 +56,7 @@ struct ProgramData {
     int16_t getDeltaTLimit() const;
 
     void edit(int index);
- 
     void createName(int index);
-
     void resetName(int index);
 
     uint8_t printBatteryString(int n) const;

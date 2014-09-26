@@ -376,7 +376,7 @@ public:
 
 void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
 {
-    AnalogInputs::ValueType maxValue = 65535 ;
+    AnalogInputs::ValueType maxValue = 65535;
     AnalogInputs::Name name1;
     AnalogInputs::Name name2;
 
@@ -532,11 +532,7 @@ void run()
 
 
 
-
 /* Check calibrate and set .SMPS_Upperbound_Value_ */
-
-
-
 
 void checkCalibrateIcharge()
 {
@@ -565,8 +561,6 @@ void checkCalibrateIcharge()
      }
 }
 
-
-
 void checkCalibrateIdischarge()
 {
     if (!checkCalibrate(MAX_DISCHARGE_I+ANALOG_AMP(0.100),AnalogInputs::IdischargeValue))
@@ -586,8 +580,6 @@ void checkCalibrateIdischarge()
      }
 }
 
-
-
 bool checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name1)
 {   
     uint16_t x2=0;
@@ -603,24 +595,6 @@ bool checkCalibrate(AnalogInputs::ValueType testCurrent, AnalogInputs::Name name
     x1=x2;    //x1 return maxcharge/discharge value before overflow
     return r;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 } // namespace Calibrate

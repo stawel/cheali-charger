@@ -233,14 +233,12 @@ void sendChannel1()
 
     printUInt(TheveninMethod::getReadableWiresRth());
     printD();
-    
-    //TODO_NJ (procent/ETA)
+
     printUInt(Screen::getChargeProcent());
     printD();
     printUInt(Screen::getETATime());   //timestamp
     printD();
-    //TODO_NJ end
-    
+
     sendEnd();
 }
 

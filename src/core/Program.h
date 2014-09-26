@@ -34,8 +34,6 @@ public:
         Charging, ChargingBalancing, Discharging,DischargingCharging, Balancing, Storage,
     };
 
-
-
     static ProgramType programType_;
     static ProgramState programState_;
     static const char * stopReason_;
@@ -53,7 +51,7 @@ public:
     static Strategy::statusType runNiXXDischarge(bool immediately);
     static Strategy::statusType runWasteTime();
     static Strategy::statusType runDCcycle(uint8_t prog1);
-    static Strategy::statusType runCycleDischargeCommon(uint8_t prog1); 
+    static Strategy::statusType runCycleDischargeCommon(uint8_t prog1);
     static Strategy::statusType runCycleChargeCommon(uint8_t prog1, bool mode);
     static uint8_t currentCycle();
     static char currentCycleMode();

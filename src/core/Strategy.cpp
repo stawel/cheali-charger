@@ -37,7 +37,7 @@ namespace Strategy {
 #endif
         Buzzer::soundProgramComplete();
         waitButtonPressed();
-        Buzzer::soundOff(); 
+        Buzzer::soundOff();
     }
 
     void chargingMonitorError() {
@@ -102,24 +102,23 @@ namespace Strategy {
                 //change displayed screen
                 key =  Keyboard::getPressedWithSpeed();
                 if(key == BUTTON_INC && pgm::read(&chargeScreens[screen_nr+1]) != Screen::ScreenEnd)
-                    { 
+                {
 #ifndef ENABLE_T_INTERNAL //TODO: after program complete, reconnect battery but wrong cell measurement if disconnected
-        if(status == Strategy::COMPLETE) {hardware::setBatteryOutput(true); }  // ADD THIS LINE TO TURN ON THE FAN
+                    if(status == Strategy::COMPLETE) { hardware::setBatteryOutput(true); }  // ADD THIS LINE TO TURN ON THE FAN
 #endif
 
 #ifdef ENABLE_SCREENANIMATION
-                      Screen::displayAnimation(); 
-#endif                     
-                      screen_nr++;
-                    }
-                if(key == BUTTON_DEC && screen_nr > 0) 
-                    {
-#ifdef ENABLE_SCREENANIMATION
-                      Screen::displayAnimation();
+                    Screen::displayAnimation();
 #endif
-                      screen_nr--;
-                    }
-                    
+                    screen_nr++;
+                }
+                if(key == BUTTON_DEC && screen_nr > 0)
+                {
+#ifdef ENABLE_SCREENANIMATION
+                    Screen::displayAnimation();
+#endif
+                    screen_nr--;
+                }
             }
 
             if(run) {

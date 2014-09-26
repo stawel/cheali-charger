@@ -117,6 +117,7 @@ namespace AnalogInputs {
     ValueType getRealValue(Name name);
     //get the ADC (measured) value - in this particular moment
     ValueType getADCValue(Name name);
+
     ValueType getVout();
     ValueType getIout();
     ValueType getDeltaLastT();

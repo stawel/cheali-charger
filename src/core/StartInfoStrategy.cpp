@@ -22,8 +22,6 @@
 #include "memory.h"
 #include "Settings.h"
 
-//for LAST_PROGRAMTYPE const ???? (charge without balancer)
-#include "Program.h"
 
 namespace StartInfoStrategy {
     uint8_t ok_;
@@ -71,32 +69,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
             cell_nr =   false;
             v_balance = false;
         }
-     }
-
-/*
-#ifdef CHARGE_LIXX_WITHOUT_BALANCER
-    if( (AnalogInputs::getConnectedBalancePorts() == 0) && (v_balance == true) &&
-          (absDiff(AnalogInputs::getRealValue(AnalogInputs::Vout),
-             AnalogInputs::getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)  ))
-             {
-                 if(ProgramData::currentProgramData.isLiXX())
-                 { 
-                   if ( Program::programType_ == Program::ChargeLiXX ||
-                        Program::programType_ == Program::DischargeLiXX ||
-                        Program::programType_ == Program::FastChargeLiXX ||
-                        Program::programType_ == Program::StorageLiXX) 
-                   {                      
-                      //Screen::displayWarningScreen();
-                      Buzzer::soundInfo();
-                      //without balancer
-                      cell_nr =   false;
-                      v_balance = false;
-                   }  
-                  }
-              }
-#endif    
-*/    
-    
+    }
     if(AnalogInputs::isConnected(AnalogInputs::Vbalancer) &&
             absDiff(AnalogInputs::getRealValue(AnalogInputs::Vout),
                AnalogInputs::getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)) v_out = true;

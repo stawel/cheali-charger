@@ -26,7 +26,7 @@
 namespace SMPS {
     STATE state_;
     uint16_t value_;
-#ifdef ENABLE_SMOOTHCURRENT  
+#ifdef ENABLE_SMOOTHCURRENT
     uint16_t oldI, newI,stepValue;
 #endif
 
@@ -52,7 +52,7 @@ void SMPS::setValue(uint16_t value)
     //if (settings.calibratedState_ >= 7) //disable limit if uncalibrated.
     if (Program::programState_ != Program::Calibration)
     {
-      if(value > settings.SMPS_Upperbound_Value_) value = settings.SMPS_Upperbound_Value_;     
+      if(value > settings.SMPS_Upperbound_Value_) value = settings.SMPS_Upperbound_Value_;
     }
 
     value_ = SMPS::setSmoothI(value, value_);
@@ -92,14 +92,14 @@ void SMPS::powerOff(STATE reason)
 
 uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
 {
-#ifdef ENABLE_SMOOTHCURRENT 
+#ifdef ENABLE_SMOOTHCURRENT
  //if (settings.calibratedState_ >= 7) //enabled if  calibrated.
    if (Program::programState_ != Program::Calibration)
     {
             oldI = calibrateValue(AnalogInputs::IsmpsValue, oldValue);
             stepValue = (AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, ENABLE_SMOOTHCURRENT))/2;
             newI = calibrateValue(AnalogInputs::IsmpsValue, value);
-            
+
           //rising
             if ((newI > oldI) && ((newI-oldI) > ENABLE_SMOOTHCURRENT))
             {
@@ -109,14 +109,14 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
               for(uint16_t i=oldValue; i <= value; i=i+stepValue){
                    if (i> value) //safety
                    {
-                     i=value; 
+                     i=value;
                    }
                    hardware::setChargerValue(i);
                    Timer::delay(500);
               }
-              AnalogInputs::isOutStable();    //resistance measure? 
+              AnalogInputs::isOutStable();    //resistance measure?
             }
-            
+
           //falling
             if ((oldI > newI) && ((oldI-newI) > ENABLE_SMOOTHCURRENT))
             {
@@ -126,14 +126,14 @@ uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
               for(uint16_t i=value; i <= oldValue; i=i+stepValue){
                    if (i> oldValue)   //safety
                    {
-                     i=oldValue;  
-                   } 
+                     i=oldValue;
+                   }
                    hardware::setChargerValue(oldValue-i);
                    Timer::delay(500);
               }
-              AnalogInputs::isOutStable();    //resistance measure? 
+              AnalogInputs::isOutStable();    //resistance measure?
             }
-    }        
-#endif 
+    }
+#endif
   return value;
 }
