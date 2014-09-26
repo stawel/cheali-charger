@@ -37,9 +37,9 @@ struct ProgramData {
         uint8_t type;
 
         uint16_t C,Ic,Id,cells;
-#ifdef ENABLE_TIME_LIMIT  
+        //#ifdef ENABLE_TIME_LIMIT: to ensure the same eeprom layout Time is always enabled
         uint16_t Time;
-#endif
+
     } __attribute__((packed));
 
     BatteryData battery;
@@ -48,9 +48,10 @@ struct ProgramData {
     uint16_t getVoltagePerCell(VoltageType type = VIdle) const;
     uint16_t getVoltage(VoltageType type = VIdle) const;
     uint16_t getCapacityLimit() const;
-#ifdef ENABLE_TIME_LIMIT    
+#ifdef ENABLE_TIME_LIMIT
     uint16_t getTimeLimit() const;
     uint8_t printTimeString() const;
+    void changeTime(int direction);
 #endif
     int16_t getDeltaVLimit() const;
     int16_t getDeltaTLimit() const;
@@ -72,9 +73,6 @@ struct ProgramData {
     void changeCharge(int direction);
     void changeIc(int direction);
     void changeId(int direction);
-#ifdef ENABLE_TIME_LIMIT  
-    void changeTime(int direction);
-#endif
 
     uint16_t getMaxCells() const;
     uint16_t getMaxIc() const;

@@ -30,6 +30,7 @@
 
 //info: I use __ COUNTER__ which is not supported by some compilers
 #define START_CASE_COUNTER const uint8_t _case_counter = __COUNTER__
+#define START_CASE_COUNTER_FROM(x) const uint8_t _case_counter = __COUNTER__ - (x)
 #define NEXT_CASE (__COUNTER__ - _case_counter - 1)
 
 //assert

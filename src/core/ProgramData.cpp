@@ -57,8 +57,7 @@ const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][Progr
 
 };
 
-#ifdef ENABLE_TIME_LIMIT
-//                              def. capacity          chargei             dischargei       cell   tlimit                               
+//                              def. capacity          chargei             dischargei       cell   tlimit
 const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
         {ProgramData::Unknown,  ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 10000, 600},
         {ProgramData::NiCd,     ANALOG_CHARGE(2.200), ANALOG_AMP(0.500), ANALOG_AMP(1.900),     1, 480},
@@ -70,21 +69,6 @@ const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PR
         {ProgramData::Li430,    ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
         {ProgramData::Li435,    ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
         {ProgramData::NiZn,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120}
-#else
-//                              def. capacity          chargei             dischargei       cell                            
-const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
-        {ProgramData::Unknown,  ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 10000},
-        {ProgramData::NiCd,     ANALOG_CHARGE(2.200), ANALOG_AMP(0.500), ANALOG_AMP(1.900),     1},
-        {ProgramData::NiMH,     ANALOG_CHARGE(2.200), ANALOG_AMP(0.500), ANALOG_AMP(1.900),     1},
-        {ProgramData::Pb,       ANALOG_CHARGE(2.200), ANALOG_AMP(0.220), ANALOG_AMP(1.900),     6},
-        {ProgramData::Life,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3},
-        {ProgramData::Lilo,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3},
-        {ProgramData::Lipo,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3},
-        {ProgramData::Li430,    ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3},
-        {ProgramData::Li435,    ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3},
-        {ProgramData::NiZn,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3}
-#endif
-
 };
 
 const char batteryString_Unknown[]  PROGMEM = "Unkn";
@@ -349,9 +333,7 @@ uint16_t ProgramData::getTimeLimit() const
     uint16_t tim = battery.Time;
     return tim;
 }
-#endif
 
-#ifdef ENABLE_TIME_LIMIT
 uint8_t ProgramData::printTimeString() const
 {
     if(battery.Time == 1000) {
@@ -362,9 +344,7 @@ uint8_t ProgramData::printTimeString() const
     }
     return 6;
 }
-#endif
 
-#ifdef ENABLE_TIME_LIMIT
 void ProgramData::changeTime(int direction)
 {
     change0ToMaxSmart(battery.Time, direction, 1000,0,1);

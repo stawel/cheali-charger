@@ -146,9 +146,9 @@ Strategy::statusType Monitor::run()
         Program::stopReason_ = PSTR("CAP COFF");
         return Strategy::ERROR;
     }
-    
-#ifdef ENABLE_TIME_LIMIT      
-//TODO_NJ timelimit     
+
+#ifdef ENABLE_TIME_LIMIT
+//TODO_NJ timelimit
     if (ProgramData::currentProgramData.getTimeLimit() < 1000)  //unlimited
     {
         uint16_t chargeMin = Screen::getTotalChargDischargeTime();
@@ -156,11 +156,11 @@ Strategy::statusType Monitor::run()
         if(chargeMin >= time_limit) {
             Program::stopReason_ = PSTR("T limit");
             return Strategy::ERROR;
-        }               
+        }
     }
-//timelimit end      
+//timelimit end
 #endif
-    
+
     if(settings.externT_) {
         AnalogInputs::ValueType Textern = AnalogInputs::getRealValue(AnalogInputs::Textern);
         if(Textern > settings.externTCO_) {

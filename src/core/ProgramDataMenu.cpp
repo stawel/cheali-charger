@@ -38,7 +38,9 @@ const char * const ProgramDataStaticMenu[] PROGMEM =
         string_PDMM2,
         string_PDMM3,
         string_PDMM4,
+#ifdef ENABLE_TIME_LIMIT
         string_PDMM5,
+#endif
         string_PDMM6,
         string_PDMM7,
         string_PDMM8,
@@ -84,14 +86,15 @@ uint8_t ProgramDataMenu::printItem(uint8_t index)
 {
     StaticMenu::printItem(index);
     if(getBlinkIndex() != index) {
+        START_CASE_COUNTER;
         switch (index) {
-            case 0:    p_.printBatteryString(); break;
-            case 1:    p_.printVoltageString(); break;
-            case 2:    p_.printChargeString();  break;
-            case 3:    p_.printIcString();      break;
-            case 4:    p_.printIdString();      break;
+            case NEXT_CASE:    p_.printBatteryString(); break;
+            case NEXT_CASE:    p_.printVoltageString(); break;
+            case NEXT_CASE:    p_.printChargeString();  break;
+            case NEXT_CASE:    p_.printIcString();      break;
+            case NEXT_CASE:    p_.printIdString();      break;
 #ifdef ENABLE_TIME_LIMIT
-            case 5:    p_.printTimeString();    break;
+            case NEXT_CASE:    p_.printTimeString();    break;
 #endif
         }
     }
@@ -102,16 +105,16 @@ void ProgramDataMenu::editItem(uint8_t index, uint8_t key)
 {
     int dir = -1;
     if(key == BUTTON_INC) dir = 1;
-//    dir *= keyboard.getSpeedFactor();
 
+    START_CASE_COUNTER;
     switch(index) {
-    case 0: p_.changeBattery(dir);     break;
-    case 1: p_.changeVoltage(dir);     break;
-    case 2: p_.changeCharge(dir);     break;
-    case 3: p_.changeIc(dir);         break;
-    case 4: p_.changeId(dir);         break;
+        case NEXT_CASE: p_.changeBattery(dir);    break;
+        case NEXT_CASE: p_.changeVoltage(dir);    break;
+        case NEXT_CASE: p_.changeCharge(dir);     break;
+        case NEXT_CASE: p_.changeIc(dir);         break;
+        case NEXT_CASE: p_.changeId(dir);         break;
 #ifdef ENABLE_TIME_LIMIT
-    case 5: p_.changeTime(dir);         break;
+        case NEXT_CASE: p_.changeTime(dir);       break;
 #endif
     }
 }
@@ -122,16 +125,12 @@ void ProgramDataMenu::run() {
         index = runSimple();
 
         if(index < 0) return;
+        START_CASE_COUNTER_FROM(sizeOfArray(ProgramDataStaticMenu)-4);
         switch(index) {
-#ifdef ENABLE_TIME_LIMIT
-        case 6: createName(); break;
-        case 7: editName(); break;
-        case 8: resetName(); break;
-#else
-        case 5: createName(); break;
-        case 6: editName(); break;
-        case 7: resetName(); break;
-#endif
+            case NEXT_CASE: createName(); break;
+            case NEXT_CASE: editName();   break;
+            case NEXT_CASE: resetName();  break;
+
         default:
             ProgramData undo(p_);
             if(!runEdit(index)) {
