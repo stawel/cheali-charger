@@ -29,7 +29,6 @@ void printChar(char * &buf, uint8_t &maxSize, char chr);
 void printUInt(char * &buf, uint8_t &maxSize, uint16_t value);
 void printULong(char * &buf, uint8_t &maxSize, uint32_t value);
 
-
 void lcdSetCursor(uint8_t x, uint8_t y);
 void lcdSetCursor0_0();
 void lcdSetCursor0_1();
@@ -60,7 +59,6 @@ void lcdPrintResistance(AnalogInputs::ValueType r, int8_t dig);
 void lcdPrintPercentage(AnalogInputs::ValueType p, int8_t dig);
 void lcdPrint_mV(AnalogInputs::ValueType p, int8_t dig);
 void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t dig);
-
 
 void lcdPrintTime(uint16_t timeSec);
 

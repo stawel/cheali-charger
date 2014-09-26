@@ -286,9 +286,7 @@ uint16_t ProgramData::getMaxId() const
     if(i > MAX_DISCHARGE_I)
         i = MAX_DISCHARGE_I;
     return i;
-
 }
-
 
 void ProgramData::changeIc(int direction)
 {

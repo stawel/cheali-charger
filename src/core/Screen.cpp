@@ -416,10 +416,11 @@ void Screen::displayStartInfo()
     lcdSetCursor0_1();
     uint16_t procent = getChargeProcent();
     if(procent == 100) {
-        if(blink.getBlinkOff())
+        if(blink.getBlinkOff()) {
             lcdPrintSpaces(4);
-        else
+        } else {
             lcdPrint_P(PSTR("FUL "));
+        }
     } else {
         lcdPrintUnsigned(procent, 2);
         lcdPrint_P(PSTR("% "));

@@ -261,6 +261,7 @@ AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
     if(y < 0) y = 0;
     return y;
 }
+
 AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType y)
 {
     //TODO: do this with more points

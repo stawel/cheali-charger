@@ -48,7 +48,6 @@ void Discharger::setValue(uint16_t value)
     if(value > DISCHARGER_UPPERBOUND_VALUE)
         value = DISCHARGER_UPPERBOUND_VALUE;
     valueSet_ = value;
-
     finalizeValueTintern(true);
 }
 
