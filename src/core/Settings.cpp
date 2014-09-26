@@ -51,8 +51,8 @@ const Settings defaultSettings PROGMEM = {
         SETTINGS_DELTA_V_ENABLE_DEFAULT, //enable_deltaV_
         ANALOG_VOLT(0.005), //deltaV_NiMH_
         ANALOG_VOLT(0.015), //deltaV_NiCd_
-        5,                  //CDcycles_
-        30,                 //WasteTime_
+        5,                  //DCcycles_
+        30,                 //DCRestTime_
         1,                  //AudioBeep_ yes/no
         10,                 //Lixx_Imin.
         120,                //"%" capCutoff_
@@ -102,7 +102,7 @@ void Settings::restoreDefault() {
 }
 
 void Settings::check() {
-    if(CDcycles_>5) CDcycles_ = 5;
+    if(DCcycles_>5) DCcycles_ = 5;
 }
 
 void Settings::apply() {

@@ -36,10 +36,10 @@ const char string_dTdt[]        PROGMEM = "dT/dt:";
 const char string_enabledV[]    PROGMEM = "enab -dV:  ";
 const char string_NiMHdV[]      PROGMEM = "NiMH -dV:";
 const char string_NiCddV[]      PROGMEM = "NiCd -dV:";
-const char string_CDcycles[]    PROGMEM = "D/C cycles:";
-const char string_WasteTime[]   PROGMEM = "waste T.:  ";
+const char string_DCcycles[]    PROGMEM = "D/C cycles:";
+const char string_DCRestTime[]  PROGMEM = "D/C rest t:";
 const char string_AudioBeep[]   PROGMEM = "beep:      ";
-const char string_Lixx_Imin[]  PROGMEM =  "min.I I = I/";
+const char string_Lixx_Imin[]   PROGMEM = "min.I I = I/";
 const char string_capCoff[]     PROGMEM = "cap COff:";
 const char string_inputLow[]    PROGMEM = "input low:";
 const char string_dichLiXX[]    PROGMEM = "disch +:";
@@ -67,8 +67,8 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_enabledV,
         string_NiMHdV,
         string_NiCddV,
-        string_CDcycles,
-        string_WasteTime,
+        string_DCcycles,
+        string_DCRestTime,
         string_AudioBeep,
         string_Lixx_Imin,
         string_capCoff,
@@ -109,8 +109,8 @@ uint8_t SettingsMenu::printItem(uint8_t index)
             case NEXT_CASE:     lcdPrintYesNo(p_.enable_deltaV_);       break;
             case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiMH_, 5);        break;
             case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiCd_, 5);        break;
-            case NEXT_CASE:     lcdPrintUnsigned(p_.CDcycles_, 3);      break;
-            case NEXT_CASE:     lcdPrintUnsigned(p_.WasteTime_, 3);     break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.DCcycles_, 3);      break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.DCRestTime_, 3);    break;
             case NEXT_CASE:     lcdPrintYesNo(p_.AudioBeep_);           break;
             case NEXT_CASE:     lcdPrintUnsigned(p_.Lixx_Imin_, 2);     break;
             case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff_, 5);   break;
@@ -147,8 +147,8 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     change0ToMax(p_.enable_deltaV_, dir, 1);                break;
         case NEXT_CASE:     change0ToMax(p_.deltaV_NiMH_, dir, 20);                 break;
         case NEXT_CASE:     change0ToMax(p_.deltaV_NiCd_, dir, 20);                 break;
-        case NEXT_CASE:     change1ToMax(p_.CDcycles_, dir, 5);                     break;
-        case NEXT_CASE:     change1ToMax(p_.WasteTime_, dir, 99);                   break;
+        case NEXT_CASE:     change1ToMax(p_.DCcycles_, dir, 5);                     break;
+        case NEXT_CASE:     change1ToMax(p_.DCRestTime_, dir, 99);                  break;
         case NEXT_CASE:     change0ToMax(p_.AudioBeep_, dir, 1);                    break;
         case NEXT_CASE:     changeIMin(p_.Lixx_Imin_, dir);                         break;
         case NEXT_CASE:     change1ToMax(p_.capCutoff_, dir, 250);                  break;
