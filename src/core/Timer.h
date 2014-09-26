@@ -28,6 +28,8 @@ namespace Timer {
     void initialize();
     uint32_t getInterrupts();
     uint32_t getMiliseconds();
+    uint16_t getSeconds();
+    uint16_t getMinutes();
     void delay(uint16_t ms);
     void delayIdle(uint16_t ms);
 
@@ -35,5 +37,8 @@ namespace Timer {
     void callback();
 };
 
+inline uint16_t timeDiffU16(uint16_t start, uint16_t end) {
+    return end - start;
+}
 
 #endif /* TIMER_H_ */

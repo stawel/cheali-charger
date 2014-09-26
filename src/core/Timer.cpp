@@ -75,6 +75,14 @@ uint32_t Timer::getMiliseconds()
     return retu;
 }
 
+uint16_t Timer::getSeconds() {
+    return getMiliseconds()/1000;
+}
+
+uint16_t Timer::getMinutes() {
+    return getMiliseconds()/60000;
+}
+
 void Timer::delay(uint16_t ms)
 {
     uint32_t end;

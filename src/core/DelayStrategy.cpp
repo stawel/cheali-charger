@@ -30,57 +30,43 @@ namespace DelayStrategy {
         doStrategy
      };
 
-
     bool state_ = false;
-    uint32_t start_time_;
+    uint16_t start_time_;
     uint16_t delay_;
-    
-    
-
-    
-
-
-  
 
 }// namespace DelayStrategy
 
-void DelayStrategy::powerOn() 
+void DelayStrategy::powerOn()
 {
-    start_time_ = Timer::getMiliseconds()/1000;
+    start_time_ = Timer::getMinutes();
 }
 
-void DelayStrategy::powerOff() 
+void DelayStrategy::powerOff()
 {
     state_ = false;
 }
 
-Strategy::statusType DelayStrategy::doStrategy() 
+Strategy::statusType DelayStrategy::doStrategy()
 {
-  Strategy::statusType status;
-  
-  if((Timer::getMiliseconds()/1000) <= start_time_ + delay_) 
-  {
-     state_ = true;
-     return Strategy::RUNNING;
-  }
-  else 
-  {
-    state_ = false;
-    return Strategy::COMPLETE;
-  }  
-}
- 
- 
- 
- 
-bool DelayStrategy::isDelay() 
-{
-   return(state_);
+    Strategy::statusType status;
+
+    if(timeDiffU16(start_time_, Timer::getMinutes()) <= delay_) {
+        state_ = true;
+        return Strategy::RUNNING;
+    } else {
+        state_ = false;
+        return Strategy::COMPLETE;
+    }
 }
 
-void DelayStrategy::setDelay(int16_t minutes) 
+bool DelayStrategy::isDelay()
 {
-   delay_ = minutes*60;
+   return state_;
+}
+
+void DelayStrategy::setDelay(uint16_t minutes)
+{
+   delay_ = minutes;
    DelayStrategy::powerOn();
 }
 

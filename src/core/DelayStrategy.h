@@ -23,15 +23,14 @@
 namespace DelayStrategy {
 
     extern const Strategy::VTable vtable;
-    
+
     void powerOn();
     Strategy::statusType doStrategy();
     void powerOff();
 
     bool isDelay();
-    void setDelay(int16_t minutes);
+    void setDelay(uint16_t minutes);
 
-   
 };
 
 
