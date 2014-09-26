@@ -626,7 +626,7 @@ void Screen::displayScreenEnergy()
   
 }
 
-#ifdef ENABLE_SCREENANIMATION
+#ifdef ENABLE_SCREEN_ANIMATION
 void Screen::displayAnimation()
 {
     for (uint8_t i=0; i<16; i++) {

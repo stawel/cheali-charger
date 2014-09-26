@@ -40,7 +40,7 @@
 #define ENABLE_SMOOTHCURRENT ANALOG_AMP(1.000)
 
 //screenanimation
-#define ENABLE_SCREENANIMATION
+#define ENABLE_SCREEN_ANIMATION
 
 //knightrider effect is ADC working
 #define ENABLE_SCREEN_KNIGHTRIDEREFFECT

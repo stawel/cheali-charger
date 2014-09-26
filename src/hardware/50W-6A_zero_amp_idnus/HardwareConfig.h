@@ -32,7 +32,7 @@
 
 
 //screenanimation
-#define ENABLE_SCREENANIMATION
+#define ENABLE_SCREEN_ANIMATION
 
 //knightrider effect is ADC working
 #define ENABLE_SCREEN_KNIGHTRIDEREFFECT

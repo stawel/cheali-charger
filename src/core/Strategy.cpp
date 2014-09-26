@@ -107,14 +107,14 @@ namespace Strategy {
                     if(status == Strategy::COMPLETE) { hardware::setBatteryOutput(true); }  // ADD THIS LINE TO TURN ON THE FAN
 #endif
 
-#ifdef ENABLE_SCREENANIMATION
+#ifdef ENABLE_SCREEN_ANIMATION
                     Screen::displayAnimation();
 #endif
                     screen_nr++;
                 }
                 if(key == BUTTON_DEC && screen_nr > 0)
                 {
-#ifdef ENABLE_SCREENANIMATION
+#ifdef ENABLE_SCREEN_ANIMATION
                     Screen::displayAnimation();
 #endif
                     screen_nr--;
