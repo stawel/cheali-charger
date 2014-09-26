@@ -17,7 +17,7 @@
 */
 #include "Hardware.h"
 #include "Buzzer.h"
-
+#include "Settings.h"
 
 
 namespace Buzzer {
@@ -45,11 +45,12 @@ namespace Buzzer {
 
 void Buzzer::sound(Buzzer::SoundType s)
 {
-      if(sound_ == s)
-          return;
-      sound_ = s;
-      begin();
-      Timer::delayIdle(50);
+    if (!settings.AudioBeep_) return;
+    if(sound_ == s)
+        return;
+    sound_ = s;
+    begin();
+    Timer::delayIdle(50);
 }
 
 void Buzzer::soundIfSilence(Buzzer::SoundType s)

@@ -100,9 +100,6 @@ void hardware::soundInterrupt()
 
 void hardware::setBuzzer(uint8_t val)
 {
-#ifdef ENABLE_MUTEAUDIO
-    if (!settings.AudioBeep_) return;
-#endif    
     sound_ = val;
 }
 

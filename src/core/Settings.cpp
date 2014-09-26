@@ -53,9 +53,7 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_VOLT(0.015), //deltaV_NiCd_
         5,                  //CDcycles_
         30,                 //WasteTime_
-#ifdef ENABLE_MUTEAUDIO        
         1,                  //AudioBeep_ yes/no
-#endif        
         10,                 //Lixx_Imin.
         120,                //"%" capCutoff_
         ANALOG_VOLT(7),     //inputVoltageLow_
