@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2013  Pawel Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,6 +23,20 @@
 #include "Settings.h"
 #include "Hardware.h"
 #include "Program.h"
+#include "DelayStrategy.h"
+#include "Version.h"
+#include "ProgramDCcycle.h"
+
+#ifdef ENABLE_LCD_RAM_CG
+   #define BALANCE_FULL_CELL_CHAR   2
+   #define BALANCE_AVR_CELL_CHAR    1
+   #define BALANCE_EMPTY_CELL_CHAR  0
+#else
+   #define BALANCE_FULL_CELL_CHAR   255    //'!'-34 (fulfill char)
+   #define BALANCE_AVR_CELL_CHAR    '-'
+   #define BALANCE_EMPTY_CELL_CHAR  '_'
+#endif
+
 
 namespace Screen{
 
@@ -30,28 +44,53 @@ namespace Screen{
     uint32_t totalBalanceTime_;
     uint32_t totalChargDischargeTime_;
     Blink blink;
+    bool blinkIcon;
+#ifdef  ENABLE_SCREEN_KNIGHTRIDEREFFECT
+    int8_t knightRiderCounter = 0;
+    bool knightRiderDir;
+#endif
+    uint8_t toggleTextCounter = 0;
+    uint8_t toggleTextCycleCounter_ = 1;
+    uint8_t procent_ = 0;
+    uint8_t procent;
+    uint16_t etaSec = 0;
+    uint16_t timeSecOldETACalc;
+    uint16_t etaSecLarge = 0;
+    
+    
+    //TODO_NJ for cyclehistory  
+    uint16_t cyclesHistoryChCapacity[5]   = {0,0,0,0,0};
+    uint16_t cyclesHistoryDcCapacity[5]   = {0,0,0,0,0};
+    uint16_t cyclesHistoryChTime[5]       = {0,0,0,0,0};
+    uint16_t cyclesHistoryDcTime[5]       = {0,0,0,0,0};
+    char     cyclesHistoryMode[5]         = {'-','-','-','-','-'}; //C=charge   D=discharge '-' = none
+
+    //fix
+    uint16_t ETATime_ ;
+    bool balance_on;
     bool on_;
 
-    const char programString[] PROGMEM = "ChCBBlDiFCStSBChDiCyCYChDiEB";
+    const char programString[] PROGMEM = "ChCBBlDiFCStSBChDiCYcyChDiFPCPEB";
     void printProgram2chars(Program::ProgramType prog)
     {
         STATIC_ASSERT(sizeOfArray(programString)-1 == Program::LAST_PROGRAM_TYPE*2);
         //TODO: ??
         lcdPrint_P(programString+prog*2, 2);
     }
-
+   
     uint8_t getChargeProcent(){
         uint16_t v1,v2, v;
         v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
-        v1 = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
-        v = AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
+        v1 = ProgramData::currentProgramData.getVoltage(ProgramData::ValidEmpty);
+        v =  AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
 
-        if(v >= v2) return 100;
+        if(v >= v2) return 99;
         if(v <= v1) return 0;
         v-=v1;
         v2-=v1;
         v2/=100;
         v=  v/v2;
+        if(v >= 100) v=99; //not 101% with isCharge
         return v;
     }
 
@@ -73,8 +112,15 @@ namespace Screen{
     void displayBalanceInfo(uint8_t from, AnalogInputs::Type type)
     {
         lcdSetCursor0_0();
+        blinkIcon = !blinkIcon;
 
+#ifdef ENABLE_SCREEN_KNIGHTRIDEREFFECT
+        if ( knightRiderDir==true) knightRiderCounter++; else knightRiderCounter--;
+        if (knightRiderCounter>5) knightRiderDir=false;
+        if (knightRiderCounter<=1) knightRiderDir=true;
+#endif
         char c = ' ';
+        balance_on=false;
         if(!Balancer::isWorking()) {
             if(!Balancer::isStable())
                 c = 'm';
@@ -85,30 +131,48 @@ namespace Screen{
                 c = 'b';
         }
 
-        lcdPrintChar(c);
+        if (Balancer::balance_ == 0) {
+            lcdPrintChar(c);
+        }
 
-        if(Balancer::balance_ != 0) {
-            uint8_t  j = 1, start = 0;
-            if(from >= 6) {
-               j = 64;
-               start = 6;
-            }
-            for(uint8_t i = start; i < start + 6; i++) {
+        if (Balancer::balance_ != 0) {
+            uint8_t  j = 1;
+            for(uint8_t i = 0; i < Balancer::getCells(); i++) {
                 if(i == Balancer::minCell_) {
-                    c = '_';
+                    c = BALANCE_EMPTY_CELL_CHAR; //lowest cell
                 } else {
-                    if(j) {
-                        if(Balancer::balance_&j) c = '1';
-                        else c = '0';
-                    } else c = ' ';
+                    if(Balancer::balance_&j) {
+                        if (blinkIcon) {
+                            c = BALANCE_FULL_CELL_CHAR; //flash full/empty cells
+                        } else {
+                            c = BALANCE_EMPTY_CELL_CHAR; //flash full/empty cells
+                        }
+                    } else {
+                     c = BALANCE_AVR_CELL_CHAR; //average cells
+                    }
                 }
                 lcdPrintChar(c);
                 if(j!=128)  j <<= 1;
                 else        j = 0;
             }
-            lcdPrintChar(' ');
-        } else lcdPrintSpaces(7);
+            lcdPrintSpaces(8 - Balancer::getCells());
 
+        } else {
+#ifdef ENABLE_SCREEN_KNIGHTRIDEREFFECT
+            char knightRiderArrow;
+            if (knightRiderDir==true) knightRiderArrow='>'; else knightRiderArrow='<';
+            if ((c == 'm') || (c == ' ')) {
+                for (uint8_t i=1; i<7; i++ ) {
+                    if (knightRiderCounter==i) lcdPrintChar(knightRiderArrow); else lcdPrintChar(' ');
+                }
+                lcdPrintChar(' ');
+            } else {
+                lcdPrintSpaces(7);
+            }
+#else
+        lcdPrintSpaces(7);
+#endif
+        }
         lcdPrintDigit(from+1);
 #ifdef ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
         if(from == 0 && Discharger::isPowerOn() && Discharger::getValue()>0) {
@@ -138,6 +202,15 @@ namespace Screen{
 
 } // namespace Screen
 
+void Screen::initialize() {
+#ifdef SCREEN_START_DELAY_MS
+    Timer::delay(SCREEN_START_DELAY_MS); //waiting common display charger for display relase
+#endif
+#ifdef ENABLE_LCD_RAM_CG
+    lcdCreateCGRam();
+#endif
+}
+
 void Screen::printCharge() {
     lcdPrintCharge(AnalogInputs::getRealValue(AnalogInputs::Cout), 8);
     lcdPrintChar(' ');
@@ -154,6 +227,9 @@ void Screen::printChar_Time() {
         c = 'B';
     }
 
+    if(DelayStrategy::isDelay() == true) {
+        c = 'W';
+    }
     lcdPrintChar(c);
     lcdPrintChar(' ');
     lcdPrintTime(getTimeSec());
@@ -178,7 +254,8 @@ void Screen::displayScreenCIVlimits()
     lcdSetCursor0_0();
     lcdPrintCharge(ProgramData::currentProgramData.getCapacityLimit(), 8);
     lcdPrintChar(' ');
-    lcdPrintCurrent(TheveninMethod::getImax(), 7);
+    lcdPrintCurrent(TheveninMethod::getImax(), 7);  //failed value on Nixx
+    //ProgramData::currentProgramData.printIcString();
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
@@ -216,7 +293,14 @@ void Screen::doSlowInterrupt()
 
    if(Balancer::isWorking())
        totalBalanceTime_ += SLOW_INTERRUPT_PERIOD_MILISECONDS;
+       
+   Screen::storeCycleHistoryInfo();     //actualisation values
 
+   ETATime_ = getETATime();
+
+      //TODO_NJ
+    //for multiscreen
+    toggleTextCounter++; if (toggleTextCounter>40) toggleTextCounter=0;
 }
 
 void Screen::displayScreenTime()
@@ -300,7 +384,6 @@ namespace {
         lcdPrint_P(firstLine);
         lcdSetCursor0_1();
         if(pgm::strlen(Program::stopReason_)>0) {
-            lcdPrint_P(PSTR("reason: "));
             lcdPrint_P(Program::stopReason_);
         }
         lcdPrintSpaces();
@@ -310,11 +393,13 @@ namespace {
 void Screen::displayScreenProgramCompleted()
 {
     screenEnd(PSTR("program complete"));
+    lcdSetCursor0_1();
+    lcdPrint_P(PSTR("Time: ")); lcdPrintTime(getTimeSec());
 }
 
 void Screen::displayMonitorError()
 {
-    screenEnd(PSTR("monitor error"));
+    screenEnd(PSTR("Error:"));
 }
 
 namespace {
@@ -370,7 +455,7 @@ void Screen::displayDeltaTextern()
     if(settings.externT_) {
         lcdPrintTemperature(AnalogInputs::getDeltaLastT(), 9);
     } else {
-        lcdPrint_P(PSTR("not used"));
+        lcdPrint_P(PSTR("N/A"));
     }
     lcdPrintSpaces();
 
@@ -382,7 +467,7 @@ void Screen::displayDeltaTextern()
 
 void Screen::displayNotImplemented()
 {
-    displayStrings(PSTR("Function not"), PSTR("implemented yet"));
+    displayStrings(PSTR("N/A"),NULL);
 }
 
 
@@ -394,7 +479,7 @@ void Screen::runNotImplemented()
 
 void Screen::runCalibrateBeforeUse()
 {
-    displayStrings(PSTR("please calibrate"), PSTR("before use"));
+    displayStrings(PSTR("please cal."),NULL);
     Timer::delay(5000);
 }
 
@@ -406,6 +491,8 @@ void Screen::displayScreenReversedPolarity()
 
 void Screen::displayStartInfo()
 {
+    resetETA();
+    resetCycleHistory();
     lcdSetCursor0_0();
     ProgramData::currentProgramData.printBatteryString(4);
     lcdPrintChar(' ');
@@ -414,17 +501,9 @@ void Screen::displayStartInfo()
     printProgram2chars(Program::programType_);
 
     lcdSetCursor0_1();
-    uint16_t procent = getChargeProcent();
-    if(procent == 100) {
-        if(blink.getBlinkOff()) {
-            lcdPrintSpaces(4);
-        } else {
-            lcdPrint_P(PSTR("FUL "));
-        }
-    } else {
-        lcdPrintUnsigned(procent, 2);
-        lcdPrint_P(PSTR("% "));
-    }
+    procent = getChargeProcent();
+    lcdPrintUnsigned(procent, 2);
+    lcdPrint_P(PSTR("% "));
 
     int bindex = blink.getBlinkIndex();
     if(bindex & 1) AnalogInputs::printRealValue(AnalogInputs::Vout, 5);
@@ -465,8 +544,187 @@ void Screen::display(ScreenType screen)
     case ScreenR:                       return displayScreenR();
     case ScreenVout:                    return displayScreenVout();
     case ScreenVinput:                  return displayScreenVinput();
+    case ScreenEnergy:                  return displayScreenEnergy();
     case ScreenDeltaVout:               return displayDeltaVout();
     case ScreenDeltaTextern:            return displayDeltaTextern();
     case ScreenDeltaFirst:              return displayDeltaFirst();
+    case ScreenCycles:                  return displayScreenCycles();
     }
+}
+
+uint16_t Screen::getTotalChargDischargeTime()
+{
+    return (totalChargDischargeTime_/1000/60);
+}
+
+void Screen::displayScreenCycles()
+{
+    uint8_t c;
+    //multiscreen (5x2 cyclenumber, D/C, timeD/timeC, mAhDC/mAhC)
+    if (++toggleTextCounter>3) toggleTextCounter=0;
+
+    if (toggleTextCounter == 3) {
+        toggleTextCycleCounter_++;
+        if (toggleTextCycleCounter_ >  ProgramDCcycle::currentCycle) toggleTextCycleCounter_ = 1;
+    }
+
+    c = toggleTextCycleCounter_-1;
+    lcdSetCursor0_0();
+    lcdPrintUnsigned(toggleTextCycleCounter_, 1);
+    lcdPrintChar(BALANCE_EMPTY_CELL_CHAR);
+    lcdPrintTime(cyclesHistoryDcTime[c]);
+    lcdPrintSpaces(1);
+    lcdPrintChar(BALANCE_FULL_CELL_CHAR);
+    lcdPrintTime(cyclesHistoryChTime[c]);
+    lcdPrintSpaces();
+
+    lcdSetCursor0_1();
+    lcdPrintCharge(cyclesHistoryDcCapacity[c],8);
+    lcdPrintCharge(cyclesHistoryChCapacity[c],8);
+    lcdPrintSpaces();
+}
+
+void Screen::displayScreenEnergy()
+{
+    //get procent increment time
+    getDeltaProcentTimeSec();
+    bool displayBlink_ = displayBlink();
+
+    if (displayBlink_ == true) {
+        lcdSetCursor0_0();
+        printCharge();
+        AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+
+        lcdPrintSpaces();
+        lcdSetCursor0_1();
+        printChar_Time();
+        lcdPrint_P(PSTR(" "));
+    } else {
+        lcdSetCursor0_0();
+        AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
+        lcdPrint_P(PSTR(" "));
+        AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+        lcdPrintSpaces();
+        lcdSetCursor0_1();
+        AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
+        lcdPrint_P(PSTR("  "));
+    }
+
+    if (displayBlink_ == true && SMPS::isPowerOn() && procent < 99) { 
+        //display calculated simple ETA
+
+        if(etaSecLarge>20)  //bigger 20sec for ETA calc (is 1C)
+        {
+            lcdPrintTime(ETATime_); //TODO_NJ (not accurate for balancing time)
+        } else {
+            lcdPrint_P(PSTR(" --:--"));
+        }
+    } else {
+        lcdPrintUnsigned(procent, 4);
+        lcdPrint_P(PSTR("%"));
+        lcdPrintSpaces();
+    }
+  
+}
+
+#ifdef ENABLE_SCREEN_ANIMATION
+void Screen::displayAnimation()
+{
+    for (uint8_t i=0; i<16; i++) {
+        lcdSetCursor(15-i,1);
+        lcdPrintChar(255);
+        lcdSetCursor(i,0);
+        lcdPrintChar(255);
+        Timer::delay(10);
+    }
+    Timer::delay(10);
+}
+#endif
+
+void Screen::displayCalibrationErrorScreen(uint8_t errNo)
+{
+    lcdClear();
+    lcdSetCursor0_0();
+    lcdPrint_P(PSTR("Cal.err.  F:"));
+    lcdPrintUnsigned(errNo, 2);
+    Timer::delay(8000);
+}
+
+void Screen::resetETA()
+{
+    etaSec=0;
+    timeSecOldETACalc=0;
+    procent_=procent;
+    etaSecLarge = 0;
+}
+
+void Screen::resetCycleHistory()
+{
+    for (uint8_t i = 0; i < 5; i++) {
+        cyclesHistoryMode[i] = '-';
+        cyclesHistoryChTime[i] = 0;
+        cyclesHistoryDcTime[i] = 0;
+        cyclesHistoryChCapacity[i] = 0;
+        cyclesHistoryDcCapacity[i] = 0;
+    }
+}
+
+void Screen::getDeltaProcentTimeSec()
+{
+    procent = getChargeProcent();
+    if(procent_ < procent) {
+        procent_=procent; //probable only 1% max incremet/running
+        etaSec = getTimeSec()-timeSecOldETACalc;
+        timeSecOldETACalc = getTimeSec();
+        if ((etaSec > etaSecLarge) || (etaSecLarge==0) )  { etaSecLarge=etaSec;}  // find longer time for deltaprocent
+    }
+}
+
+uint16_t Screen::getETATime()
+{
+    getDeltaProcentTimeSec();
+    uint8_t kx=105;
+    if((AnalogInputs::getConnectedBalancePorts() == 0)
+        && (absDiff(AnalogInputs::getRealValue(AnalogInputs::Vout),
+             AnalogInputs::getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)))
+    {
+        //balancer not connected
+        kx=100;
+    }
+
+    //if (getChargeProcent()==99) {return (0);} //no avail more calc (or call secondary calculator)
+    return (etaSecLarge*(kx-procent_));
+}
+
+void Screen::storeCycleHistoryInfo()
+{
+    int8_t c = ProgramDCcycle::currentCycle-1;
+    if (ProgramDCcycle::cycleMode == 'C') {
+        cyclesHistoryMode[c] = 'C';
+        cyclesHistoryChTime[c] = totalChargDischargeTime_/1000;
+        cyclesHistoryChCapacity[c] = AnalogInputs::getRealValue(AnalogInputs::Cout);
+    }
+    if (ProgramDCcycle::cycleMode == 'D') {
+        cyclesHistoryMode[c] = 'D';
+        cyclesHistoryDcTime[c] = totalChargDischargeTime_/1000;
+        cyclesHistoryDcCapacity[c] = AnalogInputs::getRealValue(AnalogInputs::Cout);
+    }
+}
+
+bool Screen::displayBlink()
+{
+    return toggleTextCounter<=20;
+}
+
+void Screen::runResettingEeprom()
+{
+    Screen::displayStrings(PSTR("reseting eeprom:"),
+                           PSTR("v: " CHEALI_CHARGER_EPPROM_VERSION_STRING " "));
+    Timer::delay(2000);
+}
+
+void Screen::runWelcomeScreen() {
+    Screen::displayStrings(PSTR("Cheali-Charger m"),
+                           PSTR("v"  CHEALI_CHARGER_VERSION_STRING));
+    Timer::delay(1000);
 }

@@ -21,38 +21,38 @@
 #include "ProgramData.h"
 #include "Strategy.h"
 
-class Program {
-public:
+namespace Program {
+
     enum ProgramType {
         ChargeLiXX, ChargeLiXX_Balance, Balance, DischargeLiXX, FastChargeLiXX, StorageLiXX, StorageLiXX_Balance,
-        ChargeNiXX, DischargeNiXX, CDcycleNiXX,DCcycleNiXX,
-        ChargePb, DischargePb,
+        ChargeNiXX, DischargeNiXX,  DCcycleLiXX,  DCcycleNiXX,
+        ChargePb, DischargePb, FastChargePb, DCcyclePb,
         EditBattery, LAST_PROGRAM_TYPE};
 
     enum ProgramState {
         None, Info, Calibration, Done, Error,
-        Charging, ChargingBalancing, Discharging, Balancing, Storage,
+        Charging, ChargingBalancing, Discharging,DischargingCharging, Balancing, Storage,
     };
 
-    static ProgramType programType_;
-    static ProgramState programState_;
-    static const char * stopReason_;
+    extern ProgramType programType_;
+    extern ProgramState programState_;
+    extern const char * stopReason_;
 
-    static void selectProgram(int index);
-    static void run(ProgramType prog);
+    void selectProgram(int index);
+    void run(ProgramType prog);
 
+    void printStartInfo(ProgramType prog);
+    bool startInfo();
 
-    static void printStartInfo(ProgramType prog);
-    static bool startInfo();
+    Strategy::statusType runStorage(bool balance);
+    Strategy::statusType runTheveninCharge(int minChargeC);
+    Strategy::statusType runDischarge();
+    Strategy::statusType runNiXXDischarge();
+    Strategy::statusType runTheveninChargeBalance();
+    Strategy::statusType runBalance();
+    Strategy::statusType runDeltaCharge();
 
-    static Strategy::statusType runStorage(bool balance);
-    static Strategy::statusType runTheveninCharge(int minChargeC);
-    static Strategy::statusType runDischarge();
-    static Strategy::statusType runNiXXDischarge();
-
-    static Strategy::statusType runTheveninChargeBalance();
-    static Strategy::statusType runBalance();
-    static Strategy::statusType runDeltaCharge();
+    Strategy::statusType runDCRestTime();
 };
 
 

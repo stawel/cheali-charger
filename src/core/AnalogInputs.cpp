@@ -247,6 +247,7 @@ bool AnalogInputs::isReversePolarity()
 AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
 {
     //TODO: do this with more points
+    if (x==0) return 0;
     CalibrationPoint p0, p1;
     getCalibrationPoint(p0, name, 0);
     getCalibrationPoint(p1, name, 1);
@@ -264,6 +265,7 @@ AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
 
 AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType y)
 {
+    if (y==0) return 0;
     //TODO: do this with more points
     CalibrationPoint p0, p1;
     getCalibrationPoint(p0, name, 0);
@@ -302,6 +304,10 @@ AnalogInputs::Type AnalogInputs::getType(Name name)
     case Tintern:
     case Textern:
         return Temperature;
+    case Pout:
+        return Power;
+    case Eout:
+        return Work;
     default:
         return Voltage;
     }
@@ -517,4 +523,9 @@ void AnalogInputs::setReal(Name name, ValueType real)
     real_[name] = real;
 }
 
+void AnalogInputs::resetAccumulatedMeasurements()
+{
+    i_charge_ = 0;
+    resetMeasurement();
+}
 

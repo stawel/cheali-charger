@@ -17,10 +17,18 @@
 */
 #include "Hardware.h"
 #include "SMPS.h"
+#include "Program.h"    
+#include "EditMenu.h"
+#include "LcdPrint.h"
+#include "Screen.h"
+#include "Settings.h"
 
 namespace SMPS {
     STATE state_;
     uint16_t value_;
+#ifdef ENABLE_SMOOTHCURRENT
+    uint16_t oldI, newI,stepValue;
+#endif
 
     STATE getState()    { return state_; }
     bool isPowerOn()    { return getState() == CHARGING; }
@@ -33,6 +41,7 @@ namespace SMPS {
 
 void SMPS::initialize()
 {
+    value_ = 0;
     setValue(0);
     powerOff(CHARGING_COMPLETE);
 }
@@ -43,6 +52,8 @@ void SMPS::setValue(uint16_t value)
     if(value > SMPS_UPPERBOUND_VALUE)
         value = SMPS_UPPERBOUND_VALUE;
     value_ = value;
+
+    value_ = SMPS::setSmoothI(value, value_);
     hardware::setChargerValue(value_);
     AnalogInputs::resetMeasurement();
 }
@@ -57,7 +68,8 @@ void SMPS::powerOn()
 {
     if(isPowerOn())
         return;
-
+    //reset rising value
+    value_ = 0;
     setValue(0);
     hardware::setChargerOutput(true);
     state_ = CHARGING;
@@ -70,6 +82,56 @@ void SMPS::powerOff(STATE reason)
         return;
 
     setValue(0);
+    //reset rising value
+    value_ = 0;
     hardware::setChargerOutput(false);
     state_ = reason;
+}
+
+uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
+{
+#ifdef ENABLE_SMOOTHCURRENT
+ //if (settings.calibratedState_ >= 7) //enabled if  calibrated.
+   if (Program::programState_ != Program::Calibration)
+    {
+            oldI = calibrateValue(AnalogInputs::IsmpsValue, oldValue);
+            stepValue = (AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, ENABLE_SMOOTHCURRENT))/2;
+            newI = calibrateValue(AnalogInputs::IsmpsValue, value);
+
+          //rising
+            if ((newI > oldI) && ((newI-oldI) > ENABLE_SMOOTHCURRENT))
+            {
+              lcdClear();
+              lcdSetCursor0_0();
+              Screen::displayStrings(PSTR("SMPS up"), NULL);
+              for(uint16_t i=oldValue; i <= value; i=i+stepValue){
+                   if (i> value) //safety
+                   {
+                     i=value;
+                   }
+                   hardware::setChargerValue(i);
+                   Timer::delay(500);
+              }
+              AnalogInputs::isOutStable();    //resistance measure?
+            }
+
+          //falling
+            if ((oldI > newI) && ((oldI-newI) > ENABLE_SMOOTHCURRENT))
+            {
+              lcdClear();
+              lcdSetCursor0_0();
+              Screen::displayStrings(PSTR("SMPS down"), NULL);
+              for(uint16_t i=value; i <= oldValue; i=i+stepValue){
+                   if (i> oldValue)   //safety
+                   {
+                     i=oldValue;
+                   }
+                   hardware::setChargerValue(oldValue-i);
+                   Timer::delay(500);
+              }
+              AnalogInputs::isOutStable();    //resistance measure?
+            }
+    }
+#endif
+  return value;
 }

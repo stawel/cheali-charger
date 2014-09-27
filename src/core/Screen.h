@@ -34,11 +34,17 @@ namespace Screen {
         ScreenVinput,
         ScreenDeltaVout,
         ScreenDeltaTextern,
+        ScreenEnergy,  //multiscreen
+        ScreenCycles,  //multiscreen
         };
 
     extern Blink blink;
 
+    void initialize();
+
     uint16_t getTimeSec();
+    uint16_t getTotalChargDischargeTime();
+    uint8_t getChargeProcent();
     void doSlowInterrupt();
 
     void powerOn();
@@ -56,6 +62,16 @@ namespace Screen {
     void displayDeltaVout();
     void displayDeltaTextern();
     void displayDeltaFirst();
+    void displayScreenEnergy();
+    void displayScreenCycles();
+    void displayCalibrationErrorScreen(uint8_t errNo);
+    void displayAnimation();
+    void getDeltaProcentTimeSec();
+    uint16_t getETATime();
+    void resetETA();
+    void resetCycleHistory();
+    void storeCycleHistoryInfo();
+    bool displayBlink();
 
     void displayScreenProgramCompleted();
 
@@ -69,8 +85,10 @@ namespace Screen {
     void displayNotImplemented();
     void displayScreenReversedPolarity();
 
+    void runResettingEeprom();
     void runCalibrateBeforeUse();
     void runNotImplemented();
+    void runWelcomeScreen();
 };
 
 #endif /* SCREEN_H_ */

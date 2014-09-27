@@ -379,6 +379,12 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
     case AnalogInputs::Voltage:
         unit ='V';
         break;
+    case AnalogInputs::Power:
+        return lcdPrintPower(x,'W',' ');
+        break;
+    case AnalogInputs::Work:
+        return lcdPrintPower(x,'W','h');
+        break;
     case AnalogInputs::Temperature:
         return lcdPrintTemperature(x, dig+1);
     case AnalogInputs::Resistance:
@@ -402,4 +408,55 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
     if(type == AnalogInputs::Charge)     lcdPrintChar('h');
 }
 
+#ifdef ENABLE_LCD_RAM_CG
+void lcdCreateCGRam()
+{
+   uint8_t CGRAM[8];
+   CGRAM[0] = 0b01110;
+   CGRAM[1] = 0b11111;
+   CGRAM[2] = 0b10001;
+   CGRAM[3] = 0b10001;
+   CGRAM[4] = 0b10001;
+   CGRAM[5] = 0b10001;
+   CGRAM[6] = 0b10001;
+   CGRAM[7] = 0b11111;
+   lcd.createChar(0, CGRAM); //empty
+   
+   CGRAM[0] = 0b01110;
+   CGRAM[1] = 0b11111;
+   CGRAM[2] = 0b10001;
+   CGRAM[3] = 0b10001;
+   CGRAM[4] = 0b11111;
+   CGRAM[5] = 0b11111;
+   CGRAM[6] = 0b11111;
+   CGRAM[7] = 0b11111;           
+   lcd.createChar(1, CGRAM); //half
+   
+   CGRAM[0] = 0b01110;
+   CGRAM[1] = 0b11111;
+   CGRAM[2] = 0b11111;
+   CGRAM[3] = 0b11111;
+   CGRAM[4] = 0b11111;
+   CGRAM[5] = 0b11111;
+   CGRAM[6] = 0b11111;
+   CGRAM[7] = 0b11111;           
+   lcd.createChar(2, CGRAM); //full      
+}
+#endif
 
+
+void lcdPrintPower(AnalogInputs::ValueType x, char u1, char u2)
+{
+    const char prefix = ' ';
+    x /=100;
+    if(x<10000) lcdPrintChar(prefix);
+    if(x<1000) lcdPrintChar(prefix);
+    if(x<100) lcdPrintChar(prefix);
+    if(x<10) lcdPrintChar(prefix);
+    
+    lcdPrintUInt(x);
+     lcdPrintChar(u1);
+     lcdPrintChar(u2);
+     lcdPrintChar(prefix);
+    
+}

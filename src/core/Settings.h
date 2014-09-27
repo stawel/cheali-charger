@@ -36,7 +36,10 @@ struct Settings {
     AnalogInputs::ValueType deltaT_;
     uint16_t enable_deltaV_;
     AnalogInputs::ValueType deltaV_NiMH_, deltaV_NiCd_;
-    uint16_t CDcycles_;
+    uint16_t DCcycles_;
+    uint16_t DCRestTime_;
+    uint16_t AudioBeep_;
+    uint16_t Lixx_Imin_;
     uint16_t capCutoff_;
     AnalogInputs::ValueType inputVoltageLow_;
     AnalogInputs::ValueType dischargeOffset_LiXX_;
@@ -45,6 +48,9 @@ struct Settings {
     AnalogInputs::ValueType balancerError_;
     uint16_t UART_;
     uint16_t UARTspeed_;
+    uint16_t calibratedState_;
+    uint16_t SMPS_Upperbound_Value_;
+    uint16_t DISCHARGER_Upperbound_Value_;
 
     void edit();
     void check();

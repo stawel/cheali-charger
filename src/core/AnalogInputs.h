@@ -140,6 +140,7 @@ namespace AnalogInputs {
     void doFullMeasurement();
 
     void resetMeasurement();
+    void resetAccumulatedMeasurements();
     void powerOn();
     void powerOff();
 

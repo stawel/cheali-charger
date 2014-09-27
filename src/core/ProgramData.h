@@ -20,7 +20,7 @@
 
 #include <inttypes.h>
 #include "AnalogInputs.h"
-//#include "Hardware.h"
+#include "Hardware.h"
 
 
 #define MAX_PROGRAMS 32
@@ -28,12 +28,18 @@
 #define PROGRAM_DATA_MAX_CHARGE ANALOG_CHARGE(65.000)
 
 struct ProgramData {
+
     enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo, Li430, Li435, NiZn,    LAST_BATTERY_TYPE};
-    enum VoltageType {VIdle,VCharge,VDischarge,VStorage, VUpperLimit,                   LAST_VOLTAGE_TYPE};
+    enum VoltageType {VIdle,VCharge,VDischarge,VStorage, VUpperLimit, ValidEmpty,       LAST_VOLTAGE_TYPE};
+
 
     struct BatteryData {
         uint8_t type;
+
         uint16_t C,Ic,Id,cells;
+        //#ifdef ENABLE_TIME_LIMIT: to ensure the same eeprom layout Time is always enabled
+        uint16_t Time;
+
     } __attribute__((packed));
 
     BatteryData battery;
@@ -42,6 +48,11 @@ struct ProgramData {
     uint16_t getVoltagePerCell(VoltageType type = VIdle) const;
     uint16_t getVoltage(VoltageType type = VIdle) const;
     uint16_t getCapacityLimit() const;
+#ifdef ENABLE_TIME_LIMIT
+    uint16_t getTimeLimit() const;
+    uint8_t printTimeString() const;
+    void changeTime(int direction);
+#endif
     int16_t getDeltaVLimit() const;
     int16_t getDeltaTLimit() const;
 

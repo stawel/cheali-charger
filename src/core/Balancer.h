@@ -24,11 +24,15 @@
 #define BALANCER_PORTS_GT_6(x...)
 #endif
 
+#ifndef IBALANCE
+#define IBALANCE ANALOG_AMP(0.160) //default 160mA
+#endif
+
+
 #include "Strategy.h"
 
 namespace Balancer {
    
-    const static AnalogInputs::ValueType Ibalance = ANALOG_AMP(0.200); //200mA
     const static uint16_t maxBalanceTime = 30; //30/2s
     const static uint16_t balancerStartStableCount = 10; //10/2s
 

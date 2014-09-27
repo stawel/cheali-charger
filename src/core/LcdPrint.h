@@ -29,6 +29,10 @@ void printChar(char * &buf, uint8_t &maxSize, char chr);
 void printUInt(char * &buf, uint8_t &maxSize, uint16_t value);
 void printULong(char * &buf, uint8_t &maxSize, uint32_t value);
 
+#ifdef ENABLE_LCD_RAM_CG
+void lcdCreateCGRam();
+#endif
+
 void lcdSetCursor(uint8_t x, uint8_t y);
 void lcdSetCursor0_0();
 void lcdSetCursor0_1();
@@ -52,6 +56,7 @@ void lcdPrintYesNo(uint8_t yes);
 void lcdPrintEValue(uint16_t x, int8_t dig, bool dot);
 
 void lcdPrintTemperature(AnalogInputs::ValueType c, int8_t dig);
+void lcdPrintPower(AnalogInputs::ValueType c, char u1, char u2);
 void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig);
 void lcdPrintCurrent(AnalogInputs::ValueType i, int8_t dig);
 void lcdPrintVoltage(AnalogInputs::ValueType v, int8_t dig);

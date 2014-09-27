@@ -24,11 +24,11 @@
 #include "eeprom.h"
 
 #ifndef SETTINGS_EXTERNAL_T_DEFAULT
-#define SETTINGS_EXTERNAL_T_DEFAULT 1
+#define SETTINGS_EXTERNAL_T_DEFAULT 0
 #endif
 
 #ifndef SETTINGS_DISCHARGE_AGGRESSIVE_LIXX_DEFAULT
-#define SETTINGS_DISCHARGE_AGGRESSIVE_LIXX_DEFAULT 0
+#define SETTINGS_DISCHARGE_AGGRESSIVE_LIXX_DEFAULT 1
 #endif
 
 #ifndef SETTINGS_DELTA_V_ENABLE_DEFAULT
@@ -50,8 +50,11 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_CELCIUS(1),  //deltaT_
         SETTINGS_DELTA_V_ENABLE_DEFAULT, //enable_deltaV_
         ANALOG_VOLT(0.005), //deltaV_NiMH_
-        ANALOG_VOLT(0.012), //deltaV_NiCd_
-        5,                  //CDcycles_
+        ANALOG_VOLT(0.015), //deltaV_NiCd_
+        5,                  //DCcycles_
+        30,                 //DCRestTime_
+        1,                  //AudioBeep_ yes/no
+        10,                 //Lixx_Imin.
         120,                //"%" capCutoff_
         ANALOG_VOLT(7),     //inputVoltageLow_
         ANALOG_VOLT(0),     //dischargeOffset_LiXX_
@@ -59,7 +62,10 @@ const Settings defaultSettings PROGMEM = {
         SETTINGS_FORCE_BALANCE_PORT_DEFAULT,            //forceBalancePort_
         ANALOG_VOLT(0.008), //balancerError_
         Settings::Disabled, //UART_ - disabled
-        3                   //57600
+        0,                   //9600
+        0,                   //calibratedState_
+        0,                   //SMPS_Upperbound_Value_
+        0                    //DISCHARGER_Upperbound_Value_
 };
 
 
@@ -96,7 +102,7 @@ void Settings::restoreDefault() {
 }
 
 void Settings::check() {
-    if(CDcycles_>5) CDcycles_ = 5;
+    if(DCcycles_>5) DCcycles_ = 5;
 }
 
 void Settings::apply() {

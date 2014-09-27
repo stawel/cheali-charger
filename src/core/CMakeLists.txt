@@ -51,6 +51,8 @@ set(CORE_SOURCE
         StorageStrategy.h
         StartInfoStrategy.cpp
         StartInfoStrategy.h
+        DelayStrategy.cpp
+        DelayStrategy.h
 
         SMPS.cpp
         SMPS.h
@@ -58,6 +60,10 @@ set(CORE_SOURCE
         Discharger.h
         Program.cpp
         Program.h
+        ProgramDCcycle.cpp
+        ProgramDCcycle.h
+        ProgramMenus.cpp
+        ProgramMenus.h
         Thevenin.cpp
         Thevenin.h
         TheveninMethod.cpp

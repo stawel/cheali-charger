@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2013  Pawel Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,30 +15,23 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef TIMER_H_
-#define TIMER_H_
+#ifndef DELAYSTRATEGY_H_
+#define DELAYSTRATEGY_H_
 
-#include "Hardware.h"
+#include "Strategy.h"
 
-#define TIMER_INTERRUPT_PERIOD_MICROSECONDS     500
-#define TIMER_SLOW_INTERRUPT_INTERVAL           225
-#define SLOW_INTERRUPT_PERIOD_MILISECONDS ((long)TIMER_INTERRUPT_PERIOD_MICROSECONDS*TIMER_SLOW_INTERRUPT_INTERVAL/1000)
+namespace DelayStrategy {
 
-namespace Timer {
-    void initialize();
-    uint32_t getInterrupts();
-    uint32_t getMiliseconds();
-    uint16_t getSeconds();
-    uint16_t getMinutes();
-    void delay(uint16_t ms);
-    void delayIdle(uint16_t ms);
+    extern const Strategy::VTable vtable;
 
-    //private
-    void callback();
+    void powerOn();
+    Strategy::statusType doStrategy();
+    void powerOff();
+
+    bool isDelay();
+    void setDelay(uint16_t minutes);
+
 };
 
-inline uint16_t timeDiffU16(uint16_t start, uint16_t end) {
-    return end - start;
-}
 
-#endif /* TIMER_H_ */
+#endif /* DELAYSTRATEGY_H_ */

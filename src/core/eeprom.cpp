@@ -25,6 +25,8 @@
 #include "LcdPrint.h"
 #include "eeprom.h"
 
+#define CHARS_TO_UINT16(x,y) (((y)<< 8) + (x))
+
 namespace eeprom {
     Data data EEMEM;
 
@@ -35,32 +37,38 @@ namespace eeprom {
         return true;
     }
 
+    void calibrationDisplayMessage(bool calib, bool force)
+    {
+        if(force)
+            Screen::runResettingEeprom();
+
+        if(calib)
+            Screen::runCalibrateBeforeUse();
+    }
+
     void restoreDefault(bool force) {
         bool calib = false;
 
-        Screen::displayStrings(PSTR("reseting eeprom:"),
-                               PSTR("v: " CHEALI_CHARGER_EPPROM_VERSION_STRING " "));
+        if(testWriteVersion((uint16_t*) &data.magicString[0], CHARS_TO_UINT16('c','h')))  {
+            calib = force = true;
+        }
+        if(testWriteVersion((uint16_t*) &data.magicString[2], CHARS_TO_UINT16('l','i')))  {
+            calib = force = true;
+        }
 
         if(testWriteVersion(&data.calibrationVersion, CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION) || force)  {
-            lcdPrint_P(PSTR("c "));
             calib = force = true;
             AnalogInputs::restoreDefault();
         }
         if(testWriteVersion(&data.programDataVersion, CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION) || force)  {
-            lcdPrint_P(PSTR("d "));
             force = true;
             ProgramData::restoreDefault();
         }
         if(testWriteVersion(&data.settingVersion, CHEALI_CHARGER_EEPROM_SETTINGS_VERSION) || force)  {
-            lcdPrint_P(PSTR("s "));
             force = true;
             Settings::restoreDefault();
         }
 
-        if(force)
-            Timer::delay(2000);
-
-        if(calib)
-            Screen::runCalibrateBeforeUse();
+        calibrationDisplayMessage(calib, force);
     }
 }

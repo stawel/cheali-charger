@@ -33,15 +33,19 @@
 #include "StaticMenu.h"
 #include "Settings.h"
 #include "SerialLog.h"
+#include "DelayStrategy.h"
 
+#include "ProgramDCcycle.h"
 
 Program::ProgramType Program::programType_;
 Program::ProgramState Program::programState_ = Program::Done;
 const char * Program::stopReason_;
 
-namespace {
+namespace Program {
+    //TODO: separate Screens from Programs
     const Screen::ScreenType deltaChargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
+      Screen::ScreenEnergy,
       Screen::ScreenDeltaFirst,
       Screen::ScreenDeltaVout,
       Screen::ScreenDeltaTextern,
@@ -50,23 +54,29 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
+      Screen::ScreenCycles,
       Screen::ScreenCIVlimits,
       Screen::ScreenEnd
     };
+
     const Screen::ScreenType NiXXDischargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
+      Screen::ScreenEnergy,
       Screen::ScreenDeltaTextern,
       Screen::ScreenR,
       Screen::ScreenVout,
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
+      Screen::ScreenCycles,
       Screen::ScreenCIVlimits,
       Screen::ScreenEnd
     };
 
     const Screen::ScreenType theveninScreens[] PROGMEM = {
       Screen::ScreenFirst,
+
+      Screen::ScreenEnergy,
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
       Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,   BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9Rth,)
       Screen::ScreenR,
@@ -74,18 +84,23 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
+      Screen::ScreenCycles,
       Screen::ScreenCIVlimits,
       Screen::ScreenEnd
 
     };
+
     const Screen::ScreenType balanceScreens[] PROGMEM = {
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
       Screen::ScreenTime,
+      Screen::ScreenVinput,
       Screen::ScreenTemperature,
       Screen::ScreenEnd
     };
+
     const Screen::ScreenType dischargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
+      Screen::ScreenEnergy,
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
       Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,   BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9Rth,)
       Screen::ScreenR,
@@ -93,12 +108,14 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
+      Screen::ScreenCycles,
       Screen::ScreenCIVlimits,
       Screen::ScreenEnd
-
     };
+
     const Screen::ScreenType storageScreens[] PROGMEM = {
       Screen::ScreenFirst,
+      Screen::ScreenEnergy,
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
       Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,   BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9Rth,)
       Screen::ScreenR,
@@ -106,7 +123,6 @@ namespace {
       Screen::ScreenVinput,
       Screen::ScreenTime,
       Screen::ScreenTemperature,
-      Screen::ScreenCIVlimits,
       Screen::ScreenEnd
 
     };
@@ -114,37 +130,32 @@ namespace {
     const Screen::ScreenType startInfoBalanceScreens[] PROGMEM = {
       Screen::ScreenStartInfo,
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
+      Screen::ScreenVinput,
       Screen::ScreenTemperature,
       Screen::ScreenEnd
     };
 
     const Screen::ScreenType startInfoScreens[] PROGMEM = {
       Screen::ScreenStartInfo,
+      Screen::ScreenVinput,
       Screen::ScreenTemperature,
       Screen::ScreenEnd
     };
-
-    Strategy::statusType doStrategy(const Screen::ScreenType chargeScreens[], bool exitImmediately = false){
-
-        Strategy::statusType status = Strategy::doStrategy(chargeScreens, exitImmediately);
-        return status;
-    }
-
-
-} //namespace {
+}
 
 bool Program::startInfo()
 {
     bool balancer = false;
     const Screen::ScreenType * screen = startInfoScreens;
-    Strategy::strategy_ = &StartInfoStrategy::vtable;
+    Strategy::strategy = &StartInfoStrategy::vtable;
+    Strategy::exitImmediately = true;
     if(ProgramData::currentProgramData.isLiXX()) {
         //usues balance port
         balancer = true;
         screen = startInfoBalanceScreens;
     }
     StartInfoStrategy::setBalancePort(balancer);
-    return doStrategy(startInfoBalanceScreens, true) == Strategy::COMPLETE;
+    return Strategy::doStrategy(startInfoBalanceScreens) == Strategy::COMPLETE;
 }
 
 Strategy::statusType Program::runStorage(bool balance)
@@ -152,31 +163,31 @@ Strategy::statusType Program::runStorage(bool balance)
     StorageStrategy::setDoBalance(balance);
     StorageStrategy::setVII(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage),
             ProgramData::currentProgramData.battery.Ic, ProgramData::currentProgramData.battery.Id);
-    Strategy::strategy_ = &StorageStrategy::vtable;
-    return doStrategy(storageScreens);
+    Strategy::strategy = &StorageStrategy::vtable;
+    return Strategy::doStrategy(storageScreens);
 }
 Strategy::statusType Program::runTheveninCharge(int minChargeC)
 {
     TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
             ProgramData::currentProgramData.battery.Ic, false);
     TheveninChargeStrategy::setMinI(ProgramData::currentProgramData.battery.Ic/minChargeC);
-    Strategy::strategy_ = &TheveninChargeStrategy::vtable;
-    return doStrategy(theveninScreens);
+    Strategy::strategy = &TheveninChargeStrategy::vtable;
+    return Strategy::doStrategy(theveninScreens);
 }
 
 Strategy::statusType Program::runTheveninChargeBalance()
 {
     TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
             ProgramData::currentProgramData.battery.Ic, true);
-    Strategy::strategy_ = &TheveninChargeStrategy::vtable;
-    return doStrategy(theveninScreens);
+    Strategy::strategy = &TheveninChargeStrategy::vtable;
+    return Strategy::doStrategy(theveninScreens);
 }
 
 
 Strategy::statusType Program::runDeltaCharge()
 {
-    Strategy::strategy_ = &DeltaChargeStrategy::vtable;
-    return doStrategy(deltaChargeScreens);
+    Strategy::strategy = &DeltaChargeStrategy::vtable;
+    return Strategy::doStrategy(deltaChargeScreens);
 }
 
 Strategy::statusType Program::runDischarge()
@@ -184,21 +195,21 @@ Strategy::statusType Program::runDischarge()
     AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
     Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
     TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
-    Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-    return doStrategy(dischargeScreens);
+    Strategy::strategy = &TheveninDischargeStrategy::vtable;
+    return Strategy::doStrategy(dischargeScreens);
 }
 
 Strategy::statusType Program::runNiXXDischarge()
 {
     TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-    Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-    return doStrategy(NiXXDischargeScreens);
+    Strategy::strategy = &TheveninDischargeStrategy::vtable;
+    return Strategy::doStrategy(NiXXDischargeScreens);
 }
 
 Strategy::statusType Program::runBalance()
 {
-    Strategy::strategy_ = &Balancer::vtable;
-    return doStrategy(balanceScreens);
+    Strategy::strategy = &Balancer::vtable;
+    return Strategy::doStrategy(balanceScreens);
 }
 
 Program::ProgramState getProgramState(Program::ProgramType prog)
@@ -207,6 +218,7 @@ Program::ProgramState getProgramState(Program::ProgramType prog)
     switch(prog) {
     case Program::ChargeLiXX:
     case Program::ChargePb:
+    case Program::FastChargePb:
     case Program::FastChargeLiXX:
     case Program::ChargeNiXX:
         retu = Program::Charging;
@@ -219,7 +231,13 @@ Program::ProgramState getProgramState(Program::ProgramType prog)
     case Program::DischargeNiXX:
         retu = Program::Discharging;
         break;
-
+    case Program::DCcycleLiXX:
+    case Program::DCcyclePb:
+         retu = Program::DischargingCharging;
+        break;
+    case Program::DCcycleNiXX:
+         retu = Program::DischargingCharging;
+        break; 
     case Program::StorageLiXX:
     case Program::StorageLiXX_Balance:
         retu = Program::Storage;
@@ -245,11 +263,13 @@ void Program::run(ProgramType prog)
 
 
     if(startInfo()) {
+        Strategy::exitImmediately = false;
         Buzzer::soundStartProgram();
 
         switch(prog) {
         case Program::ChargeLiXX:
-            runTheveninCharge(10);
+        case Program::ChargePb:
+            runTheveninCharge(settings.Lixx_Imin_);   //(default end current = start current / 10)
             break;
         case Program::Balance:
             runBalance();
@@ -258,10 +278,8 @@ void Program::run(ProgramType prog)
         case Program::DischargePb:
             runDischarge();
             break;
-        case Program::ChargePb:
-            runTheveninCharge(5); //(end current = start current / 5)
-            break;
         case Program::FastChargeLiXX:
+        case Program::FastChargePb:
             runTheveninCharge(5);
             break;
         case Program::StorageLiXX:
@@ -276,6 +294,21 @@ void Program::run(ProgramType prog)
         case Program::DischargeNiXX:
             runNiXXDischarge();
             break;
+        case Program::DCcycleLiXX:
+            if (settings.forceBalancePort_) {
+                ProgramDCcycle::runDCcycle(ProgramDCcycle::LiXX);
+            } else {
+                // Program::stopReason_ = PSTR("NEED BALANCER");
+                Screen::displayStrings(PSTR("NEED force bal."),  PSTR("set. --> YES"));
+                Timer::delay(2000);
+            }
+            break;
+        case Program::DCcycleNiXX:
+            ProgramDCcycle::runDCcycle(ProgramDCcycle::NiXX);
+            break;
+        case Program::DCcyclePb:
+            ProgramDCcycle::runDCcycle(ProgramDCcycle::Pb);
+            break;
         case Program::ChargeLiXX_Balance:
             runTheveninChargeBalance();
             break;
@@ -289,144 +322,9 @@ void Program::run(ProgramType prog)
     SerialLog::powerOff();
 }
 
-
-
-// Program selection depending on the battery type
-
-namespace {
-
-    const char charge_str[] PROGMEM = "charge";
-    const char chaBal_str[] PROGMEM = "charge+balance";
-    const char balanc_str[] PROGMEM = "balance";
-    const char discha_str[] PROGMEM = "discharge";
-    const char fastCh_str[] PROGMEM = "fast charge";
-    const char storag_str[] PROGMEM = "storage";
-    const char stoBal_str[] PROGMEM = "storage+balanc";
-    const char CDcycl_str[] PROGMEM = "c>d cycle";
-    const char DCcycl_str[] PROGMEM = "d>c cycle";
-    const char edBatt_str[] PROGMEM = "edit battery";
-
-    const char * const programLiXXMenu[] PROGMEM =
-    { charge_str,
-      chaBal_str,
-      balanc_str,
-      discha_str,
-      fastCh_str,
-      storag_str,
-      stoBal_str,
-      edBatt_str,
-      NULL
-    };
-
-    const Program::ProgramType programLiXXMenuType[] PROGMEM =
-    { Program::ChargeLiXX,
-      Program::ChargeLiXX_Balance,
-      Program::Balance,
-      Program::DischargeLiXX,
-      Program::FastChargeLiXX,
-      Program::StorageLiXX,
-      Program::StorageLiXX_Balance,
-      Program::EditBattery
-    };
-
-    const char * const programNiZnMenu[] PROGMEM =
-    { charge_str,
-      chaBal_str,
-      balanc_str,
-      discha_str,
-      fastCh_str,
-      edBatt_str,
-      NULL
-    };
-
-    const Program::ProgramType programNiZnMenuType[] PROGMEM =
-    { Program::ChargeLiXX,
-      Program::ChargeLiXX_Balance,
-      Program::Balance,
-      Program::DischargeLiXX,
-      Program::FastChargeLiXX,
-      Program::EditBattery
-    };
-
-
-    const char * const programNiXXMenu[] PROGMEM =
-    { charge_str,
-      discha_str,
-      CDcycl_str,
-      DCcycl_str,
-      edBatt_str,
-      NULL
-    };
-
-    const Program::ProgramType programNiXXMenuType[] PROGMEM =
-    { Program::ChargeNiXX,
-      Program::DischargeNiXX,
-      Program::CDcycleNiXX,
-      Program::DCcycleNiXX,
-      Program::EditBattery
-    };
-
-    const char * const programPbMenu[] PROGMEM =
-    { charge_str,
-      discha_str,
-      edBatt_str,
-      NULL
-    };
-
-    const Program::ProgramType programPbMenuType[] PROGMEM =
-    { Program::ChargePb,
-      Program::DischargePb,
-      Program::EditBattery
-    };
-
-
-    StaticMenu selectLiXXMenu(programLiXXMenu);
-    StaticMenu selectNiXXMenu(programNiXXMenu);
-    StaticMenu selectNiZnMenu(programNiZnMenu);
-    StaticMenu selectPbMenu(programPbMenu);
-
-    StaticMenu * getSelectProgramMenu() {
-        if(ProgramData::currentProgramData.battery.type == ProgramData::NiZn)
-            return &selectNiZnMenu;
-        if(ProgramData::currentProgramData.isLiXX())
-            return &selectLiXXMenu;
-        else if(ProgramData::currentProgramData.isNiXX())
-            return &selectNiXXMenu;
-        else return &selectPbMenu;
-    }
-    Program::ProgramType getSelectProgramType(uint8_t index) {
-        const Program::ProgramType * address;
-        if(ProgramData::currentProgramData.battery.type == ProgramData::NiZn)
-            address = &programNiZnMenuType[index];
-        else if(ProgramData::currentProgramData.isLiXX())
-            address = &programLiXXMenuType[index];
-        else if(ProgramData::currentProgramData.isNiXX())
-            address = &programNiXXMenuType[index];
-        else address = &programPbMenuType[index];
-        return pgm::read(address);
-    }
-}
-
-void Program::selectProgram(int index)
+Strategy::statusType Program::runDCRestTime()
 {
-    ProgramData::loadProgramData(index);
-    StaticMenu * selectPrograms = getSelectProgramMenu();
-    int8_t menuIndex;
-    do {
-        menuIndex = selectPrograms->runSimple();
-        if(menuIndex >= 0)  {
-            Program::ProgramType prog = getSelectProgramType(menuIndex);
-            if(prog == Program::EditBattery) {
-                ProgramData::currentProgramData.edit(index);
-                ProgramData::saveProgramData(index);
-                selectPrograms = getSelectProgramMenu();
-            } else {
-                Program::run(prog);
-            }
-        }
-    } while(menuIndex >= 0);
+    DelayStrategy::setDelay(settings.DCRestTime_);
+    Strategy::strategy = &DelayStrategy::vtable;
+    return Strategy::doStrategy(Program::dischargeScreens);
 }
-
-
-
-

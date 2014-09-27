@@ -21,6 +21,7 @@
 #include "ProgramData.h"
 #include "Screen.h"
 #include "Utils.h"
+#include "Settings.h"
 
 namespace TheveninMethod {
     uint16_t minValue_;
@@ -41,13 +42,18 @@ namespace TheveninMethod {
     AnalogInputs::ValueType idebug_;
 
 
-    void setMinI(AnalogInputs::ValueType i) {    minValue_ = i; };
+    void setMinI(AnalogInputs::ValueType i) 
+    {    
+        if (i < 50) i = 50;
+        minValue_ = i; 
+    }
 
     uint16_t getMinValueB() {
         if(bstatus_ != Strategy::COMPLETE)
             return 0;
         else return minValue_;
     }
+
     AnalogInputs::ValueType getImax()
     {
         return AnalogInputs::calibrateValue(iName_, maxValue_);
@@ -88,7 +94,10 @@ void TheveninMethod::setVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueTyp
 {
     Vend_ = Vend;
     maxValue_ = i;
-    minValue_ = i/10;
+    minValue_ = i / settings.Lixx_Imin_;    //default=10
+        //low current
+    if (maxValue_ < 50) { maxValue_ = 50; }
+    if (minValue_ < 50) { minValue_ = 50; }
     balance_ = balance;
 }
 
@@ -98,7 +107,7 @@ void TheveninMethod::initialize(AnalogInputs::Name iName)
     bool charge = (iName == AnalogInputs::IsmpsValue);
 
     iName_ = iName;
-    minBalanceValue_ = AnalogInputs::reverseCalibrateValue(iName_, Balancer::Ibalance);
+    minBalanceValue_ = AnalogInputs::reverseCalibrateValue(iName_, IBALANCE);
     AnalogInputs::ValueType Vout = AnalogInputs::getVout();
     tVout_.init(Vout, Vend_, minValue_, charge);
 
