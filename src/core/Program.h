@@ -45,12 +45,12 @@ namespace Program {
     bool startInfo();
 
     Strategy::statusType runStorage(bool balance);
-    Strategy::statusType runTheveninCharge(int minChargeC, bool immediately = false);
-    Strategy::statusType runDischarge(bool immediately = false);
-    Strategy::statusType runNiXXDischarge(bool immediately = false);
-    Strategy::statusType runTheveninChargeBalance(bool immediately = false);
+    Strategy::statusType runTheveninCharge(int minChargeC);
+    Strategy::statusType runDischarge();
+    Strategy::statusType runNiXXDischarge();
+    Strategy::statusType runTheveninChargeBalance();
     Strategy::statusType runBalance();
-    Strategy::statusType runDeltaCharge(bool immediately = false);
+    Strategy::statusType runDeltaCharge();
 
     Strategy::statusType runDCRestTime();
 };

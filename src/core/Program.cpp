@@ -141,27 +141,21 @@ namespace Program {
       Screen::ScreenTemperature,
       Screen::ScreenEnd
     };
-
-    Strategy::statusType doStrategy(const Screen::ScreenType chargeScreens[], bool exitImmediately = false){
-
-        Strategy::statusType status = Strategy::doStrategy(chargeScreens, exitImmediately);
-        return status;
-    }
-
 }
 
 bool Program::startInfo()
 {
     bool balancer = false;
     const Screen::ScreenType * screen = startInfoScreens;
-    Strategy::strategy_ = &StartInfoStrategy::vtable;
+    Strategy::strategy = &StartInfoStrategy::vtable;
+    Strategy::exitImmediately = true;
     if(ProgramData::currentProgramData.isLiXX()) {
         //usues balance port
         balancer = true;
         screen = startInfoBalanceScreens;
     }
     StartInfoStrategy::setBalancePort(balancer);
-    return doStrategy(startInfoBalanceScreens, true) == Strategy::COMPLETE;
+    return Strategy::doStrategy(startInfoBalanceScreens) == Strategy::COMPLETE;
 }
 
 Strategy::statusType Program::runStorage(bool balance)
@@ -169,53 +163,53 @@ Strategy::statusType Program::runStorage(bool balance)
     StorageStrategy::setDoBalance(balance);
     StorageStrategy::setVII(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage),
             ProgramData::currentProgramData.battery.Ic, ProgramData::currentProgramData.battery.Id);
-    Strategy::strategy_ = &StorageStrategy::vtable;
-    return doStrategy(storageScreens);
+    Strategy::strategy = &StorageStrategy::vtable;
+    return Strategy::doStrategy(storageScreens);
 }
-Strategy::statusType Program::runTheveninCharge(int minChargeC,  bool immediately)
+Strategy::statusType Program::runTheveninCharge(int minChargeC)
 {
     TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
             ProgramData::currentProgramData.battery.Ic, false);
     TheveninChargeStrategy::setMinI(ProgramData::currentProgramData.battery.Ic/minChargeC);
-    Strategy::strategy_ = &TheveninChargeStrategy::vtable;
-    return doStrategy(theveninScreens, immediately);
+    Strategy::strategy = &TheveninChargeStrategy::vtable;
+    return Strategy::doStrategy(theveninScreens);
 }
 
-Strategy::statusType Program::runTheveninChargeBalance(bool immediately)
+Strategy::statusType Program::runTheveninChargeBalance()
 {
     TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
             ProgramData::currentProgramData.battery.Ic, true);
-    Strategy::strategy_ = &TheveninChargeStrategy::vtable;
-    return doStrategy(theveninScreens, immediately);
+    Strategy::strategy = &TheveninChargeStrategy::vtable;
+    return Strategy::doStrategy(theveninScreens);
 }
 
 
-Strategy::statusType Program::runDeltaCharge(bool immediately)
+Strategy::statusType Program::runDeltaCharge()
 {
-    Strategy::strategy_ = &DeltaChargeStrategy::vtable;
-    return doStrategy(deltaChargeScreens, immediately);
+    Strategy::strategy = &DeltaChargeStrategy::vtable;
+    return Strategy::doStrategy(deltaChargeScreens);
 }
 
-Strategy::statusType Program::runDischarge(bool immediately)
+Strategy::statusType Program::runDischarge()
 {
     AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
     Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
     TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
-    Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-    return doStrategy(dischargeScreens, immediately);
+    Strategy::strategy = &TheveninDischargeStrategy::vtable;
+    return Strategy::doStrategy(dischargeScreens);
 }
 
-Strategy::statusType Program::runNiXXDischarge(bool immediately)
+Strategy::statusType Program::runNiXXDischarge()
 {
     TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-    Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
-    return doStrategy(NiXXDischargeScreens, immediately);
+    Strategy::strategy = &TheveninDischargeStrategy::vtable;
+    return Strategy::doStrategy(NiXXDischargeScreens);
 }
 
 Strategy::statusType Program::runBalance()
 {
-    Strategy::strategy_ = &Balancer::vtable;
-    return doStrategy(balanceScreens);
+    Strategy::strategy = &Balancer::vtable;
+    return Strategy::doStrategy(balanceScreens);
 }
 
 Program::ProgramState getProgramState(Program::ProgramType prog)
@@ -269,6 +263,7 @@ void Program::run(ProgramType prog)
 
 
     if(startInfo()) {
+        Strategy::exitImmediately = false;
         Buzzer::soundStartProgram();
 
         switch(prog) {
@@ -330,6 +325,6 @@ void Program::run(ProgramType prog)
 Strategy::statusType Program::runDCRestTime()
 {
     DelayStrategy::setDelay(settings.DCRestTime_);
-    Strategy::strategy_ = &DelayStrategy::vtable;
-    return doStrategy(Program::dischargeScreens, true);
+    Strategy::strategy = &DelayStrategy::vtable;
+    return Strategy::doStrategy(Program::dischargeScreens);
 }

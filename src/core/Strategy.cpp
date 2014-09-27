@@ -22,19 +22,17 @@
 #include "memory.h"
 #include "Monitor.h"
 #include "PolarityCheck.h"
-#include "AnalogInputs.h"    
+#include "AnalogInputs.h"
 
 namespace Strategy {
 
-    const VTable * strategy_;
+    const VTable * strategy;
+    bool exitImmediately;
 
 
     void chargingComplete() {
         lcdClear();
         Screen::displayScreenProgramCompleted();
-#ifndef ENABLE_T_INTERNAL
-        hardware::setBatteryOutput(false); // ADD THIS LINE TO TURN OFF THE FAN
-#endif
         Buzzer::soundProgramComplete();
         waitButtonPressed();
         Buzzer::soundOff();
@@ -49,25 +47,24 @@ namespace Strategy {
     }
 
     void strategyPowerOn() {
-        void (*powerOn)() = pgm::read(&strategy_->powerOn);
+        void (*powerOn)() = pgm::read(&strategy->powerOn);
         powerOn();
     }
     void strategyPowerOff() {
-        void (*powerOff)() = pgm::read(&strategy_->powerOff);
+        void (*powerOff)() = pgm::read(&strategy->powerOff);
         powerOff();
     }
     Strategy::statusType strategyDoStrategy() {
-        Strategy::statusType (*doStrategy)() = pgm::read(&strategy_->doStrategy);
+        Strategy::statusType (*doStrategy)() = pgm::read(&strategy->doStrategy);
         return doStrategy();
     }
 
 
-    bool analizeStrategyStatus(Strategy::statusType status, bool exitImmediately) {
+    bool analizeStrategyStatus(Strategy::statusType status) {
         bool run = true;
         if(status == Strategy::ERROR) {
             Screen::powerOff();
             strategyPowerOff();
-            AnalogInputs::powerOff();   //disconnect the battery (pin12 off)
             chargingMonitorError();
             run = false;
         }
@@ -82,7 +79,7 @@ namespace Strategy {
         return run;
     }
 
-    Strategy::statusType doStrategy(const Screen::ScreenType chargeScreens[], bool exitImmediately)
+    Strategy::statusType doStrategy(const Screen::ScreenType chargeScreens[])
     {
         uint8_t key;
         bool run = true;
@@ -101,19 +98,13 @@ namespace Strategy {
             {
                 //change displayed screen
                 key =  Keyboard::getPressedWithSpeed();
-                if(key == BUTTON_INC && pgm::read(&chargeScreens[screen_nr+1]) != Screen::ScreenEnd)
-                {
-#ifndef ENABLE_T_INTERNAL //TODO: after program complete, reconnect battery but wrong cell measurement if disconnected
-                    if(status == Strategy::COMPLETE) { hardware::setBatteryOutput(true); }  // ADD THIS LINE TO TURN ON THE FAN
-#endif
-
+                if(key == BUTTON_INC && pgm::read(&chargeScreens[screen_nr+1]) != Screen::ScreenEnd) {
 #ifdef ENABLE_SCREEN_ANIMATION
                     Screen::displayAnimation();
 #endif
                     screen_nr++;
                 }
-                if(key == BUTTON_DEC && screen_nr > 0)
-                {
+                if(key == BUTTON_DEC && screen_nr > 0) {
 #ifdef ENABLE_SCREEN_ANIMATION
                     Screen::displayAnimation();
 #endif
@@ -123,12 +114,12 @@ namespace Strategy {
 
             if(run) {
                 status = Monitor::run();
-                run = analizeStrategyStatus(status, exitImmediately);
+                run = analizeStrategyStatus(status);
 
                 if(run && newMesurmentData != AnalogInputs::getFullMeasurementCount()) {
                     newMesurmentData = AnalogInputs::getFullMeasurementCount();
                     status = strategyDoStrategy();
-                    run = analizeStrategyStatus(status, exitImmediately);
+                    run = analizeStrategyStatus(status);
                 }
             }
             if(!run && exitImmediately)

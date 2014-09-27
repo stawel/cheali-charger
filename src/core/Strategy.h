@@ -30,9 +30,10 @@ namespace Strategy {
         statusType (*doStrategy)();
     };
 
-    extern const VTable * strategy_;
+    extern const VTable * strategy;
+    extern bool exitImmediately;
 
-    statusType doStrategy(const Screen::ScreenType chargeScreens[], bool exitImmediately = false);
+    statusType doStrategy(const Screen::ScreenType chargeScreens[]);
 };
 
 

@@ -28,13 +28,13 @@ namespace ProgramDCcycle {
     char cycleMode;
 
     Strategy::statusType runCycleDischargeCommon(BatteryGroup prog1);
-    Strategy::statusType runCycleChargeCommon(BatteryGroup prog1, bool mode);
+    Strategy::statusType runCycleChargeCommon(BatteryGroup prog1);
 }
 
 Strategy::statusType ProgramDCcycle::runDCcycle(BatteryGroup prog1)
 { //TODO_NJ
     Strategy::statusType status;
-
+    Strategy::exitImmediately = true;
     for(currentCycle = 1; currentCycle <= settings.DCcycles_; currentCycle++) {
 
         //discharge
@@ -54,11 +54,10 @@ Strategy::statusType ProgramDCcycle::runDCcycle(BatteryGroup prog1)
         cycleMode='C';
 
         //lastcharge? (no need wait at end?)
-        if (currentCycle != settings.DCcycles_) {
-            status = runCycleChargeCommon(prog1, true); //independent exit
-        } else {
-            status = runCycleChargeCommon(prog1, false);
+        if (currentCycle == settings.DCcycles_) {
+            Strategy::exitImmediately = false;
         }
+        status = runCycleChargeCommon(prog1); //independent exit
         if(status != Strategy::COMPLETE) {break;}
 
         //waiting after charge
@@ -76,49 +75,31 @@ Strategy::statusType ProgramDCcycle::runCycleDischargeCommon(BatteryGroup prog1)
 {
     Strategy::statusType status;
 
-    if(prog1 == LiXX)
-    {
-        status = runDischarge(true);
+    if(prog1 == LiXX){
+        status = runDischarge();
     }
-
-    if(prog1 == NiXX)
-    {
-        status = runNiXXDischarge(true);
+    if(prog1 == NiXX) {
+        status = runNiXXDischarge();
     }
-
-    if(prog1 == Pb)
-    {
-        status = runDischarge(true);
+    if(prog1 == Pb) {
+        status = runDischarge();
     }
 
     return status;
 }
 
-Strategy::statusType ProgramDCcycle::runCycleChargeCommon(BatteryGroup prog1, bool mode)
+Strategy::statusType ProgramDCcycle::runCycleChargeCommon(BatteryGroup prog1)
 {
     Strategy::statusType status;
 
-    //lastcharge? (no need wait at end?)
-    if (currentCycle != settings.DCcycles_) {
-        if(prog1 == LiXX) {
-            status =  runTheveninChargeBalance(mode);
-        } //independent exit
-        if(prog1 == NiXX) {
-            status =  runDeltaCharge(mode);
-        } //independent exit
-        if(prog1 == Pb) {
-            status =  runTheveninCharge(settings.Lixx_Imin_, mode);
-        }  //independent exit
-    } else {
-        if(prog1 == LiXX) {
-            status = runTheveninChargeBalance();
-        } //normal exit point
-        if(prog1 == NiXX) {
-            status = runDeltaCharge();
-        } //normal exit point
-        if(prog1 == Pb) {
-            status =  runTheveninCharge(settings.Lixx_Imin_);
-        }   //normal exit point
+    if(prog1 == LiXX) {
+        status = runTheveninChargeBalance();
+    }
+    if(prog1 == NiXX) {
+        status = runDeltaCharge();
+    }
+    if(prog1 == Pb) {
+        status =  runTheveninCharge(settings.Lixx_Imin_);
     }
 
     return status;
