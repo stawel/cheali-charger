@@ -35,12 +35,14 @@
 #include "SerialLog.h"
 #include "DelayStrategy.h"
 
+#include "ProgramDCcycle.h"
 
 Program::ProgramType Program::programType_;
 Program::ProgramState Program::programState_ = Program::Done;
 const char * Program::stopReason_;
 
-namespace {
+namespace Program {
+    //TODO: separate Screens from Programs
     const Screen::ScreenType deltaChargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenEnergy,
@@ -87,6 +89,7 @@ namespace {
       Screen::ScreenEnd
 
     };
+
     const Screen::ScreenType balanceScreens[] PROGMEM = {
       Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
       Screen::ScreenTime,
@@ -94,6 +97,7 @@ namespace {
       Screen::ScreenTemperature,
       Screen::ScreenEnd
     };
+
     const Screen::ScreenType dischargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenEnergy,
@@ -107,8 +111,8 @@ namespace {
       Screen::ScreenCycles,
       Screen::ScreenCIVlimits,
       Screen::ScreenEnd
-
     };
+
     const Screen::ScreenType storageScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenEnergy,
@@ -144,10 +148,7 @@ namespace {
         return status;
     }
 
-    uint8_t tempDCcycles_ = 0;
-    char cycleMode='-';
-
-} //namespace {
+}
 
 bool Program::startInfo()
 {
@@ -163,7 +164,7 @@ bool Program::startInfo()
     return doStrategy(startInfoBalanceScreens, true) == Strategy::COMPLETE;
 }
 
-Strategy::statusType Program::runStorage(bool balance, bool immediately = false)
+Strategy::statusType Program::runStorage(bool balance)
 {
     StorageStrategy::setDoBalance(balance);
     StorageStrategy::setVII(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage),
@@ -171,7 +172,7 @@ Strategy::statusType Program::runStorage(bool balance, bool immediately = false)
     Strategy::strategy_ = &StorageStrategy::vtable;
     return doStrategy(storageScreens);
 }
-Strategy::statusType Program::runTheveninCharge(int minChargeC,  bool immediately = false)
+Strategy::statusType Program::runTheveninCharge(int minChargeC,  bool immediately)
 {
     TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
             ProgramData::currentProgramData.battery.Ic, false);
@@ -180,7 +181,7 @@ Strategy::statusType Program::runTheveninCharge(int minChargeC,  bool immediatel
     return doStrategy(theveninScreens, immediately);
 }
 
-Strategy::statusType Program::runTheveninChargeBalance( bool immediately = false)
+Strategy::statusType Program::runTheveninChargeBalance(bool immediately)
 {
     TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
             ProgramData::currentProgramData.battery.Ic, true);
@@ -189,13 +190,13 @@ Strategy::statusType Program::runTheveninChargeBalance( bool immediately = false
 }
 
 
-Strategy::statusType Program::runDeltaCharge(bool immediately = false)
+Strategy::statusType Program::runDeltaCharge(bool immediately)
 {
     Strategy::strategy_ = &DeltaChargeStrategy::vtable;
     return doStrategy(deltaChargeScreens, immediately);
 }
 
-Strategy::statusType Program::runDischarge(bool immediately = false)
+Strategy::statusType Program::runDischarge(bool immediately)
 {
     AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
     Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
@@ -204,7 +205,7 @@ Strategy::statusType Program::runDischarge(bool immediately = false)
     return doStrategy(dischargeScreens, immediately);
 }
 
-Strategy::statusType Program::runNiXXDischarge(bool immediately = false)
+Strategy::statusType Program::runNiXXDischarge(bool immediately)
 {
     TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
     Strategy::strategy_ = &TheveninDischargeStrategy::vtable;
@@ -215,13 +216,6 @@ Strategy::statusType Program::runBalance()
 {
     Strategy::strategy_ = &Balancer::vtable;
     return doStrategy(balanceScreens);
-}
-
-Strategy::statusType Program::runDCRestTime()
-{
-    DelayStrategy::setDelay(settings.DCRestTime_);
-    Strategy::strategy_ = &DelayStrategy::vtable;
-    return doStrategy(dischargeScreens, true);
 }
 
 Program::ProgramState getProgramState(Program::ProgramType prog)
@@ -307,7 +301,7 @@ void Program::run(ProgramType prog)
             break;
         case Program::DCcycleLiXX:
             if (settings.forceBalancePort_) {
-                runDCcycle(1);  //1= lixx
+                ProgramDCcycle::runDCcycle(ProgramDCcycle::LiXX);
             } else {
                 // Program::stopReason_ = PSTR("NEED BALANCER");
                 Screen::displayStrings(PSTR("NEED force bal."),  PSTR("set. --> YES"));
@@ -315,10 +309,10 @@ void Program::run(ProgramType prog)
             }
             break;
         case Program::DCcycleNiXX:
-            runDCcycle(0);   //0 = nixx
+            ProgramDCcycle::runDCcycle(ProgramDCcycle::NiXX);
             break;
         case Program::DCcyclePb:
-            runDCcycle(2);   //2= pb
+            ProgramDCcycle::runDCcycle(ProgramDCcycle::Pb);
             break;
         case Program::ChargeLiXX_Balance:
             runTheveninChargeBalance();
@@ -333,99 +327,9 @@ void Program::run(ProgramType prog)
     SerialLog::powerOff();
 }
 
-uint8_t Program::currentCycle() { return tempDCcycles_;}
-
-char Program::currentCycleMode() { return cycleMode;}
-
-Strategy::statusType Program::runDCcycle(uint8_t prog1)
-{ //TODO_NJ
-    Strategy::statusType status;
-
-    for(tempDCcycles_=1; tempDCcycles_ <= settings.DCcycles_; tempDCcycles_++) {
-
-        //discharge
-        AnalogInputs::resetAccumulatedMeasurements();
-        cycleMode='D';
-        status = runCycleDischargeCommon(prog1);
-        if(status != Strategy::COMPLETE) {break;} 
- 
-        //waiting after discharge
-        cycleMode='W';
-        status = runDCRestTime();
-        if(status != Strategy::COMPLETE) { break; }
-
-        //charge
-        Screen::resetETA();
-        AnalogInputs::resetAccumulatedMeasurements();
-        cycleMode='C';
-
-        //lastcharge? (no need wait at end?)
-        if (tempDCcycles_ != settings.DCcycles_) {
-            status = runCycleChargeCommon(prog1, true); //independent exit
-        } else {
-            status = runCycleChargeCommon(prog1, false);
-        }
-        if(status != Strategy::COMPLETE) {break;}
-
-        //waiting after charge
-        cycleMode='W';
-        if (tempDCcycles_ != settings.DCcycles_) {
-            status = runDCRestTime();
-            if(status != Strategy::COMPLETE) { break; }
-            else {status = Strategy::COMPLETE;}
-        }
-    }
-    return status;
-}
-
-Strategy::statusType Program::runCycleDischargeCommon(uint8_t prog1)
+Strategy::statusType Program::runDCRestTime()
 {
-    Strategy::statusType status;
-
-    if(prog1 == 1)  //1 is lixx
-    {
-        status = runDischarge(true);
-    }
-
-    if(prog1 == 0)  //0 nixx
-    {
-        status = runNiXXDischarge(true);
-    }
-
-    if(prog1 == 2)  //2 pb
-    {
-        status = runDischarge(true);
-    }
-
-    return status;
-}
-
-Strategy::statusType Program::runCycleChargeCommon(uint8_t prog1, bool mode)
-{
-    Strategy::statusType status;
-
-    //lastcharge? (no need wait at end?)
-    if (tempDCcycles_ != settings.DCcycles_) {
-        if(prog1 == 1) {//1 is lixx  //0 is nixx
-            status =  runTheveninChargeBalance(mode);
-        } //independent exit
-        if(prog1 == 0) {     //nixx
-            status =  runDeltaCharge(mode);
-        } //independent exit
-        if(prog1 == 2) {  //pb
-            status =  runTheveninCharge(settings.Lixx_Imin_, mode);
-        }  //independent exit
-    } else {
-        if(prog1 == 1) {
-            status = runTheveninChargeBalance();
-        } //normal exit point
-        if(prog1 == 0) {  //nixx
-            status = runDeltaCharge();
-        } //normal exit point
-        if(prog1 == 2) {  //pb
-            status =  runTheveninCharge(settings.Lixx_Imin_);
-        }   //normal exit point
-    }
-
-    return status;
+    DelayStrategy::setDelay(settings.DCRestTime_);
+    Strategy::strategy_ = &DelayStrategy::vtable;
+    return doStrategy(Program::dischargeScreens, true);
 }

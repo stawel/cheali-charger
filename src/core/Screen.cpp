@@ -25,6 +25,7 @@
 #include "Program.h"
 #include "DelayStrategy.h"
 #include "Version.h"
+#include "ProgramDCcycle.h"
 
 #ifdef ENABLE_LCD_RAM_CG
    #define BALANCE_FULL_CELL_CHAR   2
@@ -564,7 +565,7 @@ void Screen::displayScreenCycles()
 
     if (toggleTextCounter == 3) {
         toggleTextCycleCounter_++;
-        if (toggleTextCycleCounter_ >  Program::currentCycle()) toggleTextCycleCounter_ = 1;
+        if (toggleTextCycleCounter_ >  ProgramDCcycle::currentCycle) toggleTextCycleCounter_ = 1;
     }
 
     c = toggleTextCycleCounter_-1;
@@ -697,13 +698,13 @@ uint16_t Screen::getETATime()
 
 void Screen::storeCycleHistoryInfo()
 {
-    int8_t c = Program::currentCycle()-1;
-    if (Program::currentCycleMode() == 'C') {
+    int8_t c = ProgramDCcycle::currentCycle-1;
+    if (ProgramDCcycle::cycleMode == 'C') {
         cyclesHistoryMode[c] = 'C';
         cyclesHistoryChTime[c] = totalChargDischargeTime_/1000;
         cyclesHistoryChCapacity[c] = AnalogInputs::getRealValue(AnalogInputs::Cout);
     }
-    if (Program::currentCycleMode() == 'D') {
+    if (ProgramDCcycle::cycleMode == 'D') {
         cyclesHistoryMode[c] = 'D';
         cyclesHistoryDcTime[c] = totalChargDischargeTime_/1000;
         cyclesHistoryDcCapacity[c] = AnalogInputs::getRealValue(AnalogInputs::Cout);

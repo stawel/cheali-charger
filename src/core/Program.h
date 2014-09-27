@@ -44,19 +44,15 @@ namespace Program {
     void printStartInfo(ProgramType prog);
     bool startInfo();
 
-    Strategy::statusType runStorage(bool balance, bool immediately);
-    Strategy::statusType runTheveninCharge(int minChargeC, bool immediately);
-    Strategy::statusType runDischarge(bool immediately);
-    Strategy::statusType runNiXXDischarge(bool immediately);
-    Strategy::statusType runDCRestTime();
-    Strategy::statusType runDCcycle(uint8_t prog1);
-    Strategy::statusType runCycleDischargeCommon(uint8_t prog1);
-    Strategy::statusType runCycleChargeCommon(uint8_t prog1, bool mode);
-    uint8_t currentCycle();
-    char currentCycleMode();
-    Strategy::statusType runTheveninChargeBalance( bool immediately);
+    Strategy::statusType runStorage(bool balance);
+    Strategy::statusType runTheveninCharge(int minChargeC, bool immediately = false);
+    Strategy::statusType runDischarge(bool immediately = false);
+    Strategy::statusType runNiXXDischarge(bool immediately = false);
+    Strategy::statusType runTheveninChargeBalance(bool immediately = false);
     Strategy::statusType runBalance();
-    Strategy::statusType runDeltaCharge( bool immediately);
+    Strategy::statusType runDeltaCharge(bool immediately = false);
+
+    Strategy::statusType runDCRestTime();
 };
 
 
