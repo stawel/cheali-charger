@@ -31,6 +31,7 @@
 #include "SerialLog.h"
 #include "eeprom.h"
 #include "cpu.h"
+#include "Serial.h"
 
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
@@ -56,11 +57,13 @@ void loop()
 void setup()
 {
     cpu::init();
+
     hardware::initialize();
     Timer::initialize();
     SMPS::initialize();
     Discharger::initialize();
     AnalogInputs::initialize();
+    Serial::initialize();
 
 #ifdef ENABLE_STACK_INFO
     StackInfo::initialize();

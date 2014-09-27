@@ -26,7 +26,7 @@
 #include "Discharger.h"
 #include "Balancer.h"
 #include "Timer1.h"
-#include "Timer.h"
+#include "Time.h"
 #include "Buzzer.h"
 #include "adc.h"
 
@@ -52,6 +52,7 @@ namespace hardware {
     inline void doInterrupt(){}
 
     void soundInterrupt();
+    inline void setExternalTemperatueOutput(bool enable) {};
 }
 
 

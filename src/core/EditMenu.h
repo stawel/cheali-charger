@@ -25,7 +25,7 @@
 class EditMenu : public StaticMenu, public Blink {
 public:
     EditMenu(const char * const* staticMenu): StaticMenu(staticMenu){}
-    virtual uint8_t printItem(uint8_t item) {}
+    virtual void printItem(uint8_t item) {}
     virtual void editItem(uint8_t item, uint8_t key) {}
     bool runEdit(uint8_t index);
 };

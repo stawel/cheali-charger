@@ -12,7 +12,9 @@ set(ATMEGA32_SOURCE
         Timer1.h
 
         Serial.h
-        Serial.cpp
+
+        HardwareSerial.h
+        HardwareSerial.cpp
 
         StackInfo.cpp
 

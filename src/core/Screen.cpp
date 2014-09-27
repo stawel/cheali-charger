@@ -404,7 +404,7 @@ void Screen::displayMonitorError()
 
 namespace {
     void deltaV() {
-        int x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
+        int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
         lcdPrintSigned(x, 5);
         lcdPrintChar('m');
         lcdPrintChar('V');
@@ -413,7 +413,7 @@ namespace {
     }
     void deltaT() {
         if(settings.externT_) {
-            int x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
+        	int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
             lcdPrintSigned(x*10, 5);
             lcdPrintChar('m');
             lcdPrintChar('C');
@@ -549,6 +549,8 @@ void Screen::display(ScreenType screen)
     case ScreenDeltaTextern:            return displayDeltaTextern();
     case ScreenDeltaFirst:              return displayDeltaFirst();
     case ScreenCycles:                  return displayScreenCycles();
+    default:
+        return;
     }
 }
 

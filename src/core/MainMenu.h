@@ -26,12 +26,12 @@ public:
     MainMenu(const char * const* staticMenu,uint8_t staticMenuItems):
             StaticMenu(staticMenu){size_ += MAX_PROGRAMS;}
 
-    virtual uint8_t printItem(uint8_t i) {
+    virtual void printItem(uint8_t i) {
         uint8_t staticMenuSize = size_ - MAX_PROGRAMS;
         if(i < staticMenuSize) {
-            return StaticMenu::printItem(i);
+            StaticMenu::printItem(i);
         } else {
-            return lcdPrint_E(ProgramData::getName_E(i - staticMenuSize), PROGRAM_DATA_MAX_NAME);
+            lcdPrint_E(ProgramData::getName_E(i - staticMenuSize), PROGRAM_DATA_MAX_NAME);
         }
     }
 };

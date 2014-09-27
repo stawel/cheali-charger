@@ -76,7 +76,6 @@ void Menu::decIndex() {
     else if(begin_ > 0) begin_--;
 }
 
-
 void Menu::display() {
     uint8_t lines = LCD_LINES;
     for(uint8_t i = 0; i < lines; i++) {
@@ -89,6 +88,16 @@ void Menu::display() {
     lcdPrintChar('>');
     lcdSetCursor(LCD_COLUMNS - 1,pos_);
     lcdPrintChar('<');
+    debug();
     render_ = false;
 }
 
+
+void Menu::debug()
+{
+/*    lcdSetCursor0_0();
+    lcdPrintUInt(AnalogInputs::tmp_time_);
+    lcdPrintChar(' ');
+    Utils::delayMicroseconds(50000);
+*/
+}

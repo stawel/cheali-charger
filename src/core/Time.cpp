@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Timer.h"
+#include "Time.h"
 #include "Hardware.h"
 #include "Monitor.h"
 #include "Buzzer.h"
@@ -96,8 +96,8 @@ void Timer::delayIdle(uint16_t ms)
     uint32_t end;
     end = getMiliseconds() + ms;
 
-    while(getMiliseconds() < end) {
+    do {
         doIdle();
-    };
+    } while (getMiliseconds() < end);
 }
 

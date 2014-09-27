@@ -24,7 +24,7 @@
 class SettingsMenu : public EditMenu {
 public:
     SettingsMenu(const Settings &p);
-    virtual uint8_t printItem(uint8_t i);
+    virtual void printItem(uint8_t i);
     virtual void editItem(uint8_t i, uint8_t key);
 
     void run();
@@ -34,10 +34,13 @@ private:
 
     void printUART() const;
     void printUARTSpeed() const;
+    void printUARTinput() const;
+
 #ifdef ENABLE_LCD_BACKLIGHT
     void changeBacklight(int dir);
 #endif
     void changeUART(int dir);
+    void changeExternTemp(int dir);
 
     static void printTemp(AnalogInputs::ValueType t);
     static void printDeltaT(AnalogInputs::ValueType dt);

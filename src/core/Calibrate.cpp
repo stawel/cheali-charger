@@ -174,7 +174,7 @@ public:
         EditMenu(vMenu),
         vNames_(vNames),
         dig_(dig){};
-    virtual uint8_t printItem(uint8_t index) {
+    virtual void printItem(uint8_t index) {
         StaticMenu::printItem(index);
         if(getBlinkIndex() != index) {
             AnalogInputs::Name name = pgm::read(&vNames_[index]);
@@ -211,6 +211,9 @@ void calibrateSimplifiedVb1_pin(AnalogInputs::ValueType real_v)
     p1.y = real_v + AnalogInputs::getRealValue(AnalogInputs::Vb0_pin);
     p2.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vb2_pin);
     p2.y = p1.y + AnalogInputs::getRealValue(AnalogInputs::Vb2);
+    //TODO: ??? Vb0_pin
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb0_pin, 1, p1);
+
     AnalogInputs::setCalibrationPoint(AnalogInputs::Vb1_pin, 1, p1);
     AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, 1, p2);
 }
@@ -339,7 +342,7 @@ public:
         AnalogInputs::getCalibrationPoint(p, cName_, point_);
         value_ = p.x;
     };
-    virtual uint8_t printItem(uint8_t index) {
+    virtual void printItem(uint8_t index) {
         //TODO: hack, should be improved ... Gyuri: R138 burned.
         if(!AnalogInputs::isConnected(AnalogInputs::Vout)) {
             Screen::displayStrings(PSTR(" Connect Battery"),NULL);
@@ -433,7 +436,7 @@ class TempMenu: public EditMenu {
 public:
     AnalogInputs::Name tName_;
     TempMenu(AnalogInputs::Name name) : EditMenu(tempMenu), tName_(name){};
-    virtual uint8_t printItem(uint8_t index) {
+    virtual void printItem(uint8_t index) {
         StaticMenu::printItem(index);
         if(getBlinkIndex() != index) {
             if(index == 0) {

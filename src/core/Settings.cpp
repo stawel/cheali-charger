@@ -62,7 +62,9 @@ const Settings defaultSettings PROGMEM = {
         SETTINGS_FORCE_BALANCE_PORT_DEFAULT,            //forceBalancePort_
         ANALOG_VOLT(0.008), //balancerError_
         Settings::Disabled, //UART_ - disabled
-        0,                   //9600
+        3,                   //57600
+        Settings::Software, //UARTinput_
+
         0,                   //calibratedState_
         0,                   //SMPS_Upperbound_Value_
         0                    //DISCHARGER_Upperbound_Value_
@@ -110,6 +112,7 @@ void Settings::apply() {
     hardware::setLCDBacklight(backlight_);
 #endif
     Monitor::update();
+    hardware::setExternalTemperatueOutput(externT_);
 }
 
 

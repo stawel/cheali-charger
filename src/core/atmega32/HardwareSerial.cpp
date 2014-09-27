@@ -40,7 +40,7 @@
 // this is so I can support Attiny series and any other chip without a uart
 #if defined(UBRRH) || defined(UBRR0H) || defined(UBRR1H) || defined(UBRR2H) || defined(UBRR3H)
 
-#include "Serial.h"
+#include "HardwareSerial.h"
 
 /*
  * on ATmega8, the uart and its bits are not numbered, so there is no "TXC0"
@@ -202,7 +202,7 @@ inline void store_char(unsigned char c, ring_buffer *buffer)
 void serialEventRun(void)
 {
 #ifdef serialEvent_implemented
-  if (Serial.available()) serialEvent();
+  if (Serial0.available()) serialEvent();
 #endif
 #ifdef serialEvent1_implemented
   if (Serial1.available()) serialEvent1();
@@ -507,9 +507,9 @@ HardwareSerial::operator bool() {
 // Preinstantiate Objects //////////////////////////////////////////////////////
 
 #if defined(UBRRH) && defined(UBRRL)
-  HardwareSerial Serial(&rx_buffer, &tx_buffer, &UBRRH, &UBRRL, &UCSRA, &UCSRB, &UCSRC, &UDR, RXEN, TXEN, RXCIE, UDRIE, U2X);
+  HardwareSerial Serial0(&rx_buffer, &tx_buffer, &UBRRH, &UBRRL, &UCSRA, &UCSRB, &UCSRC, &UDR, RXEN, TXEN, RXCIE, UDRIE, U2X);
 #elif defined(UBRR0H) && defined(UBRR0L)
-  HardwareSerial Serial(&rx_buffer, &tx_buffer, &UBRR0H, &UBRR0L, &UCSR0A, &UCSR0B, &UCSR0C, &UDR0, RXEN0, TXEN0, RXCIE0, UDRIE0, U2X0);
+  HardwareSerial Serial0(&rx_buffer, &tx_buffer, &UBRR0H, &UBRR0L, &UCSR0A, &UCSR0B, &UCSR0C, &UDR0, RXEN0, TXEN0, RXCIE0, UDRIE0, U2X0);
 #elif defined(USBCON)
   // do nothing - Serial object and buffers are initialized in CDC code
 #else

@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2014 Paweł Stawicki. All right reserved.
+    Copyright (C) 2013  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,21 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#ifndef ANALOG_INPUTS_ADC_H_
+#define ANALOG_INPUTS_ADC_H_
 
-#include "Utils.h"
-
-namespace Utils
+namespace AnalogInputsADC
 {
-    //TODO: implement, used by LCD
-    void delayTenMicroseconds(uint16_t value)
-    {
-    }
+    void initialize();
+};
 
-    void delayMicroseconds(uint16_t value)
-    {
-    }
-
-    void delayMilliseconds(uint16_t value)
-    {
-    }
-}
+#endif /* ANALOG_INPUTS_ADC_H_ */

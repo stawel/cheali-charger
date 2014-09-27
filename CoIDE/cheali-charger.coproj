@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Project version="2G - 1.7.6" name="cheali-charger">
+  <Target name="cheali-charger" isCurrent="1">
+    <Device manufacturerId="8" manufacturerName="Nuvoton" chipId="225" chipName="M0516LBN" boardId="" boardName=""/>
+    <BuildOption>
+      <Compile>
+        <Option name="OptimizationLevel" value="4"/>
+        <Option name="UseFPU" value="0"/>
+        <Option name="UserEditCompiler" value="-fno-rtti;  -fno-exceptions; -std=c11"/>
+        <Option name="SupportCPlusplus" value="1"/>
+        <Includepaths>
+          <Includepath path="."/>
+        </Includepaths>
+        <DefinedSymbols>
+          <Define name="M0516LBN"/>
+          <Define name="SUPPORT_CPLUSPLUS"/>
+        </DefinedSymbols>
+      </Compile>
+      <Link useDefault="0">
+        <Option name="DiscardUnusedSection" value="0"/>
+        <Option name="UserEditLinkder" value=""/>
+        <Option name="UseMemoryLayout" value="0"/>
+        <Option name="nostartfiles" value="0"/>
+        <Option name="LTO" value="0"/>
+        <Option name="IsNewStartupCode" value="1"/>
+        <Option name="Library" value="Not use C Library"/>
+        <Option name="UserEditLinker" value="--entry=main; "/>
+        <LinkedLibraries/>
+        <MemoryAreas debugInFlashNotRAM="1">
+          <Memory name="IROM1" type="ReadOnly" size="0x00010000" startValue="0x00000000"/>
+          <Memory name="IRAM1" type="ReadWrite" size="0x00001000" startValue="0x20000000"/>
+          <Memory name="IROM2" type="ReadOnly" size="0x00020000" startValue="0x0001f000"/>
+          <Memory name="IRAM2" type="ReadWrite" size="" startValue=""/>
+        </MemoryAreas>
+        <LocateLinkFile path="./arm-gcc-link.ld" type="0"/>
+      </Link>
+      <Output>
+        <Option name="OutputFileType" value="0"/>
+        <Option name="Path" value="./"/>
+        <Option name="Name" value="cheali-charger"/>
+        <Option name="HEX" value="1"/>
+        <Option name="BIN" value="1"/>
+      </Output>
+      <User>
+        <UserRun name="Run#1" type="Before" checked="0" value=""/>
+        <UserRun name="Run#1" type="After" checked="0" value=""/>
+      </User>
+    </BuildOption>
+    <DebugOption>
+      <Option name="org.coocox.codebugger.gdbjtag.core.adapter" value="Nu-Link"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.debugMode" value="SWD"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.clockDiv" value="2M"/>
+      <Option name="org.coocox.codebugger.gdbjtag.corerunToMain" value="1"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.jlinkgdbserver" value=""/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.userDefineGDBScript" value=""/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.targetEndianess" value="0"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.jlinkResetMode" value="Type 0: Normal"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.resetMode" value="SYSRESETREQ"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.ifSemihost" value="0"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.ifCacheRom" value="1"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.ipAddress" value="127.0.0.1"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.portNumber" value="2009"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.autoDownload" value="1"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.verify" value="1"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.downloadFuction" value="Erase Effected"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.defaultAlgorithm" value="M051_64.elf"/>
+      <Option name="org.coocox.codebugger.gdbjtag.coredebugInRamInitCommands" value="cd S:/cheali-charger/CoIDE/cheali-charger/Debug/bin restore cheali-charger.elf set {unsigned int*}0xE000ED08 = 0x20000000 set $sp = {unsigned int*}0x20000000 set $pc = {unsigned int*}0x20000004 "/>
+    </DebugOption>
+    <ExcludeFile/>
+  </Target>
+  <Components path="./">
+    <Component id="46" name="M0 Cmsis Core" path="" type="2"/>
+    <Component id="364" name="CMSIS Boot" path="" type="2"/>
+    <Component id="365" name="System Definitions" path="" type="2"/>
+    <Component id="366" name="SYS" path="" type="2"/>
+    <Component id="367" name="GPIO" path="" type="2"/>
+    <Component id="369" name="ADC" path="" type="2"/>
+    <Component id="371" name="FMC" path="" type="2"/>
+    <Component id="375" name="TIMER" path="" type="2"/>
+  </Components>
+  <Files>
+    <File name="core/Screen.cpp" path="../src/core/Screen.cpp" type="1"/>
+    <File name="core/ARM/CMSIS/CMSIS/core_cm0.h" path="../src/core/ARM-Cortex-M0/CMSIS/CMSIS/Include/core_cm0.h" type="1"/>
+    <File name="core/SettingsMenu.h" path="../src/core/SettingsMenu.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/wdt.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/wdt.h" type="1"/>
+    <File name="core/ARM/irq_priority.h" path="../src/core/ARM-Cortex-M0/irq_priority.h" type="1"/>
+    <File name="core/ARM/CMSIS/Device/system_M051Series.h" path="../src/core/ARM-Cortex-M0/CMSIS/Device/Nuvoton/M051Series/Include/system_M051Series.h" type="1"/>
+    <File name="hardware/defaultCalibration.cpp" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/defaultCalibration.cpp" type="1"/>
+    <File name="core/Screen.h" path="../src/core/Screen.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/uart.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/uart.h" type="1"/>
+    <File name="core/eeprom.cpp" path="../src/core/eeprom.cpp" type="1"/>
+    <File name="core/AnalogInputsPrivate.h" path="../src/core/AnalogInputsPrivate.h" type="1"/>
+    <File name="core/ARM/memory.h" path="../src/core/ARM-Cortex-M0/memory.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/src/sys.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/sys.c" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/src/timer.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/timer.c" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/src/gpio.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/gpio.c" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/ebi.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/ebi.h" type="1"/>
+    <File name="core/ARM/Serial.cpp" path="../src/core/ARM-Cortex-M0/Serial.cpp" type="1"/>
+    <File name="hardware/Hardware.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/Hardware.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver" path="" type="2"/>
+    <File name="hardware/outputPWM.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/outputPWM.h" type="1"/>
+    <File name="core/StorageStrategy.h" path="../src/core/StorageStrategy.h" type="1"/>
+    <File name="core/Options.cpp" path="../src/core/Options.cpp" type="1"/>
+    <File name="core/LcdPrint.cpp" path="../src/core/LcdPrint.cpp" type="1"/>
+    <File name="other.c" path="other.c" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/gpio.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/gpio.h" type="1"/>
+    <File name="core/ARM/Serial.h" path="../src/core/ARM-Cortex-M0/Serial.h" type="1"/>
+    <File name="core/Monitor.h" path="../src/core/Monitor.h" type="1"/>
+    <File name="core/ARM/CMSIS/CMSIS" path="" type="2"/>
+    <File name="core/PolarityCheck.cpp" path="../src/core/PolarityCheck.cpp" type="1"/>
+    <File name="core/ARM/TxHardSerial.cpp" path="../src/core/ARM-Cortex-M0/TxHardSerial.cpp" type="1"/>
+    <File name="hardware/AnalogInputsADC.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/AnalogInputsADC.h" type="1"/>
+    <File name="core/SimpleDischargeStrategy.h" path="../src/core/SimpleDischargeStrategy.h" type="1"/>
+    <File name="core/EditName.cpp" path="../src/core/EditName.cpp" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/fmc.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/fmc.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/pwm.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/pwm.h" type="1"/>
+    <File name="core/PolarityCheck.h" path="../src/core/PolarityCheck.h" type="1"/>
+    <File name="core/SerialLog.cpp" path="../src/core/SerialLog.cpp" type="1"/>
+    <File name="core/ARM/CMSIS" path="" type="2"/>
+    <File name="Version.h" path="Version.h" type="1"/>
+    <File name="core/Monitor.cpp" path="../src/core/Monitor.cpp" type="1"/>
+    <File name="core/Buzzer.h" path="../src/core/Buzzer.h" type="1"/>
+    <File name="core/EditName.h" path="../src/core/EditName.h" type="1"/>
+    <File name="core/SMPS.h" path="../src/core/SMPS.h" type="1"/>
+    <File name="core/ARM/CMSIS/CMSIS/core_cmInstr.h" path="../src/core/ARM-Cortex-M0/CMSIS/CMSIS/Include/core_cmInstr.h" type="1"/>
+    <File name="core/DummyLiquidCrystal.h" path="../src/core/DummyLiquidCrystal.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/src/fmc.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/fmc.c" type="1"/>
+    <File name="core/SMPS.cpp" path="../src/core/SMPS.cpp" type="1"/>
+    <File name="core/TheveninMethod.cpp" path="../src/core/TheveninMethod.cpp" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/src" path="" type="2"/>
+    <File name="core/ARM/TxSoftSerial.h" path="../src/core/ARM-Cortex-M0/TxSoftSerial.h" type="1"/>
+    <File name="core/Keyboard.h" path="../src/core/Keyboard.h" type="1"/>
+    <File name="core/Program.cpp" path="../src/core/Program.cpp" type="1"/>
+    <File name="core/Blink.cpp" path="../src/core/Blink.cpp" type="1"/>
+    <File name="hardware/HardwareConfig.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/HardwareConfig.h" type="1"/>
+    <File name="core/Time.cpp" path="../src/core/Time.cpp" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/adc.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/adc.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/clk.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/clk.h" type="1"/>
+    <File name="core/Balancer.h" path="../src/core/Balancer.h" type="1"/>
+    <File name="core/ProgramData.h" path="../src/core/ProgramData.h" type="1"/>
+    <File name="hardware/imaxB6.cpp" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/imaxB6.cpp" type="1"/>
+    <File name="core/StartInfoStrategy.h" path="../src/core/StartInfoStrategy.h" type="1"/>
+    <File name="core/StorageStrategy.cpp" path="../src/core/StorageStrategy.cpp" type="1"/>
+    <File name="core/AnalogInputs.h" path="../src/core/AnalogInputs.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/wwdt.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/wwdt.h" type="1"/>
+    <File name="core/ARM/CMSIS/Device/system_M051Series.c" path="../src/core/ARM-Cortex-M0/CMSIS/Device/Nuvoton/M051Series/Source/system_M051Series.c" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/hdiv.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/hdiv.h" type="1"/>
+    <File name="hardware/SMPS_PID.cpp" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/SMPS_PID.cpp" type="1"/>
+    <File name="core/Calibrate.cpp" path="../src/core/Calibrate.cpp" type="1"/>
+    <File name="core/StackInfo.h" path="../src/core/StackInfo.h" type="1"/>
+    <File name="core/Program.h" path="../src/core/Program.h" type="1"/>
+    <File name="hardware/imaxB6-pins.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/imaxB6-pins.h" type="1"/>
+    <File name="core/DeltaChargeStrategy.h" path="../src/core/DeltaChargeStrategy.h" type="1"/>
+    <File name="core/Menu.h" path="../src/core/Menu.h" type="1"/>
+    <File name="core/LiquidCrystal.cpp" path="../src/core/LiquidCrystal.cpp" type="1"/>
+    <File name="core/Keyboard.cpp" path="../src/core/Keyboard.cpp" type="1"/>
+    <File name="core/ARM/TxSoftSerial.cpp" path="../src/core/ARM-Cortex-M0/TxSoftSerial.cpp" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/src/uart.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/uart.c" type="1"/>
+    <File name="core/StaticMenu.cpp" path="../src/core/StaticMenu.cpp" type="1"/>
+    <File name="core/Buzzer.cpp" path="../src/core/Buzzer.cpp" type="1"/>
+    <File name="core/ARM/CMSIS/Device" path="" type="2"/>
+    <File name="core/Thevenin.cpp" path="../src/core/Thevenin.cpp" type="1"/>
+    <File name="core/ProgramData.cpp" path="../src/core/ProgramData.cpp" type="1"/>
+    <File name="core/ProgramDataMenu.h" path="../src/core/ProgramDataMenu.h" type="1"/>
+    <File name="core/Settings.h" path="../src/core/Settings.h" type="1"/>
+    <File name="core/LcdPrint.h" path="../src/core/LcdPrint.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/src/adc.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/adc.c" type="1"/>
+    <File name="core/Time.h" path="../src/core/Time.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/spi.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/spi.h" type="1"/>
+    <File name="core" path="" type="2"/>
+    <File name="core/ARM/CMSIS/StdDriver/src/pwm.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/pwm.c" type="1"/>
+    <File name="core/ARM/CMSIS/CMSIS/core_cmFunc.h" path="../src/core/ARM-Cortex-M0/CMSIS/CMSIS/Include/core_cmFunc.h" type="1"/>
+    <File name="core/SimpleChargeStrategy.cpp" path="../src/core/SimpleChargeStrategy.cpp" type="1"/>
+    <File name="core/Utils.h" path="../src/core/Utils.h" type="1"/>
+    <File name="core/Version.cpp" path="../src/core/Version.cpp" type="1"/>
+    <File name="core/ARM/startup_M051Series.c" path="../src/core/ARM-Cortex-M0/startup_M051Series.c" type="1"/>
+    <File name="core/StaticMenu.h" path="../src/core/StaticMenu.h" type="1"/>
+    <File name="core/Blink.h" path="../src/core/Blink.h" type="1"/>
+    <File name="core/SimpleChargeStrategy.h" path="../src/core/SimpleChargeStrategy.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/src/clk.c" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/src/clk.c" type="1"/>
+    <File name="core/AnalogInputsTypes.h" path="../src/core/AnalogInputsTypes.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/timer.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/timer.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/sys.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/sys.h" type="1"/>
+    <File name="core/eeprom.h" path="../src/core/eeprom.h" type="1"/>
+    <File name="hardware" path="" type="2"/>
+    <File name="core/TheveninDischargeStrategy.h" path="../src/core/TheveninDischargeStrategy.h" type="1"/>
+    <File name="core/EditMenu.cpp" path="../src/core/EditMenu.cpp" type="1"/>
+    <File name="core/ProgramDataMenu.cpp" path="../src/core/ProgramDataMenu.cpp" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc" path="" type="2"/>
+    <File name="core/Calibrate.h" path="../src/core/Calibrate.h" type="1"/>
+    <File name="core/ARM/IO.h" path="../src/core/ARM-Cortex-M0/IO.h" type="1"/>
+    <File name="hardware/HardwareConfigGeneric.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/HardwareConfigGeneric.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/acmp.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/acmp.h" type="1"/>
+    <File name="core/Options.h" path="../src/core/Options.h" type="1"/>
+    <File name="core/Discharger.h" path="../src/core/Discharger.h" type="1"/>
+    <File name="core/MainMenu.h" path="../src/core/MainMenu.h" type="1"/>
+    <File name="core/TheveninDischargeStrategy.cpp" path="../src/core/TheveninDischargeStrategy.cpp" type="1"/>
+    <File name="core/TheveninChargeStrategy.h" path="../src/core/TheveninChargeStrategy.h" type="1"/>
+    <File name="core/SerialLog.h" path="../src/core/SerialLog.h" type="1"/>
+    <File name="core/ARM/CMSIS/Device/M051Series.h" path="../src/core/ARM-Cortex-M0/CMSIS/Device/Nuvoton/M051Series/Include/M051Series.h" type="1"/>
+    <File name="core/ARM/memory.cpp" path="../src/core/ARM-Cortex-M0/memory.cpp" type="1"/>
+    <File name="core/ChealiCharger2.h" path="../src/core/ChealiCharger2.h" type="1"/>
+    <File name="core/LiquidCrystal.h" path="../src/core/LiquidCrystal.h" type="1"/>
+    <File name="core/ARM/TxHardSerial.h" path="../src/core/ARM-Cortex-M0/TxHardSerial.h" type="1"/>
+    <File name="core/Utils.cpp" path="../src/core/Utils.cpp" type="1"/>
+    <File name="core/ARM/UtilsD.cpp" path="../src/core/ARM-Cortex-M0/UtilsD.cpp" type="1"/>
+    <File name="hardware/outputPWM.cpp" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/outputPWM.cpp" type="1"/>
+    <File name="core/Strategy.h" path="../src/core/Strategy.h" type="1"/>
+    <File name="core/Strategy.cpp" path="../src/core/Strategy.cpp" type="1"/>
+    <File name="hardware/SMPS_PID.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/SMPS_PID.h" type="1"/>
+    <File name="core/SettingsMenu.cpp" path="../src/core/SettingsMenu.cpp" type="1"/>
+    <File name="core/Menu.cpp" path="../src/core/Menu.cpp" type="1"/>
+    <File name="core/Thevenin.h" path="../src/core/Thevenin.h" type="1"/>
+    <File name="core/ARM/Stimer.h" path="../src/core/ARM-Cortex-M0/Stimer.h" type="1"/>
+    <File name="core/StartInfoStrategy.cpp" path="../src/core/StartInfoStrategy.cpp" type="1"/>
+    <File name="core/EditMenu.h" path="../src/core/EditMenu.h" type="1"/>
+    <File name="core/Balancer.cpp" path="../src/core/Balancer.cpp" type="1"/>
+    <File name="core/AnalogInputs.cpp" path="../src/core/AnalogInputs.cpp" type="1"/>
+    <File name="core/DeltaChargeStrategy.cpp" path="../src/core/DeltaChargeStrategy.cpp" type="1"/>
+    <File name="core/ARM" path="" type="2"/>
+    <File name="core/ARM/cpu.cpp" path="../src/core/ARM-Cortex-M0/cpu.cpp" type="1"/>
+    <File name="hardware/imaxB6.h" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/imaxB6.h" type="1"/>
+    <File name="core/TheveninChargeStrategy.cpp" path="../src/core/TheveninChargeStrategy.cpp" type="1"/>
+    <File name="hardware/AnalogInputsADC.cpp" path="../src/hardware/imaxB6-clone-ARM-Cortex-M0/AnalogInputsADC.cpp" type="1"/>
+    <File name="core/Settings.cpp" path="../src/core/Settings.cpp" type="1"/>
+    <File name="core/ARM/atomic.h" path="../src/core/ARM-Cortex-M0/atomic.h" type="1"/>
+    <File name="core/TheveninMethod.h" path="../src/core/TheveninMethod.h" type="1"/>
+    <File name="core/ARM/CMSIS/StdDriver/inc/i2c.h" path="../src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/i2c.h" type="1"/>
+    <File name="core/Discharger.cpp" path="../src/core/Discharger.cpp" type="1"/>
+    <File name="core/ARM/Timer0.cpp" path="../src/core/ARM-Cortex-M0/Timer0.cpp" type="1"/>
+    <File name="core/ARM/cpu.h" path="../src/core/ARM-Cortex-M0/cpu.h" type="1"/>
+    <File name="core/ChealiCharger2.cpp" path="../src/core/ChealiCharger2.cpp" type="1"/>
+    <File name="core/SimpleDischargeStrategy.cpp" path="../src/core/SimpleDischargeStrategy.cpp" type="1"/>
+  </Files>
+</Project>

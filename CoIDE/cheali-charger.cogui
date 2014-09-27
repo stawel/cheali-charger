@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench version="2.0">
+<workbenchAdvisor/>
+<window>
+<fastViewData fastViewLocation="1024"/>
+<perspectiveBar/>
+<page focus="true" label="Workspace - CooCox CoBuilder">
+<editors>
+<editorArea activeWorkbook="DefaultEditorWorkbook">
+<info part="DefaultEditorWorkbook">
+<folder appearance="1" expanded="2">
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+<part id="1"/>
+<part id="2"/>
+<part id="3"/>
+<part id="4"/>
+<part id="5"/>
+<part id="6"/>
+<part id="7"/>
+<part id="8"/>
+<part id="9"/>
+<part id="10"/>
+<part id="11"/>
+<part id="12"/>
+<part id="13"/>
+<part id="14"/>
+<part id="15"/>
+</presentation>
+</folder>
+</info>
+</editorArea>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="AnalogInputs.cpp" partName="AnalogInputs.cpp" path="C:/Users/stawel/git/cheali-charger/src/core/AnalogInputs.cpp" title="AnalogInputs.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/core/AnalogInputs.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/AnalogInputs.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="9613" selectionTopPixel="6225"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="AnalogInputsADC.cpp" partName="AnalogInputsADC.cpp" path="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/AnalogInputsADC.cpp" title="AnalogInputsADC.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/AnalogInputsADC.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/AnalogInputsADC.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3423" selectionTopPixel="1245"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="AnalogInputsADC.h" partName="AnalogInputsADC.h" path="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/AnalogInputsADC.h" title="AnalogInputsADC.h" tooltip="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/AnalogInputsADC.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/AnalogInputsADC.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="Calibrate.cpp" partName="Calibrate.cpp" path="C:/Users/stawel/git/cheali-charger/src/core/Calibrate.cpp" title="Calibrate.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/core/Calibrate.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/Calibrate.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="11000" selectionTopPixel="5040"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="AnalogInputs.h" partName="AnalogInputs.h" path="C:/Users/stawel/git/cheali-charger/src/core/AnalogInputs.h" title="AnalogInputs.h" tooltip="C:/Users/stawel/git/cheali-charger/src/core/AnalogInputs.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/AnalogInputs.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3938" selectionTopPixel="2160"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="Discharger.cpp" partName="Discharger.cpp" path="C:/Users/stawel/git/cheali-charger/src/core/Discharger.cpp" title="Discharger.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/core/Discharger.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/Discharger.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="16" selectionOffset="2099" selectionTopPixel="1020"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="Time.h" partName="Time.h" path="C:/Users/stawel/git/cheali-charger/src/core/Time.h" title="Time.h" tooltip="C:/Users/stawel/git/cheali-charger/src/core/Time.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/Time.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="9" selectionOffset="1217" selectionTopPixel="210"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="Time.cpp" partName="Time.cpp" path="C:/Users/stawel/git/cheali-charger/src/core/Time.cpp" title="Time.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/core/Time.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/Time.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2349" selectionTopPixel="1048"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="UtilsD.cpp" partName="UtilsD.cpp" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/UtilsD.cpp" title="UtilsD.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/UtilsD.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ARM/UtilsD.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1155" selectionTopPixel="283"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="Keyboard.cpp" partName="Keyboard.cpp" path="C:/Users/stawel/git/cheali-charger/src/core/Keyboard.cpp" title="Keyboard.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/core/Keyboard.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/Keyboard.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2196" selectionTopPixel="1080"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="Menu.cpp" partName="Menu.cpp" path="C:/Users/stawel/git/cheali-charger/src/core/Menu.cpp" title="Menu.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/core/Menu.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/Menu.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2549" selectionTopPixel="1153"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="Menu.h" partName="Menu.h" path="C:/Users/stawel/git/cheali-charger/src/core/Menu.h" title="Menu.h" tooltip="C:/Users/stawel/git/cheali-charger/src/core/Menu.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/Menu.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1361" selectionTopPixel="388"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="adc.h" partName="adc.h" path="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/adc.h" title="adc.h" tooltip="C:/Users/stawel/git/cheali-charger/src/core/ARM-Cortex-M0/CMSIS/StdDriver/inc/adc.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/adc.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="13" selectionOffset="18132" selectionTopPixel="4648"/>
+</editor>
+<editor id="org.coocox.builder.ui.editors.ConfigEditor" name="" partName="Configuration" title="Configuration" tooltip="" workbook="DefaultEditorWorkbook">
+<input factoryID="org.coocox.builder.ui.persistent.PersistentElementFactory">
+<org.coocox.builder.ui.editors.ConfigEditor horizontalPosition="0" subTagIndex="1" verticalPosition="0"/>
+</input>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="HardwareConfigGeneric.h" partName="HardwareConfigGeneric.h" path="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/HardwareConfigGeneric.h" title="HardwareConfigGeneric.h" tooltip="C:/Users/stawel/git/cheali-charger/src/hardware/imaxB6-clone-ARM-Cortex-M0/HardwareConfigGeneric.h" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/HardwareConfigGeneric.h"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1822" selectionTopPixel="448"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="PolarityCheck.cpp" partName="PolarityCheck.cpp" path="C:/Users/stawel/git/cheali-charger/src/core/PolarityCheck.cpp" title="PolarityCheck.cpp" tooltip="C:/Users/stawel/git/cheali-charger/src/core/PolarityCheck.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/core/PolarityCheck.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1176" selectionTopPixel="253"/>
+</editor>
+</editors>
+<views>
+<view id="org.coocox.builder.ui.views.ProjectView" partName="Project">
+<viewState CommonNavigator.LINKING_ENABLED="0" horizontalPosition="0" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0" verticalPosition="12">
+<expanded>
+<element path="/cheali-charger"/>
+<element path="/cheali-charger/core"/>
+</expanded>
+<selection>
+<element path="/cheali-charger/core/Calibrate.cpp"/>
+</selection>
+</viewState>
+</view>
+<view id="org.coocox.component.ui.ComponentView" partName="Components">
+<viewState/>
+</view>
+<view id="org.eclipse.debug.ui.RegisterView" partName="Registers">
+<viewState/>
+</view>
+<view id="org.coocox.codebugger.trace.ui.traceview" partName="Semihosting">
+<viewState/>
+</view>
+<view id="org.eclipse.debug.ui.DebugView" partName="Debug">
+<viewState/>
+</view>
+<view id="org.eclipse.cdt.ui.callHierarchy" partName="Call Hierarchy">
+<viewState showFilesInLabels="false" variableFilter="false"/>
+</view>
+<view id="org.eclipse.ui.console.ConsoleView" partName="Console">
+<viewState/>
+</view>
+<view id="org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser" partName="Memory Browser">
+<viewState>
+<MemoryBroser ComboItemsValue="0x20000000;0x20000f00;0x6df0;" FocuseTabIndex="0" TabsValue="" TextValue="0x20000fdc" horizontalPosition="0" verticalPosition="0"/>
+</viewState>
+</view>
+<view id="org.eclipse.debug.ui.VariableView" partName="Variables">
+<viewState/>
+</view>
+</views>
+<perspectives activePart="org.eclipse.cdt.ui.editor.CEditor" activePerspective="org.coocox.builder.perspective.CoBuilder">
+<perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
+<descriptor class="org.coocox.builder.ui.PerspectiveCoBuilder" id="org.coocox.builder.perspective.CoBuilder" label="CooCox CoBuilder"/>
+<alwaysOnActionSet id="org.coocox.component.ui.actionSet"/>
+<alwaysOnActionSet id="org.coocox.welcome.ui.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.search.searchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.annotationNavigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.navigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.convertLineDelimitersTo"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.keyBindings"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.openFiles"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.breakpointActionSet"/>
+<alwaysOnActionSet id="org.coocox.userspace.actionSet"/>
+<hide_menu_item_id id="org.coocox.codebugger.configuration.showMemoryAction"/>
+<hide_menu_item_id id="org.eclipse.jdt.ui.refactoring.menu"/>
+<hide_menu_item_id id="org.coocox.codebugger.configuration.ShowDisassemblyAction"/>
+<hide_menu_item_id id="org.coocox.codebugger.configuration.showExpressionsAction"/>
+<hide_menu_item_id id="org.coocox.codebugger.configuration.showDebugAction"/>
+<hide_menu_item_id id="org.coocox.codebugger.configuration.showConsoleAction"/>
+<hide_menu_item_id id="org.eclipse.cdt.debug.internal.ui.actions.ToggleInstructionStepModeAction"/>
+<hide_menu_item_id id="org.eclipse.jdt.ui.source.menu"/>
+<hide_menu_item_id id="org.coocox.codebugger.configuration.showMemoryBrowserAction"/>
+<hide_menu_item_id id="org.coocox.codebugger.configuration.showVariablesAction"/>
+<hide_menu_item_id id="org.coocox.builder.ui.openProjectExplorerAction"/>
+<hide_menu_item_id id="org.coocox.codebugger.trace.actions.ShowTraceControlAction"/>
+<hide_menu_item_id id="org.eclipse.debug.ui.commands.TerminateAndRelaunch"/>
+<hide_menu_item_id id="org.coocox.codebugger.configuration.showRegistersAction"/>
+<hide_toolbar_item_id id="org.eclipse.cdt.debug.internal.ui.actions.ToggleInstructionStepModeAction"/>
+<hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
+<hide_toolbar_item_id id="org.eclipse.debug.ui.commands.TerminateAndRelaunch"/>
+<view id="org.coocox.component.ui.ComponentView"/>
+<view id="org.coocox.builder.ui.views.ProjectView"/>
+<view id="org.eclipse.ui.console.ConsoleView"/>
+<view id="org.eclipse.cdt.ui.callHierarchy"/>
+<fastViewBars/>
+<layout>
+<mainWindow>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@139fc08">
+<folder activePageID="org.coocox.component.ui.ComponentView" appearance="2" expanded="2">
+<page content="org.coocox.component.ui.ComponentView" label="Components"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="stickyFolderRight" ratio="0.7496318" ratioLeft="1018" ratioRight="340" relationship="2" relative="org.eclipse.ui.internal.ViewStack@139fc08">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
+</folder>
+</info>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@857381" ratio="0.7" ratioLeft="441" ratioRight="189" relationship="4" relative="org.eclipse.ui.internal.ViewStack@139fc08">
+<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
+<page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
+<page content="org.eclipse.cdt.ui.callHierarchy" label="Call Hierarchy"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+<part id="1"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@1c00693" ratio="0.24575646" ratioLeft="333" ratioRight="1022" relationship="2" relative="org.eclipse.ui.internal.ViewStack@139fc08">
+<folder appearance="2" expanded="2">
+<page content="org.coocox.builder.ui.exampleView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@536b4e" ratio="0.7198113" ratioLeft="763" ratioRight="297" relationship="2" relative="org.eclipse.ui.internal.ViewStack@1c00693">
+<folder appearance="2" expanded="2">
+<page content="org.coocox.component.ui.Help" label="LabelNotFound"/>
+<page content="org.eclipse.debug.ui.BreakpointView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.views.ContentOutline" label="LabelNotFound"/>
+<page content="org.coocox.coassistant.view.CoAssistantView" label="LabelNotFound"/>
+<page content="org.coocox.builder.ui.MoreExampleView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+<info part="org.eclipse.ui.editorss" ratio="0.35172415" ratioLeft="153" ratioRight="282" relationship="4" relative="org.eclipse.ui.internal.ViewStack@1c00693"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@1d174ec" ratio="0.36984128" ratioLeft="233" ratioRight="397" relationship="4" relative="org.eclipse.ui.internal.ViewStack@139fc08">
+<folder activePageID="org.coocox.builder.ui.views.ProjectView" appearance="2" expanded="2">
+<page content="org.coocox.builder.ui.views.ProjectView" label="Project"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+</presentation>
+</folder>
+</info>
+</mainWindow>
+</layout>
+</perspective>
+<perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
+<descriptor class="org.coocox.codebugger.configuration.ui.Perspective" id="org.coocox.codebugger.configuration.perspective" label="CoDebugger"/>
+<alwaysOnActionSet id="org.coocox.component.ui.actionSet"/>
+<alwaysOnActionSet id="org.coocox.welcome.ui.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.search.searchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.annotationNavigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.navigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.convertLineDelimitersTo"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.keyBindings"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.openFiles"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.breakpointActionSet"/>
+<alwaysOnActionSet id="org.eclipse.debug.ui.debugActionSet"/>
+<hide_menu_item_id id="org.coocox.builder.ui.newFolder"/>
+<hide_menu_item_id id="org.coocox.welcome.ui.action.repository"/>
+<hide_menu_item_id id="org.eclipse.ui.file.save"/>
+<hide_menu_item_id id="org.eclipse.jdt.ui.refactoring.menu"/>
+<hide_menu_item_id id="org.eclipse.ui.file.saveAll"/>
+<hide_menu_item_id id="org.coocox.builder.ui.rebuild"/>
+<hide_menu_item_id id="org.coocox.builder.ui.openFile"/>
+<hide_menu_item_id id="org.eclipse.ui.file.saveAs"/>
+<hide_menu_item_id id="org.coocox.builder.rcp.projectMenu"/>
+<hide_menu_item_id id="org.coocox.builder.rcp.flashMenu"/>
+<hide_menu_item_id id="org.coocox.builder.ui.debug"/>
+<hide_menu_item_id id="org.coocox.builder.ui.showHelpViewAction"/>
+<hide_menu_item_id id="org.coocox.builder.ui.newFile"/>
+<hide_menu_item_id id="org.coocox.builder.ui.actions.ConfigurationAction"/>
+<hide_menu_item_id id="org.eclipse.jdt.ui.source.menu"/>
+<hide_menu_item_id id="org.coocox.builder.ui.build"/>
+<hide_menu_item_id id="org.coocox.welcome.ui.action.welcome"/>
+<hide_menu_item_id id="org.coocox.component.ui.ShowRepositoryAction"/>
+<hide_toolbar_item_id id="org.coocox.builder.ui.actions.TargetManageAction"/>
+<hide_toolbar_item_id id="org.coocox.builder.ui.newProject"/>
+<hide_toolbar_item_id id="org.coocox.welcome.ui.action.repository"/>
+<hide_toolbar_item_id id="org.eclipse.ui.file.save"/>
+<hide_toolbar_item_id id="org.coocox.builder.ui.rebuild"/>
+<hide_toolbar_item_id id="org.coocox.codebugger.configuration.coideFlashEraseAction"/>
+<hide_toolbar_item_id id="org.coocox.builder.ui.debug"/>
+<hide_toolbar_item_id id="org.coocox.builder.ui.newFile"/>
+<hide_toolbar_item_id id="org.coocox.builder.ui.actions.ConfigurationAction"/>
+<hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
+<hide_toolbar_item_id id="org.coocox.builder.ui.build"/>
+<hide_toolbar_item_id id="org.coocox.welcome.ui.action.welcome"/>
+<hide_toolbar_item_id id="org.coocox.component.ui.ShowRepositoryAction"/>
+<hide_toolbar_item_id id="org.coocox.codebugger.configuration.coideProgramDownloadAction"/>
+<view id="org.eclipse.ui.console.ConsoleView"/>
+<view id="org.eclipse.debug.ui.DebugView"/>
+<view id="org.coocox.codebugger.trace.ui.traceview"/>
+<view id="org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser"/>
+<view id="org.eclipse.debug.ui.RegisterView"/>
+<view id="org.eclipse.debug.ui.VariableView"/>
+<view id="org.coocox.builder.ui.views.ProjectView"/>
+<fastViewBars/>
+<viewLayoutRec closeable="false" id="org.eclipse.debug.ui.DebugView"/>
+<layout>&#x0A;<mainWindow>&#x0A;<info folder="true" part="org.eclipse.ui.internal.ViewStack@1bbe298">&#x0A;<folder activePageID="org.coocox.builder.ui.views.ProjectView" appearance="2" expanded="2">&#x0A;<page content="org.coocox.builder.ui.views.ProjectView" label="Project"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="stickyFolderRight" ratio="0.7496318" ratioLeft="1018" ratioRight="340" relationship="2" relative="org.eclipse.ui.internal.ViewStack@1bbe298">&#x0A;<folder appearance="2" expanded="2">&#x0A;<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
+</folder>
+</info>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@72b712" ratio="0.6220096" ratioLeft="390" ratioRight="237" relationship="4" relative="org.eclipse.ui.internal.ViewStack@1bbe298">&#x0A;<folder activePageID="org.eclipse.debug.ui.DebugView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
+<page content="org.eclipse.debug.ui.DebugView" label="Debug"/>
+<page content="org.eclipse.debug.ui.BreakpointView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+<part id="1"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@15fabb" ratio="0.4295203" ratioLeft="582" ratioRight="773" relationship="2" relative="org.eclipse.ui.internal.ViewStack@72b712">&#x0A;<folder activePageID="org.eclipse.debug.ui.RegisterView" appearance="2" expanded="2">&#x0A;<page content="org.coocox.codebugger.trace.ui.traceview" label="Semihosting"/>
+<page content="org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser" label="Memory Browser"/>
+<page content="org.eclipse.debug.ui.RegisterView" label="Registers"/>
+<page content="org.eclipse.debug.ui.ExpressionView" label="LabelNotFound"/>
+<page content="org.eclipse.debug.ui.MemoryView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+<part id="1"/>
+<part id="2"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@1fe1b72" ratio="0.71955717" ratioLeft="975" ratioRight="380" relationship="2" relative="org.eclipse.ui.internal.ViewStack@1bbe298">&#x0A;<folder activePageID="org.eclipse.debug.ui.VariableView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.debug.ui.VariableView" label="Variables"/>
+<page content="org.eclipse.cdt.dsf.debug.ui.disassembly.view" label="LabelNotFound"/>
+<page content="org.eclipse.ui.views.ContentOutline" label="LabelNotFound"/>
+<page content="org.coocox.coassistant.view.CoAssistantView_debug" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info part="org.eclipse.ui.editorss" ratio="0.313786" ratioLeft="305" ratioRight="667" relationship="2" relative="org.eclipse.ui.internal.ViewStack@1bbe298"/>
+</mainWindow>
+</layout>
+</perspective>
+</perspectives>
+<workingSets/>
+<navigationHistory>
+<editors>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/AnalogInputs.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/AnalogInputsADC.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/Menu.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/Menu.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/adc.h"/>
+<editor factoryID="org.coocox.builder.ui.persistent.PersistentElementFactory" id="org.coocox.builder.ui.editors.ConfigEditor">
+<org.coocox.builder.ui.editors.ConfigEditor horizontalPosition="0" subTagIndex="1" verticalPosition="0"/>
+</editor>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/HardwareConfigGeneric.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/PolarityCheck.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/Calibrate.cpp"/>
+</editors>
+<item historyLabel="Menu.h" index="3">
+<position info="not_deleted" x="1393" y="0"/>
+</item>
+<item historyLabel="Menu.cpp" index="2">
+<position info="not_deleted" x="2047" y="7"/>
+</item>
+<item historyLabel="Menu.cpp" index="2">
+<position info="not_deleted" x="2371" y="0"/>
+</item>
+<item historyLabel="Menu.h" index="3">
+<position info="not_deleted" x="1393" y="0"/>
+</item>
+<item historyLabel="Menu.h" index="3">
+<position info="not_deleted" x="1361" y="0"/>
+</item>
+<item historyLabel="Menu.cpp" index="2">
+<position info="not_deleted" x="2371" y="0"/>
+</item>
+<item historyLabel="Menu.cpp" index="2">
+<position info="not_deleted" x="2418" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="6623" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position/>
+</item>
+<item historyLabel="adc.h" index="4">
+<position info="not_deleted" x="18132" y="13"/>
+</item>
+<item historyLabel="Configuration" index="5"/>
+<item historyLabel="adc.h" index="4">
+<position info="not_deleted" x="18132" y="13"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="9599" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="7774" y="24"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="7559" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="2476" y="12"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position/>
+</item>
+<item historyLabel="Menu.cpp" index="2">
+<position info="not_deleted" x="2549" y="0"/>
+</item>
+<item historyLabel="AnalogInputs.cpp" index="0">
+<position info="not_deleted" x="5436" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position/>
+</item>
+<item historyLabel="AnalogInputs.cpp" index="0">
+<position info="not_deleted" x="5436" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="6870" y="0"/>
+</item>
+<item historyLabel="HardwareConfigGeneric.h" index="6">
+<position info="not_deleted" x="1822" y="0"/>
+</item>
+<item historyLabel="AnalogInputs.cpp" index="0">
+<position info="not_deleted" x="5436" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position/>
+</item>
+<item historyLabel="Menu.cpp" index="2">
+<position info="not_deleted" x="2541" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="6623" y="0"/>
+</item>
+<item historyLabel="HardwareConfigGeneric.h" index="6">
+<position info="not_deleted" x="1822" y="0"/>
+</item>
+<item historyLabel="AnalogInputs.cpp" index="0">
+<position info="not_deleted" x="5436" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="6623" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="2560" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="10162" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="8076" y="14"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="8395" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="9491" y="0"/>
+</item>
+<item historyLabel="Menu.cpp" index="2">
+<position info="not_deleted" x="2549" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="5648" y="0"/>
+</item>
+<item historyLabel="AnalogInputs.cpp" index="0">
+<position info="not_deleted" x="5436" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="8976" y="0"/>
+</item>
+<item historyLabel="AnalogInputs.cpp" index="0">
+<position info="not_deleted" x="8191" y="29"/>
+</item>
+<item historyLabel="AnalogInputs.cpp" index="0">
+<position info="not_deleted" x="8533" y="0"/>
+</item>
+<item historyLabel="AnalogInputs.cpp" index="0">
+<position info="not_deleted" x="8601" y="23"/>
+</item>
+<item historyLabel="AnalogInputs.cpp" index="0">
+<position info="not_deleted" x="8563" y="0"/>
+</item>
+<item historyLabel="AnalogInputs.cpp" index="0">
+<position info="not_deleted" x="9613" y="0"/>
+</item>
+<item historyLabel="PolarityCheck.cpp" index="7">
+<position info="not_deleted" x="1176" y="0"/>
+</item>
+<item historyLabel="AnalogInputsADC.cpp" index="1">
+<position info="not_deleted" x="3423" y="0"/>
+</item>
+<item active="true" historyLabel="Calibrate.cpp" index="8">
+<position info="not_deleted" x="9267" y="0"/>
+</item>
+</navigationHistory>
+<input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
+</page>
+<workbenchWindowAdvisor/>
+<actionBarAdvisor/>
+</window>
+<mruList>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="PolarityCheck.cpp" tooltip="cheali-charger/core/PolarityCheck.cpp">
+<persistable path="/cheali-charger/core/PolarityCheck.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="HardwareConfigGeneric.h" tooltip="cheali-charger/hardware/HardwareConfigGeneric.h">
+<persistable path="/cheali-charger/hardware/HardwareConfigGeneric.h"/>
+</file>
+<file factoryID="org.coocox.builder.ui.persistent.PersistentElementFactory" id="org.coocox.builder.ui.editors.ConfigEditor" name="" tooltip="">
+<persistable>
+<org.coocox.builder.ui.editors.ConfigEditor horizontalPosition="0" subTagIndex="1" verticalPosition="0"/>
+</persistable>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="adc.h" tooltip="cheali-charger/core/ARM/CMSIS/StdDriver/inc/adc.h">
+<persistable path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/adc.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Menu.h" tooltip="cheali-charger/core/Menu.h">
+<persistable path="/cheali-charger/core/Menu.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Menu.cpp" tooltip="cheali-charger/core/Menu.cpp">
+<persistable path="/cheali-charger/core/Menu.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Keyboard.cpp" tooltip="cheali-charger/core/Keyboard.cpp">
+<persistable path="/cheali-charger/core/Keyboard.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="UtilsD.cpp" tooltip="cheali-charger/core/ARM/UtilsD.cpp">
+<persistable path="/cheali-charger/core/ARM/UtilsD.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Time.cpp" tooltip="cheali-charger/core/Time.cpp">
+<persistable path="/cheali-charger/core/Time.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Time.h" tooltip="cheali-charger/core/Time.h">
+<persistable path="/cheali-charger/core/Time.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Discharger.cpp" tooltip="cheali-charger/core/Discharger.cpp">
+<persistable path="/cheali-charger/core/Discharger.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="AnalogInputs.h" tooltip="cheali-charger/core/AnalogInputs.h">
+<persistable path="/cheali-charger/core/AnalogInputs.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Calibrate.cpp" tooltip="cheali-charger/core/Calibrate.cpp">
+<persistable path="/cheali-charger/core/Calibrate.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="AnalogInputsADC.h" tooltip="cheali-charger/hardware/AnalogInputsADC.h">
+<persistable path="/cheali-charger/hardware/AnalogInputsADC.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="AnalogInputsADC.cpp" tooltip="cheali-charger/hardware/AnalogInputsADC.cpp">
+<persistable path="/cheali-charger/hardware/AnalogInputsADC.cpp"/>
+</file>
+</mruList>
+</workbench>

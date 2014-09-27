@@ -1,4 +1,7 @@
 /*
+    Serial - wrapper for Hardware OR Software serial library (transmit only)
+    Copyright (c) 2014 Sasa Mihajlovic.  All right reserved.
+
     cheali-charger - open source firmware for a variety of LiPo chargers
     Copyright (C) 2013  Paweł Stawicki. All right reserved.
 
@@ -15,20 +18,16 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Timer.h"
-#include "Hardware.h"
+#ifndef Serial_H_
+#define Serial_H_
 
+namespace Serial {
+    void  begin(unsigned long baud);
+    void  write(uint8_t c);
+    void  flush();
+    void  end();
+    void  initialize();
+	} // namespace Serial
 
-// time measurement - measure TIMER_INTERRUPT_PERIOD_MICROSECONDS
+#endif //  Serial_H_
 
-//TODO: implement
-/*ISR(TIMER2_COMP_vect)
-{
-    Timer::callback();
-}*/
-
-
-void Timer::initialize()
-{
-    //TODO: implement
-}

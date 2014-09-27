@@ -34,7 +34,7 @@
 #define NEXT_CASE (__COUNTER__ - _case_counter - 1)
 
 //assert
-#define STATIC_ASSERT(x) typedef char __STATIC_ASSERT__[( x )?1:-1]
+#define STATIC_ASSERT(x) typedef char __STATIC_ASSERT__[( x )?1:-1] __attribute__((unused))
 
 //Preprocessor: concatenate int to string
 #define CHEALI_CHARGER_STRING2(x)   #x

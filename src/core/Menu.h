@@ -41,10 +41,11 @@ public:
     void decIndex();
 
     uint8_t getIndex() { return begin_ + pos_; }
-    virtual uint8_t printItem(uint8_t i) {}
+    virtual void printItem(uint8_t i) {}
     uint8_t getMenuSize() const { return size_; }
 
     void display();
+    void debug();
 };
 
 #endif /* MENU_H_ */

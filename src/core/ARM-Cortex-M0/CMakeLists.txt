@@ -1,14 +1,17 @@
 
 include(${CMAKE_SOURCE_DIR}/src/core/CMakeLists.txt)
 
-set(ARM_Cortex_M0_SOURCE
-        memory.h
-        Timer2.cpp
+include(${CMAKE_SOURCE_DIR}/src/core/ARM-Cortex-M0/CMSIS/CMakeLists.txt)
 
-        IO.h
-        Utils.cpp
-        atomic.h
-        cpu.h
+
+set(ARM_Cortex_M0_SOURCE
+        cpu.cpp
+        memory.cpp
+        Serial.cpp
+        Timer0.cpp
+        TxHardSerial.cpp
+        TxSoftSerial.cpp
+        UtilsD.cpp
 )
 
 foreach (SOURCE ${ARM_Cortex_M0_SOURCE})

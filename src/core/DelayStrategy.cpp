@@ -18,7 +18,7 @@
 
 
 #include "DelayStrategy.h"
-#include "Timer.h"
+#include "Time.h"
 #include "memory.h"
 #include "Strategy.h"
 #include "Buzzer.h"

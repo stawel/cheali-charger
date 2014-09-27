@@ -34,6 +34,9 @@
 
 namespace AnalogInputs {
 
+    extern uint32_t tmp_time_;
+    extern uint32_t tmp_time_last_;
+
     struct CalibrationPoint {
         ValueType x;
         ValueType y;
@@ -106,7 +109,6 @@ namespace AnalogInputs {
     };
     static const uint8_t    PHYSICAL_INPUTS     = VirtualInputs - Vout_plus_pin;
     static const uint8_t    ALL_INPUTS          = LastInput - Vout_plus_pin;
-    static const uint16_t   AVR_MAX_COUNT       = 100;
     static const ValueType  REVERSE_POLARITY_MIN_VOLTAGE = ANALOG_VOLT(1.000);
     static const ValueType  CONNECTED_MIN_VOLTAGE = ANALOG_VOLT(0.600);
     static const ValueType  CONNECTED_MIN_CURRENT = ANALOG_AMP(0.050);

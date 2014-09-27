@@ -74,7 +74,7 @@ Strategy::statusType StorageStrategy::doStrategy()
         case Discharge:
             status = TheveninDischargeStrategy::doStrategy();
             break;
-        case Balance:
+        default: // Balance:
             status = Balancer::doStrategy();
             if(status != Strategy::RUNNING) {
                 powerOff();

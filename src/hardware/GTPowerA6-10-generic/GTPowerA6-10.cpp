@@ -129,5 +129,6 @@ void hardware::setBalancerOutput(bool enable)
 {
 }
 
+
 LiquidCrystal lcd;
 

@@ -82,7 +82,7 @@ void ProgramDataMenu::waitName()
 }
 
 
-uint8_t ProgramDataMenu::printItem(uint8_t index)
+void ProgramDataMenu::printItem(uint8_t index)
 {
     StaticMenu::printItem(index);
     if(getBlinkIndex() != index) {
@@ -98,7 +98,6 @@ uint8_t ProgramDataMenu::printItem(uint8_t index)
 #endif
         }
     }
-    return 0;
 }
 
 void ProgramDataMenu::editItem(uint8_t index, uint8_t key)

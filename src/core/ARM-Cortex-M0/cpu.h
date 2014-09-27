@@ -18,10 +18,8 @@
 #ifndef CPU_H_
 #define CPU_H_
 
-//TODO: implement
 namespace cpu {
-    inline void init() {
-    }
+    void init();
 }
 
 #endif /* CPU_H_ */

@@ -58,7 +58,7 @@
  * note: 1-4 are in setMuxAddress()
  */
 
-
+#define ADC_I_SMPS_PER_ROUND 4
 //discharge ADC capacitor on Vb6 - there is an operational amplifier
 #define ADC_CAPACITOR_DISCHARGE_ADDRESS MADDR_V_BALANSER6
 #define ADC_CAPACITOR_DISCHARGE_DELAY_US 10
@@ -66,6 +66,7 @@
 namespace adc {
 
 static uint8_t input_;
+volatile uint8_t g_addSumToInput = 0;
 
 void initialize()
 {
@@ -171,7 +172,10 @@ void processConversion(uint8_t input)
     high = ADCH;
 
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        AnalogInputs::i_adc_[getAIName(input)] = (high << 8) | low;
+        uint16_t v = (high << 8) | low;
+        AnalogInputs::i_adc_[getAIName(input)] = v;
+        if(g_addSumToInput)
+            AnalogInputs::i_avrSum_[getAIName(input)] += v;
     }
 }
 
@@ -184,7 +188,15 @@ void finalizeMeasurement()
 {
     AnalogInputs::i_adc_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
     AnalogInputs::i_adc_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
-    AnalogInputs::intterruptFinalizeMeasurement();
+    if(g_addSumToInput) {
+        AnalogInputs::i_avrSum_[AnalogInputs::IsmpsValue]        += SMPS::getValue();
+        AnalogInputs::i_avrSum_[AnalogInputs::IdischargeValue]   += Discharger::getValue();
+        if(AnalogInputs::i_avrCount_ == 1) {
+            AnalogInputs::i_avrSum_[AnalogInputs::Ismps]          /= ADC_I_SMPS_PER_ROUND;
+        }
+        //TODO: maybe intterruptFinalizeMeasurement should be removed
+        AnalogInputs::intterruptFinalizeMeasurement();
+    }
 }
 
 void setNextMuxAddress()
@@ -212,8 +224,10 @@ void conversionDone()
     if(getTriggerPID(input_))
         SMPS_PID::update();
 
-    if(input_ == 0)
+    if(input_ == 0) {
         finalizeMeasurement();
+        g_addSumToInput = AnalogInputs::i_avrCount_ > 0;
+    }
 }
 
 } // namespace adc

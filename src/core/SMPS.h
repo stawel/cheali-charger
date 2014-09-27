@@ -20,8 +20,7 @@
 #ifndef SMPS_H_
 #define SMPS_H_
 
-#include "AnalogInputs.h"
-#include "Timer.h"
+#include <inttypes.h>
 
 namespace SMPS {
     enum STATE { CHARGING, CHARGING_COMPLETE, ERROR, STOP};

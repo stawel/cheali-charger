@@ -15,6 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#define __STDC_LIMIT_MACROS
 #include "Hardware.h"
 #include "AnalogInputsPrivate.h"
 #include "memory.h"
@@ -22,6 +23,28 @@
 #include "SerialLog.h"
 #include "eeprom.h"
 #include "atomic.h"
+
+#ifndef ANALOG_INPUTS_ADC_BURST_COUNT
+#define ANALOG_INPUTS_ADC_BURST_COUNT           1
+#endif
+#ifndef ANALOG_INPUTS_ADC_ROUND_MAX_COUNT
+#define ANALOG_INPUTS_ADC_ROUND_MAX_COUNT       100
+#endif
+#ifndef ANALOG_INPUTS_ADC_DELTA_SHIFT
+#define ANALOG_INPUTS_ADC_DELTA_SHIFT           0
+#endif
+
+
+#define ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT (ANALOG_INPUTS_ADC_ROUND_MAX_COUNT*ANALOG_INPUTS_ADC_BURST_COUNT)
+
+#if (1<<ANALOG_INPUTS_RESOLUTION) * ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT > UINT32_MAX
+#error "avr sum don't fit into uint32_t"
+#endif
+
+//TODO: 120?? we take not more then 60 measurements into account
+#if ((1<<ANALOG_INPUTS_RESOLUTION)>>ANALOG_INPUTS_ADC_DELTA_SHIFT) * ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT * 120 > UINT32_MAX
+#error "delta avr sum don't fit into uint32_t"
+#endif
 
 
 #define RETURN_ATOMIC(x)  \
@@ -35,16 +58,19 @@
 
 namespace AnalogInputs {
 
-    bool on_;
-    uint16_t  i_avrCount_;
-    uint32_t  i_avrSum_[PHYSICAL_INPUTS];
-    ValueType i_adc_[PHYSICAL_INPUTS];
+    volatile bool on_;
+    volatile bool ignoreLastResult_;
+    volatile uint16_t  i_avrCount_;
+    volatile uint32_t  i_avrSum_[PHYSICAL_INPUTS];
+    volatile ValueType i_adc_[PHYSICAL_INPUTS];
 
     ValueType avrAdc_[PHYSICAL_INPUTS];
     ValueType real_[ALL_INPUTS];
     uint16_t stableCount_[ALL_INPUTS];
 
     uint16_t calculationCount_;
+    uint32_t tmp_time_;
+    uint32_t tmp_time_last_;
 
     uint16_t    i_deltaAvrCount_;
     uint32_t    i_deltaAvrSumVoutPlus_;
@@ -57,8 +83,8 @@ namespace AnalogInputs {
 
     uint32_t    i_charge_;
 
-    void resetAvr();
-    void resetDeltaAvr();
+    void _resetAvr();
+    void _resetDeltaAvr();
     void resetADC();
     void reset();
     void resetDelta();
@@ -85,16 +111,9 @@ namespace AnalogInputs {
 } // namespace AnalogInputs
 
 //this method depends on the ADC implementation
-void AnalogInputs::resetADC()
-{
-    adc::reset();
-}
-
-//this method depends on the ADC implementation
 void AnalogInputs::doFullMeasurement()
 {
-    resetAvr();
-    resetDeltaAvr();
+    resetMeasurement();
     uint16_t c = getFullMeasurementCount();
     while(c == getFullMeasurementCount())
         Timer::delayIdle(10);
@@ -161,17 +180,18 @@ bool AnalogInputs::isOutStable()
     return isStable(AnalogInputs::VoutBalancer) && isStable(AnalogInputs::Iout) && Balancer::isStable();
 }
 
-void AnalogInputs::resetAvr()
+void AnalogInputs::_resetAvr()
 {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         FOR_ALL_PHY_INPUTS(name) {
             i_avrSum_[name] = 0;
         }
-        i_avrCount_ = 0;
+        i_avrCount_ = ANALOG_INPUTS_ADC_ROUND_MAX_COUNT;
+        ignoreLastResult_ = false;
     }
 }
 
-void AnalogInputs::resetDeltaAvr()
+void AnalogInputs::_resetDeltaAvr()
 {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         i_deltaAvrCount_ = 0;
@@ -184,7 +204,7 @@ void AnalogInputs::resetDeltaAvr()
 
 void AnalogInputs::resetDelta()
 {
-    resetDeltaAvr();
+    _resetDeltaAvr();
     deltaCount_ = 0;
     deltaLastT_ = 0;
 }
@@ -199,9 +219,11 @@ void AnalogInputs::resetStable()
 
 void AnalogInputs::resetMeasurement()
 {
-    resetAvr();
-    resetDeltaAvr();
-    resetStable();
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    	i_avrCount_ = 1; //TODO:??
+    	ignoreLastResult_ = true;
+        resetStable();
+    }
 }
 
 void AnalogInputs::reset()
@@ -210,7 +232,6 @@ void AnalogInputs::reset()
         i_charge_ = 0;
     }
     calculationCount_ = 0;
-    resetADC();
     resetMeasurement();
     resetDelta();
     FOR_ALL_INPUTS(name){
@@ -346,27 +367,16 @@ void AnalogInputs::doSlowInterrupt()
 
 void AnalogInputs::intterruptFinalizeMeasurement()
 {
-    if(!AnalogInputs::isPowerOn())
-        return;
-
-    if(i_avrCount_ < AVR_MAX_COUNT) {
-        FOR_ALL_PHY_INPUTS(name) {
-            i_avrSum_[name] += i_adc_[name];
-        }
-        i_avrCount_++;
-    }
-
-    i_deltaAvrSumVoutPlus_    += i_adc_[Vout_plus_pin];
-    i_deltaAvrSumVoutMinus_   += i_adc_[Vout_minus_pin];
-    i_deltaAvrSumTextern_     += i_adc_[Textern];
-    i_deltaAvrCount_++;
+    if(i_avrCount_>0)
+    	i_avrCount_--;
 }
 
 
 void AnalogInputs::doIdle()
 {
-    finalizeFullMeasurement();
-    finalizeDeltaMeasurement();
+	if(isPowerOn()) {
+		finalizeFullMeasurement();
+	}
 }
 
 void AnalogInputs::finalizeFullMeasurement()
@@ -376,15 +386,27 @@ void AnalogInputs::finalizeFullMeasurement()
         avrCount = i_avrCount_;
     }
 
-    if(avrCount == AVR_MAX_COUNT) {
-        calculationCount_++;
-        FOR_ALL_PHY_INPUTS(name) {
-            avrAdc_[name] = i_avrSum_[name] / avrCount;
-            ValueType real = calibrateValue(name, avrAdc_[name]);
-            setReal(name, real);
-        }
-        finalizeFullVirtualMeasurement();
-        resetAvr();
+    if(avrCount == 0) {
+		uint32_t t = Timer::getMiliseconds();
+    	if(!ignoreLastResult_) {
+			tmp_time_ = t - tmp_time_last_;
+			calculationCount_++;
+
+		    i_deltaAvrSumVoutPlus_    += i_avrSum_[Vout_plus_pin] >> ANALOG_INPUTS_ADC_DELTA_SHIFT;
+		    i_deltaAvrSumVoutMinus_   += i_avrSum_[Vout_minus_pin] >> ANALOG_INPUTS_ADC_DELTA_SHIFT;
+		    i_deltaAvrSumTextern_     += i_avrSum_[Textern] >> ANALOG_INPUTS_ADC_DELTA_SHIFT;
+		    i_deltaAvrCount_ ++;
+		    finalizeDeltaMeasurement();
+
+			FOR_ALL_PHY_INPUTS(name) {
+				avrAdc_[name] = i_avrSum_[name] / ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT;
+				ValueType real = calibrateValue(name, avrAdc_[name]);
+				setReal(name, real);
+			}
+			finalizeFullVirtualMeasurement();
+    	}
+		tmp_time_last_ = t;
+        _resetAvr();
     }
 }
 
@@ -392,17 +414,18 @@ void AnalogInputs::finalizeFullMeasurement()
 void AnalogInputs::finalizeDeltaMeasurement()
 {
     if(Timer::getMiliseconds() - deltaStartTime_ > DELTA_TIME_MILISECONDS) {
-        uint16_t deltaAvrCount;
+        uint32_t deltaAvrCount;
         uint32_t deltaAvrSumVoutPlus;
         uint32_t deltaAvrSumVoutMinus;
         uint32_t deltaAvrSumTextern;
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-            deltaAvrCount = i_deltaAvrCount_;
+            deltaAvrCount = i_deltaAvrCount_*ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT;
+            deltaAvrCount >>= ANALOG_INPUTS_ADC_DELTA_SHIFT;
             deltaAvrSumVoutPlus  = i_deltaAvrSumVoutPlus_;
             deltaAvrSumVoutMinus = i_deltaAvrSumVoutMinus_;
             deltaAvrSumTextern   = i_deltaAvrSumTextern_;
         }
-        resetDeltaAvr();
+        _resetDeltaAvr();
         deltaCount_++;
 
         uint16_t x;

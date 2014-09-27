@@ -34,13 +34,13 @@ struct ProgramData {
 
 
     struct BatteryData {
-        uint8_t type;
+        uint16_t type;
 
         uint16_t C,Ic,Id,cells;
         //#ifdef ENABLE_TIME_LIMIT: to ensure the same eeprom layout Time is always enabled
         uint16_t Time;
 
-    } __attribute__((packed));
+    }; //__attribute__((packed));
 
     BatteryData battery;
     char name[PROGRAM_DATA_MAX_NAME];

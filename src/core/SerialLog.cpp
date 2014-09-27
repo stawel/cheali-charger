@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "Hardware.h"
-#include "Timer.h"
 #include "LcdPrint.h"
 #include "Program.h"
 #include "Settings.h"
@@ -68,18 +67,17 @@ void sendTime();
 
 void serialBegin()
 {
-    Serial.begin(settings.getUARTspeed());
+    Serial::begin(settings.getUARTspeed());
 }
 void serialEnd()
 {
-    Serial.flush();
-    Serial.end();
-    IO::pinMode(10, INPUT);
+    Serial::flush();
+    Serial::end();
 }
 
 void printChar(char c)
 {
-    Serial.write(c);
+    Serial::write(c);
     CRC^=c;
 }
 
@@ -174,9 +172,11 @@ void printUInt(uint16_t x)
 
 void printULong(uint32_t x)
 {
-    char buf[8];
+//    char buf[8];
+    char buf[15];
     char *str = buf;
-    uint8_t maxSize = 7;
+//    uint8_t maxSize = 7;
+    uint8_t maxSize = 14;
     ::printULong(str, maxSize, x);
     printString(buf);
 }
@@ -216,14 +216,14 @@ void sendChannel1()
 {
     sendHeader(1);
     //analog inputs
-    for(int8_t i=0;i < sizeOfArray(channel1);i++) {
+    for(uint8_t i=0;i < sizeOfArray(channel1);i++) {
         AnalogInputs::Name name = pgm::read(&channel1[i]);
         uint16_t v = AnalogInputs::getRealValue(name);
         printUInt(v);
         printD();
     }
 
-    for(int8_t i=0;i<MAX_BANANCE_CELLS;i++) {
+    for(uint8_t i=0;i<MAX_BANANCE_CELLS;i++) {
         printUInt(TheveninMethod::getReadableRthCell(i));
         printD();
     }
@@ -267,7 +267,7 @@ void sendChannel2(bool adc)
 void sendChannel3()
 {
     sendHeader(3);
-#ifdef ENABLE_SERIAL_LOG
+#ifdef    ENABLE_STACK_INFO //ENABLE_SERIAL_LOG
     printUInt(StackInfo::getNeverUsedStackSize());
     printD();
     printUInt(StackInfo::getFreeStackSize());
@@ -323,8 +323,11 @@ void dumpCalibration()
         printV('R',it, p.y);
     }
 }
+
 void sendCalibration()
 {
+    if(state == Off)
+        return;
     serialBegin();
     dumpCalibration();
     printNL();

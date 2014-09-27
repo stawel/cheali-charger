@@ -1,6 +1,6 @@
 set(CORE_SOURCE
-        Timer.cpp
-        Timer.h
+        Time.cpp
+        Time.h
 
         StackInfo.h
 

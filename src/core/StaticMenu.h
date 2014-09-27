@@ -29,7 +29,7 @@ public:
 
 public:
     StaticMenu(const char * const* staticMenu);
-    virtual uint8_t printItem(uint8_t i);
+    virtual void printItem(uint8_t i);
 };
 
 #endif /* STATICMENU_H_ */

@@ -22,12 +22,12 @@
 
 #include "LiquidCrystal.h"
 #include "Keyboard.h"
-#include "Timer.h"
+#include "Time.h"
 #include "SMPS.h"
 #include "Discharger.h"
 #include "Balancer.h"
 #include "Buzzer.h"
-#include "adc.h"
+#include "AnalogInputsADC.h"
 
 #include "imaxB6-pins.h"
 
@@ -50,6 +50,8 @@ namespace hardware {
 
     void soundInterrupt();
     uint16_t getPIDValue();
+
+    void setExternalTemperatueOutput(bool enable);
 }
 
 
