@@ -20,7 +20,7 @@
 #include "ProgramData.h"
 #include "AnalogInputs.h"
 #include "EditName.h"
-#include "Program.h"
+#include "ProgramMenus.h"
 #include "Options.h"
 #include "Utils.h"
 #include "Buzzer.h"
@@ -47,7 +47,7 @@ void loop()
             Options::run();
             break;
         default:
-            Program::selectProgram(index - 1);
+            ProgramMenus::selectProgram(index - 1);
         }
     }
 }

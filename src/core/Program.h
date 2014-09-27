@@ -21,8 +21,8 @@
 #include "ProgramData.h"
 #include "Strategy.h"
 
-class Program {
-public:
+namespace Program {
+
     enum ProgramType {
         ChargeLiXX, ChargeLiXX_Balance, Balance, DischargeLiXX, FastChargeLiXX, StorageLiXX, StorageLiXX_Balance,
         ChargeNiXX, DischargeNiXX,  DCcycleLiXX,  DCcycleNiXX,
@@ -34,30 +34,29 @@ public:
         Charging, ChargingBalancing, Discharging,DischargingCharging, Balancing, Storage,
     };
 
-    static ProgramType programType_;
-    static ProgramState programState_;
-    static const char * stopReason_;
+    extern ProgramType programType_;
+    extern ProgramState programState_;
+    extern const char * stopReason_;
 
-    static void selectProgram(int index);
-    static void run(ProgramType prog);
+    void selectProgram(int index);
+    void run(ProgramType prog);
 
+    void printStartInfo(ProgramType prog);
+    bool startInfo();
 
-    static void printStartInfo(ProgramType prog);
-    static bool startInfo();
-
-    static Strategy::statusType runStorage(bool balance, bool immediately);
-    static Strategy::statusType runTheveninCharge(int minChargeC, bool immediately);
-    static Strategy::statusType runDischarge(bool immediately);
-    static Strategy::statusType runNiXXDischarge(bool immediately);
-    static Strategy::statusType runDCRestTime();
-    static Strategy::statusType runDCcycle(uint8_t prog1);
-    static Strategy::statusType runCycleDischargeCommon(uint8_t prog1);
-    static Strategy::statusType runCycleChargeCommon(uint8_t prog1, bool mode);
-    static uint8_t currentCycle();
-    static char currentCycleMode();
-    static Strategy::statusType runTheveninChargeBalance( bool immediately);
-    static Strategy::statusType runBalance();
-    static Strategy::statusType runDeltaCharge( bool immediately);
+    Strategy::statusType runStorage(bool balance, bool immediately);
+    Strategy::statusType runTheveninCharge(int minChargeC, bool immediately);
+    Strategy::statusType runDischarge(bool immediately);
+    Strategy::statusType runNiXXDischarge(bool immediately);
+    Strategy::statusType runDCRestTime();
+    Strategy::statusType runDCcycle(uint8_t prog1);
+    Strategy::statusType runCycleDischargeCommon(uint8_t prog1);
+    Strategy::statusType runCycleChargeCommon(uint8_t prog1, bool mode);
+    uint8_t currentCycle();
+    char currentCycleMode();
+    Strategy::statusType runTheveninChargeBalance( bool immediately);
+    Strategy::statusType runBalance();
+    Strategy::statusType runDeltaCharge( bool immediately);
 };
 
 

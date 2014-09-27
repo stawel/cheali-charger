@@ -60,6 +60,8 @@ set(CORE_SOURCE
         Discharger.h
         Program.cpp
         Program.h
+        ProgramMenus.cpp
+        ProgramMenus.h
         Thevenin.cpp
         Thevenin.h
         TheveninMethod.cpp
