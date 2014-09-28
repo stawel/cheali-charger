@@ -154,6 +154,9 @@ uint8_t AnalogInputs::getConnectedBalancePorts()
 }
 bool AnalogInputs::isConnected(Name name)
 {
+	if(name == Vbalancer) {
+		return getRealValue(VobInfo) == Vbalancer;
+	}
     AnalogInputs::ValueType x = getRealValue(name);
     switch(getType(name)) {
     case Current:

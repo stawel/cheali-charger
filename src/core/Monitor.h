@@ -21,10 +21,27 @@
 #include "Strategy.h"
 
 namespace Monitor {
-    Strategy::statusType run();
+	extern uint16_t etaDeltaSec;
+
+	Strategy::statusType run();
     void doIdle();
     void powerOn();
+    void powerOff();
+
     void update();
+
+    uint16_t getTimeSec();
+    uint16_t getTotalBalanceTimeSec();
+    uint16_t getTotalChargeDischargeTimeSec();
+    uint16_t getTotalChargeDischargeTimeMin();
+    uint16_t getETATime();
+
+    uint8_t getChargeProcent();
+
+    void resetETA();
+
+
+    void doSlowInterrupt();
 };
 
 

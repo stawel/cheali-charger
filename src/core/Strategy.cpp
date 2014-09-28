@@ -31,6 +31,7 @@ namespace Strategy {
 
 
     void chargingComplete() {
+        Monitor::powerOff();
         lcdClear();
         Screen::displayScreenProgramCompleted();
         Buzzer::soundProgramComplete();
@@ -39,6 +40,7 @@ namespace Strategy {
     }
 
     void chargingMonitorError() {
+        Monitor::powerOff();
         lcdClear();
         Screen::displayMonitorError();
         Buzzer::soundError();
@@ -63,14 +65,12 @@ namespace Strategy {
     bool analizeStrategyStatus(Strategy::statusType status) {
         bool run = true;
         if(status == Strategy::ERROR) {
-            Screen::powerOff();
             strategyPowerOff();
             chargingMonitorError();
             run = false;
         }
 
         if(status == Strategy::COMPLETE) {
-            Screen::powerOff();
             strategyPowerOff();
             if(!exitImmediately)
                 chargingComplete();
@@ -86,8 +86,6 @@ namespace Strategy {
         uint16_t newMesurmentData = 0;
         Strategy::statusType status = Strategy::RUNNING;
         strategyPowerOn();
-        Screen::powerOn();
-        Monitor::powerOn();
         lcdClear();
         uint8_t screen_nr = 0;
         do {
@@ -126,7 +124,6 @@ namespace Strategy {
                 return status;
         } while(key != BUTTON_STOP);
 
-        Screen::powerOff();
         strategyPowerOff();
         return status;
     }

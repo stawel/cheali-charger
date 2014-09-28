@@ -31,8 +31,7 @@
 #include "Serial.h"
 #endif //ENABLE_SERIAL_LOG
 
-//TODO_NJ
-#include "Screen.h"
+#include "Monitor.h"
 
 namespace SerialLog {
     enum State { On, Off, Starting };
@@ -234,9 +233,9 @@ void sendChannel1()
     printUInt(TheveninMethod::getReadableWiresRth());
     printD();
 
-    printUInt(Screen::getChargeProcent());
+    printUInt(Monitor::getChargeProcent());
     printD();
-    printUInt(Screen::getETATime());   //timestamp
+    printUInt(Monitor::getETATime());
     printD();
 
     sendEnd();

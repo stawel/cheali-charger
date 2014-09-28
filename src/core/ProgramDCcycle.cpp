@@ -20,6 +20,7 @@
 #include "Program.h"
 #include "DelayStrategy.h"
 #include "Settings.h"
+#include "Monitor.h"
 
 using namespace Program;
 
@@ -49,7 +50,7 @@ Strategy::statusType ProgramDCcycle::runDCcycle(BatteryGroup prog1)
         if(status != Strategy::COMPLETE) { break; }
 
         //charge
-        Screen::resetETA();
+        Monitor::resetETA();
         AnalogInputs::resetAccumulatedMeasurements();
         cycleMode='C';
 

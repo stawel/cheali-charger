@@ -42,13 +42,8 @@ namespace Screen {
 
     void initialize();
 
-    uint16_t getTimeSec();
-    uint16_t getTotalChargDischargeTime();
     uint8_t getChargeProcent();
     void doSlowInterrupt();
-
-    void powerOn();
-    void powerOff();
 
     void display(ScreenType screen);
 

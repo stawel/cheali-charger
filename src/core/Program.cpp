@@ -263,6 +263,7 @@ void Program::run(ProgramType prog)
 
 
     if(startInfo()) {
+        Monitor::powerOn();
         Strategy::exitImmediately = false;
         Buzzer::soundStartProgram();
 
@@ -317,6 +318,7 @@ void Program::run(ProgramType prog)
             Screen::runNotImplemented();
             break;
         }
+        Monitor::powerOff();
     }
     AnalogInputs::powerOff();
     SerialLog::powerOff();

@@ -26,6 +26,7 @@
 #include "DelayStrategy.h"
 #include "Version.h"
 #include "ProgramDCcycle.h"
+#include "Monitor.h"
 
 #ifdef ENABLE_LCD_RAM_CG
    #define BALANCE_FULL_CELL_CHAR   2
@@ -38,25 +39,17 @@
 #endif
 
 
-namespace Screen{
+namespace Screen {
 
-    uint16_t startTime_totalTime_U16_;
-    uint32_t totalBalanceTime_;
-    uint32_t totalChargDischargeTime_;
     Blink blink;
     bool blinkIcon;
 #ifdef  ENABLE_SCREEN_KNIGHTRIDEREFFECT
     int8_t knightRiderCounter = 0;
     bool knightRiderDir;
 #endif
+
     uint8_t toggleTextCounter = 0;
     uint8_t toggleTextCycleCounter_ = 1;
-    uint8_t procent_ = 0;
-    uint8_t procent;
-    uint16_t etaSec = 0;
-    uint16_t timeSecOldETACalc;
-    uint16_t etaSecLarge = 0;
-    
     
     //TODO_NJ for cyclehistory  
     uint16_t cyclesHistoryChCapacity[5]   = {0,0,0,0,0};
@@ -65,35 +58,13 @@ namespace Screen{
     uint16_t cyclesHistoryDcTime[5]       = {0,0,0,0,0};
     char     cyclesHistoryMode[5]         = {'-','-','-','-','-'}; //C=charge   D=discharge '-' = none
 
-    //fix
-    uint16_t ETATime_ ;
-    bool balance_on;
-    bool on_;
-
     const char programString[] PROGMEM = "ChCBBlDiFCStSBChDiCYcyChDiFPCPEB";
     void printProgram2chars(Program::ProgramType prog)
     {
         STATIC_ASSERT(sizeOfArray(programString)-1 == Program::LAST_PROGRAM_TYPE*2);
-        //TODO: ??
         lcdPrint_P(programString+prog*2, 2);
     }
    
-    uint8_t getChargeProcent(){
-        uint16_t v1,v2, v;
-        v2 = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
-        v1 = ProgramData::currentProgramData.getVoltage(ProgramData::ValidEmpty);
-        v =  AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
-
-        if(v >= v2) return 99;
-        if(v <= v1) return 0;
-        v-=v1;
-        v2-=v1;
-        v2/=100;
-        v=  v/v2;
-        if(v >= 100) v=99; //not 101% with isCharge
-        return v;
-    }
-
     AnalogInputs::ValueType getBalanceValue(uint8_t cell, AnalogInputs::Type type)
     {
         if(type == AnalogInputs::Voltage)
@@ -120,7 +91,6 @@ namespace Screen{
         if (knightRiderCounter<=1) knightRiderDir=true;
 #endif
         char c = ' ';
-        balance_on=false;
         if(!Balancer::isWorking()) {
             if(!Balancer::isStable())
                 c = 'm';
@@ -200,6 +170,8 @@ namespace Screen{
         lcdPrintSpaces();
     }
 
+    void display_(ScreenType screen);
+
 } // namespace Screen
 
 void Screen::initialize() {
@@ -232,7 +204,7 @@ void Screen::printChar_Time() {
     }
     lcdPrintChar(c);
     lcdPrintChar(' ');
-    lcdPrintTime(getTimeSec());
+    lcdPrintTime(Monitor::getTimeSec());
     lcdPrintChar(' ');
 }
 
@@ -264,39 +236,9 @@ void Screen::displayScreenCIVlimits()
     lcdPrintSpaces();
 }
 
-uint16_t Screen::getTimeSec()
-{
-    uint16_t t = startTime_totalTime_U16_;
-    if(on_) t = Time::diffU16(startTime_totalTime_U16_, Time::getSecondsU16());
-    return t;
-}
-
-void Screen::powerOn()
-{
-    startTime_totalTime_U16_ = Time::getSecondsU16();
-    totalBalanceTime_ = 0;
-    totalChargDischargeTime_ = 0;
-    on_ = true;
-}
-
-void Screen::powerOff()
-{
-    startTime_totalTime_U16_ = Time::diffU16(startTime_totalTime_U16_, Time::getSecondsU16());
-    on_ = false;
-}
 
 void Screen::doSlowInterrupt()
 {
-   if(SMPS::isWorking() || Discharger::isWorking())
-       totalChargDischargeTime_ += SLOW_INTERRUPT_PERIOD_MILISECONDS;
-
-   if(Balancer::isWorking())
-       totalBalanceTime_ += SLOW_INTERRUPT_PERIOD_MILISECONDS;
-       
-   Screen::storeCycleHistoryInfo();     //actualisation values
-
-   ETATime_ = getETATime();
-
       //TODO_NJ
     //for multiscreen
     toggleTextCounter++; if (toggleTextCounter>40) toggleTextCounter=0;
@@ -305,12 +247,12 @@ void Screen::doSlowInterrupt()
 void Screen::displayScreenTime()
 {
     lcdSetCursor0_0();
-    lcdPrint_P(PSTR("time:     ")); lcdPrintTime(getTimeSec());
+    lcdPrint_P(PSTR("time:     ")); lcdPrintTime(Monitor::getTimeSec());
     lcdSetCursor0_1();
     lcdPrint_P(PSTR("b "));
-    lcdPrintTime(totalBalanceTime_/1000);
+    lcdPrintTime(Monitor::getTotalBalanceTimeSec());
     lcdPrint_P(PSTR("  "));
-    lcdPrintTime(totalChargDischargeTime_/1000);
+    lcdPrintTime(Monitor::getTotalChargeDischargeTimeSec());
 }
 
 
@@ -393,7 +335,7 @@ void Screen::displayScreenProgramCompleted()
 {
     screenEnd(PSTR("program complete"));
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR("Time: ")); lcdPrintTime(getTimeSec());
+    lcdPrint_P(PSTR("Time: ")); lcdPrintTime(Monitor::getTimeSec());
 }
 
 void Screen::displayMonitorError()
@@ -490,7 +432,6 @@ void Screen::displayScreenReversedPolarity()
 
 void Screen::displayStartInfo()
 {
-    resetETA();
     resetCycleHistory();
     lcdSetCursor0_0();
     ProgramData::currentProgramData.printBatteryString(4);
@@ -500,8 +441,7 @@ void Screen::displayStartInfo()
     printProgram2chars(Program::programType_);
 
     lcdSetCursor0_1();
-    procent = getChargeProcent();
-    lcdPrintUnsigned(procent, 2);
+    lcdPrintUnsigned(Monitor::getChargeProcent(), 2);
     lcdPrint_P(PSTR("% "));
 
     int bindex = blink.getBlinkIndex();
@@ -527,7 +467,13 @@ void Screen::displayStartInfo()
 
 void Screen::display(ScreenType screen)
 {
+	Screen::storeCycleHistoryInfo();     //actualisation values
     blink.incBlinkTime();
+
+    display_(screen);
+}
+void Screen::display_(ScreenType screen)
+{
     switch(screen) {
     case ScreenFirst:                   return displayScreenFirst();
     case ScreenCIVlimits:               return displayScreenCIVlimits();
@@ -551,11 +497,6 @@ void Screen::display(ScreenType screen)
     default:
         return;
     }
-}
-
-uint16_t Screen::getTotalChargDischargeTime()
-{
-    return (totalChargDischargeTime_/1000/60);
 }
 
 void Screen::displayScreenCycles()
@@ -587,8 +528,6 @@ void Screen::displayScreenCycles()
 
 void Screen::displayScreenEnergy()
 {
-    //get procent increment time
-    getDeltaProcentTimeSec();
     bool displayBlink_ = displayBlink();
 
     if (displayBlink_ == true) {
@@ -611,12 +550,13 @@ void Screen::displayScreenEnergy()
         lcdPrint_P(PSTR("  "));
     }
 
+    uint8_t procent = Monitor::getChargeProcent();
     if (displayBlink_ == true && SMPS::isPowerOn() && procent < 99) { 
         //display calculated simple ETA
 
-        if(etaSecLarge>20)  //bigger 20sec for ETA calc (is 1C)
+        if(Monitor::etaDeltaSec > 20)  //bigger 20sec for ETA calc (is 1C)
         {
-            lcdPrintTime(ETATime_); //TODO_NJ (not accurate for balancing time)
+            lcdPrintTime(Monitor::getETATime()); //TODO_NJ (not accurate for balancing time)
         } else {
             lcdPrint_P(PSTR(" --:--"));
         }
@@ -636,9 +576,9 @@ void Screen::displayAnimation()
         lcdPrintChar(255);
         lcdSetCursor(i,0);
         lcdPrintChar(255);
-        Time::delay(10);
+        Time::delayDoIdle(10);
     }
-    Time::delay(10);
+    Time::delayDoIdle(10);
 }
 #endif
 
@@ -649,14 +589,6 @@ void Screen::displayCalibrationErrorScreen(uint8_t errNo)
     lcdPrint_P(PSTR("Cal.err.  F:"));
     lcdPrintUnsigned(errNo, 2);
     Time::delay(8000);
-}
-
-void Screen::resetETA()
-{
-    etaSec=0;
-    timeSecOldETACalc=0;
-    procent_=procent;
-    etaSecLarge = 0;
 }
 
 void Screen::resetCycleHistory()
@@ -670,44 +602,17 @@ void Screen::resetCycleHistory()
     }
 }
 
-void Screen::getDeltaProcentTimeSec()
-{
-    procent = getChargeProcent();
-    if(procent_ < procent) {
-        procent_=procent; //probable only 1% max incremet/running
-        etaSec = getTimeSec()-timeSecOldETACalc;
-        timeSecOldETACalc = getTimeSec();
-        if ((etaSec > etaSecLarge) || (etaSecLarge==0) )  { etaSecLarge=etaSec;}  // find longer time for deltaprocent
-    }
-}
-
-uint16_t Screen::getETATime()
-{
-    getDeltaProcentTimeSec();
-    uint8_t kx=105;
-    if((AnalogInputs::getConnectedBalancePorts() == 0)
-        && (absDiff(AnalogInputs::getRealValue(AnalogInputs::Vout),
-             AnalogInputs::getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)))
-    {
-        //balancer not connected
-        kx=100;
-    }
-
-    //if (getChargeProcent()==99) {return (0);} //no avail more calc (or call secondary calculator)
-    return (etaSecLarge*(kx-procent_));
-}
-
 void Screen::storeCycleHistoryInfo()
 {
     int8_t c = ProgramDCcycle::currentCycle-1;
     if (ProgramDCcycle::cycleMode == 'C') {
         cyclesHistoryMode[c] = 'C';
-        cyclesHistoryChTime[c] = totalChargDischargeTime_/1000;
+        cyclesHistoryChTime[c] = Monitor::getTotalChargeDischargeTimeSec();
         cyclesHistoryChCapacity[c] = AnalogInputs::getRealValue(AnalogInputs::Cout);
     }
     if (ProgramDCcycle::cycleMode == 'D') {
         cyclesHistoryMode[c] = 'D';
-        cyclesHistoryDcTime[c] = totalChargDischargeTime_/1000;
+        cyclesHistoryDcTime[c] = Monitor::getTotalChargeDischargeTimeSec();
         cyclesHistoryDcCapacity[c] = AnalogInputs::getRealValue(AnalogInputs::Cout);
     }
 }
