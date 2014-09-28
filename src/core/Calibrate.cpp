@@ -39,9 +39,6 @@ const char c4[] PROGMEM = "temp extern";
 #ifdef ENABLE_T_INTERNAL
 const char c5[] PROGMEM = "temp intern";
 #endif
-#ifdef ENABLE_SERIAL_LOG
-const char c6[] PROGMEM = "calib->UART";
-#endif
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
 const char c7[] PROGMEM = "expert DANGER!";
 #endif
@@ -49,9 +46,6 @@ const char c7[] PROGMEM = "expert DANGER!";
 const char * const calibrateMenu[] PROGMEM = {c1,c2,c3,c4
 #ifdef ENABLE_T_INTERNAL
   ,c5
-#endif
-#ifdef ENABLE_SERIAL_LOG
-  ,c6
 #endif
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
   ,c7
@@ -511,9 +505,6 @@ void run()
         case NEXT_CASE: calibrateTemp(AnalogInputs::Textern); break;
 #ifdef ENABLE_T_INTERNAL
         case NEXT_CASE: calibrateTemp(AnalogInputs::Tintern); break;
-#endif
-#ifdef ENABLE_SERIAL_LOG
-        case NEXT_CASE: SerialLog::sendCalibration(); break;
 #endif
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
         case NEXT_CASE: expertCalibrateVoltage(); break;
