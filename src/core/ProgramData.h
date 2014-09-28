@@ -23,7 +23,7 @@
 #include "Hardware.h"
 
 
-#define MAX_PROGRAMS 32
+#define MAX_PROGRAMS 30
 #define PROGRAM_DATA_MAX_NAME 14
 #define PROGRAM_DATA_MAX_CHARGE ANALOG_CHARGE(65.000)
 
