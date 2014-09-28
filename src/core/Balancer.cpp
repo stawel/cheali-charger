@@ -31,8 +31,7 @@ namespace Balancer {
     bool done_;
     AnalogInputs::ValueType Von_[MAX_BANANCE_CELLS], Voff_[MAX_BANANCE_CELLS];
     bool savedVon_;
-    uint32_t startBalanceTime_;
-    uint32_t startSwitchTime_;
+    uint16_t startBalanceTimeSecondsU16_;
     uint16_t balancingEnded_;
 
     uint32_t IVtime_;
@@ -71,7 +70,6 @@ void Balancer::powerOn()
     done_ = false;
     setBalance(0);
     balancingEnded_ = 0;
-    startSwitchTime_ = 0;
 }
 
 uint8_t Balancer::getCellMinV()
@@ -125,7 +123,6 @@ void Balancer::setBalance(uint8_t v)
         balancingEnded_ = AnalogInputs::getFullMeasurementCount();
 
     balance_ = v;
-    startSwitchTime_ = Time::getMiliseconds();
     AnalogInputs::resetStable();
     if(!done_)
         hardware::setBalancer(v);
@@ -152,7 +149,7 @@ void Balancer::startBalacing()
     }
 
     savedVon_ = false;
-    startBalanceTime_ = Time::getMiliseconds();
+    startBalanceTimeSecondsU16_ = Time::getSecondsU16();
     if(off) {
         endBalancing();
     } else {
@@ -200,7 +197,7 @@ void Balancer::trySaveVon() {
 
 uint16_t Balancer::getBalanceTime()
 {
-    return (Time::getMiliseconds() - startBalanceTime_) / 1000;
+    return Time::diffU16(startBalanceTimeSecondsU16_, Time::getSecondsU16());
 }
 
 

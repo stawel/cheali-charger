@@ -31,14 +31,14 @@ namespace DelayStrategy {
      };
 
     bool state_ = false;
-    uint16_t start_time_;
+    uint16_t start_time_U16_;
     uint16_t delay_;
 
 }// namespace DelayStrategy
 
 void DelayStrategy::powerOn()
 {
-    start_time_ = Time::getMinutes();
+    start_time_U16_ = Time::getMinutesU16();
 }
 
 void DelayStrategy::powerOff()
@@ -48,7 +48,7 @@ void DelayStrategy::powerOff()
 
 Strategy::statusType DelayStrategy::doStrategy()
 {
-    if(Time::diffU16(start_time_, Time::getMinutes()) <= delay_) {
+    if(Time::diffU16(start_time_U16_, Time::getMinutesU16()) <= delay_) {
         state_ = true;
         return Strategy::RUNNING;
     } else {

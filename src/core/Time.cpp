@@ -79,11 +79,16 @@ uint16_t Time::getMilisecondsU16() {
 	return getMiliseconds();
 }
 
-uint16_t Time::getSeconds() {
+uint16_t Time::getInterruptsU16() {
+	return getInterrupts();
+}
+
+
+uint16_t Time::getSecondsU16() {
     return getMiliseconds()/1000;
 }
 
-uint16_t Time::getMinutes() {
+uint16_t Time::getMinutesU16() {
     return getMiliseconds()/60000;
 }
 

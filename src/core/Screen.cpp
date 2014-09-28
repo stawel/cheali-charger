@@ -40,7 +40,7 @@
 
 namespace Screen{
 
-    uint32_t startTime_totalTime_;
+    uint16_t startTime_totalTime_U16_;
     uint32_t totalBalanceTime_;
     uint32_t totalChargDischargeTime_;
     Blink blink;
@@ -266,15 +266,14 @@ void Screen::displayScreenCIVlimits()
 
 uint16_t Screen::getTimeSec()
 {
-    uint32_t t = startTime_totalTime_;
-    if(on_) t = Time::getMiliseconds() - startTime_totalTime_;
-    t/=1000;
+    uint16_t t = startTime_totalTime_U16_;
+    if(on_) t = Time::diffU16(startTime_totalTime_U16_, Time::getSecondsU16());
     return t;
 }
 
 void Screen::powerOn()
 {
-    startTime_totalTime_ = Time::getMiliseconds();
+    startTime_totalTime_U16_ = Time::getSecondsU16();
     totalBalanceTime_ = 0;
     totalChargDischargeTime_ = 0;
     on_ = true;
@@ -282,7 +281,7 @@ void Screen::powerOn()
 
 void Screen::powerOff()
 {
-    startTime_totalTime_ = Time::getMiliseconds() - startTime_totalTime_;
+    startTime_totalTime_U16_ = Time::diffU16(startTime_totalTime_U16_, Time::getSecondsU16());
     on_ = false;
 }
 

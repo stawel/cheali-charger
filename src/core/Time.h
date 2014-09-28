@@ -28,9 +28,10 @@ namespace Time {
     void initialize();
     uint32_t getInterrupts();
     uint32_t getMiliseconds();
+    uint16_t getInterruptsU16();
     uint16_t getMilisecondsU16();
-    uint16_t getSeconds();
-    uint16_t getMinutes();
+    uint16_t getSecondsU16();
+    uint16_t getMinutesU16();
     void delay(uint16_t ms);
     void delayDoIdle(uint16_t ms);
 

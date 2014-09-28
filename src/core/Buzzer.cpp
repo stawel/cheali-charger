@@ -21,7 +21,7 @@
 
 
 namespace Buzzer {
-    uint16_t begin_time_;
+    uint16_t begin_time_U16_;
     uint16_t last_value_;
     SoundType sound_;
 
@@ -62,13 +62,13 @@ void Buzzer::soundIfSilence(Buzzer::SoundType s)
 
 void Buzzer::begin()
 {
-    begin_time_ = Time::getInterrupts();
+    begin_time_U16_ = Time::getInterruptsU16();
 }
 
 
 void Buzzer::doIdle()
 {
-    uint8_t v2 = getSound(Time::getInterrupts() - begin_time_);
+    uint8_t v2 = getSound(Time::diffU16(begin_time_U16_, Time::getInterruptsU16()));
     if(v2 != last_value_) {
         last_value_ = v2;
         hardware::setBuzzer(last_value_);
@@ -81,11 +81,11 @@ uint8_t Buzzer::getSound(uint16_t time)
     case Keyboard:             return getKeyboard(time);
     case Info:                 return getInfo(time);
     case Save:                 return getSave(time);
-    case Select:             return getSelect(time);
-    case ProgramComplete:     return getProgramComplete(time);
+    case Select:               return getSelect(time);
+    case ProgramComplete:      return getProgramComplete(time);
     case StartProgram:         return getStartProgram(time);
     case ReversedPolarity:     return getReversedPolarity(time);
-    case Error:             return getError(time);
+    case Error:                return getError(time);
     case Off:
     default:
                     return getOff(time);

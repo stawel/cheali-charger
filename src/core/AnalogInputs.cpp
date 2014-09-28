@@ -79,7 +79,7 @@ namespace AnalogInputs {
 
     uint16_t    deltaCount_;
     ValueType   deltaLastT_;
-    uint32_t    deltaStartTime_;
+    uint16_t    deltaStartTimeU16_;
 
     uint32_t    i_charge_;
 
@@ -198,7 +198,7 @@ void AnalogInputs::_resetDeltaAvr()
         i_deltaAvrSumVoutPlus_ = 0;
         i_deltaAvrSumVoutMinus_ = 0;
         i_deltaAvrSumTextern_ = 0;
-        deltaStartTime_ = Time::getMiliseconds();
+        deltaStartTimeU16_ = Time::getMilisecondsU16();
     }
 }
 
@@ -387,9 +387,7 @@ void AnalogInputs::finalizeFullMeasurement()
     }
 
     if(avrCount == 0) {
-		uint32_t t = Time::getMiliseconds();
     	if(!ignoreLastResult_) {
-			tmp_time_ = t - tmp_time_last_;
 			calculationCount_++;
 
 		    i_deltaAvrSumVoutPlus_    += i_avrSum_[Vout_plus_pin] >> ANALOG_INPUTS_ADC_DELTA_SHIFT;
@@ -405,7 +403,6 @@ void AnalogInputs::finalizeFullMeasurement()
 			}
 			finalizeFullVirtualMeasurement();
     	}
-		tmp_time_last_ = t;
         _resetAvr();
     }
 }
@@ -413,7 +410,7 @@ void AnalogInputs::finalizeFullMeasurement()
 
 void AnalogInputs::finalizeDeltaMeasurement()
 {
-    if(Time::getMiliseconds() - deltaStartTime_ > DELTA_TIME_MILISECONDS) {
+    if(Time::diffU16(deltaStartTimeU16_, Time::getMilisecondsU16()) > DELTA_TIME_MILISECONDS) {
         uint32_t deltaAvrCount;
         uint32_t deltaAvrSumVoutPlus;
         uint32_t deltaAvrSumVoutMinus;
