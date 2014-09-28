@@ -300,7 +300,7 @@ void Program::run(ProgramType prog)
             } else {
                 // Program::stopReason_ = PSTR("NEED BALANCER");
                 Screen::displayStrings(PSTR("NEED force bal."),  PSTR("set. --> YES"));
-                Timer::delay(2000);
+                Time::delay(2000);
             }
             break;
         case Program::DCcycleNiXX:

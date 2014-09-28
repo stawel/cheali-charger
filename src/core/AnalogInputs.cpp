@@ -116,7 +116,7 @@ void AnalogInputs::doFullMeasurement()
     resetMeasurement();
     uint16_t c = getFullMeasurementCount();
     while(c == getFullMeasurementCount())
-        Timer::delayIdle(10);
+        Time::delayDoIdle(10);
 }
 
 
@@ -198,7 +198,7 @@ void AnalogInputs::_resetDeltaAvr()
         i_deltaAvrSumVoutPlus_ = 0;
         i_deltaAvrSumVoutMinus_ = 0;
         i_deltaAvrSumTextern_ = 0;
-        deltaStartTime_ = Timer::getMiliseconds();
+        deltaStartTime_ = Time::getMiliseconds();
     }
 }
 
@@ -387,7 +387,7 @@ void AnalogInputs::finalizeFullMeasurement()
     }
 
     if(avrCount == 0) {
-		uint32_t t = Timer::getMiliseconds();
+		uint32_t t = Time::getMiliseconds();
     	if(!ignoreLastResult_) {
 			tmp_time_ = t - tmp_time_last_;
 			calculationCount_++;
@@ -413,7 +413,7 @@ void AnalogInputs::finalizeFullMeasurement()
 
 void AnalogInputs::finalizeDeltaMeasurement()
 {
-    if(Timer::getMiliseconds() - deltaStartTime_ > DELTA_TIME_MILISECONDS) {
+    if(Time::getMiliseconds() - deltaStartTime_ > DELTA_TIME_MILISECONDS) {
         uint32_t deltaAvrCount;
         uint32_t deltaAvrSumVoutPlus;
         uint32_t deltaAvrSumVoutMinus;

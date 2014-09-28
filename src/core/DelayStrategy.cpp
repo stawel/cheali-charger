@@ -38,7 +38,7 @@ namespace DelayStrategy {
 
 void DelayStrategy::powerOn()
 {
-    start_time_ = Timer::getMinutes();
+    start_time_ = Time::getMinutes();
 }
 
 void DelayStrategy::powerOff()
@@ -48,9 +48,7 @@ void DelayStrategy::powerOff()
 
 Strategy::statusType DelayStrategy::doStrategy()
 {
-    Strategy::statusType status;
-
-    if(timeDiffU16(start_time_, Timer::getMinutes()) <= delay_) {
+    if(Time::diffU16(start_time_, Time::getMinutes()) <= delay_) {
         state_ = true;
         return Strategy::RUNNING;
     } else {

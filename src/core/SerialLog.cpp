@@ -107,7 +107,7 @@ void send()
     if(state == Off)
         return;
 
-    currentTime = Timer::getMiliseconds();
+    currentTime = Time::getMiliseconds();
 
     if(state == Starting) {
         startTime = currentTime;

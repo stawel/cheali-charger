@@ -58,7 +58,7 @@ uint8_t Keyboard::keyChanged(uint8_t key)
 
     key2 = getPressed();
     while(key2 != key) {
-        Timer::delayIdle(BUTTON_CHANGE_DELAY);
+        Time::delayDoIdle(BUTTON_CHANGE_DELAY);
         key = key2;
         key2 = getPressed();
     }
@@ -79,7 +79,7 @@ uint8_t Keyboard::getPressedWithSpeed()
     uint8_t key = BUTTON_NONE;
     for(uint16_t i = 0; i < (BUTTON_DELAY_TIMES / pgm::read(&speedTable[speed_])) + 1; i++) {
         key = getPressed();
-        Timer::delayIdle(BUTTON_DELAY);
+        Time::delayDoIdle(BUTTON_DELAY);
         if(key == last_key_)
             continue;
 

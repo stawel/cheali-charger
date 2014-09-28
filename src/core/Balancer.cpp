@@ -125,7 +125,7 @@ void Balancer::setBalance(uint8_t v)
         balancingEnded_ = AnalogInputs::getFullMeasurementCount();
 
     balance_ = v;
-    startSwitchTime_ = Timer::getMiliseconds();
+    startSwitchTime_ = Time::getMiliseconds();
     AnalogInputs::resetStable();
     if(!done_)
         hardware::setBalancer(v);
@@ -152,7 +152,7 @@ void Balancer::startBalacing()
     }
 
     savedVon_ = false;
-    startBalanceTime_ = Timer::getMiliseconds();
+    startBalanceTime_ = Time::getMiliseconds();
     if(off) {
         endBalancing();
     } else {
@@ -200,7 +200,7 @@ void Balancer::trySaveVon() {
 
 uint16_t Balancer::getBalanceTime()
 {
-    return (Timer::getMiliseconds() - startBalanceTime_) / 1000;
+    return (Time::getMiliseconds() - startBalanceTime_) / 1000;
 }
 
 

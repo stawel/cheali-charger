@@ -59,7 +59,7 @@ void setup()
     cpu::init();
 
     hardware::initialize();
-    Timer::initialize();
+    Time::initialize();
     SMPS::initialize();
     Discharger::initialize();
     AnalogInputs::initialize();

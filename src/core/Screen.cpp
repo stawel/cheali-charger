@@ -204,7 +204,7 @@ namespace Screen{
 
 void Screen::initialize() {
 #ifdef SCREEN_START_DELAY_MS
-    Timer::delay(SCREEN_START_DELAY_MS); //waiting common display charger for display relase
+    Time::delay(SCREEN_START_DELAY_MS); //waiting common display charger for display relase
 #endif
 #ifdef ENABLE_LCD_RAM_CG
     lcdCreateCGRam();
@@ -267,14 +267,14 @@ void Screen::displayScreenCIVlimits()
 uint16_t Screen::getTimeSec()
 {
     uint32_t t = startTime_totalTime_;
-    if(on_) t = Timer::getMiliseconds() - startTime_totalTime_;
+    if(on_) t = Time::getMiliseconds() - startTime_totalTime_;
     t/=1000;
     return t;
 }
 
 void Screen::powerOn()
 {
-    startTime_totalTime_ = Timer::getMiliseconds();
+    startTime_totalTime_ = Time::getMiliseconds();
     totalBalanceTime_ = 0;
     totalChargDischargeTime_ = 0;
     on_ = true;
@@ -282,7 +282,7 @@ void Screen::powerOn()
 
 void Screen::powerOff()
 {
-    startTime_totalTime_ = Timer::getMiliseconds() - startTime_totalTime_;
+    startTime_totalTime_ = Time::getMiliseconds() - startTime_totalTime_;
     on_ = false;
 }
 
@@ -480,7 +480,7 @@ void Screen::runNotImplemented()
 void Screen::runCalibrateBeforeUse()
 {
     displayStrings(PSTR("please cal."),NULL);
-    Timer::delay(5000);
+    Time::delay(5000);
 }
 
 
@@ -637,9 +637,9 @@ void Screen::displayAnimation()
         lcdPrintChar(255);
         lcdSetCursor(i,0);
         lcdPrintChar(255);
-        Timer::delay(10);
+        Time::delay(10);
     }
-    Timer::delay(10);
+    Time::delay(10);
 }
 #endif
 
@@ -649,7 +649,7 @@ void Screen::displayCalibrationErrorScreen(uint8_t errNo)
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("Cal.err.  F:"));
     lcdPrintUnsigned(errNo, 2);
-    Timer::delay(8000);
+    Time::delay(8000);
 }
 
 void Screen::resetETA()
@@ -722,11 +722,11 @@ void Screen::runResettingEeprom()
 {
     Screen::displayStrings(PSTR("reseting eeprom:"),
                            PSTR("v: " CHEALI_CHARGER_EPPROM_VERSION_STRING " "));
-    Timer::delay(2000);
+    Time::delay(2000);
 }
 
 void Screen::runWelcomeScreen() {
     Screen::displayStrings(PSTR("Cheali-Charger m"),
                            PSTR("v"  CHEALI_CHARGER_VERSION_STRING));
-    Timer::delay(1000);
+    Time::delay(1000);
 }

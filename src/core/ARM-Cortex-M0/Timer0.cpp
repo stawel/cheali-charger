@@ -29,12 +29,12 @@ void TMR0_IRQHandler(void)
 {
     /* Clear Timer0 time-out interrupt flag */
     TIMER_ClearIntFlag(TIMER0);
-    Timer::callback();
+    Time::callback();
 }
 }
 
 
-void Timer::initialize()
+void Time::initialize()
 {
 	CLK_EnableModuleClock(TMR0_MODULE);
 	CLK_SetModuleClock(TMR0_MODULE,CLK_CLKSEL1_TMR0_S_HCLK,CLK_CLKDIV_UART(1));

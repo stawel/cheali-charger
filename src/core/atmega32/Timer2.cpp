@@ -24,11 +24,11 @@
 
 ISR(TIMER2_COMP_vect)
 {
-    Timer::callback();
+    Time::callback();
 }
 
 
-void Timer::initialize()
+void Time::initialize()
 {
 #if F_CPU != 16000000
 #error "F_CPU != 16000000 - not implemented"

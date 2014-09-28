@@ -28,7 +28,7 @@
 
 // time measurement
 
-namespace Timer {
+namespace Time {
     volatile uint32_t interrupts_ = 0;
 
     uint32_t getInterrupts() {
@@ -52,7 +52,7 @@ namespace Timer {
 
     void callback() {
         static uint8_t slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
-        Timer::doInterrupt();
+        Time::doInterrupt();
         if(--slowInterval == 0){
             slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
             AnalogInputs::doSlowInterrupt();
@@ -61,7 +61,7 @@ namespace Timer {
     }
 }
 
-uint32_t Timer::getMiliseconds()
+uint32_t Time::getMiliseconds()
 {
     uint32_t retu = getInterrupts();
 #if TIMER_INTERRUPT_PERIOD_MICROSECONDS == 500
@@ -75,29 +75,31 @@ uint32_t Timer::getMiliseconds()
     return retu;
 }
 
-uint16_t Timer::getSeconds() {
+uint16_t Time::getMilisecondsU16() {
+	return getMiliseconds();
+}
+
+uint16_t Time::getSeconds() {
     return getMiliseconds()/1000;
 }
 
-uint16_t Timer::getMinutes() {
+uint16_t Time::getMinutes() {
     return getMiliseconds()/60000;
 }
 
-void Timer::delay(uint16_t ms)
+void Time::delay(uint16_t ms)
 {
-    uint32_t end;
-    end = getMiliseconds() + ms;
+	uint16_t start = getMilisecondsU16();
 
-    while(getMiliseconds() < end) {};
+    while(diffU16(start, getMilisecondsU16()) < ms) {};
 }
 
-void Timer::delayIdle(uint16_t ms)
+void Time::delayDoIdle(uint16_t ms)
 {
-    uint32_t end;
-    end = getMiliseconds() + ms;
+	uint16_t start = getMilisecondsU16();
 
     do {
         doIdle();
-    } while (getMiliseconds() < end);
+    } while (diffU16(start, getMilisecondsU16()) < ms);
 }
 
