@@ -21,6 +21,7 @@
 #include <inttypes.h>
 #include "AnalogInputs.h"
 #include "Hardware.h"
+#include "Settings.h"
 
 
 #define MAX_PROGRAMS 30
@@ -37,10 +38,11 @@ struct ProgramData {
         uint16_t type;
 
         uint16_t C,Ic,Id,cells;
-        //#ifdef ENABLE_TIME_LIMIT: to ensure the same eeprom layout Time is always enabled
-        uint16_t Time;
 
-    }; //__attribute__((packed));
+        //#ifdef ENABLE_TIME_LIMIT: to ensure the same eeprom layout Time is always enabled
+        uint16_t time;
+
+    };
 
     BatteryData battery;
     char name[PROGRAM_DATA_MAX_NAME];
@@ -49,24 +51,21 @@ struct ProgramData {
     uint16_t getVoltage(VoltageType type = VIdle) const;
     uint16_t getCapacityLimit() const;
 #ifdef ENABLE_TIME_LIMIT
-    uint16_t getTimeLimit() const;
-    uint8_t printTimeString() const;
+    uint16_t getTimeLimit() const {return battery.time; }
+    void printTimeString() const;
     void changeTime(int direction);
 #endif
     int16_t getDeltaVLimit() const;
-    int16_t getDeltaTLimit() const;
+    int16_t getDeltaTLimit() const {return settings.deltaT_;}
 
-    void edit(int index);
-    void createName(int index);
-    void resetName(int index);
+    //Info: the print... and change... methods are used in ProgramDataMenu AND Screen
+    void printBatteryString(int n) const;
+    void printBatteryString() const;
 
-    uint8_t printBatteryString(int n) const;
-    uint8_t printBatteryString() const;
-
-    uint8_t printVoltageString() const;
-    uint8_t printIcString() const;
-    uint8_t printIdString() const;
-    uint8_t printChargeString() const;
+    void printVoltageString() const;
+    void printIcString() const;
+    void printIdString() const;
+    void printChargeString() const;
 
     void changeBattery(int direction);
     void changeVoltage(int direction);
@@ -84,6 +83,11 @@ struct ProgramData {
     bool isLiXX() const { return battery.type == Life || battery.type == Lilo || battery.type == Lipo || battery.type == Li430 ||battery.type == Li435 || battery.type == NiZn; };
     bool isNiXX() const { return battery.type == NiCd || battery.type == NiMH; };
     bool isPb() const { return battery.type == Pb; };
+
+    void edit(int index);
+
+    void createName(int index);
+    void resetName(int index);
 
     static void loadProgramData(int index);
     static void saveProgramData(int index);

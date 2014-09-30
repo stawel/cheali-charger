@@ -158,11 +158,6 @@ int16_t ProgramData::getDeltaVLimit() const
     if(battery.type == NiMH) v = settings.deltaV_NiMH_;
     return battery.cells * v;
 }
-int16_t ProgramData::getDeltaTLimit() const
-{
-    return settings.deltaT_;
-}
-
 
 void ProgramData::restoreDefault()
 {
@@ -181,42 +176,37 @@ void ProgramData::loadDefault()
 }
 
 
-uint8_t ProgramData::printBatteryString(int n) const { return lcdPrint_P(pgm::read(&batteryString[battery.type]), n); }
-uint8_t ProgramData::printBatteryString() const { return printBatteryString(LCD_COLUMNS); }
+void ProgramData::printBatteryString(int n) const { lcdPrint_P(pgm::read(&batteryString[battery.type]), n); }
+void ProgramData::printBatteryString() const { printBatteryString(LCD_COLUMNS); }
 
-uint8_t ProgramData::printVoltageString() const
+void ProgramData::printVoltageString() const
 {
     if(battery.type == Unknown) {
         lcdPrintVoltage(getVoltage(), 7);
-        return 7;
     } else {
         uint8_t r = 5+2+1;
         lcdPrintVoltage(getVoltage(), 5);
         lcdPrintChar('/');
         lcdPrintUInt(battery.cells);
         lcdPrintChar('C');
-        return r;
     }
 }
 
-uint8_t ProgramData::printIcString() const
+void ProgramData::printIcString() const
 {
     lcdPrintCurrent(battery.Ic, 6);
-    return 6;
 }
-uint8_t ProgramData::printIdString() const
+void ProgramData::printIdString() const
 {
     lcdPrintCurrent(battery.Id, 6);
-    return 6;
 }
 
-uint8_t ProgramData::printChargeString() const
+void ProgramData::printChargeString() const
 {
     if(battery.C == PROGRAM_DATA_MAX_CHARGE)
         lcdPrint_P(PSTR("unlimited"));
     else
         lcdPrintCharge(battery.C, 7);
-    return 8;
 }
 
 
@@ -330,25 +320,19 @@ void ProgramData::check()
 }
 
 #ifdef ENABLE_TIME_LIMIT
-uint16_t ProgramData::getTimeLimit() const
-{
-    uint16_t tim = battery.Time;
-    return tim;
-}
 
-uint8_t ProgramData::printTimeString() const
+void ProgramData::printTimeString() const
 {
-    if(battery.Time == 1000) {
+    if(battery.time == 1000) {
         lcdPrint_P(PSTR("unlimit"));
     } else {
-        lcdPrintUInt(battery.Time);
+        lcdPrintUInt(battery.time);
         lcdPrint_P(PSTR("min."));
     }
-    return 6;
 }
 
 void ProgramData::changeTime(int direction)
 {
-    change0ToMaxSmart(battery.Time, direction, 1000,0,1);
+    change0ToMaxSmart(battery.time, direction, 1000,0,1);
 }
 #endif
