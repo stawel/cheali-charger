@@ -34,7 +34,7 @@ namespace ProgramDCcycle {
 
 Strategy::statusType ProgramDCcycle::runDCcycle(BatteryGroup prog1)
 { //TODO_NJ
-    Strategy::statusType status;
+    Strategy::statusType status = Strategy::COMPLETE;
     Strategy::exitImmediately = true;
     for(currentCycle = 1; currentCycle <= settings.DCcycles_; currentCycle++) {
 
@@ -74,7 +74,7 @@ Strategy::statusType ProgramDCcycle::runDCcycle(BatteryGroup prog1)
 
 Strategy::statusType ProgramDCcycle::runCycleDischargeCommon(BatteryGroup prog1)
 {
-    Strategy::statusType status;
+    Strategy::statusType status = Strategy::COMPLETE;
 
     if(prog1 == LiXX){
         status = runDischarge();
@@ -91,7 +91,7 @@ Strategy::statusType ProgramDCcycle::runCycleDischargeCommon(BatteryGroup prog1)
 
 Strategy::statusType ProgramDCcycle::runCycleChargeCommon(BatteryGroup prog1)
 {
-    Strategy::statusType status;
+    Strategy::statusType status = Strategy::COMPLETE;
 
     if(prog1 == LiXX) {
         status = runTheveninChargeBalance();

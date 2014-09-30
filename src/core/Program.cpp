@@ -146,13 +146,11 @@ namespace Program {
 bool Program::startInfo()
 {
     bool balancer = false;
-    const Screen::ScreenType * screen = startInfoScreens;
     Strategy::strategy = &StartInfoStrategy::vtable;
     Strategy::exitImmediately = true;
     if(ProgramData::currentProgramData.isLiXX()) {
         //usues balance port
         balancer = true;
-        screen = startInfoBalanceScreens;
     }
     StartInfoStrategy::setBalancePort(balancer);
     return Strategy::doStrategy(startInfoBalanceScreens) == Strategy::COMPLETE;

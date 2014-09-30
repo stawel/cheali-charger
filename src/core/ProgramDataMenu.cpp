@@ -128,7 +128,6 @@ void ProgramDataMenu::run() {
         index = runSimple();
 
         if(index < 0) return;
-        uint8_t enabled = 0;
 
         START_CASE_COUNTER_FROM(sizeOfArray(ProgramDataStaticMenu)
 #ifdef ENABLE_PROGRAM_MENU_EDIT_NAME
