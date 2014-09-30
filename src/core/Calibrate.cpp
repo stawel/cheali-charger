@@ -29,6 +29,7 @@
 #include "Program.h"
 #include "AnalogInputsPrivate.h"
 #include "Hardware.h"
+#include "eeprom.h"
 
 namespace Calibrate {
 
@@ -510,6 +511,8 @@ void run()
         case NEXT_CASE: expertCalibrateVoltage(); break;
 #endif
         }
+        eeprom::restoreCalibrationCRC();
+
         AnalogInputs::powerOff();
         SerialLog::powerOff();
 

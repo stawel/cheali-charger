@@ -120,7 +120,7 @@ std::string EEPROM::toString() const
     std::stringstream s;
     {
         s << std::setprecision(3) << std::fixed;
-        s << "magicString='" << std::string((char *) d.magicString, MAGIC_STRING_LEN) <<"'\n";
+        s << "magicString='" << std::string((char *) d.magicString, EEPROM_MAGIC_STRING_LEN) <<"'\n";
         d.magicString[0] = d.magicString[1] = d.magicString[2] = d.magicString[3] = MAGIC;
         PRINT16(calibrationVersion, d.calibrationVersion);
         PRINT16(programDataVersion, d.programDataVersion);

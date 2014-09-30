@@ -27,48 +27,110 @@
 
 #define CHARS_TO_UINT16(x,y) (((y)<< 8) + (x))
 
+#define EEPROM_READ_TRIALS 5
+
 namespace eeprom {
     Data data EEMEM;
 
-    bool testWriteVersion(uint16_t * adr, uint16_t version) {
-        if(eeprom::read(adr) == version)
-            return false;
-        eeprom::write(adr, version);
+    bool testOrRestore(uint16_t * adr, uint16_t version, bool restore) {
+        uint8_t trials = EEPROM_READ_TRIALS;
+        if(restore) {
+            eeprom::write(adr, version);
+        }
+        while(--trials) {
+            if(eeprom::read(adr) == version)
+                return false;
+            Time::delay(100);
+        }
         return true;
     }
 
-    void calibrationDisplayMessage(bool calib, bool force)
-    {
-        if(force)
-            Screen::runResettingEeprom();
+    uint8_t testOrRestore(uint8_t restore) {
+        uint8_t test = 0;
+        if(testOrRestore((uint16_t*) &data.magicString[0], CHARS_TO_UINT16('c','h'), restore & EEPROM_RESTORE_MAGIC_STRING)) test |= EEPROM_RESTORE_MAGIC_STRING;
+        if(testOrRestore((uint16_t*) &data.magicString[2], CHARS_TO_UINT16('l','i'), restore & EEPROM_RESTORE_MAGIC_STRING)) test |= EEPROM_RESTORE_MAGIC_STRING;
 
-        if(calib)
-            Screen::runCalibrateBeforeUse();
+        if(testOrRestore(&data.calibrationVersion, CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION, restore & EEPROM_RESTORE_CALIBRATION_VERSION))    test |= EEPROM_RESTORE_CALIBRATION_VERSION;
+        if(testOrRestore(&data.programDataVersion, CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION, restore & EEPROM_RESTORE_PROGRAM_DATA_VERSION))   test |= EEPROM_RESTORE_PROGRAM_DATA_VERSION;
+        if(testOrRestore(&data.settingVersion, CHEALI_CHARGER_EEPROM_SETTINGS_VERSION, restore & EEPROM_RESTORE_SETTING_VERSION))               test |= EEPROM_RESTORE_SETTING_VERSION;
+
+        if(restore & EEPROM_RESTORE_CALIBRATION) AnalogInputs::restoreDefault();
+        if(restoreCalibrationCRC(false)) test |= EEPROM_RESTORE_CALIBRATION;
+
+        if(restore & EEPROM_RESTORE_PROGRAM_DATA) ProgramData::restoreDefault();
+        if(restoreProgramDataCRC(false)) test |= EEPROM_RESTORE_PROGRAM_DATA;
+
+        if(restore & EEPROM_RESTORE_SETTINGS)	Settings::restoreDefault();
+        if(restoreSettingsCRC(false)) test |= EEPROM_RESTORE_SETTINGS;
+
+        return test;
     }
 
-    void restoreDefault(bool force) {
-        bool calib = false;
+    void restoreDefault(uint8_t what) {
+        if(Screen::runAskResetEeprom(what)) {
+            if(what & EEPROM_RESTORE_MAGIC_STRING)          what |= EEPROM_RESTORE_CALIBRATION_VERSION;
+            if(what & EEPROM_RESTORE_CALIBRATION_VERSION)   what |= EEPROM_RESTORE_PROGRAM_DATA_VERSION | EEPROM_RESTORE_CALIBRATION;
+            if(what & EEPROM_RESTORE_PROGRAM_DATA_VERSION)  what |= EEPROM_RESTORE_SETTING_VERSION | EEPROM_RESTORE_PROGRAM_DATA;
+            if(what & EEPROM_RESTORE_SETTING_VERSION)       what |= EEPROM_RESTORE_SETTINGS;
 
-        if(testWriteVersion((uint16_t*) &data.magicString[0], CHARS_TO_UINT16('c','h')))  {
-            calib = force = true;
+            uint8_t after = testOrRestore(what);
+            Screen::runResetEepromDone(what, after);
         }
-        if(testWriteVersion((uint16_t*) &data.magicString[2], CHARS_TO_UINT16('l','i')))  {
-            calib = force = true;
-        }
-
-        if(testWriteVersion(&data.calibrationVersion, CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION) || force)  {
-            calib = force = true;
-            AnalogInputs::restoreDefault();
-        }
-        if(testWriteVersion(&data.programDataVersion, CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION) || force)  {
-            force = true;
-            ProgramData::restoreDefault();
-        }
-        if(testWriteVersion(&data.settingVersion, CHEALI_CHARGER_EEPROM_SETTINGS_VERSION) || force)  {
-            force = true;
-            Settings::restoreDefault();
-        }
-
-        calibrationDisplayMessage(calib, force);
     }
+
+#ifdef ENABLE_EEPROM_RESTORE_DEFAULT
+    void check() {
+        uint8_t c = testOrRestore(0);
+        if(c == 0) return;
+        restoreDefault(c);
+    }
+
+    void restoreDefault() {
+        uint8_t what = testOrRestore(0) | EEPROM_RESTORE_MAGIC_STRING;
+        restoreDefault(what);
+    }
+#endif
+
+
+#ifdef ENABLE_EEPROM_CRC
+
+    inline uint16_t crc16_update(uint16_t crc, uint8_t a) {
+        uint8_t i;
+        crc ^= a;
+        for (i = 0; i < 8; ++i) {
+            if (crc & 1)
+                crc = (crc >> 1) ^ 0xA001;
+            else
+                crc = (crc >> 1);
+        }
+        return crc;
+    }
+
+    uint16_t getCRC(uint8_t * adr, uint16_t size) {
+        //TODO: write CRC
+        uint16_t crc = 0xffff;
+        for(uint16_t i = 0; i < size; i++) {
+            crc = crc16_update(crc, eeprom::read(&adr[i]));
+        }
+        return crc;
+    }
+
+    bool testOrRestoreCRC(uint8_t * adr, uint16_t size, bool restore) {
+        uint16_t CRC = getCRC(adr, size);
+        return testOrRestore((uint16_t*)(adr+size),CRC, restore);
+    }
+
+    bool restoreCalibrationCRC(bool restore) {
+        return testOrRestoreCRC((uint8_t*)&data.calibration, sizeof(data.calibration), restore);
+    }
+
+    bool restoreProgramDataCRC(bool restore) {
+        return testOrRestoreCRC((uint8_t*)&data.programData, sizeof(data.programData), restore);
+    }
+
+    bool restoreSettingsCRC(bool restore) {
+        return testOrRestoreCRC((uint8_t*)&data.settings, sizeof(data.settings), restore);
+    }
+#endif
+
 }

@@ -53,8 +53,9 @@ const char string_speed[]       PROGMEM = "speed: ";
 #ifdef ENABLE_TX_HW_SERIAL
 const char string_uartInput[]   PROGMEM = "UART inp: ";
 #endif
+#ifdef ENABLE_SETTINGS_MENU_RESET
 const char string_reset[]       PROGMEM = "   reset";
-
+#endif
 const char * const SettingsStaticMenu[] PROGMEM =
 {
 #ifdef ENABLE_LCD_BACKLIGHT
@@ -87,7 +88,9 @@ const char * const SettingsStaticMenu[] PROGMEM =
 #ifdef ENABLE_TX_HW_SERIAL
         string_uartInput,
 #endif
+#ifdef ENABLE_SETTINGS_MENU_RESET
         string_reset,
+#endif
         NULL
 };
 
@@ -184,10 +187,12 @@ void SettingsMenu::run() {
 
         if(index < 0) return;
         switch(index) {
+#ifdef ENABLE_SETTINGS_MENU_RESET
         case sizeOfArray(SettingsStaticMenu) - 2:  //reset
             p_.setDefault();
             Buzzer::soundSelect();
             break;
+#endif
         default:
             Settings undo(p_);
             if(!runEdit(index)) {

@@ -42,8 +42,12 @@ const char * const ProgramDataStaticMenu[] PROGMEM =
         string_PDMM5,
 #endif
         string_PDMM6,
+#ifdef ENABLE_PROGRAM_MENU_EDIT_NAME
         string_PDMM7,
+#endif
+#ifdef ENABLE_PROGRAM_MENU_RESET_NAME
         string_PDMM8,
+#endif
         NULL
 };
 
@@ -124,12 +128,24 @@ void ProgramDataMenu::run() {
         index = runSimple();
 
         if(index < 0) return;
-        START_CASE_COUNTER_FROM(sizeOfArray(ProgramDataStaticMenu)-4);
+        uint8_t enabled = 0;
+
+        START_CASE_COUNTER_FROM(sizeOfArray(ProgramDataStaticMenu)
+#ifdef ENABLE_PROGRAM_MENU_EDIT_NAME
+                  -1
+#endif
+#ifdef ENABLE_PROGRAM_MENU_RESET_NAME
+                  -1
+#endif
+                  -1 -1);
         switch(index) {
             case NEXT_CASE: createName(); break;
+#ifdef ENABLE_PROGRAM_MENU_EDIT_NAME
             case NEXT_CASE: editName();   break;
+#endif
+#ifdef ENABLE_PROGRAM_MENU_RESET_NAME
             case NEXT_CASE: resetName();  break;
-
+#endif
         default:
             ProgramData undo(p_);
             if(!runEdit(index)) {

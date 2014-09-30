@@ -19,6 +19,7 @@
 #include "Program.h"
 #include "ProgramMenus.h"
 #include "StaticMenu.h"
+#include "eeprom.h"
 
 // Program selection depending on the battery type
 
@@ -153,6 +154,7 @@ void ProgramMenus::selectProgram(int index)
             if(prog == Program::EditBattery) {
                 ProgramData::currentProgramData.edit(index);
                 ProgramData::saveProgramData(index);
+                eeprom::restoreProgramDataCRC();
                 selectPrograms = getSelectProgramMenu();
             } else {
                 Program::run(prog);

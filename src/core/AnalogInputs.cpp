@@ -129,6 +129,7 @@ void AnalogInputs::restoreDefault()
         p = pgm::read<CalibrationPoint>(&inputsP_[name].p1);
         setCalibrationPoint(name, 1, p);
     }
+    eeprom::restoreCalibrationCRC();
 }
 
 void AnalogInputs::getCalibrationPoint(CalibrationPoint &x, Name name, uint8_t i)

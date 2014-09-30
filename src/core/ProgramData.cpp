@@ -172,6 +172,7 @@ void ProgramData::restoreDefault()
         currentProgramData.resetName(i+1);
         saveProgramData(i);
     }
+    eeprom::restoreProgramDataCRC();
 }
 
 void ProgramData::loadDefault()

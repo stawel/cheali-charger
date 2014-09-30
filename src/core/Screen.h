@@ -80,8 +80,8 @@ namespace Screen {
     void displayNotImplemented();
     void displayScreenReversedPolarity();
 
-    void runResettingEeprom();
-    void runCalibrateBeforeUse();
+    bool runAskResetEeprom(uint8_t what);
+    void runResetEepromDone(uint8_t before, uint8_t after);
     void runNotImplemented();
     void runWelcomeScreen();
 };

@@ -418,12 +418,6 @@ void Screen::runNotImplemented()
     waitButtonPressed();
 }
 
-void Screen::runCalibrateBeforeUse()
-{
-    displayStrings(PSTR("please cal."),NULL);
-    Time::delay(5000);
-}
-
 
 void Screen::displayScreenReversedPolarity()
 {
@@ -622,11 +616,28 @@ bool Screen::displayBlink()
     return toggleTextCounter<=20;
 }
 
-void Screen::runResettingEeprom()
+bool Screen::runAskResetEeprom(uint8_t what)
 {
-    Screen::displayStrings(PSTR("reseting eeprom:"),
-                           PSTR("v: " CHEALI_CHARGER_EPPROM_VERSION_STRING " "));
-    Time::delay(2000);
+    lcdClear();
+    lcdSetCursor0_0();
+    lcdPrint_P(PSTR("eeprom reset:"));
+    lcdPrintUInt(what);
+    lcdSetCursor0_1();
+    lcdPrint_P(PSTR(" NO         YES"));
+    return waitButtonPressed() == BUTTON_START;
+}
+
+void Screen::runResetEepromDone(uint8_t before, uint8_t after) {
+	if(after != 0) {
+	    displayStrings(PSTR("eeprom reset"),
+	                           PSTR("error: "));
+	    lcdPrintUInt(after);
+	} else {
+		//TODO
+		//if(before )
+	    displayStrings(PSTR("please cal."), NULL);
+	    Time::delay(2000);
+	}
 }
 
 void Screen::runWelcomeScreen() {

@@ -74,7 +74,7 @@ void setup()
 
     Screen::runWelcomeScreen();
 
-    eeprom::restoreDefault();
+    eeprom::check();
 }
 
 

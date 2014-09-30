@@ -53,7 +53,7 @@ void change0ToMaxSmart(uint16_t &v, int direc, uint16_t max, int16_t step, uint8
 void change0ToMax(uint16_t &v, int direc, uint8_t max);
 void change1ToMax(uint16_t &v, int direc, uint8_t max);
 
-void waitButtonPressed();
+uint8_t waitButtonPressed();
 uint8_t countElements(const char * const* staticMenu);
 
 

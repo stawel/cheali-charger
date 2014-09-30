@@ -115,8 +115,15 @@ void change0ToMaxSmart(uint16_t &v, int dir, uint16_t max, int16_t step, uint8_t
     else SUB_MIN(v, step ,starting);
 }
 
-void waitButtonPressed()
+uint8_t waitButtonPressed()
 {
+    uint8_t key;
+
     while(Keyboard::getPressedWithSpeed() != BUTTON_NONE);
-    while(Keyboard::getPressedWithSpeed() == BUTTON_NONE);
+
+    do {
+        key = Keyboard::getPressedWithSpeed();
+    } while(key == BUTTON_NONE);
+
+    return key;
 }

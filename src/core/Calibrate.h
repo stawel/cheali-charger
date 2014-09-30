@@ -28,7 +28,6 @@
 
 namespace Calibrate {
     void run();
-    void calibrateVoltage();
 };
 
 #endif /* CALIBRATE_H_ */

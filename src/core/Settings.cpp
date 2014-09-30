@@ -91,6 +91,8 @@ void Settings::load() {
 
 void Settings::save() {
     eeprom::write(&eeprom::data.settings, settings);
+    eeprom::restoreSettingsCRC();
+
     settings.apply();
 }
 

@@ -20,11 +20,11 @@
 #include "ProgramData.h"
 #include "Settings.h"
 
-#define MAGIC_STRING_LEN 4
+#define EEPROM_MAGIC_STRING_LEN 4
 
 namespace eeprom {
     struct Data {
-        uint8_t magicString[MAGIC_STRING_LEN];
+        uint8_t magicString[EEPROM_MAGIC_STRING_LEN];
         uint16_t calibrationVersion;
         uint16_t programDataVersion;
         uint16_t settingVersion;

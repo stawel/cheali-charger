@@ -34,13 +34,15 @@ const char string_o3[] PROGMEM = "reset default";
 const char * const optionsStaticMenu[] PROGMEM =
 { string_o1,
   string_o2,
+#ifdef ENABLE_EEPROM_RESTORE_DEFAULT
   string_o3,
+#endif
   NULL
 };
 
 void Options::resetDefault()
 {
-    eeprom::restoreDefault(true);
+    eeprom::restoreDefault();
 }
 
 void Options::run()
@@ -50,10 +52,15 @@ void Options::run()
 
     do {
         i = optionsMenu.runSimple();
+        START_CASE_COUNTER;
         switch(i) {
-        case 0: settings.edit(); break;
-        case 1: Calibrate::run(); break;
-        case 2: resetDefault(); break;
+            case NEXT_CASE: settings.edit(); break;
+#ifdef ENABLE_CALIBRATION
+            case NEXT_CASE: Calibrate::run(); break;
+#endif
+#ifdef ENABLE_EEPROM_RESTORE_DEFAULT
+            case NEXT_CASE: resetDefault(); break;
+#endif
         }
     } while(i>=0);
 }

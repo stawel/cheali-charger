@@ -20,19 +20,52 @@
 #include "ProgramData.h"
 #include "Settings.h"
 
-#define MAGIC_STRING_LEN 4
+#define EEPROM_MAGIC_STRING_LEN 4
+
+#define EEPROM_RESTORE_MAGIC_STRING         1
+#define EEPROM_RESTORE_CALIBRATION_VERSION  2
+#define EEPROM_RESTORE_PROGRAM_DATA_VERSION 4
+#define EEPROM_RESTORE_SETTING_VERSION      8
+#define EEPROM_RESTORE_CALIBRATION          16
+#define EEPROM_RESTORE_PROGRAM_DATA         32
+#define EEPROM_RESTORE_SETTINGS             64
+
 
 namespace eeprom {
     struct Data {
-        uint8_t magicString[MAGIC_STRING_LEN];
+        uint8_t magicString[EEPROM_MAGIC_STRING_LEN];
         uint16_t calibrationVersion;
         uint16_t programDataVersion;
         uint16_t settingVersion;
 
         AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS];
+        uint16_t calibrationCRC;
+
         ProgramData programData[MAX_PROGRAMS];
+        uint16_t programDataCRC;
+
         Settings settings;
+        uint16_t settingsCRC;
     };
     extern Data data;
-    void restoreDefault(bool force = false);
+
+#ifdef ENABLE_EEPROM_CRC
+    bool restoreCalibrationCRC(bool restore = true);
+    bool restoreProgramDataCRC(bool restore = true);
+    bool restoreSettingsCRC(bool restore = true);
+#else
+    inline bool restoreCalibrationCRC(bool restore = true)  { return false; }
+    inline bool restoreProgramDataCRC(bool restore = true)  { return false; }
+    inline bool restoreSettingsCRC(bool restore = true)     { return false; }
+#endif
+
+#ifdef ENABLE_EEPROM_RESTORE_DEFAULT
+    void check();
+    void restoreDefault();
+#else
+    inline void check() {};
+    inline void restoreDefault() {};
+#endif
+
+
 }
