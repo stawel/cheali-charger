@@ -22,96 +22,87 @@
 #include "eeprom.h"
 
 // Program selection depending on the battery type
+using namespace ProgramMenus;
 
 namespace {
 
-    const char charge_str[] PROGMEM = "charge";
-    const char chaBal_str[] PROGMEM = "charge+balance";
-    const char balanc_str[] PROGMEM = "balance";
-    const char discha_str[] PROGMEM = "discharge";
-    const char fastCh_str[] PROGMEM = "fast charge";
-    const char storag_str[] PROGMEM = "storage";
-    const char stoBal_str[] PROGMEM = "storage+balanc";
-    const char dccycl_str[] PROGMEM = "D>C format";
-    const char edBatt_str[] PROGMEM = "edit battery";
-
-    const char * const programLiXXMenu[] PROGMEM =
-    { charge_str,
-      chaBal_str,
-      balanc_str,
-      discha_str,
-      fastCh_str,
-      storag_str,
-      stoBal_str,
-      dccycl_str,
-      edBatt_str,
-      NULL
+    const char * const programLiXXMenu[] PROGMEM = {
+            string_charge,
+            string_chargeAndBalance,
+            string_balance,
+            string_discharge,
+            string_fastCharge,
+            string_storage,
+            string_storageAndBalance,
+            string_dcCycle,
+            string_editBattery,
+            NULL
     };
 
-    const Program::ProgramType programLiXXMenuType[] PROGMEM =
-    { Program::ChargeLiXX,
-      Program::ChargeLiXX_Balance,
-      Program::Balance,
-      Program::DischargeLiXX,
-      Program::FastChargeLiXX,
-      Program::StorageLiXX,
-      Program::StorageLiXX_Balance,
-      Program::DCcycleLiXX,
-      Program::EditBattery
+    const Program::ProgramType programLiXXMenuType[] PROGMEM = {
+            Program::ChargeLiXX,
+            Program::ChargeLiXX_Balance,
+            Program::Balance,
+            Program::DischargeLiXX,
+            Program::FastChargeLiXX,
+            Program::StorageLiXX,
+            Program::StorageLiXX_Balance,
+            Program::DCcycleLiXX,
+            Program::EditBattery
     };
 
-    const char * const programNiZnMenu[] PROGMEM =
-    { charge_str,
-      chaBal_str,
-      balanc_str,
-      discha_str,
-      fastCh_str,
-      dccycl_str,
-      edBatt_str,
-      NULL
+    const char * const programNiZnMenu[] PROGMEM = {
+            string_charge,
+            string_chargeAndBalance,
+            string_balance,
+            string_discharge,
+            string_fastCharge,
+            string_dcCycle,
+            string_editBattery,
+            NULL
     };
 
-    const Program::ProgramType programNiZnMenuType[] PROGMEM =
-    { Program::ChargeLiXX,
-      Program::ChargeLiXX_Balance,
-      Program::Balance,
-      Program::DischargeLiXX,
-      Program::FastChargeLiXX,   //TODO: check
-      Program::DCcycleLiXX,      //TODO: check
-      Program::EditBattery
+    const Program::ProgramType programNiZnMenuType[] PROGMEM = {
+            Program::ChargeLiXX,
+            Program::ChargeLiXX_Balance,
+            Program::Balance,
+            Program::DischargeLiXX,
+            Program::FastChargeLiXX,   //TODO: check
+            Program::DCcycleLiXX,      //TODO: check
+            Program::EditBattery
     };
 
 
-    const char * const programNiXXMenu[] PROGMEM =
-    { charge_str,
-      discha_str,
-      dccycl_str,
-      edBatt_str,
-      NULL
+    const char * const programNiXXMenu[] PROGMEM = {
+            string_charge,
+            string_discharge,
+            string_dcCycle,
+            string_editBattery,
+            NULL
     };
 
-    const Program::ProgramType programNiXXMenuType[] PROGMEM =
-    { Program::ChargeNiXX,
-      Program::DischargeNiXX,
-      Program::DCcycleNiXX,
-      Program::EditBattery
+    const Program::ProgramType programNiXXMenuType[] PROGMEM = {
+            Program::ChargeNiXX,
+            Program::DischargeNiXX,
+            Program::DCcycleNiXX,
+            Program::EditBattery
     };
 
-    const char * const programPbMenu[] PROGMEM =
-    { charge_str,
-      discha_str,
-      fastCh_str,
-      dccycl_str,
-      edBatt_str,
-      NULL
+    const char * const programPbMenu[] PROGMEM = {
+            string_charge,
+            string_discharge,
+            string_fastCharge,
+            string_dcCycle,
+            string_editBattery,
+            NULL
     };
 
-    const Program::ProgramType programPbMenuType[] PROGMEM =
-    { Program::ChargePb,
-      Program::DischargePb,
-      Program::FastChargePb,   //TODO: check
-      Program::DCcyclePb,      //TODO: check
-      Program::EditBattery
+    const Program::ProgramType programPbMenuType[] PROGMEM = {
+            Program::ChargePb,
+            Program::DischargePb,
+            Program::FastChargePb,   //TODO: check
+            Program::DCcyclePb,      //TODO: check
+            Program::EditBattery
     };
 
 

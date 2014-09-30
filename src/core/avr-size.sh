@@ -1,7 +1,7 @@
 #!/bin/bash
 
 INPUT="$1"
-OUTPUT="$2"
+OUTPUT="$2.tmp"
 echo "INPUT=$INPUT"
 echo "OUTPUT=$OUTPUT"
 avr-gcc -v 2>&1 | tee "$OUTPUT"

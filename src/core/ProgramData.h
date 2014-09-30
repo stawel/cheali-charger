@@ -59,7 +59,6 @@ struct ProgramData {
     int16_t getDeltaTLimit() const {return settings.deltaT_;}
 
     //Info: the print... and change... methods are used in ProgramDataMenu AND Screen
-    void printBatteryString(int n) const;
     void printBatteryString() const;
 
     void printVoltageString() const;

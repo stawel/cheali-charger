@@ -21,32 +21,24 @@
 #include "Utils.h"
 #include "Buzzer.h"
 
-const char string_PDMM0[] PROGMEM = "Bat:  ";
-const char string_PDMM1[] PROGMEM = "V:  ";
-const char string_PDMM2[] PROGMEM = "Ch: ";
-const char string_PDMM3[] PROGMEM = "Ic: ";
-const char string_PDMM4[] PROGMEM = "Id: ";
-const char string_PDMM5[] PROGMEM = "Tlim: ";
-const char string_PDMM6[] PROGMEM = "Create name";
-const char string_PDMM7[] PROGMEM = "Edit name";
-const char string_PDMM8[] PROGMEM = "Reset name";
+using namespace programDataMenu;
 
 const char * const ProgramDataStaticMenu[] PROGMEM =
 {
-        string_PDMM0,
-        string_PDMM1,
-        string_PDMM2,
-        string_PDMM3,
-        string_PDMM4,
+        string_batteryType,
+        string_voltage,
+        string_capacity,
+        string_chargeCurrent,
+        string_dischargeCurrent,
 #ifdef ENABLE_TIME_LIMIT
-        string_PDMM5,
+        string_timeLimit,
 #endif
-        string_PDMM6,
+        string_createName,
 #ifdef ENABLE_PROGRAM_MENU_EDIT_NAME
-        string_PDMM7,
+        string_editName,
 #endif
 #ifdef ENABLE_PROGRAM_MENU_RESET_NAME
-        string_PDMM8,
+        string_resetName,
 #endif
         NULL
 };
@@ -58,7 +50,7 @@ ProgramDataMenu::ProgramDataMenu(const ProgramData &p, int programIndex):
 
 void ProgramDataMenu::editName()
 {
-    EditName editName(p_.name, PROGRAM_DATA_MAX_NAME, PSTR("Edit name:"));
+    EditName editName(p_.name, PROGRAM_DATA_MAX_NAME, string_editedName);
     editName.run();
     render();
 }
@@ -78,7 +70,7 @@ void ProgramDataMenu::waitName()
 {
     lcdClear();
     lcdSetCursor0_0();
-    lcdPrint_P(PSTR("Name:"));
+    lcdPrint_P(string_name);
     lcdSetCursor0_1();
     lcdPrint(p_.name, PROGRAM_DATA_MAX_NAME);
     waitButtonPressed();

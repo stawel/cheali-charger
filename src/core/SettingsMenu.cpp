@@ -21,41 +21,8 @@
 #include "LcdPrint.h"
 #include "Buzzer.h"
 
+using namespace settingsMenu;
 
-
-#ifdef ENABLE_LCD_BACKLIGHT
-const char string_backlight[]   PROGMEM = "backlight:";
-#endif
-#ifdef ENABLE_FAN
-const char string_fanOn[]       PROGMEM = "fan on:   ";
-#endif
-#ifdef ENABLE_T_INTERNAL
-const char string_dischOff[]    PROGMEM = "disch off:";
-#endif
-const char string_externT[]     PROGMEM = "extrn T:   ";
-const char string_externTCO[]   PROGMEM = "extrn TCO:";
-const char string_dTdt[]        PROGMEM = "dT/dt:";
-const char string_enabledV[]    PROGMEM = "enab -dV:  ";
-const char string_NiMHdV[]      PROGMEM = "NiMH -dV:";
-const char string_NiCddV[]      PROGMEM = "NiCd -dV:";
-const char string_DCcycles[]    PROGMEM = "D/C cycles:";
-const char string_DCRestTime[]  PROGMEM = "D/C rest t:";
-const char string_AudioBeep[]   PROGMEM = "beep:      ";
-const char string_Lixx_Imin[]   PROGMEM = "min.I I = I/";
-const char string_capCoff[]     PROGMEM = "cap COff:";
-const char string_inputLow[]    PROGMEM = "input low:";
-const char string_dichLiXX[]    PROGMEM = "disch +:";
-const char string_dichAggLiXX[] PROGMEM = "dis agres: ";
-const char string_forceBalanc[] PROGMEM = "force bal: ";
-const char string_balancErr[]   PROGMEM = "bal. err:";
-const char string_view[]        PROGMEM = "UART: ";
-const char string_speed[]       PROGMEM = "speed: ";
-#ifdef ENABLE_TX_HW_SERIAL
-const char string_uartInput[]   PROGMEM = "UART inp: ";
-#endif
-#ifdef ENABLE_SETTINGS_MENU_RESET
-const char string_reset[]       PROGMEM = "   reset";
-#endif
 const char * const SettingsStaticMenu[] PROGMEM =
 {
 #ifdef ENABLE_LCD_BACKLIGHT
@@ -83,10 +50,10 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_dichAggLiXX,
         string_forceBalanc,
         string_balancErr,
-        string_view,
-        string_speed,
+        string_UARTview,
+        string_UARTspeed,
 #ifdef ENABLE_TX_HW_SERIAL
-        string_uartInput,
+        string_UARTinput,
 #endif
 #ifdef ENABLE_SETTINGS_MENU_RESET
         string_reset,
@@ -223,7 +190,7 @@ void SettingsMenu::printDeltaT(AnalogInputs::ValueType dt)
     lcdPrintUnsigned(dt/100, 3);
     lcdPrintChar('.');
     lcdPrintDigit((dt%100)/10);
-    lcdPrint_P(PSTR("C/m"));
+    lcdPrint_P(string_unitDeltaT);
 }
 
 #ifdef ENABLE_LCD_BACKLIGHT
@@ -255,12 +222,6 @@ void SettingsMenu::changeUART(int dir) {
 #endif
 }
 
-const char string_disable[]     PROGMEM = "disabled";
-const char string_normal[]      PROGMEM = "normal";
-const char string_debug[]       PROGMEM = "debug";
-const char string_extDebug[]    PROGMEM = "ext. deb";
-const char string_extDebugAdc[] PROGMEM = "ext. Adc";
-
 const char * const SettingsUART[] PROGMEM = {
         string_disable,
         string_normal,
@@ -268,9 +229,6 @@ const char * const SettingsUART[] PROGMEM = {
         string_extDebug,
         string_extDebugAdc
 };
-
-const char string_temp[]    PROGMEM = "temp";
-const char string_pin7[]    PROGMEM = "pin7";
 
 const char * const SettingsUARTinput[] PROGMEM = {
 		string_temp,

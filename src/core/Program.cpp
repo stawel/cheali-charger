@@ -253,7 +253,7 @@ Program::ProgramState getProgramState(Program::ProgramType prog)
 void Program::run(ProgramType prog)
 {
     programType_ = prog;
-    stopReason_ = PSTR("");
+    stopReason_ = NULL;
 
     programState_ = getProgramState(prog);
     SerialLog::powerOn();
@@ -297,9 +297,7 @@ void Program::run(ProgramType prog)
             if (settings.forceBalancePort_) {
                 ProgramDCcycle::runDCcycle(ProgramDCcycle::LiXX);
             } else {
-                // Program::stopReason_ = PSTR("NEED BALANCER");
-                Screen::displayStrings(PSTR("NEED force bal."),  PSTR("set. --> YES"));
-                Time::delay(2000);
+                Screen::runNeedForceBalance();
             }
             break;
         case Program::DCcycleNiXX:

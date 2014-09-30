@@ -23,6 +23,8 @@
 #include "Settings.h"
 #include "eeprom.h"
 
+using namespace programData;
+
 ProgramData ProgramData::currentProgramData;
 
 //TODO_NJ
@@ -71,28 +73,17 @@ const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PR
         {ProgramData::NiZn,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120}
 };
 
-const char batteryString_Unknown[]  PROGMEM = "Unkn";
-const char batteryString_NiCd[]     PROGMEM = "NiCd";
-const char batteryString_NiMH[]     PROGMEM = "NiMH";
-const char batteryString_Pb[]       PROGMEM = "Pb  ";
-const char batteryString_Life[]     PROGMEM = "Life";
-const char batteryString_Lilo[]     PROGMEM = "Lilo";
-const char batteryString_Lipo[]     PROGMEM = "Lipo";
-const char batteryString_Li430[]    PROGMEM = "L430";
-const char batteryString_Li435[]    PROGMEM = "L435";
-const char batteryString_NiZn[]     PROGMEM = "NiZn";
-
 const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
-        batteryString_Unknown,
-        batteryString_NiCd,
-        batteryString_NiMH,
-        batteryString_Pb,
-        batteryString_Life,
-        batteryString_Lilo,
-        batteryString_Lipo,
-        batteryString_Li430,
-        batteryString_Li435,
-        batteryString_NiZn
+        string_battery_Unknown,
+        string_battery_NiCd,
+        string_battery_NiMH,
+        string_battery_Pb,
+        string_battery_Life,
+        string_battery_Lilo,
+        string_battery_Lipo,
+        string_battery_Li430,
+        string_battery_Li435,
+        string_battery_NiZn
 };
 
 void ProgramData::printIndex(char *&buf, uint8_t &maxSize, uint8_t index)
@@ -176,15 +167,13 @@ void ProgramData::loadDefault()
 }
 
 
-void ProgramData::printBatteryString(int n) const { lcdPrint_P(pgm::read(&batteryString[battery.type]), n); }
-void ProgramData::printBatteryString() const { printBatteryString(LCD_COLUMNS); }
+void ProgramData::printBatteryString() const { lcdPrint_P(pgm::read(&batteryString[battery.type])); }
 
 void ProgramData::printVoltageString() const
 {
     if(battery.type == Unknown) {
         lcdPrintVoltage(getVoltage(), 7);
     } else {
-        uint8_t r = 5+2+1;
         lcdPrintVoltage(getVoltage(), 5);
         lcdPrintChar('/');
         lcdPrintUInt(battery.cells);
@@ -204,7 +193,7 @@ void ProgramData::printIdString() const
 void ProgramData::printChargeString() const
 {
     if(battery.C == PROGRAM_DATA_MAX_CHARGE)
-        lcdPrint_P(PSTR("unlimited"));
+        lcdPrint_P(string_unlimited);
     else
         lcdPrintCharge(battery.C, 7);
 }
@@ -324,10 +313,10 @@ void ProgramData::check()
 void ProgramData::printTimeString() const
 {
     if(battery.time == 1000) {
-        lcdPrint_P(PSTR("unlimit"));
+        lcdPrint_P(string_unlimited);
     } else {
         lcdPrintUInt(battery.time);
-        lcdPrint_P(PSTR("min."));
+        lcdPrint_P(string_minutes);
     }
 }
 

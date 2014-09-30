@@ -99,7 +99,13 @@ set(CORE_SOURCE
 
         eeprom.h
         eeprom.cpp
+
+        strings/standard.h
+        strings/strings_common.h
+        strings/strings.cpp
 )
+
+SET_SOURCE_FILES_PROPERTIES(${CMAKE_SOURCE_DIR}/src/core/strings/strings.cpp PROPERTIES OBJECT_DEPENDS ${CMAKE_SOURCE_DIR}/src/core/strings/standard.h)
 
 set (CORE_SOURCE_FILES "")
 foreach (SOURCE ${CORE_SOURCE})

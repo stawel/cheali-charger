@@ -189,69 +189,57 @@ Strategy::statusType Monitor::run()
 #ifdef ENABLE_T_INTERNAL
     AnalogInputs::ValueType t = AnalogInputs::getRealValue(AnalogInputs::Tintern);
 
-    if(t > settings.dischargeTempOff_+Settings::TempDifference) {
-        Program::stopReason_ = PSTR("INT T");
+    if(t > settings.dischargeTempOff_+ Settings::TempDifference) {
+        Program::stopReason_ = string_internalTemperatureToHigh;
         return Strategy::ERROR;
     }
 #endif
 
     AnalogInputs::ValueType VMout = AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin);
     if(VoutMaxMesured_ < VMout || (VMout < VoutMinMesured_ && Discharger::isPowerOn())) {
-        Program::stopReason_ = PSTR("BAT disc");
+        Program::stopReason_ = string_batteryDisconnected;
         return Strategy::ERROR;
     }
 
-
     //TODO: NJ if disconnected balancer
     if (settings.forceBalancePort_ && SMPS::isPowerOn() && ProgramData::currentProgramData.isLiXX() && (ProgramData::currentProgramData.battery.cells > 1)) 
-        {
-        bool checkBal = AnalogInputs::isConnected(AnalogInputs::Name(AnalogInputs::Vb1));
-        if(!checkBal) 
-        {  
-          Program::stopReason_ =   PSTR("BAL break");
+    {
+        if(!AnalogInputs::isConnected(AnalogInputs::Vb1)) {
+            Program::stopReason_ = string_balancePortBreak;
             return Strategy::ERROR;
         }
     }
 
-
-    if (SMPS::isPowerOn()) 
-        {
-        
-        if((TheveninMethod::Vend_ + ANALOG_VOLT(0.500)) < AnalogInputs::Vout) 
-        {  
-          Program::stopReason_ =   PSTR("OVERLOAD err");
-          AnalogInputs::powerOff();   //disconnect the battery (pin12 off)
-          return Strategy::ERROR;
+    if (SMPS::isPowerOn()) {
+        if((TheveninMethod::Vend_ + ANALOG_VOLT(0.500)) < AnalogInputs::Vout) {
+            Program::stopReason_ = string_outputVoltageToHigh;
+            AnalogInputs::powerOff();   //disconnect the battery (pin12 off)
+            return Strategy::ERROR;
         }
     }
-
-
 
     //charger hardware failure (smps q2 short)
     AnalogInputs::ValueType v = ANALOG_AMP(0.000);
     if (SMPS::isPowerOn()) {v = ProgramData::currentProgramData.getMaxIc();}
     if (Discharger::isPowerOn()) {v = ProgramData::currentProgramData.getMaxId();}
-    if (v + ANALOG_AMP(1.000) <  AnalogInputs::Iout ) 
-    {
-        Program::stopReason_ = PSTR("HW FAILURE");
+    //TODO stawel: should be fixed
+    if (v + ANALOG_AMP(1.000) <  AnalogInputs::Iout) {
+        Program::stopReason_ = string_outputCurrentToHigh;
         AnalogInputs::powerOff();   //disconnect the battery (pin12 off)
         return Strategy::ERROR;               
     }
 
-
-
-
     AnalogInputs::ValueType Vin = AnalogInputs::getRealValue(AnalogInputs::Vin);
     if(AnalogInputs::isConnected(AnalogInputs::Vin) && Vin < settings.inputVoltageLow_) {
-        Program::stopReason_ = PSTR("INPUT V");
+        Program::stopReason_ = string_inputVoltageToLow;
         return Strategy::ERROR;
     }
 
     AnalogInputs::ValueType c = AnalogInputs::getRealValue(AnalogInputs::Cout);
     AnalogInputs::ValueType c_limit  = ProgramData::currentProgramData.getCapacityLimit();
     if(c_limit != PROGRAM_DATA_MAX_CHARGE && c > c_limit) {
-        Program::stopReason_ = PSTR("CAP COFF");
-        return Strategy::ERROR;
+        Program::stopReason_ = string_capacityLimit;
+        return Strategy::COMPLETE;
     }
 
 #ifdef ENABLE_TIME_LIMIT
@@ -261,8 +249,8 @@ Strategy::statusType Monitor::run()
         uint16_t chargeMin = getTotalChargeDischargeTimeMin();
         uint16_t time_limit  = ProgramData::currentProgramData.getTimeLimit();
         if(chargeMin >= time_limit) {
-            Program::stopReason_ = PSTR("T limit");
-            return Strategy::ERROR;
+            Program::stopReason_ = string_timeLimit;
+            return Strategy::COMPLETE;
         }
     }
 //timelimit end
@@ -271,7 +259,7 @@ Strategy::statusType Monitor::run()
     if(settings.externT_) {
         AnalogInputs::ValueType Textern = AnalogInputs::getRealValue(AnalogInputs::Textern);
         if(Textern > settings.externTCO_) {
-            Program::stopReason_ = PSTR("EXT TCOF");
+            Program::stopReason_ = string_externalTemperatureCutOff;
             return Strategy::ERROR;
         }
     }

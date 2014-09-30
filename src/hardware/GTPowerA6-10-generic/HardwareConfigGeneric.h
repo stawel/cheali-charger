@@ -56,5 +56,6 @@
 
 #define ENABLE_CALIBRATION
 
+#define STRINGS_HEADER "strings/standard.h"
 
 #endif /* HARDWARE_CONFIG_GENERIC_H_ */

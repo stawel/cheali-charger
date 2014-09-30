@@ -62,7 +62,9 @@ namespace Screen {
     void printProgram2chars(Program::ProgramType prog)
     {
         STATIC_ASSERT(sizeOfArray(programString)-1 == Program::LAST_PROGRAM_TYPE*2);
-        lcdPrint_P(programString+prog*2, 2);
+        for(uint8_t i = 0; i < 2; i++) {
+            lcdPrintChar(pgm::read(&programString[prog*2+i]));
+        }
     }
    
     AnalogInputs::ValueType getBalanceValue(uint8_t cell, AnalogInputs::Type type)
@@ -312,21 +314,20 @@ void Screen::displayScreenTemperature()
     lcdPrintSpaces();
 }
 
-void Screen::displayStrings(const char *s1, const char *s2)
+void Screen::displayStrings(const char *s)
 {
     lcdClear();
-    lcdSetCursor0_0(); lcdPrint_P(s1);
-    lcdSetCursor0_1(); lcdPrint_P(s2);
+    lcdSetCursor0_0();
+    lcdPrint_P(s);
 }
+
 
 namespace {
     void screenEnd(const char * firstLine) {
         lcdSetCursor0_0();
         lcdPrint_P(firstLine);
         lcdSetCursor0_1();
-        if(pgm::strlen(Program::stopReason_)>0) {
-            lcdPrint_P(Program::stopReason_);
-        }
+        lcdPrint_P(Program::stopReason_);
         lcdPrintSpaces();
     }
 }
@@ -408,7 +409,7 @@ void Screen::displayDeltaTextern()
 
 void Screen::displayNotImplemented()
 {
-    displayStrings(PSTR("N/A"),NULL);
+    displayStrings(PSTR("N/A"));
 }
 
 
@@ -421,14 +422,14 @@ void Screen::runNotImplemented()
 
 void Screen::displayScreenReversedPolarity()
 {
-    displayStrings(PSTR("REVERSE POLARITY"), NULL);
+    displayStrings(PSTR("REVERSE POLARITY"));
 }
 
 void Screen::displayStartInfo()
 {
     resetCycleHistory();
     lcdSetCursor0_0();
-    ProgramData::currentProgramData.printBatteryString(4);
+    ProgramData::currentProgramData.printBatteryString();
     lcdPrintChar(' ');
     ProgramData::currentProgramData.printVoltageString();
     lcdPrintChar(' ');
@@ -629,19 +630,25 @@ bool Screen::runAskResetEeprom(uint8_t what)
 
 void Screen::runResetEepromDone(uint8_t before, uint8_t after) {
 	if(after != 0) {
-	    displayStrings(PSTR("eeprom reset"),
-	                           PSTR("error: "));
+	    displayStrings(PSTR("eeprom reset\n"
+	                        "error: "));
 	    lcdPrintUInt(after);
 	} else {
 		//TODO
 		//if(before )
-	    displayStrings(PSTR("please cal."), NULL);
+	    displayStrings(PSTR("please cal."));
 	    Time::delay(2000);
 	}
 }
 
 void Screen::runWelcomeScreen() {
-    Screen::displayStrings(PSTR("Cheali-Charger m"),
-                           PSTR("v"  CHEALI_CHARGER_VERSION_STRING));
+    Screen::displayStrings(PSTR("Cheali-Charger m\n"
+                                "v"  CHEALI_CHARGER_VERSION_STRING));
     Time::delay(1000);
+}
+
+void Screen::runNeedForceBalance() {
+    Screen::displayStrings(PSTR("NEED force bal.\n"
+                                "set. --> YES"));
+    Time::delay(2000);
 }

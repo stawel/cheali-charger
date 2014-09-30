@@ -19,6 +19,7 @@
 #include "Hardware.h"
 #include "memory.h"
 
+using namespace lcd_print;
 
 void lcdSetCursor(uint8_t x, uint8_t y)
 {
@@ -137,54 +138,61 @@ void lcdPrintUInt(uint16_t x)
     char *str = buf;
     uint8_t maxSize = 7;
     printUInt(str, maxSize, x);
-    lcd.print(buf);
+    lcdPrint(buf, 8);
 }
 
 
-uint8_t lcdPrint(const char *str, uint8_t n)
+uint8_t lcdPrint(const char *str, uint8_t size)
 {
+    uint8_t n = 0;
     if(str) {
-        char buffer[LCD_COLUMNS + 1];
-        if (n > LCD_COLUMNS) n = LCD_COLUMNS;
-        strncpy(buffer, str, n);
-        buffer[n] = 0;
-        return lcd.print(buffer);
+        while(n < size) {
+            n++;
+            char c = *str;
+            str++;
+            if (c == 0) {
+                break;
+            }
+            lcdPrintChar(c);
+        }
     }
-    return 0;
+    return n;
 }
 
 
 uint8_t lcdPrint_P(const char *str)
 {
-    return lcdPrint_P (str, LCD_COLUMNS);
-}
-
-uint8_t lcdPrint_P(const char *str, uint8_t n)
-{
+    uint8_t n = 0;
     if(str) {
-        char buffer[LCD_COLUMNS + 1];
-        if (n > LCD_COLUMNS) n = LCD_COLUMNS;
-        pgm::strncpy(buffer, str, n);
-        buffer[n] = 0;
-        return lcd.print(buffer);
-    }
-    return 0;
-}
-
-uint8_t lcdPrint_E(const char *str, uint8_t n)
-{
-    if(str) {
-        char buffer[LCD_COLUMNS + 1];
-        if (n > LCD_COLUMNS) n = LCD_COLUMNS;
-        for (uint8_t i = 0; i < n; i++) {
-            buffer[i] = eeprom::read((uint8_t*)str + i);
-            if(!buffer[i])
+        while(true) {
+            n++;
+            char c = pgm::read(str);
+            str++;
+            if (c == 0) {
                 break;
+            }
+            lcdPrintChar(c);
         }
-        buffer[n] = 0;
-        return lcd.print(buffer);
     }
-    return 0;
+    return n;
+}
+
+uint8_t lcdPrint_E(const char *str, uint8_t size)
+{
+    uint8_t n = 0;
+    if(str) {
+        while(n < size) {
+            n++;
+            char c = eeprom::read((const uint8_t*)str);
+            str++;
+            if (c == 0) {
+                break;
+            } else {
+                lcdPrintChar(c);
+            }
+        }
+    }
+    return n;
 }
 
 namespace {
@@ -193,7 +201,7 @@ void lcdPrintInf(int8_t dig)
     for(; dig > 3; dig--)
         lcdPrintChar(' ');
 
-    lcdPrint_P(PSTR("Inf"), dig);
+    lcdPrint_P(string_infinity + 3 - dig);
 }
 }
 
@@ -266,10 +274,10 @@ void lcdPrintTime(uint16_t timeSec)
 
 void lcdPrintYesNo(uint8_t yes)
 {
-    if(yes)
-        lcdPrint_P(PSTR("yes"));
-    else
-        lcdPrint_P(PSTR(" no"));
+    const char * str = string_no;
+    if(yes) str = string_yes;
+
+    lcdPrint_P(str);
 }
 
 void lcdPrintUnsigned(uint16_t x, int8_t dig)
@@ -279,7 +287,11 @@ void lcdPrintUnsigned(uint16_t x, int8_t dig)
 
 void lcdPrintChar(char c)
 {
-    lcd.print(c);
+    if(c == '\n') {
+        lcdSetCursor0_1();
+    } else {
+        lcd.print(c);
+    }
 }
 
 
@@ -360,7 +372,7 @@ void lcdPrint_mV(AnalogInputs::ValueType p, int8_t dig)
 {
     if(dig > 2) {
         lcdPrintUnsigned(p,dig-2);
-        lcdPrint_P(PSTR("mV"));
+        lcdPrint_P(string_unit_mV);
     }
 }
 

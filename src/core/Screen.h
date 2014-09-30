@@ -76,7 +76,7 @@ namespace Screen {
     void printCharge();
     void printChar_Time();
 
-    void displayStrings(const char *s1, const char *s2);
+    void displayStrings(const char *s);
     void displayNotImplemented();
     void displayScreenReversedPolarity();
 
@@ -84,6 +84,8 @@ namespace Screen {
     void runResetEepromDone(uint8_t before, uint8_t after);
     void runNotImplemented();
     void runWelcomeScreen();
+
+    void runNeedForceBalance();
 };
 
 #endif /* SCREEN_H_ */

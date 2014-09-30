@@ -27,17 +27,15 @@
 #include "ProgramData.h"
 #include "eeprom.h"
 
-const char string_o1[] PROGMEM = "settings";
-const char string_o2[] PROGMEM = "calibrate";
-const char string_o3[] PROGMEM = "reset default";
+using namespace options;
 
-const char * const optionsStaticMenu[] PROGMEM =
-{ string_o1,
-  string_o2,
+const char * const optionsStaticMenu[] PROGMEM = {
+        string_settings,
+        string_calibrate,
 #ifdef ENABLE_EEPROM_RESTORE_DEFAULT
-  string_o3,
+        string_resetDefault,
 #endif
-  NULL
+        NULL
 };
 
 void Options::resetDefault()

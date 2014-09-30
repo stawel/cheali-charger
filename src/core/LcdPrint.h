@@ -39,7 +39,6 @@ void lcdSetCursor0_1();
 void lcdClear();
 
 uint8_t lcdPrint_P(const char *str);
-uint8_t lcdPrint_P(const char *str, uint8_t n);
 uint8_t lcdPrint_E(const char *str, uint8_t n);
 uint8_t lcdPrint  (const char *str, uint8_t n);
 uint8_t lcdPrintSpaces();

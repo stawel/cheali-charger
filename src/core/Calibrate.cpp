@@ -33,46 +33,24 @@
 
 namespace Calibrate {
 
-const char c1[] PROGMEM = "voltage";
-const char c2[] PROGMEM = "I charge";
-const char c3[] PROGMEM = "I discharge";
-const char c4[] PROGMEM = "temp extern";
+const char * const calibrateMenu[] PROGMEM = {
+        string_voltage,
+        string_chargeCurrent,
+        string_dischargeCurrent,
+        string_externalTemperature,
 #ifdef ENABLE_T_INTERNAL
-const char c5[] PROGMEM = "temp intern";
+        string_internalTemperature,
 #endif
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
-const char c7[] PROGMEM = "expert DANGER!";
+        string_extertsVoltage,
 #endif
-
-const char * const calibrateMenu[] PROGMEM = {c1,c2,c3,c4
-#ifdef ENABLE_T_INTERNAL
-  ,c5
-#endif
-#ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
-  ,c7
-#endif
-  ,NULL
+    NULL
 };
 
-const char cvin[]   PROGMEM = "Vin: ";
-const char cvb1[]   PROGMEM = "Vb1: ";
-const char cvb2[]   PROGMEM = "Vb2: ";
-const char cvb3[]   PROGMEM = "Vb3: ";
-const char cvb4[]   PROGMEM = "Vb4: ";
-const char cvb5[]   PROGMEM = "Vb5: ";
-const char cvb6[]   PROGMEM = "Vb6: ";
-#if MAX_BANANCE_CELLS > 6
-const char cvb7[]   PROGMEM = "Vb7: ";
-const char cvb8[]   PROGMEM = "Vb8: ";
-const char cvbsum[] PROGMEM = "V1-8:";
-#else
-const char cvbsum[] PROGMEM = "V1-6:";
-#endif
-const char cvo[]    PROGMEM = "Vout:";
-
-const char * const voltageMenu[] PROGMEM = {cvin, cvb1, cvb2, cvb3, cvb4, cvb5, cvb6,
-        BALANCER_PORTS_GT_6(cvb7, cvb8,)
-        cvbsum, cvo, NULL};
+const char * const voltageMenu[] PROGMEM = {string_v_menu_input, string_v_menu_cell1, string_v_menu_cell2,
+        string_v_menu_cell3, string_v_menu_cell4, string_v_menu_cell5, string_v_menu_cell6,
+        BALANCER_PORTS_GT_6( string_v_menu_cell7, string_v_menu_cell8,)
+        string_v_menu_cellSum, string_v_menu_output, NULL};
 
 const AnalogInputs::Name voltageName[] PROGMEM = {
        AnalogInputs::Vin,
@@ -86,6 +64,7 @@ const AnalogInputs::Name voltageName[] PROGMEM = {
        AnalogInputs::Vbalancer,
        AnalogInputs::Vout,
 };
+
 const AnalogInputs::Name voltageName2[] PROGMEM = {
        AnalogInputs::Vin,
        AnalogInputs::Vb1_pin,
@@ -97,54 +76,23 @@ const AnalogInputs::Name voltageName2[] PROGMEM = {
        BALANCER_PORTS_GT_6(AnalogInputs::Vb7_pin, AnalogInputs::Vb8_pin)
 };
 
-
-
-const char cIC0[] PROGMEM = CHEALI_CHARGER_STRING(CALIBRATION_CHARGE_POINT0_mA)    "mA";
-const char cIC1[] PROGMEM = CHEALI_CHARGER_STRING(CALIBRATION_CHARGE_POINT1_mA)    "mA";
-const char cID0[] PROGMEM = CHEALI_CHARGER_STRING(CALIBRATION_DISCHARGE_POINT0_mA) "mA";
-const char cID1[] PROGMEM = CHEALI_CHARGER_STRING(CALIBRATION_DISCHARGE_POINT1_mA) "mA";
-
-const char * const chargeIMenu[]    PROGMEM = { cIC0, cIC1, NULL};
-const char * const dischargeIMenu[] PROGMEM = { cID0, cID1, NULL};
+const char * const chargeIMenu[]    PROGMEM = { string_ic_menu_current0, string_ic_menu_current1, NULL};
+const char * const dischargeIMenu[] PROGMEM = { string_id_menu_current0, string_id_menu_current1, NULL};
 const AnalogInputs::ValueType chargeIValues[]     PROGMEM = {CALIBRATION_CHARGE_POINT0_mA,    CALIBRATION_CHARGE_POINT1_mA};
 const AnalogInputs::ValueType dischargeIValues[]  PROGMEM = {CALIBRATION_DISCHARGE_POINT0_mA, CALIBRATION_DISCHARGE_POINT1_mA};
 
-const char cc1[] PROGMEM = "value: ";
-const char cc2[] PROGMEM = "Iout:  ";
-
-const char * const currentMenu[] PROGMEM = {cc1,cc2, NULL};
-
-
-
-const char cp1[] PROGMEM = "point 1.";
-const char cp2[] PROGMEM = "point 2.";
-
-const char * const pointMenu[] PROGMEM = {cp1,cp2, NULL};
-
-const char ct1[] PROGMEM = "temp: ";
-const char ct2[] PROGMEM = "value:";
-
-const char * const tempMenu[] PROGMEM = {ct1,ct2, NULL};
-
-
+const char * const currentMenu[] PROGMEM = {string_i_menu_value,        string_i_menu_output,   NULL};
+const char * const pointMenu[]   PROGMEM = {string_tp_menu_point0,      string_tp_menu_point1,  NULL};
+const char * const tempMenu[]    PROGMEM = {string_t_menu_temperature,  string_t_menu_value,    NULL};
 
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
 
-#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-const char cev0[] PROGMEM = "Vb0pin:";
-const char cev1[] PROGMEM = "Vb1pin:";
-const char cev2[] PROGMEM = "Vb2pin:";
-#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-
-const char cevp[] PROGMEM = "Vplus: ";
-const char cevm[] PROGMEM = "Vminus:";
-
 const char * const expertVoltageMenu[] PROGMEM = {
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-        cev0,cev1,cev2,
+        string_ev_menu_cell0pin, string_ev_menu_cell1pin, string_ev_menu_cell2pin,
 #endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-        cevp,
-        cevm,
+        string_ev_menu_plusVoltagePin,
+        string_ev_menu_minusVoltagePin,
         NULL};
 
 const AnalogInputs::Name expertVoltageName[] PROGMEM = {
@@ -226,7 +174,7 @@ void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
 
 bool testVout()
 {
-    Screen::displayStrings(PSTR("Connect Battery!"),NULL);
+    Screen::displayStrings(string_connectBattery);
     do {
         if(AnalogInputs::isConnected(AnalogInputs::Vout))
             return true;
@@ -340,7 +288,7 @@ public:
     virtual void printItem(uint8_t index) {
         //TODO: hack, should be improved ... Gyuri: R138 burned.
         if(!AnalogInputs::isConnected(AnalogInputs::Vout)) {
-            Screen::displayStrings(PSTR(" Connect Battery"),NULL);
+            Screen::displayStrings(string_connectBattery);
             if(cName_ == AnalogInputs::IdischargeValue) {
                 Discharger::powerOff();
             }

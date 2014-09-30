@@ -30,6 +30,7 @@
 #include "AnalogInputsADC.h"
 
 #include "imaxB6-pins.h"
+#include STRINGS_HEADER
 
 extern LiquidCrystal lcd;
 
