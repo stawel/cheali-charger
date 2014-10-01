@@ -1,0 +1,10 @@
+
+add_subdirectory(targets/Dual-Power-B6AC-80W-RC)
+add_subdirectory(targets/imaxB6-clone)
+add_subdirectory(targets/Turnigy-A-6-10-200W)
+add_subdirectory(targets/Turnigy-Accucel-8-150W-7A)
+add_subdirectory(targets/GTPowerA6-10-original)
+add_subdirectory(targets/imaxB6-original)
+add_subdirectory(targets/Turnigy-Accucel-6-50W-5A)
+add_subdirectory(targets/Turnigy-MEGA-400Wx2)
+

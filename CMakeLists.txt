@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.11)
 
 SET(CMAKE_SYSTEM_NAME Generic)
 SET(CMAKE_C_COMPILER avr-gcc)
@@ -6,35 +6,34 @@ SET(CMAKE_CXX_COMPILER avr-g++)
 
 Project(cheali-charger)
 
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 find_package(UnixCommands)
+find_package(ChealiChargerInternal REQUIRED)
+
+string(TIMESTAMP timestamp "%Y%m%d")
 
 set(cheali-charger-version 0.33)
 set(cheali-charger-eeprom-calibration-version 8)
 set(cheali-charger-eeprom-programdata-version 1)
 set(cheali-charger-eeprom-settings-version 5)
+set(cheali-charger-buildnumber ${timestamp})
+
+message(STATUS "cheali-charger-version: ${cheali-charger-version}")
+message(STATUS "cheali-charger-eeprom-calibration-version: ${cheali-charger-eeprom-calibration-version}")
+message(STATUS "cheali-charger-eeprom-programdata-version: ${cheali-charger-eeprom-programdata-version}")
+message(STATUS "cheali-charger-eeprom-settings-version: ${cheali-charger-eeprom-settings-version}")
+message(STATUS "cheali-charger-buildnumber: ${cheali-charger-buildnumber}")
 
 configure_file(src/core/Version.h.in src/core/Version.h)
 
 
 if(ARM-Cortex-M0)
-    message(STATUS "target: ARM-Cortex-M0")
+    message(STATUS "target architecture: ARM-Cortex-M0")
     include(arm-compiler.cmake)
-    add_subdirectory(src/core)
-    add_subdirectory(src/hardware/imaxB6-clone-ARM-Cortex-M0)
+    add_subdirectory(src/hardware/nuvoton-M0517)
 else(ARM-Cortex-M0)
-    message(STATUS "target: avr")
+    message(STATUS "target architecture: avr")
     include(avr-compiler.cmake)
-    add_subdirectory(src/core/atmega32)
-    add_subdirectory(src/hardware/GTPowerA6-10-original)
-    add_subdirectory(src/hardware/imaxB6-original)
-    add_subdirectory(src/hardware/imaxB6-clone)
-    add_subdirectory(src/hardware/Turnigy-MEGA-400Wx2)
-    add_subdirectory(src/hardware/Turnigy-A-6-10-200W)
-    add_subdirectory(src/hardware/Turnigy-Accucel-6-50W-5A)
-    add_subdirectory(src/hardware/Turnigy-Accucel-8-150W-7A)
-    add_subdirectory(src/hardware//Dual-Power-B6AC-80W-RC)
+    add_subdirectory(src/hardware/atmega32)
 endif(ARM-Cortex-M0)
-
-
-
-

@@ -20,13 +20,17 @@
 
 #include "Utils.h"
 
-//#define CHEALI_CHARGER_BUILDNUMBER                      @cheali-charger-buildnumber@
-#define CHEALI_CHARGER_VERSION                          @cheali-charger-version@_@cheali-charger-buildnumber@
+#define CHEALI_CHARGER_PROJECT_NAME                     @CMAKE_PROJECT_NAME@
+#define CHEALI_CHARGER_BUILDNUMBER                      @cheali-charger-buildnumber@
+#define CHEALI_CHARGER_VERSION                          @cheali-charger-version@
+#define CHEALI_CHARGER_FULL_VERSION                     @cheali-charger-version@_@cheali-charger-buildnumber@
+
 #define CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION       @cheali-charger-eeprom-calibration-version@
 #define CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION       @cheali-charger-eeprom-programdata-version@
 #define CHEALI_CHARGER_EEPROM_SETTINGS_VERSION          @cheali-charger-eeprom-settings-version@
 
-#define CHEALI_CHARGER_VERSION_STRING           CHEALI_CHARGER_STRING(CHEALI_CHARGER_VERSION)
+#define CHEALI_CHARGER_PROJECT_NAME_STRING              CHEALI_CHARGER_STRING(CHEALI_CHARGER_PROJECT_NAME)
+#define CHEALI_CHARGER_VERSION_STRING           CHEALI_CHARGER_STRING(CHEALI_CHARGER_FULL_VERSION)
 #define CHEALI_CHARGER_EPPROM_VERSION_STRING    \
                 CHEALI_CHARGER_STRING(CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION) "."\
                 CHEALI_CHARGER_STRING(CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION) "."\
