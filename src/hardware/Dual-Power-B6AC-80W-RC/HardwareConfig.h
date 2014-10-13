@@ -24,7 +24,7 @@
 
 #undef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
 
-#define MAX_CHARGE_V            ANALOG_VOLT(27.000) //27.0V
+#define MAX_CHARGE_V            ANALOG_VOLT(26.000) //26.0V
 #define MAX_CHARGE_I            ANALOG_AMP(6.000)   //6A
 #define MAX_CHARGE_P            ANALOG_WATT(80.000)               //80W
 
