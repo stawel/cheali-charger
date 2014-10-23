@@ -24,14 +24,14 @@
 namespace Program {
 
     enum ProgramType {
-        ChargeLiXX, ChargeLiXX_Balance, Balance, DischargeLiXX, FastChargeLiXX, StorageLiXX, StorageLiXX_Balance,
-        ChargeNiXX, DischargeNiXX,  DCcycleLiXX,  DCcycleNiXX,
-        ChargePb, DischargePb, FastChargePb, DCcyclePb,
-        EditBattery, LAST_PROGRAM_TYPE};
+        Calibrate,
+        Charge, ChargeBalance, Balance, Discharge, FastCharge,
+        Storage, StorageBalance, DischargeChargeCycle,
+        EditBattery,
+        LAST_PROGRAM_TYPE};
 
     enum ProgramState {
-        None, Info, Calibration, Done, Error,
-        Charging, ChargingBalancing, Discharging,DischargingCharging, Balancing, Storage,
+        Done, InProgress, Error, Info
     };
 
     extern ProgramType programType_;

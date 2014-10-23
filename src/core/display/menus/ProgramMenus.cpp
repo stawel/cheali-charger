@@ -26,7 +26,47 @@ using namespace ProgramMenus;
 
 namespace {
 
-    const char * const programLiXXMenu[] PROGMEM = {
+    const Program::ProgramType programLiXXMenu[] PROGMEM = {
+            Program::Charge,
+            Program::ChargeBalance,
+            Program::Balance,
+            Program::Discharge,
+            Program::FastCharge,
+            Program::Storage,
+            Program::StorageBalance,
+            Program::DischargeChargeCycle,
+            Program::EditBattery,
+    };
+
+    const Program::ProgramType programNiZnMenu[] PROGMEM = {
+            Program::Charge,
+            Program::ChargeBalance,
+            Program::Balance,
+            Program::Discharge,
+            Program::FastCharge,                //TODO: check
+            Program::DischargeChargeCycle,      //TODO: check
+            Program::EditBattery,
+    };
+
+    const Program::ProgramType programNiXXMenu[] PROGMEM = {
+            Program::Charge,
+            Program::Discharge,
+            Program::DischargeChargeCycle,
+            Program::EditBattery,
+    };
+
+    const Program::ProgramType programPbMenu[] PROGMEM = {
+            Program::Charge,
+            Program::Discharge,
+            Program::FastCharge,                //TODO: check
+            Program::DischargeChargeCycle,      //TODO: check
+            Program::EditBattery,
+    };
+
+
+// ProgramType -> strings
+    const char * const programMenus_strings[] PROGMEM = {
+            NULL,
             string_charge,
             string_chargeAndBalance,
             string_balance,
@@ -36,82 +76,37 @@ namespace {
             string_storageAndBalance,
             string_dcCycle,
             string_editBattery,
-            NULL
     };
 
-    const Program::ProgramType programLiXXMenuType[] PROGMEM = {
-            Program::ChargeLiXX,
-            Program::ChargeLiXX_Balance,
-            Program::Balance,
-            Program::DischargeLiXX,
-            Program::FastChargeLiXX,
-            Program::StorageLiXX,
-            Program::StorageLiXX_Balance,
-            Program::DCcycleLiXX,
-            Program::EditBattery
+    class ProgramTypeMenu : public Menu {
+    public:
+        const Program::ProgramType * typeMenu_;
+        ProgramTypeMenu(const Program::ProgramType  *typeMenu) :
+            Menu(countElements(typeMenu)), typeMenu_(typeMenu){};
+
+        Program::ProgramType getProgramType(uint8_t i) {
+            return pgm::read(&typeMenu_[i]);
+        }
+
+        virtual void printItem(uint8_t i) {
+            STATIC_ASSERT(sizeOfArray(programMenus_strings) == Program::LAST_PROGRAM_TYPE);
+
+            lcdPrint_P(pgm::read(&programMenus_strings[getProgramType(i)]));
+        }
+
+        static uint8_t countElements(const Program::ProgramType * typeMenu) {
+            uint8_t retu = 0;
+            while(pgm::read(&typeMenu[retu++]) != Program::EditBattery);
+            return retu;
+        }
     };
 
-    const char * const programNiZnMenu[] PROGMEM = {
-            string_charge,
-            string_chargeAndBalance,
-            string_balance,
-            string_discharge,
-            string_fastCharge,
-            string_dcCycle,
-            string_editBattery,
-            NULL
-    };
+    ProgramTypeMenu selectLiXXMenu(programLiXXMenu);
+    ProgramTypeMenu selectNiXXMenu(programNiXXMenu);
+    ProgramTypeMenu selectNiZnMenu(programNiZnMenu);
+    ProgramTypeMenu selectPbMenu(programPbMenu);
 
-    const Program::ProgramType programNiZnMenuType[] PROGMEM = {
-            Program::ChargeLiXX,
-            Program::ChargeLiXX_Balance,
-            Program::Balance,
-            Program::DischargeLiXX,
-            Program::FastChargeLiXX,   //TODO: check
-            Program::DCcycleLiXX,      //TODO: check
-            Program::EditBattery
-    };
-
-
-    const char * const programNiXXMenu[] PROGMEM = {
-            string_charge,
-            string_discharge,
-            string_dcCycle,
-            string_editBattery,
-            NULL
-    };
-
-    const Program::ProgramType programNiXXMenuType[] PROGMEM = {
-            Program::ChargeNiXX,
-            Program::DischargeNiXX,
-            Program::DCcycleNiXX,
-            Program::EditBattery
-    };
-
-    const char * const programPbMenu[] PROGMEM = {
-            string_charge,
-            string_discharge,
-            string_fastCharge,
-            string_dcCycle,
-            string_editBattery,
-            NULL
-    };
-
-    const Program::ProgramType programPbMenuType[] PROGMEM = {
-            Program::ChargePb,
-            Program::DischargePb,
-            Program::FastChargePb,   //TODO: check
-            Program::DCcyclePb,      //TODO: check
-            Program::EditBattery
-    };
-
-
-    StaticMenu selectLiXXMenu(programLiXXMenu);
-    StaticMenu selectNiXXMenu(programNiXXMenu);
-    StaticMenu selectNiZnMenu(programNiZnMenu);
-    StaticMenu selectPbMenu(programPbMenu);
-
-    StaticMenu * getSelectProgramMenu() {
+    ProgramTypeMenu * getSelectProgramMenu() {
         if(ProgramData::currentProgramData.battery.type == ProgramData::NiZn)
             return &selectNiZnMenu;
         if(ProgramData::currentProgramData.isLiXX())
@@ -120,28 +115,17 @@ namespace {
             return &selectNiXXMenu;
         else return &selectPbMenu;
     }
-    Program::ProgramType getSelectProgramType(uint8_t index) {
-        const Program::ProgramType * address;
-        if(ProgramData::currentProgramData.battery.type == ProgramData::NiZn)
-            address = &programNiZnMenuType[index];
-        else if(ProgramData::currentProgramData.isLiXX())
-            address = &programLiXXMenuType[index];
-        else if(ProgramData::currentProgramData.isNiXX())
-            address = &programNiXXMenuType[index];
-        else address = &programPbMenuType[index];
-        return pgm::read(address);
-    }
 }
 
 void ProgramMenus::selectProgram(int index)
 {
     ProgramData::loadProgramData(index);
-    StaticMenu * selectPrograms = getSelectProgramMenu();
+    ProgramTypeMenu * selectPrograms = getSelectProgramMenu();
     int8_t menuIndex;
     do {
         menuIndex = selectPrograms->runSimple();
         if(menuIndex >= 0)  {
-            Program::ProgramType prog = getSelectProgramType(menuIndex);
+            Program::ProgramType prog = selectPrograms->getProgramType(menuIndex);
             if(prog == Program::EditBattery) {
                 ProgramData::currentProgramData.edit(index);
                 ProgramData::saveProgramData(index);

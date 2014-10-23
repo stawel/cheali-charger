@@ -58,7 +58,7 @@ namespace Screen {
     uint16_t cyclesHistoryDcTime[5]       = {0,0,0,0,0};
     char     cyclesHistoryMode[5]         = {'-','-','-','-','-'}; //C=charge   D=discharge '-' = none
 
-    const char programString[] PROGMEM = "ChCBBlDiFCStSBChDiCYcyChDiFPCPEB";
+    const char programString[] PROGMEM = "__ChCBBlDiFCStSBCY__";
     void printProgram2chars(Program::ProgramType prog)
     {
         STATIC_ASSERT(sizeOfArray(programString)-1 == Program::LAST_PROGRAM_TYPE*2);

@@ -210,52 +210,12 @@ Strategy::statusType Program::runBalance()
     return Strategy::doStrategy(balanceScreens);
 }
 
-Program::ProgramState getProgramState(Program::ProgramType prog)
-{
-    Program::ProgramState retu;
-    switch(prog) {
-    case Program::ChargeLiXX:
-    case Program::ChargePb:
-    case Program::FastChargePb:
-    case Program::FastChargeLiXX:
-    case Program::ChargeNiXX:
-        retu = Program::Charging;
-        break;
-    case Program::Balance:
-        retu = Program::Balancing;
-        break;
-    case Program::DischargeLiXX:
-    case Program::DischargePb:
-    case Program::DischargeNiXX:
-        retu = Program::Discharging;
-        break;
-    case Program::DCcycleLiXX:
-    case Program::DCcyclePb:
-         retu = Program::DischargingCharging;
-        break;
-    case Program::DCcycleNiXX:
-         retu = Program::DischargingCharging;
-        break; 
-    case Program::StorageLiXX:
-    case Program::StorageLiXX_Balance:
-        retu = Program::Storage;
-        break;
-    case Program::ChargeLiXX_Balance:
-        retu = Program::ChargingBalancing;
-        break;
-    default:
-        retu = Program::None;
-        break;
-    }
-    return retu;
-}
-
 void Program::run(ProgramType prog)
 {
     programType_ = prog;
     stopReason_ = NULL;
 
-    programState_ = getProgramState(prog);
+//    programState_ = getProgramState(prog);
     SerialLog::powerOn();
     AnalogInputs::powerOn();
 
@@ -265,51 +225,57 @@ void Program::run(ProgramType prog)
         Strategy::exitImmediately = false;
         Buzzer::soundStartProgram();
 
+        enum ProgramType {
+            Calibrate,
+            Charge, ChargeBalance, Balance, Discharge, FastCharge,
+            Storage, StorageBalance, DischargeChargeCycle,
+            EditBattery
+        };
+
         switch(prog) {
-        case Program::ChargeLiXX:
-        case Program::ChargePb:
-            runTheveninCharge(settings.Lixx_Imin_);   //(default end current = start current / 10)
+        case Program::Charge:
+            if(ProgramData::currentProgramData.isNiXX()) {
+                runDeltaCharge();
+            } else {
+                runTheveninCharge(settings.Lixx_Imin_);   //(default end current = start current / 10)
+            }
+            break;
+        case Program::ChargeBalance:
+            runTheveninChargeBalance();
             break;
         case Program::Balance:
             runBalance();
             break;
-        case Program::DischargeLiXX:
-        case Program::DischargePb:
+        case Program::Discharge:
             runDischarge();
             break;
-        case Program::FastChargeLiXX:
-        case Program::FastChargePb:
+        case Program::FastCharge:
             runTheveninCharge(5);
             break;
-        case Program::StorageLiXX:
+        case Program::Storage:
             runStorage(false);
             break;
-        case Program::StorageLiXX_Balance:
+        case Program::StorageBalance:
             runStorage(true);
             break;
-        case Program::ChargeNiXX:
-            runDeltaCharge();
-            break;
-        case Program::DischargeNiXX:
+/*        case Program::DischargeNiXX:
             runNiXXDischarge();
             break;
-        case Program::DCcycleLiXX:
+*/
+        case Program::DischargeChargeCycle:
             if (settings.forceBalancePort_) {
                 ProgramDCcycle::runDCcycle(ProgramDCcycle::LiXX);
             } else {
                 Screen::runNeedForceBalance();
             }
             break;
-        case Program::DCcycleNiXX:
+/*        case Program::DCcycleNiXX:
             ProgramDCcycle::runDCcycle(ProgramDCcycle::NiXX);
             break;
         case Program::DCcyclePb:
             ProgramDCcycle::runDCcycle(ProgramDCcycle::Pb);
             break;
-        case Program::ChargeLiXX_Balance:
-            runTheveninChargeBalance();
-            break;
-        default:
+*/        default:
             //TODO:
             Screen::runNotImplemented();
             break;

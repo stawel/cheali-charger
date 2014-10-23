@@ -438,7 +438,7 @@ void calibrateTemp(AnalogInputs::Name name)
 
 void run()
 {
-    Program::programState_ = Program::Calibration;
+//    Program::programState_ = Program::Calibration;
     StaticMenu menu(calibrateMenu);
     int8_t i;
     do {
