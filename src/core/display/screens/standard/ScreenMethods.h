@@ -15,26 +15,25 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef STRATEGY_H_
-#define STRATEGY_H_
-
-#include <inttypes.h>
-#include "Screen.h"
+#ifndef SCREEN_METHODS_H_
+#define SCREEN_METHODS_H_
 
 
-namespace Strategy {
-    enum statusType {ERROR, COMPLETE, RUNNING };
-    struct VTable {
-        void (*powerOn)();
-        void (*powerOff)();
-        statusType (*doStrategy)();
-    };
+namespace Screen {
+namespace Methods {
 
-    extern const VTable * strategy;
-    extern bool exitImmediately;
-
-    statusType doStrategy();
+    void displayFirstScreen();
+    void displayCIVlimits();
+    void displayTime();
+    void displayTemperature();
+    void displayR();
+    void displayVout();
+    void displayVinput();
+    void displayDeltaVout();
+    void displayDeltaTextern();
+    void displayDeltaFirst();
+    void displayEnergy();
+};
 };
 
-
-#endif /* STRATEGY_H_ */
+#endif /* SCREEN_METHODS_H_ */

@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2014  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,26 +15,20 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef STRATEGY_H_
-#define STRATEGY_H_
-
-#include <inttypes.h>
-#include "Screen.h"
+#ifndef SCREEN_BALANCER_H_
+#define SCREEN_BALANCER_H_
 
 
-namespace Strategy {
-    enum statusType {ERROR, COMPLETE, RUNNING };
-    struct VTable {
-        void (*powerOn)();
-        void (*powerOff)();
-        statusType (*doStrategy)();
-    };
+namespace Screen {
+namespace Balancer {
+        void displayVoltage1_3();
+        void displayVoltage4_6();
+        void displayVoltage7_9();
 
-    extern const VTable * strategy;
-    extern bool exitImmediately;
-
-    statusType doStrategy();
+        void displayResistance1_3();
+        void displayResistance4_6();
+        void displayResistancee7_9();
+};
 };
 
-
-#endif /* STRATEGY_H_ */
+#endif /* SCREEN_BALANCER_H_ */

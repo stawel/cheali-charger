@@ -74,18 +74,7 @@ Strategy::statusType ProgramDCcycle::runDCcycle(BatteryGroup prog1)
 
 Strategy::statusType ProgramDCcycle::runCycleDischargeCommon(BatteryGroup prog1)
 {
-    Strategy::statusType status = Strategy::COMPLETE;
-
-    if(prog1 == LiXX){
-        status = runDischarge();
-    }
-    if(prog1 == NiXX) {
-        status = runNiXXDischarge();
-    }
-    if(prog1 == Pb) {
-        status = runDischarge();
-    }
-
+    Strategy::statusType status = runDischarge();
     return status;
 }
 

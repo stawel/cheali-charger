@@ -43,7 +43,7 @@ const char * Program::stopReason_;
 
 namespace Program {
     //TODO: separate Screens from Programs
-    const Screen::ScreenType deltaChargeScreens[] PROGMEM = {
+/*    const Screen::ScreenType deltaChargeScreens[] PROGMEM = {
       Screen::ScreenFirst,
       Screen::ScreenEnergy,
       Screen::ScreenDeltaFirst,
@@ -141,6 +141,7 @@ namespace Program {
       Screen::ScreenTemperature,
       Screen::ScreenEnd
     };
+*/
 }
 
 bool Program::startInfo()
@@ -153,7 +154,7 @@ bool Program::startInfo()
         balancer = true;
     }
     StartInfoStrategy::setBalancePort(balancer);
-    return Strategy::doStrategy(startInfoBalanceScreens) == Strategy::COMPLETE;
+    return Strategy::doStrategy() == Strategy::COMPLETE;
 }
 
 Strategy::statusType Program::runStorage(bool balance)
@@ -162,7 +163,7 @@ Strategy::statusType Program::runStorage(bool balance)
     StorageStrategy::setVII(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage),
             ProgramData::currentProgramData.battery.Ic, ProgramData::currentProgramData.battery.Id);
     Strategy::strategy = &StorageStrategy::vtable;
-    return Strategy::doStrategy(storageScreens);
+    return Strategy::doStrategy();
 }
 Strategy::statusType Program::runTheveninCharge(int minChargeC)
 {
@@ -170,7 +171,7 @@ Strategy::statusType Program::runTheveninCharge(int minChargeC)
             ProgramData::currentProgramData.battery.Ic, false);
     TheveninChargeStrategy::setMinI(ProgramData::currentProgramData.battery.Ic/minChargeC);
     Strategy::strategy = &TheveninChargeStrategy::vtable;
-    return Strategy::doStrategy(theveninScreens);
+    return Strategy::doStrategy();
 }
 
 Strategy::statusType Program::runTheveninChargeBalance()
@@ -178,36 +179,31 @@ Strategy::statusType Program::runTheveninChargeBalance()
     TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
             ProgramData::currentProgramData.battery.Ic, true);
     Strategy::strategy = &TheveninChargeStrategy::vtable;
-    return Strategy::doStrategy(theveninScreens);
+    return Strategy::doStrategy();
 }
 
 
 Strategy::statusType Program::runDeltaCharge()
 {
     Strategy::strategy = &DeltaChargeStrategy::vtable;
-    return Strategy::doStrategy(deltaChargeScreens);
+    return Strategy::doStrategy();
 }
 
 Strategy::statusType Program::runDischarge()
 {
     AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
-    Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
+    if(ProgramData::currentProgramData.isLiXX()) {
+        Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
+    }
     TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
     Strategy::strategy = &TheveninDischargeStrategy::vtable;
-    return Strategy::doStrategy(dischargeScreens);
-}
-
-Strategy::statusType Program::runNiXXDischarge()
-{
-    TheveninDischargeStrategy::setVI(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge), ProgramData::currentProgramData.battery.Id);
-    Strategy::strategy = &TheveninDischargeStrategy::vtable;
-    return Strategy::doStrategy(NiXXDischargeScreens);
+    return Strategy::doStrategy();
 }
 
 Strategy::statusType Program::runBalance()
 {
     Strategy::strategy = &Balancer::vtable;
-    return Strategy::doStrategy(balanceScreens);
+    return Strategy::doStrategy();
 }
 
 void Program::run(ProgramType prog)
@@ -215,12 +211,14 @@ void Program::run(ProgramType prog)
     programType_ = prog;
     stopReason_ = NULL;
 
-//    programState_ = getProgramState(prog);
+    programState_ = Info;
     SerialLog::powerOn();
     AnalogInputs::powerOn();
 
 
     if(startInfo()) {
+        programState_ = InProgress;
+
         Monitor::powerOn();
         Strategy::exitImmediately = false;
         Buzzer::soundStartProgram();
@@ -232,7 +230,7 @@ void Program::run(ProgramType prog)
             EditBattery
         };
 
-        switch(prog) {
+        switch(programType_) {
         case Program::Charge:
             if(ProgramData::currentProgramData.isNiXX()) {
                 runDeltaCharge();
@@ -258,10 +256,6 @@ void Program::run(ProgramType prog)
         case Program::StorageBalance:
             runStorage(true);
             break;
-/*        case Program::DischargeNiXX:
-            runNiXXDischarge();
-            break;
-*/
         case Program::DischargeChargeCycle:
             if (settings.forceBalancePort_) {
                 ProgramDCcycle::runDCcycle(ProgramDCcycle::LiXX);
@@ -290,5 +284,5 @@ Strategy::statusType Program::runDCRestTime()
 {
     DelayStrategy::setDelay(settings.DCRestTime_);
     Strategy::strategy = &DelayStrategy::vtable;
-    return Strategy::doStrategy(Program::dischargeScreens);
+    return Strategy::doStrategy();
 }

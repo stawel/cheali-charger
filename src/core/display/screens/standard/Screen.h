@@ -21,62 +21,28 @@
 #include <inttypes.h>
 #include "Blink.h"
 
+#ifdef ENABLE_LCD_RAM_CG
+   #define SCREEN_FULL_CELL_CHAR   2
+   #define SCREEN_AVR_CELL_CHAR    1
+   #define SCREEN_EMPTY_CELL_CHAR  0
+#else
+   #define SCREEN_FULL_CELL_CHAR   255    //'!'-34 (fulfill char)
+   #define SCREEN_AVR_CELL_CHAR    '-'
+   #define SCREEN_EMPTY_CELL_CHAR  '_'
+#endif
+
+
 namespace Screen {
-    enum ScreenType {
-        ScreenEnd,
-        ScreenStartInfo,
-        ScreenFirst, ScreenCIVlimits, ScreenTime, ScreenTemperature,
-        ScreenBalancer1_3,      ScreenBalancer4_6,      ScreenBalancer7_9,
-        ScreenBalancer1_3Rth,   ScreenBalancer4_6Rth,   ScreenBalancer7_9Rth,
-        ScreenDeltaFirst,
-        ScreenR,
-        ScreenVout,
-        ScreenVinput,
-        ScreenDeltaVout,
-        ScreenDeltaTextern,
-        ScreenEnergy,  //multiscreen
-        ScreenCycles,  //multiscreen
-        };
 
     extern Blink blink;
 
-    void initialize();
-
-    uint8_t getChargeProcent();
-    void doSlowInterrupt();
-
-    void display(ScreenType screen);
-
-    void displayScreenFirst();
-    void displayScreenCIVlimits();
-    void displayScreenTime();
-    void displayScreenTemperature();
-    void displayScreenR();
-    void displayScreenVout();
-    void displayScreenVinput();
-    void displayDeltaVout();
-    void displayDeltaTextern();
-    void displayDeltaFirst();
-    void displayScreenEnergy();
-    void displayScreenCycles();
     void displayCalibrationErrorScreen(uint8_t errNo);
-    void displayAnimation();
-    void getDeltaProcentTimeSec();
-    uint16_t getETATime();
-    void resetETA();
-    void resetCycleHistory();
-    void storeCycleHistoryInfo();
-    bool displayBlink();
 
     void displayScreenProgramCompleted();
-
     void displayMonitorError();
-    void displayStartInfo();
-
-    void printCharge();
-    void printChar_Time();
-
     void displayStrings(const char *s);
+
+
     void displayNotImplemented();
     void displayScreenReversedPolarity();
 
@@ -86,6 +52,11 @@ namespace Screen {
     void runWelcomeScreen();
 
     void runNeedForceBalance();
+
+    void initialize();
+    void doStrategy(uint8_t key);
+    void powerOn();
+    void powerOff();
 };
 
 #endif /* SCREEN_H_ */

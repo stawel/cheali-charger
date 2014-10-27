@@ -21,7 +21,6 @@
 #include "Buzzer.h"
 #include "memory.h"
 #include "Monitor.h"
-#include "PolarityCheck.h"
 #include "AnalogInputs.h"
 
 namespace Strategy {
@@ -79,36 +78,17 @@ namespace Strategy {
         return run;
     }
 
-    Strategy::statusType doStrategy(const Screen::ScreenType chargeScreens[])
+    Strategy::statusType doStrategy()
     {
-        uint8_t key;
+        uint8_t key = BUTTON_NONE;
         bool run = true;
         uint16_t newMesurmentData = 0;
         Strategy::statusType status = Strategy::RUNNING;
         strategyPowerOn();
-        lcdClear();
-        uint8_t screen_nr = 0;
+        Screen::powerOn();
         do {
-            if(!PolarityCheck::runReversedPolarityInfo()) {
-                Screen::display(pgm::read(&chargeScreens[screen_nr]));
-            }
-
-            {
-                //change displayed screen
-                key =  Keyboard::getPressedWithSpeed();
-                if(key == BUTTON_INC && pgm::read(&chargeScreens[screen_nr+1]) != Screen::ScreenEnd) {
-#ifdef ENABLE_SCREEN_ANIMATION
-                    Screen::displayAnimation();
-#endif
-                    screen_nr++;
-                }
-                if(key == BUTTON_DEC && screen_nr > 0) {
-#ifdef ENABLE_SCREEN_ANIMATION
-                    Screen::displayAnimation();
-#endif
-                    screen_nr--;
-                }
-            }
+            Screen::doStrategy(key);
+            key =  Keyboard::getPressedWithSpeed();
 
             if(run) {
                 status = Monitor::run();
@@ -124,6 +104,7 @@ namespace Strategy {
                 return status;
         } while(key != BUTTON_STOP);
 
+        Screen::powerOff();
         strategyPowerOff();
         return status;
     }

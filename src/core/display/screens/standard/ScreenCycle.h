@@ -15,26 +15,16 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef STRATEGY_H_
-#define STRATEGY_H_
-
-#include <inttypes.h>
-#include "Screen.h"
+#ifndef SCREEN_CYCLE_H_
+#define SCREEN_CYCLE_H_
 
 
-namespace Strategy {
-    enum statusType {ERROR, COMPLETE, RUNNING };
-    struct VTable {
-        void (*powerOn)();
-        void (*powerOff)();
-        statusType (*doStrategy)();
-    };
+namespace Screen { namespace Cycle {
 
-    extern const VTable * strategy;
-    extern bool exitImmediately;
+    void displayCycles();
+    void resetCycleHistory();
+    void storeCycleHistoryInfo();
 
-    statusType doStrategy();
-};
+} };
 
-
-#endif /* STRATEGY_H_ */
+#endif /* SCREEN_CYCLE_H_ */

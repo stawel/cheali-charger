@@ -56,7 +56,6 @@ namespace Time {
         if(--slowInterval == 0){
             slowInterval = TIMER_SLOW_INTERRUPT_INTERVAL;
             AnalogInputs::doSlowInterrupt();
-            Screen::doSlowInterrupt();
             Monitor::doSlowInterrupt();
         }
     }
