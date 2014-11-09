@@ -32,6 +32,7 @@
 #include "eeprom.h"
 #include "cpu.h"
 #include "Serial.h"
+#include "Screen.h"
 
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =

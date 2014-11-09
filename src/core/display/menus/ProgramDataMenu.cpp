@@ -103,7 +103,7 @@ void ProgramDataMenu::editItem(uint8_t index, uint8_t key)
 
     START_CASE_COUNTER;
     switch(index) {
-        case NEXT_CASE: p_.changeBattery(dir);    break;
+        case NEXT_CASE: p_.changeBatteryType(dir);    break;
         case NEXT_CASE: p_.changeVoltage(dir);    break;
         case NEXT_CASE: p_.changeCharge(dir);     break;
         case NEXT_CASE: p_.changeIc(dir);         break;

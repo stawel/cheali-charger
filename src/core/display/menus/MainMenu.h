@@ -23,7 +23,7 @@
 
 class MainMenu : public StaticMenu {
 public:
-    MainMenu(const char * const* staticMenu,uint8_t staticMenuItems):
+    MainMenu(const char * const staticMenu[],uint8_t staticMenuItems):
             StaticMenu(staticMenu){size_ += MAX_PROGRAMS;}
 
     virtual void printItem(uint8_t i) {

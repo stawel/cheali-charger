@@ -37,112 +37,21 @@
 
 #include "ProgramDCcycle.h"
 
-Program::ProgramType Program::programType_;
-Program::ProgramState Program::programState_ = Program::Done;
-const char * Program::stopReason_;
-
 namespace Program {
-    //TODO: separate Screens from Programs
-/*    const Screen::ScreenType deltaChargeScreens[] PROGMEM = {
-      Screen::ScreenFirst,
-      Screen::ScreenEnergy,
-      Screen::ScreenDeltaFirst,
-      Screen::ScreenDeltaVout,
-      Screen::ScreenDeltaTextern,
-      Screen::ScreenR,
-      Screen::ScreenVout,
-      Screen::ScreenVinput,
-      Screen::ScreenTime,
-      Screen::ScreenTemperature,
-      Screen::ScreenCycles,
-      Screen::ScreenCIVlimits,
-      Screen::ScreenEnd
-    };
+    ProgramType programType_;
+    ProgramState programState_ = Program::Done;
+    const char * stopReason_;
 
-    const Screen::ScreenType NiXXDischargeScreens[] PROGMEM = {
-      Screen::ScreenFirst,
-      Screen::ScreenEnergy,
-      Screen::ScreenDeltaTextern,
-      Screen::ScreenR,
-      Screen::ScreenVout,
-      Screen::ScreenVinput,
-      Screen::ScreenTime,
-      Screen::ScreenTemperature,
-      Screen::ScreenCycles,
-      Screen::ScreenCIVlimits,
-      Screen::ScreenEnd
-    };
+    bool startInfo();
 
-    const Screen::ScreenType theveninScreens[] PROGMEM = {
-      Screen::ScreenFirst,
+    Strategy::statusType runStorage(bool balance);
+    Strategy::statusType runTheveninCharge(int minChargeC);
+    Strategy::statusType runDischarge();
+    Strategy::statusType runTheveninChargeBalance();
+    Strategy::statusType runBalance();
+    Strategy::statusType runDeltaCharge();
 
-      Screen::ScreenEnergy,
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
-      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,   BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9Rth,)
-      Screen::ScreenR,
-      Screen::ScreenVout,
-      Screen::ScreenVinput,
-      Screen::ScreenTime,
-      Screen::ScreenTemperature,
-      Screen::ScreenCycles,
-      Screen::ScreenCIVlimits,
-      Screen::ScreenEnd
-
-    };
-
-    const Screen::ScreenType balanceScreens[] PROGMEM = {
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
-      Screen::ScreenTime,
-      Screen::ScreenVinput,
-      Screen::ScreenTemperature,
-      Screen::ScreenEnd
-    };
-
-    const Screen::ScreenType dischargeScreens[] PROGMEM = {
-      Screen::ScreenFirst,
-      Screen::ScreenEnergy,
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
-      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,   BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9Rth,)
-      Screen::ScreenR,
-      Screen::ScreenVout,
-      Screen::ScreenVinput,
-      Screen::ScreenTime,
-      Screen::ScreenTemperature,
-      Screen::ScreenCycles,
-      Screen::ScreenCIVlimits,
-      Screen::ScreenEnd
-    };
-
-    const Screen::ScreenType storageScreens[] PROGMEM = {
-      Screen::ScreenFirst,
-      Screen::ScreenEnergy,
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
-      Screen::ScreenBalancer1_3Rth,         Screen::ScreenBalancer4_6Rth,   BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9Rth,)
-      Screen::ScreenR,
-      Screen::ScreenVout,
-      Screen::ScreenVinput,
-      Screen::ScreenTime,
-      Screen::ScreenTemperature,
-      Screen::ScreenEnd
-
-    };
-
-    const Screen::ScreenType startInfoBalanceScreens[] PROGMEM = {
-      Screen::ScreenStartInfo,
-      Screen::ScreenBalancer1_3,            Screen::ScreenBalancer4_6,      BALANCER_PORTS_GT_6(Screen::ScreenBalancer7_9,)
-      Screen::ScreenVinput,
-      Screen::ScreenTemperature,
-      Screen::ScreenEnd
-    };
-
-    const Screen::ScreenType startInfoScreens[] PROGMEM = {
-      Screen::ScreenStartInfo,
-      Screen::ScreenVinput,
-      Screen::ScreenTemperature,
-      Screen::ScreenEnd
-    };
-*/
-}
+} //namespace Program
 
 bool Program::startInfo()
 {
@@ -206,6 +115,36 @@ Strategy::statusType Program::runBalance()
     return Strategy::doStrategy();
 }
 
+Strategy::statusType Program::runWithoutInfo(ProgramType prog)
+{
+    switch(prog) {
+    case Program::Charge:
+        if(ProgramData::currentProgramData.isNiXX()) {
+            return runDeltaCharge();
+        } else {
+            return runTheveninCharge(settings.Lixx_Imin_);   //(default end current = start current / 10)
+        }
+    case Program::ChargeBalance:
+        return runTheveninChargeBalance();
+    case Program::Balance:
+        return runBalance();
+    case Program::Discharge:
+        return runDischarge();
+    case Program::FastCharge:
+        return runTheveninCharge(5);
+    case Program::Storage:
+        return runStorage(false);
+    case Program::StorageBalance:
+        return runStorage(true);
+    case Program::DischargeChargeCycle:
+        return ProgramDCcycle::runDCcycle();
+    default:
+        //TODO:
+        Screen::runNotImplemented();
+        return Strategy::ERROR;
+    }
+}
+
 void Program::run(ProgramType prog)
 {
     programType_ = prog;
@@ -223,66 +162,10 @@ void Program::run(ProgramType prog)
         Strategy::exitImmediately = false;
         Buzzer::soundStartProgram();
 
-        enum ProgramType {
-            Calibrate,
-            Charge, ChargeBalance, Balance, Discharge, FastCharge,
-            Storage, StorageBalance, DischargeChargeCycle,
-            EditBattery
-        };
+        runWithoutInfo(programType_);
 
-        switch(programType_) {
-        case Program::Charge:
-            if(ProgramData::currentProgramData.isNiXX()) {
-                runDeltaCharge();
-            } else {
-                runTheveninCharge(settings.Lixx_Imin_);   //(default end current = start current / 10)
-            }
-            break;
-        case Program::ChargeBalance:
-            runTheveninChargeBalance();
-            break;
-        case Program::Balance:
-            runBalance();
-            break;
-        case Program::Discharge:
-            runDischarge();
-            break;
-        case Program::FastCharge:
-            runTheveninCharge(5);
-            break;
-        case Program::Storage:
-            runStorage(false);
-            break;
-        case Program::StorageBalance:
-            runStorage(true);
-            break;
-        case Program::DischargeChargeCycle:
-            if (settings.forceBalancePort_) {
-                ProgramDCcycle::runDCcycle(ProgramDCcycle::LiXX);
-            } else {
-                Screen::runNeedForceBalance();
-            }
-            break;
-/*        case Program::DCcycleNiXX:
-            ProgramDCcycle::runDCcycle(ProgramDCcycle::NiXX);
-            break;
-        case Program::DCcyclePb:
-            ProgramDCcycle::runDCcycle(ProgramDCcycle::Pb);
-            break;
-*/        default:
-            //TODO:
-            Screen::runNotImplemented();
-            break;
-        }
         Monitor::powerOff();
     }
     AnalogInputs::powerOff();
     SerialLog::powerOff();
-}
-
-Strategy::statusType Program::runDCRestTime()
-{
-    DelayStrategy::setDelay(settings.DCRestTime_);
-    Strategy::strategy = &DelayStrategy::vtable;
-    return Strategy::doStrategy();
 }

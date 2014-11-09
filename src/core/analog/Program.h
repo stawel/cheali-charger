@@ -24,10 +24,10 @@
 namespace Program {
 
     enum ProgramType {
-        Calibrate,
         Charge, ChargeBalance, Balance, Discharge, FastCharge,
         Storage, StorageBalance, DischargeChargeCycle,
         EditBattery,
+        Calibrate,
         LAST_PROGRAM_TYPE};
 
     enum ProgramState {
@@ -41,18 +41,7 @@ namespace Program {
     void selectProgram(int index);
     void run(ProgramType prog);
 
-    void printStartInfo(ProgramType prog);
-    bool startInfo();
-
-    Strategy::statusType runStorage(bool balance);
-    Strategy::statusType runTheveninCharge(int minChargeC);
-    Strategy::statusType runDischarge();
-    Strategy::statusType runNiXXDischarge();
-    Strategy::statusType runTheveninChargeBalance();
-    Strategy::statusType runBalance();
-    Strategy::statusType runDeltaCharge();
-
-    Strategy::statusType runDCRestTime();
+    Strategy::statusType runWithoutInfo(ProgramType prog);
 };
 
 

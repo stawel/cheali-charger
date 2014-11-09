@@ -30,6 +30,7 @@
 
 struct ProgramData {
 
+    enum BatteryClass {ClassNiXX, ClassPb, ClassLiXX, ClassNiZn};
     enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo, Li430, Li435, NiZn,    LAST_BATTERY_TYPE};
     enum VoltageType {VIdle,VCharge,VDischarge,VStorage, VUpperLimit, ValidEmpty,       LAST_VOLTAGE_TYPE};
 
@@ -39,7 +40,7 @@ struct ProgramData {
 
         uint16_t C,Ic,Id,cells;
 
-        //#ifdef ENABLE_TIME_LIMIT: to ensure the same eeprom layout Time is always enabled
+//#ifdef ENABLE_TIME_LIMIT: to ensure the same eeprom layout Time is always enabled
         uint16_t time;
 
     };
@@ -66,7 +67,8 @@ struct ProgramData {
     void printIdString() const;
     void printChargeString() const;
 
-    void changeBattery(int direction);
+    //TODO: change to changeBatteryType
+    void changeBatteryType(int direction);
     void changeVoltage(int direction);
     void changeCharge(int direction);
     void changeIc(int direction);
@@ -79,9 +81,12 @@ struct ProgramData {
     void check();
     void loadDefault();
 
-    bool isLiXX() const { return battery.type == Life || battery.type == Lilo || battery.type == Lipo || battery.type == Li430 ||battery.type == Li435 || battery.type == NiZn; };
-    bool isNiXX() const { return battery.type == NiCd || battery.type == NiMH; };
-    bool isPb() const { return battery.type == Pb; };
+    BatteryClass getBatteryClass() const;
+
+    //TODO: remove
+    bool isLiXX() const { return getBatteryClass() == ClassLiXX; };
+    bool isNiXX() const { return getBatteryClass() == ClassNiXX; };
+    bool isPb() const { return getBatteryClass() == ClassPb; };
 
     void edit(int index);
 

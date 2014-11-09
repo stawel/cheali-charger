@@ -220,10 +220,10 @@ void Screen::Methods::displayDeltaTextern()
 
 void Screen::Methods::displayEnergy()
 {
-    bool displayBlink_ = blink.getBlinkOff();
+    bool displayBlink_ = (blink.blinkTime_/16)&1;
 
+    lcdSetCursor0_0();
     if (displayBlink_ == true) {
-        lcdSetCursor0_0();
         printCharge();
         AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
 
@@ -232,7 +232,6 @@ void Screen::Methods::displayEnergy()
         printCharAndTime();
         lcdPrint_P(PSTR(" "));
     } else {
-        lcdSetCursor0_0();
         AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
         lcdPrint_P(PSTR(" "));
         AnalogInputs::printRealValue(AnalogInputs::Iout, 7);

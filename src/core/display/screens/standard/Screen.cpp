@@ -28,67 +28,90 @@
 #include "ProgramDCcycle.h"
 #include "Monitor.h"
 #include "PolarityCheck.h"
-#include "ScreenMethods.h"
-#include "ScreenStartInfo.h"
-#include "ScreenBalancer.h"
-#include "ScreenCycle.h"
+#include "Utils.h"
+
+#include "ScreenPages.h"
 
 namespace Screen {
 
     Blink blink;
 
-    uint8_t screen_nr_;
-    uint8_t screen_nr_max_;
+    uint8_t pageNr_;
+    uint8_t isBalancePort_;
+    uint8_t keyboardButton;
 
+    uint16_t getConditions() {
+        uint16_t c = 0;
+        if(Program::programState_ == Program::Info)
+            c += PAGE_START_INFO;
+        if(isBalancePort_)
+            c += PAGE_BALANCE_PORT;
+        c += PAGE_BATTERY(ProgramData::currentProgramData.getBatteryClass());
+        c += PAGE_PROGRAM(Program::programType_);
+        return c;
+    }
 
-    typedef void(*method)();
+    VoidMethod getPage(uint8_t page) {
+        uint8_t i = 0;
+        Pages::PageInfo info;
+        uint16_t condition = getConditions();
+        bool ok;
+        page++;
+        do {
+            info = pgm::read(&Pages::pageInfo[i]);
+            ok = ((info.conditionEnable & condition) > 0) && ((info.conditionDisable & condition) == 0);
+            if(ok) {
+                page--;
+            }
+            i++;
+        } while(page);
+        return info.displayMethod;
+    }
 
-    method table[] = {
-            Screen::StartInfo::displayStartInfo,
-            Screen::Methods::displayTemperature,
-            NULL,
-    };
-
-    void displayAnimation();
-
-    void display() {
+    void displayPage() {
         Screen::Cycle::storeCycleHistoryInfo();
         blink.incBlinkTime();
 
-      //  table[screen_nr_]();
+        getPage(pageNr_)();
     }
 
-void doStrategy(uint8_t key)
+    void displayAnimation();
+
+} // namespace Screen
+
+
+
+void Screen::doStrategy()
 {
     if(!PolarityCheck::runReversedPolarityInfo()) {
-        Screen::display();
+        Screen::displayPage();
     }
 
-    if(key == BUTTON_INC && screen_nr_ < screen_nr_max_) {
+    if(keyboardButton == BUTTON_INC && getPage(pageNr_ + 1) != NULL ) {
 #ifdef ENABLE_SCREEN_ANIMATION
         Screen::displayAnimation();
 #endif
-        screen_nr_++;
+        pageNr_++;
     }
-    if(key == BUTTON_DEC && screen_nr_ > 0) {
+    if(keyboardButton == BUTTON_DEC && pageNr_ > 0) {
 #ifdef ENABLE_SCREEN_ANIMATION
         Screen::displayAnimation();
 #endif
-        screen_nr_--;
+        pageNr_--;
     }
 }
-void powerOn()
+
+void Screen::powerOn()
 {
-    screen_nr_ = 0;
-    screen_nr_max_ = 1;
+    Screen::Cycle::resetCycleHistory();
+    Screen::blink.startBlinkOn(0);
+
+    isBalancePort_ = AnalogInputs::isConnected(AnalogInputs::Vbalancer);
+    pageNr_ = 0;
 }
 
-void powerOff()
-{
-
-}
+void Screen::powerOff() {}
     
-} // namespace Screen
 
 void Screen::initialize() {
 #ifdef SCREEN_START_DELAY_MS

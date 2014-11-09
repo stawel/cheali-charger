@@ -58,7 +58,7 @@ namespace Screen { namespace Balancer {
 
 #ifdef ENABLE_SCREEN_KNIGHTRIDEREFFECT
         knightRiderCounter += knightRiderDir;
-        if (knightRiderCounter<=1 || knightRiderCounter>5) knightRiderDir=-knightRiderDir;
+        if (knightRiderCounter==0 || knightRiderCounter>4) knightRiderDir=-knightRiderDir;
 #endif
         char c = ' ';
         if(!::Balancer::isWorking()) {
@@ -102,8 +102,9 @@ namespace Screen { namespace Balancer {
             char knightRiderArrow;
             if (knightRiderDir > 0) knightRiderArrow='>'; else knightRiderArrow='<';
             if ((c == 'm') || (c == ' ')) {
-                for (uint8_t i=1; i<7; i++ ) {
-                    if (knightRiderCounter==i) lcdPrintChar(knightRiderArrow); else lcdPrintChar(' ');
+                for (uint8_t i=0; i<6; i++ ) {
+                    if (knightRiderCounter==i) lcdPrintChar(knightRiderArrow);
+                    else lcdPrintChar(' ');
                 }
                 lcdPrintChar(' ');
             } else {
@@ -160,7 +161,7 @@ void Screen::Balancer::displayResistance1_3() {
 void Screen::Balancer::displayResistance4_6() {
     displayBalanceInfo(3, AnalogInputs::Resistance);
 }
-void Screen::Balancer::displayResistancee7_9() {
+void Screen::Balancer::displayResistance7_9() {
     displayBalanceInfo(6, AnalogInputs::Resistance);
 }
 

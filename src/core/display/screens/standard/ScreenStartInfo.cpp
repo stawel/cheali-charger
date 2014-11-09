@@ -33,11 +33,11 @@
 namespace Screen {
 namespace StartInfo {
 
-    const char programString[] PROGMEM = "__ChCBBlDiFCStSBCY__";
+    const char programString[] PROGMEM = "ChCBBlDiFCStSBCY";
     
     void printProgram2chars(Program::ProgramType prog)
     {
-        STATIC_ASSERT(sizeOfArray(programString)-1 == Program::LAST_PROGRAM_TYPE*2);
+        STATIC_ASSERT(sizeOfArray(programString)-1 == Program::EditBattery*2);
         for(uint8_t i = 0; i < 2; i++) {
             lcdPrintChar(pgm::read(&programString[prog*2+i]));
         }
@@ -60,7 +60,7 @@ void Screen::StartInfo::displayStartInfo()
     lcdPrintUnsigned(Monitor::getChargeProcent(), 2);
     lcdPrint_P(PSTR("% "));
 
-    int bindex = blink.getBlinkIndex();
+    int8_t bindex = Screen::blink.getBlinkIndex();
     if(bindex & 1) AnalogInputs::printRealValue(AnalogInputs::Vout, 5);
     else lcdPrintSpaces(5);
 

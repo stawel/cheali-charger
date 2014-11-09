@@ -26,71 +26,36 @@ using namespace Program;
 
 namespace ProgramDCcycle {
     uint8_t currentCycle;
-    char cycleMode;
 
-    Strategy::statusType runCycleDischargeCommon(BatteryGroup prog1);
-    Strategy::statusType runCycleChargeCommon(BatteryGroup prog1);
+    Strategy::statusType runDCRestTime()
+    {
+        DelayStrategy::setDelay(settings.DCRestTime_);
+        Strategy::strategy = &DelayStrategy::vtable;
+        return Strategy::doStrategy();
+    }
 }
 
-Strategy::statusType ProgramDCcycle::runDCcycle(BatteryGroup prog1)
+
+Strategy::statusType ProgramDCcycle::runDCcycle()
 { //TODO_NJ
     Strategy::statusType status = Strategy::COMPLETE;
     Strategy::exitImmediately = true;
-    for(currentCycle = 1; currentCycle <= settings.DCcycles_; currentCycle++) {
+    for(currentCycle = 0; currentCycle < settings.DCcycles_*2; currentCycle++) {
 
-        //discharge
         AnalogInputs::resetAccumulatedMeasurements();
-        cycleMode='D';
-        status = runCycleDischargeCommon(prog1);
-        if(status != Strategy::COMPLETE) {break;} 
- 
-        //waiting after discharge
-        cycleMode='W';
-        status = runDCRestTime();
-        if(status != Strategy::COMPLETE) { break; }
-
-        //charge
-        Monitor::resetETA();
-        AnalogInputs::resetAccumulatedMeasurements();
-        cycleMode='C';
-
-        //lastcharge? (no need wait at end?)
-        if (currentCycle == settings.DCcycles_) {
+        if (currentCycle == settings.DCcycles_*2 - 1) {
             Strategy::exitImmediately = false;
         }
-        status = runCycleChargeCommon(prog1); //independent exit
-        if(status != Strategy::COMPLETE) {break;}
 
-        //waiting after charge
-        cycleMode='W';
-        if (currentCycle != settings.DCcycles_) {
-            status = runDCRestTime();
-            if(status != Strategy::COMPLETE) { break; }
-            else {status = Strategy::COMPLETE;}
-        }
+        status = Program::runWithoutInfo(currentCycle & 1 ? Program::Charge : Program::Discharge);
+        if(status != Strategy::COMPLETE || (!Strategy::exitImmediately)) break;
+ 
+        status = runDCRestTime();
+        if(status != Strategy::COMPLETE) break;
+
+        Monitor::resetETA();
+
     }
     return status;
 }
 
-Strategy::statusType ProgramDCcycle::runCycleDischargeCommon(BatteryGroup prog1)
-{
-    Strategy::statusType status = runDischarge();
-    return status;
-}
-
-Strategy::statusType ProgramDCcycle::runCycleChargeCommon(BatteryGroup prog1)
-{
-    Strategy::statusType status = Strategy::COMPLETE;
-
-    if(prog1 == LiXX) {
-        status = runTheveninChargeBalance();
-    }
-    if(prog1 == NiXX) {
-        status = runDeltaCharge();
-    }
-    if(prog1 == Pb) {
-        status =  runTheveninCharge(settings.Lixx_Imin_);
-    }
-
-    return status;
-}

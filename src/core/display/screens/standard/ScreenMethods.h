@@ -19,8 +19,7 @@
 #define SCREEN_METHODS_H_
 
 
-namespace Screen {
-namespace Methods {
+namespace Screen { namespace Methods {
 
     void displayFirstScreen();
     void displayCIVlimits();
@@ -33,7 +32,7 @@ namespace Methods {
     void displayDeltaTextern();
     void displayDeltaFirst();
     void displayEnergy();
-};
-};
+
+} };
 
 #endif /* SCREEN_METHODS_H_ */

@@ -22,6 +22,7 @@
 #include "memory.h"
 #include "Monitor.h"
 #include "AnalogInputs.h"
+#include "Screen.h"
 
 namespace Strategy {
 
@@ -48,13 +49,13 @@ namespace Strategy {
     }
 
     void strategyPowerOn() {
-        void (*powerOn)() = pgm::read(&strategy->powerOn);
-        powerOn();
+        callVoidMethod_P(&strategy->powerOn);
     }
+
     void strategyPowerOff() {
-        void (*powerOff)() = pgm::read(&strategy->powerOff);
-        powerOff();
+        callVoidMethod_P(&strategy->powerOff);
     }
+
     Strategy::statusType strategyDoStrategy() {
         Strategy::statusType (*doStrategy)() = pgm::read(&strategy->doStrategy);
         return doStrategy();
@@ -80,15 +81,15 @@ namespace Strategy {
 
     Strategy::statusType doStrategy()
     {
-        uint8_t key = BUTTON_NONE;
+        Screen::keyboardButton = BUTTON_NONE;
         bool run = true;
         uint16_t newMesurmentData = 0;
         Strategy::statusType status = Strategy::RUNNING;
         strategyPowerOn();
         Screen::powerOn();
         do {
-            Screen::doStrategy(key);
-            key =  Keyboard::getPressedWithSpeed();
+            Screen::keyboardButton =  Keyboard::getPressedWithSpeed();
+            Screen::doStrategy();
 
             if(run) {
                 status = Monitor::run();
@@ -102,7 +103,7 @@ namespace Strategy {
             }
             if(!run && exitImmediately)
                 return status;
-        } while(key != BUTTON_STOP);
+        } while(Screen::keyboardButton != BUTTON_STOP);
 
         Screen::powerOff();
         strategyPowerOff();

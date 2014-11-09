@@ -21,10 +21,17 @@
 #include "AnalogInputs.h"
 #include "memory.h"
 
-uint8_t countElements(const char * const* staticMenu)
+void callVoidMethod_P(const VoidMethod * method)
+{
+    VoidMethod voidMethod = pgm::read(method);
+    voidMethod();
+}
+
+
+uint8_t countElements(const void * const array[])
 {
     uint8_t retu=0;
-    while(pgm::read(staticMenu++))
+    while(pgm::read(array++))
         retu++;
 
     return retu;

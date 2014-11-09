@@ -19,8 +19,6 @@
 #define STRATEGY_H_
 
 #include <inttypes.h>
-#include "Screen.h"
-
 
 namespace Strategy {
     enum statusType {ERROR, COMPLETE, RUNNING };

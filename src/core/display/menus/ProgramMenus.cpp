@@ -66,7 +66,6 @@ namespace {
 
 // ProgramType -> strings
     const char * const programMenus_strings[] PROGMEM = {
-            NULL,
             string_charge,
             string_chargeAndBalance,
             string_balance,
@@ -89,7 +88,7 @@ namespace {
         }
 
         virtual void printItem(uint8_t i) {
-            STATIC_ASSERT(sizeOfArray(programMenus_strings) == Program::LAST_PROGRAM_TYPE);
+            STATIC_ASSERT(sizeOfArray(programMenus_strings)-1 == Program::EditBattery);
 
             lcdPrint_P(pgm::read(&programMenus_strings[getProgramType(i)]));
         }
@@ -107,11 +106,12 @@ namespace {
     ProgramTypeMenu selectPbMenu(programPbMenu);
 
     ProgramTypeMenu * getSelectProgramMenu() {
-        if(ProgramData::currentProgramData.battery.type == ProgramData::NiZn)
+        ProgramData::BatteryClass bc = ProgramData::currentProgramData.getBatteryClass();
+        if(bc == ProgramData::ClassNiZn)
             return &selectNiZnMenu;
-        if(ProgramData::currentProgramData.isLiXX())
+        if(bc == ProgramData::ClassLiXX)
             return &selectLiXXMenu;
-        else if(ProgramData::currentProgramData.isNiXX())
+        if(bc == ProgramData::ClassNiXX)
             return &selectNiXXMenu;
         else return &selectPbMenu;
     }

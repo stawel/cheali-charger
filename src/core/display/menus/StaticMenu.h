@@ -28,7 +28,7 @@ public:
     const char * const* staticMenu_;
 
 public:
-    StaticMenu(const char * const* staticMenu);
+    StaticMenu(const char * const staticMenu[]);
     virtual void printItem(uint8_t i);
 };
 

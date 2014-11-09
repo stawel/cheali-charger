@@ -19,14 +19,13 @@
 #define PROGRAM_D_C_CYCLE_H_
 
 #include "Strategy.h"
+#include "ProgramData.h"
 
 namespace ProgramDCcycle {
 
-    enum BatteryGroup {NiXX, LiXX, Pb};
     extern uint8_t currentCycle;
-    extern char cycleMode;
 
-    Strategy::statusType runDCcycle(BatteryGroup prog1);
+    Strategy::statusType runDCcycle();
 };
 
 

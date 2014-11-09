@@ -20,6 +20,7 @@
 
 #include <inttypes.h>
 #include "Blink.h"
+#include "Hardware.h"
 
 #ifdef ENABLE_LCD_RAM_CG
    #define SCREEN_FULL_CELL_CHAR   2
@@ -31,10 +32,18 @@
    #define SCREEN_EMPTY_CELL_CHAR  '_'
 #endif
 
+#define PAGE_NONE 0
+#define PAGE_ALWAYS                 0xffff
+
+#define PAGE_START_INFO             (1<<15)
+#define PAGE_BALANCE_PORT           (1<<14)
+#define PAGE_PROGRAM(program)       (1<<(program))
+#define PAGE_BATTERY(_class)        ((1<<8)<<(_class))
 
 namespace Screen {
 
     extern Blink blink;
+    extern uint8_t keyboardButton;
 
     void displayCalibrationErrorScreen(uint8_t errNo);
 
@@ -54,7 +63,7 @@ namespace Screen {
     void runNeedForceBalance();
 
     void initialize();
-    void doStrategy(uint8_t key);
+    void doStrategy();
     void powerOn();
     void powerOff();
 };

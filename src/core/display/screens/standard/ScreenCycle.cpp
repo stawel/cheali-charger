@@ -30,70 +30,48 @@
 #include "PolarityCheck.h"
 #include "ScreenCycle.h"
 
-
+//TODO: remove constant: 10 (move to #define)
 
 namespace Screen { namespace Cycle {
     
     //TODO_NJ for cyclehistory  
-    uint16_t cyclesHistoryChCapacity[5]   = {0,0,0,0,0};
-    uint16_t cyclesHistoryDcCapacity[5]   = {0,0,0,0,0};
-    uint16_t cyclesHistoryChTime[5]       = {0,0,0,0,0};
-    uint16_t cyclesHistoryDcTime[5]       = {0,0,0,0,0};
-    char     cyclesHistoryMode[5]         = {'-','-','-','-','-'}; //C=charge   D=discharge '-' = none
+    uint16_t cyclesHistoryCapacity[10];
+    uint16_t cyclesHistoryTime[10];
 
 } // namespace Screen
 } // namespace Cycle
 
 void Screen::Cycle::displayCycles()
 {
-    //multiscreen (5x2 cyclenumber, D/C, timeD/timeC, mAhDC/mAhC)
-    uint8_t c;
-/*    if (++toggleTextCounter>3) toggleTextCounter=0;
-
-    if (toggleTextCounter == 3) {
-        toggleTextCycleCounter_++;
-        if (toggleTextCycleCounter_ >  ProgramDCcycle::currentCycle) toggleTextCycleCounter_ = 1;
-    }
-*/
-    //TODO: stawel ??
-    c = (blink.getBlinkTime()/3) % (ProgramDCcycle::currentCycle);
+    uint8_t c, time = blink.blinkTime_/16;
+    //TODO: remove 5
+    c = time % 5;
     lcdSetCursor0_0();
     lcdPrintUnsigned(c+1, 1);
     lcdPrintChar(SCREEN_EMPTY_CELL_CHAR);
-    lcdPrintTime(cyclesHistoryDcTime[c]);
+    lcdPrintTime(cyclesHistoryTime[c*2]);
     lcdPrintSpaces(1);
     lcdPrintChar(SCREEN_FULL_CELL_CHAR);
-    lcdPrintTime(cyclesHistoryChTime[c]);
+    lcdPrintTime(cyclesHistoryTime[c*2+1]);
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
-    lcdPrintCharge(cyclesHistoryDcCapacity[c],8);
-    lcdPrintCharge(cyclesHistoryChCapacity[c],8);
+    lcdPrintCharge(cyclesHistoryCapacity[c*2],8);
+    lcdPrintCharge(cyclesHistoryCapacity[c*2+1],8);
     lcdPrintSpaces();
 }
 
 void Screen::Cycle::resetCycleHistory()
 {
-    for (uint8_t i = 0; i < 5; i++) {
-        cyclesHistoryMode[i] = '-';
-        cyclesHistoryChTime[i] = 0;
-        cyclesHistoryDcTime[i] = 0;
-        cyclesHistoryChCapacity[i] = 0;
-        cyclesHistoryDcCapacity[i] = 0;
+    for (uint8_t i = 0; i < 10; i++) {
+        cyclesHistoryTime[i] = 0;
+        cyclesHistoryCapacity[i] = 0;
     }
 }
 
 void Screen::Cycle::storeCycleHistoryInfo()
 {
-    int8_t c = ProgramDCcycle::currentCycle-1;
-    if (ProgramDCcycle::cycleMode == 'C') {
-        cyclesHistoryMode[c] = 'C';
-        cyclesHistoryChTime[c] = Monitor::getTotalChargeDischargeTimeSec();
-        cyclesHistoryChCapacity[c] = AnalogInputs::getRealValue(AnalogInputs::Cout);
-    }
-    if (ProgramDCcycle::cycleMode == 'D') {
-        cyclesHistoryMode[c] = 'D';
-        cyclesHistoryDcTime[c] = Monitor::getTotalChargeDischargeTimeSec();
-        cyclesHistoryDcCapacity[c] = AnalogInputs::getRealValue(AnalogInputs::Cout);
-    }
+    uint8_t c = ProgramDCcycle::currentCycle;
+    cyclesHistoryTime[c] = Monitor::getTotalChargeDischargeTimeSec();
+    cyclesHistoryCapacity[c] = AnalogInputs::getRealValue(AnalogInputs::Cout);
 }

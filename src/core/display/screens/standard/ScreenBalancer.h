@@ -19,16 +19,16 @@
 #define SCREEN_BALANCER_H_
 
 
-namespace Screen {
-namespace Balancer {
-        void displayVoltage1_3();
-        void displayVoltage4_6();
-        void displayVoltage7_9();
+namespace Screen { namespace Balancer {
 
-        void displayResistance1_3();
-        void displayResistance4_6();
-        void displayResistancee7_9();
-};
-};
+    void displayVoltage1_3();
+    void displayVoltage4_6();
+    void displayVoltage7_9();
+
+    void displayResistance1_3();
+    void displayResistance4_6();
+    void displayResistance7_9();
+
+} };
 
 #endif /* SCREEN_BALANCER_H_ */

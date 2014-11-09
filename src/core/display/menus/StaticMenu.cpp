@@ -21,7 +21,7 @@
 #include "StaticMenu.h"
 
 
-StaticMenu::StaticMenu(const char * const* staticMenu):
+StaticMenu::StaticMenu(const char * const staticMenu[]):
             Menu(countElements(staticMenu)), staticMenu_(staticMenu){}
 
 

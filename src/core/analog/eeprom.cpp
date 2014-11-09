@@ -22,8 +22,8 @@
 #include "Settings.h"
 #include "memory.h"
 #include "Version.h"
-#include "LcdPrint.h"
 #include "eeprom.h"
+#include "Screen.h"
 
 #define CHARS_TO_UINT16(x,y) (((y)<< 8) + (x))
 

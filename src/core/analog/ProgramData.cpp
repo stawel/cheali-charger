@@ -86,6 +86,16 @@ const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
         string_battery_NiZn
 };
 
+ProgramData::BatteryClass ProgramData::getBatteryClass() const {
+    if( battery.type == NiZn) return ClassNiZn;
+    if( battery.type == Life  || battery.type == Lilo  || battery.type == Lipo
+     || battery.type == Li430 || battery.type == Li435) return ClassLiXX;
+    if( battery.type == NiCd  || battery.type == NiMH) return ClassNiXX;
+    return ClassPb;
+}
+
+
+
 void ProgramData::printIndex(char *&buf, uint8_t &maxSize, uint8_t index)
 {
     printUInt(buf, maxSize, index);
@@ -217,7 +227,7 @@ void change(val_t &v, int direction, uint16_t max)
 {
 }
 
-void ProgramData::changeBattery(int direction)
+void ProgramData::changeBatteryType(int direction)
 {
     battery.type+=direction;
     if(battery.type>=LAST_BATTERY_TYPE) {

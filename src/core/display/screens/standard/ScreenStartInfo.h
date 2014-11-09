@@ -19,12 +19,10 @@
 #define SCREEN_START_INFO_H_
 
 
-namespace Screen {
-namespace StartInfo {
-
-    extern Blink blink;
+namespace Screen { namespace StartInfo {
 
     void displayStartInfo();
+
 };
 };
 
