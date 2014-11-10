@@ -39,8 +39,9 @@ struct Settings {
     AnalogInputs::ValueType deltaV_NiMH_, deltaV_NiCd_;
     uint16_t DCcycles_;
     uint16_t DCRestTime_;
-    uint16_t AudioBeep_;
-    uint16_t Lixx_Imin_;
+    uint16_t audioBeep_;
+    uint16_t minIoutDiv_;
+    uint16_t minIout_;
     uint16_t capCutoff_;
     AnalogInputs::ValueType inputVoltageLow_;
     AnalogInputs::ValueType dischargeOffset_LiXX_;

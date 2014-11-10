@@ -23,25 +23,41 @@
 #include "Screen.h"
 #include "Settings.h"
 
+#define SMPS_MAX_CURRENT_CHANGE     ANALOG_AMP(0.100)
+
+#define SMPS_MAX_CURRENT_CHANGE_dM  ((AnalogInputs::ValueType)(SMPS_MAX_CURRENT_CHANGE*0.7))
+
 namespace SMPS {
     STATE state_;
     uint16_t value_;
-#ifdef ENABLE_SMOOTHCURRENT
-    uint16_t oldI, newI,stepValue;
-#endif
+    AnalogInputs::ValueType IoutSet_;
 
     STATE getState()    { return state_; }
     bool isPowerOn()    { return getState() == CHARGING; }
     bool isWorking()    { return value_ != 0; }
-
-
     uint16_t getValue() { return value_; }
+    AnalogInputs::ValueType getIout() { return IoutSet_; }
+
+    void setValue(uint16_t value);
+
+    AnalogInputs::ValueType getMaxIout()
+    {
+        uint32_t i = MAX_CHARGE_P;
+        uint16_t v = AnalogInputs::getVout();
+        i *= ANALOG_VOLT(1);
+        i /= v;
+
+        if(i > MAX_CHARGE_I)
+            i = MAX_CHARGE_I;
+        return i;
+    }
 
 }
 
 void SMPS::initialize()
 {
     value_ = 0;
+    IoutSet_ = 0;
     setValue(0);
     powerOff(CHARGING_COMPLETE);
 }
@@ -53,13 +69,25 @@ void SMPS::setValue(uint16_t value)
         value = SMPS_UPPERBOUND_VALUE;
     value_ = value;
 
-    value_ = SMPS::setSmoothI(value, value_);
     hardware::setChargerValue(value_);
     AnalogInputs::resetMeasurement();
 }
 
-void SMPS::setRealValue(uint16_t I)
+void SMPS::trySetIout(AnalogInputs::ValueType I)
 {
+    AnalogInputs::ValueType maxI = getMaxIout();
+    if(maxI < I) I = maxI;
+
+    if(I < IoutSet_) {
+        if(SMPS_MAX_CURRENT_CHANGE_dM < IoutSet_ - I)
+            I = IoutSet_ - SMPS_MAX_CURRENT_CHANGE_dM;
+    } else {
+        if(SMPS_MAX_CURRENT_CHANGE_dM < I - IoutSet_)
+            I = IoutSet_ + SMPS_MAX_CURRENT_CHANGE_dM;
+    }
+
+    if(IoutSet_ == I) return;
+    IoutSet_ = I;
     uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, I);
     setValue(value);
 }
@@ -84,54 +112,7 @@ void SMPS::powerOff(STATE reason)
     setValue(0);
     //reset rising value
     value_ = 0;
+    IoutSet_ = 0;
     hardware::setChargerOutput(false);
     state_ = reason;
-}
-
-uint16_t SMPS::setSmoothI(uint16_t value, uint16_t oldValue)
-{
-#ifdef ENABLE_SMOOTHCURRENT
- //if (settings.calibratedState_ >= 7) //enabled if  calibrated.
-   if (Program::programState_ != Program::Calibration)
-    {
-            oldI = calibrateValue(AnalogInputs::IsmpsValue, oldValue);
-            stepValue = (AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, ENABLE_SMOOTHCURRENT))/2;
-            newI = calibrateValue(AnalogInputs::IsmpsValue, value);
-
-          //rising
-            if ((newI > oldI) && ((newI-oldI) > ENABLE_SMOOTHCURRENT))
-            {
-              lcdClear();
-              lcdSetCursor0_0();
-              Screen::displayStrings(PSTR("SMPS up"), NULL);
-              for(uint16_t i=oldValue; i <= value; i=i+stepValue){
-                   if (i> value) //safety
-                   {
-                     i=value;
-                   }
-                   hardware::setChargerValue(i);
-                   Timer::delay(500);
-              }
-              AnalogInputs::isOutStable();    //resistance measure?
-            }
-
-          //falling
-            if ((oldI > newI) && ((oldI-newI) > ENABLE_SMOOTHCURRENT))
-            {
-              lcdClear();
-              lcdSetCursor0_0();
-              Screen::displayStrings(PSTR("SMPS down"), NULL);
-              for(uint16_t i=value; i <= oldValue; i=i+stepValue){
-                   if (i> oldValue)   //safety
-                   {
-                     i=oldValue;
-                   }
-                   hardware::setChargerValue(oldValue-i);
-                   Timer::delay(500);
-              }
-              AnalogInputs::isOutStable();    //resistance measure?
-            }
-    }
-#endif
-  return value;
 }

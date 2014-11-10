@@ -85,7 +85,8 @@ namespace settingsMenu {
     STRING(DCcycles,    "D/C cycles:");
     STRING(DCRestTime,  "D/C rest t:");
     STRING(AudioBeep,   "beep:      ");
-    STRING(Lixx_Imin,   "min.I I = I/");
+    STRING(minIoutDiv,  "min Iout: I/");
+    STRING(minIout,     "min Iout:");
     STRING(capCoff,     "cap COff:");
     STRING(inputLow,    "input low:");
     STRING(dichLiXX,    "disch +:");

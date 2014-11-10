@@ -37,7 +37,6 @@ namespace Balancer {
     uint32_t IVtime_;
     AnalogInputs::ValueType V_[MAX_BANANCE_CELLS];
 
-    uint8_t getCells() { return cells_; }
     bool isWorking()  {
         if(balance_ != 0)
             return true;

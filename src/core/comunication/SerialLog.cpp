@@ -120,9 +120,8 @@ void send()
 void doIdle()
 {
     static int16_t analogCount;
-    uint16_t getFullMeasurementCount();
     if(!AnalogInputs::isPowerOn()) {
-        analogCount = -1;
+        analogCount = 0;
     } else {
         uint16_t c = AnalogInputs::getFullMeasurementCount();
         if(analogCount != c) {
@@ -188,7 +187,7 @@ void sendHeader(uint16_t channel)
     printChar('$');
     printUInt(channel);
     printD();
-    printUInt(Program::programState_);   //state
+    printUInt(Program::programType_+1);
     printD();
 
     printUInt(currentTime/1000);   //timestamp

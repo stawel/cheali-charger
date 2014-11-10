@@ -25,23 +25,13 @@
 
 AnalogInputs::ValueType Resistance::getReadableRth()
 {
-    if(uI_ == 0)
+    if(uI == 0)
         return 0;
-    uint32_t R = abs(iV_);
+    uint32_t R = abs(iV);
     R*=1000;
-    R/=uI_;
+    R/=uI;
     return R;
 }
-
-AnalogInputs::ValueType Resistance::getReadableRth_calibrateI(AnalogInputs::Name name)
-{
-    Resistance R;
-    R.uI_ = AnalogInputs::calibrateValue(name, uI_);
-    R.iV_ = iV_;
-    return R.getReadableRth();
-}
-
-
 
 void Thevenin::init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i, bool charge)
 {
@@ -57,8 +47,8 @@ void Thevenin::init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, An
     VLast_ = Vth_ = Vfrom;
     ILastDiff_ = ILast_ = 0;
 
-    Rth_.uI_ = i;
-    Rth_.iV_ = Vto;  Rth_.iV_ -= Vfrom;
+    Rth.uI = i;
+    Rth.iV = Vto;  Rth.iV -= Vfrom;
 }
 
 AnalogInputs::ValueType Thevenin::calculateI(AnalogInputs::ValueType v) const
@@ -66,8 +56,8 @@ AnalogInputs::ValueType Thevenin::calculateI(AnalogInputs::ValueType v) const
     int32_t i;
     i  = v;
     i -= Vth_;
-    i *= Rth_.uI_;
-    i /= Rth_.iV_;
+    i *= Rth.uI;
+    i /= Rth.iV;
     if(i >  UINT16_MAX) return  UINT16_MAX;
     if(i < 0) return 0;
     return i;
@@ -95,10 +85,10 @@ void Thevenin::calculateRth(AnalogInputs::ValueType v, AnalogInputs::ValueType i
             rth_i  = ILast_;
             rth_i  -= i;
         }
-        if(sign(rth_v) == sign(Rth_.iV_)) {
+        if(sign(rth_v) == sign(Rth.iV)) {
             ILastDiff_ = rth_i;
-            Rth_.iV_ = rth_v;
-            Rth_.uI_ = rth_i;
+            Rth.iV = rth_v;
+            Rth.uI = rth_i;
         }
     }
 }
@@ -107,8 +97,8 @@ void Thevenin::calculateVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i
 {
     int32_t VRth;
     VRth = i;
-    VRth *= Rth_.iV_;
-    VRth /= Rth_.uI_;
+    VRth *= Rth.iV;
+    VRth /= Rth.uI;
     if(v < VRth) Vth_ = 0;
     else Vth_ = v - VRth;
 }

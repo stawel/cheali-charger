@@ -100,13 +100,13 @@ void Screen::Methods::displayCIVlimits()
     lcdSetCursor0_0();
     lcdPrintCharge(ProgramData::currentProgramData.getCapacityLimit(), 8);
     lcdPrintChar(' ');
-    lcdPrintCurrent(TheveninMethod::getImax(), 7);  //failed value on Nixx
+    lcdPrintCurrent(TheveninMethod::getMaxI(), 7);  //failed value on Nixx
     //ProgramData::currentProgramData.printIcString();
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
     lcdPrint_P(PSTR("Limits: "));
-    lcdPrintVoltage(TheveninMethod::Vend_, 7);
+    lcdPrintVoltage(TheveninMethod::endV, 7);
     lcdPrintSpaces();
 }
 

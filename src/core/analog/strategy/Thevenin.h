@@ -22,16 +22,15 @@
 
 class Resistance {
 public:
-   //R = iV_/uI_;
+   //R = iV/uI;
    //when discharging the resistance is negative (iV_ < 0)
    //in a Thevenin model this is mathematically equivalent
    //to a positive resistance and a current flowing in the opposite direction
 
-    int16_t iV_;
-    uint16_t uI_;
+    int16_t iV;
+    uint16_t uI;
 
     AnalogInputs::ValueType getReadableRth();
-    AnalogInputs::ValueType getReadableRth_calibrateI(AnalogInputs::Name name);
 };
 
 class Thevenin {
@@ -40,7 +39,7 @@ class Thevenin {
     AnalogInputs::ValueType ILastDiff_;
     AnalogInputs::ValueType Vth_;
 public:
-    Resistance Rth_;
+    Resistance Rth;
 
     Thevenin(){};
     void storeLast(AnalogInputs::ValueType VLast, AnalogInputs::ValueType ILast) { VLast_ = VLast; ILast_ = ILast; }

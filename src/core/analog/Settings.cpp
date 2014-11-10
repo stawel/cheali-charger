@@ -54,7 +54,8 @@ const Settings defaultSettings PROGMEM = {
         5,                  //DCcycles_
         30,                 //DCRestTime_
         1,                  //AudioBeep_ yes/no
-        10,                 //Lixx_Imin.
+        10,                 //minIoutDiv_
+        50,                 //minIout_
         120,                //"%" capCutoff_
         ANALOG_VOLT(7),     //inputVoltageLow_
         ANALOG_VOLT(0),     //dischargeOffset_LiXX_

@@ -31,6 +31,15 @@ namespace TheveninChargeStrategy {
         powerOff,
         doStrategy
     };
+
+    bool isEndVout();
+}
+
+void TheveninChargeStrategy::powerOn()
+{
+    Balancer::powerOn();
+    SMPS::powerOn();
+    TheveninMethod::initialize(true);
 }
 
 void TheveninChargeStrategy::powerOff()
@@ -39,50 +48,27 @@ void TheveninChargeStrategy::powerOff()
     Balancer::powerOff();
 }
 
-
-void TheveninChargeStrategy::powerOn()
-{
-    Balancer::powerOn();
-    SMPS::powerOn();
-    TheveninMethod::initialize(AnalogInputs::IsmpsValue);
-}
-
-void TheveninChargeStrategy::setVIB(AnalogInputs::ValueType v, AnalogInputs::ValueType i, bool balance)
-{
-       TheveninMethod::setVIB(v, AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, i), balance);
-}
-void TheveninChargeStrategy::setMinI(AnalogInputs::ValueType i)
-{
-       TheveninMethod::setMinI(AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, i));
-}
-
 Strategy::statusType TheveninChargeStrategy::doStrategy()
 {
     bool update;
     bool isendVout = isEndVout();
-    uint16_t oldValue = SMPS::getValue();
+    AnalogInputs::ValueType I = SMPS::getIout();
 
-    //test if charge complete
-    if(TheveninMethod::isComlete(isendVout, oldValue)) {
+    //balance, test if charge complete
+    if(TheveninMethod::balance_isComplete(isendVout, I)) {
         SMPS::powerOff(SMPS::CHARGING_COMPLETE);
         return Strategy::COMPLETE;
     }
+    AnalogInputs::ValueType newI = TheveninMethod::calculateNewI(isendVout, I);
+    SMPS::trySetIout(newI);
 
-    update = AnalogInputs::isOutStable() || isendVout || TheveninMethod::isBelowMin(oldValue);
-
-
-    if(update && !Balancer::isWorking()) {
-        uint16_t value = TheveninMethod::calculateNewValue(isendVout, oldValue);
-        if(value != oldValue)
-            SMPS::setValue(value);
-    }
     return Strategy::RUNNING;
 }
 
 
 bool TheveninChargeStrategy::isEndVout()
 {
-    AnalogInputs::ValueType Vc = TheveninMethod::Vend_;
+    AnalogInputs::ValueType Vc = TheveninMethod::endV;
     AnalogInputs::ValueType Vc_per_cell = Balancer::calculatePerCell(Vc);
 
     return Vc <= AnalogInputs::getVout() || Balancer::isMaxVout(Vc_per_cell);

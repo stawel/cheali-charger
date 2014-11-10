@@ -24,8 +24,8 @@
 #define BALANCER_PORTS_GT_6(x...)
 #endif
 
-#ifndef IBALANCE
-#define IBALANCE ANALOG_AMP(0.160) //default 160mA
+#ifndef BALANCER_I
+#define BALANCER_I ANALOG_AMP(0.160) //default 160mA
 #endif
 
 
@@ -43,6 +43,7 @@ namespace Balancer {
     extern uint8_t minCell_;
     extern bool done_;
     extern uint16_t balancingEnded_;
+    extern uint8_t cells_;
 
 
     void powerOn();
@@ -55,7 +56,7 @@ namespace Balancer {
     uint8_t calculateBalance();
     void setBalance(uint8_t v);
     uint8_t getCellMinV();
-    uint8_t getCells();
+    inline uint8_t getCells() { return cells_; }
     AnalogInputs::ValueType getV(uint8_t cell);
     AnalogInputs::ValueType getPresumedV(uint8_t cell);
     inline AnalogInputs::ValueType getRealV(uint8_t cell) { return getPresumedV(cell); }

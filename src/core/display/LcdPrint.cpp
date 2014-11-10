@@ -211,17 +211,19 @@ void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
     if(dig<=0)
         return;
 
-    int8_t xdig = digits(x/1000);
-    xdig+=1+3; // m or .
+    int8_t xdig = digits(x);
+    xdig++; // m or .
+
+    if(dig<xdig || dot){
+        dot = true;
+        xdig = digits(x/1000);
+        xdig+=1+3; // "."
+    }
 
     for(;xdig<dig;dig--)
         lcdPrintChar(prefix);
 
-    if(dig >= xdig && !dot) {
-        xdig = digits(x);
-        dig--; //m
-        for(;xdig<dig;dig--)
-            lcdPrintChar(prefix);
+    if(!dot) {
         lcdPrintUInt(x);
         lcdPrintChar('m');
     } else if(dig < xdig - 4) {

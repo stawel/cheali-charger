@@ -24,112 +24,94 @@
 #include "Settings.h"
 
 namespace TheveninMethod {
-    uint16_t minValue_;
-    uint16_t minBalanceValue_;
-    uint16_t maxValue_;
-    AnalogInputs::ValueType Vend_;
-    AnalogInputs::ValueType valueTh_;
-    uint16_t lastBallancingEnded_;
+    enum FallingState {NotFalling, LastRthMesurment, Falling};
+
+    FallingState Ifalling_;
+
+    AnalogInputs::ValueType maxI;
+    AnalogInputs::ValueType endV;
+    AnalogInputs::ValueType minI;
+    AnalogInputs::ValueType newI_;
 
     Thevenin tVout_;
     Thevenin tBal_[MAX_BANANCE_CELLS];
-    FallingState Ifalling_;
     uint8_t fullCount_;
-    uint8_t cells_;
-    AnalogInputs::Name iName_;
+
     bool balance_;
+    uint16_t lastBallancingEnded_;
     Strategy::statusType bstatus_;
-    AnalogInputs::ValueType idebug_;
 
+    AnalogInputs::ValueType calculateI();
+    AnalogInputs::ValueType normalizeI(AnalogInputs::ValueType newI, AnalogInputs::ValueType I);
 
-    void setMinI(AnalogInputs::ValueType i) 
-    {    
-        if (i < 50) i = 50;
-        minValue_ = i; 
+    void calculateRthVth(AnalogInputs::ValueType I);
+
+    void setMinI(AnalogInputs::ValueType i)  {
+        if (i < settings.minIout_) i = settings.minIout_;
+        minI = i;
     }
 
-    uint16_t getMinValueB() {
+    uint16_t getMinIwithBalancer() {
         if(bstatus_ != Strategy::COMPLETE)
             return 0;
-        else return minValue_;
+        else return minI;
     }
 
-    AnalogInputs::ValueType getImax()
-    {
-        return AnalogInputs::calibrateValue(iName_, maxValue_);
-    }
-
-    bool isBelowMin(AnalogInputs::ValueType value)
+    bool isBelowMin(AnalogInputs::ValueType I)
     {
         if(Ifalling_ == LastRthMesurment)
             return false;
-        return value < minValue_;
+        return I < minI;
     }
-
+    void storeI(AnalogInputs::ValueType I);
 }
 
-AnalogInputs::ValueType TheveninMethod::getReadableRthCell(uint8_t cell)
-{
-    return tBal_[cell].Rth_.getReadableRth_calibrateI(iName_);
-//      return tBal_[cell].ILastDiff_;
-}
-AnalogInputs::ValueType TheveninMethod::getReadableBattRth()
-{
-    return tVout_.Rth_.getReadableRth_calibrateI(iName_);
-}
-
+AnalogInputs::ValueType TheveninMethod::getReadableRthCell(uint8_t cell) { return tBal_[cell].Rth.getReadableRth(); }
+AnalogInputs::ValueType TheveninMethod::getReadableBattRth()             { return tVout_.Rth.getReadableRth(); }
 AnalogInputs::ValueType TheveninMethod::getReadableWiresRth()
 {
     Resistance R;
-    R.iV_ =  AnalogInputs::getRealValue(AnalogInputs::Vout);
-    R.iV_ -= AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
-    R.uI_ = AnalogInputs::getRealValue(AnalogInputs::Iout);
+    R.iV =  AnalogInputs::getRealValue(AnalogInputs::Vout);
+    R.iV -= AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
+    R.uI = AnalogInputs::getRealValue(AnalogInputs::Iout);
     return R.getReadableRth();
 
 }
 
-
-
 void TheveninMethod::setVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueType i, bool balance)
 {
-    Vend_ = Vend;
-    maxValue_ = i;
-    minValue_ = i / settings.Lixx_Imin_;    //default=10
-        //low current
-    if (maxValue_ < 50) { maxValue_ = 50; }
-    if (minValue_ < 50) { minValue_ = 50; }
+    TheveninMethod::endV = Vend;
+    maxI = i;
+    setMinI(i/settings.minIoutDiv_);
     balance_ = balance;
 }
 
-void TheveninMethod::initialize(AnalogInputs::Name iName)
+void TheveninMethod::initialize(bool charge)
 {
     bstatus_ = Strategy::COMPLETE;
-    bool charge = (iName == AnalogInputs::IsmpsValue);
 
-    iName_ = iName;
-    minBalanceValue_ = AnalogInputs::reverseCalibrateValue(iName_, IBALANCE);
     AnalogInputs::ValueType Vout = AnalogInputs::getVout();
-    tVout_.init(Vout, Vend_, minValue_, charge);
+    tVout_.init(Vout, endV, minI, charge);
 
-    cells_ = Balancer::getCells();
-    AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(Vend_);
+    AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(endV);
 
-    for(uint8_t c = 0; c < cells_; c++) {
+    for(uint8_t c = 0; c < Balancer::getCells(); c++) {
         AnalogInputs::ValueType v = Balancer::getPresumedV(c);
-        tBal_[c].init(v, Vend_per_cell, minValue_, charge);
+        tBal_[c].init(v, Vend_per_cell, minI, charge);
     }
 
     Ifalling_ = NotFalling;
     fullCount_ = 0;
+    newI_ = 0;
 }
 
 //TODO: the TheveninMethod  is too complex, should be refactored, maybe when switching to mAmps
 
 
-bool TheveninMethod::isComlete(bool isEndVout, AnalogInputs::ValueType value)
+bool TheveninMethod::balance_isComplete(bool isEndVout, AnalogInputs::ValueType I)
 {
     if(balance_) {
-        if(value > max(minBalanceValue_, minValue_))
+        if(I > max(BALANCER_I, minI))
             Balancer::done_ = false;
         if(Ifalling_ != LastRthMesurment)
             bstatus_ = Balancer::doStrategy();
@@ -138,9 +120,9 @@ bool TheveninMethod::isComlete(bool isEndVout, AnalogInputs::ValueType value)
     if(bstatus_ != Strategy::COMPLETE)
         return false;
 
-    isEndVout |= (Ifalling_ == Falling)  && value < minValue_;
+    isEndVout |= (Ifalling_ == Falling)  && I < minI;
 
-    if(value <= getMinValueB() && isEndVout) {
+    if(I <= getMinIwithBalancer() && isEndVout) {
         if(fullCount_++ >= 10) {
             return true;
         }
@@ -151,85 +133,86 @@ bool TheveninMethod::isComlete(bool isEndVout, AnalogInputs::ValueType value)
 }
 
 
-AnalogInputs::ValueType TheveninMethod::calculateNewValue(bool isEndVout, AnalogInputs::ValueType oldValue)
+AnalogInputs::ValueType TheveninMethod::calculateNewI(bool isEndVout, AnalogInputs::ValueType I)
 {
-    AnalogInputs::ValueType i;
+    bool updateI = AnalogInputs::isOutStable() || isEndVout || TheveninMethod::isBelowMin(I);
+    updateI = updateI && !Balancer::isWorking();
 
-    calculateRthVth(oldValue);
-    storeOldValue(oldValue);
+    if(updateI) {
+        calculateRthVth(I);
+        storeI(I);
 
-    i = calculateI();
-    idebug_ = i;
-    i = normalizeI(i, oldValue);
+        newI_ = calculateI();
+        newI_ = normalizeI(newI_, I);
 
-    //test if maximum output voltage reached
-    switch(Ifalling_) {
-    case NotFalling:
-        if(!isEndVout)
+        //test if maximum output voltage reached
+        switch(Ifalling_) {
+        case NotFalling:
+            if(!isEndVout)
+                break;
+            if(balance_) {
+                Balancer::endBalancing();
+                Balancer::done_ = false;
+            }
+            Ifalling_ = LastRthMesurment;
+            //temporarily turn off
+            newI_ = 0;
             break;
-        if(balance_) {
-            Balancer::endBalancing();
-            Balancer::done_ = false;
+        default:
+            Ifalling_ = Falling;
+            break;
         }
-        Ifalling_ = LastRthMesurment;
-        //temporarily turn off
-        i = 0;
-        break;
-    default:
-        Ifalling_ = Falling;
-        break;
     }
-    return i;
+    return newI_;
 }
 
 
-void TheveninMethod::calculateRthVth(AnalogInputs::ValueType oldValue)
+void TheveninMethod::calculateRthVth(AnalogInputs::ValueType I)
 {
-    tVout_.calculateRthVth(AnalogInputs::getVout(),oldValue);
+    tVout_.calculateRthVth(AnalogInputs::getVout(),I);
 
-    for(uint8_t c = 0; c < cells_; c++) {
-        tBal_[c].calculateRthVth(Balancer::getPresumedV(c),oldValue);
+    for(uint8_t c = 0; c < Balancer::getCells(); c++) {
+        tBal_[c].calculateRthVth(Balancer::getPresumedV(c),I);
     }
 }
 
 AnalogInputs::ValueType TheveninMethod::calculateI()
 {
-    AnalogInputs::ValueType i = tVout_.calculateI(Vend_);
-    AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(Vend_);
-    for(uint8_t c = 0; c < cells_; c++) {
+    AnalogInputs::ValueType i = tVout_.calculateI(endV);
+    AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(endV);
+    for(uint8_t c = 0; c < Balancer::getCells(); c++) {
         i = min(i, tBal_[c].calculateI(Vend_per_cell));
     }
     return i;
 }
 
-AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType value, AnalogInputs::ValueType oldValue)
+AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType newI, AnalogInputs::ValueType I)
 {
-    valueTh_ = value;
-    if(value > maxValue_) {
-        value = maxValue_;
+    if(newI > maxI) {
+        newI = maxI;
     }
-    if(value < getMinValueB()) {
-        value = getMinValueB();
+    if(newI < getMinIwithBalancer()) {
+        newI = getMinIwithBalancer();
     }
 
-    if(oldValue != value) {
+    if(I != newI) {
         if(Ifalling_ != Falling
-            || value < oldValue
-            || (oldValue <= minValue_ && lastBallancingEnded_ != Balancer::balancingEnded_)) {
+            || newI < I
+            || (I <= minI && lastBallancingEnded_ != Balancer::balancingEnded_)) {
 
             lastBallancingEnded_ = Balancer::balancingEnded_;
-            return value;
+            return newI;
         }
     }
-    return oldValue;
+    return I;
 }
 
-void TheveninMethod::storeOldValue(AnalogInputs::ValueType oldValue)
+void TheveninMethod::storeI(AnalogInputs::ValueType I)
 {
-    tVout_.storeLast(AnalogInputs::getVout(), oldValue);
+    tVout_.storeLast(AnalogInputs::getVout(), I);
 
-    for(uint8_t i = 0; i < cells_; i++) {
+    for(uint8_t i = 0; i < Balancer::getCells(); i++) {
         AnalogInputs::ValueType vi = Balancer::getPresumedV(i);
-        tBal_[i].storeLast(vi, oldValue);
+        tBal_[i].storeLast(vi, I);
     }
 }

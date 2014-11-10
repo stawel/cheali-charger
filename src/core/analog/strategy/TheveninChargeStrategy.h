@@ -29,10 +29,9 @@ namespace TheveninChargeStrategy
     void powerOn();
     Strategy::statusType doStrategy();
     void powerOff();
-    bool isEndVout();
 
-    void setVIB(AnalogInputs::ValueType v, AnalogInputs::ValueType i, bool balance);
-    void setMinI(AnalogInputs::ValueType i);
+    inline void setVIB(AnalogInputs::ValueType v, AnalogInputs::ValueType i, bool balance) {  TheveninMethod::setVIB(v, i, balance); }
+    inline void setMinI(AnalogInputs::ValueType i) { TheveninMethod::setMinI(i); }
 
 };
 

@@ -21,6 +21,7 @@
 #define SMPS_H_
 
 #include <inttypes.h>
+#include "AnalogInputsTypes.h"
 
 namespace SMPS {
     enum STATE { CHARGING, CHARGING_COMPLETE, ERROR, STOP};
@@ -31,10 +32,12 @@ namespace SMPS {
     bool isPowerOn();
     bool isWorking();
 
+    //returns the truly set Iout
+    AnalogInputs::ValueType getIout();
+    void trySetIout(AnalogInputs::ValueType I);
+
     uint16_t getValue();
     void setValue(uint16_t value);
-    uint16_t setSmoothI(uint16_t value, uint16_t value_);
-    void setRealValue(uint16_t I);
 
     void powerOn();
     void powerOff(STATE reason = CHARGING_COMPLETE);

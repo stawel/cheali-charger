@@ -122,7 +122,7 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
         if(ProgramData::currentProgramData.isNiXX()) {
             return runDeltaCharge();
         } else {
-            return runTheveninCharge(settings.Lixx_Imin_);   //(default end current = start current / 10)
+            return runTheveninCharge(settings.minIoutDiv_);   //(default end current = start current / 10)
         }
     case Program::ChargeBalance:
         return runTheveninChargeBalance();

@@ -43,7 +43,8 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_DCcycles,
         string_DCRestTime,
         string_AudioBeep,
-        string_Lixx_Imin,
+        string_minIoutDiv,
+        string_minIout,
         string_capCoff,
         string_inputLow,
         string_dichLiXX,
@@ -89,8 +90,9 @@ void SettingsMenu::printItem(uint8_t index)
             case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiCd_, 5);        break;
             case NEXT_CASE:     lcdPrintUnsigned(p_.DCcycles_, 3);      break;
             case NEXT_CASE:     lcdPrintUnsigned(p_.DCRestTime_, 3);    break;
-            case NEXT_CASE:     lcdPrintYesNo(p_.AudioBeep_);           break;
-            case NEXT_CASE:     lcdPrintUnsigned(p_.Lixx_Imin_, 2);     break;
+            case NEXT_CASE:     lcdPrintYesNo(p_.audioBeep_);           break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.minIoutDiv_, 2);    break;
+            case NEXT_CASE:     lcdPrintCurrent(p_.minIout_, 5);        break;
             case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff_, 5);   break;
             case NEXT_CASE:     printVolt(p_.inputVoltageLow_);         break;
             case NEXT_CASE:     lcdPrint_mV(p_.dischargeOffset_LiXX_,6);break;
@@ -130,8 +132,9 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     change0ToMax(p_.deltaV_NiCd_, dir, 20);                 break;
         case NEXT_CASE:     change1ToMax(p_.DCcycles_, dir, 5);                     break;
         case NEXT_CASE:     change1ToMax(p_.DCRestTime_, dir, 99);                  break;
-        case NEXT_CASE:     change0ToMax(p_.AudioBeep_, dir, 1);                    break;
-        case NEXT_CASE:     changeIMin(p_.Lixx_Imin_, dir);                         break;
+        case NEXT_CASE:     change0ToMax(p_.audioBeep_, dir, 1);                    break;
+        case NEXT_CASE:     change1ToMax(p_.minIoutDiv_, dir, 50);                  break;
+        case NEXT_CASE:     change1ToMax(p_.minIout_, dir, 200);                    break;
         case NEXT_CASE:     change1ToMax(p_.capCutoff_, dir, 250);                  break;
         case NEXT_CASE:     changeInputVolt(p_.inputVoltageLow_, dir);              break;
         case NEXT_CASE:     change0ToMaxSmart(p_.dischargeOffset_LiXX_, dir,
@@ -285,16 +288,6 @@ void SettingsMenu::changeInputVolt(AnalogInputs::ValueType &v, int step) {
 void SettingsMenu::changeBalanceError(AnalogInputs::ValueType &v, int step) {
     const AnalogInputs::ValueType min = ANALOG_VOLT(0.003);
     const AnalogInputs::ValueType max = ANALOG_VOLT(0.200);
-    v+=step;
-    if(v < min) v = min;
-    if(v > max) v = max;
-}
-
-
-void SettingsMenu::changeIMin(AnalogInputs::ValueType &v, int step) {
-    const AnalogInputs::ValueType min = 5;
-    const AnalogInputs::ValueType max = 50;
-    step *= 5;
     v+=step;
     if(v < min) v = min;
     if(v > max) v = max;

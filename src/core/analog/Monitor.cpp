@@ -210,14 +210,6 @@ Strategy::statusType Monitor::run()
         }
     }
 
-    if (SMPS::isPowerOn()) {
-        if((TheveninMethod::Vend_ + ANALOG_VOLT(0.500)) < AnalogInputs::Vout) {
-            Program::stopReason_ = string_outputVoltageToHigh;
-            AnalogInputs::powerOff();   //disconnect the battery (pin12 off)
-            return Strategy::ERROR;
-        }
-    }
-
     //charger hardware failure (smps q2 short)
     AnalogInputs::ValueType v = ANALOG_AMP(0.000);
     if (SMPS::isPowerOn()) {v = ProgramData::currentProgramData.getMaxIc();}

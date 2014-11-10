@@ -25,9 +25,6 @@
 #include "Settings.h"
 
 namespace DeltaChargeStrategy {
-    enum StateType {PreCharge, RapidCharge};
-
-    StateType state_;
 
     const Strategy::VTable vtable PROGMEM = {
         powerOn,
@@ -38,7 +35,6 @@ namespace DeltaChargeStrategy {
 
 void DeltaChargeStrategy::powerOn()
 {
-    state_ = PreCharge;
     SimpleChargeStrategy::powerOn();
 }
 
@@ -47,11 +43,8 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
     SimpleChargeStrategy::calculateThevenin();
     AnalogInputs::ValueType Vout = AnalogInputs::getVout();
 
-    if(state_ == PreCharge) {
-        if(Vout > ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge)) {
-            state_ = RapidCharge;
-            SMPS::setRealValue(ProgramData::currentProgramData.battery.Ic);
-        }
+    if(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge) < Vout) {
+        SMPS::trySetIout(ProgramData::currentProgramData.battery.Ic);
     }
 
     if(AnalogInputs::isOutStable() && Vout > ProgramData::currentProgramData.getVoltage(ProgramData::VUpperLimit)) {

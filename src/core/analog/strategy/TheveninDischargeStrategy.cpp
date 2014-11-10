@@ -47,7 +47,7 @@ void TheveninDischargeStrategy::powerOn()
     Balancer::powerOn();
     //end on minimum Voltage reached or TheveninMethodComplete
     endOnTheveninMethodComplete_ = settings.dischargeAggressive_LiXX_;
-    TheveninMethod::initialize(AnalogInputs::IdischargeValue);
+    TheveninMethod::initialize(false);
 }
 
 void TheveninDischargeStrategy::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
@@ -63,30 +63,24 @@ void TheveninDischargeStrategy::setMinI(AnalogInputs::ValueType i)
 
 Strategy::statusType TheveninDischargeStrategy::doStrategy()
 {
-    bool stable;
     bool isEndVout = SimpleDischargeStrategy::isMinVout();
     uint16_t oldValue = Discharger::getValue();
-
-    //when discharging near the end, the battery voltage is very unstable
-    //but we need new discharge values at that point
-    stable = AnalogInputs::isOutStable() || isEndVout;
 
     //test for charge complete
     bool end = isEndVout;
     if(endOnTheveninMethodComplete_) {
-        end = TheveninMethod::isComlete(isEndVout, oldValue);
+        end = TheveninMethod::balance_isComplete(isEndVout, oldValue);
     }
     if(end) {
         Discharger::powerOff(Discharger::DISCHARGING_COMPLETE);
         return Strategy::COMPLETE;
     }
 
-    if(stable) {
-        uint16_t value = TheveninMethod::calculateNewValue(isEndVout, oldValue);
-        if(value != oldValue) {
-            Discharger::setValue(value);
-        }
+    uint16_t value = TheveninMethod::calculateNewI(isEndVout, oldValue);
+    if(value != oldValue) {
+        Discharger::setValue(value);
     }
+
     return Strategy::RUNNING;
 }
 

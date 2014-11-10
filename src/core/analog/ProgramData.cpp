@@ -257,7 +257,7 @@ uint16_t ProgramData::getMaxIc() const
 {
     uint32_t i;
     uint16_t v;
-    v = getVoltage(VCharge);
+    v = getVoltage(VDischarge);
     i = MAX_CHARGE_P;
     i *= ANALOG_VOLT(1);
     i /= v;
@@ -271,7 +271,7 @@ uint16_t ProgramData::getMaxId() const
 {
     uint32_t i;
     uint16_t v;
-    v = getVoltage(VCharge);
+    v = getVoltage(VDischarge);
     i = MAX_DISCHARGE_P;
     i *= ANALOG_VOLT(1);
     i /= v;

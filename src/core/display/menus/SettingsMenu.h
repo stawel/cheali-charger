@@ -49,7 +49,6 @@ private:
     static void changeDeltaTemp(AnalogInputs::ValueType &v, int dir);
     static void changeInputVolt(AnalogInputs::ValueType &v, int dir);
     static void changeBalanceError(AnalogInputs::ValueType &v, int dir);
-    static void changeIMin(AnalogInputs::ValueType &v, int step);
 };
 
 #endif /* SETTINGSMENU_H_ */
