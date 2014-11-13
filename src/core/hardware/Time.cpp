@@ -21,7 +21,6 @@
 #include "Buzzer.h"
 #include "Screen.h"
 #include "SerialLog.h"
-#include "Discharger.h"
 #include "AnalogInputsPrivate.h"
 #include "atomic.h"
 
@@ -45,7 +44,6 @@ namespace Time {
     void doIdle() {
         Monitor::doIdle();
         SerialLog::doIdle();
-        Discharger::doIdle();
         Buzzer::doIdle();
         AnalogInputs::doIdle();
     }

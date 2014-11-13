@@ -30,6 +30,8 @@ namespace TheveninDischargeStrategy {
     };
 
     bool endOnTheveninMethodComplete_;
+    bool isEndVout();
+
 }
 
 
@@ -50,37 +52,32 @@ void TheveninDischargeStrategy::powerOn()
     TheveninMethod::initialize(false);
 }
 
-void TheveninDischargeStrategy::setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
-{
-    SimpleDischargeStrategy::setVI(v,i);
-    TheveninMethod::setVIB(v, AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, i), false);
-    setMinI(i/10);
-}
-void TheveninDischargeStrategy::setMinI(AnalogInputs::ValueType i)
-{
-    TheveninMethod::setMinI(AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, i));
-}
-
 Strategy::statusType TheveninDischargeStrategy::doStrategy()
 {
-    bool isEndVout = SimpleDischargeStrategy::isMinVout();
-    uint16_t oldValue = Discharger::getValue();
+    bool isendVout = isEndVout();
+    AnalogInputs::ValueType I = Discharger::getIout();
 
     //test for charge complete
-    bool end = isEndVout;
+    bool end = isendVout;
     if(endOnTheveninMethodComplete_) {
-        end = TheveninMethod::balance_isComplete(isEndVout, oldValue);
+        end = TheveninMethod::balance_isComplete(isendVout, I);
     }
     if(end) {
         Discharger::powerOff(Discharger::DISCHARGING_COMPLETE);
         return Strategy::COMPLETE;
     }
 
-    uint16_t value = TheveninMethod::calculateNewI(isEndVout, oldValue);
-    if(value != oldValue) {
-        Discharger::setValue(value);
-    }
+    AnalogInputs::ValueType newI = TheveninMethod::calculateNewI(isendVout, I);
+    Discharger::trySetIout(newI);
 
     return Strategy::RUNNING;
+}
+
+bool TheveninDischargeStrategy::isEndVout()
+{
+    AnalogInputs::ValueType Vc = TheveninMethod::endV;
+    AnalogInputs::ValueType Vc_per_cell = Balancer::calculatePerCell(Vc);
+
+    return Vc >= AnalogInputs::getVout() || Balancer::isMinVout(Vc_per_cell);
 }
 

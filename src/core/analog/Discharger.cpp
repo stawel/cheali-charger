@@ -21,20 +21,35 @@
 
 
 namespace Discharger {
-#ifdef ENABLE_T_INTERNAL
-    uint16_t correctValueTintern(uint16_t v);
-    bool tempcutoff_;
-#endif
-    void finalizeValueTintern(bool force);
-
     STATE state_;
-    uint16_t value_,valueSet_;
+    uint16_t value_;
+    AnalogInputs::ValueType IoutSet_;
 
     STATE getState()    { return state_; }
     bool isPowerOn()    { return getState() == DISCHARGING; }
     bool isWorking()    { return value_ != 0; }
     uint16_t getValue() { return value_; }
+    AnalogInputs::ValueType getIout() { return IoutSet_; }
 
+    AnalogInputs::ValueType getMaxIout()
+    {
+#ifdef ENABLE_T_INTERNAL
+        bool tempcutoff_;
+        testTintern(tempcutoff_, settings.dischargeTempOff_ - Settings::TempDifference, settings.dischargeTempOff_);
+
+        if(tempcutoff_)
+            return 0;
+#endif
+
+        uint32_t i = MAX_DISCHARGE_P;
+        uint16_t v = AnalogInputs::getVout();
+        i *= ANALOG_VOLT(1);
+        i /= v;
+
+        if(i > MAX_DISCHARGE_I)
+            i = MAX_DISCHARGE_I;
+        return i;
+    }
 }
 
 void Discharger::initialize()
@@ -47,38 +62,19 @@ void Discharger::setValue(uint16_t value)
 {
     if(value > DISCHARGER_UPPERBOUND_VALUE)
         value = DISCHARGER_UPPERBOUND_VALUE;
-    valueSet_ = value;
-    finalizeValueTintern(true);
+    value_ = value;
+    hardware::setDischargerValue(value_);
+    AnalogInputs::resetMeasurement();
+
 }
 
-#ifdef ENABLE_T_INTERNAL
-uint16_t Discharger::correctValueTintern(uint16_t v)
+void Discharger::trySetIout(AnalogInputs::ValueType I)
 {
-    testTintern(tempcutoff_, settings.dischargeTempOff_ - Settings::TempDifference, settings.dischargeTempOff_);
+    AnalogInputs::ValueType maxI = getMaxIout();
+    if(maxI < I) I = maxI;
 
-    if(tempcutoff_)
-        v = 0;
-    return v;
-}
-#endif
-
-void Discharger::finalizeValueTintern(bool force)
-{
-#ifdef ENABLE_T_INTERNAL
-    uint16_t  v = correctValueTintern(valueSet_);
-#else
-    uint16_t  v = valueSet_;
-#endif
-
-    if(v != value_ || force) {
-        value_ = v;
-        hardware::setDischargerValue(value_);
-        AnalogInputs::resetMeasurement();
-    }
-}
-
-void Discharger::setRealValue(uint16_t I)
-{
+    if(IoutSet_ == I) return;
+    IoutSet_ = I;
     uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, I);
     setValue(value);
 }
@@ -101,13 +97,4 @@ void Discharger::powerOff(STATE reason)
     setValue(0);
     hardware::setDischargerOutput(false);
     state_ = reason;
-}
-
-void Discharger::doIdle()
-{
-#ifdef ENABLE_T_INTERNAL
-    if(isPowerOn()) {
-        finalizeValueTintern(false);
-    }
-#endif
 }

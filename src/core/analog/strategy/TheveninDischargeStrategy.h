@@ -30,9 +30,7 @@ namespace TheveninDischargeStrategy
     Strategy::statusType doStrategy();
     void powerOff();
 
-    void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
-    void setMinI(AnalogInputs::ValueType i);
-
+    inline void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i) { TheveninMethod::setVIB(v,  i, false); }
 };
 
 

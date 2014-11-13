@@ -18,18 +18,8 @@
 #ifndef SIMPLEDISCHARGESTRATEGY_H_
 #define SIMPLEDISCHARGESTRATEGY_H_
 
-#include "Strategy.h"
-#include "AnalogInputs.h"
+//TODO: remove file
 
-namespace SimpleDischargeStrategy {
-
-    void powerOn();
-    Strategy::statusType doStrategy();
-    void powerOff();
-
-    bool isMinVout();
-    void setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I);
-};
 
 
 #endif /* SIMPLEDISCHARGESTRATEGY_H_ */

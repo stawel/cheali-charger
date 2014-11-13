@@ -50,7 +50,6 @@ void TheveninChargeStrategy::powerOff()
 
 Strategy::statusType TheveninChargeStrategy::doStrategy()
 {
-    bool update;
     bool isendVout = isEndVout();
     AnalogInputs::ValueType I = SMPS::getIout();
 

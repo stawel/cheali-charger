@@ -15,49 +15,5 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "SimpleDischargeStrategy.h"
-#include "Hardware.h"
-#include "ProgramData.h"
-
-
-namespace SimpleDischargeStrategy {
-    AnalogInputs::ValueType I_;
-    AnalogInputs::ValueType V_;
-    void setVI(AnalogInputs::ValueType V, AnalogInputs::ValueType I) { I_ = I; V_ = V; };
-
-}
-
-void SimpleDischargeStrategy::powerOff()
-{
-    Discharger::powerOff();
-    Balancer::powerOff();
-}
-
-void SimpleDischargeStrategy::powerOn()
-{
-    Discharger::powerOn();
-    Balancer::powerOn();
-
-    Discharger::setRealValue(I_);
-}
-
-
-Strategy::statusType SimpleDischargeStrategy::doStrategy()
-{
-    if(isMinVout()) {
-        Discharger::powerOff(Discharger::DISCHARGING_COMPLETE);
-        return Strategy::COMPLETE;
-    }
-    return Strategy::RUNNING;
-}
-
-
-bool SimpleDischargeStrategy::isMinVout()
-{
-    AnalogInputs::ValueType Vc = V_;
-    AnalogInputs::ValueType Vc_per_cell = Balancer::calculatePerCell(Vc);
-
-    return Vc >= AnalogInputs::getVout() || Balancer::isMinVout(Vc_per_cell);
-}
 
 

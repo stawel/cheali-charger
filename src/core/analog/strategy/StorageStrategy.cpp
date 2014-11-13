@@ -51,7 +51,13 @@ void StorageStrategy::powerOff()
 void StorageStrategy::powerOn()
 {
     Balancer::powerOn();
-    if(Balancer::isMinVout(Balancer::calculatePerCell(V_))) {
+    bool charge;
+    if(Balancer::getCells() == 0) {
+        charge = AnalogInputs::getVout() <= V_;
+    } else {
+        charge = Balancer::isMinVout(Balancer::calculatePerCell(V_));
+    }
+    if(charge) {
         TheveninChargeStrategy::setVIB(V_, Ic_, false);
         TheveninChargeStrategy::powerOn();
         state = Charge;

@@ -116,7 +116,7 @@ namespace Screen { namespace Balancer {
         }
         lcdPrintDigit(from+1);
 #ifdef ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
-        if(from == 0 && Discharger::isPowerOn() && Discharger::getValue()>0) {
+        if(from == 0 && Discharger::isPowerOn() && Discharger::isWorking()) {
             lcdPrintChar('?');
         } else {
             lcdPrintChar(':');

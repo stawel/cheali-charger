@@ -60,7 +60,7 @@ BALANCER_PORTS_GT_6(
 BALANCER_PORTS_GT_6(
             {Screen::Balancer::displayResistance7_9,PAGE_BALANCE_PORT, PAGE_START_INFO + PAGE_PROGRAM(Program::Balance)},)
 
-            {Screen::Methods::displayR,             PAGE_BALANCE_PORT, PAGE_START_INFO + PAGE_PROGRAM(Program::Balance)},
+            {Screen::Methods::displayR,             PAGE_ALWAYS, PAGE_START_INFO + PAGE_PROGRAM(Program::Balance)},
 
             {Screen::Methods::displayTime,          PAGE_ALWAYS, PAGE_START_INFO},
             {Screen::Methods::displayVinput,        PAGE_ALWAYS, PAGE_NONE},

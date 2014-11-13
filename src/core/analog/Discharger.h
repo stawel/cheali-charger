@@ -31,14 +31,15 @@ namespace Discharger {
     bool isWorking();
 
 
+    //returns the truly set Iout
+    AnalogInputs::ValueType getIout();
+    void trySetIout(AnalogInputs::ValueType I);
+
     uint16_t getValue();
     void setValue(uint16_t value);
-    void setRealValue(uint16_t I);
 
     void powerOn();
     void powerOff(STATE reason = DISCHARGING_COMPLETE);
-
-    void doIdle();
 };
 
 

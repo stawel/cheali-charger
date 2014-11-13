@@ -51,7 +51,6 @@ namespace SMPS {
             i = MAX_CHARGE_I;
         return i;
     }
-
 }
 
 void SMPS::initialize()
@@ -98,6 +97,7 @@ void SMPS::powerOn()
         return;
     //reset rising value
     value_ = 0;
+    IoutSet_ = 0;
     setValue(0);
     hardware::setChargerOutput(true);
     state_ = CHARGING;
