@@ -15,6 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#define __STDC_LIMIT_MACROS
 #include "SMPS.h"
 #include "Hardware.h"
 #include "ProgramData.h"
@@ -129,6 +130,12 @@ AnalogInputs::ValueType TheveninMethod::calculateNewI(bool isEndVout, AnalogInpu
         newI_ = calculateI();
         newI_ = normalizeI(newI_, I);
 
+        if(newI_ < I) {
+            //static assert: low pass filter overflow
+            STATIC_ASSERT(MAX_CHARGE_I < INT16_MAX);
+            STATIC_ASSERT(MAX_DISCHARGE_I < INT16_MAX);
+            newI_ = (newI_ + I)/2;
+        }
         //test if maximum output voltage reached
         switch(Ifalling_) {
         case NotFalling:
