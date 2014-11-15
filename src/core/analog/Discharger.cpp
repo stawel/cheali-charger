@@ -34,10 +34,10 @@ namespace Discharger {
     AnalogInputs::ValueType getMaxIout()
     {
 #ifdef ENABLE_T_INTERNAL
-        bool tempcutoff_;
-        testTintern(tempcutoff_, settings.dischargeTempOff_ - Settings::TempDifference, settings.dischargeTempOff_);
+        bool tempcutoff;
+        testTintern(tempcutoff, settings.dischargeTempOff - Settings::TempDifference, settings.dischargeTempOff);
 
-        if(tempcutoff_)
+        if(tempcutoff)
             return 0;
 #endif
 

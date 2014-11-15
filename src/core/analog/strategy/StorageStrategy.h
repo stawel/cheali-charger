@@ -25,8 +25,6 @@ namespace StorageStrategy {
     void powerOn();
     Strategy::statusType doStrategy();
     void powerOff();
-    void setVII(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic, AnalogInputs::ValueType Id);
-    void setDoBalance(bool v);
 };
 
 

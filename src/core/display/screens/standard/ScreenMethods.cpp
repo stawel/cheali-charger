@@ -29,6 +29,7 @@
 #include "Monitor.h"
 #include "PolarityCheck.h"
 #include "ScreenMethods.h"
+#include "Balancer.h"
 
 namespace Screen {
 
@@ -66,7 +67,7 @@ namespace Screen {
 
     }
     void printDeltaT() {
-        if(settings.externT_) {
+        if(settings.externT) {
             int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
             lcdPrintSigned(x*10, 5);
             lcdPrintChar('m');
@@ -100,13 +101,13 @@ void Screen::Methods::displayCIVlimits()
     lcdSetCursor0_0();
     lcdPrintCharge(ProgramData::currentProgramData.getCapacityLimit(), 8);
     lcdPrintChar(' ');
-    lcdPrintCurrent(TheveninMethod::getMaxI(), 7);  //failed value on Nixx
+    lcdPrintCurrent(Strategy::maxI, 7);  //failed value on Nixx
     //ProgramData::currentProgramData.printIcString();
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
     lcdPrint_P(PSTR("Limits: "));
-    lcdPrintVoltage(TheveninMethod::endV, 7);
+    lcdPrintVoltage(Strategy::endV, 7);
     lcdPrintSpaces();
 }
 
@@ -144,7 +145,7 @@ void Screen::Methods::displayVinput()
     lcdPrintSpaces();
     lcdSetCursor0_1();
     lcdPrint_P(PSTR(" limit="));
-    lcdPrintAnalog(settings.inputVoltageLow_, AnalogInputs::Voltage, 7);
+    lcdPrintAnalog(settings.inputVoltageLow, AnalogInputs::Voltage, 7);
     lcdPrintSpaces();
 }
 
@@ -164,7 +165,7 @@ void Screen::Methods::displayTemperature()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("Text="));
-    if(settings.externT_)
+    if(settings.externT)
         AnalogInputs::printRealValue(AnalogInputs::Textern,    5);
     else
         lcdPrint_P(PSTR("-"));
@@ -206,7 +207,7 @@ void Screen::Methods::displayDeltaTextern()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("Text="));
-    if(settings.externT_) {
+    if(settings.externT) {
         lcdPrintTemperature(AnalogInputs::getDeltaLastT(), 9);
     } else {
         lcdPrint_P(PSTR("N/A"));

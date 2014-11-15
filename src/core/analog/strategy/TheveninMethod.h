@@ -23,22 +23,12 @@
 
 namespace TheveninMethod {
 
-    extern AnalogInputs::ValueType endV;
-    extern AnalogInputs::ValueType maxI;
-    extern AnalogInputs::ValueType minI;
-
     void initialize(bool charge);
     bool balance_isComplete(bool isEndVout, AnalogInputs::ValueType I);
 
     bool isBelowMin(AnalogInputs::ValueType I);
     void calculateRthVth(AnalogInputs::ValueType I);
     AnalogInputs::ValueType calculateNewI(bool isEndVout, AnalogInputs::ValueType I);
-
-    void setVIB(AnalogInputs::ValueType v, AnalogInputs::ValueType i, bool balance);
-    void setMinI(AnalogInputs::ValueType i);
-
-    inline AnalogInputs::ValueType getMaxI() {return maxI; }
-    inline AnalogInputs::ValueType getMinI() {return minI; }
 
     AnalogInputs::ValueType getReadableRthCell(uint8_t cell);
     AnalogInputs::ValueType getReadableBattRth();

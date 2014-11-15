@@ -26,6 +26,7 @@
 #include "IO.h"
 #include "SerialLog.h"
 #include "AnalogInputsPrivate.h"
+#include "Balancer.h"
 
 #ifdef ENABLE_SERIAL_LOG
 #include "Serial.h"
@@ -84,7 +85,7 @@ void powerOn()
 {
     if(state != Off)
         return;
-    if(settings.UART_ == Settings::Disabled)
+    if(settings.UART == Settings::Disabled)
         return;
 
     serialBegin();
@@ -250,7 +251,7 @@ void sendChannel2(bool adc)
         printUInt(v);
         printD();
     }
-    printUInt(Balancer::balance_);
+    printUInt(Balancer::balance);
     printD();
 
     uint16_t pidV=0;
@@ -277,7 +278,7 @@ void sendChannel3()
 
 void sendTime()
 {
-    int uart = settings.UART_;
+    int uart = settings.UART;
     bool adc = false;
 
     STATIC_ASSERT(Settings::ExtDebugAdc == 4);

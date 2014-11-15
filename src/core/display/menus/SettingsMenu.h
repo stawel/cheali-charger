@@ -36,11 +36,12 @@ private:
     void printUARTSpeed() const;
     void printUARTinput() const;
 
-#ifdef ENABLE_LCD_BACKLIGHT
     void changeBacklight(int dir);
-#endif
     void changeUART(int dir);
     void changeExternTemp(int dir);
+
+    void changeOverCharge(int dir);
+    void changeOverDischarge(int dir);
 
     static void printTemp(AnalogInputs::ValueType t);
     static void printDeltaT(AnalogInputs::ValueType dt);
@@ -49,6 +50,7 @@ private:
     static void changeDeltaTemp(AnalogInputs::ValueType &v, int dir);
     static void changeInputVolt(AnalogInputs::ValueType &v, int dir);
     static void changeBalanceError(AnalogInputs::ValueType &v, int dir);
+    static void changeDeltaV(int16_t &v, int dir);
 };
 
 #endif /* SETTINGSMENU_H_ */

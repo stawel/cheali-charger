@@ -79,9 +79,9 @@ namespace settingsMenu {
     STRING(externT,     "extrn T:   ");
     STRING(externTCO,   "extrn TCO:");
     STRING(dTdt,        "dT/dt:");
-    STRING(enabledV,    "enab -dV:  ");
-    STRING(NiMHdV,      "NiMH -dV:");
-    STRING(NiCddV,      "NiCd -dV:");
+    STRING(enabledV,    "enab dV:   ");
+    STRING(NiMHdV,      "NiMH dV:");
+    STRING(NiCddV,      "NiCd dV:");
     STRING(DCcycles,    "D/C cycles:");
     STRING(DCRestTime,  "D/C rest t:");
     STRING(AudioBeep,   "beep:      ");
@@ -89,7 +89,8 @@ namespace settingsMenu {
     STRING(minIout,     "min Iout:");
     STRING(capCoff,     "cap COff:");
     STRING(inputLow,    "input low:");
-    STRING(dichLiXX,    "disch +:");
+    STRING(overChargeLiXX,      "overCha:");
+    STRING(overDischargeLiXX,   "overDis:");
     STRING(dichAggLiXX, "dis agres: ");
     STRING(forceBalanc, "force bal: ");
     STRING(balancErr,   "bal. err:");

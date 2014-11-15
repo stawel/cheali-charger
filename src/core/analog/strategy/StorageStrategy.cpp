@@ -20,17 +20,12 @@
 #include "TheveninChargeStrategy.h"
 #include "TheveninDischargeStrategy.h"
 #include "memory.h"
+#include "Balancer.h"
 
 namespace StorageStrategy {
 
     enum State  {Charge, Discharge, Balance};
-
-    AnalogInputs::ValueType V_;
-    AnalogInputs::ValueType Ic_;
-    AnalogInputs::ValueType Id_;
     State state;
-    bool doBalance_;
-    void setDoBalance(bool v) { doBalance_ = v; }
 
     const Strategy::VTable vtable PROGMEM = {
         powerOn,
@@ -51,18 +46,19 @@ void StorageStrategy::powerOff()
 void StorageStrategy::powerOn()
 {
     Balancer::powerOn();
+    Strategy::setVI(ProgramData::VStorage, true);
+    AnalogInputs::ValueType V = Strategy::endV;
     bool charge;
     if(Balancer::getCells() == 0) {
-        charge = AnalogInputs::getVout() <= V_;
+        charge = AnalogInputs::getVout() <= V;
     } else {
-        charge = Balancer::isMinVout(Balancer::calculatePerCell(V_));
+        charge = Balancer::isMinVout(Balancer::calculatePerCell(V));
     }
     if(charge) {
-        TheveninChargeStrategy::setVIB(V_, Ic_, false);
         TheveninChargeStrategy::powerOn();
         state = Charge;
     } else {
-        TheveninDischargeStrategy::setVI(V_, Id_);
+        Strategy::setVI(ProgramData::VStorage, false);
         TheveninDischargeStrategy::powerOn();
         TheveninDischargeStrategy::endOnTheveninMethodComplete_ = true;
         state = Discharge;
@@ -89,7 +85,7 @@ Strategy::statusType StorageStrategy::doStrategy()
             break;
     }
 
-    if(status == Strategy::COMPLETE && doBalance_) {
+    if(status == Strategy::COMPLETE && Strategy::doBalance) {
         status = Strategy::RUNNING;
         state = Balance;
         //turn one measurement
@@ -97,11 +93,4 @@ Strategy::statusType StorageStrategy::doStrategy()
     }
 
     return status;
-}
-
-void StorageStrategy::setVII(AnalogInputs::ValueType V, AnalogInputs::ValueType Ic, AnalogInputs::ValueType Id)
-{
-    V_ = V;
-    Ic_ = Ic;
-    Id_ = Id;
 }

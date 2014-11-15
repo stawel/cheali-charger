@@ -19,6 +19,8 @@
 #include "ProgramData.h"
 #include "Screen.h"
 #include "TheveninDischargeStrategy.h"
+#include "Balancer.h"
+#include "TheveninMethod.h"
 #include "Settings.h"
 #include "memory.h"
 
@@ -48,7 +50,7 @@ void TheveninDischargeStrategy::powerOn()
     Discharger::powerOn();
     Balancer::powerOn();
     //end on minimum Voltage reached or TheveninMethodComplete
-    endOnTheveninMethodComplete_ = settings.dischargeAggressive_LiXX_;
+    endOnTheveninMethodComplete_ = settings.dischargeAggressive_LiXX;
     TheveninMethod::initialize(false);
 }
 
@@ -75,7 +77,7 @@ Strategy::statusType TheveninDischargeStrategy::doStrategy()
 
 bool TheveninDischargeStrategy::isEndVout()
 {
-    AnalogInputs::ValueType Vc = TheveninMethod::endV;
+    AnalogInputs::ValueType Vc = Strategy::endV;
     AnalogInputs::ValueType Vc_per_cell = Balancer::calculatePerCell(Vc);
 
     return Vc >= AnalogInputs::getVout() || Balancer::isMinVout(Vc_per_cell);

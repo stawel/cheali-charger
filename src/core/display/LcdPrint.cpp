@@ -370,10 +370,10 @@ void lcdPrintPercentage(AnalogInputs::ValueType p, int8_t dig)
         lcdPrintChar('%');
     }
 }
-void lcdPrint_mV(AnalogInputs::ValueType p, int8_t dig)
+void lcdPrint_mV(int16_t p, int8_t dig)
 {
     if(dig > 2) {
-        lcdPrintUnsigned(p,dig-2);
+        lcdPrintSigned(p,dig-2);
         lcdPrint_P(string_unit_mV);
     }
 }

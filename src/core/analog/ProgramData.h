@@ -57,7 +57,7 @@ struct ProgramData {
     void changeTime(int direction);
 #endif
     int16_t getDeltaVLimit() const;
-    int16_t getDeltaTLimit() const {return settings.deltaT_;}
+    int16_t getDeltaTLimit() const {return settings.deltaT;}
 
     //Info: the print... and change... methods are used in ProgramDataMenu AND Screen
     void printBatteryString() const;

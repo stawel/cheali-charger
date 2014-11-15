@@ -26,6 +26,7 @@
 #include "TheveninDischargeStrategy.h"
 #include "DeltaChargeStrategy.h"
 #include "StorageStrategy.h"
+#include "Balancer.h"
 #include "Monitor.h"
 #include "memory.h"
 #include "StartInfoStrategy.h"
@@ -44,12 +45,11 @@ namespace Program {
 
     bool startInfo();
 
-    Strategy::statusType runStorage(bool balance);
-    Strategy::statusType runTheveninCharge(int minChargeC);
-    Strategy::statusType runDischarge();
-    Strategy::statusType runTheveninChargeBalance();
-    Strategy::statusType runBalance();
-    Strategy::statusType runDeltaCharge();
+    void setupStorage();
+    void setupTheveninCharge();
+    void setupDischarge();
+    void setupBalance();
+    void setupDeltaCharge();
 
 } //namespace Program
 
@@ -58,84 +58,74 @@ bool Program::startInfo()
     bool balancer = false;
     Strategy::strategy = &StartInfoStrategy::vtable;
     Strategy::exitImmediately = true;
+    Strategy::doBalance = false;
     if(ProgramData::currentProgramData.isLiXX()) {
         //usues balance port
-        balancer = true;
+        Strategy::doBalance = true;
     }
-    StartInfoStrategy::setBalancePort(balancer);
     return Strategy::doStrategy() == Strategy::COMPLETE;
 }
 
-Strategy::statusType Program::runStorage(bool balance)
+void Program::setupStorage()
 {
-    StorageStrategy::setDoBalance(balance);
-    StorageStrategy::setVII(ProgramData::currentProgramData.getVoltage(ProgramData::VStorage),
-            ProgramData::currentProgramData.battery.Ic, ProgramData::currentProgramData.battery.Id);
     Strategy::strategy = &StorageStrategy::vtable;
-    return Strategy::doStrategy();
 }
-Strategy::statusType Program::runTheveninCharge(int minChargeC)
+void Program::setupTheveninCharge()
 {
-    TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
-            ProgramData::currentProgramData.battery.Ic, false);
-    TheveninChargeStrategy::setMinI(ProgramData::currentProgramData.battery.Ic/minChargeC);
+    Strategy::setVI(ProgramData::VCharge, true);
     Strategy::strategy = &TheveninChargeStrategy::vtable;
-    return Strategy::doStrategy();
 }
 
-Strategy::statusType Program::runTheveninChargeBalance()
-{
-    TheveninChargeStrategy::setVIB(ProgramData::currentProgramData.getVoltage(ProgramData::VCharge),
-            ProgramData::currentProgramData.battery.Ic, true);
-    Strategy::strategy = &TheveninChargeStrategy::vtable;
-    return Strategy::doStrategy();
-}
-
-
-Strategy::statusType Program::runDeltaCharge()
+void Program::setupDeltaCharge()
 {
     Strategy::strategy = &DeltaChargeStrategy::vtable;
-    return Strategy::doStrategy();
 }
 
-Strategy::statusType Program::runDischarge()
+void Program::setupDischarge()
 {
-    AnalogInputs::ValueType Voff = ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge);
-    if(ProgramData::currentProgramData.isLiXX()) {
-        Voff += settings.dischargeOffset_LiXX_ * ProgramData::currentProgramData.battery.cells;
-    }
-    TheveninDischargeStrategy::setVI(Voff, ProgramData::currentProgramData.battery.Id);
+    Strategy::setVI(ProgramData::VDischarge, true);
     Strategy::strategy = &TheveninDischargeStrategy::vtable;
-    return Strategy::doStrategy();
 }
 
-Strategy::statusType Program::runBalance()
+void Program::setupBalance()
 {
     Strategy::strategy = &Balancer::vtable;
-    return Strategy::doStrategy();
 }
 
 Strategy::statusType Program::runWithoutInfo(ProgramType prog)
 {
+    Strategy::minIdiv = settings.minIoutDiv;
+    Strategy::doBalance = false;
+
     switch(prog) {
     case Program::Charge:
         if(ProgramData::currentProgramData.isNiXX()) {
-            return runDeltaCharge();
+            setupDeltaCharge();
         } else {
-            return runTheveninCharge(settings.minIoutDiv_);   //(default end current = start current / 10)
+            setupTheveninCharge();
         }
+        break;
     case Program::ChargeBalance:
-        return runTheveninChargeBalance();
+        Strategy::doBalance = true;
+        setupTheveninCharge();
+        break;
     case Program::Balance:
-        return runBalance();
+        setupBalance();
+        break;
     case Program::Discharge:
-        return runDischarge();
+        setupDischarge();
+        break;
     case Program::FastCharge:
-        return runTheveninCharge(5);
+        Strategy::minIdiv = 5;
+        setupTheveninCharge();
+        break;
     case Program::Storage:
-        return runStorage(false);
+        setupStorage();
+        break;
     case Program::StorageBalance:
-        return runStorage(true);
+        Strategy::doBalance = true;
+        setupStorage();
+        break;
     case Program::DischargeChargeCycle:
         return ProgramDCcycle::runDCcycle();
     default:
@@ -143,6 +133,7 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
         Screen::runNotImplemented();
         return Strategy::ERROR;
     }
+    return Strategy::doStrategy();
 }
 
 void Program::run(ProgramType prog)

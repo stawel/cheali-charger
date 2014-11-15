@@ -55,15 +55,14 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
     if(AnalogInputs::getDeltaCount() <= 1)
         return Strategy::RUNNING;
 
-    if(settings.enable_deltaV_) {
+    if(settings.enable_deltaV) {
         int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
-        x=-x;
-        if(x > ProgramData::currentProgramData.getDeltaVLimit()) {
+        if(x < ProgramData::currentProgramData.getDeltaVLimit()) {
             Program::stopReason_ = string_batteryVoltageReachedDeltaVLimit;
             return Strategy::COMPLETE;
         }
     }
-    if(settings.externT_) {
+    if(settings.externT) {
     	int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
         if(x > ProgramData::currentProgramData.getDeltaTLimit()) {
             Program::stopReason_ = string_externalTemperatureReachedDeltaTLimit;

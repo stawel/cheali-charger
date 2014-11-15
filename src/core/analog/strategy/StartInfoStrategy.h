@@ -26,7 +26,6 @@ namespace StartInfoStrategy {
     void powerOn();
     Strategy::statusType doStrategy();
     void powerOff();
-    void setBalancePort(bool p);
 };
 
 #endif /* STARTINFOSTRATEGY_H_ */

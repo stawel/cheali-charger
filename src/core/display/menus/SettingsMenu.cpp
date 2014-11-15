@@ -47,7 +47,8 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_minIout,
         string_capCoff,
         string_inputLow,
-        string_dichLiXX,
+        string_overChargeLiXX,
+        string_overDischargeLiXX,
         string_dichAggLiXX,
         string_forceBalanc,
         string_balancErr,
@@ -74,31 +75,32 @@ void SettingsMenu::printItem(uint8_t index)
         START_CASE_COUNTER;
         switch (index) {
 #ifdef ENABLE_LCD_BACKLIGHT
-            case NEXT_CASE:     lcdPrintUnsigned(p_.backlight_, 3);     break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.backlight, 3);      break;
 #endif
 #ifdef ENABLE_FAN
-            case NEXT_CASE:     printTemp(p_.fanTempOn_);               break;
+            case NEXT_CASE:     printTemp(p_.fanTempOn);                break;
 #endif
 #ifdef ENABLE_T_INTERNAL
-            case NEXT_CASE:     printTemp(p_.dischargeTempOff_);        break;
+            case NEXT_CASE:     printTemp(p_.dischargeTempOff);         break;
 #endif
-            case NEXT_CASE:     lcdPrintYesNo(p_.externT_);             break;
-            case NEXT_CASE:     printTemp(p_.externTCO_);               break;
-            case NEXT_CASE:     printDeltaT(p_.deltaT_);                break;
-            case NEXT_CASE:     lcdPrintYesNo(p_.enable_deltaV_);       break;
-            case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiMH_, 5);        break;
-            case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiCd_, 5);        break;
-            case NEXT_CASE:     lcdPrintUnsigned(p_.DCcycles_, 3);      break;
-            case NEXT_CASE:     lcdPrintUnsigned(p_.DCRestTime_, 3);    break;
-            case NEXT_CASE:     lcdPrintYesNo(p_.audioBeep_);           break;
-            case NEXT_CASE:     lcdPrintUnsigned(p_.minIoutDiv_, 2);    break;
-            case NEXT_CASE:     lcdPrintCurrent(p_.minIout_, 5);        break;
-            case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff_, 5);   break;
-            case NEXT_CASE:     printVolt(p_.inputVoltageLow_);         break;
-            case NEXT_CASE:     lcdPrint_mV(p_.dischargeOffset_LiXX_,6);break;
-            case NEXT_CASE:     lcdPrintYesNo(p_.dischargeAggressive_LiXX_);break;
-            case NEXT_CASE:     lcdPrintYesNo(p_.forceBalancePort_);    break;
-            case NEXT_CASE:     lcdPrint_mV(p_.balancerError_, 5);      break;
+            case NEXT_CASE:     lcdPrintYesNo(p_.externT);              break;
+            case NEXT_CASE:     printTemp(p_.externTCO);                break;
+            case NEXT_CASE:     printDeltaT(p_.deltaT);                 break;
+            case NEXT_CASE:     lcdPrintYesNo(p_.enable_deltaV);        break;
+            case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiMH, 6);         break;
+            case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiCd, 6);         break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.DCcycles, 3);       break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.DCRestTime, 3);     break;
+            case NEXT_CASE:     lcdPrintYesNo(p_.audioBeep);            break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.minIoutDiv, 2);     break;
+            case NEXT_CASE:     lcdPrintCurrent(p_.minIout, 5);         break;
+            case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff, 5);    break;
+            case NEXT_CASE:     printVolt(p_.inputVoltageLow);          break;
+            case NEXT_CASE:     lcdPrint_mV(p_.overCharge_LiXX,6);      break;
+            case NEXT_CASE:     lcdPrint_mV(p_.overDischarge_LiXX,6);   break;
+            case NEXT_CASE:     lcdPrintYesNo(p_.dischargeAggressive_LiXX);break;
+            case NEXT_CASE:     lcdPrintYesNo(p_.forceBalancePort);     break;
+            case NEXT_CASE:     lcdPrint_mV(p_.balancerError, 5);       break;
             case NEXT_CASE:     printUART();                            break;
             case NEXT_CASE:     printUARTSpeed();                       break;
 #ifdef ENABLE_TX_HW_SERIAL
@@ -112,40 +114,39 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
 {
     int dir = -1;
     if(key == BUTTON_INC) dir = 1;
-//    dir *= keyboard.getSpeedFactor();
     START_CASE_COUNTER;
     switch(index) {
 #ifdef ENABLE_LCD_BACKLIGHT
         case NEXT_CASE:     changeBacklight(dir);                                   break;
 #endif
 #ifdef ENABLE_FAN
-        case NEXT_CASE:     changeTemp(p_.fanTempOn_, dir);                         break;
+        case NEXT_CASE:     changeTemp(p_.fanTempOn, dir);                          break;
 #endif
 #ifdef ENABLE_T_INTERNAL
-        case NEXT_CASE:     changeTemp(p_.dischargeTempOff_, dir);                  break;
+        case NEXT_CASE:     changeTemp(p_.dischargeTempOff, dir);                   break;
 #endif
         case NEXT_CASE:     changeExternTemp(dir);                                  break;
-        case NEXT_CASE:     changeTemp(p_.externTCO_,dir);                          break;
-        case NEXT_CASE:     changeDeltaTemp(p_.deltaT_,dir);                        break;
-        case NEXT_CASE:     change0ToMax(p_.enable_deltaV_, dir, 1);                break;
-        case NEXT_CASE:     change0ToMax(p_.deltaV_NiMH_, dir, 20);                 break;
-        case NEXT_CASE:     change0ToMax(p_.deltaV_NiCd_, dir, 20);                 break;
-        case NEXT_CASE:     change1ToMax(p_.DCcycles_, dir, 5);                     break;
-        case NEXT_CASE:     change1ToMax(p_.DCRestTime_, dir, 99);                  break;
-        case NEXT_CASE:     change0ToMax(p_.audioBeep_, dir, 1);                    break;
-        case NEXT_CASE:     change1ToMax(p_.minIoutDiv_, dir, 50);                  break;
-        case NEXT_CASE:     change1ToMax(p_.minIout_, dir, 200);                    break;
-        case NEXT_CASE:     change1ToMax(p_.capCutoff_, dir, 250);                  break;
-        case NEXT_CASE:     changeInputVolt(p_.inputVoltageLow_, dir);              break;
-        case NEXT_CASE:     change0ToMaxSmart(p_.dischargeOffset_LiXX_, dir,
-                                               Settings::MaxDischargeOffset_LiXX);  break;
-        case NEXT_CASE:     change0ToMax(p_.dischargeAggressive_LiXX_, dir, 1);     break;
-        case NEXT_CASE:     change0ToMax(p_.forceBalancePort_, dir, 1);             break;
-        case NEXT_CASE:     changeBalanceError(p_.balancerError_, dir);             break;
+        case NEXT_CASE:     changeTemp(p_.externTCO,dir);                           break;
+        case NEXT_CASE:     changeDeltaTemp(p_.deltaT,dir);                         break;
+        case NEXT_CASE:     change0ToMax(p_.enable_deltaV, dir, 1);                 break;
+        case NEXT_CASE:     changeDeltaV(p_.deltaV_NiMH, dir);                      break;
+        case NEXT_CASE:     changeDeltaV(p_.deltaV_NiCd, dir);                      break;
+        case NEXT_CASE:     change1ToMax(p_.DCcycles, dir, 5);                      break;
+        case NEXT_CASE:     change1ToMax(p_.DCRestTime, dir, 99);                   break;
+        case NEXT_CASE:     change0ToMax(p_.audioBeep, dir, 1);                     break;
+        case NEXT_CASE:     change1ToMax(p_.minIoutDiv, dir, 50);                   break;
+        case NEXT_CASE:     change1ToMax(p_.minIout, dir, 200);                     break;
+        case NEXT_CASE:     change1ToMax(p_.capCutoff, dir, 250);                   break;
+        case NEXT_CASE:     changeInputVolt(p_.inputVoltageLow, dir);               break;
+        case NEXT_CASE:     changeOverCharge(dir);                                  break;
+        case NEXT_CASE:     changeOverDischarge(dir);                               break;
+        case NEXT_CASE:     change0ToMax(p_.dischargeAggressive_LiXX, dir, 1);      break;
+        case NEXT_CASE:     change0ToMax(p_.forceBalancePort, dir, 1);              break;
+        case NEXT_CASE:     changeBalanceError(p_.balancerError, dir);              break;
         case NEXT_CASE:     changeUART(dir);                                        break;
-        case NEXT_CASE:     change0ToMax(p_.UARTspeed_, dir, Settings::UARTSpeeds-1); break;
+        case NEXT_CASE:     change0ToMax(p_.UARTspeed, dir, Settings::UARTSpeeds-1);break;
 #ifdef ENABLE_TX_HW_SERIAL
-        case NEXT_CASE:     change0ToMax(p_.UARTinput_, dir, 1);                    break;
+        case NEXT_CASE:     change0ToMax(p_.UARTinput, dir, 1);                     break;
 #endif
      }
 }
@@ -196,32 +197,30 @@ void SettingsMenu::printDeltaT(AnalogInputs::ValueType dt)
     lcdPrint_P(string_unitDeltaT);
 }
 
-#ifdef ENABLE_LCD_BACKLIGHT
 void SettingsMenu::changeBacklight(int dir) {
-    change0ToMax(p_.backlight_, dir, 99);
+    change0ToMax(p_.backlight, dir, 99);
     p_.apply();
 }
-#endif
 
 void SettingsMenu::changeExternTemp(int dir) {
-    change0ToMax(p_.externT_, dir, 1);
+    change0ToMax(p_.externT, dir, 1);
 #ifdef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
-    if(p_.externT_)
+    if(p_.externT)
 #ifdef ENABLE_TX_HW_SERIAL
-        if(p_.UARTinput_ == Settings::Software)
+        if(p_.UARTinput == Settings::Software)
 #endif
-        	p_.UART_ = Settings::Disabled;
+        	p_.UART = Settings::Disabled;
 #endif
 }
 
 void SettingsMenu::changeUART(int dir) {
-    change0ToMax(p_.UART_, dir, Settings::ExtDebugAdc);
+    change0ToMax(p_.UART, dir, Settings::ExtDebugAdc);
 #ifdef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
-    if(p_.UART_ != Settings::Disabled)
+    if(p_.UART != Settings::Disabled)
 #ifdef ENABLE_TX_HW_SERIAL
-        if(p_.UARTinput_ == Settings::Software)
+        if(p_.UARTinput == Settings::Software)
 #endif
-            p_.externT_ = false;
+            p_.externT = false;
 #endif
 }
 
@@ -240,12 +239,12 @@ const char * const SettingsUARTinput[] PROGMEM = {
 
 void SettingsMenu::printUART() const
 {
-    lcdPrint_P(pgm::read(&SettingsUART[p_.UART_]));
+    lcdPrint_P(pgm::read(&SettingsUART[p_.UART]));
 }
 
 void SettingsMenu::printUARTinput() const
 {
-    lcdPrint_P(pgm::read(&SettingsUARTinput[p_.UARTinput_]));
+    lcdPrint_P(pgm::read(&SettingsUARTinput[p_.UARTinput]));
 }
 
 void SettingsMenu::printUARTSpeed() const
@@ -292,3 +291,31 @@ void SettingsMenu::changeBalanceError(AnalogInputs::ValueType &v, int step) {
     if(v < min) v = min;
     if(v > max) v = max;
 }
+
+void SettingsMenu::changeOverCharge(int dir)
+{
+    int16_t &v = p_.overCharge_LiXX;
+    const int16_t min = -ANALOG_VOLT(0.035);
+    const int16_t max = +ANALOG_VOLT(0.035);
+    v+=dir;
+    if(v < min) v = min;
+    if(v > max) v = max;
+}
+void SettingsMenu::changeOverDischarge(int dir)
+{
+    int16_t &v = p_.overDischarge_LiXX;
+    const int16_t min = -ANALOG_VOLT(1.000);
+    const int16_t max = +ANALOG_VOLT(1.000);
+    v+=dir;
+    if(v < min) v = min;
+    if(v > max) v = max;
+}
+void SettingsMenu::changeDeltaV(int16_t &v, int dir)
+{
+    const int16_t min = -ANALOG_VOLT(0.020);
+    const int16_t max = +ANALOG_VOLT(0.000);
+    v+=dir;
+    if(v < min) v = min;
+    if(v > max) v = max;
+}
+

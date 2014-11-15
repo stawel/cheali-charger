@@ -18,8 +18,7 @@
 #ifndef THEVENINDISCHARGESTRATEGY_H_
 #define THEVENINDISCHARGESTRATEGY_H_
 
-#include "SimpleDischargeStrategy.h"
-#include "TheveninMethod.h"
+#include "Strategy.h"
 
 namespace TheveninDischargeStrategy
 {
@@ -30,7 +29,6 @@ namespace TheveninDischargeStrategy
     Strategy::statusType doStrategy();
     void powerOff();
 
-    inline void setVI(AnalogInputs::ValueType v, AnalogInputs::ValueType i) { TheveninMethod::setVIB(v,  i, false); }
 };
 
 

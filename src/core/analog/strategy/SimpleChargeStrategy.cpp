@@ -25,11 +25,9 @@
 void SimpleChargeStrategy::powerOn()
 {
     SMPS::powerOn();
-    AnalogInputs::ValueType I = ProgramData::currentProgramData.battery.Ic;
-    AnalogInputs::ValueType Vc = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
-    TheveninMethod::setVIB(Vc, I, false);
+    Strategy::setVI(ProgramData::VCharge, true);
     TheveninMethod::initialize(true);
-    SMPS::trySetIout(TheveninMethod::getMinI());
+    SMPS::trySetIout(Strategy::minI);
 }
 
 void SimpleChargeStrategy::powerOff()

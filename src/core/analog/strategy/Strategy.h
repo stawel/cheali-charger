@@ -19,6 +19,8 @@
 #define STRATEGY_H_
 
 #include <inttypes.h>
+#include "AnalogInputs.h"
+#include "ProgramData.h"
 
 namespace Strategy {
     enum statusType {ERROR, COMPLETE, RUNNING };
@@ -27,6 +29,15 @@ namespace Strategy {
         void (*powerOff)();
         statusType (*doStrategy)();
     };
+
+    //variables common to all Strategies
+    extern AnalogInputs::ValueType endV;
+    extern AnalogInputs::ValueType maxI;
+    extern AnalogInputs::ValueType minI;
+    extern uint8_t minIdiv;
+    extern bool doBalance;
+
+    void setVI(ProgramData::VoltageType vt, bool charge);
 
     extern const VTable * strategy;
     extern bool exitImmediately;

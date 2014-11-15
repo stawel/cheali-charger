@@ -25,6 +25,7 @@
 #include "ProgramData.h"
 #include "Program.h"
 #include "memory.h"
+#include "Balancer.h"
 
 //TODO_NJ
 #include "LcdPrint.h"     
@@ -147,8 +148,8 @@ void Monitor::doIdle()
 void Monitor::update()
 {
 #ifdef MONITOR_T_INTERNAL_FAN
-    monitor_off_T = AnalogInputs::reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_ - Settings::TempDifference);
-    monitor_on_T  = AnalogInputs::reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn_);
+    monitor_off_T = AnalogInputs::reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn - Settings::TempDifference);
+    monitor_on_T  = AnalogInputs::reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn);
 #endif
 }
 
@@ -189,7 +190,7 @@ Strategy::statusType Monitor::run()
 #ifdef ENABLE_T_INTERNAL
     AnalogInputs::ValueType t = AnalogInputs::getRealValue(AnalogInputs::Tintern);
 
-    if(t > settings.dischargeTempOff_+ Settings::TempDifference) {
+    if(t > settings.dischargeTempOff + Settings::TempDifference) {
         Program::stopReason_ = string_internalTemperatureToHigh;
         return Strategy::ERROR;
     }
@@ -202,7 +203,7 @@ Strategy::statusType Monitor::run()
     }
 
     //TODO: NJ if disconnected balancer
-    if (settings.forceBalancePort_ && SMPS::isPowerOn() && ProgramData::currentProgramData.isLiXX() && (ProgramData::currentProgramData.battery.cells > 1)) 
+    if (settings.forceBalancePort && SMPS::isPowerOn() && ProgramData::currentProgramData.isLiXX() && (ProgramData::currentProgramData.battery.cells > 1)) 
     {
         if(!AnalogInputs::isConnected(AnalogInputs::Vb1)) {
             Program::stopReason_ = string_balancePortBreak;
@@ -222,7 +223,7 @@ Strategy::statusType Monitor::run()
     }
 
     AnalogInputs::ValueType Vin = AnalogInputs::getRealValue(AnalogInputs::Vin);
-    if(AnalogInputs::isConnected(AnalogInputs::Vin) && Vin < settings.inputVoltageLow_) {
+    if(AnalogInputs::isConnected(AnalogInputs::Vin) && Vin < settings.inputVoltageLow) {
         Program::stopReason_ = string_inputVoltageToLow;
         return Strategy::ERROR;
     }
@@ -248,9 +249,9 @@ Strategy::statusType Monitor::run()
 //timelimit end
 #endif
 
-    if(settings.externT_) {
+    if(settings.externT) {
         AnalogInputs::ValueType Textern = AnalogInputs::getRealValue(AnalogInputs::Textern);
-        if(Textern > settings.externTCO_) {
+        if(Textern > settings.externTCO) {
             Program::stopReason_ = string_externalTemperatureCutOff;
             return Strategy::ERROR;
         }

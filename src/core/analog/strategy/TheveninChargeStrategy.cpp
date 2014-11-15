@@ -21,9 +21,8 @@
 #include "ProgramData.h"
 #include "Screen.h"
 #include "TheveninMethod.h"
+#include "Balancer.h"
 #include "memory.h"
-
-
 
 namespace TheveninChargeStrategy {
     const Strategy::VTable vtable PROGMEM = {
@@ -67,7 +66,7 @@ Strategy::statusType TheveninChargeStrategy::doStrategy()
 
 bool TheveninChargeStrategy::isEndVout()
 {
-    AnalogInputs::ValueType Vc = TheveninMethod::endV;
+    AnalogInputs::ValueType Vc = Strategy::endV;
     AnalogInputs::ValueType Vc_per_cell = Balancer::calculatePerCell(Vc);
 
     return Vc <= AnalogInputs::getVout() || Balancer::isMaxVout(Vc_per_cell);

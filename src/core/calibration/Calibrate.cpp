@@ -30,6 +30,7 @@
 #include "AnalogInputsPrivate.h"
 #include "Hardware.h"
 #include "eeprom.h"
+#include "Balancer.h"
 
 namespace Calibrate {
 

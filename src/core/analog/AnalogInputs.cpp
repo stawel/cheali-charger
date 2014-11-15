@@ -23,6 +23,7 @@
 #include "SerialLog.h"
 #include "eeprom.h"
 #include "atomic.h"
+#include "Balancer.h"
 
 #ifndef ANALOG_INPUTS_ADC_BURST_COUNT
 #define ANALOG_INPUTS_ADC_BURST_COUNT           1

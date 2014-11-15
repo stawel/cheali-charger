@@ -15,22 +15,19 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "TheveninChargeStrategy.h"
 #include "SMPS.h"
 #include "Hardware.h"
 #include "ProgramData.h"
 #include "Screen.h"
 #include "Utils.h"
 #include "Settings.h"
+#include "TheveninMethod.h"
+#include "Balancer.h"
 
 namespace TheveninMethod {
     enum FallingState {NotFalling, LastRthMesurment, Falling};
 
     FallingState Ifalling_;
-
-    AnalogInputs::ValueType maxI;
-    AnalogInputs::ValueType endV;
-    AnalogInputs::ValueType minI;
     AnalogInputs::ValueType newI_;
 
     Thevenin tVout_;
@@ -46,22 +43,17 @@ namespace TheveninMethod {
 
     void calculateRthVth(AnalogInputs::ValueType I);
 
-    void setMinI(AnalogInputs::ValueType i)  {
-        if (i < settings.minIout_) i = settings.minIout_;
-        minI = i;
-    }
-
     uint16_t getMinIwithBalancer() {
         if(bstatus_ != Strategy::COMPLETE)
             return 0;
-        else return minI;
+        else return Strategy::minI;
     }
 
     bool isBelowMin(AnalogInputs::ValueType I)
     {
         if(Ifalling_ == LastRthMesurment)
             return false;
-        return I < minI;
+        return I < Strategy::minI;
     }
     void storeI(AnalogInputs::ValueType I);
 }
@@ -78,26 +70,18 @@ AnalogInputs::ValueType TheveninMethod::getReadableWiresRth()
 
 }
 
-void TheveninMethod::setVIB(AnalogInputs::ValueType Vend, AnalogInputs::ValueType i, bool balance)
-{
-    TheveninMethod::endV = Vend;
-    maxI = i;
-    setMinI(i/settings.minIoutDiv_);
-    balance_ = balance;
-}
-
 void TheveninMethod::initialize(bool charge)
 {
     bstatus_ = Strategy::COMPLETE;
 
     AnalogInputs::ValueType Vout = AnalogInputs::getVout();
-    tVout_.init(Vout, endV, minI, charge);
+    tVout_.init(Vout, Strategy::endV, Strategy::minI, charge);
 
-    AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(endV);
+    AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(Strategy::endV);
 
     for(uint8_t c = 0; c < Balancer::getCells(); c++) {
         AnalogInputs::ValueType v = Balancer::getPresumedV(c);
-        tBal_[c].init(v, Vend_per_cell, minI, charge);
+        tBal_[c].init(v, Vend_per_cell, Strategy::minI, charge);
     }
 
     Ifalling_ = NotFalling;
@@ -111,8 +95,8 @@ void TheveninMethod::initialize(bool charge)
 bool TheveninMethod::balance_isComplete(bool isEndVout, AnalogInputs::ValueType I)
 {
     if(balance_) {
-        if(I > max(BALANCER_I, minI))
-            Balancer::done_ = false;
+        if(I > max(BALANCER_I, Strategy::minI))
+            Balancer::done = false;
         if(Ifalling_ != LastRthMesurment)
             bstatus_ = Balancer::doStrategy();
     }
@@ -120,7 +104,7 @@ bool TheveninMethod::balance_isComplete(bool isEndVout, AnalogInputs::ValueType 
     if(bstatus_ != Strategy::COMPLETE)
         return false;
 
-    isEndVout |= (Ifalling_ == Falling)  && I < minI;
+    isEndVout |= (Ifalling_ == Falling)  && I < Strategy::minI;
 
     if(I <= getMinIwithBalancer() && isEndVout) {
         if(fullCount_++ >= 10) {
@@ -152,7 +136,7 @@ AnalogInputs::ValueType TheveninMethod::calculateNewI(bool isEndVout, AnalogInpu
                 break;
             if(balance_) {
                 Balancer::endBalancing();
-                Balancer::done_ = false;
+                Balancer::done = false;
             }
             Ifalling_ = LastRthMesurment;
             //temporarily turn off
@@ -178,8 +162,8 @@ void TheveninMethod::calculateRthVth(AnalogInputs::ValueType I)
 
 AnalogInputs::ValueType TheveninMethod::calculateI()
 {
-    AnalogInputs::ValueType i = tVout_.calculateI(endV);
-    AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(endV);
+    AnalogInputs::ValueType i = tVout_.calculateI(Strategy::endV);
+    AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(Strategy::endV);
     for(uint8_t c = 0; c < Balancer::getCells(); c++) {
         i = min(i, tBal_[c].calculateI(Vend_per_cell));
     }
@@ -188,8 +172,8 @@ AnalogInputs::ValueType TheveninMethod::calculateI()
 
 AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType newI, AnalogInputs::ValueType I)
 {
-    if(newI > maxI) {
-        newI = maxI;
+    if(newI > Strategy::maxI) {
+        newI = Strategy::maxI;
     }
     if(newI < getMinIwithBalancer()) {
         newI = getMinIwithBalancer();
@@ -198,9 +182,9 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType newI,
     if(I != newI) {
         if(Ifalling_ != Falling
             || newI < I
-            || (I <= minI && lastBallancingEnded_ != Balancer::balancingEnded_)) {
+            || (I <= Strategy::minI && lastBallancingEnded_ != Balancer::balancingEnded)) {
 
-            lastBallancingEnded_ = Balancer::balancingEnded_;
+            lastBallancingEnded_ = Balancer::balancingEnded;
             return newI;
         }
     }

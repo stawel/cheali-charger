@@ -29,6 +29,35 @@ namespace Strategy {
     const VTable * strategy;
     bool exitImmediately;
 
+    AnalogInputs::ValueType endV;
+    AnalogInputs::ValueType maxI;
+    AnalogInputs::ValueType minI;
+    uint8_t minIdiv;
+    bool doBalance;
+
+    void setMinI(AnalogInputs::ValueType i)  {
+        if (i < settings.minIout) i = settings.minIout;
+        minI = i;
+    }
+
+    void setVI(ProgramData::VoltageType vt, bool charge) {
+        endV = ProgramData::currentProgramData.getVoltage(vt);
+
+        if(charge) {
+            maxI = ProgramData::currentProgramData.battery.Ic;
+            if(vt == ProgramData::VCharge && ProgramData::currentProgramData.isLiXX()) {
+                endV += settings.overCharge_LiXX * ProgramData::currentProgramData.battery.cells;
+            }
+        } else {
+            maxI = ProgramData::currentProgramData.battery.Id;
+            if(vt == ProgramData::VDischarge && ProgramData::currentProgramData.isLiXX()) {
+                endV += settings.overDischarge_LiXX * ProgramData::currentProgramData.battery.cells;
+            }
+        }
+
+        setMinI(maxI/minIdiv);
+    }
+
 
     void chargingComplete() {
         Monitor::powerOff();

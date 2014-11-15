@@ -29,7 +29,7 @@ namespace ProgramDCcycle {
 
     Strategy::statusType runDCRestTime()
     {
-        DelayStrategy::setDelay(settings.DCRestTime_);
+        DelayStrategy::setDelay(settings.DCRestTime);
         Strategy::strategy = &DelayStrategy::vtable;
         return Strategy::doStrategy();
     }
@@ -40,10 +40,10 @@ Strategy::statusType ProgramDCcycle::runDCcycle()
 { //TODO_NJ
     Strategy::statusType status = Strategy::COMPLETE;
     Strategy::exitImmediately = true;
-    for(currentCycle = 0; currentCycle < settings.DCcycles_*2; currentCycle++) {
+    for(currentCycle = 0; currentCycle < settings.DCcycles*2; currentCycle++) {
 
         AnalogInputs::resetAccumulatedMeasurements();
-        if (currentCycle == settings.DCcycles_*2 - 1) {
+        if (currentCycle == settings.DCcycles*2 - 1) {
             Strategy::exitImmediately = false;
         }
 

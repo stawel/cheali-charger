@@ -145,7 +145,7 @@ uint16_t ProgramData::getVoltage(VoltageType type) const
 uint16_t ProgramData::getCapacityLimit() const
 {
     uint32_t cap = battery.C;
-    cap *= settings.capCutoff_;
+    cap *= settings.capCutoff;
     cap/=100;
     if(cap>PROGRAM_DATA_MAX_CHARGE)
         cap = PROGRAM_DATA_MAX_CHARGE;
@@ -155,8 +155,8 @@ uint16_t ProgramData::getCapacityLimit() const
 int16_t ProgramData::getDeltaVLimit() const
 {
     int16_t v = 0;
-    if(battery.type == NiCd) v = settings.deltaV_NiCd_;
-    if(battery.type == NiMH) v = settings.deltaV_NiMH_;
+    if(battery.type == NiCd) v = settings.deltaV_NiCd;
+    if(battery.type == NiMH) v = settings.deltaV_NiMH;
     return battery.cells * v;
 }
 

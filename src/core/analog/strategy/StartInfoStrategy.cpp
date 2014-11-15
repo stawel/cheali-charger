@@ -25,8 +25,6 @@
 
 namespace StartInfoStrategy {
     uint8_t ok_;
-    bool balancePort_;
-    void setBalancePort(bool p) {balancePort_ = p;}
 
     const Strategy::VTable vtable PROGMEM = {
         powerOn,
@@ -57,7 +55,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
     cell_nr = v_balance = false;
     v_out = ! AnalogInputs::isConnected(AnalogInputs::Vout);
 
-    if(balancePort_) {
+    if(Strategy::doBalance) {
         uint8_t is_cells, should_be_cells;
         is_cells = AnalogInputs::getConnectedBalancePorts();
         should_be_cells = ProgramData::currentProgramData.battery.cells;
@@ -85,7 +83,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
         Buzzer::soundOff();
     }
 
-    balance = (v_balance || cell_nr) && settings.forceBalancePort_;
+    balance = (v_balance || cell_nr) && settings.forceBalancePort;
 
     if(Keyboard::getPressed() == BUTTON_NONE)
         ok_ = 0;

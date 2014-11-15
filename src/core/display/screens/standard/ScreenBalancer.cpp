@@ -29,6 +29,7 @@
 #include "Monitor.h"
 #include "PolarityCheck.h"
 #include "ScreenBalancer.h"
+#include "Balancer.h"
 
 namespace Screen { namespace Balancer {
 
@@ -65,23 +66,23 @@ namespace Screen { namespace Balancer {
             if(!::Balancer::isStable())
                 c = 'm';
         } else {
-            if(::Balancer::savedVon_)
+            if(::Balancer::savedVon)
                 c = 'B';
             else
                 c = 'b';
         }
 
-        if (::Balancer::balance_ == 0) {
+        if (::Balancer::balance == 0) {
             lcdPrintChar(c);
         }
 
-        if (::Balancer::balance_ != 0) {
+        if (::Balancer::balance != 0) {
             uint8_t  j = 1;
             for(uint8_t i = 0; i < ::Balancer::getCells(); i++) {
-                if(i == ::Balancer::minCell_) {
+                if(i == ::Balancer::minCell) {
                     c = SCREEN_EMPTY_CELL_CHAR; //lowest cell
                 } else {
-                    if(::Balancer::balance_&j) {
+                    if(::Balancer::balance&j) {
                         if (blink.getBlinkOff()) {
                             c = SCREEN_FULL_CELL_CHAR; //flash full/empty cells
                         } else {

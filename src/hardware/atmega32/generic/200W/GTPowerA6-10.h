@@ -24,7 +24,6 @@
 #include "Keyboard.h"
 #include "SMPS.h"
 #include "Discharger.h"
-#include "Balancer.h"
 #include "Timer1.h"
 #include "Time.h"
 #include "Buzzer.h"
