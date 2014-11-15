@@ -128,14 +128,17 @@ AnalogInputs::ValueType TheveninMethod::calculateNewI(bool isEndVout, AnalogInpu
         storeI(I);
 
         newI_ = calculateI();
-        newI_ = normalizeI(newI_, I);
 
         if(newI_ < I) {
+            //low pass filter
             //static assert: low pass filter overflow
             STATIC_ASSERT(MAX_CHARGE_I < INT16_MAX);
             STATIC_ASSERT(MAX_DISCHARGE_I < INT16_MAX);
             newI_ = (newI_ + I)/2;
         }
+
+        newI_ = normalizeI(newI_, I);
+
         //test if maximum output voltage reached
         switch(Ifalling_) {
         case NotFalling:
