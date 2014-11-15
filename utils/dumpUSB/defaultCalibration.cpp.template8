@@ -46,8 +46,8 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
 #endif
 
     //1-1 correlation
-    {{$a17, $r17},                      {$A17, $R17}},  //IsmpsValue
-    {{$a18, $r18},                      {$A18, $R18}},  //IdischargeValue
+    {{$a17, $r17},                      {$A17, $R17}},  //IsmpsSet
+    {{$a18, $r18},                      {$A18, $R18}},  //IdischargeSet
 };
 
 "

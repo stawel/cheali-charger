@@ -45,8 +45,8 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
   {{,}, {,}},                   //Vb8_pin
 #endif
 
-  {{504, ANALOG_AMP (0.050)}, {11131, ANALOG_AMP (1.000)}},     //IsmpsValue
-  {{410, ANALOG_AMP (0.050)}, {2938, ANALOG_AMP (0.300)}},      //IdischargeValue
+  {{504, ANALOG_AMP (0.050)}, {11131, ANALOG_AMP (1.000)}},     //IsmpsSet
+  {{410, ANALOG_AMP (0.050)}, {2938, ANALOG_AMP (0.300)}},      //IdischargeSet
 };
 
 namespace

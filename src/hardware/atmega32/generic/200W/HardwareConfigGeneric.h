@@ -26,7 +26,7 @@
 #define LCD_BACKLIGHT_MAX       32000
 
 #define MAX_BANANCE_CELLS       6
-#define TIMER1_PERIOD           512
+#define TIMER1_PERIOD           1024
 
 #define CALIBRATION_CHARGE_POINT0_mA    50
 #define CALIBRATION_CHARGE_POINT1_mA    1000

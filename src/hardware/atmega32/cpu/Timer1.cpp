@@ -48,22 +48,17 @@ void Timer1::setPWM(char pin, uint16_t val)  // expects duty cycle to be 10 bit 
 
 void Timer1::initialize()
 {
-
-    TCCR1A = 0;                 // clear control register A
-    TCCR1B = _BV(WGM13);        // set mode 8: phase and frequency correct pwm, stop the timer
-
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        ICR1 = TIMER1_PERIOD;
-    }
-    TCCR1B &= ~(_BV(CS10) | _BV(CS11) | _BV(CS12));
-    TCCR1B |= _BV(CS10);
+    ICR1 = TIMER1_PERIOD;
+    TCCR1A = _BV(WGM11);
+    TCCR1B = _BV(WGM13)| _BV(WGM12)             // set mode 14: Fast PWM
+             | _BV(CS10);                       // No prescaling
 
     TIMSK |= _BV(TOIE1);
 }
 
 void Timer1::disablePWM(char pin)
 {
-  if(pin == 14)       TCCR1A &= ~_BV(COM1A1);   // clear the bit that enables pwm on PB1
-  else if(pin == 13) TCCR1A &= ~_BV(COM1B1);   // clear the bit that enables pwm on PB2
+  if(pin == 14)      TCCR1A &= ~_BV(COM1A1);    // clear the bit that enables pwm on PB1
+  else if(pin == 13) TCCR1A &= ~_BV(COM1B1);    // clear the bit that enables pwm on PB2
 }
 

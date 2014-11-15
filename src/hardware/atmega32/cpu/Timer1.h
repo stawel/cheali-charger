@@ -3,7 +3,7 @@
 
 #include "HardwareConfig.h"
 
-#define TIMER1_PRECISION 6
+#define TIMER1_PRECISION 5
 #define TIMER1_PRECISION_PERIOD (TIMER1_PERIOD<<TIMER1_PRECISION)
 
 namespace Timer1

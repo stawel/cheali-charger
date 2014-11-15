@@ -45,8 +45,8 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
     {{$c_p0_x__Vb8_pin,          $c_p0_y__Vb8_pin},               {$c_p1_x__Vb8_pin,       $c_p1_y__Vb8_pin}},   //Vb8_pin
 #endif
 
-    {{$c_p0_x__IsmpsValue,       $c_p0_y__IsmpsValue},            {$c_p1_x__IsmpsValue,     $c_p1_y__IsmpsValue}},            //IsmpsValue
-    {{$c_p0_x__IdischargeValue,  $c_p0_y__IdischargeValue},       {$c_p1_x__IdischargeValue,$c_p1_y__IdischargeValue}},       //IdischargeValue
+    {{$c_p0_x__IsmpsValue,       $c_p0_y__IsmpsValue},            {$c_p1_x__IsmpsValue,     $c_p1_y__IsmpsValue}},            //IsmpsSet
+    {{$c_p0_x__IdischargeValue,  $c_p0_y__IdischargeValue},       {$c_p1_x__IdischargeValue,$c_p1_y__IdischargeValue}},       //IdischargeSet
 };
 
 namespace {

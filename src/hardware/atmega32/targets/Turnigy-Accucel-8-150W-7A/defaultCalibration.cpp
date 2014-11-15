@@ -42,8 +42,8 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                        {50752, ANALOG_VOLT(3.865)}},   //Vb7_pin
     {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb8_pin
 #endif
-    {{176, ANALOG_AMP(0.050)},       {176*2, ANALOG_AMP(1.000)}},      //IsmpsValue
-    {{335, ANALOG_AMP(0.050)},       {335*2, ANALOG_AMP(0.300)}},      //IdischargeValue
+    {{176, ANALOG_AMP(0.050)},       {176*2, ANALOG_AMP(1.000)}},      //IsmpsSet
+    {{335, ANALOG_AMP(0.050)},       {335*2, ANALOG_AMP(0.300)}},      //IdischargeSet
 };
 
 

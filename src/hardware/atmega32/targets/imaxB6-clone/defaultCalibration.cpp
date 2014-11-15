@@ -44,8 +44,8 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb8_pin
 #endif
     //1-1 correlation
-    {{380, 50},                      {10920, 1000}},  //IsmpsValue
-    {{2610, 50},                      {15850, 300}},  //IdischargeValue
+    {{380, 50},                      {10920, 1000}},  //IsmpsSet
+    {{2610, 50},                      {15850, 300}},  //IdischargeSet
 };
 
 
