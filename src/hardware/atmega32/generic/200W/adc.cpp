@@ -185,8 +185,8 @@ void reset() {
 
 void finalizeMeasurement()
 {
-    AnalogInputs::i_adc_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
-    AnalogInputs::i_adc_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
+    AnalogInputs::i_adc_[AnalogInputs::IsmpsSet]        = SMPS::getValue();
+    AnalogInputs::i_adc_[AnalogInputs::IdischargeSet]   = Discharger::getValue();
     AnalogInputs::intterruptFinalizeMeasurement();
 }
 

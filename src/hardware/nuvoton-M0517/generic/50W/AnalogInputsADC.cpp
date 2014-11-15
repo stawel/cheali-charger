@@ -264,12 +264,12 @@ void conversionDone()
 
 void finalizeMeasurement()
 {
-    AnalogInputs::i_adc_[AnalogInputs::IsmpsValue]        = SMPS::getValue();
-    AnalogInputs::i_adc_[AnalogInputs::IdischargeValue]   = Discharger::getValue();
+    AnalogInputs::i_adc_[AnalogInputs::IsmpsSet]        = SMPS::getValue();
+    AnalogInputs::i_adc_[AnalogInputs::IdischargeSet]   = Discharger::getValue();
 
     if(g_addSumToInput) {
-        AnalogInputs::i_avrSum_[AnalogInputs::IsmpsValue]        += SMPS::getValue() * ANALOG_INPUTS_ADC_BURST_COUNT;
-        AnalogInputs::i_avrSum_[AnalogInputs::IdischargeValue]   += Discharger::getValue() * ANALOG_INPUTS_ADC_BURST_COUNT;
+        AnalogInputs::i_avrSum_[AnalogInputs::IsmpsSet]        += SMPS::getValue() * ANALOG_INPUTS_ADC_BURST_COUNT;
+        AnalogInputs::i_avrSum_[AnalogInputs::IdischargeSet]   += Discharger::getValue() * ANALOG_INPUTS_ADC_BURST_COUNT;
         if(AnalogInputs::i_avrCount_ == 1) {
             AnalogInputs::i_avrSum_[AnalogInputs::Ismps]          /= ADC_I_SMPS_PER_ROUND;
         }

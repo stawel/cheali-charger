@@ -87,7 +87,7 @@ void SMPS::trySetIout(AnalogInputs::ValueType I)
 
     if(IoutSet_ == I) return;
     IoutSet_ = I;
-    uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsValue, I);
+    uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsSet, I);
     setValue(value);
 }
 

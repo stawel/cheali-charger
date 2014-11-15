@@ -268,7 +268,7 @@ void expertCalibrateVoltage()
 
 void setCurrentValue(AnalogInputs::Name name, AnalogInputs::ValueType value)
 {
-    if(name == AnalogInputs::IsmpsValue)    SMPS::setValue(value);
+    if(name == AnalogInputs::IsmpsSet)    SMPS::setValue(value);
     else                                    Discharger::setValue(value);
 }
 
@@ -290,7 +290,7 @@ public:
         //TODO: hack, should be improved ... Gyuri: R138 burned.
         if(!AnalogInputs::isConnected(AnalogInputs::Vout)) {
             Screen::displayStrings(string_connectBattery);
-            if(cName_ == AnalogInputs::IdischargeValue) {
+            if(cName_ == AnalogInputs::IdischargeSet) {
                 Discharger::powerOff();
             }
         } else {
@@ -323,11 +323,11 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
 
         if(charging) {
             maxValue = SMPS_UPPERBOUND_VALUE;
-            name1 = AnalogInputs::IsmpsValue;
+            name1 = AnalogInputs::IsmpsSet;
             name2 = AnalogInputs::Ismps;
             SMPS::powerOn();
         } else {
-            name1 = AnalogInputs::IdischargeValue;
+            name1 = AnalogInputs::IdischargeSet;
             name2 = AnalogInputs::Idischarge;
             maxValue = DISCHARGER_UPPERBOUND_VALUE;
             Discharger::powerOn();

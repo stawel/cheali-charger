@@ -73,8 +73,8 @@ namespace AnalogInputs {
         Vb8_pin,
 #endif
 
-        IsmpsValue,
-        IdischargeValue,
+        IsmpsSet,
+        IdischargeSet,
 
         VirtualInputs,
         Vout,

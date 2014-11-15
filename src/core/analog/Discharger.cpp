@@ -75,7 +75,7 @@ void Discharger::trySetIout(AnalogInputs::ValueType I)
 
     if(IoutSet_ == I) return;
     IoutSet_ = I;
-    uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeValue, I);
+    uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeSet, I);
     setValue(value);
 }
 

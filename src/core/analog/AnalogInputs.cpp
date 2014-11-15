@@ -323,9 +323,9 @@ AnalogInputs::Type AnalogInputs::getType(Name name)
         return Unknown;
     case Iout:
     case Ismps:
-    case IsmpsValue:
+    case IsmpsSet:
     case Idischarge:
-    case IdischargeValue:
+    case IdischargeSet:
         return Current;
     case Tintern:
     case Textern:
