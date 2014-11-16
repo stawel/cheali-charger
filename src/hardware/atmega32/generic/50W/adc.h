@@ -21,10 +21,6 @@
 namespace adc
 {
     void initialize();
-    void reset();
-
-    void conversionDone();
-    void timerInterrupt();
 };
 
 #endif /* ADC_H_ */

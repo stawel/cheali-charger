@@ -68,6 +68,10 @@ namespace adc {
 static uint8_t input_;
 volatile uint8_t g_addSumToInput = 0;
 
+void reset() {
+    input_ = 0;
+}
+
 void initialize()
 {
     IO::digitalWrite(MUX0_Z_D_PIN, 0);
@@ -171,18 +175,14 @@ void processConversion(uint8_t input)
     low  = ADCL;
     high = ADCH;
 
+    AnalogInputs::Name name = getAIName(input_);
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         uint16_t v = (high << 8) | low;
-        AnalogInputs::i_adc_[getAIName(input)] = v;
+        AnalogInputs::i_adc_[name] = v;
         if(g_addSumToInput)
-            AnalogInputs::i_avrSum_[getAIName(input)] += v;
+            AnalogInputs::i_avrSum_[name] += v;
     }
 }
-
-void reset() {
-    input_ = 0;
-}
-
 
 void finalizeMeasurement()
 {

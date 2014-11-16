@@ -61,6 +61,11 @@ namespace adc {
 
 static uint8_t input_;
 static uint8_t adc_keyboard_;
+static uint8_t g_addSumToInput = 0;
+
+void reset() {
+    input_ = 0;
+}
 
 void initialize()
 {
@@ -94,6 +99,13 @@ struct adc_correlation {
     AnalogInputs::Name ai_name_;
     uint8_t key_;
 };
+
+#define ADC_STANDARD_PER_ROUND 2
+#if MAX_BANANCE_CELLS > 6
+#define ADC_I_DISCHARGE_PER_ROUND 2
+#else
+#define ADC_I_DISCHARGE_PER_ROUND 1
+#endif
 
 const adc_correlation order_analogInputs_on[] PROGMEM = {
     {-1,                    OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,    0},
@@ -167,7 +179,11 @@ void processConversion(bool finalize)
     AnalogInputs::Name name = getAIName(input_);
     if(name != AnalogInputs::VirtualInputs) {
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-            AnalogInputs::i_adc_[name] = (high << 8) | low;
+            uint16_t v = (high << 8) | low;
+            AnalogInputs::i_adc_[name] = v;
+            if(g_addSumToInput) {
+                AnalogInputs::i_avrSum_[name] += v;
+            }
         }
     } else {
         key = getKey(input_);
@@ -179,15 +195,23 @@ void processConversion(bool finalize)
     }
 }
 
-void reset() {
-    input_ = 0;
-}
-
 void finalizeMeasurement()
 {
     AnalogInputs::i_adc_[AnalogInputs::IsmpsSet]        = SMPS::getValue();
     AnalogInputs::i_adc_[AnalogInputs::IdischargeSet]   = Discharger::getValue();
-    AnalogInputs::intterruptFinalizeMeasurement();
+    if(g_addSumToInput) {
+        AnalogInputs::i_avrSum_[AnalogInputs::IsmpsSet]        += SMPS::getValue();
+        AnalogInputs::i_avrSum_[AnalogInputs::IdischargeSet]   += Discharger::getValue();
+        if(AnalogInputs::i_avrCount_ == 1) {
+            AnalogInputs::i_avrSum_[AnalogInputs::Ismps]            /= ADC_STANDARD_PER_ROUND;
+            AnalogInputs::i_avrSum_[AnalogInputs::Vout_plus_pin]    /= ADC_STANDARD_PER_ROUND;
+            AnalogInputs::i_avrSum_[AnalogInputs::Vout_minus_pin]   /= ADC_STANDARD_PER_ROUND;
+            AnalogInputs::i_avrSum_[AnalogInputs::Idischarge]       /= ADC_I_DISCHARGE_PER_ROUND;
+        }
+        //TODO: maybe intterruptFinalizeMeasurement should be removed
+        AnalogInputs::intterruptFinalizeMeasurement();
+    }
+
 }
 
 void setNextMuxAddress()
@@ -208,8 +232,11 @@ void conversionDone()
     input_ = nextInput(input_);
     setADC(getADC(input_));
 
-    if(input_ == 0)
+    if(input_ == 0) {
         finalizeMeasurement();
+        g_addSumToInput = AnalogInputs::i_avrCount_ > 0;
+    }
+
 }
 
 }// namespace adc
