@@ -319,8 +319,6 @@ void AnalogInputs::initialize()
 AnalogInputs::Type AnalogInputs::getType(Name name)
 {
     switch(name){
-    case VirtualInputs:
-        return Unknown;
     case Iout:
     case Ismps:
     case IsmpsSet:

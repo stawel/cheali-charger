@@ -205,7 +205,7 @@ void lcdPrintInf(int8_t dig)
 }
 }
 
-void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
+void lcdPrintValue1000(uint16_t x, int8_t dig, bool dot)
 {
     const char prefix = ' ';
     if(dig<=0)
@@ -241,19 +241,29 @@ void lcdPrintEValue(uint16_t x, int8_t dig, bool dot)
     }
 }
 
-void lcdPrintTemperature_(AnalogInputs::ValueType x, int8_t dig)
+void lcdPrintValue100(uint16_t x, int8_t dig, bool dot)
 {
     const char prefix = ' ';
     if(dig<=0)
         return;
 
-    int8_t xdig = digits(x/100);
-    xdig+=1+2; // .
+    int8_t xdig = digits(x);
+    xdig+=2; // m and last '0'
+
+    if(dig<xdig || dot){
+        dot = true;
+        xdig = digits(x/100);
+        xdig+=1+2; // "."
+    }
 
     for(;xdig<dig;dig--)
         lcdPrintChar(prefix);
 
-    if(dig < xdig - 3) {
+    if(!dot) {
+        lcdPrintUInt(x);
+        lcdPrintChar('0');
+        lcdPrintChar('m');
+    } else if(dig < xdig - 3) {
         lcdPrintInf(dig);
     } else {
         lcdPrintUInt(x/100);
@@ -336,6 +346,10 @@ void lcdPrintSigned(int16_t x, int8_t dig)
     lcdPrintUnsigned_sign(x,dig, ' ', minus);
 }
 
+void lcdPrintTemperature(AnalogInputs::ValueType t, int8_t dig)
+{
+    lcdPrintAnalog(t, AnalogInputs::Temperature, dig);
+}
 
 void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig)
 {
@@ -356,13 +370,6 @@ void lcdPrintResistance(AnalogInputs::ValueType r, int8_t dig)
     lcdPrintAnalog(r, AnalogInputs::Resistance, dig);
 }
 
-void lcdPrintTemperature(AnalogInputs::ValueType t, int8_t dig)
-{
-    if(dig > 0) {
-        lcdPrintTemperature_(t,--dig);
-        lcdPrintChar('C');
-    }
-}
 void lcdPrintPercentage(AnalogInputs::ValueType p, int8_t dig)
 {
     if(dig > 0) {
@@ -383,9 +390,14 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
     if(dig <= 0)
         return;
     bool dot = true;
+    bool div100 = false;
+    bool h = false;
     char unit = 'U';
     dig--;
     switch (type) {
+    case AnalogInputs::Charge:
+        dig--;
+        h = true;
     case AnalogInputs::Current:
         dot = false;
         unit ='A';
@@ -393,33 +405,29 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
     case AnalogInputs::Voltage:
         unit ='V';
         break;
-    case AnalogInputs::Power:
-        return lcdPrintPower(x,'W',' ');
-        break;
     case AnalogInputs::Work:
-        return lcdPrintPower(x,'W','h');
+        h = true;
+        dig--;
+    case AnalogInputs::Power:
+        div100 = true;
+        unit = 'W';
         break;
     case AnalogInputs::Temperature:
-        return lcdPrintTemperature(x, dig+1);
+        dot = true;
+        div100 = true;
+        unit = 'C';
+        break;
     case AnalogInputs::Resistance:
         dot = false;
         //TODO: ??Ohm
         unit ='!'-45;
         break;
-    case AnalogInputs::Unknown:
-        lcdPrintSigned(x, dig);
-        lcdPrintChar(unit);
-        return;
-    case AnalogInputs::Charge:
-        dot = false;
-        dig--;
-        unit ='A';
-        break;
     }
-    lcdPrintEValue(x, (int8_t) dig, dot);
+    if(div100)  lcdPrintValue100 (x, (int8_t) dig, dot);
+    else        lcdPrintValue1000(x, (int8_t) dig, dot);
     lcdPrintChar(unit);
 
-    if(type == AnalogInputs::Charge)     lcdPrintChar('h');
+    if(h)     lcdPrintChar('h');
 }
 
 #ifdef ENABLE_LCD_RAM_CG
@@ -458,19 +466,3 @@ void lcdCreateCGRam()
 }
 #endif
 
-
-void lcdPrintPower(AnalogInputs::ValueType x, char u1, char u2)
-{
-    const char prefix = ' ';
-    x /=100;
-    if(x<10000) lcdPrintChar(prefix);
-    if(x<1000) lcdPrintChar(prefix);
-    if(x<100) lcdPrintChar(prefix);
-    if(x<10) lcdPrintChar(prefix);
-    
-    lcdPrintUInt(x);
-     lcdPrintChar(u1);
-     lcdPrintChar(u2);
-     lcdPrintChar(prefix);
-    
-}
