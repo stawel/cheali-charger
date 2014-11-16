@@ -73,6 +73,7 @@ namespace eeprom {
             if(what & EEPROM_RESTORE_PROGRAM_DATA_VERSION)  what |= EEPROM_RESTORE_SETTING_VERSION | EEPROM_RESTORE_PROGRAM_DATA;
             if(what & EEPROM_RESTORE_SETTING_VERSION)       what |= EEPROM_RESTORE_SETTINGS;
 
+            Screen::displayResettingEeprom();
             uint8_t after = testOrRestore(what);
             Screen::runResetEepromDone(what, after);
         }

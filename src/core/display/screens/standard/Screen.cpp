@@ -198,9 +198,15 @@ bool Screen::runAskResetEeprom(uint8_t what)
     lcdPrint_P(PSTR("eeprom reset:"));
     lcdPrintUInt(what);
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR(" NO         YES"));
+    lcdPrint_P(PSTR(" no         yes"));
     return waitButtonPressed() == BUTTON_START;
 }
+
+void Screen::displayResettingEeprom()
+{
+    displayStrings(PSTR("resetting eeprom"));
+}
+
 
 void Screen::runResetEepromDone(uint8_t before, uint8_t after) {
 	if(after != 0) {
@@ -211,7 +217,7 @@ void Screen::runResetEepromDone(uint8_t before, uint8_t after) {
 		//TODO
 		//if(before )
 	    displayStrings(PSTR("please cal."));
-	    Time::delay(2000);
+	    waitButtonPressed();
 	}
 }
 
