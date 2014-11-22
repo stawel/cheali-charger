@@ -107,6 +107,7 @@ void Screen::powerOn()
 
     isBalancePort_ = AnalogInputs::isConnected(AnalogInputs::Vbalancer);
     pageNr_ = 0;
+    Screen::Cycle::resetCycleHistory();
 }
 
 void Screen::powerOff() {}

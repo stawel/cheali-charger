@@ -55,6 +55,7 @@ namespace Program {
 
 bool Program::startInfo()
 {
+    Screen::powerOn();
     Strategy::strategy = &StartInfoStrategy::vtable;
     Strategy::exitImmediately = true;
     Strategy::doBalance = false;
@@ -143,7 +144,7 @@ void Program::run(ProgramType prog)
     programState_ = Info;
     SerialLog::powerOn();
     AnalogInputs::powerOn();
-
+    Screen::powerOn();
 
     if(startInfo()) {
         programState_ = InProgress;
@@ -158,4 +159,5 @@ void Program::run(ProgramType prog)
     }
     AnalogInputs::powerOff();
     SerialLog::powerOff();
+    Screen::powerOff();
 }

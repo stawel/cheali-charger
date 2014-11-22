@@ -24,6 +24,8 @@
 #include "AnalogInputs.h"
 #include "Screen.h"
 
+#define STRATEGY_DISABLE_OUTPUT_AFTER_SECONDS 60
+
 namespace Strategy {
 
     const VTable * strategy;
@@ -58,31 +60,46 @@ namespace Strategy {
         setMinI(maxI/minIdiv);
     }
 
-
-    void chargingComplete() {
-        Monitor::powerOff();
-        lcdClear();
-        Screen::displayScreenProgramCompleted();
-        Buzzer::soundProgramComplete();
-        waitButtonPressed();
-        Buzzer::soundOff();
-    }
-
-    void chargingMonitorError() {
-        Monitor::powerOff();
-        lcdClear();
-        Screen::displayMonitorError();
-        Buzzer::soundError();
-        waitButtonPressed();
-        Buzzer::soundOff();
-    }
-
     void strategyPowerOn() {
         callVoidMethod_P(&strategy->powerOn);
     }
 
     void strategyPowerOff() {
         callVoidMethod_P(&strategy->powerOff);
+    }
+
+
+    void chargingEnd() {
+        strategyPowerOff();
+        Monitor::powerOff();
+        lcdClear();
+    }
+
+    void waitButtonOrDisableOutput() {
+        uint16_t time = Time::getSecondsU16();
+
+        do {
+            if(Time::diffU16(time, Time::getSecondsU16()) > STRATEGY_DISABLE_OUTPUT_AFTER_SECONDS) {
+                AnalogInputs::powerOff();
+            }
+        } while(Keyboard::getPressedWithSpeed() == BUTTON_NONE);
+
+        Buzzer::soundOff();
+    }
+
+    void chargingComplete() {
+        chargingEnd();
+        Screen::displayScreenProgramCompleted();
+        Buzzer::soundProgramComplete();
+        waitButtonOrDisableOutput();
+    }
+
+    void chargingMonitorError() {
+        chargingEnd();
+        Screen::displayMonitorError();
+
+        Buzzer::soundError();
+        waitButtonOrDisableOutput();
     }
 
     Strategy::statusType strategyDoStrategy() {
@@ -92,20 +109,17 @@ namespace Strategy {
 
 
     bool analizeStrategyStatus(Strategy::statusType status) {
-        bool run = true;
         if(status == Strategy::ERROR) {
-            strategyPowerOff();
             chargingMonitorError();
-            run = false;
+            return false;
         }
 
         if(status == Strategy::COMPLETE) {
-            strategyPowerOff();
             if(!exitImmediately)
                 chargingComplete();
-            run = false;
+            return false;
         }
-        return run;
+        return true;
     }
 
     Strategy::statusType doStrategy()
@@ -115,7 +129,6 @@ namespace Strategy {
         uint16_t newMesurmentData = 0;
         Strategy::statusType status = Strategy::RUNNING;
         strategyPowerOn();
-        Screen::powerOn();
         do {
             Screen::keyboardButton =  Keyboard::getPressedWithSpeed();
             Screen::doStrategy();
@@ -131,10 +144,9 @@ namespace Strategy {
                 }
             }
             if(!run && exitImmediately)
-                return status;
+                break;
         } while(Screen::keyboardButton != BUTTON_STOP);
 
-        Screen::powerOff();
         strategyPowerOff();
         return status;
     }

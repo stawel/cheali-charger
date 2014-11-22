@@ -39,8 +39,6 @@ namespace ProgramDCcycle {
 
 Strategy::statusType ProgramDCcycle::runDCcycle()
 {
-    Screen::Cycle::resetCycleHistory();
-
     Strategy::statusType status = Strategy::COMPLETE;
     Strategy::exitImmediately = true;
     for(currentCycle = 0; currentCycle < settings.DCcycles*2; currentCycle++) {
