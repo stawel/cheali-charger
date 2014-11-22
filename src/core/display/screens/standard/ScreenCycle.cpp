@@ -43,9 +43,9 @@ namespace Screen { namespace Cycle {
 
 void Screen::Cycle::displayCycles()
 {
-    uint8_t c, time = blink.blinkTime_/16;
-    //TODO: remove 5
-    c = time % 5;
+    uint8_t c, time = blink.blinkTime_/8;
+    uint8_t all_scr = ProgramDCcycle::currentCycle/2 + 1;
+    c = time % all_scr;
     lcdSetCursor0_0();
     lcdPrintUnsigned(c+1, 1);
     lcdPrintChar(SCREEN_EMPTY_CELL_CHAR);

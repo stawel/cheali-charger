@@ -21,6 +21,7 @@
 #include "DelayStrategy.h"
 #include "Settings.h"
 #include "Monitor.h"
+#include "ScreenCycle.h"
 
 using namespace Program;
 
@@ -37,24 +38,24 @@ namespace ProgramDCcycle {
 
 
 Strategy::statusType ProgramDCcycle::runDCcycle()
-{ //TODO_NJ
+{
+    Screen::Cycle::resetCycleHistory();
+
     Strategy::statusType status = Strategy::COMPLETE;
     Strategy::exitImmediately = true;
     for(currentCycle = 0; currentCycle < settings.DCcycles*2; currentCycle++) {
-
-        AnalogInputs::resetAccumulatedMeasurements();
         if (currentCycle == settings.DCcycles*2 - 1) {
             Strategy::exitImmediately = false;
         }
+
+        Monitor::resetETA();
+        AnalogInputs::resetAccumulatedMeasurements();
 
         status = Program::runWithoutInfo(currentCycle & 1 ? Program::Charge : Program::Discharge);
         if(status != Strategy::COMPLETE || (!Strategy::exitImmediately)) break;
  
         status = runDCRestTime();
         if(status != Strategy::COMPLETE) break;
-
-        Monitor::resetETA();
-
     }
     return status;
 }

@@ -103,7 +103,6 @@ void Screen::doStrategy()
 
 void Screen::powerOn()
 {
-    Screen::Cycle::resetCycleHistory();
     Screen::blink.startBlinkOn(0);
 
     isBalancePort_ = AnalogInputs::isConnected(AnalogInputs::Vbalancer);
