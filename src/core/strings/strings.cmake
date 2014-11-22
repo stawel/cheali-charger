@@ -1,9 +1,9 @@
 
 
-set(CURRENT_DIR ${CORE_DIR}/hardware)
+set(CURRENT_DIR ${CORE_DIR}/strings)
 
 set(CORE_SOURCE
-   Buzzer.cpp  Buzzer.h  Keyboard.cpp  Keyboard.h  StackInfo.h  Time.cpp  Time.h
+    standard.h  strings_common.h  strings.cpp
 )
 
 include_directories(${CURRENT_DIR})

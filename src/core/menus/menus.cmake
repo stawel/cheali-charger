@@ -1,6 +1,6 @@
 
 
-set(CURRENT_DIR ${CORE_DIR}/display/menus)
+set(CURRENT_DIR ${CORE_DIR}/menus)
 
 set(CORE_SOURCE
 EditMenu.cpp  EditName.cpp  MainMenu.h  Menu.h       Options.h            ProgramDataMenu.h  ProgramMenus.h    SettingsMenu.h  StaticMenu.h
