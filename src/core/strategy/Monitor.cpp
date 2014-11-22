@@ -236,7 +236,6 @@ Strategy::statusType Monitor::run()
     }
 
 #ifdef ENABLE_TIME_LIMIT
-//TODO_NJ timelimit
     if (ProgramData::currentProgramData.getTimeLimit() < 1000)  //unlimited
     {
         uint16_t chargeMin = getTotalChargeDischargeTimeMin();
@@ -246,8 +245,7 @@ Strategy::statusType Monitor::run()
             return Strategy::COMPLETE;
         }
     }
-//timelimit end
-#endif
+#endif //ENABLE_TIME_LIMIT
 
     if(settings.externT) {
         AnalogInputs::ValueType Textern = AnalogInputs::getRealValue(AnalogInputs::Textern);

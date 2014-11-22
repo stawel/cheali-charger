@@ -134,6 +134,7 @@ namespace Screen {
     void screenEnd(const char * firstLine) {
         lcdSetCursor0_0();
         lcdPrint_P(firstLine);
+        lcdPrintTime(Monitor::getTimeSec());
         lcdSetCursor0_1();
         lcdPrint_P(Program::stopReason_);
         lcdPrintSpaces();
@@ -142,14 +143,12 @@ namespace Screen {
 
 void Screen::displayScreenProgramCompleted()
 {
-    screenEnd(PSTR("program complete"));
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("Time: ")); lcdPrintTime(Monitor::getTimeSec());
+    screenEnd(PSTR("complete: "));
 }
 
 void Screen::displayMonitorError()
 {
-    screenEnd(PSTR("Error:"));
+    screenEnd(PSTR("error:    "));
 }
 
 
@@ -179,7 +178,6 @@ void Screen::displayAnimation()
         lcdPrintChar(255);
         Time::delayDoIdle(10);
     }
-    Time::delayDoIdle(10);
 }
 
 void Screen::displayCalibrationErrorScreen(uint8_t errNo)
@@ -216,7 +214,7 @@ void Screen::runResetEepromDone(uint8_t before, uint8_t after) {
 	} else {
 		//TODO
 		//if(before )
-	    displayStrings(PSTR("please cal."));
+	    displayStrings(PSTR("please calibrate"));
 	    waitButtonPressed();
 	}
 }
