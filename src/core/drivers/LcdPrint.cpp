@@ -422,6 +422,8 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t d
         //TODO: ??Ohm
         unit ='!'-45;
         break;
+    default:
+        break;
     }
     if(div100)  lcdPrintValue100 (x, (int8_t) dig, dot);
     else        lcdPrintValue1000(x, (int8_t) dig, dot);

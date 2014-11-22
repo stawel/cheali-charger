@@ -33,7 +33,7 @@ namespace Serial {
 void  begin(unsigned long baud)
 {
 #ifdef ENABLE_TX_HW_SERIAL
-	if(settings.UARTinput_ == Settings::Hardware) {
+	if(settings.UARTinput == Settings::Hardware) {
 		TxHardSerial::begin(baud);
 	} else {
 		TxSoftSerial::begin(baud);
@@ -46,7 +46,7 @@ void  begin(unsigned long baud)
 void  write(uint8_t c)
 {
 #ifdef ENABLE_TX_HW_SERIAL
-	if(settings.UARTinput_ == Settings::Hardware) {
+	if(settings.UARTinput == Settings::Hardware) {
 		TxHardSerial::write(c);
 	} else {
 		TxSoftSerial::write(c);
@@ -59,7 +59,7 @@ void  write(uint8_t c)
 void  flush()
 {
 #ifdef ENABLE_TX_HW_SERIAL
-	if(settings.UARTinput_ == Settings::Hardware) {
+	if(settings.UARTinput == Settings::Hardware) {
 		TxHardSerial::flush();
 	} else {
 		TxSoftSerial::flush();
@@ -70,7 +70,7 @@ void  flush()
 }
 void  end() {
 #ifdef ENABLE_TX_HW_SERIAL
-	if(settings.UARTinput_ == Settings::Hardware) {
+	if(settings.UARTinput == Settings::Hardware) {
 		TxHardSerial::end();
 	} else {
 		TxSoftSerial::end();

@@ -25,7 +25,6 @@
 #include "Time.h"
 #include "SMPS.h"
 #include "Discharger.h"
-#include "Balancer.h"
 #include "Buzzer.h"
 #include "AnalogInputsADC.h"
 

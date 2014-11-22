@@ -55,7 +55,6 @@ namespace Program {
 
 bool Program::startInfo()
 {
-    bool balancer = false;
     Strategy::strategy = &StartInfoStrategy::vtable;
     Strategy::exitImmediately = true;
     Strategy::doBalance = false;
