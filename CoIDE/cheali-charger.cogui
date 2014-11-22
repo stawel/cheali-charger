@@ -16,24 +16,28 @@
 </folder>
 </info>
 </editorArea>
-<editor id="org.eclipse.cdt.ui.editor.CEditor" name="other.c" partName="other.c" path="C:/Users/stawel/git/cheali-charger/CoIDE/other.c" title="other.c" tooltip="C:/Users/stawel/git/cheali-charger/CoIDE/other.c" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/other.c"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="outputPWM.cpp" partName="outputPWM.cpp" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/outputPWM.cpp" title="outputPWM.cpp" tooltip="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/outputPWM.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/generic/outputPWM.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2742" selectionTopPixel="1540"/>
 </editor>
-<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="Version.h" partName="Version.h" path="C:/Users/stawel/git/cheali-charger/CoIDE/Version.h" title="Version.h" tooltip="C:/Users/stawel/git/cheali-charger/CoIDE/Version.h" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/Version.h"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1543" selectionTopPixel="144"/>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="SMPS_PID.cpp" partName="SMPS_PID.cpp" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/SMPS_PID.cpp" title="SMPS_PID.cpp" tooltip="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/SMPS_PID.cpp" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/generic/SMPS_PID.cpp"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="461" selectionTopPixel="41"/>
 </editor>
 </editors>
 <views>
 <view id="org.coocox.builder.ui.views.ProjectView" partName="Project">
-<viewState CommonNavigator.LINKING_ENABLED="0" horizontalPosition="0" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0" verticalPosition="3">
+<viewState CommonNavigator.LINKING_ENABLED="0" horizontalPosition="0" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0" verticalPosition="25">
 <expanded>
 <element path="/cheali-charger"/>
 <element path="/cheali-charger/hardware"/>
 <element path="/cheali-charger/hardware/cpu"/>
+<element path="/cheali-charger/hardware/generic"/>
 <element path="/cheali-charger/hardware/targets"/>
 </expanded>
+<selection>
+<element path="/cheali-charger/hardware/generic/SMPS_PID.cpp"/>
+</selection>
 </viewState>
 </view>
 <view id="org.coocox.component.ui.ComponentView" partName="Components">
@@ -63,7 +67,7 @@
 <viewState/>
 </view>
 </views>
-<perspectives activePart="org.coocox.builder.ui.views.ProjectView" activePerspective="org.coocox.builder.perspective.CoBuilder">
+<perspectives activePart="org.eclipse.cdt.ui.editor.CEditor" activePerspective="org.coocox.builder.perspective.CoBuilder">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.coocox.builder.ui.PerspectiveCoBuilder" id="org.coocox.builder.perspective.CoBuilder" label="CooCox CoBuilder"/>
 <alwaysOnActionSet id="org.coocox.component.ui.actionSet"/>
@@ -114,7 +118,7 @@
 <page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@857381" ratio="0.73322684" ratioLeft="459" ratioRight="167" relationship="4" relative="org.eclipse.ui.internal.ViewStack@139fc08">
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@857381" ratio="0.6597444" ratioLeft="413" ratioRight="213" relationship="4" relative="org.eclipse.ui.internal.ViewStack@139fc08">
 <folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
 <page content="org.eclipse.cdt.ui.callHierarchy" label="Call Hierarchy"/>
@@ -194,8 +198,8 @@
 <hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
 <hide_toolbar_item_id id="org.coocox.builder.ui.build"/>
 <hide_toolbar_item_id id="org.coocox.welcome.ui.action.welcome"/>
-<hide_toolbar_item_id id="org.coocox.component.ui.ShowRepositoryAction"/>
 <hide_toolbar_item_id id="org.coocox.codebugger.configuration.coideProgramDownloadAction"/>
+<hide_toolbar_item_id id="org.coocox.component.ui.ShowRepositoryAction"/>
 <view id="org.eclipse.ui.console.ConsoleView"/>
 <view id="org.eclipse.debug.ui.DebugView"/>
 <view id="org.coocox.codebugger.trace.ui.traceview"/>
@@ -205,39 +209,55 @@
 <view id="org.coocox.builder.ui.views.ProjectView"/>
 <fastViewBars/>
 <viewLayoutRec closeable="false" id="org.eclipse.debug.ui.DebugView"/>
-<layout>&#x0A;<mainWindow>&#x0A;<info folder="true" part="org.eclipse.ui.internal.ViewStack@1bbe298">&#x0A;<folder activePageID="org.coocox.builder.ui.views.ProjectView" appearance="2" expanded="2">&#x0A;<page content="org.coocox.builder.ui.views.ProjectView" label="Project"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+<layout>
+<mainWindow>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@1bbe298">
+<folder activePageID="org.coocox.builder.ui.views.ProjectView" appearance="2" expanded="2">
+<page content="org.coocox.builder.ui.views.ProjectView" label="Project"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="stickyFolderRight" ratio="0.7496318" ratioLeft="1018" ratioRight="340" relationship="2" relative="org.eclipse.ui.internal.ViewStack@1bbe298">&#x0A;<folder appearance="2" expanded="2">&#x0A;<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<info folder="true" part="stickyFolderRight" ratio="0.7496318" ratioLeft="1018" ratioRight="340" relationship="2" relative="org.eclipse.ui.internal.ViewStack@1bbe298">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
 <page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@72b712" ratio="0.6220096" ratioLeft="390" ratioRight="237" relationship="4" relative="org.eclipse.ui.internal.ViewStack@1bbe298">&#x0A;<folder activePageID="org.eclipse.debug.ui.DebugView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@72b712" ratio="0.6220096" ratioLeft="390" ratioRight="237" relationship="4" relative="org.eclipse.ui.internal.ViewStack@1bbe298">
+<folder activePageID="org.eclipse.debug.ui.DebugView" appearance="2" expanded="2">
+<page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
 <page content="org.eclipse.debug.ui.DebugView" label="Debug"/>
 <page content="org.eclipse.debug.ui.BreakpointView" label="LabelNotFound"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
 <part id="1"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@15fabb" ratio="0.4295203" ratioLeft="582" ratioRight="773" relationship="2" relative="org.eclipse.ui.internal.ViewStack@72b712">&#x0A;<folder activePageID="org.eclipse.debug.ui.RegisterView" appearance="2" expanded="2">&#x0A;<page content="org.coocox.codebugger.trace.ui.traceview" label="Semihosting"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@15fabb" ratio="0.4295203" ratioLeft="582" ratioRight="773" relationship="2" relative="org.eclipse.ui.internal.ViewStack@72b712">
+<folder activePageID="org.eclipse.debug.ui.RegisterView" appearance="2" expanded="2">
+<page content="org.coocox.codebugger.trace.ui.traceview" label="Semihosting"/>
 <page content="org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser" label="Memory Browser"/>
 <page content="org.eclipse.debug.ui.RegisterView" label="Registers"/>
 <page content="org.eclipse.debug.ui.ExpressionView" label="LabelNotFound"/>
 <page content="org.eclipse.debug.ui.MemoryView" label="LabelNotFound"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
 <part id="1"/>
 <part id="2"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@1fe1b72" ratio="0.71955717" ratioLeft="975" ratioRight="380" relationship="2" relative="org.eclipse.ui.internal.ViewStack@1bbe298">&#x0A;<folder activePageID="org.eclipse.debug.ui.VariableView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.debug.ui.VariableView" label="Variables"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@1fe1b72" ratio="0.71955717" ratioLeft="975" ratioRight="380" relationship="2" relative="org.eclipse.ui.internal.ViewStack@1bbe298">
+<folder activePageID="org.eclipse.debug.ui.VariableView" appearance="2" expanded="2">
+<page content="org.eclipse.debug.ui.VariableView" label="Variables"/>
 <page content="org.eclipse.cdt.dsf.debug.ui.disassembly.view" label="LabelNotFound"/>
 <page content="org.eclipse.ui.views.ContentOutline" label="LabelNotFound"/>
 <page content="org.coocox.coassistant.view.CoAssistantView_debug" label="LabelNotFound"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
 </presentation>
 </folder>
 </info>
@@ -249,179 +269,166 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/AnalogInputs.cpp"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/AnalogInputsADC.cpp"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/Menu.cpp"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/HardwareConfigGeneric.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/PolarityCheck.cpp"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/Calibrate.cpp"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/AnalogInputs.cpp"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/AnalogInputsADC.cpp"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/AnalogInputsADC.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/AnalogInputs.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/Discharger.cpp"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/Time.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/Time.cpp"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/ARM/UtilsD.cpp"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/Keyboard.cpp"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/Menu.cpp"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/Menu.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/ARM/CMSIS/StdDriver/inc/adc.h"/>
-<editor factoryID="org.coocox.builder.ui.persistent.PersistentElementFactory" id="org.coocox.builder.ui.editors.ConfigEditor">
-<org.coocox.builder.ui.editors.ConfigEditor/>
-</editor>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/HardwareConfigGeneric.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/PolarityCheck.cpp"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/Version.h"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/other.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/generic/outputPWM.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/cpu/startup_M051Series.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/generic/outputPWM.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/cpu/CMSIS/StdDriver/src/pwm.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/cpu/irq_priority.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/core/ChealiCharger2.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/generic/imaxB6.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/cpu/Timer0.cpp"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/cpu/CMSIS/StdDriver/inc/pwm.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/cheali-charger/hardware/generic/SMPS_PID.cpp"/>
 </editors>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
-<position info="not_deleted" x="2476" y="12"/>
-</item>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
+<item historyLabel="outputPWM.cpp" index="0">
 <position/>
 </item>
-<item historyLabel="Menu.cpp" index="2">
-<position info="not_deleted" x="2549" y="0"/>
+<item historyLabel="outputPWM.h" index="2">
+<position info="not_deleted" x="975" y="0"/>
 </item>
-<item historyLabel="AnalogInputs.cpp" index="0">
-<position info="not_deleted" x="5436" y="0"/>
-</item>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
+<item historyLabel="outputPWM.cpp" index="0">
 <position/>
 </item>
-<item historyLabel="AnalogInputs.cpp" index="0">
-<position info="not_deleted" x="5436" y="0"/>
+<item historyLabel="outputPWM.h" index="2">
+<position info="not_deleted" x="975" y="0"/>
 </item>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
-<position info="not_deleted" x="6870" y="0"/>
-</item>
-<item historyLabel="HardwareConfigGeneric.h" index="3">
-<position info="not_deleted" x="1822" y="0"/>
-</item>
-<item historyLabel="AnalogInputs.cpp" index="0">
-<position info="not_deleted" x="5436" y="0"/>
-</item>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
+<item historyLabel="outputPWM.cpp" index="0">
 <position/>
 </item>
-<item historyLabel="Menu.cpp" index="2">
-<position info="not_deleted" x="2541" y="0"/>
+<item historyLabel="outputPWM.h" index="2">
+<position info="not_deleted" x="975" y="0"/>
 </item>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
-<position info="not_deleted" x="6623" y="0"/>
+<item historyLabel="outputPWM.h" index="2">
+<position info="not_deleted" x="937" y="0"/>
 </item>
-<item historyLabel="HardwareConfigGeneric.h" index="3">
-<position info="not_deleted" x="1822" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position/>
 </item>
-<item historyLabel="AnalogInputs.cpp" index="0">
-<position info="not_deleted" x="5436" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="3326" y="0"/>
 </item>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
-<position info="not_deleted" x="6623" y="0"/>
+<item historyLabel="irq_priority.h" index="4">
+<position info="not_deleted" x="1096" y="23"/>
 </item>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
-<position info="not_deleted" x="2560" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="2435" y="0"/>
 </item>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
-<position info="not_deleted" x="10162" y="0"/>
+<item historyLabel="startup_M051Series.c" index="1">
+<position info="not_deleted" x="6556" y="0"/>
 </item>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
-<position info="not_deleted" x="8076" y="14"/>
+<item historyLabel="ChealiCharger2.cpp" index="5">
+<position info="not_deleted" x="1984" y="0"/>
 </item>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
-<position info="not_deleted" x="8395" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="2563" y="0"/>
 </item>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
-<position info="not_deleted" x="9491" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="2600" y="0"/>
 </item>
-<item historyLabel="Menu.cpp" index="2">
-<position info="not_deleted" x="2549" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="2711" y="0"/>
 </item>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
-<position info="not_deleted" x="5648" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="2759" y="0"/>
 </item>
-<item historyLabel="AnalogInputs.cpp" index="0">
-<position info="not_deleted" x="5436" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="2821" y="0"/>
 </item>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
-<position info="not_deleted" x="8976" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="2855" y="0"/>
 </item>
-<item historyLabel="AnalogInputs.cpp" index="0">
-<position info="not_deleted" x="8191" y="29"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="3312" y="0"/>
 </item>
-<item historyLabel="AnalogInputs.cpp" index="0">
-<position info="not_deleted" x="8533" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="3336" y="0"/>
 </item>
-<item historyLabel="AnalogInputs.cpp" index="0">
-<position info="not_deleted" x="8601" y="23"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="3379" y="0"/>
 </item>
-<item historyLabel="AnalogInputs.cpp" index="0">
-<position info="not_deleted" x="8563" y="0"/>
+<item historyLabel="pwm.c" index="3">
+<position info="not_deleted" x="8420" y="0"/>
 </item>
-<item historyLabel="AnalogInputs.cpp" index="0">
-<position info="not_deleted" x="9613" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="3379" y="0"/>
 </item>
-<item historyLabel="PolarityCheck.cpp" index="4">
-<position info="not_deleted" x="1176" y="0"/>
+<item historyLabel="pwm.c" index="3">
+<position info="not_deleted" x="8420" y="0"/>
 </item>
-<item historyLabel="AnalogInputsADC.cpp" index="1">
-<position info="not_deleted" x="3423" y="0"/>
+<item historyLabel="pwm.c" index="3">
+<position info="not_deleted" x="8470" y="0"/>
 </item>
-<item historyLabel="Calibrate.cpp" index="5">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="pwm.c" index="3">
+<position info="not_deleted" x="8420" y="0"/>
 </item>
-<item historyLabel="AnalogInputs.cpp" index="6">
-<position info="not_deleted" x="9613" y="0"/>
+<item historyLabel="pwm.c" index="3">
+<position info="not_deleted" x="8546" y="0"/>
 </item>
-<item historyLabel="AnalogInputsADC.cpp" index="7">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="pwm.c" index="3">
+<position info="not_deleted" x="8574" y="0"/>
 </item>
-<item historyLabel="AnalogInputsADC.h" index="8">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="2889" y="0"/>
 </item>
-<item historyLabel="AnalogInputs.h" index="9">
-<position info="not_deleted" x="3938" y="0"/>
+<item historyLabel="imaxB6.cpp" index="6">
+<position info="not_deleted" x="2287" y="0"/>
 </item>
-<item historyLabel="Discharger.cpp" index="10">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="ChealiCharger2.cpp" index="5">
+<position info="not_deleted" x="1667" y="0"/>
 </item>
-<item historyLabel="Time.h" index="11">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="3312" y="0"/>
 </item>
-<item historyLabel="Time.cpp" index="12">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="3336" y="0"/>
 </item>
-<item historyLabel="UtilsD.cpp" index="13">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="3379" y="0"/>
 </item>
-<item historyLabel="Keyboard.cpp" index="14">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="Timer0.cpp" index="7">
+<position info="not_deleted" x="1139" y="0"/>
 </item>
-<item historyLabel="Menu.cpp" index="15">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="Timer0.cpp" index="7">
+<position info="not_deleted" x="1141" y="0"/>
 </item>
-<item historyLabel="Menu.h" index="16">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="Timer0.cpp" index="7">
+<position info="not_deleted" x="1517" y="0"/>
 </item>
-<item historyLabel="adc.h" index="17">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="pwm.c" index="3">
+<position info="not_deleted" x="24709" y="0"/>
 </item>
-<item historyLabel="Configuration" index="18"/>
-<item historyLabel="HardwareConfigGeneric.h" index="19">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="3353" y="0"/>
 </item>
-<item historyLabel="PolarityCheck.cpp" index="20">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="pwm.c" index="3">
+<position info="not_deleted" x="24646" y="22"/>
 </item>
-<item historyLabel="Version.h" index="21">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="1484" y="0"/>
 </item>
-<item historyLabel="other.c" index="22">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="pwm.h" index="8">
+<position info="not_deleted" x="9281" y="11"/>
 </item>
-<item active="true" historyLabel="Version.h" index="21">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="1484" y="0"/>
+</item>
+<item historyLabel="outputPWM.h" index="2">
+<position info="not_deleted" x="937" y="0"/>
+</item>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="1484" y="0"/>
+</item>
+<item historyLabel="outputPWM.h" index="2">
+<position info="not_deleted" x="937" y="0"/>
+</item>
+<item historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="1477" y="0"/>
+</item>
+<item historyLabel="SMPS_PID.cpp" index="9">
+<position info="not_deleted" x="461" y="0"/>
+</item>
+<item active="true" historyLabel="outputPWM.cpp" index="0">
+<position info="not_deleted" x="1477" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -430,6 +437,33 @@
 <actionBarAdvisor/>
 </window>
 <mruList>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="SMPS_PID.cpp" tooltip="cheali-charger/hardware/generic/SMPS_PID.cpp">
+<persistable path="/cheali-charger/hardware/generic/SMPS_PID.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="startup_M051Series.c" tooltip="cheali-charger/hardware/cpu/startup_M051Series.c">
+<persistable path="/cheali-charger/hardware/cpu/startup_M051Series.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="irq_priority.h" tooltip="cheali-charger/hardware/cpu/irq_priority.h">
+<persistable path="/cheali-charger/hardware/cpu/irq_priority.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="M051Series.h" tooltip="cheali-charger/hardware/cpu/CMSIS/Device/Include/M051Series.h">
+<persistable path="/cheali-charger/hardware/cpu/CMSIS/Device/Include/M051Series.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="pwm.h" tooltip="cheali-charger/hardware/cpu/CMSIS/StdDriver/inc/pwm.h">
+<persistable path="/cheali-charger/hardware/cpu/CMSIS/StdDriver/inc/pwm.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="pwm.c" tooltip="cheali-charger/hardware/cpu/CMSIS/StdDriver/src/pwm.c">
+<persistable path="/cheali-charger/hardware/cpu/CMSIS/StdDriver/src/pwm.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="outputPWM.h" tooltip="cheali-charger/hardware/generic/outputPWM.h">
+<persistable path="/cheali-charger/hardware/generic/outputPWM.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="cpu.cpp" tooltip="cheali-charger/hardware/cpu/cpu.cpp">
+<persistable path="/cheali-charger/hardware/cpu/cpu.cpp"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="outputPWM.cpp" tooltip="cheali-charger/hardware/generic/outputPWM.cpp">
+<persistable path="/cheali-charger/hardware/generic/outputPWM.cpp"/>
+</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Version.h" tooltip="cheali-charger/Version.h">
 <persistable path="/cheali-charger/Version.h"/>
 </file>
@@ -447,33 +481,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="imaxB6-pins.h" tooltip="cheali-charger/hardware/imaxB6-pins.h">
 <persistable path="/cheali-charger/hardware/imaxB6-pins.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Utils.h" tooltip="cheali-charger/core/Utils.h">
-<persistable path="/cheali-charger/core/Utils.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="SettingsMenu.h" tooltip="cheali-charger/core/SettingsMenu.h">
-<persistable path="/cheali-charger/core/SettingsMenu.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="HardwareConfigGeneric.h" tooltip="cheali-charger/hardware/HardwareConfigGeneric.h">
-<persistable path="/cheali-charger/hardware/HardwareConfigGeneric.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="SettingsMenu.cpp" tooltip="cheali-charger/core/SettingsMenu.cpp">
-<persistable path="/cheali-charger/core/SettingsMenu.cpp"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Settings.h" tooltip="cheali-charger/core/Settings.h">
-<persistable path="/cheali-charger/core/Settings.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Settings.cpp" tooltip="cheali-charger/core/Settings.cpp">
-<persistable path="/cheali-charger/core/Settings.cpp"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Serial.h" tooltip="cheali-charger/core/ARM/Serial.h">
-<persistable path="/cheali-charger/core/ARM/Serial.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="TxSoftSerial.cpp" tooltip="cheali-charger/core/ARM/TxSoftSerial.cpp">
-<persistable path="/cheali-charger/core/ARM/TxSoftSerial.cpp"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="AnalogInputsADC.cpp" tooltip="cheali-charger/hardware/AnalogInputsADC.cpp">
-<persistable path="/cheali-charger/hardware/AnalogInputsADC.cpp"/>
 </file>
 </mruList>
 </workbench>

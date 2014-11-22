@@ -24,9 +24,7 @@
 #define HARD_SERIAL_IRQ_PRIORITY        1
 #define ADC_IRQ_PRIORITY				1
 #define ADC_C_DISCHARGE_IRQ_PRIORITY    1
-
-//currently not used
-//#define OUTPUT_PWM_IRQ_PRIORITY         1
+#define OUTPUT_PWM_IRQ_PRIORITY         0
 
 #endif /* IRQ_PRIORITY_H_ */
 

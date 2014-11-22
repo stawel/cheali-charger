@@ -86,16 +86,16 @@
     <File name="hardware/generic/imaxB6-pins.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/imaxB6-pins.h" type="1"/>
     <File name="hardware/cpu/CMSIS/CMSIS/Include/core_cm3.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_cm3.h" type="1"/>
     <File name="core/eeprom.cpp" path="S:/cheali-charger/src/core/eeprom.cpp" type="1"/>
-    <File name="hardware/cpu/CMSIS/Device/Include/system_M051Series.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/Device/Nuvoton/M051Series/Include/system_M051Series.h" type="1"/>
     <File name="core/AnalogInputsPrivate.h" path="S:/cheali-charger/src/core/AnalogInputsPrivate.h" type="1"/>
-    <File name="core/drivers" path="" type="2"/>
+    <File name="hardware/cpu/CMSIS/Device/Include/system_M051Series.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/Device/Nuvoton/M051Series/Include/system_M051Series.h" type="1"/>
     <File name="hardware/cpu/CMSIS/Device/Source/system_M051Series.c" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/Device/Nuvoton/M051Series/Source/system_M051Series.c" type="1"/>
-    <File name="hardware/cpu/CMSIS/StdDriver/src/gpio.c" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/gpio.c" type="1"/>
+    <File name="core/drivers" path="" type="2"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/gpio.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/gpio.h" type="1"/>
+    <File name="hardware/cpu/CMSIS/StdDriver/src/gpio.c" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/gpio.c" type="1"/>
     <File name="hardware/cpu/CMSIS/CMSIS/Include" path="" type="2"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/spi.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/spi.h" type="1"/>
-    <File name="other.c" path="other.c" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/timer.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/timer.h" type="1"/>
+    <File name="other.c" path="other.c" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/src" path="" type="2"/>
     <File name="core/drivers/PolarityCheck.cpp" path="S:/cheali-charger/src/core/drivers/PolarityCheck.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/CMSIS/Include/core_cm0.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_cm0.h" type="1"/>
@@ -110,30 +110,30 @@
     <File name="core/strategy" path="" type="2"/>
     <File name="core/strategy/Monitor.cpp" path="S:/cheali-charger/src/core/strategy/Monitor.cpp" type="1"/>
     <File name="Version.h" path="Version.h" type="1"/>
-    <File name="hardware/cpu/CMSIS/Device" path="" type="2"/>
     <File name="core/menus" path="" type="2"/>
+    <File name="hardware/cpu/CMSIS/Device" path="" type="2"/>
     <File name="hardware/cpu/startup_M051Series.c" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/startup_M051Series.c" type="1"/>
     <File name="core/strategy/TheveninMethod.h" path="S:/cheali-charger/src/core/strategy/TheveninMethod.h" type="1"/>
     <File name="hardware/generic/outputPWM.cpp" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/outputPWM.cpp" type="1"/>
-    <File name="core/strings/strings.cpp" path="S:/cheali-charger/src/core/strings/strings.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/fmc.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/fmc.h" type="1"/>
+    <File name="core/strings/strings.cpp" path="S:/cheali-charger/src/core/strings/strings.cpp" type="1"/>
     <File name="core/strategy/Discharger.h" path="S:/cheali-charger/src/core/strategy/Discharger.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/uart.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/uart.h" type="1"/>
     <File name="core/drivers/Time.cpp" path="S:/cheali-charger/src/core/drivers/Time.cpp" type="1"/>
     <File name="core/menus/ProgramDataMenu.h" path="S:/cheali-charger/src/core/menus/ProgramDataMenu.h" type="1"/>
-    <File name="hardware/targets/HardwareConfig.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/targets/imaxB6-clone/HardwareConfig.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/src/fmc.c" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/fmc.c" type="1"/>
-    <File name="core/strategy/SimpleChargeStrategy.cpp" path="S:/cheali-charger/src/core/strategy/SimpleChargeStrategy.cpp" type="1"/>
+    <File name="hardware/targets/HardwareConfig.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/targets/imaxB6-clone/HardwareConfig.h" type="1"/>
     <File name="core/screens/ScreenCycle.h" path="S:/cheali-charger/src/core/screens/ScreenCycle.h" type="1"/>
+    <File name="core/strategy/SimpleChargeStrategy.cpp" path="S:/cheali-charger/src/core/strategy/SimpleChargeStrategy.cpp" type="1"/>
     <File name="hardware/cpu/irq_priority.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/irq_priority.h" type="1"/>
     <File name="core/Program.cpp" path="S:/cheali-charger/src/core/Program.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/CMSIS/Include/core_cmFunc.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_cmFunc.h" type="1"/>
-    <File name="core/drivers/LiquidCrystal.h" path="S:/cheali-charger/src/core/drivers/LiquidCrystal.h" type="1"/>
     <File name="hardware/cpu/cpu.cpp" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/cpu.cpp" type="1"/>
+    <File name="core/drivers/LiquidCrystal.h" path="S:/cheali-charger/src/core/drivers/LiquidCrystal.h" type="1"/>
     <File name="core/strategy/SMPS.h" path="S:/cheali-charger/src/core/strategy/SMPS.h" type="1"/>
+    <File name="core/drivers/Blink.h" path="S:/cheali-charger/src/core/drivers/Blink.h" type="1"/>
     <File name="core/strategy/Strategy.h" path="S:/cheali-charger/src/core/strategy/Strategy.h" type="1"/>
     <File name="core/menus/StaticMenu.cpp" path="S:/cheali-charger/src/core/menus/StaticMenu.cpp" type="1"/>
-    <File name="core/drivers/Blink.h" path="S:/cheali-charger/src/core/drivers/Blink.h" type="1"/>
     <File name="core/ProgramData.h" path="S:/cheali-charger/src/core/ProgramData.h" type="1"/>
     <File name="hardware/generic/SMPS_PID.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/SMPS_PID.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/ebi.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/ebi.h" type="1"/>
@@ -141,27 +141,27 @@
     <File name="hardware/cpu/CMSIS/Device/Include" path="" type="2"/>
     <File name="hardware/cpu/CMSIS/CMSIS" path="" type="2"/>
     <File name="core/strategy/DelayStrategy.cpp" path="S:/cheali-charger/src/core/strategy/DelayStrategy.cpp" type="1"/>
+    <File name="core/screens/ScreenStartInfo.cpp" path="S:/cheali-charger/src/core/screens/ScreenStartInfo.cpp" type="1"/>
     <File name="core/drivers/Buzzer.cpp" path="S:/cheali-charger/src/core/drivers/Buzzer.cpp" type="1"/>
     <File name="core/menus/ProgramMenus.h" path="S:/cheali-charger/src/core/menus/ProgramMenus.h" type="1"/>
-    <File name="core/screens/ScreenStartInfo.cpp" path="S:/cheali-charger/src/core/screens/ScreenStartInfo.cpp" type="1"/>
     <File name="core/strings/strings_common.h" path="S:/cheali-charger/src/core/strings/strings_common.h" type="1"/>
     <File name="core/AnalogInputs.h" path="S:/cheali-charger/src/core/AnalogInputs.h" type="1"/>
-    <File name="core/strategy/SimpleChargeStrategy.h" path="S:/cheali-charger/src/core/strategy/SimpleChargeStrategy.h" type="1"/>
     <File name="core/drivers/PolarityCheck.h" path="S:/cheali-charger/src/core/drivers/PolarityCheck.h" type="1"/>
+    <File name="core/strategy/SimpleChargeStrategy.h" path="S:/cheali-charger/src/core/strategy/SimpleChargeStrategy.h" type="1"/>
     <File name="core/strategy/TheveninDischargeStrategy.cpp" path="S:/cheali-charger/src/core/strategy/TheveninDischargeStrategy.cpp" type="1"/>
     <File name="hardware/cpu/TxHardSerial.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/TxHardSerial.h" type="1"/>
-    <File name="core/drivers/LcdPrint.cpp" path="S:/cheali-charger/src/core/drivers/LcdPrint.cpp" type="1"/>
     <File name="hardware/cpu/Serial.cpp" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/Serial.cpp" type="1"/>
+    <File name="core/drivers/LcdPrint.cpp" path="S:/cheali-charger/src/core/drivers/LcdPrint.cpp" type="1"/>
     <File name="core/calibration/Calibrate.cpp" path="S:/cheali-charger/src/core/calibration/Calibrate.cpp" type="1"/>
     <File name="core/menus/EditMenu.cpp" path="S:/cheali-charger/src/core/menus/EditMenu.cpp" type="1"/>
     <File name="core/calibration" path="" type="2"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/clk.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/clk.h" type="1"/>
     <File name="hardware/cpu/TxHardSerial.cpp" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/TxHardSerial.cpp" type="1"/>
     <File name="hardware/generic/imaxB6.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/imaxB6.h" type="1"/>
-    <File name="hardware/cpu/CMSIS/CMSIS/Include/core_cm4_simd.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_cm4_simd.h" type="1"/>
     <File name="core/menus/ProgramMenus.cpp" path="S:/cheali-charger/src/core/menus/ProgramMenus.cpp" type="1"/>
-    <File name="core/ProgramDCcycle.cpp" path="S:/cheali-charger/src/core/ProgramDCcycle.cpp" type="1"/>
+    <File name="hardware/cpu/CMSIS/CMSIS/Include/core_cm4_simd.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_cm4_simd.h" type="1"/>
     <File name="core/drivers/Keyboard.cpp" path="S:/cheali-charger/src/core/drivers/Keyboard.cpp" type="1"/>
+    <File name="core/ProgramDCcycle.cpp" path="S:/cheali-charger/src/core/ProgramDCcycle.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/sys.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/sys.h" type="1"/>
     <File name="core/strings/standard.h" path="S:/cheali-charger/src/core/strings/standard.h" type="1"/>
     <File name="core/strategy/Thevenin.cpp" path="S:/cheali-charger/src/core/strategy/Thevenin.cpp" type="1"/>
@@ -171,13 +171,13 @@
     <File name="core/strategy/SimpleDischargeStrategy.h" path="S:/cheali-charger/src/core/strategy/SimpleDischargeStrategy.h" type="1"/>
     <File name="hardware/cpu/Stimer.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/Stimer.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/hdiv.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/hdiv.h" type="1"/>
-    <File name="core/Program.h" path="S:/cheali-charger/src/core/Program.h" type="1"/>
     <File name="hardware/generic/HardwareConfig.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/HardwareConfig.h" type="1"/>
-    <File name="hardware/generic/HardwareConfigGeneric.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/HardwareConfigGeneric.h" type="1"/>
+    <File name="core/Program.h" path="S:/cheali-charger/src/core/Program.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/adc.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/adc.h" type="1"/>
+    <File name="hardware/generic/HardwareConfigGeneric.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/HardwareConfigGeneric.h" type="1"/>
     <File name="hardware/generic/imaxB6.cpp" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/imaxB6.cpp" type="1"/>
-    <File name="hardware/cpu/CMSIS/CMSIS/Include/core_cm4.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_cm4.h" type="1"/>
     <File name="core/screens/Screen.h" path="S:/cheali-charger/src/core/screens/Screen.h" type="1"/>
+    <File name="hardware/cpu/CMSIS/CMSIS/Include/core_cm4.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_cm4.h" type="1"/>
     <File name="core/strategy/TheveninDischargeStrategy.h" path="S:/cheali-charger/src/core/strategy/TheveninDischargeStrategy.h" type="1"/>
     <File name="core/menus/Menu.cpp" path="S:/cheali-charger/src/core/menus/Menu.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/pwm.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/pwm.h" type="1"/>
@@ -186,8 +186,8 @@
     <File name="hardware/cpu/TxSoftSerial.cpp" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/TxSoftSerial.cpp" type="1"/>
     <File name="core/menus/Options.h" path="S:/cheali-charger/src/core/menus/Options.h" type="1"/>
     <File name="core/drivers/Blink.cpp" path="S:/cheali-charger/src/core/drivers/Blink.cpp" type="1"/>
-    <File name="hardware/generic/defaultCalibration.cpp" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/defaultCalibration.cpp" type="1"/>
     <File name="core/screens/ScreenCycle.cpp" path="S:/cheali-charger/src/core/screens/ScreenCycle.cpp" type="1"/>
+    <File name="hardware/generic/defaultCalibration.cpp" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/defaultCalibration.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/CMSIS/Include/core_sc300.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_sc300.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/src/clk.c" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/clk.c" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/src/sys.c" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/sys.c" type="1"/>
@@ -197,11 +197,11 @@
     <File name="core/strategy/SMPS.cpp" path="S:/cheali-charger/src/core/strategy/SMPS.cpp" type="1"/>
     <File name="core/strategy/DeltaChargeStrategy.h" path="S:/cheali-charger/src/core/strategy/DeltaChargeStrategy.h" type="1"/>
     <File name="core/ProgramData.cpp" path="S:/cheali-charger/src/core/ProgramData.cpp" type="1"/>
-    <File name="core/Settings.h" path="S:/cheali-charger/src/core/Settings.h" type="1"/>
-    <File name="core/strings" path="" type="2"/>
     <File name="hardware/generic/AnalogInputsADC.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/AnalogInputsADC.h" type="1"/>
-    <File name="core/strategy/DeltaChargeStrategy.cpp" path="S:/cheali-charger/src/core/strategy/DeltaChargeStrategy.cpp" type="1"/>
+    <File name="core/strings" path="" type="2"/>
+    <File name="core/Settings.h" path="S:/cheali-charger/src/core/Settings.h" type="1"/>
     <File name="hardware/cpu/Serial.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/Serial.h" type="1"/>
+    <File name="core/strategy/DeltaChargeStrategy.cpp" path="S:/cheali-charger/src/core/strategy/DeltaChargeStrategy.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/src/adc.c" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/adc.c" type="1"/>
     <File name="core/calibration/Calibrate.h" path="S:/cheali-charger/src/core/calibration/Calibrate.h" type="1"/>
     <File name="core" path="" type="2"/>
@@ -209,8 +209,8 @@
     <File name="hardware/cpu/CMSIS/CMSIS/Include/core_sc000.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_sc000.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/acmp.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/acmp.h" type="1"/>
     <File name="core/screens/Screen.cpp" path="S:/cheali-charger/src/core/screens/Screen.cpp" type="1"/>
-    <File name="hardware/cpu/atomic.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/atomic.h" type="1"/>
     <File name="hardware/cpu/CMSIS/CMSIS/Include/arm_common_tables.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/arm_common_tables.h" type="1"/>
+    <File name="hardware/cpu/atomic.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/atomic.h" type="1"/>
     <File name="core/Utils.h" path="S:/cheali-charger/src/core/Utils.h" type="1"/>
     <File name="core/strategy/TheveninChargeStrategy.cpp" path="S:/cheali-charger/src/core/strategy/TheveninChargeStrategy.cpp" type="1"/>
     <File name="core/menus/Options.cpp" path="S:/cheali-charger/src/core/menus/Options.cpp" type="1"/>
@@ -223,8 +223,8 @@
     <File name="core/strategy/StartInfoStrategy.cpp" path="S:/cheali-charger/src/core/strategy/StartInfoStrategy.cpp" type="1"/>
     <File name="hardware" path="" type="2"/>
     <File name="core/drivers/LiquidCrystal.cpp" path="S:/cheali-charger/src/core/drivers/LiquidCrystal.cpp" type="1"/>
-    <File name="hardware/cpu" path="" type="2"/>
     <File name="core/ProgramDCcycle.h" path="S:/cheali-charger/src/core/ProgramDCcycle.h" type="1"/>
+    <File name="hardware/cpu" path="" type="2"/>
     <File name="hardware/cpu/CMSIS/StdDriver/src/uart.c" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/uart.c" type="1"/>
     <File name="hardware/cpu/CMSIS/Device/Source" path="" type="2"/>
     <File name="core/menus/ProgramDataMenu.cpp" path="S:/cheali-charger/src/core/menus/ProgramDataMenu.cpp" type="1"/>
@@ -234,10 +234,10 @@
     <File name="hardware/cpu/IO.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/IO.h" type="1"/>
     <File name="core/ChealiCharger2.h" path="S:/cheali-charger/src/core/ChealiCharger2.h" type="1"/>
     <File name="hardware/generic" path="" type="2"/>
-    <File name="hardware/targets" path="" type="2"/>
     <File name="core/Utils.cpp" path="S:/cheali-charger/src/core/Utils.cpp" type="1"/>
-    <File name="hardware/generic/outputPWM.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/outputPWM.h" type="1"/>
+    <File name="hardware/targets" path="" type="2"/>
     <File name="core/menus/MainMenu.h" path="S:/cheali-charger/src/core/menus/MainMenu.h" type="1"/>
+    <File name="hardware/generic/outputPWM.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/generic/50W/outputPWM.h" type="1"/>
     <File name="core/screens" path="" type="2"/>
     <File name="core/strategy/StorageStrategy.h" path="S:/cheali-charger/src/core/strategy/StorageStrategy.h" type="1"/>
     <File name="core/screens/ScreenBalancer.h" path="S:/cheali-charger/src/core/screens/ScreenBalancer.h" type="1"/>
@@ -249,11 +249,11 @@
     <File name="core/strategy/Balancer.h" path="S:/cheali-charger/src/core/strategy/Balancer.h" type="1"/>
     <File name="core/screens/ScreenMethods.cpp" path="S:/cheali-charger/src/core/screens/ScreenMethods.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/CMSIS/Include/core_cm0plus.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_cm0plus.h" type="1"/>
+    <File name="hardware/cpu/CMSIS/StdDriver/src/pwm.c" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/pwm.c" type="1"/>
     <File name="core/AnalogInputs.cpp" path="S:/cheali-charger/src/core/AnalogInputs.cpp" type="1"/>
     <File name="hardware/cpu/memory.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/memory.h" type="1"/>
-    <File name="hardware/cpu/CMSIS/StdDriver/src/pwm.c" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/pwm.c" type="1"/>
-    <File name="core/strategy/Balancer.cpp" path="S:/cheali-charger/src/core/strategy/Balancer.cpp" type="1"/>
     <File name="core/screens/ScreenMethods.h" path="S:/cheali-charger/src/core/screens/ScreenMethods.h" type="1"/>
+    <File name="core/strategy/Balancer.cpp" path="S:/cheali-charger/src/core/strategy/Balancer.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/Device/Include/M051Series.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/CMSIS/Device/Nuvoton/M051Series/Include/M051Series.h" type="1"/>
     <File name="core/menus/Menu.h" path="S:/cheali-charger/src/core/menus/Menu.h" type="1"/>
     <File name="core/menus/SettingsMenu.cpp" path="S:/cheali-charger/src/core/menus/SettingsMenu.cpp" type="1"/>
@@ -261,9 +261,9 @@
     <File name="hardware/cpu/cpu.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/cpu.h" type="1"/>
     <File name="core/drivers/StackInfo.h" path="S:/cheali-charger/src/core/drivers/StackInfo.h" type="1"/>
     <File name="core/menus/EditName.cpp" path="S:/cheali-charger/src/core/menus/EditName.cpp" type="1"/>
+    <File name="core/strategy/TheveninChargeStrategy.h" path="S:/cheali-charger/src/core/strategy/TheveninChargeStrategy.h" type="1"/>
     <File name="core/strategy/Strategy.cpp" path="S:/cheali-charger/src/core/strategy/Strategy.cpp" type="1"/>
     <File name="core/strategy/Monitor.h" path="S:/cheali-charger/src/core/strategy/Monitor.h" type="1"/>
-    <File name="core/strategy/TheveninChargeStrategy.h" path="S:/cheali-charger/src/core/strategy/TheveninChargeStrategy.h" type="1"/>
     <File name="core/ChealiCharger2.cpp" path="S:/cheali-charger/src/core/ChealiCharger2.cpp" type="1"/>
     <File name="core/menus/StaticMenu.h" path="S:/cheali-charger/src/core/menus/StaticMenu.h" type="1"/>
     <File name="core/strategy/StartInfoStrategy.h" path="S:/cheali-charger/src/core/strategy/StartInfoStrategy.h" type="1"/>
