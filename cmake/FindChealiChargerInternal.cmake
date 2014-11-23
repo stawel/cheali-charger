@@ -51,6 +51,21 @@ ENDMACRO(CHEALI_GENERIC_CHARGER)
 
 MACRO(CHEALI_GENERATE_ARM_EXEC)
     add_executable(${execName} ${ALL_SOURCE_FILES})
+
+    add_custom_command(
+        TARGET ${execName}
+        POST_BUILD
+        COMMAND ${TOOLCHAIN}-objcopy -O ihex $<TARGET_FILE:${execName}> $<TARGET_FILE:${execName}>.hex)
+
+    add_custom_command(
+        TARGET ${execName}
+        POST_BUILD
+        COMMAND ${TOOLCHAIN}-objcopy -O binary $<TARGET_FILE:${execName}> $<TARGET_FILE:${execName}>.bin)
+
+    add_custom_target(${execName}.size ALL
+        COMMAND ${TOOLCHAIN}-size $<TARGET_FILE:${execName}>
+        DEPENDS ${execName})
+
 ENDMACRO(CHEALI_GENERATE_ARM_EXEC)
 
 
