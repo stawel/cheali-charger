@@ -23,7 +23,9 @@
 #include "Screen.h"
 #include "Settings.h"
 
-#define SMPS_MAX_CURRENT_CHANGE     ANALOG_AMP(0.100)
+#ifndef SMPS_MAX_CURRENT_CHANGE
+#define SMPS_MAX_CURRENT_CHANGE     ANALOG_AMP(0.200)
+#endif
 
 #define SMPS_MAX_CURRENT_CHANGE_dM  ((AnalogInputs::ValueType)(SMPS_MAX_CURRENT_CHANGE*0.7))
 
