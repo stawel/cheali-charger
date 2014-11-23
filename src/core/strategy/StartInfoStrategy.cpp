@@ -68,7 +68,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
             v_balance = false;
         }
     }
-    if(AnalogInputs::isConnected(AnalogInputs::Vbalancer) &&
+    if(AnalogInputs::isBalancePortConnected() &&
             absDiff(AnalogInputs::getRealValue(AnalogInputs::Vout),
                AnalogInputs::getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)) v_out = true;
 

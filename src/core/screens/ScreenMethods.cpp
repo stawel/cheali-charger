@@ -130,7 +130,7 @@ void Screen::Methods::displayR()
     lcdPrintResistance(TheveninMethod::getReadableBattRth(), 8);
     lcdPrintSpaces();
     lcdSetCursor0_1();
-    if(AnalogInputs::isConnected(AnalogInputs::Vbalancer)) {
+    if(Monitor::isBalancePortConnected) {
         lcdPrint_P(PSTR("wires R="));
         lcdPrintResistance(TheveninMethod::getReadableWiresRth(),8);
     }

@@ -7,7 +7,6 @@
 
 namespace {
     volatile uint16_t i_PID_setpoint;
-    volatile uint16_t i_PID_CutOff;
     volatile long i_PID_MV;
     volatile bool i_PID_enable;
 }
@@ -29,7 +28,7 @@ void SMPS_PID::update()
 {
     if(!i_PID_enable) return;
     //if Vout is too high disable PID
-    if(AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin) > i_PID_CutOff) {
+    if(AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin) >= ANALOG_INPUTS_MAX_ADC_VALUE) {
         hardware::setChargerOutput(false);
         i_PID_enable = false;
         return;
@@ -94,11 +93,8 @@ void SMPS_PID::setPID_MV(uint16_t value) {
 
 void hardware::setChargerValue(uint16_t value)
 {
-    AnalogInputs::ValueType cutoff = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, PID_CUTOFF_VOLTAGE);
-
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         i_PID_setpoint = value;
-        i_PID_CutOff = cutoff;
     }
 }
 

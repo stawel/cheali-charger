@@ -237,6 +237,7 @@ void (* const g_pfnVectors[])(void) =
   Default_Handler, 
 };
 
+void _start(void);
 
 //*****************************************************************************
 //

@@ -179,7 +179,7 @@ bool testVout(bool balancePort)
     bool displayed = false;
     do {
         if(AnalogInputs::isConnected(AnalogInputs::Vout)) {
-            if(AnalogInputs::isConnected(AnalogInputs::Vbalancer) == balancePort)
+            if(AnalogInputs::isBalancePortConnected() == balancePort)
                 return true;
             if(!displayed) {
                 if(balancePort) {

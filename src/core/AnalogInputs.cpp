@@ -124,7 +124,7 @@ void AnalogInputs::doFullMeasurement()
 void AnalogInputs::restoreDefault()
 {
     CalibrationPoint p;
-    FOR_ALL_PHY_INPUTS(name) {
+    ANALOG_INPUTS_FOR_ALL_PHY(name) {
         p = pgm::read<CalibrationPoint>(&inputsP_[name].p0);
         setCalibrationPoint(name, 0, p);
         p = pgm::read<CalibrationPoint>(&inputsP_[name].p1);
@@ -135,7 +135,7 @@ void AnalogInputs::restoreDefault()
 
 void AnalogInputs::getCalibrationPoint(CalibrationPoint &x, Name name, uint8_t i)
 {
-    if(name >= PHYSICAL_INPUTS || i >= MAX_CALIBRATION_POINTS) {
+    if(name >= PHYSICAL_INPUTS || i >= ANALOG_INPUTS_MAX_CALIBRATION_POINTS) {
         x.x = x.y = 1;
         return;
     }
@@ -143,7 +143,7 @@ void AnalogInputs::getCalibrationPoint(CalibrationPoint &x, Name name, uint8_t i
 }
 void AnalogInputs::setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &x)
 {
-    if(name >= PHYSICAL_INPUTS || i >= MAX_CALIBRATION_POINTS) return;
+    if(name >= PHYSICAL_INPUTS || i >= ANALOG_INPUTS_MAX_CALIBRATION_POINTS) return;
     eeprom::write<CalibrationPoint>(&eeprom::data.calibration[name].p[i], x);
 }
 
@@ -170,6 +170,12 @@ bool AnalogInputs::isConnected(Name name)
     }
 }
 
+bool AnalogInputs::isBalancePortConnected()
+{
+    return isConnected(Vbalancer);
+}
+
+
 AnalogInputs::ValueType AnalogInputs::getVout()
 {
     return getRealValue(VoutBalancer);
@@ -188,7 +194,7 @@ bool AnalogInputs::isOutStable()
 void AnalogInputs::_resetAvr()
 {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        FOR_ALL_PHY_INPUTS(name) {
+        ANALOG_INPUTS_FOR_ALL_PHY(name) {
             i_avrSum_[name] = 0;
         }
         i_avrCount_ = ANALOG_INPUTS_ADC_ROUND_MAX_COUNT;
@@ -216,7 +222,7 @@ void AnalogInputs::resetDelta()
 
 void AnalogInputs::resetStable()
 {
-    FOR_ALL_INPUTS(name) {
+    ANALOG_INPUTS_FOR_ALL(name) {
         stableCount_[name] = 0;
     }
 }
@@ -246,7 +252,7 @@ void AnalogInputs::reset()
 {
     calculationCount_ = 0;
     resetAccumulatedMeasurements();
-    FOR_ALL_INPUTS(name){
+    ANALOG_INPUTS_FOR_ALL(name){
         real_[name] = 0;
     }
 }
@@ -406,7 +412,7 @@ void AnalogInputs::finalizeFullMeasurement()
 		    i_deltaAvrCount_ ++;
 		    finalizeDeltaMeasurement();
 
-			FOR_ALL_PHY_INPUTS(name) {
+			ANALOG_INPUTS_FOR_ALL_PHY(name) {
 				avrAdc_[name] = i_avrSum_[name] / ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT;
 				ValueType real = calibrateValue(name, avrAdc_[name]);
 				setReal(name, real);
@@ -420,7 +426,7 @@ void AnalogInputs::finalizeFullMeasurement()
 
 void AnalogInputs::finalizeDeltaMeasurement()
 {
-    if(Time::diffU16(deltaStartTimeU16_, Time::getMilisecondsU16()) > DELTA_TIME_MILISECONDS) {
+    if(Time::diffU16(deltaStartTimeU16_, Time::getMilisecondsU16()) > ANALOG_INPUTS_DELTA_TIME_MILISECONDS) {
         uint32_t deltaAvrCount;
         uint32_t deltaAvrSumVoutPlus;
         uint32_t deltaAvrSumVoutMinus;
@@ -456,8 +462,8 @@ void AnalogInputs::finalizeDeltaMeasurement()
 
         //calculate deltaTextern
         uint16_t dc = 2;
-#if DELTA_TIME_MILISECONDS != 30000
-#error "DELTA_TIME_MILISECONDS != 30000"
+#if ANALOG_INPUTS_DELTA_TIME_MILISECONDS != 30000
+#error "ANALOG_INPUTS_DELTA_TIME_MILISECONDS != 30000"
 #endif
         deltaAvrSumTextern /= deltaAvrCount;
         x = deltaAvrSumTextern;
@@ -473,7 +479,6 @@ void AnalogInputs::finalizeDeltaMeasurement()
 
 void AnalogInputs::finalizeFullVirtualMeasurement()
 {
-    AnalogInputs::ValueType oneVolt = ANALOG_VOLT(1);
     AnalogInputs::ValueType balancer = 0;
     AnalogInputs::ValueType out_p = real_[Vout_plus_pin];
     AnalogInputs::ValueType out_m = real_[Vout_minus_pin];
@@ -508,7 +513,7 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
 
     setReal(Vbalancer, balancer);
     AnalogInputs::Name obInfo;
-    if(balancer == 0 || absDiff(out, balancer) > oneVolt) {
+    if(balancer == 0 || absDiff(out, balancer) > ANALOG_VOLT(3.000)) {
         //balancer not connected or big error in calibration
         obInfo = Vout;
         ports = 0;

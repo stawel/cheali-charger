@@ -10,8 +10,6 @@
 #define PID_MV_PRECISION 8
 #define MAX_PID_MV_PRECISION (((uint32_t) MAX_PID_MV)<<PID_MV_PRECISION)
 
-#define PID_CUTOFF_VOLTAGE (MAX_CHARGE_V + ANALOG_VOLT(1.000))
-
 namespace SMPS_PID
 {
     void init(uint16_t Vin, uint16_t Vout);

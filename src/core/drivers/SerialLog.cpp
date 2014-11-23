@@ -244,7 +244,7 @@ void sendChannel1()
 void sendChannel2(bool adc)
 {
     sendHeader(2);
-    FOR_ALL_INPUTS(it) {
+    ANALOG_INPUTS_FOR_ALL(it) {
         uint16_t v;
         if(adc) v = AnalogInputs::getAvrADCValue(it);
         else    v = AnalogInputs::getRealValue(it);

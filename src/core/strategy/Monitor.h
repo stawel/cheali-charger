@@ -22,6 +22,7 @@
 
 namespace Monitor {
 	extern uint16_t etaDeltaSec;
+    extern bool isBalancePortConnected;
 
 	Strategy::statusType run();
     void doIdle();
@@ -38,7 +39,7 @@ namespace Monitor {
 
     uint8_t getChargeProcent();
 
-    void resetETA();
+    void resetAccumulatedMeasurements();
 
 
     void doSlowInterrupt();

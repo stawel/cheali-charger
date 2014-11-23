@@ -21,16 +21,16 @@
 #include "AnalogInputsTypes.h"
 #include "HardwareConfig.h"
 
-#define MAX_CALIBRATION_POINTS 2
-#define DELTA_TIME_MILISECONDS 30000
+#define ANALOG_INPUTS_MAX_CALIBRATION_POINTS 2
+#define ANALOG_INPUTS_DELTA_TIME_MILISECONDS 30000
 
 
 #define ANALOG_INPUTS_RESOLUTION         16  // bits
 #define STD_ANALOG_INPUTS_RESOLUTION     10  // bits
 #define MAKE_ANALOG_INPUTS_RESOLUTION(val, bits) ((val) << (ANALOG_INPUTS_RESOLUTION - (bits)))
 
-#define FOR_ALL_PHY_INPUTS(iterator) for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::PHYSICAL_INPUTS; iterator = AnalogInputs::Name(iterator + 1) )
-#define FOR_ALL_INPUTS(iterator)     for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::ALL_INPUTS;      iterator = AnalogInputs::Name(iterator + 1) )
+#define ANALOG_INPUTS_FOR_ALL_PHY(iterator) for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::PHYSICAL_INPUTS; iterator = AnalogInputs::Name(iterator + 1) )
+#define ANALOG_INPUTS_FOR_ALL(iterator)     for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::ALL_INPUTS;      iterator = AnalogInputs::Name(iterator + 1) )
 
 namespace AnalogInputs {
 
@@ -43,7 +43,7 @@ namespace AnalogInputs {
         CalibrationPoint p1;
     };
     struct Calibration {
-        CalibrationPoint p[MAX_CALIBRATION_POINTS];
+        CalibrationPoint p[ANALOG_INPUTS_MAX_CALIBRATION_POINTS];
     };
 
     enum Name {

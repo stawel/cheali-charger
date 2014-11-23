@@ -24,7 +24,7 @@
 namespace Monitor {
     STRING(batteryDisconnected,         "BAT disc");
     STRING(internalTemperatureToHigh,   "INT T");
-    STRING(balancePortBreak,            "BAL break");
+    STRING(balancePortDisconnected,     "BAL break");
     STRING(outputVoltageToHigh,         "OVERLOAD err");
     STRING(outputCurrentToHigh,         "HW FAILURE");
 

@@ -63,6 +63,9 @@
 
 #define ENABLE_CALIBRATION
 
+#define ANALOG_INPUTS_ADC_RESOLUTION     10  // bits
+
+
 #define STRINGS_HEADER "strings/standard.h"
 
 #endif /* HARDWARE_CONFIG_GENERIC_H_ */

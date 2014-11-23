@@ -46,7 +46,7 @@ Strategy::statusType ProgramDCcycle::runDCcycle()
             Strategy::exitImmediately = false;
         }
 
-        Monitor::resetETA();
+        Monitor::resetAccumulatedMeasurements();
         AnalogInputs::resetAccumulatedMeasurements();
 
         status = Program::runWithoutInfo(currentCycle & 1 ? Program::Charge : Program::Discharge);

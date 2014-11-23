@@ -96,6 +96,7 @@ namespace Strategy {
 
     void chargingMonitorError() {
         chargingEnd();
+        AnalogInputs::powerOff();
         Screen::displayMonitorError();
 
         Buzzer::soundError();

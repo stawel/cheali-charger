@@ -43,13 +43,14 @@ namespace Monitor {
 	uint16_t etaDeltaSec;
     uint16_t etaStartTimeCalc;
 
+    bool isBalancePortConnected;
+
 	bool on_;
     uint8_t procent_;
     uint16_t startTime_totalTime_U16_;
     uint32_t totalBalanceTime_;
     uint32_t totalChargDischargeTime_;
 
-	uint16_t VoutMaxMesured_;
 	uint16_t VoutMinMesured_;
 
 #ifdef MONITOR_T_INTERNAL_FAN
@@ -79,20 +80,13 @@ uint16_t Monitor::getETATime()
 {
     calculateDeltaProcentTimeSec();
     uint8_t kx = 105;
-    if(!AnalogInputs::isConnected(AnalogInputs::Vbalancer)) {
+    if(!Monitor::isBalancePortConnected) {
         //balancer not connected
         kx=100;
     }
 
     //if (getChargeProcent()==99) {return (0);} //no avail more calc (or call secondary calculator)
     return (etaDeltaSec*(kx-procent_));
-}
-
-void Monitor::resetETA()
-{
-    etaStartTimeCalc=0;
-    procent_ = getChargeProcent();
-    etaDeltaSec = 0;
 }
 
 uint16_t Monitor::getTimeSec()
@@ -154,16 +148,25 @@ void Monitor::update()
 }
 
 void Monitor::powerOn() {
-    VoutMaxMesured_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, MAX_CHARGE_V+ANALOG_VOLT(3.000));
     VoutMinMesured_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, AnalogInputs::CONNECTED_MIN_VOLTAGE);
+    isBalancePortConnected = AnalogInputs::isBalancePortConnected();
     update();
 
     startTime_totalTime_U16_ = Time::getSecondsU16();
+    resetAccumulatedMeasurements();
+    on_ = true;
+}
+
+void Monitor::resetAccumulatedMeasurements()
+{
+    procent_ = getChargeProcent();
+    etaStartTimeCalc = 0;
+    etaDeltaSec = 0;
+
     totalBalanceTime_ = 0;
     totalChargDischargeTime_ = 0;
-    on_ = true;
-    resetETA();
 }
+
 
 void Monitor::powerOff()
 {
@@ -183,7 +186,6 @@ void Monitor::doSlowInterrupt()
 
 Strategy::statusType Monitor::run()
 {
-	//TODO: ??
 	if(!on_) {
 		return Strategy::RUNNING;
 	}
@@ -197,40 +199,31 @@ Strategy::statusType Monitor::run()
 #endif
 
     AnalogInputs::ValueType VMout = AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin);
-    if(VoutMaxMesured_ < VMout || (VMout < VoutMinMesured_ && Discharger::isPowerOn())) {
+    if(ANALOG_INPUTS_MAX_ADC_VALUE <= VMout || (VMout < VoutMinMesured_ && Discharger::isPowerOn())) {
         Program::stopReason_ = string_batteryDisconnected;
         return Strategy::ERROR;
     }
 
-    //TODO: NJ if disconnected balancer
-    if (settings.forceBalancePort && SMPS::isPowerOn() && ProgramData::currentProgramData.isLiXX() && (ProgramData::currentProgramData.battery.cells > 1)) 
-    {
-        if(!AnalogInputs::isConnected(AnalogInputs::Vb1)) {
-            Program::stopReason_ = string_balancePortBreak;
-            return Strategy::ERROR;
-        }
+    if (isBalancePortConnected != AnalogInputs::isBalancePortConnected()) {
+        Program::stopReason_ = string_balancePortDisconnected;
+        return Strategy::ERROR;
     }
 
-    //charger hardware failure (smps q2 short)
-    AnalogInputs::ValueType v = ANALOG_AMP(0.000);
-    if (SMPS::isPowerOn()) {v = ProgramData::currentProgramData.getMaxIc();}
-    if (Discharger::isPowerOn()) {v = ProgramData::currentProgramData.getMaxId();}
-    //TODO stawel: should be fixed
-    if (v + ANALOG_AMP(1.000) <  AnalogInputs::Iout) {
+    AnalogInputs::ValueType i_limit = Strategy::maxI + ANALOG_AMP(1.000);
+    if (i_limit < AnalogInputs::getIout()) {
         Program::stopReason_ = string_outputCurrentToHigh;
-        AnalogInputs::powerOff();   //disconnect the battery (pin12 off)
         return Strategy::ERROR;               
     }
 
     AnalogInputs::ValueType Vin = AnalogInputs::getRealValue(AnalogInputs::Vin);
-    if(AnalogInputs::isConnected(AnalogInputs::Vin) && Vin < settings.inputVoltageLow) {
+    if(Vin < settings.inputVoltageLow) {
         Program::stopReason_ = string_inputVoltageToLow;
         return Strategy::ERROR;
     }
 
     AnalogInputs::ValueType c = AnalogInputs::getRealValue(AnalogInputs::Cout);
     AnalogInputs::ValueType c_limit  = ProgramData::currentProgramData.getCapacityLimit();
-    if(c_limit != PROGRAM_DATA_MAX_CHARGE && c > c_limit) {
+    if(c_limit != PROGRAM_DATA_MAX_CHARGE && c_limit < c) {
         Program::stopReason_ = string_capacityLimit;
         return Strategy::COMPLETE;
     }
@@ -238,9 +231,9 @@ Strategy::statusType Monitor::run()
 #ifdef ENABLE_TIME_LIMIT
     if (ProgramData::currentProgramData.getTimeLimit() < 1000)  //unlimited
     {
-        uint16_t chargeMin = getTotalChargeDischargeTimeMin();
+        uint16_t charge_time = getTotalChargeDischargeTimeMin();
         uint16_t time_limit  = ProgramData::currentProgramData.getTimeLimit();
-        if(chargeMin >= time_limit) {
+        if(time_limit <= charge_time) {
             Program::stopReason_ = string_timeLimit;
             return Strategy::COMPLETE;
         }
@@ -249,7 +242,7 @@ Strategy::statusType Monitor::run()
 
     if(settings.externT) {
         AnalogInputs::ValueType Textern = AnalogInputs::getRealValue(AnalogInputs::Textern);
-        if(Textern > settings.externTCO) {
+        if(settings.externTCO < Textern) {
             Program::stopReason_ = string_externalTemperatureCutOff;
             return Strategy::ERROR;
         }

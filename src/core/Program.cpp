@@ -144,12 +144,13 @@ void Program::run(ProgramType prog)
     programState_ = Info;
     SerialLog::powerOn();
     AnalogInputs::powerOn();
-    Screen::powerOn();
 
     if(startInfo()) {
         programState_ = InProgress;
 
         Monitor::powerOn();
+        Screen::powerOn();
+
         Strategy::exitImmediately = false;
         Buzzer::soundStartProgram();
 
