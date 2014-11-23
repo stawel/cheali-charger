@@ -141,7 +141,10 @@ namespace DeltaChargeStrategy {
 }
 
 namespace Calibrate {
-    STRING(connectBattery,  "Connect Battery!");
+    STRING(connect, "connect");
+    STRING(disconnect, "disconnect");
+    STRING(battery, "battery!");
+    STRING(balancePort,  "balance port!");
 
     //calibration main menu
     STRING(voltage,             "voltage");

@@ -26,7 +26,6 @@ namespace TheveninMethod {
     void initialize(bool charge);
     bool balance_isComplete(bool isEndVout, AnalogInputs::ValueType I);
 
-    bool isBelowMin(AnalogInputs::ValueType I);
     void calculateRthVth(AnalogInputs::ValueType I);
     AnalogInputs::ValueType calculateNewI(bool isEndVout, AnalogInputs::ValueType I);
 

@@ -129,6 +129,13 @@ void Screen::displayStrings(const char *s)
     lcdPrint_P(s);
 }
 
+void Screen::displayStrings(const char *s1, const char *s2)
+{
+    displayStrings(s1);
+    lcdSetCursor0_1();
+    lcdPrint_P(s2);
+}
+
 
 namespace Screen {
     void screenEnd(const char * firstLine) {

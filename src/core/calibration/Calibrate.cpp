@@ -173,12 +173,23 @@ void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
 
 
 
-bool testVout()
+bool testVout(bool balancePort)
 {
-    Screen::displayStrings(string_connectBattery);
+    Screen::displayStrings(string_connect, string_battery);
+    bool displayed = false;
     do {
-        if(AnalogInputs::isConnected(AnalogInputs::Vout))
-            return true;
+        if(AnalogInputs::isConnected(AnalogInputs::Vout)) {
+            if(AnalogInputs::isConnected(AnalogInputs::Vbalancer) == balancePort)
+                return true;
+            if(!displayed) {
+                if(balancePort) {
+                    Screen::displayStrings(string_connect, string_balancePort);
+                } else {
+                    Screen::displayStrings(string_disconnect, string_balancePort);
+                }
+            }
+            displayed = true;
+        }
         if(Keyboard::getPressedWithSpeed() == BUTTON_STOP)
             return false;
     }while(true);
@@ -215,7 +226,7 @@ void saveVoltage(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInputs::N
 
 void calibrateVoltage()
 {
-    if(testVout()) {
+    if(testVout(true)) {
         VoltageMenu v(voltageMenu, voltageName, 9);
         int8_t index;
         do {
@@ -289,7 +300,7 @@ public:
     virtual void printItem(uint8_t index) {
         //TODO: hack, should be improved ... Gyuri: R138 burned.
         if(!AnalogInputs::isConnected(AnalogInputs::Vout)) {
-            Screen::displayStrings(string_connectBattery);
+            Screen::displayStrings(string_connect, string_battery);
             if(cName_ == AnalogInputs::IdischargeSet) {
                 Discharger::powerOff();
             }
@@ -319,7 +330,7 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
     AnalogInputs::Name name1;
     AnalogInputs::Name name2;
 
-    if(testVout()) {
+    if(testVout(false)) {
 
         if(charging) {
             maxValue = SMPS_UPPERBOUND_VALUE;

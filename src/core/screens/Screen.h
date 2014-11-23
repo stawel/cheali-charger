@@ -50,6 +50,7 @@ namespace Screen {
     void displayScreenProgramCompleted();
     void displayMonitorError();
     void displayStrings(const char *s);
+    void displayStrings(const char *s1, const char *s2);
 
 
     void displayNotImplemented();

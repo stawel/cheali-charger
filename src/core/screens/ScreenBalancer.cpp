@@ -83,7 +83,7 @@ namespace Screen { namespace Balancer {
                     c = SCREEN_EMPTY_CELL_CHAR; //lowest cell
                 } else {
                     if(::Balancer::balance&j) {
-                        if (blink.getBlinkOff()) {
+                        if (blink.blinkTime_ & 1) {
                             c = SCREEN_FULL_CELL_CHAR; //flash full/empty cells
                         } else {
                             c = SCREEN_EMPTY_CELL_CHAR; //flash full/empty cells

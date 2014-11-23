@@ -35,7 +35,6 @@ namespace TheveninMethod {
     Thevenin tBal_[MAX_BANANCE_CELLS];
     uint8_t fullCount_;
 
-    bool balance_;
     uint16_t lastBallancingEnded_;
     Strategy::statusType bstatus_;
 
@@ -95,7 +94,7 @@ void TheveninMethod::initialize(bool charge)
 
 bool TheveninMethod::balance_isComplete(bool isEndVout, AnalogInputs::ValueType I)
 {
-    if(balance_) {
+    if(Strategy::doBalance) {
         if(I > max(BALANCER_I, Strategy::minI))
             Balancer::done = false;
         if(Ifalling_ != LastRthMesurment)
@@ -144,7 +143,7 @@ AnalogInputs::ValueType TheveninMethod::calculateNewI(bool isEndVout, AnalogInpu
         case NotFalling:
             if(!isEndVout)
                 break;
-            if(balance_) {
+            if(Strategy::doBalance) {
                 Balancer::endBalancing();
                 Balancer::done = false;
             }
