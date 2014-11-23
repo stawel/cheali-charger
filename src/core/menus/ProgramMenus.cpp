@@ -22,9 +22,8 @@
 #include "eeprom.h"
 
 // Program selection depending on the battery type
-using namespace ProgramMenus;
 
-namespace {
+namespace ProgramMenus {
 
     const Program::ProgramType programLiXXMenu[] PROGMEM = {
             Program::Charge,
@@ -34,7 +33,9 @@ namespace {
             Program::FastCharge,
             Program::Storage,
             Program::StorageBalance,
+#ifdef ENABLE_PROGRAM_MENUS_LIXX_CYCLING
             Program::DischargeChargeCycle,
+#endif
             Program::EditBattery,
     };
 
@@ -43,8 +44,10 @@ namespace {
             Program::ChargeBalance,
             Program::Balance,
             Program::Discharge,
-            Program::FastCharge,                //TODO: check
-            Program::DischargeChargeCycle,      //TODO: check
+            Program::FastCharge,
+#ifdef ENABLE_PROGRAM_MENUS_NIZN_CYCLING
+            Program::DischargeChargeCycle,
+#endif
             Program::EditBattery,
     };
 
@@ -58,8 +61,8 @@ namespace {
     const Program::ProgramType programPbMenu[] PROGMEM = {
             Program::Charge,
             Program::Discharge,
-            Program::FastCharge,                //TODO: check
-            Program::DischargeChargeCycle,      //TODO: check
+            Program::FastCharge,
+            Program::DischargeChargeCycle,
             Program::EditBattery,
     };
 
