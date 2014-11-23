@@ -231,14 +231,21 @@ void AnalogInputs::resetMeasurement()
     }
 }
 
-void AnalogInputs::reset()
+void AnalogInputs::resetAccumulatedMeasurements()
 {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         i_charge_ = 0;
     }
-    calculationCount_ = 0;
     resetMeasurement();
     resetDelta();
+    setReal(deltaVoutMax, 0);
+}
+
+
+void AnalogInputs::reset()
+{
+    calculationCount_ = 0;
+    resetAccumulatedMeasurements();
     FOR_ALL_INPUTS(name){
         real_[name] = 0;
     }
@@ -544,11 +551,5 @@ void AnalogInputs::setReal(Name name, ValueType real)
         stableCount_[name]++;
 
     real_[name] = real;
-}
-
-void AnalogInputs::resetAccumulatedMeasurements()
-{
-    i_charge_ = 0;
-    resetMeasurement();
 }
 

@@ -24,7 +24,7 @@
 #include "AnalogInputs.h"
 #include "Screen.h"
 
-#define STRATEGY_DISABLE_OUTPUT_AFTER_SECONDS 60
+#define STRATEGY_DISABLE_OUTPUT_AFTER_SECONDS (3*60)
 
 namespace Strategy {
 
