@@ -65,7 +65,7 @@ AnalogInputs::ValueType TheveninMethod::getReadableWiresRth()
 {
     Resistance R;
     R.iV =  AnalogInputs::getRealValue(AnalogInputs::Vout);
-    R.iV -= AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
+    R.iV -= AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
     R.uI = AnalogInputs::getRealValue(AnalogInputs::Iout);
     return R.getReadableRth();
 
