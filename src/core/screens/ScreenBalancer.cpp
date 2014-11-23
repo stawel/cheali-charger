@@ -116,15 +116,8 @@ namespace Screen { namespace Balancer {
 #endif
         }
         lcdPrintDigit(from+1);
-#ifdef ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
-        if(from == 0 && Discharger::isPowerOn() && Discharger::isWorking()) {
-            lcdPrintChar('?');
-        } else {
-            lcdPrintChar(':');
-        }
-#else
         lcdPrintChar(':');
-#endif
+
         printBalancer(from++, type);
         lcdPrintSpaces();
 
