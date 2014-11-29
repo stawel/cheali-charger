@@ -83,14 +83,14 @@ namespace settingsMenu {
     STRING(NiMHdV,      "NiMH dV:");
     STRING(NiCddV,      "NiCd dV:");
     STRING(DCcycles,    "D/C cycles:");
-    STRING(DCRestTime,  "D/C rest t:");
+    STRING(DCRestTime,  "D/C rest:");
     STRING(AudioBeep,   "beep:      ");
     STRING(minIoutDiv,  "min Iout: I/");
     STRING(minIout,     "min Iout:");
     STRING(capCoff,     "cap COff:");
     STRING(inputLow,    "input low:");
-    STRING(overChargeLiXX,      "overCha:");
-    STRING(overDischargeLiXX,   "overDis:");
+    STRING(overChargeLiXX,      "o.charge:");
+    STRING(overDischargeLiXX,   "o.disch:");
     STRING(dichAggLiXX, "dis agres: ");
     STRING(forceBalanc, "force bal: ");
     STRING(balancErr,   "bal. err:");

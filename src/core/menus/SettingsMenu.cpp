@@ -90,13 +90,14 @@ void SettingsMenu::printItem(uint8_t index)
             case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiMH, 6);         break;
             case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiCd, 6);         break;
             case NEXT_CASE:     lcdPrintUnsigned(p_.DCcycles, 3);       break;
-            case NEXT_CASE:     lcdPrintUnsigned(p_.DCRestTime, 3);     break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.DCRestTime, 4);
+                                lcdPrintChar('m');                      break;
             case NEXT_CASE:     lcdPrintYesNo(p_.audioBeep);            break;
             case NEXT_CASE:     lcdPrintUnsigned(p_.minIoutDiv, 2);     break;
             case NEXT_CASE:     lcdPrintCurrent(p_.minIout, 5);         break;
             case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff, 5);    break;
             case NEXT_CASE:     printVolt(p_.inputVoltageLow);          break;
-            case NEXT_CASE:     lcdPrint_mV(p_.overCharge_LiXX,6);      break;
+            case NEXT_CASE:     lcdPrint_mV(p_.overCharge_LiXX,5);      break;
             case NEXT_CASE:     lcdPrint_mV(p_.overDischarge_LiXX,6);   break;
             case NEXT_CASE:     lcdPrintYesNo(p_.dischargeAggressive_LiXX);break;
             case NEXT_CASE:     lcdPrintYesNo(p_.forceBalancePort);     break;
@@ -304,8 +305,8 @@ void SettingsMenu::changeOverCharge(int dir)
 void SettingsMenu::changeOverDischarge(int dir)
 {
     int16_t &v = p_.overDischarge_LiXX;
-    const int16_t min = -ANALOG_VOLT(1.000);
-    const int16_t max = +ANALOG_VOLT(1.000);
+    const int16_t min = -ANALOG_VOLT(0.999);
+    const int16_t max = +ANALOG_VOLT(0.999);
     v+=dir;
     if(v < min) v = min;
     if(v > max) v = max;
