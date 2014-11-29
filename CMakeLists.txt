@@ -13,10 +13,10 @@ find_package(ChealiChargerInternal REQUIRED)
 
 string(TIMESTAMP timestamp "%Y%m%d")
 
-set(cheali-charger-version 0.33)
-set(cheali-charger-eeprom-calibration-version 8)
-set(cheali-charger-eeprom-programdata-version 1)
-set(cheali-charger-eeprom-settings-version 5)
+set(cheali-charger-version 0.99)
+set(cheali-charger-eeprom-calibration-version 9)
+set(cheali-charger-eeprom-programdata-version 2)
+set(cheali-charger-eeprom-settings-version 6)
 set(cheali-charger-buildnumber ${timestamp})
 
 message(STATUS "cheali-charger-version: ${cheali-charger-version}")
