@@ -22,16 +22,15 @@
 
 
 namespace Monitor {
-    STRING(batteryDisconnected,         "BAT disc");
-    STRING(internalTemperatureToHigh,   "INT T");
-    STRING(balancePortDisconnected,     "BAL break");
-    STRING(outputVoltageToHigh,         "OVERLOAD err");
-    STRING(outputCurrentToHigh,         "HW FAILURE");
+    STRING(batteryDisconnected,         "battery disc.");
+    STRING(internalTemperatureToHigh,   "int.temp.cutoff");
+    STRING(balancePortDisconnected,     "balancer disc.");
+    STRING(outputCurrentToHigh,         "HW failure");
 
-    STRING(inputVoltageToLow,           "INPUT V");
-    STRING(capacityLimit,               "CAP COFF");
-    STRING(timeLimit,                   "T limit");
-    STRING(externalTemperatureCutOff,   "EXT TCOF");
+    STRING(inputVoltageToLow,           "input V to low");
+    STRING(capacityLimit,               "capacity cutoff");
+    STRING(timeLimit,                   "time limit");
+    STRING(externalTemperatureCutOff,   "ext.temp.cutoff");
 };
 
 namespace ProgramMenus {
