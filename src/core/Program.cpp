@@ -83,7 +83,7 @@ void Program::setupDeltaCharge()
 
 void Program::setupDischarge()
 {
-    Strategy::setVI(ProgramData::VDischarge, true);
+    Strategy::setVI(ProgramData::VDischarge, false);
     Strategy::strategy = &TheveninDischargeStrategy::vtable;
 }
 
