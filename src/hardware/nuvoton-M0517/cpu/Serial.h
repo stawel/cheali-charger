@@ -21,13 +21,14 @@
 #ifndef Serial_H_
 #define Serial_H_
 
+
 namespace Serial {
     void  begin(unsigned long baud);
-    void  write(uint8_t c);
-    void  flush();
-    void  end();
+    extern void (*write)(uint8_t c);
+    extern void (*flush)();
+    extern void (*end)();
     void  initialize();
-	} // namespace Serial
+} // namespace Serial
 
 #endif //  Serial_H_
 
