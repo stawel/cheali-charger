@@ -20,15 +20,15 @@
 */
 #include "atomic.h"
 #include "Hardware.h"
-#include  "uart.h"
 #include "TxHardSerial.h"
+#include "irq_priority.h"
 
 #include "IO.h"
+
 
 namespace TxHardSerial {
 
 #define Tx_BUFFER_SIZE	256
-
 
 uint8_t  pucTxBuffer[Tx_BUFFER_SIZE];
 uint16_t usTxBufferLen=Tx_BUFFER_SIZE;
@@ -56,7 +56,7 @@ void begin(unsigned long baud)
     UART0->LCR = UART_WORD_LEN_8 | UART_PARITY_NONE | UART_STOP_BIT_1;
     UART0->IER = UART_IER_THRE_IEN_Msk;
 
-//    NVIC_SetPriority(UART0_IRQn, HARD_SERIAL_IRQ_PRIORITY);
+    NVIC_SetPriority(UART0_IRQn,HARDWARE_SERIAL_IRQ_PRIORITY);
 
     usTxBufferRead = 0;
     usTxBufferWrite = 0;
