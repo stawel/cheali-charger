@@ -18,13 +18,14 @@
 #ifndef IRQ_PRIORITY_H_
 #define IRQ_PRIORITY_H_
 
-#define SOFT_SERIAL_IRQ_PRIORITY        0
-// decrease priority to 1, need for TxSoftSerial
-#define TIMER_IRQ_PRIORITY              1
-#define HARD_SERIAL_IRQ_PRIORITY        1
-#define ADC_IRQ_PRIORITY				1
-#define ADC_C_DISCHARGE_IRQ_PRIORITY    1
-#define OUTPUT_PWM_IRQ_PRIORITY         0
+
+#define SOFTWARE_SERIAL_IRQ_PRIORITY    0
+#define TIMER_IRQ_PRIORITY              2
+#define HARDWARE_SERIAL_IRQ_PRIORITY    3
+#define ADC_IRQ_PRIORITY                2
+#define ADC_C_DISCHARGE_IRQ_PRIORITY    2
+#define OUTPUT_PWM_IRQ_PRIORITY         1
+
 
 #endif /* IRQ_PRIORITY_H_ */
 

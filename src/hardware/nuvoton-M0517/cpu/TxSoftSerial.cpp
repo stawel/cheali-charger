@@ -46,7 +46,7 @@ void initialize()
 {
     CLK_EnableModuleClock(TMR2_MODULE);
     CLK_SetModuleClock(TMR2_MODULE,CLK_CLKSEL1_TMR2_S_HCLK,CLK_CLKDIV_UART(1));
-    NVIC_SetPriority(TMR2_IRQn, SOFT_SERIAL_IRQ_PRIORITY);
+    NVIC_SetPriority(TMR2_IRQn, SOFTWARE_SERIAL_IRQ_PRIORITY);
     NVIC_EnableIRQ(TMR2_IRQn);
     pucTxpin=(uint8_t *)IO::getPinAddress(UART_TX_PIN);
 
