@@ -47,7 +47,7 @@
       </User>
     </BuildOption>
     <DebugOption>
-      <Option name="org.coocox.codebugger.gdbjtag.core.adapter" value="ST-Link"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.adapter" value="Nu-Link"/>
       <Option name="org.coocox.codebugger.gdbjtag.core.debugMode" value="SWD"/>
       <Option name="org.coocox.codebugger.gdbjtag.core.clockDiv" value="1M"/>
       <Option name="org.coocox.codebugger.gdbjtag.corerunToMain" value="1"/>
@@ -86,16 +86,16 @@
     <File name="hardware/cpu/CMSIS/CMSIS/Include/core_cm3.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_cm3.h" type="1"/>
     <File name="hardware/generic/imaxB6-pins.h" path="../src/hardware/nuvoton-M0517/generic/50W/imaxB6-pins.h" type="1"/>
     <File name="core/eeprom.cpp" path="../src/core/eeprom.cpp" type="1"/>
-    <File name="core/AnalogInputsPrivate.h" path="../src/core/AnalogInputsPrivate.h" type="1"/>
     <File name="hardware/cpu/CMSIS/Device/Include/system_M051Series.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/Device/Nuvoton/M051Series/Include/system_M051Series.h" type="1"/>
+    <File name="core/AnalogInputsPrivate.h" path="../src/core/AnalogInputsPrivate.h" type="1"/>
     <File name="hardware/cpu/CMSIS/Device/Source/system_M051Series.c" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/Device/Nuvoton/M051Series/Source/system_M051Series.c" type="1"/>
     <File name="core/drivers" path="" type="2"/>
-    <File name="hardware/cpu/CMSIS/StdDriver/inc/gpio.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/gpio.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/src/gpio.c" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/gpio.c" type="1"/>
+    <File name="hardware/cpu/CMSIS/StdDriver/inc/gpio.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/gpio.h" type="1"/>
     <File name="hardware/cpu/CMSIS/CMSIS/Include" path="" type="2"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/spi.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/spi.h" type="1"/>
-    <File name="hardware/cpu/CMSIS/StdDriver/inc/timer.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/timer.h" type="1"/>
     <File name="other.c" path="other.c" type="1"/>
+    <File name="hardware/cpu/CMSIS/StdDriver/inc/timer.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/timer.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/src" path="" type="2"/>
     <File name="core/drivers/PolarityCheck.cpp" path="../src/core/drivers/PolarityCheck.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/CMSIS/Include/arm_math.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/arm_math.h" type="1"/>
@@ -110,30 +110,30 @@
     <File name="core/strategy" path="" type="2"/>
     <File name="core/strategy/Monitor.cpp" path="../src/core/strategy/Monitor.cpp" type="1"/>
     <File name="Version.h" path="Version.h" type="1"/>
-    <File name="core/menus" path="" type="2"/>
     <File name="hardware/cpu/CMSIS/Device" path="" type="2"/>
+    <File name="core/menus" path="" type="2"/>
     <File name="hardware/cpu/startup_M051Series.c" path="../src/hardware/nuvoton-M0517/cpu/startup_M051Series.c" type="1"/>
     <File name="core/strategy/TheveninMethod.h" path="../src/core/strategy/TheveninMethod.h" type="1"/>
     <File name="hardware/generic/outputPWM.cpp" path="../src/hardware/nuvoton-M0517/generic/50W/outputPWM.cpp" type="1"/>
-    <File name="hardware/cpu/CMSIS/StdDriver/inc/fmc.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/fmc.h" type="1"/>
     <File name="core/strings/strings.cpp" path="../src/core/strings/strings.cpp" type="1"/>
+    <File name="hardware/cpu/CMSIS/StdDriver/inc/fmc.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/fmc.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/uart.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/uart.h" type="1"/>
     <File name="core/strategy/Discharger.h" path="../src/core/strategy/Discharger.h" type="1"/>
     <File name="core/drivers/Time.cpp" path="../src/core/drivers/Time.cpp" type="1"/>
     <File name="core/menus/ProgramDataMenu.h" path="../src/core/menus/ProgramDataMenu.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/src/fmc.c" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/fmc.c" type="1"/>
-    <File name="hardware/targets/HardwareConfig.h" path="../src/hardware/nuvoton-M0517/generic/50W/HardwareConfig.h" type="1"/>
-    <File name="core/screens/ScreenCycle.h" path="../src/core/screens/ScreenCycle.h" type="1"/>
+    <File name="hardware/targets/HardwareConfig.h" path="../src/hardware/nuvoton-M0517/targets/imaxB6-clone/HardwareConfig.h" type="1"/>
     <File name="core/strategy/SimpleChargeStrategy.cpp" path="../src/core/strategy/SimpleChargeStrategy.cpp" type="1"/>
+    <File name="core/screens/ScreenCycle.h" path="../src/core/screens/ScreenCycle.h" type="1"/>
     <File name="hardware/cpu/irq_priority.h" path="../src/hardware/nuvoton-M0517/cpu/irq_priority.h" type="1"/>
     <File name="core/Program.cpp" path="../src/core/Program.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/CMSIS/Include/core_cmFunc.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_cmFunc.h" type="1"/>
-    <File name="hardware/cpu/cpu.cpp" path="../src/hardware/nuvoton-M0517/cpu/cpu.cpp" type="1"/>
     <File name="core/drivers/LiquidCrystal.h" path="../src/core/drivers/LiquidCrystal.h" type="1"/>
+    <File name="hardware/cpu/cpu.cpp" path="../src/hardware/nuvoton-M0517/cpu/cpu.cpp" type="1"/>
     <File name="core/strategy/SMPS.h" path="../src/core/strategy/SMPS.h" type="1"/>
+    <File name="core/ProgramData.h" path="../src/core/ProgramData.h" type="1"/>
     <File name="core/strategy/Strategy.h" path="../src/core/strategy/Strategy.h" type="1"/>
     <File name="core/drivers/Blink.h" path="../src/core/drivers/Blink.h" type="1"/>
-    <File name="core/ProgramData.h" path="../src/core/ProgramData.h" type="1"/>
     <File name="core/menus/StaticMenu.cpp" path="../src/core/menus/StaticMenu.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/ebi.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/ebi.h" type="1"/>
     <File name="hardware/generic/SMPS_PID.h" path="../src/hardware/nuvoton-M0517/generic/50W/SMPS_PID.h" type="1"/>
@@ -141,27 +141,27 @@
     <File name="hardware/cpu/CMSIS/Device/Include" path="" type="2"/>
     <File name="hardware/cpu/CMSIS/CMSIS" path="" type="2"/>
     <File name="core/strategy/DelayStrategy.cpp" path="../src/core/strategy/DelayStrategy.cpp" type="1"/>
+    <File name="core/strings/strings_common.h" path="../src/core/strings/strings_common.h" type="1"/>
     <File name="core/drivers/Buzzer.cpp" path="../src/core/drivers/Buzzer.cpp" type="1"/>
     <File name="core/screens/ScreenStartInfo.cpp" path="../src/core/screens/ScreenStartInfo.cpp" type="1"/>
-    <File name="core/strings/strings_common.h" path="../src/core/strings/strings_common.h" type="1"/>
     <File name="core/menus/ProgramMenus.h" path="../src/core/menus/ProgramMenus.h" type="1"/>
     <File name="core/AnalogInputs.h" path="../src/core/AnalogInputs.h" type="1"/>
-    <File name="core/drivers/PolarityCheck.h" path="../src/core/drivers/PolarityCheck.h" type="1"/>
     <File name="core/strategy/SimpleChargeStrategy.h" path="../src/core/strategy/SimpleChargeStrategy.h" type="1"/>
+    <File name="core/drivers/PolarityCheck.h" path="../src/core/drivers/PolarityCheck.h" type="1"/>
     <File name="core/strategy/TheveninDischargeStrategy.cpp" path="../src/core/strategy/TheveninDischargeStrategy.cpp" type="1"/>
     <File name="hardware/cpu/TxHardSerial.h" path="../src/hardware/nuvoton-M0517/cpu/TxHardSerial.h" type="1"/>
-    <File name="hardware/cpu/Serial.cpp" path="../src/hardware/nuvoton-M0517/cpu/Serial.cpp" type="1"/>
     <File name="core/drivers/LcdPrint.cpp" path="../src/core/drivers/LcdPrint.cpp" type="1"/>
+    <File name="hardware/cpu/Serial.cpp" path="../src/hardware/nuvoton-M0517/cpu/Serial.cpp" type="1"/>
     <File name="core/menus/EditMenu.cpp" path="../src/core/menus/EditMenu.cpp" type="1"/>
     <File name="core/calibration/Calibrate.cpp" path="../src/core/calibration/Calibrate.cpp" type="1"/>
     <File name="core/calibration" path="" type="2"/>
     <File name="hardware/cpu/TxHardSerial.cpp" path="../src/hardware/nuvoton-M0517/cpu/TxHardSerial.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/clk.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/clk.h" type="1"/>
     <File name="hardware/generic/imaxB6.h" path="../src/hardware/nuvoton-M0517/generic/50W/imaxB6.h" type="1"/>
-    <File name="core/menus/ProgramMenus.cpp" path="../src/core/menus/ProgramMenus.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/CMSIS/Include/core_cm4_simd.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_cm4_simd.h" type="1"/>
-    <File name="core/drivers/Keyboard.cpp" path="../src/core/drivers/Keyboard.cpp" type="1"/>
+    <File name="core/menus/ProgramMenus.cpp" path="../src/core/menus/ProgramMenus.cpp" type="1"/>
     <File name="core/ProgramDCcycle.cpp" path="../src/core/ProgramDCcycle.cpp" type="1"/>
+    <File name="core/drivers/Keyboard.cpp" path="../src/core/drivers/Keyboard.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/sys.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/sys.h" type="1"/>
     <File name="core/strings/standard.h" path="../src/core/strings/standard.h" type="1"/>
     <File name="core/strategy/Thevenin.cpp" path="../src/core/strategy/Thevenin.cpp" type="1"/>
@@ -169,12 +169,10 @@
     <File name="core/strategy/TheveninMethod.cpp" path="../src/core/strategy/TheveninMethod.cpp" type="1"/>
     <File name="core/drivers/Time.h" path="../src/core/drivers/Time.h" type="1"/>
     <File name="core/strategy/SimpleDischargeStrategy.h" path="../src/core/strategy/SimpleDischargeStrategy.h" type="1"/>
-    <File name="hardware/cpu/Stimer.h" path="../src/hardware/nuvoton-M0517/cpu/Stimer.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/hdiv.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/hdiv.h" type="1"/>
-    <File name="hardware/generic/HardwareConfig.h" path="../src/hardware/nuvoton-M0517/generic/50W/HardwareConfig.h" type="1"/>
     <File name="core/Program.h" path="../src/core/Program.h" type="1"/>
-    <File name="hardware/cpu/CMSIS/StdDriver/inc/adc.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/adc.h" type="1"/>
     <File name="hardware/generic/HardwareConfigGeneric.h" path="../src/hardware/nuvoton-M0517/generic/50W/HardwareConfigGeneric.h" type="1"/>
+    <File name="hardware/cpu/CMSIS/StdDriver/inc/adc.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/adc.h" type="1"/>
     <File name="hardware/generic/imaxB6.cpp" path="../src/hardware/nuvoton-M0517/generic/50W/imaxB6.cpp" type="1"/>
     <File name="core/screens/Screen.h" path="../src/core/screens/Screen.h" type="1"/>
     <File name="hardware/cpu/CMSIS/CMSIS/Include/core_cm4.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_cm4.h" type="1"/>
@@ -186,9 +184,8 @@
     <File name="hardware/cpu/TxSoftSerial.cpp" path="../src/hardware/nuvoton-M0517/cpu/TxSoftSerial.cpp" type="1"/>
     <File name="core/menus/Options.h" path="../src/core/menus/Options.h" type="1"/>
     <File name="core/drivers/Blink.cpp" path="../src/core/drivers/Blink.cpp" type="1"/>
-    <File name="hardware/cpu/CMSIS/CMSIS/Include/core_sc300.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_sc300.h" type="1"/>
     <File name="core/screens/ScreenCycle.cpp" path="../src/core/screens/ScreenCycle.cpp" type="1"/>
-    <File name="hardware/generic/defaultCalibration.cpp" path="../src/hardware/nuvoton-M0517/generic/50W/defaultCalibration.cpp" type="1"/>
+    <File name="hardware/cpu/CMSIS/CMSIS/Include/core_sc300.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_sc300.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/src/clk.c" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/clk.c" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/src/sys.c" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/sys.c" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver" path="" type="2"/>
@@ -197,11 +194,11 @@
     <File name="core/strategy/DeltaChargeStrategy.h" path="../src/core/strategy/DeltaChargeStrategy.h" type="1"/>
     <File name="core/strategy/SMPS.cpp" path="../src/core/strategy/SMPS.cpp" type="1"/>
     <File name="core/ProgramData.cpp" path="../src/core/ProgramData.cpp" type="1"/>
-    <File name="hardware/generic/AnalogInputsADC.h" path="../src/hardware/nuvoton-M0517/generic/50W/AnalogInputsADC.h" type="1"/>
-    <File name="core/strings" path="" type="2"/>
     <File name="core/Settings.h" path="../src/core/Settings.h" type="1"/>
-    <File name="hardware/cpu/Serial.h" path="../src/hardware/nuvoton-M0517/cpu/Serial.h" type="1"/>
+    <File name="core/strings" path="" type="2"/>
+    <File name="hardware/generic/AnalogInputsADC.h" path="../src/hardware/nuvoton-M0517/generic/50W/AnalogInputsADC.h" type="1"/>
     <File name="core/strategy/DeltaChargeStrategy.cpp" path="../src/core/strategy/DeltaChargeStrategy.cpp" type="1"/>
+    <File name="hardware/cpu/Serial.h" path="../src/hardware/nuvoton-M0517/cpu/Serial.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/src/adc.c" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/adc.c" type="1"/>
     <File name="core/calibration/Calibrate.h" path="../src/core/calibration/Calibrate.h" type="1"/>
     <File name="core" path="" type="2"/>
@@ -209,8 +206,8 @@
     <File name="hardware/cpu/CMSIS/CMSIS/Include/core_sc000.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_sc000.h" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/inc/acmp.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/inc/acmp.h" type="1"/>
     <File name="core/screens/Screen.cpp" path="../src/core/screens/Screen.cpp" type="1"/>
-    <File name="hardware/cpu/CMSIS/CMSIS/Include/arm_common_tables.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/arm_common_tables.h" type="1"/>
     <File name="hardware/cpu/atomic.h" path="../src/hardware/nuvoton-M0517/cpu/atomic.h" type="1"/>
+    <File name="hardware/cpu/CMSIS/CMSIS/Include/arm_common_tables.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/arm_common_tables.h" type="1"/>
     <File name="core/Utils.h" path="../src/core/Utils.h" type="1"/>
     <File name="core/strategy/TheveninChargeStrategy.cpp" path="../src/core/strategy/TheveninChargeStrategy.cpp" type="1"/>
     <File name="core/menus/Options.cpp" path="../src/core/menus/Options.cpp" type="1"/>
@@ -236,8 +233,8 @@
     <File name="hardware/generic" path="" type="2"/>
     <File name="core/Utils.cpp" path="../src/core/Utils.cpp" type="1"/>
     <File name="hardware/targets" path="" type="2"/>
-    <File name="core/menus/MainMenu.h" path="../src/core/menus/EditMenu.h" type="1"/>
     <File name="hardware/generic/outputPWM.h" path="../src/hardware/nuvoton-M0517/generic/50W/outputPWM.h" type="1"/>
+    <File name="core/menus/MainMenu.h" path="../src/core/menus/EditMenu.h" type="1"/>
     <File name="core/screens" path="" type="2"/>
     <File name="core/strategy/StorageStrategy.h" path="../src/core/strategy/StorageStrategy.h" type="1"/>
     <File name="core/screens/ScreenBalancer.h" path="../src/core/screens/ScreenBalancer.h" type="1"/>
@@ -249,11 +246,12 @@
     <File name="core/strategy/Balancer.h" path="../src/core/strategy/Balancer.h" type="1"/>
     <File name="core/screens/ScreenMethods.cpp" path="../src/core/screens/ScreenMethods.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/CMSIS/Include/core_cm0plus.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/CMSIS/Include/core_cm0plus.h" type="1"/>
+    <File name="core/AnalogInputs.cpp" path="../src/core/AnalogInputs.cpp" type="1"/>
     <File name="hardware/cpu/CMSIS/StdDriver/src/pwm.c" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/StdDriver/src/pwm.c" type="1"/>
     <File name="hardware/cpu/memory.h" path="../src/hardware/nuvoton-M0517/cpu/memory.h" type="1"/>
-    <File name="core/AnalogInputs.cpp" path="../src/core/AnalogInputs.cpp" type="1"/>
-    <File name="hardware/cpu/CMSIS/Device/Include/M051Series.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/Device/Nuvoton/M051Series/Include/M051Series.h" type="1"/>
+    <File name="hardware/targets/defaultCalibration.cpp" path="../src/hardware/nuvoton-M0517/targets/imaxB6-clone/defaultCalibration.cpp" type="1"/>
     <File name="core/screens/ScreenMethods.h" path="../src/core/screens/ScreenMethods.h" type="1"/>
+    <File name="hardware/cpu/CMSIS/Device/Include/M051Series.h" path="../src/hardware/nuvoton-M0517/cpu/CMSIS/Device/Nuvoton/M051Series/Include/M051Series.h" type="1"/>
     <File name="core/strategy/Balancer.cpp" path="../src/core/strategy/Balancer.cpp" type="1"/>
     <File name="core/menus/Menu.h" path="../src/core/menus/Menu.h" type="1"/>
     <File name="core/menus/SettingsMenu.cpp" path="../src/core/menus/SettingsMenu.cpp" type="1"/>
@@ -261,9 +259,9 @@
     <File name="hardware/cpu/cpu.h" path="../src/hardware/nuvoton-M0517/cpu/cpu.h" type="1"/>
     <File name="core/drivers/StackInfo.h" path="../src/core/drivers/StackInfo.h" type="1"/>
     <File name="core/menus/EditName.cpp" path="../src/core/menus/EditName.cpp" type="1"/>
+    <File name="core/strategy/Strategy.cpp" path="../src/core/strategy/Strategy.cpp" type="1"/>
     <File name="core/strategy/TheveninChargeStrategy.h" path="../src/core/strategy/TheveninChargeStrategy.h" type="1"/>
     <File name="core/strategy/Monitor.h" path="../src/core/strategy/Monitor.h" type="1"/>
-    <File name="core/strategy/Strategy.cpp" path="../src/core/strategy/Strategy.cpp" type="1"/>
     <File name="core/ChealiCharger2.cpp" path="../src/core/ChealiCharger2.cpp" type="1"/>
     <File name="core/menus/StaticMenu.h" path="../src/core/menus/StaticMenu.h" type="1"/>
     <File name="core/strategy/StartInfoStrategy.h" path="../src/core/strategy/StartInfoStrategy.h" type="1"/>

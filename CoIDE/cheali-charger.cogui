@@ -22,7 +22,7 @@
 </folder>
 </info>
 </editorArea>
-<editor id="org.coocox.builder.ui.editors.ConfigEditor" name="" partName="Configuration" title="Configuration" tooltip="" workbook="DefaultEditorWorkbook">
+<editor activePart="true" focus="true" id="org.coocox.builder.ui.editors.ConfigEditor" name="" partName="Configuration" title="Configuration" tooltip="" workbook="DefaultEditorWorkbook">
 <input factoryID="org.coocox.builder.ui.persistent.PersistentElementFactory">
 <org.coocox.builder.ui.editors.ConfigEditor horizontalPosition="0" subTagIndex="0" verticalPosition="0"/>
 </input>
@@ -31,7 +31,7 @@
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/generic/HardwareConfigGeneric.h"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="792" selectionTopPixel="0"/>
 </editor>
-<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="irq_priority.h" partName="irq_priority.h" path="V:/CooCox/cheali-charger.pawel/src/hardware/nuvoton-M0517/cpu/irq_priority.h" title="irq_priority.h" tooltip="V:/CooCox/cheali-charger.pawel/src/hardware/nuvoton-M0517/cpu/irq_priority.h" workbook="DefaultEditorWorkbook">
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="irq_priority.h" partName="irq_priority.h" path="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/irq_priority.h" title="irq_priority.h" tooltip="S:/cheali-charger/src/hardware/nuvoton-M0517/cpu/irq_priority.h" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/cheali-charger/hardware/cpu/irq_priority.h"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="643" selectionTopPixel="0"/>
 </editor>
@@ -58,14 +58,16 @@
 </editors>
 <views>
 <view id="org.coocox.builder.ui.views.ProjectView" partName="Project">
-<viewState CommonNavigator.LINKING_ENABLED="0" horizontalPosition="0" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0" verticalPosition="5">
+<viewState CommonNavigator.LINKING_ENABLED="0" horizontalPosition="0" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0" verticalPosition="28">
 <expanded>
 <element path="/cheali-charger"/>
 <element path="/cheali-charger/hardware"/>
 <element path="/cheali-charger/hardware/cpu"/>
+<element path="/cheali-charger/hardware/generic"/>
+<element path="/cheali-charger/hardware/targets"/>
 </expanded>
 <selection>
-<element path="/cheali-charger/hardware/cpu/irq_priority.h"/>
+<element path="/cheali-charger/hardware/targets"/>
 </selection>
 </viewState>
 </view>
@@ -96,7 +98,7 @@
 <viewState/>
 </view>
 </views>
-<perspectives activePart="org.eclipse.cdt.ui.editor.CEditor" activePerspective="org.coocox.builder.perspective.CoBuilder">
+<perspectives activePart="org.eclipse.ui.console.ConsoleView" activePerspective="org.coocox.builder.perspective.CoBuilder">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.coocox.builder.ui.PerspectiveCoBuilder" id="org.coocox.builder.perspective.CoBuilder" label="CooCox CoBuilder"/>
 <alwaysOnActionSet id="org.coocox.component.ui.actionSet"/>
@@ -295,10 +297,10 @@
 <editor factoryID="org.coocox.builder.ui.persistent.PersistentElementFactory" id="org.coocox.builder.ui.editors.ConfigEditor">
 <org.coocox.builder.ui.editors.ConfigEditor horizontalPosition="0" subTagIndex="0" verticalPosition="0"/>
 </editor>
+<editor factoryID="org.coocox.builder.ui.persistent.PersistentElementFactory" id="org.coocox.builder.ui.editors.ConfigEditor">
+<org.coocox.builder.ui.editors.ConfigEditor horizontalPosition="0" subTagIndex="0" verticalPosition="0"/>
+</editor>
 </editors>
-<item historyLabel="Serial.h" index="1">
-<position info="not_deleted" x="0" y="0"/>
-</item>
 <item historyLabel="irq_priority.h" index="0">
 <position info="not_deleted" x="840" y="0"/>
 </item>
@@ -441,9 +443,10 @@
 <position info="not_deleted" x="883" y="0"/>
 </item>
 <item historyLabel="Configuration" index="9"/>
-<item active="true" historyLabel="irq_priority.h" index="8">
+<item historyLabel="irq_priority.h" index="8">
 <position info="not_deleted" x="883" y="0"/>
 </item>
+<item active="true" historyLabel="Configuration" index="10"/>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
 </page>
@@ -456,44 +459,44 @@
 <org.coocox.welcome.ui.WelcomePage/>
 </persistable>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="TxSoftSerial.h" tooltip="cheali-charger/hardware/cpu/TxSoftSerial.h">
-<persistable path="/cheali-charger/hardware/cpu/TxSoftSerial.h"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Version.h" tooltip="cheali-charger/Version.h">
+<persistable path="/cheali-charger/Version.h"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="TxSoftSerial.cpp" tooltip="cheali-charger/hardware/cpu/TxSoftSerial.cpp">
-<persistable path="/cheali-charger/hardware/cpu/TxSoftSerial.cpp"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="other.c" tooltip="cheali-charger/other.c">
+<persistable path="/cheali-charger/other.c"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="SerialLog.cpp" tooltip="cheali-charger/core/drivers/SerialLog.cpp">
-<persistable path="/cheali-charger/core/drivers/SerialLog.cpp"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="startup_M051Series.c" tooltip="cheali-charger/core/ARM/startup_M051Series.c">
+<persistable path="/cheali-charger/core/ARM/startup_M051Series.c"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Stimer.h" tooltip="cheali-charger/hardware/cpu/Stimer.h">
-<persistable path="/cheali-charger/hardware/cpu/Stimer.h"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="AnalogInputsADC.cpp" tooltip="cheali-charger/hardware/AnalogInputsADC.cpp">
+<persistable path="/cheali-charger/hardware/AnalogInputsADC.cpp"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Serial.h" tooltip="cheali-charger/hardware/cpu/Serial.h">
-<persistable path="/cheali-charger/hardware/cpu/Serial.h"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Serial.cpp" tooltip="cheali-charger/core/ARM/Serial.cpp">
+<persistable path="/cheali-charger/core/ARM/Serial.cpp"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Serial.cpp" tooltip="cheali-charger/hardware/cpu/Serial.cpp">
-<persistable path="/cheali-charger/hardware/cpu/Serial.cpp"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="imaxB6-pins.h" tooltip="cheali-charger/hardware/imaxB6-pins.h">
+<persistable path="/cheali-charger/hardware/imaxB6-pins.h"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="TxHardSerial.cpp" tooltip="cheali-charger/hardware/cpu/TxHardSerial.cpp">
-<persistable path="/cheali-charger/hardware/cpu/TxHardSerial.cpp"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Utils.h" tooltip="cheali-charger/core/Utils.h">
+<persistable path="/cheali-charger/core/Utils.h"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="irq_priority.h" tooltip="cheali-charger/hardware/cpu/irq_priority.h">
-<persistable path="/cheali-charger/hardware/cpu/irq_priority.h"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="SettingsMenu.h" tooltip="cheali-charger/core/SettingsMenu.h">
+<persistable path="/cheali-charger/core/SettingsMenu.h"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="HardwareConfigGeneric.h" tooltip="cheali-charger/hardware/generic/HardwareConfigGeneric.h">
-<persistable path="/cheali-charger/hardware/generic/HardwareConfigGeneric.h"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="HardwareConfigGeneric.h" tooltip="cheali-charger/hardware/HardwareConfigGeneric.h">
+<persistable path="/cheali-charger/hardware/HardwareConfigGeneric.h"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="HardwareConfig.h" tooltip="cheali-charger/hardware/targets/HardwareConfig.h">
-<persistable path="/cheali-charger/hardware/targets/HardwareConfig.h"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="SettingsMenu.cpp" tooltip="cheali-charger/core/SettingsMenu.cpp">
+<persistable path="/cheali-charger/core/SettingsMenu.cpp"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="ChealiCharger2.h" tooltip="cheali-charger/core/ChealiCharger2.h">
-<persistable path="/cheali-charger/core/ChealiCharger2.h"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Settings.h" tooltip="cheali-charger/core/Settings.h">
+<persistable path="/cheali-charger/core/Settings.h"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="HardwareConfig.h" tooltip="cheali-charger/hardware/HardwareConfig.h">
-<persistable path="/cheali-charger/hardware/HardwareConfig.h"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Settings.cpp" tooltip="cheali-charger/core/Settings.cpp">
+<persistable path="/cheali-charger/core/Settings.cpp"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="TxSoftSerial.h" tooltip="cheali-charger/hardware/cpu/TxSoftSerial.h">
-<persistable path="/cheali-charger/hardware/cpu/TxSoftSerial.h"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="Serial.h" tooltip="cheali-charger/core/ARM/Serial.h">
+<persistable path="/cheali-charger/core/ARM/Serial.h"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="HardwareConfigGeneric.h" tooltip="cheali-charger/hardware/HardwareConfigGeneric.h">
 <persistable path="/cheali-charger/hardware/HardwareConfigGeneric.h"/>
