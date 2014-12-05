@@ -45,7 +45,8 @@ namespace Buzzer {
 
 void Buzzer::sound(Buzzer::SoundType s)
 {
-    if (!settings.audioBeep) return;
+    if (!settings.audioBeep)
+        s = Off;
     if(sound_ == s)
         return;
     sound_ = s;
