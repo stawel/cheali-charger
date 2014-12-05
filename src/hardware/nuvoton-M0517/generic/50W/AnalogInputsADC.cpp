@@ -93,24 +93,23 @@ struct adc_correlation {
 };
 
 const adc_correlation order_analogInputs_on[] PROGMEM = {
-	{MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_D_PIN,           AnalogInputs::Vb0_pin,         false},
-	{-1,                            OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin, false},
-	{MADDR_V_BALANSER1,             MUX0_Z_D_PIN,           AnalogInputs::Vb1_pin,         false},
-	{-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true},
-	{MADDR_V_BALANSER2,             MUX0_Z_D_PIN,           AnalogInputs::Vb2_pin,         false},
-	{-1,                            OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,   false},
-	{MADDR_V_BALANSER6,             MUX0_Z_D_PIN,           AnalogInputs::Vb6_pin,         false},
-	{-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true},
-	{MADDR_V_BALANSER5,             MUX0_Z_D_PIN,           AnalogInputs::Vb5_pin,         false},
-	{-1,                            DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,      false},
-	{MADDR_V_BALANSER4,             MUX0_Z_D_PIN,           AnalogInputs::Vb4_pin,         false},
-	{-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true},
-	{MADDR_V_BALANSER3,             MUX0_Z_D_PIN,           AnalogInputs::Vb3_pin,         false},
-	{-1,                            V_IN_PIN,               AnalogInputs::Vin,             false},
-	{-1,                            T_EXTERNAL_PIN,         AnalogInputs::Textern,         false},
-	{-1,                            T_INTERNAL_PIN,         AnalogInputs::Tintern,         false},
-	{-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true},
-
+    {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_D_PIN,           AnalogInputs::Vb0_pin,         false},
+    {-1,                            OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin, false},
+    {MADDR_V_BALANSER1,             MUX0_Z_D_PIN,           AnalogInputs::Vb1_pin,         false},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true},
+    {MADDR_V_BALANSER2,             MUX0_Z_D_PIN,           AnalogInputs::Vb2_pin,         false},
+    {-1,                            OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,   false},
+    {MADDR_V_BALANSER6,             MUX0_Z_D_PIN,           AnalogInputs::Vb6_pin,         false},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true},
+    {MADDR_V_BALANSER5,             MUX0_Z_D_PIN,           AnalogInputs::Vb5_pin,         false},
+    {-1,                            DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,      false},
+    {MADDR_V_BALANSER4,             MUX0_Z_D_PIN,           AnalogInputs::Vb4_pin,         false},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true},
+    {MADDR_V_BALANSER3,             MUX0_Z_D_PIN,           AnalogInputs::Vb3_pin,         false},
+    {-1,                            V_IN_PIN,               AnalogInputs::Vin,             false},
+    {-1,                            T_EXTERNAL_PIN,         AnalogInputs::Textern,         false},
+    {-1,                            T_INTERNAL_PIN,         AnalogInputs::Tintern,         false},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true},
 };
 
 
@@ -123,7 +122,7 @@ inline uint8_t nextInput(uint8_t i) {
 
 
 void setADC(uint8_t pin) {
-	ADC_SET_INPUT_CHANNEL(ADC, 1 << IO::getADCChannel(pin));
+    ADC_SET_INPUT_CHANNEL(ADC, 1 << IO::getADCChannel(pin));
 }
 
 void _setMuxAddress(int8_t address)
@@ -139,9 +138,9 @@ void setMuxAddressAndDischarge(int8_t address)
         return;
     g_muxAddress = address;
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-    	//start mux ADC C discharge
-    	_setMuxAddress(ADC_CAPACITOR_DISCHARGE_ADDRESS);
-    	IO::disableFuncADC(IO::getPinBit(MUX0_Z_D_PIN));
+        //start mux ADC C discharge
+        _setMuxAddress(ADC_CAPACITOR_DISCHARGE_ADDRESS);
+        IO::disableFuncADC(IO::getPinBit(MUX0_Z_D_PIN));
     }
     TIMER_Start(TIMER1);             /* Start counting */
 }
@@ -152,9 +151,9 @@ void TMR1_IRQHandler(void)
     TIMER_ClearIntFlag(TIMER1);
 
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-    	_setMuxAddress(g_muxAddress);
-    	//stop mux ADC C discharge
-    	IO::enableFuncADC(IO::getPinBit(MUX0_Z_D_PIN));
+        _setMuxAddress(g_muxAddress);
+        //stop mux ADC C discharge
+        IO::enableFuncADC(IO::getPinBit(MUX0_Z_D_PIN));
     }
 }
 } //extern "C"
@@ -179,9 +178,9 @@ void initialize()
     SYS->TEMPCR |= 1;
 
     //initialize TIMER 1 (mux ADC capacitor discharge)
-	CLK_EnableModuleClock(TMR1_MODULE);
-	CLK_SetModuleClock(TMR1_MODULE,CLK_CLKSEL1_TMR1_S_HCLK,CLK_CLKDIV_UART(1));
-	//TODO: 50kHz ??
+    CLK_EnableModuleClock(TMR1_MODULE);
+    CLK_SetModuleClock(TMR1_MODULE,CLK_CLKSEL1_TMR1_S_HCLK,CLK_CLKDIV_UART(1));
+    //TODO: 50kHz ??
     TIMER_Open(TIMER1, TIMER_ONESHOT_MODE, 1000000 / ADC_CAPACITOR_DISCHARGE_DELAY_US);//50000);//2000);
     TIMER_EnableInt(TIMER1);
     NVIC_EnableIRQ(TMR1_IRQn);
@@ -229,9 +228,9 @@ void startConversion()
     uint8_t adc_pin = order_analogInputs_on[current_input_].adc_pin_;
     setADC(adc_pin);
     if(adc_pin > 64) {
-    	ADC_CONFIG_CH7(ADC, (adc_pin >> 6) << ADC_ADCHER_PRESEL_Pos);
+        ADC_CONFIG_CH7(ADC, (adc_pin >> 6) << ADC_ADCHER_PRESEL_Pos);
     } else {
-    	ADC_CONFIG_CH7(ADC, ADC_ADCHER_PRESEL_EXT_INPUT_SIGNAL);
+        ADC_CONFIG_CH7(ADC, ADC_ADCHER_PRESEL_EXT_INPUT_SIGNAL);
     }
     ADC_START_CONV(ADC);
 }

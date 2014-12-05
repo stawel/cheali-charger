@@ -26,16 +26,16 @@ extern "C" {
 extern uint8_t __atomic_h_irq_count;
 static __inline__ uint8_t __iCliRetVal(void)
 {
-	__disable_irq();
-	__atomic_h_irq_count++;
+    __disable_irq();
+    __atomic_h_irq_count++;
     return __atomic_h_irq_count;
 }
 
 static __inline__ void __iRestore(uint8_t *__s)
 {
-	__atomic_h_irq_count --;
+    __atomic_h_irq_count --;
     if(__atomic_h_irq_count == 0) {
-    	__enable_irq();
+        __enable_irq();
     }
 }
 

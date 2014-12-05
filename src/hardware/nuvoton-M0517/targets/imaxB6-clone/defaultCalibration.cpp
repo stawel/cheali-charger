@@ -24,8 +24,8 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
 
   {{0, ANALOG_VOLT (0.000)}, {25124, ANALOG_VOLT (23.328)}},    //Vout_plus_pin
   {{0, ANALOG_VOLT (0.000)}, {25124, ANALOG_VOLT (23.328)}},    //Vout_minus_pin
-  {{113, ANALOG_AMP (0.050)}, {5025, ANALOG_AMP (1.000)}},      //Ismps
-  {{857, ANALOG_AMP (0.050)}, {5703, ANALOG_AMP (0.300)}},      //Idischarge
+  {{2*113, ANALOG_AMP (0.100)}, {5025, ANALOG_AMP (1.000)}},      //Ismps
+  {{2*857, ANALOG_AMP (0.100)}, {5703, ANALOG_AMP (0.300)}},      //Idischarge
 
 
   {{0, ANALOG_VOLT (0.000)}, {1, ANALOG_VOLT (0.001)}}, //VoutMux
@@ -33,7 +33,7 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
   {{0, ANALOG_VOLT (0.000)}, {23508, ANALOG_VOLT (14.012)}},    //Vin
   {{9780, ANALOG_CELCIUS (28.60)}, {9144, ANALOG_CELCIUS (60.00)}},   //Textern
 
-  {{0, ANALOG_VOLT (0.000)}, {23765, ANALOG_VOLT (3.901)}}, 	//Vb0_pin
+  {{0, ANALOG_VOLT (0.000)}, {23765, ANALOG_VOLT (3.901)}},     //Vb0_pin
   {{0, ANALOG_VOLT (0.000)}, {23765, ANALOG_VOLT (3.901)}},     //Vb1_pin
   {{0, ANALOG_VOLT (0.000)}, {48029, ANALOG_VOLT (7.613)}},     //Vb2_pin
   {{0, ANALOG_VOLT (0.000)}, {24315, ANALOG_VOLT (3.750)}},     //Vb3_pin
@@ -46,8 +46,8 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
   {{,}, {,}},                   //Vb8_pin
 #endif
 
-  {{114, ANALOG_AMP (0.050)}, {5028, ANALOG_AMP (1.000)}},      //IsmpsSet
-  {{68, ANALOG_AMP (0.050)}, {431, ANALOG_AMP (0.300)}},        //IdischargeSet
+  {{2*114, ANALOG_AMP (0.100)}, {5028, ANALOG_AMP (1.000)}},      //IsmpsSet
+  {{42*68, ANALOG_AMP (0.100)}, {21*431, ANALOG_AMP (0.300)}},        //IdischargeSet
 };
 
 namespace

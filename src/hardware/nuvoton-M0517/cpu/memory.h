@@ -23,7 +23,6 @@
 
 #define PSTR(x) x
 #define PROGMEM
-//__attribute__((section(".text")))
 #define EEMEM __attribute__((section(".data_flash")))
 
 namespace pgm {

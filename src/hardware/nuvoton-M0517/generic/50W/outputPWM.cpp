@@ -42,14 +42,14 @@ volatile uint32_t PWM_sumB = 0;
 void setCMR() {
     //modulate the PWM - we modulate the PWM signal to get more precision.
     //(the PWM frequency stays at about 32kHz)
-	PWM_sumA+=PWM_valueA;
-	PWM_sumB+=PWM_valueB;
+    PWM_sumA+=PWM_valueA;
+    PWM_sumB+=PWM_valueB;
 
-	PWM_SET_CMR(PWMA, PWM_CH1, PWM_sumA/OUTPUT_PWM_PRECISION_FACTOR);
-	PWM_SET_CMR(PWMB, PWM_CH2, PWM_sumB/OUTPUT_PWM_PRECISION_FACTOR);
+    PWM_SET_CMR(PWMA, PWM_CH1, PWM_sumA/OUTPUT_PWM_PRECISION_FACTOR);
+    PWM_SET_CMR(PWMB, PWM_CH2, PWM_sumB/OUTPUT_PWM_PRECISION_FACTOR);
 
-	PWM_sumA%=OUTPUT_PWM_PRECISION_FACTOR;
-	PWM_sumB%=OUTPUT_PWM_PRECISION_FACTOR;
+    PWM_sumA%=OUTPUT_PWM_PRECISION_FACTOR;
+    PWM_sumB%=OUTPUT_PWM_PRECISION_FACTOR;
 }
 
 void initialize(void)
@@ -79,12 +79,12 @@ void initialize(void)
     NVIC_EnableIRQ(PWMA_IRQn);
     NVIC_SetPriority(PWMA_IRQn, OUTPUT_PWM_IRQ_PRIORITY);
 
-	pwm_n = PWM_GET_CNR(PWMB, PWM_CH2);
-	pwm_n = PWM_GET_CNR(PWMA, PWM_CH1);
+    pwm_n = PWM_GET_CNR(PWMB, PWM_CH2);
+    pwm_n = PWM_GET_CNR(PWMA, PWM_CH1);
 
-	//Hm.... this is done in PWM_ConfigOutputChannel but we want to be sure
-	PWM_SET_CNR(PWMA, PWM_CH1, OUTPUT_PWM_PERIOD);
-	PWM_SET_CNR(PWMB, PWM_CH2, OUTPUT_PWM_PERIOD);
+    //Hm.... this is done in PWM_ConfigOutputChannel but we want to be sure
+    PWM_SET_CNR(PWMA, PWM_CH1, OUTPUT_PWM_PERIOD);
+    PWM_SET_CNR(PWMB, PWM_CH2, OUTPUT_PWM_PERIOD);
 
     // Start
     PWM_Start(PWMA, 1<< PWM_CH1);
@@ -93,22 +93,22 @@ void initialize(void)
 
 void setPWM(uint8_t pin, uint32_t value)
 {
-	if(pin == 20) {
-		PWM_valueA = value;
-		SYS->P2_MFP |= SYS_MFP_P21_PWM1;
-	} else if(pin == 26) {
-		PWM_valueB = value;
-		SYS->P2_MFP |= SYS_MFP_P26_PWM6;
-	}
+    if(pin == 20) {
+        PWM_valueA = value;
+        SYS->P2_MFP |= SYS_MFP_P21_PWM1;
+    } else if(pin == 26) {
+        PWM_valueB = value;
+        SYS->P2_MFP |= SYS_MFP_P26_PWM6;
+    }
 }
 
 void disablePWM(uint8_t pin)
 {
-	if(pin == 20) {
-		SYS->P2_MFP &= ~SYS_MFP_P21_PWM1;
-	} else if (pin == 26) {
-		SYS->P2_MFP &= ~SYS_MFP_P26_PWM6;
-	}
+    if(pin == 20) {
+        SYS->P2_MFP &= ~SYS_MFP_P21_PWM1;
+    } else if (pin == 26) {
+        SYS->P2_MFP &= ~SYS_MFP_P26_PWM6;
+    }
 }
 
 } //namespace outputPWM
@@ -116,7 +116,7 @@ void disablePWM(uint8_t pin)
 extern "C" {
 void PWMA_IRQHandler(void)
 {
-	outputPWM::setCMR();
+    outputPWM::setCMR();
     PWM_ClearPeriodIntFlag(PWMA, PWM_CH1);
 }
 } //extern "C"

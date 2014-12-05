@@ -16,11 +16,11 @@ namespace {
 
 uint16_t hardware::getPIDValue()
 {
-	uint16_t v;
+    uint16_t v;
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         v = i_PID_MV>>PID_MV_PRECISION;
     }
-	return v;
+    return v;
 }
 
 
@@ -51,7 +51,7 @@ void SMPS_PID::update()
 
 void SMPS_PID::init(uint16_t Vin, uint16_t Vout)
 {
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         i_PID_setpoint = 0;
         if(Vout>Vin) {
             i_PID_MV = OUTPUT_PWM_PRECISION_PERIOD;
@@ -60,7 +60,7 @@ void SMPS_PID::init(uint16_t Vin, uint16_t Vout)
         }
         i_PID_MV <<= PID_MV_PRECISION;
         i_PID_enable = true;
-	}
+    }
 
 }
 
@@ -70,7 +70,7 @@ namespace {
         IO::digitalWrite(SMPS_VALUE_BUCK_PIN, 1);
     }
     void disableChargerBuck() {
-    	outputPWM::disablePWM(SMPS_VALUE_BUCK_PIN);
+        outputPWM::disablePWM(SMPS_VALUE_BUCK_PIN);
         IO::digitalWrite(SMPS_VALUE_BUCK_PIN, 0);
     }
     void disableChargerBoost() {
@@ -100,15 +100,15 @@ void hardware::setChargerValue(uint16_t value)
     }
 
 //  TODO: test without PID
-//	SMPS_PID::setPID_MV(value);
-//	outputPWM::setPWM(SMPS_VALUE_BUCK_PIN, value);
+//  SMPS_PID::setPID_MV(value);
+//  outputPWM::setPWM(SMPS_VALUE_BUCK_PIN, value);
 }
 
 void hardware::setChargerOutput(bool enable)
 {
     if(enable) setDischargerOutput(false);
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-    	i_PID_enable = false;
+        i_PID_enable = false;
         disableChargerBuck();
         disableChargerBoost();
     }

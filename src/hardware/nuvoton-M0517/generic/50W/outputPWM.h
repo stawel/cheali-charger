@@ -27,10 +27,9 @@
 
 namespace outputPWM {
 
-
-	void initialize(void);
-	void setPWM(uint8_t pin, uint32_t value);
-	void disablePWM(uint8_t pin);
+    void initialize(void);
+    void setPWM(uint8_t pin, uint32_t value);
+    void disablePWM(uint8_t pin);
 
 } //namespace outputPWM
 

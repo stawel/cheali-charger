@@ -27,46 +27,46 @@ namespace eeprom {
 
 void write_impl_less(uint8_t * addressE, const uint8_t * data, int size)
 {
-	uint32_t buf[PAGE_SIZE_32B];
-	int i;
-	uint32_t * p_adr_start = (uint32_t*) (((int)addressE) & (~(PAGE_SIZE - 1)));
-	uint8_t * p_adr_pos =  ((uint8_t*)buf) + (((int)addressE) & (PAGE_SIZE - 1));
+    uint32_t buf[PAGE_SIZE_32B];
+    int i;
+    uint32_t * p_adr_start = (uint32_t*) (((int)addressE) & (~(PAGE_SIZE - 1)));
+    uint8_t * p_adr_pos =  ((uint8_t*)buf) + (((int)addressE) & (PAGE_SIZE - 1));
 
-	for(i=0; i<PAGE_SIZE_32B; i++)
-		buf[i] = p_adr_start[i];
+    for(i=0; i<PAGE_SIZE_32B; i++)
+        buf[i] = p_adr_start[i];
 
-	for(i=0; i<size; i++)
-		p_adr_pos[i] = ((uint8_t*)data)[i];
+    for(i=0; i<size; i++)
+        p_adr_pos[i] = ((uint8_t*)data)[i];
 
 
     // Erase page
     FMC_Erase((uint32_t)p_adr_start);
 
-	for(i = 0; i < PAGE_SIZE_32B; i++)
-		 FMC_Write((uint32_t)&p_adr_start[i], buf[i]);
+    for(i = 0; i < PAGE_SIZE_32B; i++)
+        FMC_Write((uint32_t)&p_adr_start[i], buf[i]);
 
 }
 
 void write_impl(uint8_t * addressE, const uint8_t * data, int size)
 {
-	SYS_UnlockReg();
+    SYS_UnlockReg();
 
-	/* Enable FMC ISP function */
-	FMC_Open();
+    /* Enable FMC ISP function */
+    FMC_Open();
 
-	while(size > 0) {
-		int adr = (int) addressE & (PAGE_SIZE - 1);
-		int less_size;
-		if(adr+size > PAGE_SIZE) {
-			 less_size = PAGE_SIZE - adr;
-		} else {
-			less_size = size;
-		}
-		write_impl_less(addressE, data, less_size);
-		addressE += less_size;
-		data += less_size;
-		size -= less_size;
-	}
+    while(size > 0) {
+        int adr = (int) addressE & (PAGE_SIZE - 1);
+        int less_size;
+        if(adr+size > PAGE_SIZE) {
+            less_size = PAGE_SIZE - adr;
+        } else {
+            less_size = size;
+        }
+        write_impl_less(addressE, data, less_size);
+        addressE += less_size;
+        data += less_size;
+        size -= less_size;
+    }
 
     /* Disable FMC ISP function */
     FMC_Close();

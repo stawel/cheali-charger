@@ -24,7 +24,7 @@ uint8_t __atomic_h_irq_count;
 
 namespace cpu {
     void init() {
-    	__atomic_h_irq_count = 0;
+        __atomic_h_irq_count = 0;
 
         /* Unlock protected registers */
         SYS_UnlockReg();

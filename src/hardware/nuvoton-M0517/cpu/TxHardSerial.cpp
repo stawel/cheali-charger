@@ -28,7 +28,7 @@
 
 namespace TxHardSerial {
 
-#define Tx_BUFFER_SIZE	256
+#define Tx_BUFFER_SIZE  256
 
 uint8_t  pucTxBuffer[Tx_BUFFER_SIZE];
 uint16_t usTxBufferLen=Tx_BUFFER_SIZE;

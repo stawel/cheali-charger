@@ -2,8 +2,9 @@
 set(CURRENT_PATH ${CMAKE_SOURCE_DIR}/src/hardware/${TARGET_CPU}/cpu)
 
 set(CPU_SOURCE
-    atomic.h  cpu.h  irq_priority.h  memory.h    Serial.h              Stimer.h    TxHardSerial.cpp  TxSoftSerial.cpp  UtilsD.cpp
-    cpu.cpp   IO.h   memory.cpp      Serial.cpp  startup_M051Series.c  Timer0.cpp  TxHardSerial.h    TxSoftSerial.h    other.c
+    atomic.h  cpu.h  irq_priority.h  memory.h    Serial.h    TxHardSerial.cpp  TxSoftSerial.cpp  UtilsD.cpp
+    cpu.cpp   IO.h   memory.cpp      Serial.cpp  Timer0.cpp  TxHardSerial.h    TxSoftSerial.h    other.c
+    startup_M051Series.c
 )
 
 include_directories(${CURRENT_PATH})

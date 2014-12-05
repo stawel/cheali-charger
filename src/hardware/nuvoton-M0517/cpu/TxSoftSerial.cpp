@@ -26,9 +26,8 @@
 #include "IO.h"
 
 namespace TxSoftSerial {
-//namespace Serial {
 
-#define Tx_BUFFER_SIZE	256
+#define Tx_BUFFER_SIZE  256
 
 #define START_BIT 0
 #define STOP_BIT 512

@@ -59,9 +59,9 @@ void  begin(unsigned long baud)
 
 void  initialize() {
 #ifdef ENABLE_TX_HW_SERIAL
-	TxHardSerial::initialize();
+    TxHardSerial::initialize();
 #endif
-	TxSoftSerial::initialize();
+    TxSoftSerial::initialize();
 }
 
 } // namespace Serial
