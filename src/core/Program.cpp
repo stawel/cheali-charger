@@ -39,9 +39,9 @@
 #include "ProgramDCcycle.h"
 
 namespace Program {
-    ProgramType programType_;
-    ProgramState programState_ = Program::Done;
-    const char * stopReason_;
+    ProgramType programType;
+    ProgramState programState = Program::Done;
+    const char * stopReason;
 
     bool startInfo();
 
@@ -138,15 +138,15 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
 
 void Program::run(ProgramType prog)
 {
-    programType_ = prog;
-    stopReason_ = NULL;
+    programType = prog;
+    stopReason = NULL;
 
-    programState_ = Info;
+    programState = Info;
     SerialLog::powerOn();
     AnalogInputs::powerOn();
 
     if(startInfo()) {
-        programState_ = InProgress;
+        programState = InProgress;
 
         Monitor::powerOn();
         Screen::powerOn();
@@ -154,7 +154,7 @@ void Program::run(ProgramType prog)
         Strategy::exitImmediately = false;
         Buzzer::soundStartProgram();
 
-        runWithoutInfo(programType_);
+        runWithoutInfo(programType);
 
         Monitor::powerOff();
     }

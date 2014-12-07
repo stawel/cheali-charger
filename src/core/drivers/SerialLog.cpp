@@ -188,7 +188,7 @@ void sendHeader(uint16_t channel)
     printChar('$');
     printUInt(channel);
     printD();
-    printUInt(Program::programType_+1);
+    printUInt(Program::programType+1);
     printD();
 
     printUInt(currentTime/1000);   //timestamp

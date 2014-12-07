@@ -54,7 +54,7 @@ void Screen::StartInfo::displayStartInfo()
     lcdPrintChar(' ');
     ProgramData::currentProgramData.printVoltageString();
     lcdPrintChar(' ');
-    printProgram2chars(Program::programType_);
+    printProgram2chars(Program::programType);
 
     lcdSetCursor0_1();
     lcdPrintUnsigned(Monitor::getChargeProcent(), 2);

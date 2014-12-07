@@ -477,7 +477,7 @@ void run()
         SerialLog::powerOff();
 
     } while(true);
-    Program::programState_ = Program::Done;
+    Program::programState = Program::Done;
 }
 
 } // namespace Calibrate

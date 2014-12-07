@@ -21,7 +21,7 @@
 #include "Screen.h"
 #include "memory.h"
 #include "Settings.h"
-
+#include "Program.h"
 
 namespace StartInfoStrategy {
     uint8_t ok_;
@@ -84,6 +84,11 @@ Strategy::statusType StartInfoStrategy::doStrategy()
     }
 
     balance = (v_balance || cell_nr) && settings.forceBalancePort;
+
+    if(ProgramData::currentProgramData.battery.type == ProgramData::Unknown
+            && Program::programType == Program::Charge) {
+        v_out = false;
+    }
 
     if(Keyboard::getPressed() == BUTTON_NONE)
         ok_ = 0;

@@ -28,7 +28,7 @@ AnalogInputs::ValueType Resistance::getReadableRth()
     if(uI == 0)
         return 0;
     uint32_t R = abs(iV);
-    R*=1000;
+    R *= ANALOG_VOLT(1.0);
     R/=uI;
     return R;
 }
@@ -57,6 +57,7 @@ AnalogInputs::ValueType Thevenin::calculateI(AnalogInputs::ValueType v) const
     i  = v;
     i -= Vth_;
     i *= Rth.uI;
+    if(Rth.iV == 0) return UINT16_MAX;
     i /= Rth.iV;
     if(i >  UINT16_MAX) return  UINT16_MAX;
     if(i < 0) return 0;
@@ -71,7 +72,7 @@ void Thevenin::calculateRthVth(AnalogInputs::ValueType v, AnalogInputs::ValueTyp
 
 void Thevenin::calculateRth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
-    if(absDiff(i, ILast_) > ILastDiff_/2 && absDiff(v, VLast_) > 0) {
+    if(absDiff(i, ILast_) > ILastDiff_/2) {
         int16_t rth_v;
         uint16_t rth_i;
         if(i > ILast_) {

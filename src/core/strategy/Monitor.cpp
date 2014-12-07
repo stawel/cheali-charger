@@ -193,38 +193,38 @@ Strategy::statusType Monitor::run()
     AnalogInputs::ValueType t = AnalogInputs::getRealValue(AnalogInputs::Tintern);
 
     if(t > settings.dischargeTempOff + Settings::TempDifference) {
-        Program::stopReason_ = string_internalTemperatureToHigh;
+        Program::stopReason = string_internalTemperatureToHigh;
         return Strategy::ERROR;
     }
 #endif
 
     AnalogInputs::ValueType VMout = AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin);
     if(ANALOG_INPUTS_MAX_ADC_VALUE <= VMout || (VMout < VoutMinMesured_ && Discharger::isPowerOn())) {
-        Program::stopReason_ = string_batteryDisconnected;
+        Program::stopReason = string_batteryDisconnected;
         return Strategy::ERROR;
     }
 
     if (isBalancePortConnected != AnalogInputs::isBalancePortConnected()) {
-        Program::stopReason_ = string_balancePortDisconnected;
+        Program::stopReason = string_balancePortDisconnected;
         return Strategy::ERROR;
     }
 
     AnalogInputs::ValueType i_limit = Strategy::maxI + ANALOG_AMP(1.000);
     if (i_limit < AnalogInputs::getIout()) {
-        Program::stopReason_ = string_outputCurrentToHigh;
+        Program::stopReason = string_outputCurrentToHigh;
         return Strategy::ERROR;               
     }
 
     AnalogInputs::ValueType Vin = AnalogInputs::getRealValue(AnalogInputs::Vin);
     if(Vin < settings.inputVoltageLow) {
-        Program::stopReason_ = string_inputVoltageToLow;
+        Program::stopReason = string_inputVoltageToLow;
         return Strategy::ERROR;
     }
 
     AnalogInputs::ValueType c = AnalogInputs::getRealValue(AnalogInputs::Cout);
     AnalogInputs::ValueType c_limit  = ProgramData::currentProgramData.getCapacityLimit();
     if(c_limit != PROGRAM_DATA_MAX_CHARGE && c_limit < c) {
-        Program::stopReason_ = string_capacityLimit;
+        Program::stopReason = string_capacityLimit;
         return Strategy::COMPLETE;
     }
 
@@ -234,7 +234,7 @@ Strategy::statusType Monitor::run()
         uint16_t charge_time = getTotalChargeDischargeTimeMin();
         uint16_t time_limit  = ProgramData::currentProgramData.getTimeLimit();
         if(time_limit <= charge_time) {
-            Program::stopReason_ = string_timeLimit;
+            Program::stopReason = string_timeLimit;
             return Strategy::COMPLETE;
         }
     }
@@ -243,7 +243,7 @@ Strategy::statusType Monitor::run()
     if(settings.externT) {
         AnalogInputs::ValueType Textern = AnalogInputs::getRealValue(AnalogInputs::Textern);
         if(settings.externTCO < Textern) {
-            Program::stopReason_ = string_externalTemperatureCutOff;
+            Program::stopReason = string_externalTemperatureCutOff;
             return Strategy::ERROR;
         }
     }

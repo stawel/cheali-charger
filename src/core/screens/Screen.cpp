@@ -41,12 +41,12 @@ namespace Screen {
 
     uint16_t getConditions() {
         uint16_t c = 0;
-        if(Program::programState_ == Program::Info)
+        if(Program::programState == Program::Info)
             c += PAGE_START_INFO;
         if(Monitor::isBalancePortConnected)
             c += PAGE_BALANCE_PORT;
         c += PAGE_BATTERY(ProgramData::currentProgramData.getBatteryClass());
-        c += PAGE_PROGRAM(Program::programType_);
+        c += PAGE_PROGRAM(Program::programType);
         return c;
     }
 
@@ -140,7 +140,7 @@ namespace Screen {
         lcdPrint_P(firstLine);
         lcdPrintTime(Monitor::getTimeSec());
         lcdSetCursor0_1();
-        lcdPrint_P(Program::stopReason_);
+        lcdPrint_P(Program::stopReason);
         lcdPrintSpaces();
     }
 }

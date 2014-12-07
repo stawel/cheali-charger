@@ -34,9 +34,9 @@ namespace Program {
         Done, InProgress, Error, Info
     };
 
-    extern ProgramType programType_;
-    extern ProgramState programState_;
-    extern const char * stopReason_;
+    extern ProgramType programType;
+    extern ProgramState programState;
+    extern const char * stopReason;
 
     void selectProgram(int index);
     void run(ProgramType prog);
