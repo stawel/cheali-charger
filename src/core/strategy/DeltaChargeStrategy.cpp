@@ -55,7 +55,7 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
         SMPS::trySetIout(ProgramData::currentProgramData.battery.Ic);
     }
 
-    if(AnalogInputs::isOutStable() && Vout > ProgramData::currentProgramData.getVoltage(ProgramData::VUpperLimit)) {
+    if(AnalogInputs::isOutStable() && Vout > ProgramData::currentProgramData.getVoltage(ProgramData::VCharge)) {
         Program::stopReason = string_batteryVoltageReachedUpperLimit;
         return Strategy::COMPLETE;
     }
