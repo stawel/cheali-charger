@@ -51,6 +51,7 @@ const Settings defaultSettings PROGMEM = {
         SETTINGS_DELTA_V_ENABLE_DEFAULT, //enable_deltaV
         -ANALOG_VOLT(0.005), //deltaV_NiMH
         -ANALOG_VOLT(0.015), //deltaV_NiCd
+        ANALOG_OHM(0.000),  //Rwire
         5,                  //DCcycles
         30,                 //DCRestTime
         1,                  //AudioBeep: yes/no

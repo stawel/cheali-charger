@@ -81,6 +81,7 @@ namespace settingsMenu {
     STRING(enabledV,    "enab dV:   ");
     STRING(NiMHdV,      "NiMH dV:");
     STRING(NiCddV,      "NiCd dV:");
+    STRING(Rwire,       "Rwire:");
     STRING(DCcycles,    "D/C cycles:");
     STRING(DCRestTime,  "D/C rest:");
     STRING(AudioBeep,   "beep:      ");

@@ -24,6 +24,7 @@
 #define ANALOG_CHARGE(x) ((AnalogInputs::ValueType)((x)*1000))
 #define ANALOG_VOLT(x) ((AnalogInputs::ValueType)((x)*1000))
 #define ANALOG_AMP(x) ((AnalogInputs::ValueType)((x)*1000))
+#define ANALOG_OHM(x) ((AnalogInputs::ValueType)((x)*1000))
 #define ANALOG_WATT(x) ((unsigned long)((x)*1000L))
 
 namespace AnalogInputs {

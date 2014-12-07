@@ -70,6 +70,7 @@
 #define ENABLE_PROGRAM_MENU_EDIT_NAME
 
 #define ENABLE_CALIBRATION
+#define ENABLE_R_WIRE
 
 #define STRINGS_HEADER "strings/standard.h"
 

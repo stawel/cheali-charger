@@ -40,6 +40,9 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_enabledV,
         string_NiMHdV,
         string_NiCddV,
+#ifdef ENABLE_R_WIRE
+        string_Rwire,
+#endif
         string_DCcycles,
         string_DCRestTime,
         string_AudioBeep,
@@ -89,6 +92,9 @@ void SettingsMenu::printItem(uint8_t index)
             case NEXT_CASE:     lcdPrintYesNo(p_.enable_deltaV);        break;
             case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiMH, 6);         break;
             case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiCd, 6);         break;
+#ifdef ENABLE_R_WIRE
+            case NEXT_CASE:     lcdPrintResistance(p_.Rwire, 8);        break;
+#endif
             case NEXT_CASE:     lcdPrintUnsigned(p_.DCcycles, 3);       break;
             case NEXT_CASE:     lcdPrintUnsigned(p_.DCRestTime, 4);
                                 lcdPrintChar('m');                      break;
@@ -132,6 +138,9 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     change0ToMax(p_.enable_deltaV, dir, 1);                 break;
         case NEXT_CASE:     changeDeltaV(p_.deltaV_NiMH, dir);                      break;
         case NEXT_CASE:     changeDeltaV(p_.deltaV_NiCd, dir);                      break;
+#ifdef ENABLE_R_WIRE
+        case NEXT_CASE:     change0ToMax(p_.Rwire, dir, 255);                       break;
+#endif
         case NEXT_CASE:     change1ToMax(p_.DCcycles, dir, 5);                      break;
         case NEXT_CASE:     change1ToMax(p_.DCRestTime, dir, 99);                   break;
         case NEXT_CASE:     change0ToMax(p_.audioBeep, dir, 1);                     break;

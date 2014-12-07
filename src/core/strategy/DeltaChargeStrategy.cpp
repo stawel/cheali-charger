@@ -43,6 +43,13 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
     SimpleChargeStrategy::calculateThevenin();
     AnalogInputs::ValueType Vout = AnalogInputs::getVbattery();
 
+#ifdef ENABLE_R_WIRE
+    //TODO: maybe we should include wire voltage drop in AnalogInputs::getVbattery()
+    uint32_t Vwire = AnalogInputs::getIout();
+    Vwire *= settings.Rwire;
+    Vwire /= ANALOG_AMP(1.0);
+    Vout -= Vwire;
+#endif
 
     if(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge) < Vout) {
         SMPS::trySetIout(ProgramData::currentProgramData.battery.Ic);
