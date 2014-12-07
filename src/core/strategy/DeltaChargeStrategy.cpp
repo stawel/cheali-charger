@@ -41,7 +41,8 @@ void DeltaChargeStrategy::powerOn()
 Strategy::statusType DeltaChargeStrategy::doStrategy()
 {
     SimpleChargeStrategy::calculateThevenin();
-    AnalogInputs::ValueType Vout = AnalogInputs::getVout();
+    AnalogInputs::ValueType Vout = AnalogInputs::getVbattery();
+
 
     if(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge) < Vout) {
         SMPS::trySetIout(ProgramData::currentProgramData.battery.Ic);

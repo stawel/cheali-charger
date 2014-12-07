@@ -176,9 +176,14 @@ bool AnalogInputs::isBalancePortConnected()
 }
 
 
-AnalogInputs::ValueType AnalogInputs::getVout()
+AnalogInputs::ValueType AnalogInputs::getVbattery()
 {
     return getRealValue(VoutBalancer);
+}
+
+AnalogInputs::ValueType AnalogInputs::getVout()
+{
+    return getRealValue(Vout);
 }
 
 AnalogInputs::ValueType AnalogInputs::getIout()

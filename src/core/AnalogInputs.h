@@ -118,6 +118,9 @@ namespace AnalogInputs {
     //get the ADC (measured) value - in this particular moment
     ValueType getADCValue(Name name);
 
+    // get battery voltage, can be Vout or balance port voltage (when connected)
+    ValueType getVbattery();
+    // get voltage on output
     ValueType getVout();
     ValueType getIout();
     ValueType getDeltaLastT();

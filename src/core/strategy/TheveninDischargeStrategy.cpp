@@ -80,6 +80,6 @@ bool TheveninDischargeStrategy::isEndVout()
     AnalogInputs::ValueType Vc = Strategy::endV;
     AnalogInputs::ValueType Vc_per_cell = Balancer::calculatePerCell(Vc);
 
-    return Vc >= AnalogInputs::getVout() || Balancer::isMinVout(Vc_per_cell);
+    return Vc >= AnalogInputs::getVbattery() || Balancer::isMinVout(Vc_per_cell);
 }
 

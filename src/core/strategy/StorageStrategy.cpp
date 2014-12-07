@@ -50,7 +50,7 @@ void StorageStrategy::powerOn()
     AnalogInputs::ValueType V = Strategy::endV;
     bool charge;
     if(Balancer::getCells() == 0) {
-        charge = AnalogInputs::getVout() <= V;
+        charge = AnalogInputs::getVbattery() <= V;
     } else {
         charge = Balancer::isMinVout(Balancer::calculatePerCell(V));
     }
