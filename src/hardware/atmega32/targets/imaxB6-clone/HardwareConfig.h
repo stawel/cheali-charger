@@ -18,13 +18,14 @@
 #ifndef HARDWARE_CONFIG_H_
 #define HARDWARE_CONFIG_H_
 
+#include "GlobalConfig.h"
 #include "HardwareConfigGeneric.h"
 
-#define MAX_CHARGE_V            ANALOG_VOLT(25.300) //25.3V
-#define MAX_CHARGE_I            ANALOG_AMP(5.000)   //5A
-#define MAX_CHARGE_P            ANALOG_WATT(50.000)               //50W
+#define MAX_CHARGE_V            ANALOG_VOLT(25.300)
+#define MAX_CHARGE_I            ANALOG_AMP(5.000)
+#define MAX_CHARGE_P            ANALOG_WATT(50.000)
 
-#define MAX_DISCHARGE_P         ANALOG_WATT(5.000)                //5W
+#define MAX_DISCHARGE_P         ANALOG_WATT(5.000)
 #define MAX_DISCHARGE_I         ANALOG_AMP(1.000)
 
 

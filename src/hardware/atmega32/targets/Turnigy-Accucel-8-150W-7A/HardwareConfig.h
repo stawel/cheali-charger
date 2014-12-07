@@ -18,6 +18,7 @@
 #ifndef HARDWARE_CONFIG_H_
 #define HARDWARE_CONFIG_H_
 
+#include "GlobalConfig.h"
 #include "HardwareConfigGeneric.h"
 
 #undef  MAX_BANANCE_CELLS
