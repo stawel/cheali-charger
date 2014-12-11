@@ -22,6 +22,15 @@ namespace SerialLog {
     void powerOn();
     void doIdle();
     void powerOff();
+
+    void printString(const char *s);
+    void printString_P(const char *s);
+    void printInt(int16_t x);
+    void printUInt(uint16_t x);
+    void printULong(uint32_t x);
+    void printChar(char c);
+    void printNL();
+
 } //namespace SerialLog
 
 

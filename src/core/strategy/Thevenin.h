@@ -34,6 +34,7 @@ public:
 };
 
 class Thevenin {
+public:
     AnalogInputs::ValueType VLast_;
     AnalogInputs::ValueType ILast_;
     AnalogInputs::ValueType ILastDiff_;

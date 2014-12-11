@@ -160,6 +160,19 @@ void printString(const char *s)
     }
 }
 
+void printString_P(const char *s)
+{
+    char c;
+    while(1) {
+        c = pgm::read(s);
+        if(!c)
+            return;
+
+        printChar(c);
+        s++;
+    }
+}
+
 void printUInt(uint16_t x)
 {
     char buf[8];
@@ -167,6 +180,15 @@ void printUInt(uint16_t x)
     uint8_t maxSize = 7;
     ::printUInt(str, maxSize, x);
     printString(buf);
+}
+
+void printInt(int16_t x)
+{
+    if(x<0) {
+        printChar('-');
+        x=-x;
+    }
+    printUInt(x);
 }
 
 void printULong(uint32_t x)

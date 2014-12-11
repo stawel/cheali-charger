@@ -25,6 +25,9 @@
 #include "TheveninMethod.h"
 #include "Balancer.h"
 
+//#define ENABLE_DEBUG
+#include "debug.h"
+
 namespace TheveninMethod {
     enum FallingState {NotFalling, LastRthMesurment, Falling};
 
@@ -51,7 +54,7 @@ namespace TheveninMethod {
 
     bool isBelowMin(AnalogInputs::ValueType I)
     {
-        if(Ifalling_ == LastRthMesurment)
+        if(Ifalling_ != Falling)
             return false;
         return I < Strategy::minI;
     }
@@ -123,6 +126,9 @@ AnalogInputs::ValueType TheveninMethod::calculateNewI(bool isEndVout, AnalogInpu
     updateI = updateI && !Balancer::isWorking();
 
     if(updateI) {
+
+        LogDebug(" I=", I, " tVout_=", tVout_.Rth.iV, ',', tVout_.Rth.uI, ',', tVout_.Vth_);
+
         calculateRthVth(I);
         storeI(I);
 
