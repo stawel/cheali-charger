@@ -45,8 +45,19 @@ namespace SMPS {
     AnalogInputs::ValueType getMaxIout()
     {
         uint32_t i = MAX_CHARGE_P;
-        uint16_t v = AnalogInputs::getVout();
+        AnalogInputs::ValueType v = AnalogInputs::getVout();
         i *= ANALOG_VOLT(1);
+#ifdef ENABLE_DYNAMIC_MAX_POWER
+        AnalogInputs::ValueType v_in_10 = AnalogInputs::getRealValue(AnalogInputs::Vin);
+        if(v_in_10 > ANALOG_VOLT(10)) {
+            v_in_10 -= ANALOG_VOLT(10);
+            if(v > v_in_10) {
+                v -= v_in_10;
+            } else {
+                v = 1;
+            }
+        }
+#endif
         i /= v;
 
         if(i > MAX_CHARGE_I)

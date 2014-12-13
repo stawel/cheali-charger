@@ -259,6 +259,14 @@ uint16_t ProgramData::getMaxIc() const
     v = getVoltage(VDischarge);
     i = MAX_CHARGE_P;
     i *= ANALOG_VOLT(1);
+#ifdef ENABLE_DYNAMIC_MAX_POWER
+    if(v > ANALOG_VOLT(8)) {
+        v -= ANALOG_VOLT(8);
+    } else {
+        v = 1;
+    }
+#endif
+
     i /= v;
 
     if(i > MAX_CHARGE_I)
