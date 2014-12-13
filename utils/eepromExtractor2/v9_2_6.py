@@ -12,6 +12,7 @@ class Calibration(Structure):
 class CalibrationPoint(Structure):
     pass
 ValueType = uint16_t
+CalibrationPoint._pack_ = 1
 CalibrationPoint._fields_ = [
     ('x', ValueType),
     ('y', ValueType),
@@ -23,6 +24,7 @@ class ProgramData(Structure):
     pass
 class BatteryData(Structure):
     pass
+BatteryData._pack_ = 1
 BatteryData._fields_ = [
     ('type', uint16_t),
     ('C', uint16_t),
@@ -85,6 +87,7 @@ Settings._fields_ = [
     ('SMPS_Upperbound_Value', uint16_t),
     ('DISCHARGER_Upperbound_Value', uint16_t),
 ]
+Data._pack_ = 1
 Data._fields_ = [
     ('magicString', uint8_t * 4),
     ('calibrationVersion', uint16_t),

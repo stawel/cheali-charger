@@ -8,7 +8,7 @@ PYTHON=python
 CTYPELIB=../../../ctypeslib/ctypeslib
 
 CORE=../../src/core/
-HARDWARE=../../src/hardware/atmega32/
+HARDWARE=../../src/hardware/nuvoton-M0517/
 HCONFIG=$HARDWARE/targets/imaxB6-clone/
 CONFIG=$HARDWARE/generic/50W/
 OUTPUT=eeprom_tmp
