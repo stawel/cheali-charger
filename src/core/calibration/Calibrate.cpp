@@ -319,7 +319,7 @@ public:
         int dir = -1;
         if(key == BUTTON_INC) dir = 1;
         dir *= Keyboard::getSpeedFactor();
-        change0ToMaxSmart(value_, dir, maxValue_, Keyboard::getSpeedFactor(),1);
+        change0ToMaxSmart(&value_, dir, maxValue_, Keyboard::getSpeedFactor(),1);
         setCurrentValue(cName_, value_);
     }
 };

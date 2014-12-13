@@ -46,11 +46,11 @@ private:
     static void printTemp(AnalogInputs::ValueType t);
     static void printDeltaT(AnalogInputs::ValueType dt);
     static void printVolt(AnalogInputs::ValueType v);
-    static void changeTemp(AnalogInputs::ValueType &v, int dir);
-    static void changeDeltaTemp(AnalogInputs::ValueType &v, int dir);
-    static void changeInputVolt(AnalogInputs::ValueType &v, int dir);
-    static void changeBalanceError(AnalogInputs::ValueType &v, int dir);
-    static void changeDeltaV(int16_t &v, int dir);
+    static void changeTemp(AnalogInputs::ValueType *v, int dir);
+    static void changeDeltaTemp(AnalogInputs::ValueType *v, int dir);
+    static void changeInputVolt(AnalogInputs::ValueType *v, int dir);
+    static void changeBalanceError(AnalogInputs::ValueType *v, int dir);
+    static void changeDeltaV(int16_t *v, int dir);
 };
 
 #endif /* SETTINGSMENU_H_ */

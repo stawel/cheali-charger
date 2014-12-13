@@ -239,12 +239,12 @@ void ProgramData::changeBatteryType(int direction)
 void ProgramData::changeVoltage(int direction)
 {
     uint16_t max = getMaxCells();
-    change0ToMaxSmart(battery.cells, direction, max, battery.type == Unknown ? 50: 0,1);
+    change0ToMaxSmart(&battery.cells, direction, max, battery.type == Unknown ? 50: 0,1);
 }
 
 void ProgramData::changeCharge(int direction)
 {
-    change0ToMaxSmart(battery.C, direction, PROGRAM_DATA_MAX_CHARGE,0,100);
+    change0ToMaxSmart(&battery.C, direction, PROGRAM_DATA_MAX_CHARGE,0,100);
     battery.Ic = battery.C;
     if(isPb())
         battery.Ic/=4; //0.25C
@@ -283,18 +283,18 @@ uint16_t ProgramData::getMaxId() const
 void ProgramData::changeIc(int direction)
 {
 #ifdef ENABLE_ZERO_AMP
-    change0ToMaxSmart(battery.Ic, direction, getMaxIc());
+    change0ToMaxSmart(&battery.Ic, direction, getMaxIc());
 #else
-    change100ToMaxSmart(battery.Ic, direction, getMaxIc());
-#endif    
+    change100ToMaxSmart(&battery.Ic, direction, getMaxIc());
+#endif
 }
 void ProgramData::changeId(int direction)
 {
-#ifdef ENABLE_ZERO_AMP    
-    change0ToMaxSmart(battery.Id, direction, getMaxId());
+#ifdef ENABLE_ZERO_AMP
+    change0ToMaxSmart(&battery.Id, direction, getMaxId());
 #else
-    change100ToMaxSmart(battery.Id, direction, getMaxId());
-#endif 
+    change100ToMaxSmart(&battery.Id, direction, getMaxId());
+#endif
 }
 
 uint16_t ProgramData::getMaxCells() const
@@ -331,6 +331,6 @@ void ProgramData::printTimeString() const
 
 void ProgramData::changeTime(int direction)
 {
-    change0ToMaxSmart(battery.time, direction, 1000,0,1);
+    change0ToMaxSmart(&battery.time, direction, 1000,0,1);
 }
 #endif

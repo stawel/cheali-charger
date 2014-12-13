@@ -43,7 +43,7 @@ struct ProgramData {
 //#ifdef ENABLE_TIME_LIMIT: to ensure the same eeprom layout Time is always enabled
         uint16_t time;
 
-    };
+    } CHEALI_EEPROM_PACKED;
 
     BatteryData battery;
     char name[PROGRAM_DATA_MAX_NAME];

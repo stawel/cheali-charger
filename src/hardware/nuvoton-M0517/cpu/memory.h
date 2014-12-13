@@ -24,6 +24,7 @@
 #define PSTR(x) x
 #define PROGMEM
 #define EEMEM __attribute__((section(".data_flash")))
+#define CHEALI_EEPROM_PACKED __attribute__((packed))
 
 namespace pgm {
 

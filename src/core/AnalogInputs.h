@@ -20,6 +20,7 @@
 
 #include "AnalogInputsTypes.h"
 #include "HardwareConfig.h"
+#include "memory.h"
 
 #define ANALOG_INPUTS_MAX_CALIBRATION_POINTS    2
 #define ANALOG_INPUTS_DELTA_TIME_MILISECONDS    30000
@@ -38,14 +39,16 @@ namespace AnalogInputs {
     struct CalibrationPoint {
         ValueType x;
         ValueType y;
-    };
+    } CHEALI_EEPROM_PACKED;
+
     struct DefaultValues {
         CalibrationPoint p0;
         CalibrationPoint p1;
-    };
+    } CHEALI_EEPROM_PACKED;
+
     struct Calibration {
         CalibrationPoint p[ANALOG_INPUTS_MAX_CALIBRATION_POINTS];
-    };
+    } CHEALI_EEPROM_PACKED;
 
     enum Name {
         Vout_plus_pin,

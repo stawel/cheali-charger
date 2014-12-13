@@ -66,7 +66,7 @@ struct Settings {
     static void load();
     static void save();
     static void restoreDefault();
-};
+} CHEALI_EEPROM_PACKED;
 
 extern Settings settings;
 

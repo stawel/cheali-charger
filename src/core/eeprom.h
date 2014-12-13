@@ -46,7 +46,8 @@ namespace eeprom {
 
         Settings settings;
         uint16_t settingsCRC;
-    };
+    } CHEALI_EEPROM_PACKED;
+
     extern Data data;
 
 #ifdef ENABLE_EEPROM_CRC

@@ -124,39 +124,39 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
     START_CASE_COUNTER;
     switch(index) {
 #ifdef ENABLE_LCD_BACKLIGHT
-        case NEXT_CASE:     changeBacklight(dir);                                   break;
+        case NEXT_CASE:     changeBacklight(dir);                                    break;
 #endif
 #ifdef ENABLE_FAN
-        case NEXT_CASE:     changeTemp(p_.fanTempOn, dir);                          break;
+        case NEXT_CASE:     changeTemp(&p_.fanTempOn, dir);                          break;
 #endif
 #ifdef ENABLE_T_INTERNAL
-        case NEXT_CASE:     changeTemp(p_.dischargeTempOff, dir);                   break;
+        case NEXT_CASE:     changeTemp(&p_.dischargeTempOff, dir);                   break;
 #endif
-        case NEXT_CASE:     changeExternTemp(dir);                                  break;
-        case NEXT_CASE:     changeTemp(p_.externTCO,dir);                           break;
-        case NEXT_CASE:     changeDeltaTemp(p_.deltaT,dir);                         break;
-        case NEXT_CASE:     change0ToMax(p_.enable_deltaV, dir, 1);                 break;
-        case NEXT_CASE:     changeDeltaV(p_.deltaV_NiMH, dir);                      break;
-        case NEXT_CASE:     changeDeltaV(p_.deltaV_NiCd, dir);                      break;
+        case NEXT_CASE:     changeExternTemp(dir);                                   break;
+        case NEXT_CASE:     changeTemp(&p_.externTCO,dir);                           break;
+        case NEXT_CASE:     changeDeltaTemp(&p_.deltaT,dir);                         break;
+        case NEXT_CASE:     change0ToMax(&p_.enable_deltaV, dir, 1);                 break;
+        case NEXT_CASE:     changeDeltaV(&p_.deltaV_NiMH, dir);                      break;
+        case NEXT_CASE:     changeDeltaV(&p_.deltaV_NiCd, dir);                      break;
 #ifdef ENABLE_R_WIRE
-        case NEXT_CASE:     change0ToMax(p_.Rwire, dir, 255);                       break;
+        case NEXT_CASE:     change0ToMax(&p_.Rwire, dir, 255);                       break;
 #endif
-        case NEXT_CASE:     change1ToMax(p_.DCcycles, dir, 5);                      break;
-        case NEXT_CASE:     change1ToMax(p_.DCRestTime, dir, 99);                   break;
-        case NEXT_CASE:     change0ToMax(p_.audioBeep, dir, 1);                     break;
-        case NEXT_CASE:     change1ToMax(p_.minIoutDiv, dir, 50);                   break;
-        case NEXT_CASE:     change1ToMax(p_.minIout, dir, 200);                     break;
-        case NEXT_CASE:     change1ToMax(p_.capCutoff, dir, 250);                   break;
-        case NEXT_CASE:     changeInputVolt(p_.inputVoltageLow, dir);               break;
-        case NEXT_CASE:     changeOverCharge(dir);                                  break;
-        case NEXT_CASE:     changeOverDischarge(dir);                               break;
-        case NEXT_CASE:     change0ToMax(p_.dischargeAggressive_LiXX, dir, 1);      break;
-        case NEXT_CASE:     change0ToMax(p_.forceBalancePort, dir, 1);              break;
-        case NEXT_CASE:     changeBalanceError(p_.balancerError, dir);              break;
-        case NEXT_CASE:     changeUART(dir);                                        break;
-        case NEXT_CASE:     change0ToMax(p_.UARTspeed, dir, Settings::UARTSpeeds-1);break;
+        case NEXT_CASE:     change1ToMax(&p_.DCcycles, dir, 5);                      break;
+        case NEXT_CASE:     change1ToMax(&p_.DCRestTime, dir, 99);                   break;
+        case NEXT_CASE:     change0ToMax(&p_.audioBeep, dir, 1);                     break;
+        case NEXT_CASE:     change1ToMax(&p_.minIoutDiv, dir, 50);                   break;
+        case NEXT_CASE:     change1ToMax(&p_.minIout, dir, 200);                     break;
+        case NEXT_CASE:     change1ToMax(&p_.capCutoff, dir, 250);                   break;
+        case NEXT_CASE:     changeInputVolt(&p_.inputVoltageLow, dir);               break;
+        case NEXT_CASE:     changeOverCharge(dir);                                   break;
+        case NEXT_CASE:     changeOverDischarge(dir);                                break;
+        case NEXT_CASE:     change0ToMax(&p_.dischargeAggressive_LiXX, dir, 1);      break;
+        case NEXT_CASE:     change0ToMax(&p_.forceBalancePort, dir, 1);              break;
+        case NEXT_CASE:     changeBalanceError(&p_.balancerError, dir);              break;
+        case NEXT_CASE:     changeUART(dir);                                         break;
+        case NEXT_CASE:     change0ToMax(&p_.UARTspeed, dir, Settings::UARTSpeeds-1);break;
 #ifdef ENABLE_TX_HW_SERIAL
-        case NEXT_CASE:     change0ToMax(p_.UARTinput, dir, 1);                     break;
+        case NEXT_CASE:     change0ToMax(&p_.UARTinput, dir, 1);                     break;
 #endif
      }
 }
@@ -208,23 +208,23 @@ void SettingsMenu::printDeltaT(AnalogInputs::ValueType dt)
 }
 
 void SettingsMenu::changeBacklight(int dir) {
-    change0ToMax(p_.backlight, dir, 99);
+    change0ToMax(&p_.backlight, dir, 99);
     p_.apply();
 }
 
 void SettingsMenu::changeExternTemp(int dir) {
-    change0ToMax(p_.externT, dir, 1);
+    change0ToMax(&p_.externT, dir, 1);
 #ifdef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
     if(p_.externT)
 #ifdef ENABLE_TX_HW_SERIAL
         if(p_.UARTinput == Settings::Software)
 #endif
-        	p_.UART = Settings::Disabled;
+            p_.UART = Settings::Disabled;
 #endif
 }
 
 void SettingsMenu::changeUART(int dir) {
-    change0ToMax(p_.UART, dir, Settings::ExtDebugAdc);
+    change0ToMax(&p_.UART, dir, Settings::ExtDebugAdc);
 #ifdef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
     if(p_.UART != Settings::Disabled)
 #ifdef ENABLE_TX_HW_SERIAL
@@ -243,8 +243,8 @@ const char * const SettingsUART[] PROGMEM = {
 };
 
 const char * const SettingsUARTinput[] PROGMEM = {
-		string_temp,
-		string_pin7,
+        string_temp,
+        string_pin7,
 };
 
 void SettingsMenu::printUART() const
@@ -268,64 +268,64 @@ void SettingsMenu::printUARTSpeed() const
 }
 
 
-void SettingsMenu::changeTemp(AnalogInputs::ValueType &v, int step) {
+void SettingsMenu::changeTemp(AnalogInputs::ValueType *v, int step) {
     const AnalogInputs::ValueType min = ANALOG_CELCIUS(1);
     const AnalogInputs::ValueType max = ANALOG_CELCIUS(99);
     step *= ANALOG_CELCIUS(1);
-    v+=step;
-    if(v < min) v = min;
-    if(v > max) v = max;
+    (*v) += step;
+    if((*v) < min) (*v) = min;
+    if((*v) > max) (*v) = max;
 }
-void SettingsMenu::changeDeltaTemp(AnalogInputs::ValueType &v, int step) {
+void SettingsMenu::changeDeltaTemp(AnalogInputs::ValueType *v, int step) {
     const AnalogInputs::ValueType min = ANALOG_CELCIUS(0.1);
     const AnalogInputs::ValueType max = ANALOG_CELCIUS(10);
     step *= ANALOG_CELCIUS(0.1);
-    v+=step;
-    if(v < min) v = min;
-    if(v > max) v = max;
+    *v+=step;
+    if(*v < min) *v = min;
+    if(*v > max) *v = max;
 }
 
-void SettingsMenu::changeInputVolt(AnalogInputs::ValueType &v, int step) {
+void SettingsMenu::changeInputVolt(AnalogInputs::ValueType *v, int step) {
     const AnalogInputs::ValueType min = ANALOG_VOLT(7);
     const AnalogInputs::ValueType max = ANALOG_VOLT(30);
     step *= ANALOG_VOLT(1);
-    v+=step;
-    if(v < min) v = min;
-    if(v > max) v = max;
+    *v+=step;
+    if(*v < min) *v = min;
+    if(*v > max) *v = max;
 }
 
-void SettingsMenu::changeBalanceError(AnalogInputs::ValueType &v, int step) {
+void SettingsMenu::changeBalanceError(AnalogInputs::ValueType *v, int step) {
     const AnalogInputs::ValueType min = ANALOG_VOLT(0.003);
     const AnalogInputs::ValueType max = ANALOG_VOLT(0.200);
-    v+=step;
-    if(v < min) v = min;
-    if(v > max) v = max;
+    *v+=step;
+    if(*v < min) *v = min;
+    if(*v > max) *v = max;
 }
 
 void SettingsMenu::changeOverCharge(int dir)
 {
-    int16_t &v = p_.overCharge_LiXX;
+    int16_t *v = &p_.overCharge_LiXX;
     const int16_t min = -ANALOG_VOLT(0.035);
     const int16_t max = +ANALOG_VOLT(0.035);
-    v+=dir;
-    if(v < min) v = min;
-    if(v > max) v = max;
+    *v+=dir;
+    if(*v < min) *v = min;
+    if(*v > max) *v = max;
 }
 void SettingsMenu::changeOverDischarge(int dir)
 {
-    int16_t &v = p_.overDischarge_LiXX;
+    int16_t *v = &p_.overDischarge_LiXX;
     const int16_t min = -ANALOG_VOLT(0.999);
     const int16_t max = +ANALOG_VOLT(0.999);
-    v+=dir;
-    if(v < min) v = min;
-    if(v > max) v = max;
+    *v+=dir;
+    if(*v < min) *v = min;
+    if(*v > max) *v = max;
 }
-void SettingsMenu::changeDeltaV(int16_t &v, int dir)
+void SettingsMenu::changeDeltaV(int16_t *v, int dir)
 {
     const int16_t min = -ANALOG_VOLT(0.020);
     const int16_t max = +ANALOG_VOLT(0.000);
-    v+=dir;
-    if(v < min) v = min;
-    if(v > max) v = max;
+    *v+=dir;
+    if(*v < min) *v = min;
+    if(*v > max) *v = max;
 }
 

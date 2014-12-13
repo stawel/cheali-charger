@@ -21,6 +21,8 @@
 #include <avr/pgmspace.h>
 #include <avr/eeprom.h>
 
+#define CHEALI_EEPROM_PACKED __attribute__((packed))
+
 namespace pgm {
 
     inline char *strncpy(char * buf, const char *str, size_t s) {
