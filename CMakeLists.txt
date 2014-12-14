@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 2.8.11)
 
 SET(CMAKE_SYSTEM_NAME Generic)
-SET(CMAKE_C_COMPILER avr-gcc)
-SET(CMAKE_CXX_COMPILER avr-g++)
+
+if(ARM-Cortex-M0)
+    message(STATUS "target architecture: ARM-Cortex-M0")
+    include(arm-compiler.cmake)
+else(ARM-Cortex-M0)
+    message(STATUS "target architecture: avr")
+    include(avr-compiler.cmake)
+endif(ARM-Cortex-M0)
 
 Project(cheali-charger)
 

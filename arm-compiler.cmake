@@ -4,10 +4,16 @@
 set(TOOLCHAIN arm-none-eabi)
 #set(TOOLCHAIN arm-linux-gnueabi)
 
-include_directories(/usr/${TOOLCHAIN}/include)
-
 SET(CMAKE_C_COMPILER ${TOOLCHAIN}-gcc)
 SET(CMAKE_CXX_COMPILER ${TOOLCHAIN}-g++)
+
+#cmake compiler test bypass
+INCLUDE(CMakeForceCompiler)
+CMAKE_FORCE_C_COMPILER(${CMAKE_C_COMPILER} GNU)
+CMAKE_FORCE_CXX_COMPILER(${CMAKE_CXX_COMPILER} GNU)
+
+include_directories(/usr/${TOOLCHAIN}/include)
+
 
 SET(CTUNING "-funsigned-char -funsigned-bitfields -fshort-enums")
 
