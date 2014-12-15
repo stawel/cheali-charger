@@ -71,7 +71,7 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
         }
     }
     if(settings.externT) {
-    	int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
+        int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
         if(x > ProgramData::currentProgramData.getDeltaTLimit()) {
             Program::stopReason = string_externalTemperatureReachedDeltaTLimit;
             return Strategy::COMPLETE;

@@ -37,7 +37,7 @@ namespace Screen { namespace Balancer {
     int8_t knightRiderCounter = 0;
     int8_t knightRiderDir = 1;
 #endif
-   
+
     AnalogInputs::ValueType getBalanceValue(uint8_t cell, AnalogInputs::Type type)
     {
         if(type == AnalogInputs::Voltage)

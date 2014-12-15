@@ -65,7 +65,7 @@ public:
   LiquidCrystal();
 
   void init();
-    
+
   void begin(uint8_t cols, uint8_t rows, uint8_t charsize = LCD_5x8DOTS);
 
   void clear();
@@ -85,7 +85,7 @@ public:
   void noAutoscroll();
 
   void createChar(uint8_t, uint8_t[]);
-  void setCursor(uint8_t, uint8_t); 
+  void setCursor(uint8_t, uint8_t);
   uint8_t write(uint8_t);
   void command(uint8_t);
 
@@ -97,7 +97,7 @@ public:
 
   uint8_t print(char c);
   uint8_t print(const char buffer[]);
-  
+
 private:
   void send(uint8_t, uint8_t);
   void write4bits(uint8_t);
@@ -111,7 +111,7 @@ private:
   uint8_t _initialized;
 
   uint8_t _numlines, _currline;
- 
+
 };
 
 #endif

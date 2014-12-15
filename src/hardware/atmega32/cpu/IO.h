@@ -75,7 +75,7 @@ namespace IO
                 // Grab the port and proper bitmask for the pin
                 volatile uint8_t *port = pinToInputPort(pinNumber);
                 uint8_t bitmask = pinBitmask(pinNumber);
-                
+
                 return (*port & bitmask);
         }
 
@@ -119,7 +119,7 @@ namespace IO
                         case 36:
                         case 37:
                         return &PORTA;
-                        
+
                         // Port B
                         case 1:
                         case 2:
@@ -130,7 +130,7 @@ namespace IO
                         case 43:
                         case 44:
                         return &PORTB;
-                        
+
                         // Port C
                         case 19:
                         case 20:
@@ -141,7 +141,7 @@ namespace IO
                         case 25:
                         case 26:
                         return &PORTC;
-                        
+
                         // Port D
                         case 9:
                         case 10:
@@ -152,12 +152,12 @@ namespace IO
                         case 15:
                         case 16:
                         return &PORTD;
-                        
+
                         default:
                         return 0;
-                }               
+                }
         }
-        
+
         // Pin number to bitmask mapping
         inline uint8_t pinBitmask(uint8_t pinNumber)
         {
@@ -169,56 +169,56 @@ namespace IO
                         case 19:
                         case 9:
                         return 1<<0;
-                        
+
                         // Px1
                         case 36:
                         case 41:
                         case 20:
                         case 10:
                         return 1<<1;
-                        
+
                         // Px2
                         case 35:
                         case 42:
                         case 21:
                         case 11:
                         return 1<<2;
-                        
+
                         // Px3
                         case 34:
                         case 43:
                         case 22:
                         case 12:
                         return 1<<3;
-                        
+
                         // Px4
                         case 33:
                         case 44:
                         case 23:
                         case 13:
                         return 1<<4;
-                        
+
                         // Px5
                         case 32:
                         case 1:
                         case 24:
                         case 14:
                         return 1<<5;
-                        
+
                         // Px6
                         case 31:
                         case 2:
                         case 25:
                         case 15:
                         return 1<<6;
-                        
+
                         // Px7
                         case 30:
                         case 3:
                         case 26:
                         case 16:
                         return 1<<7;
-                        
+
                         default:
                         return 0;
                 }
@@ -276,7 +276,7 @@ namespace IO
 
                         default:
                         return 0;
-                }               
+                }
 
         }
 
@@ -295,7 +295,7 @@ namespace IO
                         case 36:
                         case 37:
                         return &DDRA;
-                        
+
                         // Port B
                         case 1:
                         case 2:
@@ -306,7 +306,7 @@ namespace IO
                         case 43:
                         case 44:
                         return &DDRB;
-                        
+
                         // Port C
                         case 19:
                         case 20:
@@ -317,7 +317,7 @@ namespace IO
                         case 25:
                         case 26:
                         return &DDRC;
-                        
+
                         // Port D
                         case 9:
                         case 10:
@@ -328,10 +328,10 @@ namespace IO
                         case 15:
                         case 16:
                         return &DDRD;
-                        
+
                         default:
                         return 0;
-                }               
+                }
         }
 
 

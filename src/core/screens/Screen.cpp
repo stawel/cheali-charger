@@ -108,7 +108,7 @@ void Screen::powerOn()
 }
 
 void Screen::powerOff() {}
-    
+
 
 void Screen::initialize() {
 #ifdef SCREEN_START_DELAY_MS
@@ -211,16 +211,16 @@ void Screen::displayResettingEeprom()
 
 
 void Screen::runResetEepromDone(uint8_t before, uint8_t after) {
-	if(after != 0) {
-	    displayStrings(PSTR("eeprom reset\n"
-	                        "error: "));
-	    lcdPrintUInt(after);
-	} else {
-		//TODO
-		//if(before )
-	    displayStrings(PSTR("please calibrate"));
-	    waitButtonPressed();
-	}
+    if(after != 0) {
+        displayStrings(PSTR("eeprom reset\n"
+                            "error: "));
+        lcdPrintUInt(after);
+    } else {
+        //TODO
+        //if(before )
+        displayStrings(PSTR("please calibrate"));
+        waitButtonPressed();
+    }
 }
 
 void Screen::runWelcomeScreen() {

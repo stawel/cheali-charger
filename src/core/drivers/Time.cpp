@@ -74,11 +74,11 @@ uint32_t Time::getMiliseconds()
 }
 
 uint16_t Time::getMilisecondsU16() {
-	return getMiliseconds();
+    return getMiliseconds();
 }
 
 uint16_t Time::getInterruptsU16() {
-	return getInterrupts();
+    return getInterrupts();
 }
 
 
@@ -92,14 +92,14 @@ uint16_t Time::getMinutesU16() {
 
 void Time::delay(uint16_t ms)
 {
-	uint16_t start = getMilisecondsU16();
+    uint16_t start = getMilisecondsU16();
 
     while(diffU16(start, getMilisecondsU16()) < ms) {};
 }
 
 void Time::delayDoIdle(uint16_t ms)
 {
-	uint16_t start = getMilisecondsU16();
+    uint16_t start = getMilisecondsU16();
 
     do {
         doIdle();

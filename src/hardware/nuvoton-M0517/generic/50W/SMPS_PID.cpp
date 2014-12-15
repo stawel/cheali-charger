@@ -74,7 +74,7 @@ namespace {
         IO::digitalWrite(SMPS_VALUE_BUCK_PIN, 0);
     }
     void disableChargerBoost() {
-    	outputPWM::disablePWM(SMPS_VALUE_BOOST_PIN);
+        outputPWM::disablePWM(SMPS_VALUE_BOOST_PIN);
         IO::digitalWrite(SMPS_VALUE_BOOST_PIN, 0);
     }
 }

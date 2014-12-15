@@ -29,17 +29,17 @@
 // When the display powers up, it is configured as follows:
 //
 // 1. Display clear
-// 2. Function set: 
-//    DL = 1; 8-bit interface data 
-//    N = 0; 1-line display 
-//    F = 0; 5x8 dot character font 
-// 3. Display on/off control: 
-//    D = 0; Display off 
-//    C = 0; Cursor off 
-//    B = 0; Blinking off 
-// 4. Entry mode set: 
-//    I/D = 1; Increment by 1 
-//    S = 0; No shift 
+// 2. Function set:
+//    DL = 1; 8-bit interface data
+//    N = 0; 1-line display
+//    F = 0; 5x8 dot character font
+// 3. Display on/off control:
+//    D = 0; Display off
+//    C = 0; Cursor off
+//    B = 0; Blinking off
+// 4. Entry mode set:
+//    I/D = 1; Increment by 1
+//    S = 0; No shift
 //
 // Note, however, that resetting the Arduino doesn't reset the LCD, so we
 // can't assume that its in that state when a sketch starts (and the
@@ -61,14 +61,14 @@ void LiquidCrystal::init()
 #endif  //LCD_RW_PIN
 
   IO::pinMode(LCD_ENABLE_PIN, OUTPUT);
-  
+
 #ifndef LCD_ENABLE_8BITMODE
     _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
 #else
     _displayfunction = LCD_8BITMODE | LCD_1LINE | LCD_5x8DOTS;
 #endif //LCD_ENABLE_8BITMODE
 
-  begin(16, 1);  
+  begin(16, 1);
 }
 
 void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
@@ -91,14 +91,14 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
   // SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
   // according to datasheet, we need at least 40ms after power rises above 2.7V
   // before sending commands. Arduino can turn on way befer 4.5V so we'll wait 50
-  Utils::delayMicroseconds(50000); 
+  Utils::delayMicroseconds(50000);
   // Now we pull both RS and R/W low to begin commands
   IO::digitalWrite(LCD_RS_PIN, LOW);
   IO::digitalWrite(LCD_ENABLE_PIN, LOW);
 #ifdef LCD_RW_PIN
     IO::digitalWrite(_rw_pin, LOW);
 #endif //LCD_RW_PIN
-  
+
   //put the LCD into 4 bit or 8 bit mode
 #ifndef  LCD_ENABLE_8BITMODE
     // this is according to the hitachi HD44780 datasheet
@@ -111,13 +111,13 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
     // second try
     write4bits(0x03);
     Utils::delayMicroseconds(4500); // wait min 4.1ms
-    
+
     // third go!
-    write4bits(0x03); 
+    write4bits(0x03);
     Utils::delayMicroseconds(150);
 
     // finally, set to 4-bit interface
-    write4bits(0x02); 
+    write4bits(0x02);
 #else
     // this is according to the hitachi HD44780 datasheet
     // page 45 figure 23
@@ -135,10 +135,10 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
 #endif //LCD_ENABLE_8BITMODE
 
   // finally, set # lines, font size, etc.
-  command(LCD_FUNCTIONSET | _displayfunction);  
+  command(LCD_FUNCTIONSET | _displayfunction);
 
   // turn the display on with no cursor or blinking default
-  _displaycontrol = LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF;  
+  _displaycontrol = LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF;
   display();
 
   // clear it off
@@ -170,7 +170,7 @@ void LiquidCrystal::setCursor(uint8_t col, uint8_t row)
   if ( row >= _numlines ) {
     row = _numlines-1;    // we count rows starting w/0
   }
-  
+
   command(LCD_SETDDRAMADDR | (col + row_offsets[row]));
 }
 
@@ -267,9 +267,9 @@ void LiquidCrystal::send(uint8_t value, uint8_t mode) {
 #ifdef LCD_RW_PIN
     IO::digitalWrite(LCD_RW_PIN, LOW);
 #endif
-  
+
 #ifdef LCD_ENABLE_8BITMODE
-    write8bits(value); 
+    write8bits(value);
 #else
     write4bits(value>>4);
     write4bits(value);
@@ -278,7 +278,7 @@ void LiquidCrystal::send(uint8_t value, uint8_t mode) {
 
 void LiquidCrystal::pulseEnable(void) {
   IO::digitalWrite(LCD_ENABLE_PIN, LOW);
-  Utils::delayMicroseconds(1);    
+  Utils::delayMicroseconds(1);
   IO::digitalWrite(LCD_ENABLE_PIN, HIGH);
   Utils::delayMicroseconds(1);    // enable pulse must be >450ns
   IO::digitalWrite(LCD_ENABLE_PIN, LOW);

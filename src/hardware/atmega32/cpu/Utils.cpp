@@ -40,7 +40,7 @@ namespace Utils
         Utils::delayTenMicroseconds(value/10);
         return;
     }
-    
+
     void delayMilliseconds(uint16_t value)
     {
         while (value--) {

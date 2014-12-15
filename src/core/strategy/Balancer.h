@@ -32,7 +32,7 @@
 #include "Strategy.h"
 
 namespace Balancer {
-   
+
     const static uint16_t maxBalanceTime = 30; //30/2s
     const static uint16_t balancerStartStableCount = 10; //10/2s
 

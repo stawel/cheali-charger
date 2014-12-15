@@ -17,7 +17,7 @@
 */
 #include "Hardware.h"
 #include "SMPS.h"
-#include "Program.h"    
+#include "Program.h"
 #include "EditMenu.h"
 #include "LcdPrint.h"
 #include "Screen.h"

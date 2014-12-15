@@ -445,7 +445,7 @@ void lcdCreateCGRam()
    CGRAM[6] = 0b10001;
    CGRAM[7] = 0b11111;
    lcd.createChar(0, CGRAM); //empty
-   
+
    CGRAM[0] = 0b01110;
    CGRAM[1] = 0b11111;
    CGRAM[2] = 0b10001;
@@ -453,9 +453,9 @@ void lcdCreateCGRam()
    CGRAM[4] = 0b11111;
    CGRAM[5] = 0b11111;
    CGRAM[6] = 0b11111;
-   CGRAM[7] = 0b11111;           
+   CGRAM[7] = 0b11111;
    lcd.createChar(1, CGRAM); //half
-   
+
    CGRAM[0] = 0b01110;
    CGRAM[1] = 0b11111;
    CGRAM[2] = 0b11111;
@@ -463,8 +463,8 @@ void lcdCreateCGRam()
    CGRAM[4] = 0b11111;
    CGRAM[5] = 0b11111;
    CGRAM[6] = 0b11111;
-   CGRAM[7] = 0b11111;           
-   lcd.createChar(2, CGRAM); //full      
+   CGRAM[7] = 0b11111;
+   lcd.createChar(2, CGRAM); //full
 }
 #endif
 

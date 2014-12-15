@@ -34,7 +34,7 @@ namespace Screen {
 namespace StartInfo {
 
     const char programString[] PROGMEM = "ChCBBlDiFCStSBCY";
-    
+
     void printProgram2chars(Program::ProgramType prog)
     {
         STATIC_ASSERT(sizeOfArray(programString)-1 == Program::EditBattery*2);
@@ -42,7 +42,7 @@ namespace StartInfo {
             lcdPrintChar(pgm::read(&programString[prog*2+i]));
         }
     }
-   
+
 } // namespace Screen
 } // namespace StartInfo
 

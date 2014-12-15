@@ -60,7 +60,7 @@ namespace eeprom {
         if(restore & EEPROM_RESTORE_PROGRAM_DATA) ProgramData::restoreDefault();
         if(restoreProgramDataCRC(false)) test |= EEPROM_RESTORE_PROGRAM_DATA;
 
-        if(restore & EEPROM_RESTORE_SETTINGS)	Settings::restoreDefault();
+        if(restore & EEPROM_RESTORE_SETTINGS)   Settings::restoreDefault();
         if(restoreSettingsCRC(false)) test |= EEPROM_RESTORE_SETTINGS;
 
         return test;

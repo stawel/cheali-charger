@@ -33,8 +33,8 @@
 //TODO: remove constant: 10 (move to #define)
 
 namespace Screen { namespace Cycle {
-    
-    //TODO_NJ for cyclehistory  
+
+    //TODO_NJ for cyclehistory
     uint16_t cyclesHistoryCapacity[10];
     uint16_t cyclesHistoryTime[10];
 

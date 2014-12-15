@@ -28,10 +28,10 @@
 #include "Balancer.h"
 
 //TODO_NJ
-#include "LcdPrint.h"     
+#include "LcdPrint.h"
 #include "Screen.h"
 #include "TheveninMethod.h"
-   
+
 #if defined(ENABLE_FAN) && defined(ENABLE_T_INTERNAL)
 #define MONITOR_T_INTERNAL_FAN
 #endif
@@ -40,18 +40,18 @@
 
 namespace Monitor {
 
-	uint16_t etaDeltaSec;
+    uint16_t etaDeltaSec;
     uint16_t etaStartTimeCalc;
 
     bool isBalancePortConnected;
 
-	bool on_;
+    bool on_;
     uint8_t procent_;
     uint16_t startTime_totalTime_U16_;
     uint32_t totalBalanceTime_;
     uint32_t totalChargDischargeTime_;
 
-	uint16_t VoutMinMesured_;
+    uint16_t VoutMinMesured_;
 
 #ifdef MONITOR_T_INTERNAL_FAN
     AnalogInputs::ValueType monitor_on_T;
@@ -97,15 +97,15 @@ uint16_t Monitor::getTimeSec()
 }
 
 uint16_t Monitor::getTotalBalanceTimeSec() {
-	return totalBalanceTime_/1000;
+    return totalBalanceTime_/1000;
 }
 
 uint16_t Monitor::getTotalChargeDischargeTimeSec() {
-	return totalChargDischargeTime_/1000;
+    return totalChargDischargeTime_/1000;
 }
 
 uint16_t Monitor::getTotalChargeDischargeTimeMin() {
-	return totalChargDischargeTime_/1000/60;
+    return totalChargDischargeTime_/1000/60;
 }
 
 
@@ -186,9 +186,9 @@ void Monitor::doSlowInterrupt()
 
 Strategy::statusType Monitor::run()
 {
-	if(!on_) {
-		return Strategy::RUNNING;
-	}
+    if(!on_) {
+        return Strategy::RUNNING;
+    }
 #ifdef ENABLE_T_INTERNAL
     AnalogInputs::ValueType t = AnalogInputs::getRealValue(AnalogInputs::Tintern);
 
@@ -212,7 +212,7 @@ Strategy::statusType Monitor::run()
     AnalogInputs::ValueType i_limit = Strategy::maxI + ANALOG_AMP(1.000);
     if (i_limit < AnalogInputs::getIout()) {
         Program::stopReason = string_outputCurrentToHigh;
-        return Strategy::ERROR;               
+        return Strategy::ERROR;
     }
 
     AnalogInputs::ValueType Vin = AnalogInputs::getRealValue(AnalogInputs::Vin);

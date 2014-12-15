@@ -243,7 +243,7 @@ void Screen::Methods::displayEnergy()
     }
 
     uint8_t procent = Monitor::getChargeProcent();
-    if (displayBlink_ == true && SMPS::isPowerOn() && procent < 99) { 
+    if (displayBlink_ == true && SMPS::isPowerOn() && procent < 99) {
         //display calculated simple ETA
 
         if(Monitor::etaDeltaSec > 20)  //bigger 20sec for ETA calc (is 1C)
