@@ -12,8 +12,6 @@ INCLUDE(CMakeForceCompiler)
 CMAKE_FORCE_C_COMPILER(${CMAKE_C_COMPILER} GNU)
 CMAKE_FORCE_CXX_COMPILER(${CMAKE_CXX_COMPILER} GNU)
 
-include_directories(/usr/${TOOLCHAIN}/include)
-
 
 SET(CTUNING "-funsigned-char -funsigned-bitfields -fshort-enums")
 
