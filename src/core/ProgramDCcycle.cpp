@@ -41,17 +41,20 @@ Strategy::statusType ProgramDCcycle::runDCcycle()
 {
     Strategy::statusType status = Strategy::COMPLETE;
     Strategy::exitImmediately = true;
-    for(currentCycle = 0; currentCycle < settings.DCcycles*2; currentCycle++) {
+    currentCycle = 0;
+    while(true) {
         if (currentCycle == settings.DCcycles*2 - 1) {
             Strategy::exitImmediately = false;
         }
 
+        status = Program::runWithoutInfo(currentCycle & 1 ? Program::Charge : Program::Discharge);
+        if(status != Strategy::COMPLETE || (!Strategy::exitImmediately)) break;
+
+        currentCycle++;
+
         Monitor::resetAccumulatedMeasurements();
         AnalogInputs::resetAccumulatedMeasurements();
 
-        status = Program::runWithoutInfo(currentCycle & 1 ? Program::Charge : Program::Discharge);
-        if(status != Strategy::COMPLETE || (!Strategy::exitImmediately)) break;
- 
         status = runDCRestTime();
         if(status != Strategy::COMPLETE) break;
     }

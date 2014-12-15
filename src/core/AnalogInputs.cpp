@@ -249,7 +249,10 @@ void AnalogInputs::resetAccumulatedMeasurements()
     }
     resetMeasurement();
     resetDelta();
+    setReal(Cout, 0);
+    setReal(deltaVout, 0);
     setReal(deltaVoutMax, 0);
+    setReal(deltaTextern, 0);
 }
 
 

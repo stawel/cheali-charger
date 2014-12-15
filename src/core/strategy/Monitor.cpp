@@ -223,7 +223,7 @@ Strategy::statusType Monitor::run()
 
     AnalogInputs::ValueType c = AnalogInputs::getRealValue(AnalogInputs::Cout);
     AnalogInputs::ValueType c_limit  = ProgramData::currentProgramData.getCapacityLimit();
-    if(c_limit != PROGRAM_DATA_MAX_CHARGE && c_limit < c) {
+    if(c_limit != PROGRAM_DATA_MAX_CHARGE && c_limit <= c) {
         Program::stopReason = string_capacityLimit;
         return Strategy::COMPLETE;
     }
