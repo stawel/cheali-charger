@@ -3,6 +3,47 @@ from ctypes import *
 STRING = c_char_p
 
 
+
+# values for enumeration 'Name'
+Vout_plus_pin = 0
+Vout_minus_pin = 1
+Ismps = 2
+Idischarge = 3
+VoutMux = 4
+Tintern = 5
+Vin = 6
+Textern = 7
+Vb0_pin = 8
+Vb1_pin = 9
+Vb2_pin = 10
+Vb3_pin = 11
+Vb4_pin = 12
+Vb5_pin = 13
+Vb6_pin = 14
+IsmpsSet = 15
+IdischargeSet = 16
+VirtualInputs = 17
+Vout = 18
+Vbalancer = 19
+VoutBalancer = 20
+VobInfo = 21
+VbalanceInfo = 22
+Iout = 23
+Pout = 24
+Cout = 25
+Eout = 26
+deltaVout = 27
+deltaVoutMax = 28
+deltaTextern = 29
+deltaLastCount = 30
+Vb1 = 31
+Vb2 = 32
+Vb3 = 33
+Vb4 = 34
+Vb5 = 35
+Vb6 = 36
+LastInput = 37
+Name = c_int # enum
 class Data(Structure):
     pass
 uint8_t = c_uint8
@@ -104,14 +145,21 @@ CHEALI_CHARGER_EPPROM_VERSION_STRING = '9.2.6' # Variable STRING '(const char*)"
 CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION = 2 # Variable c_int '2'
 CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION = 9 # Variable c_int '9'
 CHEALI_CHARGER_EEPROM_SETTINGS_VERSION = 6 # Variable c_int '6'
-__all__ = ['ClassNiZn', 'Calibration', 'VIdle', 'ClassNiXX',
-           'ClassPb', 'VCharge', 'int16_t',
-           'CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION',
-           'CalibrationPoint', 'BatteryData', 'uint8_t',
-           'ProgramData', 'VDischarge', 'ValueType', 'ValidEmpty',
-           'Data', 'BatteryClass', 'LAST_VOLTAGE_TYPE', 'VStorage',
-           'Settings', 'VoltageType',
-           'CHEALI_CHARGER_EEPROM_SETTINGS_VERSION',
-           'CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION',
-           'CHEALI_CHARGER_EPPROM_VERSION_STRING', 'uint32_t',
-           'ClassLiXX', 'uint16_t']
+__all__ = ['Vout_minus_pin', 'IsmpsSet', 'Calibration',
+           'Vout_plus_pin', 'VIdle', 'ClassNiXX', 'Vb4', 'ClassPb',
+           'Vb3', 'Vb2', 'Vb1', 'int16_t', 'Textern', 'Vb5',
+           'VirtualInputs', 'deltaTextern', 'CalibrationPoint',
+           'deltaLastCount', 'Vb5_pin', 'Ismps', 'BatteryData',
+           'ClassNiZn', 'Vout', 'ProgramData', 'VDischarge',
+           'deltaVoutMax', 'ValidEmpty', 'Vbalancer', 'Pout',
+           'deltaVout', 'Vb1_pin', 'Idischarge', 'Data', 'Vb6_pin',
+           'CHEALI_CHARGER_EEPROM_SETTINGS_VERSION', 'BatteryClass',
+           'LAST_VOLTAGE_TYPE', 'Name', 'Settings', 'IdischargeSet',
+           'VoltageType', 'Iout', 'Vb4_pin',
+           'CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION', 'LastInput',
+           'Eout', 'VoutBalancer', 'Tintern', 'VbalanceInfo',
+           'CHEALI_CHARGER_EPPROM_VERSION_STRING', 'VoutMux',
+           'Vb3_pin', 'Cout', 'VCharge', 'Vin', 'Vb2_pin', 'Vb0_pin',
+           'CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION', 'VStorage',
+           'uint32_t', 'ClassLiXX', 'uint8_t', 'uint16_t',
+           'ValueType', 'VobInfo', 'Vb6']

@@ -2,16 +2,17 @@
 
 import sys
 from ehelper import *
+from dformatter import *
 
 from v9_2_6 import *
 
-hex = 'eeprom.bin'
+hexFile = 'eeprom.bin'
 
 if len(sys.argv) > 1:
-    hex = sys.argv[1]
+    hexFile = sys.argv[1]
 
 x = Data()
-f = open(hex, 'r')
+f = open(hexFile, 'r')
 f.readinto(x)
 
 
@@ -25,6 +26,18 @@ def checkAllCRC():
 
 print dump(x)
 checkAllCRC();
+
+
+#save defaultCalibration.cpp file
+defaultCalibrationFile = 'defaultCalibration.cpp'
+
+fmt = DFormatter()
+f = open(defaultCalibrationFile + '.template', 'r')
+template = f.read()
+out = fmt.vformat(template, [],x)
+f = open(defaultCalibrationFile, 'w')
+f.write(out)
+
 
 sys.exit()
 

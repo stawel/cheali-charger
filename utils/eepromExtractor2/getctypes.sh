@@ -17,7 +17,7 @@ INCLUDE="-I $CORE/strategy -I $HARDWARE/cpu -I $CORE/drivers -I $HCONFIG -I $COR
 
 
 $PYTHON $CTYPELIB/h2xml.py `pwd`/$CORE/eeprom.h `pwd`/$CORE/Version.h $INCLUDE -o $OUTPUT.xml --cpp-symbols
-$PYTHON $CTYPELIB/xml2py.py $OUTPUT.xml -s Data -r CHEALI_CHARGER_EEPROM.* -r CHEALI_CHARGER_EPPROM_VERSION_STRING > $OUTPUT.py
+$PYTHON $CTYPELIB/xml2py.py $OUTPUT.xml -s Name -s Data -r CHEALI_CHARGER_EEPROM.* -r CHEALI_CHARGER_EPPROM_VERSION_STRING > $OUTPUT.py
 EEPROM_VERSION=v`echo "import $OUTPUT; print $OUTPUT.CHEALI_CHARGER_EPPROM_VERSION_STRING.replace('.','_'); " | $PYTHON`
 
 echo "eeprom version: $EEPROM_VERSION"

@@ -64,4 +64,3 @@ def checkCRC(d, field):
 def restoreCRC(d, field):
     data = getattr(d, field)
     setattr(d, field + 'CRC', CRC(data))
-
