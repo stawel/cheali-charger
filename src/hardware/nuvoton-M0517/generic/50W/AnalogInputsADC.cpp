@@ -193,6 +193,7 @@ void initialize()
 
     /* Set the ADC operation mode as burst, input mode as single-end and enable the analog input channel 2 */
     ADC_Open(ADC, ADC_ADCR_DIFFEN_SINGLE_END, ADC_ADCR_ADMD_BURST, 0x1 << 2);
+    ADC_SET_DMOF(ADC, ADC_ADCR_DMOF_UNSIGNED_OUTPUT);
 
     /* Power on ADC module */
     ADC_POWER_ON(ADC);

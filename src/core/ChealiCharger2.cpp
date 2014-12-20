@@ -57,6 +57,7 @@ void loop()
 
 void setup()
 {
+    hardware::initializePins();
     cpu::init();
 
     hardware::initialize();

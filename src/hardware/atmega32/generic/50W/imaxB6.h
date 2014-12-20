@@ -36,6 +36,7 @@
 extern LiquidCrystal lcd;
 
 namespace hardware {
+    void initializePins();
     void initialize();
     uint8_t getKeyPressed();
     void delay(uint16_t t);
@@ -47,6 +48,8 @@ namespace hardware {
 
     void setChargerValue(uint16_t value);
     void setDischargerValue(uint16_t value);
+    void setVoutCutoff(AnalogInputs::ValueType v);
+
     void setBalancer(uint8_t balance);
     void doInterrupt();
 

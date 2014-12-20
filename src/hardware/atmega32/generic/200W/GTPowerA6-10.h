@@ -36,6 +36,7 @@
 extern LiquidCrystal lcd;
 
 namespace hardware {
+    void initializePins();
     void initialize();
     uint8_t getKeyPressed();
     void delay(uint16_t t);
@@ -45,8 +46,12 @@ namespace hardware {
     void setChargerOutput(bool enable);
     void setBalancerOutput(bool enable);
     void setDischargerOutput(bool enable);
+
     void setChargerValue(uint16_t value);
     void setDischargerValue(uint16_t value);
+    //200W charger do not have Vout limits, see also Monitor.cpp
+    inline void setVoutCutoff(AnalogInputs::ValueType v){};
+
     void setFan(bool enable);
     void setBalancer(uint8_t balance);
     inline void doInterrupt(){}

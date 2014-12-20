@@ -337,6 +337,8 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
             name1 = AnalogInputs::IsmpsSet;
             name2 = AnalogInputs::Ismps;
             SMPS::powerOn();
+            hardware::setVoutCutoff(MAX_CHARGE_V);
+
         } else {
             name1 = AnalogInputs::IdischargeSet;
             name2 = AnalogInputs::Idischarge;

@@ -51,7 +51,8 @@ namespace Monitor {
     uint32_t totalBalanceTime_;
     uint32_t totalChargDischargeTime_;
 
-    uint16_t VoutMinMesured_;
+    uint16_t Vout_plus_adcMinLimit_;
+    uint16_t Vout_plus_adcMaxLimit_;
 
 #ifdef MONITOR_T_INTERNAL_FAN
     AnalogInputs::ValueType monitor_on_T;
@@ -147,8 +148,26 @@ void Monitor::update()
 #endif
 }
 
-void Monitor::powerOn() {
-    VoutMinMesured_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, AnalogInputs::CONNECTED_MIN_VOLTAGE);
+void Monitor::powerOn()
+{
+
+    Vout_plus_adcMinLimit_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, AnalogInputs::CONNECTED_MIN_VOLTAGE);
+
+    {
+        //Make sure Vout_plus gets not higher VCharge + 3V (additional safety limit for protection ICs)
+        AnalogInputs::ValueType Vmax = ProgramData::currentProgramData.getVoltage(ProgramData::VCharge);
+        Vmax += ANALOG_VOLT(3.000);
+        if(Vmax > MAX_CHARGE_V) {
+            Vmax = MAX_CHARGE_V;
+        }
+        hardware::setVoutCutoff(Vmax);
+
+        Vout_plus_adcMaxLimit_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, Vmax);
+        if(Vout_plus_adcMaxLimit_ > ANALOG_INPUTS_MAX_ADC_Vout_plus_pin) {
+            Vout_plus_adcMaxLimit_ = ANALOG_INPUTS_MAX_ADC_Vout_plus_pin;
+        }
+    }
+
     isBalancePortConnected = AnalogInputs::isBalancePortConnected();
     update();
 
@@ -199,7 +218,7 @@ Strategy::statusType Monitor::run()
 #endif
 
     AnalogInputs::ValueType VMout = AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin);
-    if(ANALOG_INPUTS_MAX_ADC_VALUE <= VMout || (VMout < VoutMinMesured_ && Discharger::isPowerOn())) {
+    if(Vout_plus_adcMaxLimit_ <= VMout || (VMout < Vout_plus_adcMinLimit_ && Discharger::isPowerOn())) {
         Program::stopReason = string_batteryDisconnected;
         return Strategy::ERROR;
     }

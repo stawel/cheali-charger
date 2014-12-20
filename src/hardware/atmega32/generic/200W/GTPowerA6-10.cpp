@@ -20,8 +20,13 @@
 #include "adc.h"
 #include "IO.h"
 
-void hardware::initialize()
+void hardware::initializePins()
 {
+    setBatteryOutput(false);
+    setFan(false);
+    setBuzzer(0);
+    setBalancer(0);
+
     IO::pinMode(BACKLIGHT_PIN, OUTPUT);
     IO::pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
     IO::pinMode(FAN_PIN, OUTPUT);
@@ -46,16 +51,14 @@ void hardware::initialize()
     IO::pinMode(SMPS_DISABLE_PIN, OUTPUT);
     IO::pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
     IO::pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
+}
 
-    setBatteryOutput(false);
-    setFan(false);
-    setBuzzer(0);
-    setBalancer(0);
-
+void hardware::initialize()
+{
     lcd.begin(LCD_COLUMNS, LCD_LINES);
-//    Timer1.initialize(TIMER1_PERIOD_MICROSECONDS);         // initialize timer1, and set a 1/2 second period
     Timer1::initialize();
     adc::initialize();
+    setVoutCutoff(MAX_CHARGE_V);
 }
 
 void hardware::setLCDBacklight(uint8_t val)
@@ -92,6 +95,10 @@ void hardware::setBatteryOutput(bool enable)
 #ifdef ENABLE_BALANCER_PWR
     IO::digitalWrite(BALANCER_PWR_ENABLE_PIN, enable);
 #endif
+    if(!enable) {
+        setChargerOutput(false);
+        setDischargerOutput(false);
+    }
 }
 void hardware::setChargerOutput(bool enable)
 {
