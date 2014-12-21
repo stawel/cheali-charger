@@ -35,8 +35,8 @@
 #include "Settings.h"
 #include "SerialLog.h"
 #include "DelayStrategy.h"
-
 #include "ProgramDCcycle.h"
+#include "Calibrate.h"
 
 namespace Program {
     ProgramType programType;
@@ -138,6 +138,9 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
 
 void Program::run(ProgramType prog)
 {
+    if(!Calibrate::check())
+        return;
+
     programType = prog;
     stopReason = NULL;
 

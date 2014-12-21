@@ -20,14 +20,10 @@
 
 #include "AnalogInputs.h"
 
-#define ACCEPT_DELAY 3
-
-#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-#define ENABLE_B0_CALIBRATION
-#endif
-
 namespace Calibrate {
     void run();
+
+    bool check();
 };
 
 #endif /* CALIBRATE_H_ */

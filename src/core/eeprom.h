@@ -61,10 +61,10 @@ namespace eeprom {
 #endif
 
 #ifdef ENABLE_EEPROM_RESTORE_DEFAULT
-    void check();
+    bool check();
     void restoreDefault();
 #else
-    inline void check() {};
+    inline bool check() { return true; /* OK */};
     inline void restoreDefault() {};
 #endif
 

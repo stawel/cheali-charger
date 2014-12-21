@@ -223,6 +223,12 @@ void Screen::runResetEepromDone(uint8_t before, uint8_t after) {
     }
 }
 
+void Screen::runCalibrationError(const char *s) {
+    displayStrings(PSTR("calibation error"), s);
+    waitButtonPressed();
+}
+
+
 void Screen::runWelcomeScreen() {
     Screen::displayStrings(PSTR( CHEALI_CHARGER_PROJECT_NAME_STRING "\n"
                                 "v" CHEALI_CHARGER_VERSION_STRING));

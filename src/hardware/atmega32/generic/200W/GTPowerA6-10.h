@@ -49,7 +49,7 @@ namespace hardware {
 
     void setChargerValue(uint16_t value);
     void setDischargerValue(uint16_t value);
-    //200W charger do not have Vout limits, see also Monitor.cpp
+    //200W chargers do not have Vout limit, see also Monitor.cpp
     inline void setVoutCutoff(AnalogInputs::ValueType v){};
 
     void setFan(bool enable);
