@@ -25,9 +25,6 @@
 #include "atomic.h"
 #include "Balancer.h"
 
-#ifndef ANALOG_INPUTS_ADC_BURST_COUNT
-#define ANALOG_INPUTS_ADC_BURST_COUNT           1
-#endif
 #ifndef ANALOG_INPUTS_ADC_ROUND_MAX_COUNT
 #define ANALOG_INPUTS_ADC_ROUND_MAX_COUNT       100
 #endif
