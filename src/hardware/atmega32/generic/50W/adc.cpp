@@ -34,7 +34,7 @@
 #include "Discharger.h"
 #include <avr/cpufunc.h>
 
-#define ENABLE_DEBUG
+//#define ENABLE_DEBUG
 #include "debug.h"
 
 /* ADC - measurement:
@@ -66,8 +66,12 @@ void initialize()
     //ADEN: ADC Enable
     //ADATE: ADC Auto Trigger Enable
     //ADIE: ADC Interrupt Enable
-    //ADPS2:0: ADC Prescaler Select Bits = 16MHz/ 128 = 125kHz
-    ADCSRA = _BV(ADEN) | _BV(ADATE) | _BV(ADIE) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0);
+    //ADPS2:0: ADC Prescaler Select Bits = 16MHz/ 64 = 250kHz (above the recommended value)
+    /* atmega32 datasheet:
+        By default, the successive approximation circuitry requires an input clock frequency between
+        50kHz and 200kHz to get maximum resolution. If a lower resolution than 10 bits is needed, the
+        input clock frequency to the ADC can be higher than 200kHz to get a higher sample rate. */
+    ADCSRA = _BV(ADEN) | _BV(ADATE) | _BV(ADIE) | _BV(ADPS2) | _BV(ADPS1);
 
     //start conversion
     ADCSRA |= _BV(ADSC);
