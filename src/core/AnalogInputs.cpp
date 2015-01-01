@@ -430,7 +430,8 @@ void AnalogInputs::finalizeDeltaMeasurement()
         uint32_t deltaAvrSumVoutMinus;
         uint32_t deltaAvrSumTextern;
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-            deltaAvrCount = i_deltaAvrCount_*ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT;
+            deltaAvrCount = i_deltaAvrCount_;
+            deltaAvrCount *= ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT;
             deltaAvrCount >>= ANALOG_INPUTS_ADC_DELTA_SHIFT;
             deltaAvrSumVoutPlus  = i_deltaAvrSumVoutPlus_;
             deltaAvrSumVoutMinus = i_deltaAvrSumVoutMinus_;
