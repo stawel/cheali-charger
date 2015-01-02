@@ -86,23 +86,25 @@ struct adc_correlation {
     uint8_t noise;
 };
 
+#define NO_NOISE 0
+
 const adc_correlation order_analogInputs_on[] PROGMEM = {
-    {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_A_PIN,           AnalogInputs::Vb0_pin,          0},
-    {-1,                            OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin,  1},
-    {MADDR_V_BALANSER1,             MUX0_Z_A_PIN,           AnalogInputs::Vb1_pin,          0},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0},
-    {MADDR_V_BALANSER2,             MUX0_Z_A_PIN,           AnalogInputs::Vb2_pin,          0},
-    {-1,                            OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,    1},
-    {MADDR_V_BALANSER6,             MUX0_Z_A_PIN,           AnalogInputs::Vb6_pin,          0},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0},
-    {MADDR_V_BALANSER5,             MUX0_Z_A_PIN,           AnalogInputs::Vb5_pin,          0},
-    {-1,                            DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       0},
-    {MADDR_V_BALANSER4,             MUX0_Z_A_PIN,           AnalogInputs::Vb4_pin,          0},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0},
-    {MADDR_V_BALANSER3,             MUX0_Z_A_PIN,           AnalogInputs::Vb3_pin,          0},
-    {-1,                            V_IN_PIN,               AnalogInputs::Vin,              0},
-    {MADDR_T_EXTERN,                MUX0_Z_A_PIN,           AnalogInputs::Textern,          0},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0},
+    {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_A_PIN,           AnalogInputs::Vb0_pin,          NO_NOISE},
+    {-1,                            OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin,  10},
+    {MADDR_V_BALANSER1,             MUX0_Z_A_PIN,           AnalogInputs::Vb1_pin,          NO_NOISE},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            NO_NOISE},
+    {MADDR_V_BALANSER2,             MUX0_Z_A_PIN,           AnalogInputs::Vb2_pin,          NO_NOISE},
+    {-1,                            OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,    10},
+    {MADDR_V_BALANSER6,             MUX0_Z_A_PIN,           AnalogInputs::Vb6_pin,          NO_NOISE},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            NO_NOISE},
+    {MADDR_V_BALANSER5,             MUX0_Z_A_PIN,           AnalogInputs::Vb5_pin,          NO_NOISE},
+    {-1,                            DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       NO_NOISE},
+    {MADDR_V_BALANSER4,             MUX0_Z_A_PIN,           AnalogInputs::Vb4_pin,          NO_NOISE},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            NO_NOISE},
+    {MADDR_V_BALANSER3,             MUX0_Z_A_PIN,           AnalogInputs::Vb3_pin,          NO_NOISE},
+    {-1,                            V_IN_PIN,               AnalogInputs::Vin,              NO_NOISE},
+    {MADDR_T_EXTERN,                MUX0_Z_A_PIN,           AnalogInputs::Textern,          NO_NOISE},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            NO_NOISE},
 };
 
 inline uint8_t nextInput(uint8_t i) {
@@ -162,21 +164,21 @@ void finalizeMeasurement()
 }
 
 #ifdef ENABLE_DEBUG
-#define MAX_D 20
-uint16_t adcDebug[MAX_D];
-uint8_t adcIle = 0;
-bool adcStart = false;
+#define MAX_DEBUG_DATA 160
+uint16_t adcDebugData[MAX_DEBUG_DATA];
+uint8_t adcDebugCount = 0;
+bool adcDebugStart = false;
 #endif
 
 void debug() {
 #ifdef ENABLE_DEBUG
-    if(adcIle == MAX_D){
-        for (int i=0;i<MAX_D;i++) {
-            LogDebug(i, ':', adcDebug[i]);
+    if(adcDebugCount == MAX_DEBUG_DATA){
+        for (int i=0;i<MAX_DEBUG_DATA;i++) {
+            LogDebug(i, ':', adcDebugData[i]);
         }
         LogDebug('-');
-        adcStart = false;
-        adcIle = 0;
+        adcDebugStart = false;
+        adcDebugCount = 0;
     }
 #endif
 }
@@ -184,51 +186,23 @@ void debug() {
 
 void addAdcNoise()
 {
-    if(!adc_input_next.noise)
+    if(!settings.adcNoise)
         return;
-    uint8_t adcbit = 1 << adc_input_next.adc;
+    if(adc_input_next.noise == NO_NOISE)
+        return;
 
-    //we don't like optimization
-    switch(AnalogInputs::i_avrCount_ & 3) {
-    case 1:
-        // PORTA up for 1x nop (charge, pin: Pull-up resistor)
-        __asm__ volatile (
-                "cli"                               "\n\t"
-                "in __tmp_reg__,    %[port]"        "\n\t"
-                "or  %[bit],        __tmp_reg__"    "\n\t"
-                "out %[port],       %[bit]"         "\n\t"
-                "nop"                               "\n\t"
-                "out %[port],       __tmp_reg__"    "\n\t"
-                "sei"
-                : : [port] "I" (_SFR_IO_ADDR(PORTA)) , [bit] "r" (adcbit));
-        break;
-    case 2:
-        // PORTA up for 3x nop (charge, pin: Pull-up resistor)
-        __asm__ volatile (
-                "cli"                               "\n\t"
-                "in __tmp_reg__,    %[port]"        "\n\t"
-                "or  %[bit],        __tmp_reg__"    "\n\t"
-                "out %[port],       %[bit]"         "\n\t"
-                "nop"                               "\n\t"
-                "nop"                               "\n\t"
-                "nop"                               "\n\t"
-                "out %[port],       __tmp_reg__"    "\n\t"
-                "sei"
-                : : [port] "I" (_SFR_IO_ADDR(PORTA)) , [bit] "r" (adcbit));
-        break;
-    case 3:
-        // DDRA up for 0x nop (discharge, pin: output)
-        __asm__ volatile (
-                "cli"                               "\n\t"
-                "in __tmp_reg__,    %[port]"        "\n\t"
-                "or  %[bit],        __tmp_reg__"    "\n\t"
-                "out %[port],       %[bit]"         "\n\t"
-                "out %[port],       __tmp_reg__"    "\n\t"
-                "sei"
-                : : [port] "I" (_SFR_IO_ADDR(DDRA)) , [bit] "r" (adcbit));
-        break;
-    default:
-        break;
+    uint8_t adcbit = 1 << adc_input_next.adc;
+    uint8_t time = AnalogInputs::i_avrCount_ & 15;
+    time += adc_input_next.noise;
+
+    //we only add positive noise
+
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        // PORTA up (charge, pin: Pull-up resistor)
+        uint8_t old_porta = PORTA;
+        PORTA |= adcbit;
+        _delay_loop_1(time);
+        PORTA = old_porta;
     }
 }
 
@@ -242,13 +216,15 @@ void conversionDone()
     uint16_t v = processConversion();
 
 #ifdef ENABLE_DEBUG
-    if(g_adcBurstCount_ == 0 && adc_input.ai_name == AnalogInputs::Vb1_pin) {
-        if(adcIle < MAX_D) {
-            adcStart = true;
+    if(g_adcBurstCount_ == 0 && adc_input.ai_name == AnalogInputs::Vb0_pin) {
+        if(adcDebugCount < MAX_DEBUG_DATA) {
+            adcDebugStart = true;
         }
     }
-    if(adcStart && adcIle < MAX_D) {
-        adcDebug[adcIle++] = v;
+    if(adcDebugStart && /*adc_input.ai_name == AnalogInputs::Vout_minus_pin  &&*/ adcDebugCount < MAX_DEBUG_DATA) {
+        if(g_adcBurstCount_ == 0)
+            adcDebugData[adcDebugCount++] = adc_input.ai_name; //AnalogInputs::i_avrCount_;
+        adcDebugData[adcDebugCount++] = v;
     }
 #endif
 
@@ -276,13 +252,17 @@ void conversionDone()
         }
         break;
 
+#ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
+    case ANALOG_INPUTS_ADC_BURST_COUNT-3:
+        addAdcNoise();
+        break;
+#endif
+
     case ANALOG_INPUTS_ADC_BURST_COUNT-2:
         /* set next adc input */
         setADC(adc_input_next.adc);
-#ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
-        addAdcNoise();
-#endif
         break;
+
     case ANALOG_INPUTS_ADC_BURST_COUNT-1:
         /* switch to new input */
         g_adcBurstCount_ = 0;

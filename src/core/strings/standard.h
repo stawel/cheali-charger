@@ -94,6 +94,7 @@ namespace settingsMenu {
     STRING(dichAggLiXX, "dis agres: ");
     STRING(forceBalanc, "force bal: ");
     STRING(balancErr,   "bal. err:");
+    STRING(adcNoise,    "adc noise: ");
     STRING(UARTview,    "UART: ");
     STRING(UARTspeed,   "speed: ");
     STRING(UARTinput,   "UART inp: ");
