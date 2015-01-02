@@ -280,8 +280,11 @@ void finalizeMeasurement()
 }
 
 
-} // namespace adc
+} // namespace AnalogInputsADC
 
+namespace adc {
+void debug() {}
+}
 
 extern "C" {
 
