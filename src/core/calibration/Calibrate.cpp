@@ -139,11 +139,12 @@ public:
 
 void copyVbalVout()
 {
+    //info: we assume that Vout_plus_pin and Vout_minus_pin have identically voltage dividers
     AnalogInputs::CalibrationPoint p;
     p.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vout_plus_pin);
+    p.x -= AnalogInputs::getAvrADCValue(AnalogInputs::Vout_minus_pin);
     p.y = AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
     AnalogInputs::setCalibrationPoint(AnalogInputs::Vout_plus_pin, 1, p);
-    //info: we assume that Vout_plus_pin and Vout_minus_pin have the same voltage dividers
     AnalogInputs::setCalibrationPoint(AnalogInputs::Vout_minus_pin, 1, p);
 }
 

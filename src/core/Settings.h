@@ -49,6 +49,7 @@ struct Settings {
     uint16_t dischargeAggressive_LiXX;
     uint16_t forceBalancePort;
     AnalogInputs::ValueType balancerError;
+    uint16_t adcNoise;
     uint16_t UART;
     uint16_t UARTspeed;
     uint16_t UARTinput;

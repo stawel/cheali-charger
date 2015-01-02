@@ -55,6 +55,9 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_dichAggLiXX,
         string_forceBalanc,
         string_balancErr,
+#ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
+        string_adcNoise,
+#endif
         string_UARTview,
         string_UARTspeed,
 #ifdef ENABLE_TX_HW_SERIAL
@@ -108,6 +111,9 @@ void SettingsMenu::printItem(uint8_t index)
             case NEXT_CASE:     lcdPrintYesNo(p_.dischargeAggressive_LiXX);break;
             case NEXT_CASE:     lcdPrintYesNo(p_.forceBalancePort);     break;
             case NEXT_CASE:     lcdPrint_mV(p_.balancerError, 5);       break;
+#ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
+            case NEXT_CASE:     lcdPrintYesNo(p_.adcNoise);             break;
+#endif
             case NEXT_CASE:     printUART();                            break;
             case NEXT_CASE:     printUARTSpeed();                       break;
 #ifdef ENABLE_TX_HW_SERIAL
@@ -153,6 +159,9 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     change0ToMax(&p_.dischargeAggressive_LiXX, dir, 1);      break;
         case NEXT_CASE:     change0ToMax(&p_.forceBalancePort, dir, 1);              break;
         case NEXT_CASE:     changeBalanceError(&p_.balancerError, dir);              break;
+#ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
+        case NEXT_CASE:     change0ToMax(&p_.adcNoise, dir, 1);                      break;
+#endif
         case NEXT_CASE:     changeUART(dir);                                         break;
         case NEXT_CASE:     change0ToMax(&p_.UARTspeed, dir, Settings::UARTSpeeds-1);break;
 #ifdef ENABLE_TX_HW_SERIAL

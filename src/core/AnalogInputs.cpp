@@ -25,16 +25,6 @@
 #include "atomic.h"
 #include "Balancer.h"
 
-#ifndef ANALOG_INPUTS_ADC_BURST_COUNT
-#define ANALOG_INPUTS_ADC_BURST_COUNT           1
-#endif
-#ifndef ANALOG_INPUTS_ADC_ROUND_MAX_COUNT
-#define ANALOG_INPUTS_ADC_ROUND_MAX_COUNT       100
-#endif
-#ifndef ANALOG_INPUTS_ADC_DELTA_SHIFT
-#define ANALOG_INPUTS_ADC_DELTA_SHIFT           0
-#endif
-
 
 #define ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT (ANALOG_INPUTS_ADC_ROUND_MAX_COUNT*ANALOG_INPUTS_ADC_BURST_COUNT)
 
@@ -440,7 +430,8 @@ void AnalogInputs::finalizeDeltaMeasurement()
         uint32_t deltaAvrSumVoutMinus;
         uint32_t deltaAvrSumTextern;
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-            deltaAvrCount = i_deltaAvrCount_*ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT;
+            deltaAvrCount = i_deltaAvrCount_;
+            deltaAvrCount *= ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT;
             deltaAvrCount >>= ANALOG_INPUTS_ADC_DELTA_SHIFT;
             deltaAvrSumVoutPlus  = i_deltaAvrSumVoutPlus_;
             deltaAvrSumVoutMinus = i_deltaAvrSumVoutMinus_;

@@ -39,6 +39,10 @@
 #define SETTINGS_FORCE_BALANCE_PORT_DEFAULT 1
 #endif
 
+#ifndef SETTINGS_ADC_NOISE_DEFAULT
+#define SETTINGS_ADC_NOISE_DEFAULT 0
+#endif
+
 Settings settings;
 
 const Settings defaultSettings PROGMEM = {
@@ -64,6 +68,7 @@ const Settings defaultSettings PROGMEM = {
         SETTINGS_DISCHARGE_AGGRESSIVE_LIXX_DEFAULT,     //dischargeAggressive_LiXX
         SETTINGS_FORCE_BALANCE_PORT_DEFAULT,            //forceBalancePort
         ANALOG_VOLT(0.008), //balancerError
+        SETTINGS_ADC_NOISE_DEFAULT, //adcNoise
         Settings::Disabled, //UART - disabled
         3,                   //57600
         Settings::Software, //UARTinput

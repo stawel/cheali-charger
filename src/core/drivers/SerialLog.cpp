@@ -34,6 +34,10 @@
 
 #include "Monitor.h"
 
+namespace adc {
+    void debug();
+}
+
 namespace SerialLog {
     enum State { On, Off, Starting };
     uint32_t startTime;
@@ -130,6 +134,7 @@ void doIdle()
             send();
         }
     }
+    adc::debug();
 }
 
 #else //ENABLE_SERIAL_LOG
