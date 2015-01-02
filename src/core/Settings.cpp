@@ -40,7 +40,7 @@
 #endif
 
 #ifndef SETTINGS_ADC_NOISE_DEFAULT
-#define SETTINGS_ADC_NOISE_DEFAULT 1
+#define SETTINGS_ADC_NOISE_DEFAULT 0
 #endif
 
 Settings settings;
