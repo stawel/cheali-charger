@@ -225,7 +225,7 @@ void lcdPrintValue1000(uint16_t x, int8_t dig, bool dot)
 
     if(dig<xdig || dot){
         dot = true;
-        xdig = digits(x/1000);
+        xdig = digits((uint16_t)(x/1000));
         xdig+=1+3; // "."
     }
 
@@ -261,7 +261,7 @@ void lcdPrintValue100(uint16_t x, int8_t dig, bool dot)
 
     if(dig<xdig || dot){
         dot = true;
-        xdig = digits(x/100);
+        xdig = digits((uint16_t)(x/100));
         xdig+=1+2; // "."
     }
 
