@@ -127,8 +127,7 @@ inline void setADC(uint8_t pin) {
 
 inline uint8_t getPortBAddress(int8_t address)
 {
-    uint8_t port_adr =  ((address&1) << 2) | (address&2) | ((address&4) >>2);
-    return (PORTB & 0x1f) | (port_adr) << 5;
+    return (PORTB & 0x1f) | (address & 7) << 5;
 }
 
 uint16_t processConversion()
