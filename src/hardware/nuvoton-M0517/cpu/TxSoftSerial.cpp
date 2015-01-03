@@ -33,9 +33,8 @@ namespace TxSoftSerial {
 #define STOP_BIT 512
 
 uint8_t  pucTxBuffer[Tx_BUFFER_SIZE];
-uint16_t usTxBufferLen=Tx_BUFFER_SIZE;
-uint16_t usTxData;
-uint8_t *pucTxpin;
+volatile uint16_t usTxData;
+volatile uint32_t *pucTxpin;
 
 volatile uint16_t usTxBufferRead;
 volatile uint16_t usTxBufferWrite;
@@ -47,7 +46,7 @@ void initialize()
     CLK_SetModuleClock(TMR2_MODULE,CLK_CLKSEL1_TMR2_S_HCLK,CLK_CLKDIV_UART(1));
     NVIC_SetPriority(TMR2_IRQn, SOFTWARE_SERIAL_IRQ_PRIORITY);
     NVIC_EnableIRQ(TMR2_IRQn);
-    pucTxpin=(uint8_t *)IO::getPinAddress(UART_TX_PIN);
+    pucTxpin = IO::getPinAddress(UART_TX_PIN);
 
 #ifndef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
     IO::pinMode(UART_TX_PIN, GPIO_PMD_OUTPUT);
@@ -64,26 +63,24 @@ void begin(unsigned long baud)
 
     TIMER_Open(TIMER2, TIMER_PERIODIC_MODE, baud);
     TIMER_EnableInt(TIMER2);
-    TIMER_Start(TIMER2);
 
     *(pucTxpin) = 1;     // Tx pin high (IDLE)
     usTxBufferRead = 0;
     usTxBufferWrite = 0;
     usTxData = 0;
+
+    TIMER_Start(TIMER2);
 }
 
 
 void write(uint8_t ucData)
 {
-    uint16_t usTemp;
+    uint16_t usTemp = (usTxBufferWrite + 1) % Tx_BUFFER_SIZE;
 
-    usTemp = usTxBufferWrite + 1;
-    if(usTemp == usTxBufferLen) {
-        usTemp = 0;
-    }
-    while(usTemp == *(volatile uint8_t *)(&(usTxBufferRead))) {
-    }
+    while(usTemp == usTxBufferRead);
+
     pucTxBuffer[usTxBufferWrite] = ucData;
+    asm volatile ("" : : : "memory");
     usTxBufferWrite = usTemp;
 }
 
@@ -99,25 +96,23 @@ void end()
     TIMER_DisableInt(TIMER2);
 }
 
-inline uint16_t getNewData() {
-    if(usTxBufferRead == usTxBufferWrite) return 0;
-    uint16_t v = START_BIT + ((pucTxBuffer[usTxBufferRead]) << 1) + STOP_BIT;
-    if (++usTxBufferRead == usTxBufferLen) {
-        usTxBufferRead = 0;
-    }
-    return v;
+inline void getNewData() {
+    if(usTxBufferRead == usTxBufferWrite) return;
+
+    usTxData = START_BIT + ((pucTxBuffer[usTxBufferRead]) << 1) + STOP_BIT;
+    usTxBufferRead = (usTxBufferRead + 1) % Tx_BUFFER_SIZE;
 }
 
 extern "C"
 {
 void TMR2_IRQHandler(void) {
+    if(usTxData) {
+        *(pucTxpin) = usTxData & 1;
+        usTxData >>= 1;
+    } else {
+        getNewData();
+    }
     TIMER_ClearIntFlag(TIMER2);
-        if(usTxData) {
-            *(pucTxpin) = usTxData & 1;
-            usTxData >>= 1;
-            return;
-        }
-    usTxData = getNewData();
 }
 }
 

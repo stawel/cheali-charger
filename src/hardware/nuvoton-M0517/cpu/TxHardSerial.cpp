@@ -31,7 +31,6 @@ namespace TxHardSerial {
 #define Tx_BUFFER_SIZE  256
 
 uint8_t  pucTxBuffer[Tx_BUFFER_SIZE];
-uint16_t usTxBufferLen=Tx_BUFFER_SIZE;
 
 volatile uint16_t usTxBufferRead;
 volatile uint16_t usTxBufferWrite;
@@ -51,29 +50,28 @@ void initialize()
 
 void begin(unsigned long baud)
 {
+    usTxBufferRead = 0;
+    usTxBufferWrite = 0;
+
     /* Configure UART0 and set UART0 Baudrate */
     UART0->BAUD = UART_BAUD_MODE2 | UART_BAUD_MODE2_DIVIDER(__HXT, baud);
     UART0->LCR = UART_WORD_LEN_8 | UART_PARITY_NONE | UART_STOP_BIT_1;
     UART0->IER = UART_IER_THRE_IEN_Msk;
 
     NVIC_SetPriority(UART0_IRQn,HARDWARE_SERIAL_IRQ_PRIORITY);
-
-    usTxBufferRead = 0;
-    usTxBufferWrite = 0;
 }
 
 
 void write(uint8_t ucData)
 {
-    uint16_t usTemp;
-    usTemp = usTxBufferWrite + 1;
-    if(usTemp == usTxBufferLen) {
-        usTemp = 0;
-    }
-    while(usTemp == *(volatile uint8_t *)(&(usTxBufferRead))) {
-    }
+    uint16_t usTemp = (usTxBufferWrite + 1) % Tx_BUFFER_SIZE;
+
+    while(usTemp == usTxBufferRead);
+
     pucTxBuffer[usTxBufferWrite] = ucData;
+    asm volatile ("" : : : "memory");
     usTxBufferWrite = usTemp;
+    asm volatile ("" : : : "memory");
     NVIC_EnableIRQ(UART0_IRQn);
 }
 
@@ -100,9 +98,7 @@ void UART0_IRQHandler(void) {
     }
     while(((UART0->FSR & UART_FSR_TX_FULL_Msk) == 0) && (usTxBufferRead != usTxBufferWrite)) {
         UART_WRITE(UART0, pucTxBuffer[usTxBufferRead]);
-        if (++usTxBufferRead == usTxBufferLen) {
-            usTxBufferRead = 0;
-        }
+        usTxBufferRead = (usTxBufferRead + 1) % Tx_BUFFER_SIZE;
     }
 }
 }
