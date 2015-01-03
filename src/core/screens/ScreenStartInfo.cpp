@@ -51,9 +51,9 @@ void Screen::StartInfo::displayStartInfo()
 {
     lcdSetCursor0_0();
     ProgramData::currentProgramData.printBatteryString();
-    lcdPrintChar(' ');
+    lcdPrintSpace1();
     ProgramData::currentProgramData.printVoltageString();
-    lcdPrintChar(' ');
+    lcdPrintSpace1();
     printProgram2chars(Program::programType);
 
     lcdSetCursor0_1();
@@ -71,7 +71,7 @@ void Screen::StartInfo::displayStartInfo()
         else lcdPrintSpaces(5);
 
         if(bindex & 4) lcdPrintDigit(AnalogInputs::getConnectedBalancePorts());
-        else lcdPrintChar(' ');
+        else lcdPrintSpace1();
     } else {
 
         lcdPrintCharge(ProgramData::currentProgramData.battery.C, 6);

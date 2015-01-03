@@ -35,7 +35,7 @@ namespace Screen {
 
     void printCharge() {
         lcdPrintCharge(AnalogInputs::getRealValue(AnalogInputs::Cout), 8);
-        lcdPrintChar(' ');
+        lcdPrintSpace1();
     }
 
     void printCharAndTime() {
@@ -53,9 +53,9 @@ namespace Screen {
             c = 'W';
         }
         lcdPrintChar(c);
-        lcdPrintChar(' ');
+        lcdPrintSpace1();
         lcdPrintTime(Monitor::getTimeSec());
-        lcdPrintChar(' ');
+        lcdPrintSpace1();
     }
 
     void printDeltaV() {
@@ -100,9 +100,8 @@ void Screen::Methods::displayCIVlimits()
 {
     lcdSetCursor0_0();
     lcdPrintCharge(ProgramData::currentProgramData.getCapacityLimit(), 8);
-    lcdPrintChar(' ');
-    lcdPrintCurrent(Strategy::maxI, 7);  //failed value on Nixx
-    //ProgramData::currentProgramData.printIcString();
+    lcdPrintSpace1();
+    lcdPrintCurrent(Strategy::maxI, 7);
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
@@ -114,11 +113,18 @@ void Screen::Methods::displayCIVlimits()
 void Screen::Methods::displayTime()
 {
     lcdSetCursor0_0();
-    lcdPrint_P(PSTR("time:     ")); lcdPrintTime(Monitor::getTimeSec());
+#ifdef ENABLE_TIME_LIMIT
+    lcdPrintSpace1();
+    ProgramData::currentProgramData.printTimeString();
+    lcdPrintSpaces(2);
+#else
+    lcdPrint_P(PSTR("time:     "));
+#endif
+    lcdPrintTime(Monitor::getTimeSec());
     lcdSetCursor0_1();
     lcdPrint_P(PSTR("b "));
     lcdPrintTime(Monitor::getTotalBalanceTimeSec());
-    lcdPrint_P(PSTR("  "));
+    lcdPrintSpaces(2);
     lcdPrintTime(Monitor::getTotalChargeDischargeTimeSec());
 }
 
@@ -231,15 +237,16 @@ void Screen::Methods::displayEnergy()
         lcdPrintSpaces();
         lcdSetCursor0_1();
         printCharAndTime();
-        lcdPrint_P(PSTR(" "));
+        lcdPrintSpace1();
     } else {
         AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
-        lcdPrint_P(PSTR(" "));
+        lcdPrintSpace1();
         AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
         lcdPrintSpaces();
         lcdSetCursor0_1();
         AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
-        lcdPrint_P(PSTR("  "));
+        lcdPrintSpaces(2);
+
     }
 
     uint8_t procent = Monitor::getChargeProcent();

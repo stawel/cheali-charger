@@ -42,6 +42,7 @@ uint8_t lcdPrint_P(const char * const str[], uint8_t index);
 uint8_t lcdPrint_P(const char *str);
 uint8_t lcdPrint_E(const char *str, uint8_t n);
 uint8_t lcdPrint  (const char *str, uint8_t n);
+uint8_t lcdPrintSpace1();
 uint8_t lcdPrintSpaces();
 uint8_t lcdPrintSpaces(uint8_t n);
 

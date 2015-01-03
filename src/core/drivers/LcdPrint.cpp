@@ -40,6 +40,11 @@ void lcdClear()
 }
 
 
+uint8_t lcdPrintSpace1()
+{
+    return lcdPrintSpaces(1);
+}
+
 uint8_t lcdPrintSpaces()
 {
     return lcdPrintSpaces(16);

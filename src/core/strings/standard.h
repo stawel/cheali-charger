@@ -52,7 +52,7 @@ namespace options {
 }
 
 namespace programData {
-    STRING(unlimited,   "unlimited");
+    STRING(unlimited,   "nolimit");
     STRING(minutes,     "min.");
 
     //battery types

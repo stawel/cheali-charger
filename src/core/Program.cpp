@@ -78,6 +78,7 @@ void Program::setupTheveninCharge()
 
 void Program::setupDeltaCharge()
 {
+    Strategy::setVI(ProgramData::VCharge, true);
     Strategy::strategy = &DeltaChargeStrategy::vtable;
 }
 

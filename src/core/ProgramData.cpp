@@ -332,7 +332,7 @@ void ProgramData::printTimeString() const
     if(battery.time == 1000) {
         lcdPrint_P(string_unlimited);
     } else {
-        lcdPrintUInt(battery.time);
+        lcdPrintUnsigned(battery.time, 3);
         lcdPrint_P(string_minutes);
     }
 }

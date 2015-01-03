@@ -198,10 +198,8 @@ void printInt(int16_t x)
 
 void printULong(uint32_t x)
 {
-//    char buf[8];
     char buf[15];
     char *str = buf;
-//    uint8_t maxSize = 7;
     uint8_t maxSize = 14;
     ::printULong(str, maxSize, x);
     printString(buf);
