@@ -24,7 +24,7 @@
 //based on: http://www.dx.com/p/2-5-lcd-ac-dc-dual-power-b6ac-80w-rc-balance-charger-discharger-123252
 #undef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
 
-#define MAX_CHARGE_V            ANALOG_VOLT(27.000)
+#define MAX_CHARGE_V            ANALOG_VOLT(26.000)
 #define MAX_CHARGE_I            ANALOG_AMP(6.000)
 #define MAX_CHARGE_P            ANALOG_WATT(80.000)
 
