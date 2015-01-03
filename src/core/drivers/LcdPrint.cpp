@@ -159,6 +159,10 @@ uint8_t lcdPrint(const char *str, uint8_t size)
     return n;
 }
 
+uint8_t lcdPrint_P(const char * const str[], uint8_t index) {
+    return lcdPrint_P(pgm::read(&str[index]));
+}
+
 
 uint8_t lcdPrint_P(const char *str)
 {

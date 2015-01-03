@@ -26,5 +26,5 @@ StaticMenu::StaticMenu(const char * const staticMenu[]):
 
 
 void StaticMenu::printItem(uint8_t i) {
-        lcdPrint_P(pgm::read(&staticMenu_[i]));
+        lcdPrint_P(staticMenu_, i);
 }

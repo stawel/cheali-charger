@@ -93,7 +93,7 @@ namespace ProgramMenus {
         virtual void printItem(uint8_t i) {
             STATIC_ASSERT(sizeOfArray(programMenus_strings)-1 == Program::EditBattery);
 
-            lcdPrint_P(pgm::read(&programMenus_strings[getProgramType(i)]));
+            lcdPrint_P(programMenus_strings, getProgramType(i));
         }
 
         static uint8_t countElements(const Program::ProgramType * typeMenu) {

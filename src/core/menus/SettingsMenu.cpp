@@ -258,12 +258,12 @@ const char * const SettingsUARTinput[] PROGMEM = {
 
 void SettingsMenu::printUART() const
 {
-    lcdPrint_P(pgm::read(&SettingsUART[p_.UART]));
+    lcdPrint_P(SettingsUART, p_.UART);
 }
 
 void SettingsMenu::printUARTinput() const
 {
-    lcdPrint_P(pgm::read(&SettingsUARTinput[p_.UARTinput]));
+    lcdPrint_P(SettingsUARTinput, p_.UARTinput);
 }
 
 void SettingsMenu::printUARTSpeed() const

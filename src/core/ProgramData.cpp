@@ -176,7 +176,7 @@ void ProgramData::loadDefault()
 }
 
 
-void ProgramData::printBatteryString() const { lcdPrint_P(pgm::read(&batteryString[battery.type])); }
+void ProgramData::printBatteryString() const { lcdPrint_P(batteryString, battery.type); }
 
 void ProgramData::printVoltageString() const
 {
