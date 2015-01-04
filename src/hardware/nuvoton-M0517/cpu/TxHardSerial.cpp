@@ -69,9 +69,9 @@ void write(uint8_t ucData)
     while(usTemp == usTxBufferRead);
 
     pucTxBuffer[usTxBufferWrite] = ucData;
-    asm volatile ("" : : : "memory");
+    __sync_synchronize();
     usTxBufferWrite = usTemp;
-    asm volatile ("" : : : "memory");
+    __sync_synchronize();
     NVIC_EnableIRQ(UART0_IRQn);
 }
 

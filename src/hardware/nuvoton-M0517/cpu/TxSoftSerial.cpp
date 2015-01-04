@@ -80,7 +80,7 @@ void write(uint8_t ucData)
     while(usTemp == usTxBufferRead);
 
     pucTxBuffer[usTxBufferWrite] = ucData;
-    asm volatile ("" : : : "memory");
+    __sync_synchronize();
     usTxBufferWrite = usTemp;
 }
 
