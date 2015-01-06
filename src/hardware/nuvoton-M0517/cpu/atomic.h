@@ -27,6 +27,7 @@ extern uint8_t __atomic_h_irq_count;
 static __inline__ uint8_t __iCliRetVal(void)
 {
     __disable_irq();
+    __asm__ volatile ("" ::: "memory");
     __atomic_h_irq_count++;
     return __atomic_h_irq_count;
 }
@@ -35,6 +36,7 @@ static __inline__ void __iRestore(uint8_t *__s)
 {
     __atomic_h_irq_count --;
     if(__atomic_h_irq_count == 0) {
+        __asm__ volatile ("" ::: "memory");
         __enable_irq();
     }
 }
