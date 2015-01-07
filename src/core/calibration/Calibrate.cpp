@@ -156,11 +156,14 @@ void calibrateSimplifiedVb1_pin(AnalogInputs::ValueType real_v)
     p1.y = real_v + AnalogInputs::getRealValue(AnalogInputs::Vb0_pin);
     p2.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vb2_pin);
     p2.y = p1.y + AnalogInputs::getRealValue(AnalogInputs::Vb2);
-    //TODO: ??? Vb0_pin
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb0_pin, 1, p1);
 
+    //info: we assume that Vb0_pin and Vb1_pin have identically voltage dividers
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb0_pin, 1, p1);
     AnalogInputs::setCalibrationPoint(AnalogInputs::Vb1_pin, 1, p1);
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, 1, p2);
+
+    if(AnalogInputs::isConnected(AnalogInputs::Vb2)) {
+        AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, 1, p2);
+    }
 }
 void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
 {
@@ -180,7 +183,7 @@ bool testVout(bool balancePort)
     bool displayed = false;
     do {
         if(AnalogInputs::isConnected(AnalogInputs::Vout)) {
-            if(AnalogInputs::isBalancePortConnected() == balancePort)
+            if(AnalogInputs::isConnected(AnalogInputs::Vb1) == balancePort)
                 return true;
             if(!displayed) {
                 if(balancePort) {
