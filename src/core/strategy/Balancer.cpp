@@ -15,6 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#define __STDC_LIMIT_MACROS
 #include "ProgramData.h"
 #include "Balancer.h"
 #include "Screen.h"
@@ -26,7 +27,7 @@
 
 namespace Balancer {
     uint8_t cells;
-    uint8_t minCell;
+    int8_t minCell;
     uint8_t balance;
     bool done;
     AnalogInputs::ValueType Von_[MAX_BANANCE_CELLS], Voff_[MAX_BANANCE_CELLS];
@@ -53,8 +54,19 @@ namespace Balancer {
         doStrategy
     };
 
-
 } // namespace Balancer
+
+bool Balancer::isCalibrationRequired() {
+    AnalogInputs::ValueType Vmin = UINT16_MAX, Vmax = 0;
+    for(int i = 0; i < cells; i++) {
+        AnalogInputs::ValueType vi = getPresumedV(i);
+        if(Vmax < vi) Vmax = vi;
+        if(vi < Vmin) Vmin = vi;
+    }
+
+    return Vmax - Vmin > settings.balancerError;
+}
+
 
 void Balancer::powerOn()
 {
@@ -69,6 +81,7 @@ void Balancer::powerOn()
     done = false;
     setBalance(0);
     balancingEnded = 0;
+    resetMinCell();
 }
 
 uint8_t Balancer::getCellMinV()
@@ -130,21 +143,28 @@ void Balancer::setBalance(uint8_t v)
 void Balancer::startBalacing()
 {
     //test if battery has recovered after last balancing
-    if(!isStable(balancerStartStableCount))
+    if(!isStable(balancerStartStableCount) || !AnalogInputs::isOutStable())
         return;
 
-    minCell = getCellMinV();
+    if(minCell < 0) {
+        minCell = getCellMinV();
+    }
     AnalogInputs::ValueType vmin = getV(minCell);
 
     //test if we can still discharge
     bool off = true;
-    if(vmin >= ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VDischarge)) {
-        for(int i = 0; i < cells; i++) {
-            //save voltage values
-            Von_[i] = Voff_[i] = getV(i);
-            if(Von_[i] - vmin > settings.balancerError)
-                off = false;
+    AnalogInputs::ValueType VdisMin =  ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VDischarge);
+    for(int i = 0; i < cells; i++) {
+        //save voltage values
+        AnalogInputs::ValueType v = getV(i);
+        if(v < VdisMin) {
+            off = true;
+            break;
         }
+        if(v > vmin) {
+            off = false;
+        }
+        Von_[i] = Voff_[i] = v;
     }
 
     savedVon = false;
@@ -158,19 +178,15 @@ void Balancer::startBalacing()
 
 uint8_t Balancer::calculateBalance()
 {
+    if(minCell < 0) {
+        return 0;
+    }
     AnalogInputs::ValueType vmin = getPresumedV(minCell);
     uint8_t retu = 0, b = 1;
     for(uint8_t c = 0; c < cells; c++) {
         AnalogInputs::ValueType v = getPresumedV(c);
-        if(b & balance) {
-            // if ON
-            if(v > vmin)
-                retu |=b;
-        } else {
-            // if OFF
-            if(v > vmin + (settings.balancerError+1)/2)
-                retu |=b;
-        }
+        if(v > vmin)
+            retu |=b;
         b<<=1;
     }
     return retu;
@@ -202,15 +218,12 @@ uint16_t Balancer::getBalanceTime()
 
 Strategy::statusType Balancer::doStrategy()
 {
-    if(isStable()) {
-        if(balance == 0) {
+    if(balance == 0) {
             startBalacing();
-        } else {
-            trySaveVon();
-            uint8_t balance = calculateBalance();
-            if((balance & (~balance)) || getBalanceTime() > maxBalanceTime) {
-                setBalance(0);
-            }
+    } else {
+        trySaveVon();
+        if(getBalanceTime() > maxBalanceTime) {
+            setBalance(0);
         }
     }
     if((!isWorking()) && done)
@@ -222,8 +235,6 @@ Strategy::statusType Balancer::doStrategy()
 bool Balancer::isMaxVout(AnalogInputs::ValueType maxV)
 {
     for(uint8_t c = 0; c < cells; c++) {
-        if(getV(c) >= maxV)
-            return true;
         if(getPresumedV(c) >= maxV)
             return true;
 
@@ -234,8 +245,6 @@ bool Balancer::isMaxVout(AnalogInputs::ValueType maxV)
 bool Balancer::isMinVout(AnalogInputs::ValueType minV)
 {
     for(uint8_t c = 0; c < cells; c++) {
-        if(getV(c) <= minV)
-            return true;
         if(getPresumedV(c) <= minV)
             return true;
 

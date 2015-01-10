@@ -33,14 +33,14 @@
 
 namespace Balancer {
 
-    const static uint16_t maxBalanceTime = 30; //30/2s
-    const static uint16_t balancerStartStableCount = 10; //10/2s
+    const static uint16_t maxBalanceTime = 15; //15s
+    const static uint16_t balancerStartStableCount = 6; //6*0.7s
 
     extern const Strategy::VTable vtable;
 
     extern uint8_t balance;
     extern bool savedVon;
-    extern uint8_t minCell;
+    extern int8_t minCell;
     extern bool done;
     extern uint16_t balancingEnded;
     extern uint8_t cells;
@@ -59,11 +59,13 @@ namespace Balancer {
     AnalogInputs::ValueType getV(uint8_t cell);
     AnalogInputs::ValueType getPresumedV(uint8_t cell);
     inline AnalogInputs::ValueType getRealV(uint8_t cell) { return getPresumedV(cell); }
+    inline void resetMinCell() { minCell = -1; }
     bool isWorking();
 
     bool isMaxVout(AnalogInputs::ValueType maxV);
     bool isMinVout(AnalogInputs::ValueType minV);
     bool isStable(const uint16_t stableCount = AnalogInputs::STABLE_MIN_VALUE);
+    bool isCalibrationRequired();
     void endBalancing();
 
     AnalogInputs::ValueType calculatePerCell(AnalogInputs::ValueType v);

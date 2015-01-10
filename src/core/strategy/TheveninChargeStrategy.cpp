@@ -69,7 +69,11 @@ bool TheveninChargeStrategy::isEndVout()
     AnalogInputs::ValueType Vc = Strategy::endV;
     AnalogInputs::ValueType Vc_per_cell = Balancer::calculatePerCell(Vc);
 
-    return Vc <= AnalogInputs::getVbattery() || Balancer::isMaxVout(Vc_per_cell);
+    bool end = Balancer::isMaxVout(Vc_per_cell);
+    if(!Balancer::isWorking()) {
+        end = end || Vc <= AnalogInputs::getVbattery();
+    }
+    return  end;
 }
 
 
