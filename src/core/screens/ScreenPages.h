@@ -65,7 +65,7 @@ BALANCER_PORTS_GT_6(
             {Screen::Methods::displayTime,          PAGE_ALWAYS, PAGE_START_INFO},
             {Screen::Methods::displayTemperature,   PAGE_ALWAYS, PAGE_NONE},
             {Screen::Cycle::displayCycles,          PAGE_PROGRAM(Program::DischargeChargeCycle), PAGE_START_INFO},
-            {Screen::Methods::displayCIVlimits,     PAGE_ALWAYS, PAGE_PROGRAM(Program::Storage) + PAGE_PROGRAM(Program::Balance) + PAGE_START_INFO},
+            {Screen::Methods::displayCIVlimits,     PAGE_ALWAYS, PAGE_PROGRAM(Program::Balance) + PAGE_START_INFO},
             {Screen::Methods::displayVinput,        PAGE_ALWAYS, PAGE_NONE},
 
             {NULL, PAGE_ALWAYS, PAGE_NONE}
