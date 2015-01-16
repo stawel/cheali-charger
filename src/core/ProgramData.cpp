@@ -238,13 +238,14 @@ void ProgramData::changeBatteryType(int direction)
 
 void ProgramData::changeVoltage(int direction)
 {
-    uint16_t max = getMaxCells();
-    change0ToMaxSmart(&battery.cells, direction, max, battery.type == Unknown ? 50: 0,1);
+    changeMinToMaxStep(&battery.cells, direction, 1, getMaxCells(), (battery.type == Unknown) ? 50 : 1);
+    check();
 }
 
 void ProgramData::changeCharge(int direction)
 {
-    change0ToMaxSmart(&battery.C, direction, PROGRAM_DATA_MAX_CHARGE,0,100);
+    change0ToInfSmart(&battery.C, direction);
+    check();
     battery.Ic = battery.C;
     if(isPb())
         battery.Ic/=4; //0.25C
@@ -290,19 +291,13 @@ uint16_t ProgramData::getMaxId() const
 
 void ProgramData::changeIc(int direction)
 {
-#ifdef ENABLE_ZERO_AMP
-    change0ToMaxSmart(&battery.Ic, direction, getMaxIc());
-#else
-    change100ToMaxSmart(&battery.Ic, direction, getMaxIc());
-#endif
+    change0ToInfSmart(&battery.Ic, direction);
+    check();
 }
 void ProgramData::changeId(int direction)
 {
-#ifdef ENABLE_ZERO_AMP
-    change0ToMaxSmart(&battery.Id, direction, getMaxId());
-#else
-    change100ToMaxSmart(&battery.Id, direction, getMaxId());
-#endif
+    change0ToInfSmart(&battery.Id, direction);
+    check();
 }
 
 uint16_t ProgramData::getMaxCells() const
@@ -315,6 +310,16 @@ void ProgramData::check()
 {
     uint16_t v;
 
+    v = PROGRAM_DATA_MIN_CHARGE;
+    if(battery.C < v) battery.C = v;
+    v = PROGRAM_DATA_MAX_CHARGE;
+    if(battery.C > v) battery.C = v;
+
+#ifdef ENABLE_TIME_LIMIT
+    v = PROGRAM_DATA_MAX_TIME;
+    if(battery.time > v) battery.time = v;
+#endif
+
     v = getMaxCells();
     if(battery.cells > v) battery.cells = v;
 
@@ -323,13 +328,17 @@ void ProgramData::check()
 
     v = getMaxId();
     if(battery.Id > v) battery.Id = v;
+
+    v = settings.minIout;
+    if(battery.Ic < v) battery.Ic = v;
+    if(battery.Id < v) battery.Id = v;
 }
 
 #ifdef ENABLE_TIME_LIMIT
 
 void ProgramData::printTimeString() const
 {
-    if(battery.time == 1000) {
+    if(battery.time == PROGRAM_DATA_MAX_TIME) {
         lcdPrint_P(string_unlimited);
     } else {
         lcdPrintUnsigned(battery.time, 3);
@@ -339,6 +348,7 @@ void ProgramData::printTimeString() const
 
 void ProgramData::changeTime(int direction)
 {
-    change0ToMaxSmart(&battery.time, direction, 1000,0,1);
+    change0ToInfSmart(&battery.time, direction);
+    check();
 }
 #endif

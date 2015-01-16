@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+#define __STDC_LIMIT_MACROS
 #include "Utils.h"
 #include "Hardware.h"
 #include "AnalogInputs.h"
@@ -85,46 +85,37 @@ uint8_t digits(uint32_t x)
 
 void change0ToMax(uint16_t *v, int dir, uint8_t max)
 {
-    if( ((int)*v) + dir< 0) *v = 0;
-    else if(((int)*v)+dir > max) *v = max;
-    else *v+=dir;
+    changeMinToMaxStep(v, dir, 0, max, 1);
 }
 
 void change1ToMax(uint16_t *v, int dir, uint8_t max)
 {
-    if( ((int)*v) + dir< 1) *v = 1;
-    else if(((int)*v)+dir > max) *v = max;
-    else *v+=dir;
+    changeMinToMaxStep(v, dir, 1, max, 1);
 }
 
-void change0ToMaxSmart(uint16_t *v, int dir, uint16_t max)
+void change0ToInfSmart(uint16_t *v, int dir)
 {
-    return change0ToMaxSmart(v, dir, max, 0, 0);
+    changeMinToMaxSmart(v, dir, 0, UINT16_MAX);
 }
 
-void change100ToMaxSmart(uint16_t *v, int dir, uint16_t max)
+void changeMinToMaxSmart(uint16_t *v, int dir, uint16_t min, uint16_t max)
 {
-    return change0ToMaxSmart(v, dir, max, 0, 100);
-}
-
-void change0ToMaxSmart(uint16_t *v, int dir, uint16_t max, int16_t step, uint8_t starting)
-{
-    uint16_t r;
-
     uint8_t dv = digits(*v);
-    if(step == 0) {
-        step = 1;
-        if(dv>1) step = pow10(dv-2);
-    }
+    uint16_t step = 1;
+    if(dv>1) step = pow10(dv-2);
+    changeMinToMaxStep(v, dir, min, max, step);
+}
 
-    r = (*v)%step;
+void changeMinToMaxStep(uint16_t *v, int dir, uint16_t min, uint16_t max, uint16_t step)
+{
+    uint16_t r = (*v)%step;
 
     if(r) {
         if(dir > 0) step -=r;
         else step = r;
     }
     if(dir > 0) ADD_MAX(*v, step, max);
-    else SUB_MIN(*v, step ,starting);
+    else SUB_MIN(*v, step, min);
 }
 
 uint8_t waitButtonPressed()

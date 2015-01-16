@@ -248,7 +248,7 @@ Strategy::statusType Monitor::run()
     }
 
 #ifdef ENABLE_TIME_LIMIT
-    if (ProgramData::currentProgramData.getTimeLimit() < 1000)  //unlimited
+    if (ProgramData::currentProgramData.getTimeLimit() < PROGRAM_DATA_MAX_TIME)  //unlimited
     {
         uint16_t charge_time = getTotalChargeDischargeTimeMin();
         uint16_t time_limit  = ProgramData::currentProgramData.getTimeLimit();
