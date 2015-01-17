@@ -18,7 +18,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "atomic.h"
+#include <atomic>
 #include "Hardware.h"
 #include "TxHardSerial.h"
 #include "irq_priority.h"
@@ -30,10 +30,10 @@ namespace TxHardSerial {
 
 #define Tx_BUFFER_SIZE  256
 
-uint8_t  pucTxBuffer[Tx_BUFFER_SIZE];
+uint8_t  txBuffer_[Tx_BUFFER_SIZE];
 
-volatile uint16_t usTxBufferRead;
-volatile uint16_t usTxBufferWrite;
+std::atomic<uint16_t> tail_(0);
+std::atomic<uint16_t> head_(0);
 
 
 void initialize()
@@ -50,9 +50,6 @@ void initialize()
 
 void begin(unsigned long baud)
 {
-    usTxBufferRead = 0;
-    usTxBufferWrite = 0;
-
     /* Configure UART0 and set UART0 Baudrate */
     UART0->BAUD = UART_BAUD_MODE2 | UART_BAUD_MODE2_DIVIDER(__HXT, baud);
     UART0->LCR = UART_WORD_LEN_8 | UART_PARITY_NONE | UART_STOP_BIT_1;
@@ -64,21 +61,19 @@ void begin(unsigned long baud)
 
 void write(uint8_t ucData)
 {
-    uint16_t usTemp = (usTxBufferWrite + 1) % Tx_BUFFER_SIZE;
+    uint16_t i = (head_.load(std::memory_order_relaxed) + 1) % Tx_BUFFER_SIZE;
 
-    while(usTemp == usTxBufferRead);
+    while(i == tail_.load(std::memory_order_acquire));
 
-    pucTxBuffer[usTxBufferWrite] = ucData;
-    __sync_synchronize();
-    usTxBufferWrite = usTemp;
-    __sync_synchronize();
+    txBuffer_[i] = ucData;
+    head_.store(i,  std::memory_order_release);
     NVIC_EnableIRQ(UART0_IRQn);
 }
 
 
 void flush()
 {
-    while(usTxBufferRead != usTxBufferWrite);
+    while(tail_.load(std::memory_order_acquire) != head_.load(std::memory_order_relaxed));
     while((UART0->FSR & UART_FSR_TE_FLAG_Msk) == 0);
 }
 
@@ -91,14 +86,19 @@ void end()
 extern "C"
 {
 void UART0_IRQHandler(void) {
-    if(usTxBufferRead == usTxBufferWrite) {
+    uint16_t i = tail_.load(std::memory_order_relaxed);
+    if(i == head_.load(std::memory_order_acquire)) {
         if((UART0->FSR & UART_FSR_TE_FLAG_Msk) == 0)
             NVIC_DisableIRQ(UART0_IRQn);
         return;
     }
-    while(((UART0->FSR & UART_FSR_TX_FULL_Msk) == 0) && (usTxBufferRead != usTxBufferWrite)) {
-        UART_WRITE(UART0, pucTxBuffer[usTxBufferRead]);
-        usTxBufferRead = (usTxBufferRead + 1) % Tx_BUFFER_SIZE;
+    while((UART0->FSR & UART_FSR_TX_FULL_Msk) == 0) {
+        i = (i + 1) % Tx_BUFFER_SIZE;
+        UART_WRITE(UART0, txBuffer_[i]);
+        tail_.store(i, std::memory_order_release);
+        if(i == head_.load(std::memory_order_acquire)) {
+            break;
+        }
     }
 }
 }
