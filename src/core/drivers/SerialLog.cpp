@@ -124,7 +124,7 @@ void send()
 
 void doIdle()
 {
-    static int16_t analogCount;
+    static uint16_t analogCount;
     if(!AnalogInputs::isPowerOn()) {
         analogCount = 0;
     } else {
