@@ -95,7 +95,8 @@ charing/discharging...:
 - charger is working now, press "inc", "dec" to see more screens
 - to exit the program press "stop"
 
-Informations about [settings](docs/settings/settings.md).
+1. informations about [settings](docs/settings/settings.md)
+2. [charging NiMH and NiCd batteries](docs/nimh_nicd_charging.md)
 
 [Flashing](docs/flashing.md)
 ----------------------------
@@ -170,6 +171,7 @@ Useful materials
 - Panasonic [ni-mh-handbook-2014](http://eu.industrial.panasonic.com/sites/default/pidseu/files/downloads/files/ni-mh-handbook-2014_interactive.pdf), Duracell [Ni-MH_Rechargeable_Batteries_2007](http://www6.zetatalk.com/docs/Batteries/Chemistry/Duracell_Ni-MH_Rechargeable_Batteries_2007.pdf)
 - [batteryuniversity.com](http://batteryuniversity.com/)
 - Atmel [AVR463: Charging Nickel-Metal Hydride Batteries with ATAVRBC100](http://www.atmel.com/Images/doc8098.pdf)
+- Atmel [AVR121: Enhancing ADC resolution by oversampling](http://www.atmel.com/images/doc8003.pdf)
 
 Mailing list
 ------------
