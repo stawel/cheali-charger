@@ -43,6 +43,10 @@ namespace Discharger {
 
         uint32_t i = MAX_DISCHARGE_P;
         uint16_t v = AnalogInputs::getVout();
+        if (v == 0) {
+            v = 1;
+        }
+
         i *= ANALOG_VOLT(1);
         i /= v;
 

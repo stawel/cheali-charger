@@ -146,12 +146,14 @@ AnalogInputs::ValueType TheveninMethod::calculateNewI(bool isEndVout, AnalogInpu
 
     if(updateI) {
 
-        LogDebug(" I=", I, " tVout_=", tVout_.Rth.iV, ',', tVout_.Rth.uI, ',', tVout_.Vth_);
+        LogDebug(" I=", I, " tVout_: Rth=", tVout_.Rth.iV, ',', tVout_.Rth.uI, " Vth=", tVout_.Vth_);
 
         calculateRthVth(I);
         storeI(I);
 
         newI_ = calculateI();
+
+        LogDebug("newI=", newI_);
 
         if(newI_ < I) {
             //low pass filter
@@ -193,6 +195,8 @@ AnalogInputs::ValueType TheveninMethod::calculateNewI(bool isEndVout, AnalogInpu
             break;
         }
     }
+
+    LogDebug("normalized newI=", newI_);
     return newI_;
 }
 

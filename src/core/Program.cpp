@@ -130,8 +130,6 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
     case Program::DischargeChargeCycle:
         return ProgramDCcycle::runDCcycle();
     default:
-        //TODO:
-        Screen::runNotImplemented();
         return Strategy::ERROR;
     }
     return Strategy::doStrategy();
