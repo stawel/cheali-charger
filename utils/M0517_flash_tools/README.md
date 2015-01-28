@@ -9,6 +9,22 @@ flash:
 source M0517_flash.tcl
 FlashAprom cheali-charger.bin
 
++-SRAM--------------+
+| flash_pgm:        |
+|   FlashInit       |
+|   EraseSectors    |
+|   ProgramPage     |
+|                   |
++-(SRAM + 0x120)----+
+|                   |
+|  flash_buffer     |
+|  7*512b           |
+|                   |
++-(SRAM + 0xF20)----+
+|                   |
+|     stack         |
++-------------------+
+
 unlock:
 source M0517_flash.tcl
 ReadConf
