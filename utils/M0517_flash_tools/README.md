@@ -34,7 +34,7 @@ SRAM alocation
 
 unlock:
 ```
-source M0517_flash.tcl
+source M0517_unlock.tcl
 ReadConf
 EraseChip
 WriteConf
