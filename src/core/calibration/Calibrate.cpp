@@ -490,8 +490,8 @@ void run()
 bool checkMax(AnalogInputs::ValueType maxVal, uint16_t maxAdc, AnalogInputs::Name name)
 {
     AnalogInputs::ValueType t = AnalogInputs::calibrateValue(name, maxAdc);
-    if(t < maxVal+maxVal/4
-        && maxVal-maxVal/4 < t)
+    if(t < maxVal+maxVal/2
+        && maxVal-maxVal/2 < t)
         return true;
     return false;
 }
