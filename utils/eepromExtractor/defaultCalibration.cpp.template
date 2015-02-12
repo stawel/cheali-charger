@@ -1,6 +1,6 @@
-echo "/*
+/*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2014  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,43 +16,37 @@ echo "/*
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include \"AnalogInputsPrivate.h\"
-#include \"memory.h\"
-#include \"Utils.h\"
+#include "AnalogInputsPrivate.h"
+#include "memory.h"
+#include "Utils.h"
 
-const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
+const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {{
 
-    {{$c_p0_x__Vout_plus_pin,    $c_p0_y__Vout_plus_pin},         {$c_p1_x__Vout_plus_pin, $c_p1_y__Vout_plus_pin}},   //Vout_plus_pin
-    {{$c_p0_x__Vout_minus_pin,   $c_p0_y__Vout_minus_pin},        {$c_p1_x__Vout_minus_pin,$c_p1_y__Vout_minus_pin}},  //Vout_minus_pin
-    {{$c_p0_x__Ismps,            $c_p0_y__Ismps},                 {$c_p1_x__Ismps,         $c_p1_y__Ismps}},           //Ismps
-    {{$c_p0_x__Idischarge,       $c_p0_y__Idischarge},            {$c_p1_x__Idischarge,    $c_p1_y__Idischarge}},      //Idischarge
+    {{{{{calibration[0].p[0].x},  {calibration[0].p[0].y}}},         {{{calibration[0].p[1].x},  {calibration[0].p[1].y}}}}},   //Vout_plus_pin
+    {{{{{calibration[1].p[0].x},  {calibration[1].p[0].y}}},         {{{calibration[1].p[1].x},  {calibration[1].p[1].y}}}}},   //Vout_minus_pin
+    {{{{{calibration[2].p[0].x},  {calibration[2].p[0].y}}},         {{{calibration[2].p[1].x},  {calibration[2].p[1].y}}}}},   //Ismps
+    {{{{{calibration[3].p[0].x},  {calibration[3].p[0].y}}},         {{{calibration[3].p[1].x},  {calibration[3].p[1].y}}}}},   //Idischarge
+
+    {{{{{calibration[4].p[0].x},  {calibration[4].p[0].y}}},         {{{calibration[4].p[1].x},  {calibration[4].p[1].y}}}}},   //VoutMux
+    {{{{{calibration[5].p[0].x},  {calibration[5].p[0].y}}},         {{{calibration[5].p[1].x},  {calibration[5].p[1].y}}}}},   //Tintern
+    {{{{{calibration[6].p[0].x},  {calibration[6].p[0].y}}},         {{{calibration[6].p[1].x},  {calibration[6].p[1].y}}}}},   //Vin
+    {{{{{calibration[7].p[0].x},  {calibration[7].p[0].y}}},         {{{calibration[7].p[1].x},  {calibration[7].p[1].y}}}}},   //Textern
+
+    {{{{{calibration[8].p[0].x},  {calibration[8].p[0].y}}},         {{{calibration[8].p[1].x},  {calibration[8].p[1].y}}}}},   //Vb0_pin
+    {{{{{calibration[9].p[0].x},  {calibration[9].p[0].y}}},         {{{calibration[9].p[1].x},  {calibration[9].p[1].y}}}}},   //Vb1_pin
+    {{{{{calibration[10].p[0].x},  {calibration[10].p[0].y}}},         {{{calibration[10].p[1].x},  {calibration[10].p[1].y}}}}},   //Vb2_pin
+    {{{{{calibration[11].p[0].x},  {calibration[11].p[0].y}}},         {{{calibration[11].p[1].x},  {calibration[11].p[1].y}}}}},   //Vb3_pin
+    {{{{{calibration[12].p[0].x},  {calibration[12].p[0].y}}},         {{{calibration[12].p[1].x},  {calibration[12].p[1].y}}}}},   //Vb4_pin
+    {{{{{calibration[13].p[0].x},  {calibration[13].p[0].y}}},         {{{calibration[13].p[1].x},  {calibration[13].p[1].y}}}}},   //Vb5_pin
+    {{{{{calibration[14].p[0].x},  {calibration[14].p[0].y}}},         {{{calibration[14].p[1].x},  {calibration[14].p[1].y}}}}},   //Vb6_pin
 
 
-    {{$c_p0_x__VoutMux,          $c_p0_y__VoutMux},               {$c_p1_x__VoutMux,       $c_p1_y__VoutMux}},   //VoutMux
-    {{$c_p0_x__Tintern,          $c_p0_y__Tintern},               {$c_p1_x__Tintern,       $c_p1_y__Tintern}},   //Tintern
-    {{$c_p0_x__Vin,              $c_p0_y__Vin},                   {$c_p1_x__Vin,           $c_p1_y__Vin}},       //Vin
-    {{$c_p0_x__Textern,          $c_p0_y__Textern},               {$c_p1_x__Textern,       $c_p1_y__Textern}},   //Textern
+    {{{{{calibration[15].p[0].x},  {calibration[15].p[0].y}}},         {{{calibration[15].p[1].x},  {calibration[15].p[1].y}}}}},   //IsmpsSet
+    {{{{{calibration[16].p[0].x},  {calibration[16].p[0].y}}},         {{{calibration[16].p[1].x},  {calibration[16].p[1].y}}}}},   //IdischargeSet
+}};
 
-    {{$c_p0_x__Vb0_pin,          $c_p0_y__Vb0_pin},               {$c_p1_x__Vb0_pin,       $c_p1_y__Vb0_pin}},   //Vb0_pin
-    {{$c_p0_x__Vb1_pin,          $c_p0_y__Vb1_pin},               {$c_p1_x__Vb1_pin,       $c_p1_y__Vb1_pin}},   //Vb1_pin
-    {{$c_p0_x__Vb2_pin,          $c_p0_y__Vb2_pin},               {$c_p1_x__Vb2_pin,       $c_p1_y__Vb2_pin}},   //Vb2_pin
-    {{$c_p0_x__Vb3_pin,          $c_p0_y__Vb3_pin},               {$c_p1_x__Vb3_pin,       $c_p1_y__Vb3_pin}},   //Vb3_pin
-    {{$c_p0_x__Vb4_pin,          $c_p0_y__Vb4_pin},               {$c_p1_x__Vb4_pin,       $c_p1_y__Vb4_pin}},   //Vb4_pin
-    {{$c_p0_x__Vb5_pin,          $c_p0_y__Vb5_pin},               {$c_p1_x__Vb5_pin,       $c_p1_y__Vb5_pin}},   //Vb5_pin
-    {{$c_p0_x__Vb6_pin,          $c_p0_y__Vb6_pin},               {$c_p1_x__Vb6_pin,       $c_p1_y__Vb6_pin}},   //Vb6_pin
-#if MAX_BANANCE_CELLS > 6
-    {{$c_p0_x__Vb7_pin,          $c_p0_y__Vb7_pin},               {$c_p1_x__Vb7_pin,       $c_p1_y__Vb7_pin}},   //Vb7_pin
-    {{$c_p0_x__Vb8_pin,          $c_p0_y__Vb8_pin},               {$c_p1_x__Vb8_pin,       $c_p1_y__Vb8_pin}},   //Vb8_pin
-#endif
-
-    {{$c_p0_x__IsmpsValue,       $c_p0_y__IsmpsValue},            {$c_p1_x__IsmpsValue,     $c_p1_y__IsmpsValue}},            //IsmpsSet
-    {{$c_p0_x__IdischargeValue,  $c_p0_y__IdischargeValue},       {$c_p1_x__IdischargeValue,$c_p1_y__IdischargeValue}},       //IdischargeSet
-};
-
-namespace {
-    void assert() {
+namespace {{
+    void assert() {{
         STATIC_ASSERT(sizeOfArray(AnalogInputs::inputsP_) == AnalogInputs::PHYSICAL_INPUTS);
-    }
-}
-
-"
+    }}
+}}
