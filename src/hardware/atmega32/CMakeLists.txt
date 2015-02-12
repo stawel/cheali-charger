@@ -7,4 +7,4 @@ add_subdirectory(targets/GTPowerA6-10-original)
 add_subdirectory(targets/imaxB6-original)
 add_subdirectory(targets/Turnigy-Accucel-6-50W-5A)
 add_subdirectory(targets/Turnigy-MEGA-400Wx2)
-
+add_subdirectory(targets/Turnigy-MEGA-200Wx2)
