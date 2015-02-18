@@ -73,7 +73,8 @@ Usage:
 ------
 
 After [flashing](docs/flashing.md) your charger the first thing you should do is  
-to [calibrate](README.md#calibration) it, now your charger is ready to use.
+reset the charger to default settings (go to: "options"->"reset default" and press the "start" button)  
+and then [calibrate](README.md#calibration) it, now your charger is ready to use.
 
 programming you charger:
 - select a free battery slot (indicated as 1., 2.,...)
@@ -146,6 +147,10 @@ If you have any problems with calibration, go to "options"->"reset default" and 
 
 Troubleshooting
 ---------------
+
+1. After flashing I see "options" and some strange characters in the seccnd line (for example: squares), what should I do?
+  - reset the charger to default settings (go to: "options"->"reset default" and press the "start" button)
+
 **Atmega32 CPU:**
 
 1. After flashing charger doesn't work (display shows squares):
