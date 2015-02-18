@@ -1,7 +1,0 @@
-#!/bin/bash
-
-TTY=/dev/ttyUSB0
-
-./configTTY $TTY
-
-cat $TTY | tee dump.txt
