@@ -144,7 +144,7 @@ namespace Strategy {
                     run = analizeStrategyStatus(status);
                 }
             }
-            if(!run && exitImmediately)
+            if(!run && exitImmediately && status != Strategy::ERROR)
                 break;
         } while(Screen::keyboardButton != BUTTON_STOP);
 
