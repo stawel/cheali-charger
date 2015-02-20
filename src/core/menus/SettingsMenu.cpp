@@ -279,7 +279,7 @@ void SettingsMenu::printUARTSpeed(uint8_t dig) const
 
 
 void SettingsMenu::changeTemp(AnalogInputs::ValueType *v, int step) {
-    const AnalogInputs::ValueType min = ANALOG_CELCIUS(1);
+    const AnalogInputs::ValueType min = Settings::TempDifference + ANALOG_CELCIUS(1);
     const AnalogInputs::ValueType max = ANALOG_CELCIUS(99);
     step *= ANALOG_CELCIUS(1);
     (*v) += step;
