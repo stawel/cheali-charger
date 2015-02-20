@@ -37,6 +37,9 @@ WARNING: Don't touch the AVR fuses, setting them wrong may destroy your charger.
 Flashing: nuvoton M0517LBN CPU charger
 --------------------------------------
 
+Flashing tutorial by [Jarno](Flashing m0517.doc).
+
+
 check ISP pins (at least GND and VCC) on your chargers PCB board:  
 ![isp](connectors/isp_imaxB6_M0517.jpeg)
 
