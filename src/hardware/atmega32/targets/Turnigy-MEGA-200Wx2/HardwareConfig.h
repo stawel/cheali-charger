@@ -24,7 +24,7 @@
 //Turnigy Mega 200w X2 has a common display, so we disable custom characters
 #undef ENABLE_LCD_RAM_CG
 
-#define MAX_CHARGE_V            ANALOG_VOLT(25.300)
+#define MAX_CHARGE_V            ANALOG_VOLT(27.000)
 #define MAX_CHARGE_I            ANALOG_AMP(10.000)
 #define MAX_CHARGE_P            ANALOG_WATT(200.000)
 

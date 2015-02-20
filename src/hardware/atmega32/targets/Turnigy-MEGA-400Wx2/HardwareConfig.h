@@ -21,7 +21,7 @@
 #include "GlobalConfig.h"
 #include "HardwareConfigGeneric.h"
 
-#define MAX_CHARGE_V            ANALOG_VOLT(25.300)
+#define MAX_CHARGE_V            ANALOG_VOLT(27.000)
 #define MAX_CHARGE_I            ANALOG_AMP(20.000)
 #define MAX_CHARGE_P            ANALOG_WATT(400.000)
 
