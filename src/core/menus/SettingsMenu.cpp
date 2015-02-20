@@ -75,8 +75,9 @@ SettingsMenu::SettingsMenu(const Settings &p):
 
 void SettingsMenu::printItem(uint8_t index)
 {
-    StaticMenu::printItem(index);
-    uint8_t dig = LCD_COLUMNS - pgm::strlen(staticMenu_[index]) - 1;
+    uint8_t dig = lcdPrint_P(staticMenu_, index);
+    dig = LCD_COLUMNS - dig;
+
     if(getBlinkIndex() != index) {
         START_CASE_COUNTER;
         switch (index) {
