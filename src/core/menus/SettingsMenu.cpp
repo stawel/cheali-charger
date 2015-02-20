@@ -40,9 +40,8 @@ const char * const SettingsStaticMenu[] PROGMEM =
         string_enabledV,
         string_NiMHdV,
         string_NiCddV,
-#ifdef ENABLE_R_WIRE
-        string_Rwire,
-#endif
+        string_cutoffV_NiMH,
+        string_cutoffV_NiCd,
         string_DCcycles,
         string_DCRestTime,
         string_AudioBeep,
@@ -77,47 +76,47 @@ SettingsMenu::SettingsMenu(const Settings &p):
 void SettingsMenu::printItem(uint8_t index)
 {
     StaticMenu::printItem(index);
+    uint8_t dig = LCD_COLUMNS - pgm::strlen(staticMenu_[index]) - 1;
     if(getBlinkIndex() != index) {
         START_CASE_COUNTER;
         switch (index) {
 #ifdef ENABLE_LCD_BACKLIGHT
-            case NEXT_CASE:     lcdPrintUnsigned(p_.backlight, 3);      break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.backlight, dig);    break;
 #endif
 #ifdef ENABLE_FAN
-            case NEXT_CASE:     printTemp(p_.fanTempOn);                break;
+            case NEXT_CASE:     printTemp(p_.fanTempOn, dig);           break;
 #endif
 #ifdef ENABLE_T_INTERNAL
-            case NEXT_CASE:     printTemp(p_.dischargeTempOff);         break;
+            case NEXT_CASE:     printTemp(p_.dischargeTempOff, dig);    break;
 #endif
-            case NEXT_CASE:     lcdPrintYesNo(p_.externT);              break;
-            case NEXT_CASE:     printTemp(p_.externTCO);                break;
-            case NEXT_CASE:     printDeltaT(p_.deltaT);                 break;
-            case NEXT_CASE:     lcdPrintYesNo(p_.enable_deltaV);        break;
-            case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiMH, 6);         break;
-            case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiCd, 6);         break;
-#ifdef ENABLE_R_WIRE
-            case NEXT_CASE:     lcdPrintResistance(p_.Rwire, 8);        break;
-#endif
-            case NEXT_CASE:     lcdPrintUnsigned(p_.DCcycles, 3);       break;
-            case NEXT_CASE:     lcdPrintUnsigned(p_.DCRestTime, 4);
+            case NEXT_CASE:     lcdPrintYesNo(p_.externT, dig);         break;
+            case NEXT_CASE:     printTemp(p_.externTCO, dig);           break;
+            case NEXT_CASE:     printDeltaT(p_.deltaT, dig);            break;
+            case NEXT_CASE:     lcdPrintYesNo(p_.enable_deltaV, dig);   break;
+            case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiMH, dig);       break;
+            case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiCd, dig);       break;
+            case NEXT_CASE:     lcdPrintVoltage(p_.cutoffV_NiMH, dig);  break;
+            case NEXT_CASE:     lcdPrintVoltage(p_.cutoffV_NiCd, dig);  break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.DCcycles, dig);     break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.DCRestTime, dig-1);
                                 lcdPrintChar('m');                      break;
-            case NEXT_CASE:     lcdPrintYesNo(p_.audioBeep);            break;
-            case NEXT_CASE:     lcdPrintUnsigned(p_.minIoutDiv, 2);     break;
-            case NEXT_CASE:     lcdPrintCurrent(p_.minIout, 5);         break;
-            case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff, 5);    break;
-            case NEXT_CASE:     printVolt(p_.inputVoltageLow);          break;
-            case NEXT_CASE:     lcdPrint_mV(p_.overCharge_LiXX,5);      break;
-            case NEXT_CASE:     lcdPrint_mV(p_.overDischarge_LiXX,6);   break;
-            case NEXT_CASE:     lcdPrintYesNo(p_.dischargeAggressive_LiXX);break;
-            case NEXT_CASE:     lcdPrintYesNo(p_.forceBalancePort);     break;
-            case NEXT_CASE:     lcdPrint_mV(p_.balancerError, 5);       break;
+            case NEXT_CASE:     lcdPrintYesNo(p_.audioBeep, dig);       break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.minIoutDiv, dig);   break;
+            case NEXT_CASE:     lcdPrintCurrent(p_.minIout, dig);       break;
+            case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff, dig);  break;
+            case NEXT_CASE:     printVolt(p_.inputVoltageLow, dig);     break;
+            case NEXT_CASE:     lcdPrint_mV(p_.overCharge_LiXX, dig);   break;
+            case NEXT_CASE:     lcdPrint_mV(p_.overDischarge_LiXX, dig);        break;
+            case NEXT_CASE:     lcdPrintYesNo(p_.dischargeAggressive_LiXX, dig);break;
+            case NEXT_CASE:     lcdPrintYesNo(p_.forceBalancePort, dig);        break;
+            case NEXT_CASE:     lcdPrint_mV(p_.balancerError, dig);     break;
 #ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
-            case NEXT_CASE:     lcdPrintYesNo(p_.adcNoise);             break;
+            case NEXT_CASE:     lcdPrintYesNo(p_.adcNoise, dig);        break;
 #endif
-            case NEXT_CASE:     printUART();                            break;
-            case NEXT_CASE:     printUARTSpeed();                       break;
+            case NEXT_CASE:     printUART(dig);                         break;
+            case NEXT_CASE:     printUARTSpeed(dig);                    break;
 #ifdef ENABLE_TX_HW_SERIAL
-            case NEXT_CASE:     printUARTinput();                       break;
+            case NEXT_CASE:     printUARTinput(dig);                    break;
 #endif
         }
     }
@@ -144,9 +143,8 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     change0ToMax(&p_.enable_deltaV, dir, 1);                 break;
         case NEXT_CASE:     changeDeltaV(&p_.deltaV_NiMH, dir);                      break;
         case NEXT_CASE:     changeDeltaV(&p_.deltaV_NiCd, dir);                      break;
-#ifdef ENABLE_R_WIRE
-        case NEXT_CASE:     change0ToMax(&p_.Rwire, dir, 255);                       break;
-#endif
+        case NEXT_CASE:     changeCutoffNiXX(&p_.cutoffV_NiMH, dir);                 break;
+        case NEXT_CASE:     changeCutoffNiXX(&p_.cutoffV_NiCd, dir);                 break;
         case NEXT_CASE:     change1ToMax(&p_.DCcycles, dir, 5);                      break;
         case NEXT_CASE:     change1ToMax(&p_.DCRestTime, dir, 99);                   break;
         case NEXT_CASE:     change0ToMax(&p_.audioBeep, dir, 1);                     break;
@@ -198,19 +196,19 @@ void SettingsMenu::run() {
 }
 
 
-void SettingsMenu::printTemp(AnalogInputs::ValueType t) {
-    lcdPrintUnsigned(t/100, 3);
+void SettingsMenu::printTemp(AnalogInputs::ValueType t, uint8_t dig) {
+    lcdPrintUnsigned(t/100, dig-1);
     lcdPrintChar('C');
 }
-void SettingsMenu::printVolt(AnalogInputs::ValueType v) {
-    lcdPrintUnsigned(v/1000, 3);
+void SettingsMenu::printVolt(AnalogInputs::ValueType v, uint8_t dig) {
+    lcdPrintUnsigned(v/1000, dig-1);
     lcdPrintChar('V');
 }
 
 
-void SettingsMenu::printDeltaT(AnalogInputs::ValueType dt)
+void SettingsMenu::printDeltaT(AnalogInputs::ValueType dt, uint8_t dig)
 {
-    lcdPrintUnsigned(dt/100, 3);
+    lcdPrintUnsigned(dt/100, dig-3-2);
     lcdPrintChar('.');
     lcdPrintDigit((dt%100)/10);
     lcdPrint_P(string_unitDeltaT);
@@ -256,22 +254,24 @@ const char * const SettingsUARTinput[] PROGMEM = {
         string_pin7,
 };
 
-void SettingsMenu::printUART() const
+void SettingsMenu::printUART(uint8_t dig) const
 {
+    lcdPrintSpaces(dig - 8);
     lcdPrint_P(SettingsUART, p_.UART);
 }
 
-void SettingsMenu::printUARTinput() const
+void SettingsMenu::printUARTinput(uint8_t dig) const
 {
+    lcdPrintSpaces(dig - 4);
     lcdPrint_P(SettingsUARTinput, p_.UARTinput);
 }
 
-void SettingsMenu::printUARTSpeed() const
+void SettingsMenu::printUARTSpeed(uint8_t dig) const
 {
     //TODO: add printULong
     uint32_t s = p_.getUARTspeed();
     s/=100;
-    lcdPrintUnsigned(s,5);
+    lcdPrintUnsigned(s,dig-2);
     lcdPrintChar('0');
     lcdPrintChar('0');
 }
@@ -306,6 +306,14 @@ void SettingsMenu::changeInputVolt(AnalogInputs::ValueType *v, int step) {
 void SettingsMenu::changeBalanceError(AnalogInputs::ValueType *v, int step) {
     const AnalogInputs::ValueType min = ANALOG_VOLT(0.003);
     const AnalogInputs::ValueType max = ANALOG_VOLT(0.200);
+    *v+=step;
+    if(*v < min) *v = min;
+    if(*v > max) *v = max;
+}
+
+void SettingsMenu::changeCutoffNiXX(AnalogInputs::ValueType *v, int step) {
+    const AnalogInputs::ValueType min = ANALOG_VOLT(1.200);
+    const AnalogInputs::ValueType max = ANALOG_VOLT(2.000);
     *v+=step;
     if(*v < min) *v = min;
     if(*v > max) *v = max;

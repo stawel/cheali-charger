@@ -80,14 +80,10 @@ void Menu::display() {
     uint8_t lines = LCD_LINES;
     for(uint8_t i = 0; i < lines; i++) {
         lcdSetCursor(0, i);
-        lcdPrintChar(' ');
+        lcdPrintChar(i == pos_ ? '>' : ' ');
         printItem(i+begin_);
         lcdPrintSpaces();
     }
-    lcdSetCursor(0,pos_);
-    lcdPrintChar('>');
-    lcdSetCursor(LCD_COLUMNS - 1,pos_);
-    lcdPrintChar('<');
     debug();
     render_ = false;
 }

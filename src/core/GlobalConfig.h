@@ -41,7 +41,6 @@
 
 #define ENABLE_CALIBRATION
 #define ENABLE_CALIBRATION_CHECK
-#define ENABLE_R_WIRE
 
 /*
  * (experimental and dangerous)

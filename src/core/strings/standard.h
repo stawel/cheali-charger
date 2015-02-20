@@ -73,32 +73,34 @@ namespace settingsMenu {
 
     //settings menu
     STRING(backlight,   "backlight:");
-    STRING(fanOn,       "fan on:   ");
+    STRING(fanOn,       "fan on:");
     STRING(dischOff,    "disch off:");
-    STRING(externT,     "extrn T:   ");
+    STRING(externT,     "extrn T:");
     STRING(externTCO,   "extrn TCO:");
     STRING(dTdt,        "dT/dt:");
-    STRING(enabledV,    "enab dV:   ");
+    STRING(enabledV,    "enab dV:");
     STRING(NiMHdV,      "NiMH dV:");
     STRING(NiCddV,      "NiCd dV:");
+    STRING(cutoffV_NiMH,"NiMH VCO:");
+    STRING(cutoffV_NiCd,"NiCd VCO:");
     STRING(Rwire,       "Rwire:");
     STRING(DCcycles,    "D/C cycles:");
     STRING(DCRestTime,  "D/C rest:");
-    STRING(AudioBeep,   "beep:      ");
-    STRING(minIoutDiv,  "min Iout: I/");
+    STRING(AudioBeep,   "beep:");
+    STRING(minIoutDiv,  "min Iout:  I/");
     STRING(minIout,     "min Iout:");
     STRING(capCoff,     "cap COff:");
-    STRING(inputLow,    "input low:");
+    STRING(inputLow,    "input low: ");
     STRING(overChargeLiXX,      "o.charge:");
     STRING(overDischargeLiXX,   "o.disch:");
-    STRING(dichAggLiXX, "dis agres: ");
-    STRING(forceBalanc, "force bal: ");
+    STRING(dichAggLiXX, "dis agres:");
+    STRING(forceBalanc, "force bal:");
     STRING(balancErr,   "bal. err:");
-    STRING(adcNoise,    "adc noise: ");
-    STRING(UARTview,    "UART: ");
-    STRING(UARTspeed,   "speed: ");
-    STRING(UARTinput,   "UART inp: ");
-    STRING(reset,       "   reset");
+    STRING(adcNoise,    "adc noise:");
+    STRING(UARTview,    "UART:");
+    STRING(UARTspeed,   "speed:");
+    STRING(UARTinput,   "UART inp:");
+    STRING(reset,       "reset");
 
     //UART input menu
     STRING(temp,    "temp");

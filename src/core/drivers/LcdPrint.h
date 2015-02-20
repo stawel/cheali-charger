@@ -52,7 +52,7 @@ void lcdPrintSigned(int16_t x, int8_t dig = 5);
 void lcdPrintChar(char c);
 void lcdPrintDigit(uint8_t d);
 void lcdPrintUInt(uint16_t x);
-void lcdPrintYesNo(uint8_t yes);
+void lcdPrintYesNo(uint8_t yes, uint8_t dig);
 
 void lcdPrintValue1000(uint16_t x, int8_t dig, bool dot);
 

@@ -35,8 +35,11 @@ struct Settings {
     AnalogInputs::ValueType externTCO;
     AnalogInputs::ValueType deltaT;
     uint16_t enable_deltaV;
-    int16_t deltaV_NiMH, deltaV_NiCd;
-    AnalogInputs::ValueType Rwire;
+    int16_t deltaV_NiMH;
+    int16_t deltaV_NiCd;
+    uint16_t cutoffV_NiMH;
+    uint16_t cutoffV_NiCd;
+
     uint16_t DCcycles;
     uint16_t DCRestTime;
     uint16_t audioBeep;

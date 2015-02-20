@@ -32,9 +32,9 @@ public:
     Settings p_;
 private:
 
-    void printUART() const;
-    void printUARTSpeed() const;
-    void printUARTinput() const;
+    void printUART(uint8_t dig) const;
+    void printUARTSpeed(uint8_t dig) const;
+    void printUARTinput(uint8_t dig) const;
 
     void changeBacklight(int dir);
     void changeUART(int dir);
@@ -43,13 +43,14 @@ private:
     void changeOverCharge(int dir);
     void changeOverDischarge(int dir);
 
-    static void printTemp(AnalogInputs::ValueType t);
-    static void printDeltaT(AnalogInputs::ValueType dt);
-    static void printVolt(AnalogInputs::ValueType v);
+    static void printTemp(AnalogInputs::ValueType t, uint8_t dig);
+    static void printDeltaT(AnalogInputs::ValueType dt, uint8_t dig);
+    static void printVolt(AnalogInputs::ValueType v, uint8_t dig);
     static void changeTemp(AnalogInputs::ValueType *v, int dir);
     static void changeDeltaTemp(AnalogInputs::ValueType *v, int dir);
     static void changeInputVolt(AnalogInputs::ValueType *v, int dir);
     static void changeBalanceError(AnalogInputs::ValueType *v, int dir);
+    static void changeCutoffNiXX(AnalogInputs::ValueType *v,int dir);
     static void changeDeltaV(int16_t *v, int dir);
 };
 

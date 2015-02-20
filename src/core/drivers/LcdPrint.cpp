@@ -293,8 +293,11 @@ void lcdPrintTime(uint16_t timeSec)
 }
 
 
-void lcdPrintYesNo(uint8_t yes)
+void lcdPrintYesNo(uint8_t yes, uint8_t dig)
 {
+    for(;dig>3;dig--)
+        lcdPrintChar(' ');
+
     const char * str = string_no;
     if(yes) str = string_yes;
 

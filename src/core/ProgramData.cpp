@@ -27,17 +27,16 @@ using namespace programData;
 
 ProgramData ProgramData::currentProgramData;
 
-//TODO_NJ
-//expanded Validempty. Needed clear EEPROM!!!! (I increase EEPROM version to 6)
+//battery voltage limits, see also: ProgramData::getVoltagePerCell, ProgramData::getVoltage
 const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
 {
 //          { VIdle,              VCharge,            VDischarge,         VStorage,           ValidEmpty};
 /*Unknown*/ { 1,                  1,                  1,                  1,                  1},
-/*NiCd*/    { ANALOG_VOLT(1.200), ANALOG_VOLT(1.820), ANALOG_VOLT(0.850), ANALOG_VOLT(0.000), ANALOG_VOLT(0.850)},
+/*NiCd*/    { ANALOG_VOLT(1.200), 0/*settings*/,      ANALOG_VOLT(0.850), 0,                  ANALOG_VOLT(0.850)},
 //http://en.wikipedia.org/wiki/Nickel%E2%80%93metal_hydride_battery
-//http://industrial.panasonic.com/eu/i/21291/Handbook2011/Handbook2011.pdf
+//http://eu.industrial.panasonic.com/sites/default/pidseu/files/downloads/files/ni-mh-handbook-2014_interactive.pdf
 //http://www6.zetatalk.com/docs/Batteries/Chemistry/Duracell_Ni-MH_Rechargeable_Batteries_2007.pdf
-/*NiMH*/    { ANALOG_VOLT(1.200), ANALOG_VOLT(1.600), ANALOG_VOLT(1.000), ANALOG_VOLT(0.000), ANALOG_VOLT(1.000)},
+/*NiMH*/    { ANALOG_VOLT(1.200), 0/*settings*/,      ANALOG_VOLT(1.000), 0,                  ANALOG_VOLT(1.000)},
 
 //Pb based on:
 //http://www.battery-usa.com/Catalog/NPAppManual%28Rev0500%29.pdf
@@ -46,7 +45,8 @@ const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][Progr
 //Stage 3 (float charge) - not implemented
 //http://batteryuniversity.com/learn/article/charging_the_lead_acid_battery
 /*Pb*/      { ANALOG_VOLT(2.000), ANALOG_VOLT(2.450), ANALOG_VOLT(1.750), ANALOG_VOLT(0.000), ANALOG_VOLT(1.900)},
-//LiXX
+
+//LiXX - see also settings: overCharge_LiXX, overDischarge_LiXX
 /*Life*/    { ANALOG_VOLT(3.300), ANALOG_VOLT(3.600), ANALOG_VOLT(2.000), ANALOG_VOLT(3.300), ANALOG_VOLT(3.000)},
 /*Lilo*/    { ANALOG_VOLT(3.600), ANALOG_VOLT(4.100), ANALOG_VOLT(2.500), ANALOG_VOLT(3.750), ANALOG_VOLT(3.500)},
 /*LiPo*/    { ANALOG_VOLT(3.700), ANALOG_VOLT(4.200), ANALOG_VOLT(3.000), ANALOG_VOLT(3.850), ANALOG_VOLT(3.209)},
@@ -57,6 +57,39 @@ const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][Progr
 /*NiZn*/    { ANALOG_VOLT(1.600), ANALOG_VOLT(1.900), ANALOG_VOLT(1.300), ANALOG_VOLT(1.600), ANALOG_VOLT(1.400)},
 
 };
+
+uint16_t ProgramData::getVoltagePerCell(VoltageType type) const
+{
+    uint16_t result = pgm::read(&voltsPerCell[battery.type][type]);
+    if (type == VCharge) {
+        if (battery.type == NiMH) {
+            result = settings.cutoffV_NiMH;
+        } else if (battery.type == NiCd) {
+            result = settings.cutoffV_NiCd;
+        } else if (isLiXX()) {
+            result += settings.overCharge_LiXX;
+        }
+    } else if (type == VDischarge) {
+        if (isLiXX()) {
+            result += settings.overDischarge_LiXX;
+        }
+    }
+    return result;
+}
+uint16_t ProgramData::getVoltage(VoltageType type) const
+{
+    uint16_t cells = battery.cells;
+    uint16_t voltage = getVoltagePerCell(type);
+
+    if(type == VDischarge && battery.type == NiMH && cells > 6) {
+        //based on http://eu.industrial.panasonic.com/sites/default/pidseu/files/downloads/files/ni-mh-handbook-2014_interactive.pdf
+        //page 11: "Discharge end voltage"
+        cells--;
+        voltage = ANALOG_VOLT(1.200);
+    }
+    return cells * voltage;
+}
+
 
 //                              def. capacity          chargei             dischargei       cell   tlimit
 const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
@@ -130,15 +163,6 @@ void ProgramData::loadProgramData(int index)
 void ProgramData::saveProgramData(int index)
 {
     eeprom::write<ProgramData>(&eeprom::data.programData[index], currentProgramData);
-}
-
-uint16_t ProgramData::getVoltagePerCell(VoltageType type) const
-{
-    return pgm::read(&voltsPerCell[battery.type][type]);
-}
-uint16_t ProgramData::getVoltage(VoltageType type) const
-{
-    return battery.cells * getVoltagePerCell(type);
 }
 
 uint16_t ProgramData::getCapacityLimit() const

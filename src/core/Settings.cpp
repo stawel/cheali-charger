@@ -51,21 +51,26 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_CELCIUS(60), //dischargeTempOff
         SETTINGS_EXTERNAL_T_DEFAULT, //externT
         ANALOG_CELCIUS(60), //externTCO
+
         ANALOG_CELCIUS(1),  //deltaT
         SETTINGS_DELTA_V_ENABLE_DEFAULT, //enable_deltaV
         -ANALOG_VOLT(0.005), //deltaV_NiMH
         -ANALOG_VOLT(0.015), //deltaV_NiCd
-        ANALOG_OHM(0.000),  //Rwire
+        ANALOG_VOLT(1.800), //cutoffV_NiMH
+        ANALOG_VOLT(1.800), //cutoffV_NiCd
         5,                  //DCcycles
         30,                 //DCRestTime
+
         1,                  //AudioBeep: yes/no
         10,                 //minIoutDiv
         50,                 //minIout
         120,                //capCutoff: in "%"
         ANALOG_VOLT(10.000),//inputVoltageLow
+
         ANALOG_VOLT(0.000), //overCharge_LiXX
         ANALOG_VOLT(0.000), //overDischarge_LiXX
         SETTINGS_DISCHARGE_AGGRESSIVE_LIXX_DEFAULT,     //dischargeAggressive_LiXX
+
         SETTINGS_FORCE_BALANCE_PORT_DEFAULT,            //forceBalancePort
         ANALOG_VOLT(0.008), //balancerError
         SETTINGS_ADC_NOISE_DEFAULT, //adcNoise
