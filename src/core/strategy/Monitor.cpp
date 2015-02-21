@@ -27,7 +27,6 @@
 #include "memory.h"
 #include "Balancer.h"
 
-//TODO_NJ
 #include "LcdPrint.h"
 #include "Screen.h"
 #include "TheveninMethod.h"
@@ -53,11 +52,6 @@ namespace Monitor {
 
     uint16_t Vout_plus_adcMinLimit_;
     uint16_t Vout_plus_adcMaxLimit_;
-
-#ifdef MONITOR_T_INTERNAL_FAN
-    AnalogInputs::ValueType monitor_on_T;
-    AnalogInputs::ValueType monitor_off_T;
-#endif
 
     void calculateDeltaProcentTimeSec();
 
@@ -130,21 +124,14 @@ uint8_t Monitor::getChargeProcent() {
 void Monitor::doIdle()
 {
 #ifdef MONITOR_T_INTERNAL_FAN
+    AnalogInputs::ValueType t_adc = AnalogInputs::getADCValue(AnalogInputs::Tintern);
+    AnalogInputs::ValueType t = AnalogInputs::calibrateValue(AnalogInputs::Tintern, t_adc);
 
-    AnalogInputs::ValueType t = AnalogInputs::getADCValue(AnalogInputs::Tintern);
-    bool retu = false;
-    if(t > monitor_off_T) {
+    if (t < settings.fanTempOn - Settings::TempDifference) {
         hardware::setFan(false);
-    } else if(t < monitor_on_T) {
+    } else if (t > settings.fanTempOn) {
         hardware::setFan(true);
     }
-#endif
-}
-void Monitor::update()
-{
-#ifdef MONITOR_T_INTERNAL_FAN
-    monitor_off_T = AnalogInputs::reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn - Settings::TempDifference);
-    monitor_on_T  = AnalogInputs::reverseCalibrateValue(AnalogInputs::Tintern, settings.fanTempOn);
 #endif
 }
 
@@ -169,7 +156,6 @@ void Monitor::powerOn()
     }
 
     isBalancePortConnected = AnalogInputs::isBalancePortConnected();
-    update();
 
     startTime_totalTime_U16_ = Time::getSecondsU16();
     resetAccumulatedMeasurements();

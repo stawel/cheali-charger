@@ -126,7 +126,6 @@ void Settings::apply() {
 #ifdef ENABLE_LCD_BACKLIGHT
     hardware::setLCDBacklight(backlight);
 #endif
-    Monitor::update();
     hardware::setExternalTemperatueOutput(externT);
 }
 

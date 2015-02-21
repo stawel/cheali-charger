@@ -27,7 +27,7 @@ struct Settings {
     enum UARTType {Disabled, Normal,  Debug,  ExtDebug, ExtDebugAdc};
     enum UARTInput {Software, Hardware};
     static const uint8_t UARTSpeeds = 5;
-    static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5);
+    static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5.12);
     uint16_t backlight;
     AnalogInputs::ValueType fanTempOn;
     AnalogInputs::ValueType dischargeTempOff;
