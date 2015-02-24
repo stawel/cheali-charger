@@ -110,7 +110,6 @@ namespace eeprom {
     }
 
     uint16_t getCRC(uint8_t * adr, uint16_t size) {
-        //TODO: write CRC
         uint16_t crc = 0xffff;
         for(uint16_t i = 0; i < size; i++) {
             crc = crc16_update(crc, eeprom::read(&adr[i]));

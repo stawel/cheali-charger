@@ -4,7 +4,7 @@ import sys
 from ehelper import *
 from dformatter import *
 
-from v9_2_7 import *
+from v9_2_8 import *
 
 hexFile = 'eeprom.bin'
 
