@@ -47,6 +47,7 @@ Settings settings;
 
 const Settings defaultSettings PROGMEM = {
         70,                 //backlight
+        Settings::FanTemperature, //fanOn
         ANALOG_CELCIUS(50), //fanTempOn
         ANALOG_CELCIUS(60), //dischargeTempOff
         SETTINGS_EXTERNAL_T_DEFAULT, //externT

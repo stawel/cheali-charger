@@ -124,14 +124,26 @@ uint8_t Monitor::getChargeProcent() {
 void Monitor::doIdle()
 {
 #ifdef MONITOR_T_INTERNAL_FAN
-    AnalogInputs::ValueType t_adc = AnalogInputs::getADCValue(AnalogInputs::Tintern);
-    AnalogInputs::ValueType t = AnalogInputs::calibrateValue(AnalogInputs::Tintern, t_adc);
+    bool fan;
+    if(settings.fanOn == Settings::FanAlways) {
+        fan = true;
+    } else if (settings.fanOn == Settings::FanDisabled
+               || (settings.fanOn == Settings::FanProgramTemperature && on_ == false)) {
+        fan = false;
+    } else if (settings.fanOn == Settings::FanProgram) {
+        fan = on_;
+    } else if ((settings.fanOn == Settings::FanProgramTemperature && on_ == true)
+               || settings.fanOn == Settings::FanTemperature) {
+        AnalogInputs::ValueType t_adc = AnalogInputs::getADCValue(AnalogInputs::Tintern);
+        AnalogInputs::ValueType t = AnalogInputs::calibrateValue(AnalogInputs::Tintern, t_adc);
 
-    if (t < settings.fanTempOn - Settings::TempDifference) {
-        hardware::setFan(false);
-    } else if (t > settings.fanTempOn) {
-        hardware::setFan(true);
+        if (t < settings.fanTempOn - Settings::TempDifference) {
+            fan = false;
+        } else if (t > settings.fanTempOn) {
+            fan = true;
+        }
     }
+    hardware::setFan(fan);
 #endif
 }
 

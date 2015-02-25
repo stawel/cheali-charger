@@ -30,6 +30,7 @@ const char * const SettingsStaticMenu[] PROGMEM =
 #endif
 #ifdef ENABLE_FAN
         string_fanOn,
+        string_fanTempOn,
 #endif
 #ifdef ENABLE_T_INTERNAL
         string_dischOff,
@@ -85,6 +86,7 @@ void SettingsMenu::printItem(uint8_t index)
             case NEXT_CASE:     lcdPrintUnsigned(p_.backlight, dig);    break;
 #endif
 #ifdef ENABLE_FAN
+            case NEXT_CASE:     printFanOn(dig);                        break;
             case NEXT_CASE:     printTemp(p_.fanTempOn, dig);           break;
 #endif
 #ifdef ENABLE_T_INTERNAL
@@ -133,6 +135,7 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     changeBacklight(dir);                                    break;
 #endif
 #ifdef ENABLE_FAN
+        case NEXT_CASE:     change0ToMax(&p_.fanOn, dir, Settings::FanProgramTemperature); break;
         case NEXT_CASE:     changeTemp(&p_.fanTempOn, dir);                          break;
 #endif
 #ifdef ENABLE_T_INTERNAL
@@ -242,6 +245,14 @@ void SettingsMenu::changeUART(int dir) {
 #endif
 }
 
+const char * const SettingsFanOn[] PROGMEM = {
+        string_disable,
+        string_always,
+        string_FanProgram,
+        string_temperature,
+        string_tempProgram
+};
+
 const char * const SettingsUART[] PROGMEM = {
         string_disable,
         string_normal,
@@ -254,6 +265,12 @@ const char * const SettingsUARTinput[] PROGMEM = {
         string_temp,
         string_pin7,
 };
+
+void SettingsMenu::printFanOn(uint8_t dig) const
+{
+    lcdPrintSpaces(dig - 7);
+    lcdPrint_P(SettingsFanOn, p_.fanOn);
+}
 
 void SettingsMenu::printUART(uint8_t dig) const
 {

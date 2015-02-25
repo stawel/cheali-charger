@@ -31,7 +31,7 @@ public:
 
     Settings p_;
 private:
-
+    void printFanOn(uint8_t dig) const;
     void printUART(uint8_t dig) const;
     void printUARTSpeed(uint8_t dig) const;
     void printUARTinput(uint8_t dig) const;

@@ -74,6 +74,7 @@ namespace settingsMenu {
     //settings menu
     STRING(backlight,   "backlight:");
     STRING(fanOn,       "fan on:");
+    STRING(fanTempOn,   "fan T on:");
     STRING(dischOff,    "disch off:");
     STRING(externT,     "extrn T:");
     STRING(externTCO,   "extrn TCO:");
@@ -108,10 +109,17 @@ namespace settingsMenu {
 
     //UART view menu
     STRING(disable,     "disabled");
-    STRING(normal,      "normal");
-    STRING(debug,       "debug");
+    STRING(normal,      "  normal");
+    STRING(debug,       "   debug");
     STRING(extDebug,    "ext. deb");
     STRING(extDebugAdc, "ext. Adc");
+
+    //fanOn reason menu
+//  STRING(disable,     "disabled"); -- defined in UART view
+    STRING(always,      " always");
+    STRING(FanProgram,  "program");
+    STRING(temperature, "Tempera");
+    STRING(tempProgram, "T-progr");
 }
 
 namespace lcd_print {
