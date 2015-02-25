@@ -67,25 +67,23 @@ namespace eeprom {
         return test;
     }
 
-    bool restoreDefault(uint8_t what) {
-        if(Screen::runAskResetEeprom(what)) {
-            if(what & EEPROM_RESTORE_MAGIC_STRING)  what |= EEPROM_RESTORE_CALIBRATION;
-            if(what & EEPROM_RESTORE_CALIBRATION)   what |= EEPROM_RESTORE_PROGRAM_DATA;
-            if(what & EEPROM_RESTORE_PROGRAM_DATA)  what |= EEPROM_RESTORE_SETTINGS;
+    void restoreDefault(uint8_t what) {
+        Screen::runAskResetEeprom(what);
+        if(what & EEPROM_RESTORE_MAGIC_STRING)  what |= EEPROM_RESTORE_CALIBRATION;
+        if(what & EEPROM_RESTORE_CALIBRATION)   what |= EEPROM_RESTORE_PROGRAM_DATA;
+        if(what & EEPROM_RESTORE_PROGRAM_DATA)  what |= EEPROM_RESTORE_SETTINGS;
 
-            Screen::displayResettingEeprom();
-            uint8_t after = testOrRestore(what);
-            Screen::runResetEepromDone(what, after);
-            return true;
-        }
-        return false;
+        Screen::displayResettingEeprom();
+        uint8_t after = testOrRestore(what);
+        Screen::runResetEepromDone(what, after);
     }
 
 #ifdef ENABLE_EEPROM_RESTORE_DEFAULT
     bool check() {
         uint8_t c = testOrRestore(0);
         if(c == 0) return true;
-        return restoreDefault(c);
+        restoreDefault(c);
+        return false;
     }
 
     void restoreDefault() {

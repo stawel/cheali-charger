@@ -57,7 +57,7 @@ namespace Screen {
     void displayScreenReversedPolarity();
 
     void displayResettingEeprom();
-    bool runAskResetEeprom(uint8_t what);
+    void runAskResetEeprom(uint8_t what);
     void runResetEepromDone(uint8_t before, uint8_t after);
     void runNotImplemented();
     void runWelcomeScreen();

@@ -193,15 +193,15 @@ void Screen::displayCalibrationErrorScreen(uint8_t errNo)
     Time::delay(8000);
 }
 
-bool Screen::runAskResetEeprom(uint8_t what)
+void Screen::runAskResetEeprom(uint8_t what)
 {
     lcdClear();
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("eeprom reset:"));
     lcdPrintUInt(what);
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR(" no         yes"));
-    return waitButtonPressed() == BUTTON_START;
+    lcdPrint_P(PSTR("            yes"));
+    while (waitButtonPressed() != BUTTON_START);
 }
 
 void Screen::displayResettingEeprom()
