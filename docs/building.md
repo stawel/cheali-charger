@@ -9,6 +9,8 @@ dependencies: git, cmake, avrdude, avr-libc, gcc-avr
 user@~$ sudo apt-get install cmake avrdude avr-libc gcc-avr git
 user@~$ git clone https://github.com/stawel/cheali-charger.git
 user@~$ cd cheali-charger
+user@~$ git submodule init
+user@~$ git submodule update
 user@~/cheali-charger$ ./bootstrap
 user@~/cheali-charger$ make
       
@@ -33,6 +35,8 @@ copy [openocd/contrib/99-openocd.rules](https://github.com/stawel/openocd/blob/m
 user@~$ sudo apt-get install git cmake
 user@~$ git clone https://github.com/stawel/cheali-charger.git
 user@~$ cd cheali-charger
+user@~$ git submodule init
+user@~$ git submodule update
 user@~/cheali-charger$ ./bootstrap-arm
 user@~/cheali-charger$ make
 
@@ -87,6 +91,8 @@ install [macports](https://www.macports.org/)
 user@~$ sudo port install cmake avrdude avr-libc gcc-avr git
 user@~$ git clone https://github.com/stawel/cheali-charger.git
 user@~$ cd cheali-charger
+user@~$ git submodule init
+user@~$ git submodule update
 user@~/cheali-charger$ ./bootstrap
 user@~/cheali-charger$ make
       

@@ -1,0 +1,3 @@
+[submodule "utils/M0517_flash_tools"]
+	path = utils/M0517_flash_tools
+	url = https://github.com/sasam/M0517_flash_tools.git
