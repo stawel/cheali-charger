@@ -255,10 +255,10 @@ void AnalogInputs::reset()
     }
 }
 
-void AnalogInputs::powerOn()
+void AnalogInputs::powerOn(bool enableBatteryOutput)
 {
     if(!on_) {
-        hardware::setBatteryOutput(true);
+        hardware::setBatteryOutput(enableBatteryOutput);
         reset();
         on_ = true;
         doFullMeasurement();
