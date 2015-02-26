@@ -244,12 +244,14 @@ void conversionDone()
     uint16_t v = processConversion();
 
 #ifdef ENABLE_DEBUG
-    if(g_adcBurstCount_ == 0 && adc_input.ai_name == AnalogInputs::Vb0_pin) {
+    if(g_adcBurstCount_ == 0 && adc_input.ai_name == AnalogInputs::Vout_plus_pin) {
         if(adcDebugCount < MAX_DEBUG_DATA) {
             adcDebugStart = true;
         }
     }
-    if(adcDebugStart && /*adc_input.ai_name == AnalogInputs::Vout_minus_pin  &&*/ adcDebugCount < MAX_DEBUG_DATA) {
+    if(adcDebugStart && adcDebugCount < MAX_DEBUG_DATA
+            && adc_input.ai_name == AnalogInputs::VirtualInputs
+           ) {
         if(g_adcBurstCount_ == 0)
             adcDebugData[adcDebugCount++] = adc_input.ai_name; //AnalogInputs::i_avrCount_;
         adcDebugData[adcDebugCount++] = v;

@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2014  Paweł Stawicki. All right reserved.
+    Copyright (C) 2015  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,16 +15,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef STRINGS_COMMON_H_
-#define STRINGS_COMMON_H_
+#ifndef HELPER_H_
+#define HELPER_H_
 
-#define STRING_CPP(name, value) extern const char string_ ## name[] PROGMEM = value
+void helperMain();
 
-#ifdef STRINGS_CPP_
-#define STRING(name, value) STRING_CPP(name, value)
-#else
-#define STRING(name, value) extern const char string_ ## name[]
-#endif
-
-
-#endif /* STRINGS_COMMON_H_ */
+#endif /* HELPER_H_ */

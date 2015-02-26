@@ -33,6 +33,7 @@
 #include "cpu.h"
 #include "Serial.h"
 #include "Screen.h"
+#include "helper.h"
 
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =
@@ -83,7 +84,11 @@ void setup()
 int main()
 {
     setup();
+#ifdef ENABLE_HELPER
+    helperMain();
+#else
     while(true) {
         loop();
     }
+#endif
 }

@@ -17,5 +17,6 @@ include(${CORE_DIR}/menus/menus.cmake)
 include(${CORE_DIR}/screens/screens.cmake)
 include(${CORE_DIR}/drivers/drivers.cmake)
 include(${CORE_DIR}/strings/strings.cmake)
+include(${CORE_DIR}/helper/helper.cmake)
 
 

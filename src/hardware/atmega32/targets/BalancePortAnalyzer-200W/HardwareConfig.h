@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2014  Paweł Stawicki. All right reserved.
+    Copyright (C) 2013  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,16 +15,25 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef STRINGS_COMMON_H_
-#define STRINGS_COMMON_H_
+#ifndef HARDWARE_CONFIG_H_
+#define HARDWARE_CONFIG_H_
 
-#define STRING_CPP(name, value) extern const char string_ ## name[] PROGMEM = value
+#include "GlobalConfig.h"
+#include "HardwareConfigGeneric.h"
 
-#ifdef STRINGS_CPP_
-#define STRING(name, value) STRING_CPP(name, value)
-#else
-#define STRING(name, value) extern const char string_ ## name[]
-#endif
+#define ENABLE_HELPER
+#define ENABLE_HELPER_BALANCE_PORT_ANALYZER
 
 
-#endif /* STRINGS_COMMON_H_ */
+#define MAX_CHARGE_V            ANALOG_VOLT(27.000)
+#define MAX_CHARGE_I            ANALOG_AMP(10.000)
+#define MAX_CHARGE_P            ANALOG_WATT(200.000)
+
+#define MAX_DISCHARGE_P         ANALOG_WATT(25.000)
+#define MAX_DISCHARGE_I         ANALOG_AMP(5.000)
+
+#define SMPS_UPPERBOUND_VALUE               TIMER1_PRECISION_PERIOD
+#define DISCHARGER_UPPERBOUND_VALUE         TIMER1_PRECISION_PERIOD
+
+
+#endif /* HARDWARE_CONFIG_H_ */
