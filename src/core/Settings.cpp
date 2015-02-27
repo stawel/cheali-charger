@@ -85,7 +85,7 @@ const Settings defaultSettings PROGMEM = {
 };
 
 
-const uint32_t settingsUARTSpeeds[Settings::UARTSpeeds] PROGMEM = {
+const uint32_t Settings::UARTSpeedValue[Settings::UARTSpeeds] PROGMEM = {
     9600,
     19200,
     38400,
@@ -95,7 +95,7 @@ const uint32_t settingsUARTSpeeds[Settings::UARTSpeeds] PROGMEM = {
 
 
 uint32_t Settings::getUARTspeed() const {
-    return pgm::read(&settingsUARTSpeeds[UARTspeed]);
+    return pgm::read(&UARTSpeedValue[UARTspeed]);
 }
 
 void Settings::load() {
@@ -133,10 +133,6 @@ void Settings::apply() {
 
 void Settings::edit()
 {
-    SettingsMenu menu(*this);
-    menu.run();
-    *this = menu.p_;
-    save();
-    apply();
+    SettingsMenu::run();
 }
 

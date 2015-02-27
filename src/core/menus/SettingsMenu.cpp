@@ -20,8 +20,15 @@
 #include "Utils.h"
 #include "LcdPrint.h"
 #include "Buzzer.h"
+#include "SerialLog.h"
+#include "StaticEditMenu.h"
+
+//#define ENABLE_DEBUG
+#include "debug.h"
 
 using namespace settingsMenu;
+
+namespace SettingsMenu {
 
 const char * const SettingsStaticMenu[] PROGMEM =
 {
@@ -70,178 +77,23 @@ const char * const SettingsStaticMenu[] PROGMEM =
 };
 
 
-SettingsMenu::SettingsMenu(const Settings &p):
-        EditMenu(SettingsStaticMenu), p_(p){};
-
-
-void SettingsMenu::printItem(uint8_t index)
-{
-    uint8_t dig = lcdPrint_P(staticMenu_, index);
-    dig = LCD_COLUMNS - dig;
-
-    if(getBlinkIndex() != index) {
-        START_CASE_COUNTER;
-        switch (index) {
-#ifdef ENABLE_LCD_BACKLIGHT
-            case NEXT_CASE:     lcdPrintUnsigned(p_.backlight, dig);    break;
-#endif
-#ifdef ENABLE_FAN
-            case NEXT_CASE:     printFanOn(dig);                        break;
-            case NEXT_CASE:     printTemp(p_.fanTempOn, dig);           break;
-#endif
-#ifdef ENABLE_T_INTERNAL
-            case NEXT_CASE:     printTemp(p_.dischargeTempOff, dig);    break;
-#endif
-            case NEXT_CASE:     lcdPrintYesNo(p_.externT, dig);         break;
-            case NEXT_CASE:     printTemp(p_.externTCO, dig);           break;
-            case NEXT_CASE:     printDeltaT(p_.deltaT, dig);            break;
-            case NEXT_CASE:     lcdPrintYesNo(p_.enable_deltaV, dig);   break;
-            case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiMH, dig);       break;
-            case NEXT_CASE:     lcdPrint_mV(p_.deltaV_NiCd, dig);       break;
-            case NEXT_CASE:     lcdPrintVoltage(p_.cutoffV_NiMH, dig);  break;
-            case NEXT_CASE:     lcdPrintVoltage(p_.cutoffV_NiCd, dig);  break;
-            case NEXT_CASE:     lcdPrintUnsigned(p_.DCcycles, dig);     break;
-            case NEXT_CASE:     lcdPrintUnsigned(p_.DCRestTime, dig-1);
-                                lcdPrintChar('m');                      break;
-            case NEXT_CASE:     lcdPrintYesNo(p_.audioBeep, dig);       break;
-            case NEXT_CASE:     lcdPrintUnsigned(p_.minIoutDiv, dig);   break;
-            case NEXT_CASE:     lcdPrintCurrent(p_.minIout, dig);       break;
-            case NEXT_CASE:     lcdPrintPercentage(p_.capCutoff, dig);  break;
-            case NEXT_CASE:     printVolt(p_.inputVoltageLow, dig);     break;
-            case NEXT_CASE:     lcdPrint_mV(p_.overCharge_LiXX, dig);   break;
-            case NEXT_CASE:     lcdPrint_mV(p_.overDischarge_LiXX, dig);        break;
-            case NEXT_CASE:     lcdPrintYesNo(p_.dischargeAggressive_LiXX, dig);break;
-            case NEXT_CASE:     lcdPrintYesNo(p_.forceBalancePort, dig);        break;
-            case NEXT_CASE:     lcdPrint_mV(p_.balancerError, dig);     break;
-#ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
-            case NEXT_CASE:     lcdPrintYesNo(p_.adcNoise, dig);        break;
-#endif
-            case NEXT_CASE:     printUART(dig);                         break;
-            case NEXT_CASE:     printUARTSpeed(dig);                    break;
-#ifdef ENABLE_TX_HW_SERIAL
-            case NEXT_CASE:     printUARTinput(dig);                    break;
-#endif
-        }
-    }
-}
-
-void SettingsMenu::editItem(uint8_t index, uint8_t key)
-{
-    int dir = -1;
-    if(key == BUTTON_INC) dir = 1;
-    START_CASE_COUNTER;
-    switch(index) {
-#ifdef ENABLE_LCD_BACKLIGHT
-        case NEXT_CASE:     changeBacklight(dir);                                    break;
-#endif
-#ifdef ENABLE_FAN
-        case NEXT_CASE:     change0ToMax(&p_.fanOn, dir, Settings::FanProgramTemperature); break;
-        case NEXT_CASE:     changeTemp(&p_.fanTempOn, dir);                          break;
-#endif
-#ifdef ENABLE_T_INTERNAL
-        case NEXT_CASE:     changeTemp(&p_.dischargeTempOff, dir);                   break;
-#endif
-        case NEXT_CASE:     changeExternTemp(dir);                                   break;
-        case NEXT_CASE:     changeTemp(&p_.externTCO,dir);                           break;
-        case NEXT_CASE:     changeDeltaTemp(&p_.deltaT,dir);                         break;
-        case NEXT_CASE:     change0ToMax(&p_.enable_deltaV, dir, 1);                 break;
-        case NEXT_CASE:     changeDeltaV(&p_.deltaV_NiMH, dir);                      break;
-        case NEXT_CASE:     changeDeltaV(&p_.deltaV_NiCd, dir);                      break;
-        case NEXT_CASE:     changeCutoffNiXX(&p_.cutoffV_NiMH, dir);                 break;
-        case NEXT_CASE:     changeCutoffNiXX(&p_.cutoffV_NiCd, dir);                 break;
-        case NEXT_CASE:     change1ToMax(&p_.DCcycles, dir, 5);                      break;
-        case NEXT_CASE:     change1ToMax(&p_.DCRestTime, dir, 99);                   break;
-        case NEXT_CASE:     change0ToMax(&p_.audioBeep, dir, 1);                     break;
-        case NEXT_CASE:     change1ToMax(&p_.minIoutDiv, dir, 50);                   break;
-        case NEXT_CASE:     change1ToMax(&p_.minIout, dir, 200);                     break;
-        case NEXT_CASE:     change1ToMax(&p_.capCutoff, dir, 250);                   break;
-        case NEXT_CASE:     changeInputVolt(&p_.inputVoltageLow, dir);               break;
-        case NEXT_CASE:     changeOverCharge(dir);                                   break;
-        case NEXT_CASE:     changeOverDischarge(dir);                                break;
-        case NEXT_CASE:     change0ToMax(&p_.dischargeAggressive_LiXX, dir, 1);      break;
-        case NEXT_CASE:     change0ToMax(&p_.forceBalancePort, dir, 1);              break;
-        case NEXT_CASE:     changeBalanceError(&p_.balancerError, dir);              break;
-#ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
-        case NEXT_CASE:     change0ToMax(&p_.adcNoise, dir, 1);                      break;
-#endif
-        case NEXT_CASE:     changeUART(dir);                                         break;
-        case NEXT_CASE:     change0ToMax(&p_.UARTspeed, dir, Settings::UARTSpeeds-1);break;
-#ifdef ENABLE_TX_HW_SERIAL
-        case NEXT_CASE:     change0ToMax(&p_.UARTinput, dir, 1);                     break;
-#endif
-     }
-}
-
-void SettingsMenu::run() {
-    int8_t index;
-    do {
-        index = runSimple();
-
-        if(index < 0) return;
-        switch(index) {
-#ifdef ENABLE_SETTINGS_MENU_RESET
-        case sizeOfArray(SettingsStaticMenu) - 2:  //reset
-            p_.setDefault();
-            Buzzer::soundSelect();
-            break;
-#endif
-        default:
-            Settings undo(p_);
-            if(!runEdit(index)) {
-                p_ = undo;
-            } else {
-                Buzzer::soundSelect();
-                p_.check();
-            }
-            p_.apply();
-            break;
-        }
-    } while(true);
-}
-
-
-void SettingsMenu::printTemp(AnalogInputs::ValueType t, uint8_t dig) {
-    lcdPrintUnsigned(t/100, dig-1);
-    lcdPrintChar('C');
-}
-void SettingsMenu::printVolt(AnalogInputs::ValueType v, uint8_t dig) {
-    lcdPrintUnsigned(v/1000, dig-1);
-    lcdPrintChar('V');
-}
-
-
-void SettingsMenu::printDeltaT(AnalogInputs::ValueType dt, uint8_t dig)
-{
-    lcdPrintUnsigned(dt/100, dig-3-2);
-    lcdPrintChar('.');
-    lcdPrintDigit((dt%100)/10);
-    lcdPrint_P(string_unitDeltaT);
-}
-
-void SettingsMenu::changeBacklight(int dir) {
-    change0ToMax(&p_.backlight, dir, 99);
-    p_.apply();
-}
-
-void SettingsMenu::changeExternTemp(int dir) {
-    change0ToMax(&p_.externT, dir, 1);
+void changedExternTemp() {
 #ifdef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
-    if(p_.externT)
+    if(settings.externT)
 #ifdef ENABLE_TX_HW_SERIAL
-        if(p_.UARTinput == Settings::Software)
+        if(settings.UARTinput == Settings::Software)
 #endif
-            p_.UART = Settings::Disabled;
+            settings.UART = Settings::Disabled;
 #endif
 }
 
-void SettingsMenu::changeUART(int dir) {
-    change0ToMax(&p_.UART, dir, Settings::ExtDebugAdc);
+void changedUART() {
 #ifdef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
-    if(p_.UART != Settings::Disabled)
+    if(settings.UART != Settings::Disabled)
 #ifdef ENABLE_TX_HW_SERIAL
-        if(p_.UARTinput == Settings::Software)
+        if(settings.UARTinput == Settings::Software)
 #endif
-            p_.externT = false;
+            settings.externT = false;
 #endif
 }
 
@@ -252,6 +104,7 @@ const char * const SettingsFanOn[] PROGMEM = {
         string_temperature,
         string_tempProgram
 };
+const cprintf::ArrayData FanOnData  PROGMEM = {SettingsFanOn, &settings.fanOn};
 
 const char * const SettingsUART[] PROGMEM = {
         string_disable,
@@ -260,107 +113,95 @@ const char * const SettingsUART[] PROGMEM = {
         string_extDebug,
         string_extDebugAdc
 };
+const cprintf::ArrayData UARTData  PROGMEM = {SettingsUART, &settings.UART};
+const cprintf::ArrayData UARTSpeedsData PROGMEM = {Settings::UARTSpeedValue, &settings.UARTspeed};
 
-const char * const SettingsUARTinput[] PROGMEM = {
-        string_temp,
-        string_pin7,
+
+const char * const SettingsUARTinput[] PROGMEM = {string_temp, string_pin7};
+const cprintf::ArrayData UARTinputData  PROGMEM = {SettingsUARTinput, &settings.UARTinput};
+
+const AnalogInputs::ValueType Tmin = Settings::TempDifference + ANALOG_CELCIUS(1);
+const AnalogInputs::ValueType Tmax = ANALOG_CELCIUS(99);
+const AnalogInputs::ValueType Tstep =  ANALOG_CELCIUS(1);
+
+
+const StaticEditMenu::StaticEditData editData[] PROGMEM = {
+
+
+#ifdef ENABLE_LCD_BACKLIGHT
+        {{CP_TYPE_UNSIGNED,0,&settings.backlight}, {0,100,1}}, //TODO
+#endif
+#ifdef ENABLE_FAN
+        {{CP_TYPE_STRING_ARRAY,0,&FanOnData}, {0, Settings::FanProgramTemperature, 1}}, //TODO
+        {{CP_TYPE_TEMPERATURE,0,&settings.fanTempOn}, {Tmin,Tmax,Tstep}},
+#endif
+#ifdef ENABLE_T_INTERNAL
+        {{CP_TYPE_TEMPERATURE,0,&settings.dischargeTempOff}, {Tmin,Tmax,Tstep}},
+#endif
+        {{CP_TYPE_ON_OFF,0,&settings.externT}, {0,1,1}}, //TODO // TDOO: changeExternTemp(dir);
+        {{CP_TYPE_TEMPERATURE,0,&settings.externTCO}, {Tmin,Tmax,Tstep}},
+        {{CP_TYPE_TEMP_MINUT,0,&settings.deltaT}, {ANALOG_CELCIUS(0.1), ANALOG_CELCIUS(10), ANALOG_CELCIUS(0.1)}},
+        {{CP_TYPE_ON_OFF,0,&settings.enable_deltaV}, {0,1,1}},
+        {{CP_TYPE_SIGNED_mV,0,(uint16_t*)&settings.deltaV_NiMH}, {-ANALOG_VOLT(0.020), ANALOG_VOLT(0.000), ANALOG_VOLT(0.001)}},
+        {{CP_TYPE_SIGNED_mV,0,(uint16_t*)&settings.deltaV_NiCd}, {-ANALOG_VOLT(0.020), ANALOG_VOLT(0.000), ANALOG_VOLT(0.001)}},
+        {{CP_TYPE_V,0,&settings.cutoffV_NiMH}, {ANALOG_VOLT(1.200), ANALOG_VOLT(2.000), ANALOG_VOLT(0.001)}},
+        {{CP_TYPE_V,0,&settings.cutoffV_NiCd}, {ANALOG_VOLT(1.200), ANALOG_VOLT(2.000), ANALOG_VOLT(0.001)}},
+        {{CP_TYPE_UNSIGNED,0,&settings.DCcycles}, {0,5,1}},
+        {{CP_TYPE_MINUTES,0,&settings.DCRestTime}, {1,99,1}},
+        {{CP_TYPE_ON_OFF,0,&settings.audioBeep}, {0,1,1}},
+        {{CP_TYPE_UNSIGNED,0,&settings.minIoutDiv}, {1,50,1}},
+        {{CP_TYPE_A,0,&settings.minIout}, {ANALOG_AMP(0.001),ANALOG_AMP(0.500),ANALOG_AMP(0.001)}},
+        {{CP_TYPE_PROCENTAGE,0,&settings.capCutoff}, {1,250,1}},
+        {{CP_TYPE_V2,0,&settings.inputVoltageLow}, {ANALOG_VOLT(7),ANALOG_VOLT(30),ANALOG_VOLT(1)}},
+        {{CP_TYPE_SIGNED_mV,0,(uint16_t*)&settings.overCharge_LiXX}, {-ANALOG_VOLT(0.035),ANALOG_VOLT(0.035),ANALOG_VOLT(0.001)}},
+        {{CP_TYPE_SIGNED_mV,0,(uint16_t*)&settings.overDischarge_LiXX}, {-ANALOG_VOLT(0.999),+ANALOG_VOLT(0.999),+ANALOG_VOLT(0.001)}},
+        {{CP_TYPE_ON_OFF,0,&settings.dischargeAggressive_LiXX}, {0,1,1}},
+        {{CP_TYPE_ON_OFF,0,&settings.forceBalancePort}, {0,1,1}},
+        {{CP_TYPE_SIGNED_mV,0,&settings.balancerError}, {ANALOG_VOLT(0.003),ANALOG_VOLT(0.200),ANALOG_VOLT(0.001)}},
+#ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
+        {{CP_TYPE_ON_OFF,0,&settings.adcNoise}, {0,1,1}},
+#endif
+        {{CP_TYPE_STRING_ARRAY,0,&UARTData}, {0,Settings::ExtDebugAdc, 1}}, //TODO: changeUART(dir);
+        {{CP_TYPE_UINT32_ARRAY,0,&UARTSpeedsData}, {0,Settings::UARTSpeeds-1, 1}},
+#ifdef ENABLE_TX_HW_SERIAL
+        {{CP_TYPE_STRING_ARRAY,0,&UARTinputData}, {0,1,1}},
+#endif
+
 };
 
-void SettingsMenu::printFanOn(uint8_t dig) const
-{
-    lcdPrintSpaces(dig - 7);
-    lcdPrint_P(SettingsFanOn, p_.fanOn);
+void run() {
+    SerialLog::powerOn();
+    StaticEditMenu menu(SettingsStaticMenu, editData);
+    int8_t index;
+
+    do {
+        index = menu.runSimple();
+
+        if(index < 0) return;
+        switch(index) {
+#ifdef ENABLE_SETTINGS_MENU_RESET
+        case sizeOfArray(SettingsStaticMenu) - 2:  //reset
+            settings.setDefault();
+            Buzzer::soundSelect();
+            break;
+#endif
+        default:
+            Settings undo(settings);
+            if(!menu.runEdit(index)) {
+                settings = undo;
+            } else {
+                uint16_t * adr =(uint16_t*) menu.getEditAddress(index);
+                if(adr == &settings.UART) changedUART();
+                else if(adr == &settings.externT)changedExternTemp();
+
+                Buzzer::soundSelect();
+                settings.check();
+            }
+            settings.apply();
+            break;
+        }
+    } while(true);
+    settings.save();
 }
 
-void SettingsMenu::printUART(uint8_t dig) const
-{
-    lcdPrintSpaces(dig - 8);
-    lcdPrint_P(SettingsUART, p_.UART);
-}
-
-void SettingsMenu::printUARTinput(uint8_t dig) const
-{
-    lcdPrintSpaces(dig - 4);
-    lcdPrint_P(SettingsUARTinput, p_.UARTinput);
-}
-
-void SettingsMenu::printUARTSpeed(uint8_t dig) const
-{
-    //TODO: add printULong
-    uint32_t s = p_.getUARTspeed();
-    s/=100;
-    lcdPrintUnsigned(s,dig-2);
-    lcdPrintChar('0');
-    lcdPrintChar('0');
-}
-
-
-void SettingsMenu::changeTemp(AnalogInputs::ValueType *v, int step) {
-    const AnalogInputs::ValueType min = Settings::TempDifference + ANALOG_CELCIUS(1);
-    const AnalogInputs::ValueType max = ANALOG_CELCIUS(99);
-    step *= ANALOG_CELCIUS(1);
-    (*v) += step;
-    if((*v) < min) (*v) = min;
-    if((*v) > max) (*v) = max;
-}
-void SettingsMenu::changeDeltaTemp(AnalogInputs::ValueType *v, int step) {
-    const AnalogInputs::ValueType min = ANALOG_CELCIUS(0.1);
-    const AnalogInputs::ValueType max = ANALOG_CELCIUS(10);
-    step *= ANALOG_CELCIUS(0.1);
-    *v+=step;
-    if(*v < min) *v = min;
-    if(*v > max) *v = max;
-}
-
-void SettingsMenu::changeInputVolt(AnalogInputs::ValueType *v, int step) {
-    const AnalogInputs::ValueType min = ANALOG_VOLT(7);
-    const AnalogInputs::ValueType max = ANALOG_VOLT(30);
-    step *= ANALOG_VOLT(1);
-    *v+=step;
-    if(*v < min) *v = min;
-    if(*v > max) *v = max;
-}
-
-void SettingsMenu::changeBalanceError(AnalogInputs::ValueType *v, int step) {
-    const AnalogInputs::ValueType min = ANALOG_VOLT(0.003);
-    const AnalogInputs::ValueType max = ANALOG_VOLT(0.200);
-    *v+=step;
-    if(*v < min) *v = min;
-    if(*v > max) *v = max;
-}
-
-void SettingsMenu::changeCutoffNiXX(AnalogInputs::ValueType *v, int step) {
-    const AnalogInputs::ValueType min = ANALOG_VOLT(1.200);
-    const AnalogInputs::ValueType max = ANALOG_VOLT(2.000);
-    *v+=step;
-    if(*v < min) *v = min;
-    if(*v > max) *v = max;
-}
-
-void SettingsMenu::changeOverCharge(int dir)
-{
-    int16_t *v = &p_.overCharge_LiXX;
-    const int16_t min = -ANALOG_VOLT(0.035);
-    const int16_t max = +ANALOG_VOLT(0.035);
-    *v+=dir;
-    if(*v < min) *v = min;
-    if(*v > max) *v = max;
-}
-void SettingsMenu::changeOverDischarge(int dir)
-{
-    int16_t *v = &p_.overDischarge_LiXX;
-    const int16_t min = -ANALOG_VOLT(0.999);
-    const int16_t max = +ANALOG_VOLT(0.999);
-    *v+=dir;
-    if(*v < min) *v = min;
-    if(*v > max) *v = max;
-}
-void SettingsMenu::changeDeltaV(int16_t *v, int dir)
-{
-    const int16_t min = -ANALOG_VOLT(0.020);
-    const int16_t max = +ANALOG_VOLT(0.000);
-    *v+=dir;
-    if(*v < min) *v = min;
-    if(*v > max) *v = max;
-}
-
+} //namespace SettingsMenu

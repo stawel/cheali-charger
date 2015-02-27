@@ -15,13 +15,35 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SETTINGSMENU_H_
-#define SETTINGSMENU_H_
+#ifndef STATICEDITMENU_H_
+#define STATICEDITMENU_H_
 
-#include "Settings.h"
+#include <stdint.h>
+#include "EditMenu.h"
+#include "cprintf.h"
 
-namespace SettingsMenu {
-    void run();
+class StaticEditMenu : public EditMenu {
+public:
+
+	struct EditData {
+		int16_t minValue;
+		int16_t maxValue;
+		int16_t step;
+	};
+	struct StaticEditData {
+		cprintf::PrintData print;
+		EditData edit;
+	};
+
+	const StaticEditData * staticEditData;
+
+public:
+	StaticEditMenu(const char * const* staticMenu, const StaticEditData * staticEditData)
+			: EditMenu(staticMenu),staticEditData(staticEditData) {};
+    virtual void printItem(uint8_t item);
+    virtual void editItem(uint8_t item, uint8_t key);
+
+    int16_t * getEditAddress(uint8_t item);
 };
 
-#endif /* SETTINGSMENU_H_ */
+#endif /* STATICEDITMENU_H_ */

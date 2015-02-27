@@ -26,10 +26,12 @@
 
 namespace debug {
     inline void print(char x) { SerialLog::printChar(x); }
+    inline void print(uint8_t x) { SerialLog::printUInt(x); }
     inline void print(uint16_t x) { SerialLog::printUInt(x); }
     inline void print(int16_t x) { SerialLog::printInt(x); }
     inline void print(uint32_t x) { SerialLog::printUInt(x); }
     inline void print(const char * x) { SerialLog::printString(x); }
+    inline void print(void * x) { SerialLog::printULong((long)x); }
     inline void begin() { print('D'); print(Time::getMiliseconds()); print(':'); };
     inline void end() { SerialLog::printNL(); }
 };

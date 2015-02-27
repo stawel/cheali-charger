@@ -19,7 +19,7 @@ function exit_backup()
     exit 1
 }
 
-if [ "$1" != "--no-backup" ]; then
+if [ "$1" = "--no-backup" ]; then
     NOW=`date +"%F_%T"`
     DIR="backup/$NOW"
     echo "creating buckup: $DIR"

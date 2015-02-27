@@ -28,7 +28,7 @@ struct Settings {
     enum FanOnType {FanDisabled, FanAlways, FanProgram, FanTemperature, FanProgramTemperature};
 
     enum UARTInput {Software, Hardware};
-    static const uint8_t UARTSpeeds = 5;
+    static const uint16_t UARTSpeeds = 5;
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5.12);
     uint16_t backlight;
 
@@ -70,11 +70,12 @@ struct Settings {
     void apply();
     void setDefault();
     uint32_t getUARTspeed() const;
+    static const uint32_t UARTSpeedValue[];
 
     static void load();
     static void save();
     static void restoreDefault();
-} CHEALI_EEPROM_PACKED;
+};
 
 extern Settings settings;
 
