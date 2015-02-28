@@ -142,6 +142,7 @@ void ProgramData::loadProgramData(int index)
 void ProgramData::saveProgramData(int index)
 {
     eeprom::write(&eeprom::data.battery[index], battery);
+    eeprom::restoreProgramDataCRC();
 }
 
 uint16_t ProgramData::getCapacityLimit()
@@ -207,13 +208,6 @@ void ProgramData::printChargeString()
         lcdPrint_P(string_unlimited);
     else
         lcdPrintCharge(battery.C, 7);
-}
-
-
-void ProgramData::edit(int index)
-{
-    ProgramDataMenu menu(index);
-    menu.run();
 }
 
 template<class val_t>

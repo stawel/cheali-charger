@@ -130,9 +130,3 @@ void Settings::apply() {
     hardware::setExternalTemperatueOutput(externT);
 }
 
-
-void Settings::edit()
-{
-    SettingsMenu::run();
-}
-

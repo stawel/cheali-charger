@@ -65,7 +65,6 @@ struct Settings {
     uint16_t SMPS_Upperbound_Value;
     uint16_t DISCHARGER_Upperbound_Value;
 
-    void edit();
     void check();
     void apply();
     void setDefault();

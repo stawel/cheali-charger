@@ -30,6 +30,8 @@ public:
     void run();
 
     int programIndex_;
+
+    static void edit(int index);
 };
 
 #endif /* PROGRAMDATAMENU_H_ */

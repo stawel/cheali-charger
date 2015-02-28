@@ -96,3 +96,10 @@ void ProgramDataMenu::run() {
     } while(true);
 }
 
+void ProgramDataMenu::edit(int index)
+{
+    ProgramDataMenu menu(index);
+    menu.run();
+    ProgramData::saveProgramData(index);
+}
+

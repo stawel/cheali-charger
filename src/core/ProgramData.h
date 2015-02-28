@@ -88,8 +88,6 @@ namespace ProgramData {
     inline bool isNiXX() { return getBatteryClass() == ClassNiXX; };
     inline bool isPb() { return getBatteryClass() == ClassPb; };
 
-    void edit(int index);
-
     void loadProgramData(int index);
     void saveProgramData(int index);
     void restoreDefault();
