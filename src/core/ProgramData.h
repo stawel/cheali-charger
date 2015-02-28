@@ -24,7 +24,7 @@
 #include "Settings.h"
 
 
-#define MAX_PROGRAMS 30
+#define MAX_PROGRAMS 28
 #define PROGRAM_DATA_MAX_NAME 14
 #define PROGRAM_DATA_MAX_CHARGE ANALOG_CHARGE(65.000)
 #define PROGRAM_DATA_MAX_TIME 1000 //infinity
@@ -39,12 +39,29 @@ namespace ProgramData {
 
     struct Battery {
         uint16_t type;
+        uint16_t C;
+        uint16_t cells;
+        uint16_t Ic;
+        uint16_t Id;
+        uint16_t Vc;
+        uint16_t Vd;
 
-        uint16_t C,Ic,Id,cells;
-
-//#ifdef ENABLE_TIME_LIMIT: to ensure the same eeprom layout Time is always enabled
+//        uint16_t extrnTCO;
+        uint16_t minIc;
+        uint16_t minId;
         uint16_t time;
 
+
+        uint16_t dV;
+        uint16_t dT;
+//        uint16_t DCcycles;
+        uint16_t DCRestTime;
+
+
+        uint16_t capCoff;
+
+//        uint16_t forceBalanc;
+//        uint16_t balancErr;
     } CHEALI_EEPROM_PACKED;
 
     extern Battery battery;

@@ -24,6 +24,8 @@
 
 class StaticEditMenu : public EditMenu {
 public:
+    static const uint16_t Always = 0xffff;
+    static const uint16_t Last = 0;
 
 	struct EditData {
 		int16_t minValue;
@@ -31,19 +33,26 @@ public:
 		int16_t step;
 	};
 	struct StaticEditData {
+	    const char * staticString;
+	    uint16_t enableCondition;
 		cprintf::PrintData print;
 		EditData edit;
 	};
 
-	const StaticEditData * staticEditData;
-
 public:
-	StaticEditMenu(const char * const* staticMenu, const StaticEditData * staticEditData)
-			: EditMenu(staticMenu),staticEditData(staticEditData) {};
+	StaticEditMenu(const StaticEditData * staticEditData)
+			: EditMenu(NULL), staticEditData(staticEditData) {};
     virtual void printItem(uint8_t item);
     virtual void editItem(uint8_t item, uint8_t key);
 
     int16_t * getEditAddress(uint8_t item);
+
+    void setSelector(uint16_t selector);
+
+private:
+    uint8_t getSelectedIndexOrSize(uint8_t item);
+    const StaticEditData * staticEditData;
+    uint16_t selector;
 };
 
 #endif /* STATICEDITMENU_H_ */
