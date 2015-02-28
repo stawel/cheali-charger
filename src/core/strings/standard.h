@@ -42,6 +42,7 @@ namespace ProgramMenus {
     STRING(storage,             "storage");
     STRING(storageAndBalance,   "storage+balanc");
     STRING(dcCycle,             "D>C format");
+    STRING(capacityCheck,       "capacity check");
     STRING(editBattery,         "edit battery");
 }
 

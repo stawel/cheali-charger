@@ -39,6 +39,10 @@ namespace Screen {
     uint8_t pageNr_;
     uint8_t keyboardButton;
 
+    //see PAGE_PROGRAM
+    //see PAGE_BATTERY
+    STATIC_ASSERT(ProgramData::LAST_BATTERY_CLASS == 4 && Program::LAST_PROGRAM_TYPE == 9 + 2);
+
     uint16_t getConditions() {
         uint16_t c = 0;
         if(Program::programState == Program::Info)

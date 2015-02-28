@@ -32,7 +32,7 @@
 
 struct ProgramData {
 
-    enum BatteryClass {ClassNiXX, ClassPb, ClassLiXX, ClassNiZn};
+    enum BatteryClass {ClassNiXX, ClassPb, ClassLiXX, ClassNiZn, LAST_BATTERY_CLASS};
     enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo, Li430, Li435, NiZn, LAST_BATTERY_TYPE};
     enum VoltageType {VIdle, VCharge, VDischarge, VStorage, ValidEmpty, LAST_VOLTAGE_TYPE};
 

@@ -127,8 +127,11 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
         Strategy::doBalance = true;
         setupStorage();
         break;
+    case Program::CapacityCheck:
+        return ProgramDCcycle::runDCcycle(1, 3);
+
     case Program::DischargeChargeCycle:
-        return ProgramDCcycle::runDCcycle();
+        return ProgramDCcycle::runDCcycle(0, settings.DCcycles*2 - 1);
     default:
         return Strategy::ERROR;
     }

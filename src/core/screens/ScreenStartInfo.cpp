@@ -33,7 +33,7 @@
 namespace Screen {
 namespace StartInfo {
 
-    const char programString[] PROGMEM = "ChCBBlDiFCStSBCY";
+    const char programString[] PROGMEM = "ChCBBlDiFCStSBCYCC";
 
     void printProgram2chars(Program::ProgramType prog)
     {

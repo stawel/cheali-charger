@@ -36,6 +36,7 @@ namespace ProgramMenus {
 #ifdef ENABLE_PROGRAM_MENUS_LIXX_CYCLING
             Program::DischargeChargeCycle,
 #endif
+            Program::CapacityCheck,
             Program::EditBattery,
     };
 
@@ -48,6 +49,7 @@ namespace ProgramMenus {
 #ifdef ENABLE_PROGRAM_MENUS_NIZN_CYCLING
             Program::DischargeChargeCycle,
 #endif
+            Program::CapacityCheck,
             Program::EditBattery,
     };
 
@@ -55,6 +57,7 @@ namespace ProgramMenus {
             Program::Charge,
             Program::Discharge,
             Program::DischargeChargeCycle,
+            Program::CapacityCheck,
             Program::EditBattery,
     };
 
@@ -63,6 +66,7 @@ namespace ProgramMenus {
             Program::Discharge,
             Program::FastCharge,
             Program::DischargeChargeCycle,
+            Program::CapacityCheck,
             Program::EditBattery,
     };
 
@@ -77,6 +81,7 @@ namespace ProgramMenus {
             string_storage,
             string_storageAndBalance,
             string_dcCycle,
+            string_capacityCheck,
             string_editBattery,
     };
 

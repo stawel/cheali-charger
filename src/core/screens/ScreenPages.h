@@ -29,9 +29,8 @@
 namespace Screen { namespace Pages {
 
 /*condition bits:
- * 0..7:    PAGE_PROGRAM(..)
- * 8..12:   PAGE_BATTERY(CLASS)
- * 13:      unused
+ * 0..8:    PAGE_PROGRAM(..)
+ * 9..13:   PAGE_BATTERY(CLASS)
  * 14:      PAGE_START_INFO
  * 15:      PAGE_BALANCE_PORT
 */
@@ -64,7 +63,7 @@ BALANCER_PORTS_GT_6(
 
             {Screen::Methods::displayTime,          PAGE_ALWAYS, PAGE_START_INFO},
             {Screen::Methods::displayTemperature,   PAGE_ALWAYS, PAGE_NONE},
-            {Screen::Cycle::displayCycles,          PAGE_PROGRAM(Program::DischargeChargeCycle), PAGE_START_INFO},
+            {Screen::Cycle::displayCycles,          PAGE_PROGRAM(Program::CapacityCheck)+PAGE_PROGRAM(Program::DischargeChargeCycle), PAGE_START_INFO},
             {Screen::Methods::displayCIVlimits,     PAGE_ALWAYS, PAGE_PROGRAM(Program::Balance) + PAGE_START_INFO},
             {Screen::Methods::displayVinput,        PAGE_ALWAYS, PAGE_NONE},
 
