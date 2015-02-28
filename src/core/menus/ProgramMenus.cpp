@@ -26,6 +26,10 @@
 
 namespace ProgramMenus {
 
+    const Program::ProgramType programNoneMenu[] PROGMEM = {
+            Program::EditBattery,
+    };
+
     const Program::ProgramType programLiXXMenu[] PROGMEM = {
             Program::Charge,
             Program::ChargeBalance,
@@ -109,6 +113,7 @@ namespace ProgramMenus {
         }
     };
 
+    ProgramTypeMenu selectNoneMenu(programNoneMenu);
     ProgramTypeMenu selectLiXXMenu(programLiXXMenu);
     ProgramTypeMenu selectNiXXMenu(programNiXXMenu);
     ProgramTypeMenu selectNiZnMenu(programNiZnMenu);
@@ -116,6 +121,8 @@ namespace ProgramMenus {
 
     ProgramTypeMenu * getSelectProgramMenu() {
         ProgramData::BatteryClass bc = ProgramData::getBatteryClass();
+        if(ProgramData::battery.type == ProgramData::None)
+            return &selectNoneMenu;
         if(bc == ProgramData::ClassNiZn)
             return &selectNiZnMenu;
         if(bc == ProgramData::ClassLiXX)

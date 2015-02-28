@@ -92,7 +92,6 @@ void ProgramDataMenu::run() {
             Buzzer::soundSelect();
             ProgramData::check();
         }
-        break;
     } while(true);
 }
 

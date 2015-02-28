@@ -28,9 +28,10 @@ using namespace programData;
 ProgramData::Battery ProgramData::battery;
 
 //battery voltage limits, see also: ProgramData::getVoltagePerCell, ProgramData::getVoltage
-const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
+const AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
 {
 //          { VIdle,              VCharge,            VDischarge,         VStorage,           ValidEmpty};
+/*None*/    { 1,                  1,                  1,                  1,                  1},
 /*Unknown*/ { 1,                  1,                  1,                  1,                  1},
 /*NiCd*/    { ANALOG_VOLT(1.200), 0/*settings*/,      ANALOG_VOLT(0.850), 0,                  ANALOG_VOLT(0.850)},
 //http://en.wikipedia.org/wiki/Nickel%E2%80%93metal_hydride_battery
@@ -60,6 +61,7 @@ const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][Progr
 
 uint16_t ProgramData::getVoltagePerCell(VoltageType type)
 {
+    STATIC_ASSERT(sizeOfArray(voltsPerCell) == ProgramData::LAST_BATTERY_TYPE);
     uint16_t result = pgm::read(&voltsPerCell[battery.type][type]);
     if (type == VCharge) {
         if (battery.type == NiMH) {
@@ -92,7 +94,8 @@ uint16_t ProgramData::getVoltage(VoltageType type)
 
 
 //                              def. capacity          chargei             dischargei       cell   tlimit
-const ProgramData::Battery defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
+const ProgramData::Battery defaultProgram[] PROGMEM = {
+        {ProgramData::None,     ANALOG_CHARGE(0), ANALOG_AMP(0), ANALOG_AMP(0), 0, 0},
         {ProgramData::Unknown,  ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 10000, 600},
         {ProgramData::NiCd,     ANALOG_CHARGE(2.200), ANALOG_AMP(0.500), ANALOG_AMP(1.900),     1, 480},
         {ProgramData::NiMH,     ANALOG_CHARGE(2.200), ANALOG_AMP(0.500), ANALOG_AMP(1.900),     1, 480},
@@ -105,7 +108,8 @@ const ProgramData::Battery defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGME
         {ProgramData::NiZn,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120}
 };
 
-const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
+const char * const  batteryString[] PROGMEM = {
+        string_battery_None,
         string_battery_Unknown,
         string_battery_NiCd,
         string_battery_NiMH,
@@ -175,11 +179,16 @@ void ProgramData::restoreDefault()
 
 void ProgramData::loadDefault()
 {
+    STATIC_ASSERT(sizeOfArray(defaultProgram) == ProgramData::LAST_BATTERY_TYPE);
     pgm::read(battery, &defaultProgram[battery.type]);
 }
 
 
-void ProgramData::printBatteryString() { lcdPrint_P(batteryString, battery.type); }
+void ProgramData::printBatteryString()
+{
+    STATIC_ASSERT(sizeOfArray(batteryString) == ProgramData::LAST_BATTERY_TYPE);
+    lcdPrint_P(batteryString, battery.type);
+}
 
 void ProgramData::printVoltageString()
 {

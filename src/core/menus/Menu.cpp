@@ -68,7 +68,9 @@ int8_t Menu::runSimple(bool animate) {
 
 
 void Menu::incIndex() {
-    if(pos_ < LCD_LINES - 1) pos_++;
+    uint8_t lines = LCD_LINES;
+    if(size_ < lines) lines = size_;
+    if(pos_ < lines - 1) pos_++;
     else if( begin_ + pos_ < getMenuSize() - 1) begin_++;
 }
 void Menu::decIndex() {
@@ -81,7 +83,9 @@ void Menu::display() {
     for(uint8_t i = 0; i < lines; i++) {
         lcdSetCursor(0, i);
         lcdPrintChar(i == pos_ ? '>' : ' ');
-        printItem(i+begin_);
+        if(i + begin_ < size_) {
+            printItem(i + begin_);
+        }
         lcdPrintSpaces();
     }
     debug();

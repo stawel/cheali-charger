@@ -57,6 +57,7 @@ namespace programData {
     STRING(minutes,     "min.");
 
     //battery types
+    STRING(battery_None,    "None");
     STRING(battery_Unknown, "Unkn");
     STRING(battery_NiCd,    "NiCd");
     STRING(battery_NiMH,    "NiMH");
