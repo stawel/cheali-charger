@@ -49,7 +49,7 @@ namespace Screen {
             c += PAGE_START_INFO;
         if(Monitor::isBalancePortConnected)
             c += PAGE_BALANCE_PORT;
-        c += PAGE_BATTERY(ProgramData::currentProgramData.getBatteryClass());
+        c += PAGE_BATTERY(ProgramData::getBatteryClass());
         c += PAGE_PROGRAM(Program::programType);
         return c;
     }

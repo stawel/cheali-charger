@@ -59,7 +59,7 @@ bool Program::startInfo()
     Strategy::strategy = &StartInfoStrategy::vtable;
     Strategy::exitImmediately = true;
     Strategy::doBalance = false;
-    if(ProgramData::currentProgramData.isLiXX()) {
+    if(ProgramData::isLiXX()) {
         //usues balance port
         Strategy::doBalance = true;
     }
@@ -100,7 +100,7 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
 
     switch(prog) {
     case Program::Charge:
-        if(ProgramData::currentProgramData.isNiXX()) {
+        if(ProgramData::isNiXX()) {
             setupDeltaCharge();
         } else {
             setupTheveninCharge();

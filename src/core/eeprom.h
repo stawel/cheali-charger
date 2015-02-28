@@ -38,7 +38,7 @@ namespace eeprom {
         AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS];
         uint16_t calibrationCRC;
 
-        ProgramData programData[MAX_PROGRAMS];
+        ProgramData::Battery battery[MAX_PROGRAMS];
         uint16_t programDataCRC;
 
         Settings settings;

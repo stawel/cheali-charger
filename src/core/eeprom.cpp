@@ -125,7 +125,7 @@ namespace eeprom {
     }
 
     bool restoreProgramDataCRC(bool restore) {
-        return testOrRestoreCRC((uint8_t*)&data.programData, sizeof(data.programData), restore);
+        return testOrRestoreCRC((uint8_t*)&data.battery, sizeof(data.battery), restore);
     }
 
     bool restoreSettingsCRC(bool restore) {

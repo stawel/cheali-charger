@@ -141,9 +141,6 @@ namespace programDataMenu {
     STRING(chargeCurrent,       "Ic: ");
     STRING(dischargeCurrent,    "Id: ");
     STRING(timeLimit,           "Tlim: ");
-    STRING(createName,          "Create name");
-    STRING(editName,            "Edit name");
-    STRING(resetName,           "Reset name");
 }
 
 namespace DeltaChargeStrategy {

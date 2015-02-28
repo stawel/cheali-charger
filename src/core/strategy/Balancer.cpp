@@ -153,7 +153,7 @@ void Balancer::startBalacing()
 
     //test if we can still discharge
     bool off = true;
-    AnalogInputs::ValueType VdisMin =  ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VDischarge);
+    AnalogInputs::ValueType VdisMin =  ProgramData::getVoltagePerCell(ProgramData::VDischarge);
     for(int i = 0; i < cells; i++) {
         //save voltage values
         AnalogInputs::ValueType v = getV(i);

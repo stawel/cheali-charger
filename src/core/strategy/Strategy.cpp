@@ -43,12 +43,12 @@ namespace Strategy {
     }
 
     void setVI(ProgramData::VoltageType vt, bool charge) {
-        endV = ProgramData::currentProgramData.getVoltage(vt);
+        endV = ProgramData::getVoltage(vt);
 
         if(charge) {
-            maxI = ProgramData::currentProgramData.battery.Ic;
+            maxI = ProgramData::battery.Ic;
         } else {
-            maxI = ProgramData::currentProgramData.battery.Id;
+            maxI = ProgramData::battery.Id;
         }
 
         setMinI(maxI/minIdiv);

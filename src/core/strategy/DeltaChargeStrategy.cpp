@@ -43,7 +43,7 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
     SimpleChargeStrategy::calculateThevenin();
     AnalogInputs::ValueType Vout = AnalogInputs::getVbattery();
 
-    if(ProgramData::currentProgramData.getVoltage(ProgramData::VDischarge) < Vout) {
+    if(ProgramData::getVoltage(ProgramData::VDischarge) < Vout) {
         SMPS::trySetIout(Strategy::maxI);
     }
 
@@ -57,14 +57,14 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
 
     if(settings.enable_deltaV) {
         int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
-        if(x < ProgramData::currentProgramData.getDeltaVLimit()) {
+        if(x < ProgramData::getDeltaVLimit()) {
             Program::stopReason = string_batteryVoltageReachedDeltaVLimit;
             return Strategy::COMPLETE;
         }
     }
     if(settings.externT) {
         int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
-        if(x > ProgramData::currentProgramData.getDeltaTLimit()) {
+        if(x > ProgramData::getDeltaTLimit()) {
             Program::stopReason = string_externalTemperatureReachedDeltaTLimit;
             return Strategy::COMPLETE;
         }

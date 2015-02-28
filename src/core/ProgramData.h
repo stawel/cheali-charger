@@ -30,14 +30,14 @@
 #define PROGRAM_DATA_MAX_TIME 1000 //infinity
 #define PROGRAM_DATA_MIN_CHARGE ANALOG_CHARGE(0.100)
 
-struct ProgramData {
+namespace ProgramData {
 
     enum BatteryClass {ClassNiXX, ClassPb, ClassLiXX, ClassNiZn, LAST_BATTERY_CLASS};
     enum BatteryType {Unknown, NiCd, NiMH, Pb, Life, Lilo, Lipo, Li430, Li435, NiZn, LAST_BATTERY_TYPE};
     enum VoltageType {VIdle, VCharge, VDischarge, VStorage, ValidEmpty, LAST_VOLTAGE_TYPE};
 
 
-    struct BatteryData {
+    struct Battery {
         uint16_t type;
 
         uint16_t C,Ic,Id,cells;
@@ -47,27 +47,26 @@ struct ProgramData {
 
     } CHEALI_EEPROM_PACKED;
 
-    BatteryData battery;
-    char name[PROGRAM_DATA_MAX_NAME];
+    extern Battery battery;
 
-    uint16_t getVoltagePerCell(VoltageType type = VIdle) const;
-    uint16_t getVoltage(VoltageType type = VIdle) const;
-    uint16_t getCapacityLimit() const;
+    uint16_t getVoltagePerCell(VoltageType type = VIdle);
+    uint16_t getVoltage(VoltageType type = VIdle);
+    uint16_t getCapacityLimit();
 #ifdef ENABLE_TIME_LIMIT
-    uint16_t getTimeLimit() const {return battery.time; }
-    void printTimeString() const;
+    inline uint16_t getTimeLimit() {return battery.time; }
+    void printTimeString();
     void changeTime(int direction);
 #endif
-    int16_t getDeltaVLimit() const;
-    int16_t getDeltaTLimit() const {return settings.deltaT;}
+    int16_t getDeltaVLimit();
+    inline int16_t getDeltaTLimit() {return settings.deltaT;}
 
     //Info: the print... and change... methods are used in ProgramDataMenu AND Screen
-    void printBatteryString() const;
+    void printBatteryString();
 
-    void printVoltageString() const;
-    void printIcString() const;
-    void printIdString() const;
-    void printChargeString() const;
+    void printVoltageString();
+    void printIcString();
+    void printIdString();
+    void printChargeString();
 
     //TODO: change to changeBatteryType
     void changeBatteryType(int direction);
@@ -76,34 +75,26 @@ struct ProgramData {
     void changeIc(int direction);
     void changeId(int direction);
 
-    uint16_t getMaxCells() const;
-    uint16_t getMaxIc() const;
-    uint16_t getMaxId() const;
+    uint16_t getMaxCells();
+    uint16_t getMaxIc();
+    uint16_t getMaxId();
 
     void check();
     void loadDefault();
 
-    BatteryClass getBatteryClass() const;
+    BatteryClass getBatteryClass();
 
-    //TODO: remove
-    bool isLiXX() const { return getBatteryClass() == ClassLiXX; };
-    bool isNiXX() const { return getBatteryClass() == ClassNiXX; };
-    bool isPb() const { return getBatteryClass() == ClassPb; };
+    inline bool isLiXX() { return getBatteryClass() == ClassLiXX; };
+    inline bool isNiXX() { return getBatteryClass() == ClassNiXX; };
+    inline bool isPb() { return getBatteryClass() == ClassPb; };
 
     void edit(int index);
 
-    void createName(int index);
-    void resetName(int index);
+    void loadProgramData(int index);
+    void saveProgramData(int index);
+    void restoreDefault();
 
-    static void loadProgramData(int index);
-    static void saveProgramData(int index);
-    static char * getName_E(int index);
-    static void restoreDefault();
-
-    static ProgramData currentProgramData;
-
-private:
-    static void printIndex(char * &buf, uint8_t &maxSize, uint8_t index);
+    void printIndex(char * &buf, uint8_t &maxSize, uint8_t index);
 };
 
 #endif /* PROGRAMDATA_H_ */

@@ -33,49 +33,13 @@ const char * const ProgramDataStaticMenu[] PROGMEM =
 #ifdef ENABLE_TIME_LIMIT
         string_timeLimit,
 #endif
-        string_createName,
-#ifdef ENABLE_PROGRAM_MENU_EDIT_NAME
-        string_editName,
-#endif
-#ifdef ENABLE_PROGRAM_MENU_RESET_NAME
-        string_resetName,
-#endif
         NULL
 };
 
 
-ProgramDataMenu::ProgramDataMenu(const ProgramData &p, int programIndex):
-        EditMenu(ProgramDataStaticMenu), p_(p), programIndex_(programIndex){};
+ProgramDataMenu::ProgramDataMenu(int programIndex):
+        EditMenu(ProgramDataStaticMenu), programIndex_(programIndex){};
 
-
-void ProgramDataMenu::editName()
-{
-    EditName editName(p_.name, PROGRAM_DATA_MAX_NAME, string_editedName);
-    editName.run();
-    render();
-}
-
-void ProgramDataMenu::createName()
-{
-    p_.createName(programIndex_+1);
-    waitName();
-}
-
-void ProgramDataMenu::resetName()
-{
-    p_.resetName(programIndex_+1);
-    waitName();
-}
-void ProgramDataMenu::waitName()
-{
-    lcdClear();
-    lcdSetCursor0_0();
-    lcdPrint_P(string_name);
-    lcdSetCursor0_1();
-    lcdPrint(p_.name, PROGRAM_DATA_MAX_NAME);
-    waitButtonPressed();
-    Buzzer::soundSelect();
-}
 
 
 void ProgramDataMenu::printItem(uint8_t index)
@@ -84,13 +48,13 @@ void ProgramDataMenu::printItem(uint8_t index)
     if(getBlinkIndex() != index) {
         START_CASE_COUNTER;
         switch (index) {
-            case NEXT_CASE:    p_.printBatteryString(); break;
-            case NEXT_CASE:    p_.printVoltageString(); break;
-            case NEXT_CASE:    p_.printChargeString();  break;
-            case NEXT_CASE:    p_.printIcString();      break;
-            case NEXT_CASE:    p_.printIdString();      break;
+            case NEXT_CASE:    ProgramData::printBatteryString(); break;
+            case NEXT_CASE:    ProgramData::printVoltageString(); break;
+            case NEXT_CASE:    ProgramData::printChargeString();  break;
+            case NEXT_CASE:    ProgramData::printIcString();      break;
+            case NEXT_CASE:    ProgramData::printIdString();      break;
 #ifdef ENABLE_TIME_LIMIT
-            case NEXT_CASE:    p_.printTimeString();    break;
+            case NEXT_CASE:    ProgramData::printTimeString();    break;
 #endif
         }
     }
@@ -103,13 +67,13 @@ void ProgramDataMenu::editItem(uint8_t index, uint8_t key)
 
     START_CASE_COUNTER;
     switch(index) {
-        case NEXT_CASE: p_.changeBatteryType(dir);    break;
-        case NEXT_CASE: p_.changeVoltage(dir);    break;
-        case NEXT_CASE: p_.changeCharge(dir);     break;
-        case NEXT_CASE: p_.changeIc(dir);         break;
-        case NEXT_CASE: p_.changeId(dir);         break;
+        case NEXT_CASE: ProgramData::changeBatteryType(dir);    break;
+        case NEXT_CASE: ProgramData::changeVoltage(dir);    break;
+        case NEXT_CASE: ProgramData::changeCharge(dir);     break;
+        case NEXT_CASE: ProgramData::changeIc(dir);         break;
+        case NEXT_CASE: ProgramData::changeId(dir);         break;
 #ifdef ENABLE_TIME_LIMIT
-        case NEXT_CASE: p_.changeTime(dir);       break;
+        case NEXT_CASE: ProgramData::changeTime(dir);       break;
 #endif
     }
 }
@@ -121,32 +85,14 @@ void ProgramDataMenu::run() {
 
         if(index < 0) return;
 
-        START_CASE_COUNTER_FROM(sizeOfArray(ProgramDataStaticMenu)
-#ifdef ENABLE_PROGRAM_MENU_EDIT_NAME
-                  -1
-#endif
-#ifdef ENABLE_PROGRAM_MENU_RESET_NAME
-                  -1
-#endif
-                  -1 -1);
-        switch(index) {
-            case NEXT_CASE: createName(); break;
-#ifdef ENABLE_PROGRAM_MENU_EDIT_NAME
-            case NEXT_CASE: editName();   break;
-#endif
-#ifdef ENABLE_PROGRAM_MENU_RESET_NAME
-            case NEXT_CASE: resetName();  break;
-#endif
-        default:
-            ProgramData undo(p_);
-            if(!runEdit(index)) {
-                p_ = undo;
-            } else {
-                Buzzer::soundSelect();
-                p_.check();
-            }
-            break;
+        ProgramData::Battery undo(ProgramData::battery);
+        if(!runEdit(index)) {
+            ProgramData::battery = undo;
+        } else {
+            Buzzer::soundSelect();
+            ProgramData::check();
         }
+        break;
     } while(true);
 }
 

@@ -99,7 +99,7 @@ void Screen::Methods::displayFirstScreen()
 void Screen::Methods::displayCIVlimits()
 {
     lcdSetCursor0_0();
-    lcdPrintCharge(ProgramData::currentProgramData.getCapacityLimit(), 8);
+    lcdPrintCharge(ProgramData::getCapacityLimit(), 8);
     lcdPrintSpace1();
     lcdPrintCurrent(Strategy::maxI, 7);
     lcdPrintSpaces();
@@ -115,7 +115,7 @@ void Screen::Methods::displayTime()
     lcdSetCursor0_0();
 #ifdef ENABLE_TIME_LIMIT
     lcdPrintSpace1();
-    ProgramData::currentProgramData.printTimeString();
+    ProgramData::printTimeString();
     lcdPrintSpaces(2);
 #else
     lcdPrint_P(PSTR("time:     "));

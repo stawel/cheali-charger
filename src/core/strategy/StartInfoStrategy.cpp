@@ -58,7 +58,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
     if(Strategy::doBalance) {
         uint8_t is_cells, should_be_cells;
         is_cells = AnalogInputs::getConnectedBalancePorts();
-        should_be_cells = ProgramData::currentProgramData.battery.cells;
+        should_be_cells = ProgramData::battery.cells;
         cell_nr = (should_be_cells != is_cells);
         v_balance = (is_cells == 0);
 
@@ -85,7 +85,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 
     balance = (v_balance || cell_nr) && settings.forceBalancePort;
 
-    if(ProgramData::currentProgramData.battery.type == ProgramData::Unknown
+    if(ProgramData::battery.type == ProgramData::Unknown
             && Program::programType == Program::Charge) {
         v_out = false;
     }

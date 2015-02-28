@@ -114,7 +114,7 @@ namespace ProgramMenus {
     ProgramTypeMenu selectPbMenu(programPbMenu);
 
     ProgramTypeMenu * getSelectProgramMenu() {
-        ProgramData::BatteryClass bc = ProgramData::currentProgramData.getBatteryClass();
+        ProgramData::BatteryClass bc = ProgramData::getBatteryClass();
         if(bc == ProgramData::ClassNiZn)
             return &selectNiZnMenu;
         if(bc == ProgramData::ClassLiXX)
@@ -135,7 +135,7 @@ void ProgramMenus::selectProgram(int index)
         if(menuIndex >= 0)  {
             Program::ProgramType prog = selectPrograms->getProgramType(menuIndex);
             if(prog == Program::EditBattery) {
-                ProgramData::currentProgramData.edit(index);
+                ProgramData::edit(index);
                 ProgramData::saveProgramData(index);
                 eeprom::restoreProgramDataCRC();
                 selectPrograms = getSelectProgramMenu();

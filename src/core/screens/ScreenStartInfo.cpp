@@ -50,9 +50,9 @@ namespace StartInfo {
 void Screen::StartInfo::displayStartInfo()
 {
     lcdSetCursor0_0();
-    ProgramData::currentProgramData.printBatteryString();
+    ProgramData::printBatteryString();
     lcdPrintSpace1();
-    ProgramData::currentProgramData.printVoltageString();
+    ProgramData::printVoltageString();
     lcdPrintSpace1();
     printProgram2chars(Program::programType);
 
@@ -65,7 +65,7 @@ void Screen::StartInfo::displayStartInfo()
     else lcdPrintSpaces(5);
 
     lcdPrintChar(' ');
-    if(ProgramData::currentProgramData.isLiXX()) {
+    if(ProgramData::isLiXX()) {
         //display balance port
         if(bindex & 2) AnalogInputs::printRealValue(AnalogInputs::Vbalancer, 5);
         else lcdPrintSpaces(5);
@@ -74,7 +74,7 @@ void Screen::StartInfo::displayStartInfo()
         else lcdPrintSpace1();
     } else {
 
-        lcdPrintCharge(ProgramData::currentProgramData.battery.C, 6);
+        lcdPrintCharge(ProgramData::battery.C, 6);
         lcdPrintSpaces();
     }
 }

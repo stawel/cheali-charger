@@ -23,18 +23,12 @@
 
 class ProgramDataMenu : public EditMenu {
 public:
-    ProgramDataMenu(const ProgramData &p, int programIndex);
+    ProgramDataMenu(int programIndex);
     virtual void printItem(uint8_t i);
     virtual void editItem(uint8_t i, uint8_t key);
 
     void run();
 
-    void editName();
-    void createName();
-    void resetName();
-    void waitName();
-
-    ProgramData p_;
     int programIndex_;
 };
 

@@ -25,7 +25,7 @@
 
 using namespace programData;
 
-ProgramData ProgramData::currentProgramData;
+ProgramData::Battery ProgramData::battery;
 
 //battery voltage limits, see also: ProgramData::getVoltagePerCell, ProgramData::getVoltage
 const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
@@ -58,7 +58,7 @@ const AnalogInputs::ValueType voltsPerCell[ProgramData::LAST_BATTERY_TYPE][Progr
 
 };
 
-uint16_t ProgramData::getVoltagePerCell(VoltageType type) const
+uint16_t ProgramData::getVoltagePerCell(VoltageType type)
 {
     uint16_t result = pgm::read(&voltsPerCell[battery.type][type]);
     if (type == VCharge) {
@@ -76,7 +76,7 @@ uint16_t ProgramData::getVoltagePerCell(VoltageType type) const
     }
     return result;
 }
-uint16_t ProgramData::getVoltage(VoltageType type) const
+uint16_t ProgramData::getVoltage(VoltageType type)
 {
     uint16_t cells = battery.cells;
     uint16_t voltage = getVoltagePerCell(type);
@@ -92,7 +92,7 @@ uint16_t ProgramData::getVoltage(VoltageType type) const
 
 
 //                              def. capacity          chargei             dischargei       cell   tlimit
-const ProgramData::BatteryData defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
+const ProgramData::Battery defaultProgram[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
         {ProgramData::Unknown,  ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 10000, 600},
         {ProgramData::NiCd,     ANALOG_CHARGE(2.200), ANALOG_AMP(0.500), ANALOG_AMP(1.900),     1, 480},
         {ProgramData::NiMH,     ANALOG_CHARGE(2.200), ANALOG_AMP(0.500), ANALOG_AMP(1.900),     1, 480},
@@ -118,7 +118,7 @@ const char * const  batteryString[ProgramData::LAST_BATTERY_TYPE] PROGMEM = {
         string_battery_NiZn
 };
 
-ProgramData::BatteryClass ProgramData::getBatteryClass() const {
+ProgramData::BatteryClass ProgramData::getBatteryClass() {
     if( battery.type == NiZn) return ClassNiZn;
     if( battery.type == Life  || battery.type == Lilo  || battery.type == Lipo
      || battery.type == Li430 || battery.type == Li435) return ClassLiXX;
@@ -134,38 +134,17 @@ void ProgramData::printIndex(char *&buf, uint8_t &maxSize, uint8_t index)
     printChar(buf, maxSize, ':');
 }
 
-void ProgramData::createName(int index)
-{
-    char *buf = name;
-    uint8_t maxSize = PROGRAM_DATA_MAX_NAME;
-    const char * type = pgm::read(&batteryString[battery.type]);
-    printIndex(buf,maxSize, index);
-    print_P  (buf, maxSize, type);
-    printChar(buf, maxSize, ' ');
-    printUInt(buf, maxSize, battery.C);
-    printChar(buf, maxSize, '/');
-    printUInt(buf, maxSize, battery.cells);
-}
-
-void ProgramData::resetName(int index)
-{
-    uint8_t maxSize = PROGRAM_DATA_MAX_NAME;
-    char *buf = name;
-    printIndex(buf, maxSize, index);
-}
-
-
 void ProgramData::loadProgramData(int index)
 {
-    eeprom::read<ProgramData>(currentProgramData, &eeprom::data.programData[index]);
+    eeprom::read(battery, &eeprom::data.battery[index]);
 }
 
 void ProgramData::saveProgramData(int index)
 {
-    eeprom::write<ProgramData>(&eeprom::data.programData[index], currentProgramData);
+    eeprom::write(&eeprom::data.battery[index], battery);
 }
 
-uint16_t ProgramData::getCapacityLimit() const
+uint16_t ProgramData::getCapacityLimit()
 {
     uint32_t cap = battery.C;
     cap *= settings.capCutoff;
@@ -175,7 +154,7 @@ uint16_t ProgramData::getCapacityLimit() const
     return cap;
 }
 
-int16_t ProgramData::getDeltaVLimit() const
+int16_t ProgramData::getDeltaVLimit()
 {
     int16_t v = 0;
     if(battery.type == NiCd) v = settings.deltaV_NiCd;
@@ -185,10 +164,9 @@ int16_t ProgramData::getDeltaVLimit() const
 
 void ProgramData::restoreDefault()
 {
-    pgm::read(currentProgramData.battery, &defaultProgram[Lipo]);
-    currentProgramData.check();
+    pgm::read(battery, &defaultProgram[Lipo]);
+    check();
     for(int i=0;i< MAX_PROGRAMS;i++) {
-        currentProgramData.resetName(i+1);
         saveProgramData(i);
     }
     eeprom::restoreProgramDataCRC();
@@ -200,9 +178,9 @@ void ProgramData::loadDefault()
 }
 
 
-void ProgramData::printBatteryString() const { lcdPrint_P(batteryString, battery.type); }
+void ProgramData::printBatteryString() { lcdPrint_P(batteryString, battery.type); }
 
-void ProgramData::printVoltageString() const
+void ProgramData::printVoltageString()
 {
     if(battery.type == Unknown) {
         lcdPrintVoltage(getVoltage(), 7);
@@ -214,16 +192,16 @@ void ProgramData::printVoltageString() const
     }
 }
 
-void ProgramData::printIcString() const
+void ProgramData::printIcString()
 {
     lcdPrintCurrent(battery.Ic, 6);
 }
-void ProgramData::printIdString() const
+void ProgramData::printIdString()
 {
     lcdPrintCurrent(battery.Id, 6);
 }
 
-void ProgramData::printChargeString() const
+void ProgramData::printChargeString()
 {
     if(battery.C == PROGRAM_DATA_MAX_CHARGE)
         lcdPrint_P(string_unlimited);
@@ -232,17 +210,10 @@ void ProgramData::printChargeString() const
 }
 
 
-char * ProgramData::getName_E(int index)
-{
-    return eeprom::data.programData[index].name;
-}
-
-
 void ProgramData::edit(int index)
 {
-    ProgramDataMenu menu(*this, index);
+    ProgramDataMenu menu(index);
     menu.run();
-    *this = menu.p_;
 }
 
 template<class val_t>
@@ -277,7 +248,7 @@ void ProgramData::changeCharge(int direction)
     check();
 }
 
-uint16_t ProgramData::getMaxIc() const
+uint16_t ProgramData::getMaxIc()
 {
     uint32_t i;
     uint16_t v;
@@ -299,7 +270,7 @@ uint16_t ProgramData::getMaxIc() const
     return i;
 }
 
-uint16_t ProgramData::getMaxId() const
+uint16_t ProgramData::getMaxId()
 {
     uint32_t i;
     uint16_t v;
@@ -324,7 +295,7 @@ void ProgramData::changeId(int direction)
     check();
 }
 
-uint16_t ProgramData::getMaxCells() const
+uint16_t ProgramData::getMaxCells()
 {
     uint16_t v = getVoltagePerCell(VCharge);
     return MAX_CHARGE_V / v;
@@ -360,7 +331,7 @@ void ProgramData::check()
 
 #ifdef ENABLE_TIME_LIMIT
 
-void ProgramData::printTimeString() const
+void ProgramData::printTimeString()
 {
     if(battery.time == PROGRAM_DATA_MAX_TIME) {
         lcdPrint_P(string_unlimited);
