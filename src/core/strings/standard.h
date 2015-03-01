@@ -53,8 +53,8 @@ namespace options {
 }
 
 namespace programData {
-    STRING(unlimited,   "nolimit");
-    STRING(minutes,     "min.");
+    STRING_SIZE(unlimited,  "nolimit");
+    STRING_SIZE(minutes,    "min.");
 
     //battery types
     STRING(battery_None,    "None");

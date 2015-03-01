@@ -105,42 +105,42 @@ uint16_t getSelector() {
  */
 const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 #ifdef ENABLE_LCD_BACKLIGHT
-{string_backlight,      COND_ALWAYS,    {CP_TYPE_UNSIGNED,0,&settings.backlight},       {0,100,1}},
+{string_backlight,      COND_ALWAYS,    {CP_TYPE_UNSIGNED,0,&settings.backlight},       {1, 0, 100}},
 #endif
 #ifdef ENABLE_FAN
-{string_fanOn,          COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&FanOnData},            {0, Settings::FanProgramTemperature, 1}}, //TODO
-{string_fanTempOn,      COND_FAN_ON_T,  {CP_TYPE_TEMPERATURE,0,&settings.fanTempOn},    {Tmin,Tmax,Tstep}},
+{string_fanOn,          COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&FanOnData},            {1, 0, Settings::FanProgramTemperature}},
+{string_fanTempOn,      COND_FAN_ON_T,  {CP_TYPE_TEMPERATURE,0,&settings.fanTempOn},    {Tstep, Tmin, Tmax}},
 #endif
 #ifdef ENABLE_T_INTERNAL
-{string_dischOff,       COND_ALWAYS,    {CP_TYPE_TEMPERATURE,0,&settings.dischargeTempOff}, {Tmin,Tmax,Tstep}},
+{string_dischOff,       COND_ALWAYS,    {CP_TYPE_TEMPERATURE,0,&settings.dischargeTempOff}, {Tstep, Tmin, Tmax}},
 #endif
-{string_externT,        COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.externT},           {0,1,1}},
-{string_externTCO,      COND_EXTERN_T,  {CP_TYPE_TEMPERATURE,0,&settings.externTCO},    {Tmin,Tmax,Tstep}},
-{string_dTdt,           COND_EXTERN_T,  {CP_TYPE_TEMP_MINUT,0,&settings.deltaT},        {ANALOG_CELCIUS(0.1), ANALOG_CELCIUS(10), ANALOG_CELCIUS(0.1)}},
-{string_enabledV,       COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.enable_deltaV},     {0,1,1}},
-{string_NiMHdV,         COND_DELTAV,    {CP_TYPE_SIGNED_mV,0,(uint16_t*)&settings.deltaV_NiMH}, {-ANALOG_VOLT(0.020), ANALOG_VOLT(0.000), ANALOG_VOLT(0.001)}},
-{string_NiCddV,         COND_DELTAV,    {CP_TYPE_SIGNED_mV,0,(uint16_t*)&settings.deltaV_NiCd}, {-ANALOG_VOLT(0.020), ANALOG_VOLT(0.000), ANALOG_VOLT(0.001)}},
-{string_cutoffV_NiMH,   COND_ALWAYS,    {CP_TYPE_V,0,&settings.cutoffV_NiMH},           {ANALOG_VOLT(1.200), ANALOG_VOLT(2.000), ANALOG_VOLT(0.001)}},
-{string_cutoffV_NiCd,   COND_ALWAYS,    {CP_TYPE_V,0,&settings.cutoffV_NiCd},           {ANALOG_VOLT(1.200), ANALOG_VOLT(2.000), ANALOG_VOLT(0.001)}},
-{string_DCcycles,       COND_ALWAYS,    {CP_TYPE_UNSIGNED,0,&settings.DCcycles},        {0,5,1}},
-{string_DCRestTime,     COND_ALWAYS,    {CP_TYPE_MINUTES,0,&settings.DCRestTime},       {1,99,1}},
-{string_AudioBeep,      COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.audioBeep},         {0,1,1}},
-{string_minIoutDiv,     COND_ALWAYS,    {CP_TYPE_UNSIGNED,0,&settings.minIoutDiv},      {1,50,1}},
-{string_minIout,        COND_ALWAYS,    {CP_TYPE_A,0,&settings.minIout},                {ANALOG_AMP(0.001),ANALOG_AMP(0.500),ANALOG_AMP(0.001)}},
-{string_capCoff,        COND_ALWAYS,    {CP_TYPE_PROCENTAGE,0,&settings.capCutoff},     {1,250,1}},
-{string_inputLow,       COND_ALWAYS,    {CP_TYPE_V2,0,&settings.inputVoltageLow},       {ANALOG_VOLT(7),ANALOG_VOLT(30),ANALOG_VOLT(1)}},
-{string_overChargeLiXX, COND_ALWAYS,    {CP_TYPE_SIGNED_mV,0,(uint16_t*)&settings.overCharge_LiXX},     {-ANALOG_VOLT(0.035),ANALOG_VOLT(0.035),ANALOG_VOLT(0.001)}},
-{string_overDischargeLiXX, COND_ALWAYS, {CP_TYPE_SIGNED_mV,0,(uint16_t*)&settings.overDischarge_LiXX},  {-ANALOG_VOLT(0.999),+ANALOG_VOLT(0.999),+ANALOG_VOLT(0.001)}},
-{string_dichAggLiXX,    COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.dischargeAggressive_LiXX},          {0,1,1}},
-{string_forceBalanc,    COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.forceBalancePort},  {0,1,1}},
-{string_balancErr,      COND_ALWAYS,    {CP_TYPE_SIGNED_mV,0,&settings.balancerError},  {ANALOG_VOLT(0.003),ANALOG_VOLT(0.200),ANALOG_VOLT(0.001)}},
+{string_externT,        COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.externT},           {1, 0, 1}},
+{string_externTCO,      COND_EXTERN_T,  {CP_TYPE_TEMPERATURE,0,&settings.externTCO},    {Tstep, Tmin, Tmax}},
+{string_dTdt,           COND_EXTERN_T,  {CP_TYPE_TEMP_MINUT,0,&settings.deltaT},        {ANALOG_CELCIUS(0.1), ANALOG_CELCIUS(0.1), ANALOG_CELCIUS(10)}},
+{string_enabledV,       COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.enable_deltaV},     {1, 0, 1}},
+{string_NiMHdV,         COND_DELTAV,    {CP_TYPE_SIGNED_mV,0,&settings.deltaV_NiMH},    {ANALOG_VOLT(0.001), -ANALOG_VOLT(0.020), ANALOG_VOLT(0.000)}},
+{string_NiCddV,         COND_DELTAV,    {CP_TYPE_SIGNED_mV,0,&settings.deltaV_NiCd},    {ANALOG_VOLT(0.001), -ANALOG_VOLT(0.020), ANALOG_VOLT(0.000)}},
+{string_cutoffV_NiMH,   COND_ALWAYS,    {CP_TYPE_V,0,&settings.cutoffV_NiMH},           {ANALOG_VOLT(0.001), ANALOG_VOLT(1.200), ANALOG_VOLT(2.000)}},
+{string_cutoffV_NiCd,   COND_ALWAYS,    {CP_TYPE_V,0,&settings.cutoffV_NiCd},           {ANALOG_VOLT(0.001), ANALOG_VOLT(1.200), ANALOG_VOLT(2.000)}},
+{string_DCcycles,       COND_ALWAYS,    {CP_TYPE_UNSIGNED,0,&settings.DCcycles},        {1, 0, 5}},
+{string_DCRestTime,     COND_ALWAYS,    {CP_TYPE_MINUTES,0,&settings.DCRestTime},       {1, 1, 99}},
+{string_AudioBeep,      COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.audioBeep},         {1, 0, 1}},
+{string_minIoutDiv,     COND_ALWAYS,    {CP_TYPE_UNSIGNED,0,&settings.minIoutDiv},      {1, 1, 50}},
+{string_minIout,        COND_ALWAYS,    {CP_TYPE_A,0,&settings.minIout},                {ANALOG_AMP(0.001), ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
+{string_capCoff,        COND_ALWAYS,    {CP_TYPE_PROCENTAGE,0,&settings.capCutoff},     {1, 1, 250}},
+{string_inputLow,       COND_ALWAYS,    {CP_TYPE_V2,0,&settings.inputVoltageLow},       {ANALOG_VOLT(1), ANALOG_VOLT(7), ANALOG_VOLT(30)}},
+{string_overChargeLiXX, COND_ALWAYS,    {CP_TYPE_SIGNED_mV,0,&settings.overCharge_LiXX},        {ANALOG_VOLT(0.001), -ANALOG_VOLT(0.035), ANALOG_VOLT(0.035)}},
+{string_overDischargeLiXX, COND_ALWAYS, {CP_TYPE_SIGNED_mV,0,&settings.overDischarge_LiXX},     {ANALOG_VOLT(0.001), -ANALOG_VOLT(0.999), +ANALOG_VOLT(0.999)}},
+{string_dichAggLiXX,    COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.dischargeAggressive_LiXX},  {1, 0, 1}},
+{string_forceBalanc,    COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.forceBalancePort},  {1, 0, 1}},
+{string_balancErr,      COND_ALWAYS,    {CP_TYPE_SIGNED_mV,0,&settings.balancerError},  {ANALOG_VOLT(0.001), ANALOG_VOLT(0.003), ANALOG_VOLT(0.200)}},
 #ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
-{string_adcNoise,       COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.adcNoise},          {0,1,1}},
+{string_adcNoise,       COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.adcNoise},          {1, 0, 1}},
 #endif
-{string_UARTview,       COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&UARTData},             {0,Settings::ExtDebugAdc, 1}},
-{string_UARTspeed,      COND_UART,      {CP_TYPE_UINT32_ARRAY,0,&UARTSpeedsData},       {0,Settings::UARTSpeeds-1, 1}},
+{string_UARTview,       COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&UARTData},             {1, 0, Settings::ExtDebugAdc}},
+{string_UARTspeed,      COND_UART,      {CP_TYPE_UINT32_ARRAY,0,&UARTSpeedsData},       {1, 0, Settings::UARTSpeeds-1}},
 #ifdef ENABLE_TX_HW_SERIAL
-{string_UARTinput,      COND_UART,      {CP_TYPE_STRING_ARRAY,0,&UARTinputData},        {0,1,1}},
+{string_UARTinput,      COND_UART,      {CP_TYPE_STRING_ARRAY,0,&UARTinputData},        {1, 0, 1}},
 #endif
 #ifdef ENABLE_SETTINGS_MENU_RESET
 {string_reset,          StaticEditMenu::Always, {0,0,NULL}},
@@ -148,13 +148,20 @@ const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 {NULL,                  StaticEditMenu::Last}
 };
 
+void editCallback(StaticEditMenu * menu, uint16_t * adr) {
+    if(adr == &settings.UART) changedUART();
+    else if(adr == &settings.externT)changedExternTemp();
+
+    menu->setSelector(getSelector());
+}
+
 void run() {
 #ifdef ENABLE_DEBUG
     settings.UART = Settings::Normal;
     SerialLog::powerOn();
 #endif
 
-    StaticEditMenu menu(editData);
+    StaticEditMenu menu(editData, editCallback);
     int8_t item;
 
     do {
@@ -168,21 +175,17 @@ void run() {
         {
             settings.setDefault();
 #ifdef ENABLE_DEBUG
-    settings.UART = Settings::Normal;
-#endif
+            settings.UART = Settings::Normal;
             LogDebug("Reset");
+#endif
             Buzzer::soundSelect();
         } else
 #endif
         {
             Settings undo(settings);
-            if(!menu.runEdit(item)) {
+            if(!menu.runEdit()) {
                 settings = undo;
             } else {
-                uint16_t * adr =(uint16_t*) menu.getEditAddress(item);
-                if(adr == &settings.UART) changedUART();
-                else if(adr == &settings.externT)changedExternTemp();
-
                 Buzzer::soundSelect();
                 settings.check();
             }

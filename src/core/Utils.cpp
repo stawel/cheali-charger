@@ -23,8 +23,12 @@
 
 void callVoidMethod_P(const VoidMethod * method)
 {
-    VoidMethod voidMethod = pgm::read(method);
-    voidMethod();
+    const VoidMethod voidMethod = pgm::read(method);
+    callVoidMethod(voidMethod);
+}
+void callVoidMethod(const VoidMethod method)
+{
+    method();
 }
 
 

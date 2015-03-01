@@ -143,7 +143,8 @@ void ProgramMenus::selectProgram(int index)
         if(menuIndex >= 0)  {
             Program::ProgramType prog = selectPrograms->getProgramType(menuIndex);
             if(prog == Program::EditBattery) {
-                ProgramDataMenu::edit(index);
+                ProgramDataMenu::run();
+                ProgramData::saveProgramData(index);
                 selectPrograms = getSelectProgramMenu();
             } else {
                 Program::run(prog);

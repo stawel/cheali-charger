@@ -20,6 +20,7 @@
 
 #include <stddef.h>
 #include <inttypes.h>
+#include <Utils.h>
 
 #define CP_TYPE_TEMPERATURE     1
 #define CP_TYPE_UNSIGNED        2
@@ -33,7 +34,11 @@
 #define CP_TYPE_ON_OFF         10
 #define CP_TYPE_TEMP_MINUT     11
 #define CP_TYPE_UINT32_ARRAY   12
+#define CP_TYPE_METHOD         13
+#define CP_TYPE_CHARGE		   14
+#define CP_TYPE_CHARGE_TIME    15
 
+#define CPRINTF_METHOD(method) {CP_TYPE_METHOD, 0, {.methodPtr = method}}
 namespace cprintf {
 
     struct ArrayData;
@@ -45,6 +50,7 @@ namespace cprintf {
         int16_t  * int16Ptr;
         uint32_t * uint32Ptr;
         const char * const* stringArrayPtr;
+        VoidMethod methodPtr;
         ArrayData * arrayPtr;
     };
 

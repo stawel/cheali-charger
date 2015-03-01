@@ -65,6 +65,7 @@ namespace ProgramData {
     } CHEALI_EEPROM_PACKED;
 
     extern Battery battery;
+    extern const char * const batteryString[];
 
     uint16_t getVoltagePerCell(VoltageType type = VIdle);
     uint16_t getVoltage(VoltageType type = VIdle);
@@ -72,25 +73,12 @@ namespace ProgramData {
 #ifdef ENABLE_TIME_LIMIT
     inline uint16_t getTimeLimit() {return battery.time; }
     void printTimeString();
-    void changeTime(int direction);
 #endif
     int16_t getDeltaVLimit();
     inline int16_t getDeltaTLimit() {return settings.deltaT;}
 
     //Info: the print... and change... methods are used in ProgramDataMenu AND Screen
     void printBatteryString();
-
-    void printVoltageString();
-    void printIcString();
-    void printIdString();
-    void printChargeString();
-
-    //TODO: change to changeBatteryType
-    void changeBatteryType(int direction);
-    void changeVoltage(int direction);
-    void changeCharge(int direction);
-    void changeIc(int direction);
-    void changeId(int direction);
 
     uint16_t getMaxCells();
     uint16_t getMaxIc();

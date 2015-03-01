@@ -108,7 +108,7 @@ const ProgramData::Battery defaultProgram[] PROGMEM = {
         {ProgramData::NiZn,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120}
 };
 
-const char * const  batteryString[] PROGMEM = {
+const char * const  ProgramData::batteryString[] PROGMEM = {
         string_battery_None,
         string_battery_Unknown,
         string_battery_NiCd,
@@ -190,67 +190,6 @@ void ProgramData::printBatteryString()
     lcdPrint_P(batteryString, battery.type);
 }
 
-void ProgramData::printVoltageString()
-{
-    if(battery.type == Unknown) {
-        lcdPrintVoltage(getVoltage(), 7);
-    } else {
-        lcdPrintVoltage(getVoltage(), 5);
-        lcdPrintChar('/');
-        lcdPrintUInt(battery.cells);
-        lcdPrintChar('C');
-    }
-}
-
-void ProgramData::printIcString()
-{
-    lcdPrintCurrent(battery.Ic, 6);
-}
-void ProgramData::printIdString()
-{
-    lcdPrintCurrent(battery.Id, 6);
-}
-
-void ProgramData::printChargeString()
-{
-    if(battery.C == PROGRAM_DATA_MAX_CHARGE)
-        lcdPrint_P(string_unlimited);
-    else
-        lcdPrintCharge(battery.C, 7);
-}
-
-template<class val_t>
-void change(val_t &v, int direction, uint16_t max)
-{
-}
-
-void ProgramData::changeBatteryType(int direction)
-{
-    battery.type+=direction;
-    if(battery.type>=LAST_BATTERY_TYPE) {
-        if(direction > 0) battery.type=Unknown;
-        else battery.type=LAST_BATTERY_TYPE-1;
-    }
-    loadDefault();
-}
-
-void ProgramData::changeVoltage(int direction)
-{
-    changeMinToMaxStep(&battery.cells, direction, 1, getMaxCells(), (battery.type == Unknown) ? 50 : 1);
-    check();
-}
-
-void ProgramData::changeCharge(int direction)
-{
-    change0ToInfSmart(&battery.C, direction);
-    check();
-    battery.Ic = battery.C;
-    if(isPb())
-        battery.Ic/=4; //0.25C
-    battery.Id = battery.C;
-    check();
-}
-
 uint16_t ProgramData::getMaxIc()
 {
     uint32_t i;
@@ -285,17 +224,6 @@ uint16_t ProgramData::getMaxId()
     if(i > MAX_DISCHARGE_I)
         i = MAX_DISCHARGE_I;
     return i;
-}
-
-void ProgramData::changeIc(int direction)
-{
-    change0ToInfSmart(&battery.Ic, direction);
-    check();
-}
-void ProgramData::changeId(int direction)
-{
-    change0ToInfSmart(&battery.Id, direction);
-    check();
 }
 
 uint16_t ProgramData::getMaxCells()
@@ -344,9 +272,4 @@ void ProgramData::printTimeString()
     }
 }
 
-void ProgramData::changeTime(int direction)
-{
-    change0ToInfSmart(&battery.time, direction);
-    check();
-}
 #endif

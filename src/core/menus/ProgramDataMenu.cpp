@@ -17,76 +17,88 @@
 */
 #include "ProgramDataMenu.h"
 #include "LcdPrint.h"
-#include "EditName.h"
 #include "Utils.h"
 #include "Buzzer.h"
+#include "StaticEditMenu.h"
+#include "ProgramData.h"
+#include "ScreenStartInfo.h"
 
 using namespace programDataMenu;
+using namespace ProgramData;
 
-const char * const ProgramDataStaticMenu[] PROGMEM =
+namespace ProgramDataMenu {
+
+/*condition bits:*/
+#define COND_ALWAYS         StaticEditMenu::Always
+#define COND_ClassNiXX      1
+#define COND_ClassPb        2
+#define COND_ClassLiXX      4
+#define COND_ClassNiZn      8
+#define COND_BATTERY        (COND_ClassNiXX+COND_ClassPb+COND_ClassLiXX+COND_ClassNiZn)
+
+uint16_t getSelector() {
+    STATIC_ASSERT(LAST_BATTERY_CLASS == 4);
+    uint16_t result = 1<<15;
+    if(battery.type != None) {
+        result += 1 << getBatteryClass();
+    }
+    return result;
+}
+
+void changeVoltage(int dir)
 {
-        string_batteryType,
-        string_voltage,
-        string_capacity,
-        string_chargeCurrent,
-        string_dischargeCurrent,
+    uint16_t step = (battery.type == Unknown) ? 50 : 1;
+    changeMinToMaxStep(&battery.cells, dir, 1, getMaxCells(), step);
+}
+
+const cprintf::ArrayData batteryTypeData  PROGMEM = {batteryString, &battery.type};
+
+/*
+|static string          |when to display| how to display, see cprintf                   | how to edit |
+ */
+const StaticEditMenu::StaticEditData editData[] PROGMEM = {
+{string_batteryType,    COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&batteryTypeData},      {1, 0,LAST_BATTERY_TYPE-1}},
+{string_voltage,        COND_BATTERY,   CPRINTF_METHOD(Screen::StartInfo::printVoltageString), STATIC_EDIT_METHOD(changeVoltage)},
+{string_capacity,       COND_BATTERY,   {CP_TYPE_CHARGE,0,&battery.C},                  {CE_STEP_TYPE_SMART, PROGRAM_DATA_MIN_CHARGE, PROGRAM_DATA_MAX_CHARGE/2}},
+{string_chargeCurrent,  COND_BATTERY,   {CP_TYPE_A,0,&battery.Ic},                      {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
+{string_dischargeCurrent,COND_BATTERY,  {CP_TYPE_A,0,&battery.Id},                      {CE_STEP_TYPE_SMART, ANALOG_VOLT(0.001), MAX_DISCHARGE_I}},
 #ifdef ENABLE_TIME_LIMIT
-        string_timeLimit,
+{string_timeLimit,      COND_BATTERY,   {CP_TYPE_CHARGE_TIME,0,&battery.time},          {CE_STEP_TYPE_SMART, 0, PROGRAM_DATA_MAX_TIME}},
 #endif
-        NULL
+{NULL,                  StaticEditMenu::Last}
+
 };
 
-
-ProgramDataMenu::ProgramDataMenu(int programIndex):
-        EditMenu(ProgramDataStaticMenu), programIndex_(programIndex){};
-
-
-
-void ProgramDataMenu::printItem(uint8_t index)
+void changedCharge()
 {
-    StaticMenu::printItem(index);
-    if(getBlinkIndex() != index) {
-        START_CASE_COUNTER;
-        switch (index) {
-            case NEXT_CASE:    ProgramData::printBatteryString(); break;
-            case NEXT_CASE:    ProgramData::printVoltageString(); break;
-            case NEXT_CASE:    ProgramData::printChargeString();  break;
-            case NEXT_CASE:    ProgramData::printIcString();      break;
-            case NEXT_CASE:    ProgramData::printIdString();      break;
-#ifdef ENABLE_TIME_LIMIT
-            case NEXT_CASE:    ProgramData::printTimeString();    break;
-#endif
-        }
-    }
+    ProgramData::check();
+    ProgramData::battery.Ic = ProgramData::battery.C;
+    if(ProgramData::isPb())
+        ProgramData::battery.Ic/=4; //0.25C
+    ProgramData::battery.Id = ProgramData::battery.C;
 }
 
-void ProgramDataMenu::editItem(uint8_t index, uint8_t key)
-{
-    int dir = -1;
-    if(key == BUTTON_INC) dir = 1;
-
-    START_CASE_COUNTER;
-    switch(index) {
-        case NEXT_CASE: ProgramData::changeBatteryType(dir);    break;
-        case NEXT_CASE: ProgramData::changeVoltage(dir);    break;
-        case NEXT_CASE: ProgramData::changeCharge(dir);     break;
-        case NEXT_CASE: ProgramData::changeIc(dir);         break;
-        case NEXT_CASE: ProgramData::changeId(dir);         break;
-#ifdef ENABLE_TIME_LIMIT
-        case NEXT_CASE: ProgramData::changeTime(dir);       break;
-#endif
+void editCallback(StaticEditMenu * menu, uint16_t * value) {
+    if(value == &ProgramData::battery.type) {
+        ProgramData::loadDefault();
+        menu->setSelector(getSelector());
+    } else if(value == &ProgramData::battery.C) {
+        changedCharge();
     }
+    ProgramData::check();
 }
 
-void ProgramDataMenu::run() {
-    int8_t index;
+void run() {
+    StaticEditMenu menu(editData, editCallback);
+    int8_t item;
+
     do {
-        index = runSimple();
+        menu.setSelector(getSelector());
+        item = menu.runSimple();
 
-        if(index < 0) return;
-
+        if(item < 0) break;
         ProgramData::Battery undo(ProgramData::battery);
-        if(!runEdit(index)) {
+        if(!menu.runEdit()) {
             ProgramData::battery = undo;
         } else {
             Buzzer::soundSelect();
@@ -95,10 +107,4 @@ void ProgramDataMenu::run() {
     } while(true);
 }
 
-void ProgramDataMenu::edit(int index)
-{
-    ProgramDataMenu menu(index);
-    menu.run();
-    ProgramData::saveProgramData(index);
-}
-
+} //namespace ProgramDataMenu

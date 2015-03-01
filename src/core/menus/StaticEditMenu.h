@@ -22,16 +22,29 @@
 #include "EditMenu.h"
 #include "cprintf.h"
 
+#define CE_STEP_TYPE_SMART  0x7fff
+#define CE_STEP_TYPE_METHOD 0x7ffe
+
+#define STATIC_EDIT_METHOD(method) {CE_STEP_TYPE_METHOD,  {.editMethod=method}}
+
 class StaticEditMenu : public EditMenu {
 public:
     static const uint16_t Always = 0xffff;
     static const uint16_t Last = 0;
+    typedef void(*EditCallBack)(StaticEditMenu *, uint16_t * value);
+    typedef void(*EditMethod)(int dir);
 
 	struct EditData {
-		int16_t minValue;
-		int16_t maxValue;
-		int16_t step;
+        int16_t step;
+        union {
+            struct {
+                int16_t minValue;
+                int16_t maxValue;
+            };
+            EditMethod editMethod;
+        };
 	};
+
 	struct StaticEditData {
 	    const char * staticString;
 	    uint16_t enableCondition;
@@ -40,8 +53,8 @@ public:
 	};
 
 public:
-	StaticEditMenu(const StaticEditData * staticEditData)
-			: EditMenu(NULL), staticEditData(staticEditData) {};
+	StaticEditMenu(const StaticEditData * staticEditData, const EditCallBack callback = NULL)
+			: EditMenu(NULL), staticEditData(staticEditData), editCallback(callback) {};
     virtual void printItem(uint8_t item);
     virtual void editItem(uint8_t item, uint8_t key);
 
@@ -53,6 +66,7 @@ private:
     uint8_t getSelectedIndexOrSize(uint8_t item);
     const StaticEditData * staticEditData;
     uint16_t selector;
+    EditCallBack editCallback;
 };
 
 #endif /* STATICEDITMENU_H_ */

@@ -18,16 +18,16 @@
 #include "EditMenu.h"
 #include "Keyboard.h"
 
-bool EditMenu::runEdit(uint8_t index)
+bool EditMenu::runEdit()
 {
-    startBlinkOff(index);
+    startBlinkOff(getIndex());
     uint8_t key;
     render_ = true;
     do {
         key =  Keyboard::getPressedWithSpeed();
         if(key == BUTTON_DEC || key == BUTTON_INC) {
-            editItem(index, key);
-            startBlinkOn(index);
+            editItem(getIndex(), key);
+            startBlinkOn(getIndex());
             render_ = true;
         } else if(key == BUTTON_STOP || key == BUTTON_START) {
             break;

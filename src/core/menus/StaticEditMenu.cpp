@@ -53,18 +53,35 @@ void StaticEditMenu::editItem(uint8_t item, uint8_t key)
     int16_t * valuePtr = getEditAddress(item);
     uint8_t index = getSelectedIndexOrSize(item);
     EditData d = pgm::read(&staticEditData[index].edit);
-    if(key == BUTTON_DEC) *valuePtr -= d.step;
-    if(key == BUTTON_INC) *valuePtr += d.step;
+    int dir = 1;
+    if(key == BUTTON_DEC) dir = -1;
+
+    if(d.step == CE_STEP_TYPE_SMART) {
+        change0ToInfSmart((uint16_t*)valuePtr, dir);
+    } else if(d.step == CE_STEP_TYPE_METHOD) {
+        d.editMethod(dir);
+        goto callback; //TODO:: ?? rewrite
+    } else {
+         *valuePtr += dir*d.step;
+    }
     if(*valuePtr < d.minValue) *valuePtr = d.minValue;
     if(*valuePtr > d.maxValue) *valuePtr = d.maxValue;
+
+callback:
+    if(editCallback) {
+        editCallback(this, (uint16_t*)valuePtr);
+    }
 }
 
 void StaticEditMenu::setSelector(uint16_t s) {
-    //TODO: on selector change restore begin_ and pos_
+    uint8_t currentIndex = getSelectedIndexOrSize(begin_ + pos_);
     selector = s;
     size_ = getSelectedIndexOrSize(0xff);
-    if(begin_ + pos_ >= size_ ) {
-        begin_ = size_ - pos_ - 1;
+    for(uint8_t item = 0; item < size_ ; item++) {
+        if(getSelectedIndexOrSize(item) == currentIndex) {
+            begin_ = item - pos_;
+            break;
+        }
     }
     LogDebug(size_);
 }

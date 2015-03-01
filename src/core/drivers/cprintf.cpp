@@ -20,6 +20,9 @@
 #include "cprintf.h"
 #include "memory.h"
 #include "LcdPrint.h"
+#include "ProgramData.h"
+
+using namespace programData;
 
 namespace cprintf {
 
@@ -27,6 +30,10 @@ namespace cprintf {
 void cprintf(const PrintData * printDataPtr, uint8_t dig)
 {
     const PrintData p = pgm::read(printDataPtr);
+    if(p.type == CP_TYPE_METHOD) {
+        //Info: this must be before: uvalue = *p.data.uint16Ptr
+        return p.data.methodPtr();
+    }
     const uint16_t uvalue = *p.data.uint16Ptr;
     const uint16_t ivalue = *p.data.int16Ptr;
     uint32_t v;
@@ -76,8 +83,24 @@ void cprintf(const PrintData * printDataPtr, uint8_t dig)
         lcdPrintChar('V');
         break;
     case CP_TYPE_ON_OFF:        lcdPrintYesNo(uvalue, dig); break;
+    case CP_TYPE_CHARGE:
+        if(uvalue == PROGRAM_DATA_MAX_CHARGE) {
+            lcdPrint_P(string_unlimited);
+        } else {
+            lcdPrintCharge(uvalue, dig);
+        }
+        break;
+#ifdef ENABLE_TIME_LIMIT
+    case CP_TYPE_CHARGE_TIME:
+        if(uvalue == PROGRAM_DATA_MAX_TIME) {
+            lcdPrint_P(string_unlimited);
+        } else {
+            lcdPrintUnsigned(uvalue, dig - string_size_minutes + 1);
+            lcdPrint_P(string_minutes);
+        }
+        break;
+#endif
     }
-
 }
 
 

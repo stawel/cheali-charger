@@ -43,6 +43,19 @@ namespace StartInfo {
         }
     }
 
+    void printVoltageString()
+    {
+        if(ProgramData::battery.type == ProgramData::Unknown) {
+            lcdPrintVoltage(ProgramData::getVoltage(), 7);
+        } else {
+            lcdPrintVoltage(ProgramData::getVoltage(), 5);
+            lcdPrintChar('/');
+            lcdPrintUInt(ProgramData::battery.cells);
+            lcdPrintChar('C');
+        }
+    }
+
+
 } // namespace Screen
 } // namespace StartInfo
 
@@ -52,7 +65,7 @@ void Screen::StartInfo::displayStartInfo()
     lcdSetCursor0_0();
     ProgramData::printBatteryString();
     lcdPrintSpace1();
-    ProgramData::printVoltageString();
+    printVoltageString();
     lcdPrintSpace1();
     printProgram2chars(Program::programType);
 

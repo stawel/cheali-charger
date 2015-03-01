@@ -18,20 +18,9 @@
 #ifndef PROGRAMDATAMENU_H_
 #define PROGRAMDATAMENU_H_
 
-#include "ProgramData.h"
-#include "EditMenu.h"
-
-class ProgramDataMenu : public EditMenu {
-public:
-    ProgramDataMenu(int programIndex);
-    virtual void printItem(uint8_t i);
-    virtual void editItem(uint8_t i, uint8_t key);
-
+namespace ProgramDataMenu {
     void run();
-
-    int programIndex_;
-
-    static void edit(int index);
 };
+
 
 #endif /* PROGRAMDATAMENU_H_ */

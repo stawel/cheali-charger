@@ -241,7 +241,7 @@ void calibrateVoltage()
             if(index <= MAX_BANANCE_CELLS && AnalogInputs::isConnected(Vinput)) {
                 AnalogInputs::doFullMeasurement();
                 AnalogInputs::on_ = false;
-                if(v.runEdit(index))
+                if(v.runEdit())
                     saveVoltage(true, Vinput,pgm::read(&voltageName2[index]));
                 AnalogInputs::on_ = true;
             }
@@ -271,7 +271,7 @@ void expertCalibrateVoltage()
             continue;
         AnalogInputs::doFullMeasurement();
         AnalogInputs::on_ = false;
-        if(v.runEdit(index))
+        if(v.runEdit())
             saveVoltage(false, Vinput, Vinput);
         AnalogInputs::on_ = true;
     } while(true);
@@ -364,7 +364,7 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
             if(index < 0) break;
             if(index == 0) {
                 setCurrentValue(name1, menu.value_);
-                if(menu.runEdit(index)) {
+                if(menu.runEdit()) {
                     AnalogInputs::doFullMeasurement();
                     AnalogInputs::CalibrationPoint p;
                     p.y = current;
@@ -440,7 +440,7 @@ void calibrateTemp(AnalogInputs::Name name, uint8_t point)
         if(index < 0) break;
         if(index == 0) {
             AnalogInputs::on_ = false;
-            if(v.runEdit(index))
+            if(v.runEdit())
                 saveTemp(name, point);
             AnalogInputs::on_ = true;
         }
