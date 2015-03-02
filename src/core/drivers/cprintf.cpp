@@ -27,12 +27,35 @@ using namespace programData;
 namespace cprintf {
 
 
-void cprintf(const PrintData * printDataPtr, uint8_t dig)
+void cprintf(const PrintData printDataPtr[]) {
+    uint8_t type;
+    uint8_t size = LCD_COLUMNS;
+    do {
+        type = pgm::read(&printDataPtr->type);
+        size -= cprintf(printDataPtr++, size);
+        if(type == CP_TYPE_NEWLINE) {
+            size = LCD_COLUMNS;
+            lcdPrintChar('\n');
+        }
+    } while(type != CP_TYPE_END);
+
+}
+
+
+uint8_t cprintf(const PrintData * printDataPtr, uint8_t dig)
 {
-    const PrintData p = pgm::read(printDataPtr);
+    PrintData p = pgm::read(printDataPtr);
     if(p.type == CP_TYPE_METHOD) {
         //Info: this must be before: uvalue = *p.data.uint16Ptr
-        return p.data.methodPtr();
+        p.data.methodPtr();
+        return 0;
+    } else if (p.type == CP_TYPE_STRING) {
+        return lcdPrint_P(p.data.charPtr)-1;
+    }else if (p.type == CP_TYPE_NEWLINE) {
+        p.type = CP_TYPE_END;
+    }
+    if(p.size) {
+        dig = p.size;
     }
     const uint16_t uvalue = *p.data.uint16Ptr;
     const uint16_t ivalue = *p.data.int16Ptr;
@@ -74,6 +97,7 @@ void cprintf(const PrintData * printDataPtr, uint8_t dig)
     case CP_TYPE_V:             lcdPrintVoltage(uvalue, dig); break;
     case CP_TYPE_A:             lcdPrintCurrent(uvalue, dig); break;
     case CP_TYPE_PROCENTAGE:    lcdPrintPercentage(uvalue, dig); break;
+    case CP_TYPE_END:           lcdPrintSpaces(dig); break;
     case CP_TYPE_MINUTES:
         lcdPrintUnsigned(uvalue, dig-1);
         lcdPrintChar('m');
@@ -101,6 +125,7 @@ void cprintf(const PrintData * printDataPtr, uint8_t dig)
         break;
 #endif
     }
+    return dig;
 }
 
 

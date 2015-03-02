@@ -72,6 +72,7 @@ namespace Screen {
     }
 
     void displayPage() {
+        lcdSetCursor0_0();
         Screen::Cycle::storeCycleHistoryInfo();
         blink.incBlinkTime();
 

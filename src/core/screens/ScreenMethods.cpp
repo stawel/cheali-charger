@@ -31,6 +31,8 @@
 #include "ScreenMethods.h"
 #include "Balancer.h"
 
+#include "cprintf.h"
+
 namespace Screen {
 
     void printCharge() {
@@ -79,13 +81,26 @@ namespace Screen {
     }
 
 
+namespace Methods {
+
+    STRING_CPP(Vinput, "Vinput=");
+    STRING_CPP(VinLimit, "limit=");
+    const cprintf::PrintData displayVinputData[] PROGMEM = {
+            CPRINTF_STRING(Vinput),     CPRINTF_ANALOG_REAL_V(AnalogInputs::Vin, 7), CPRINTF_NEWLINE,
+            CPRINTF_STRING(VinLimit),   CPRINTF_VOLT(settings.inputVoltageLow, 7), CPRINTF_END
+    };
+
+    void displayVinput()
+    {
+        cprintf::cprintf(displayVinputData);
+    }
+} // namespace Methods
 } // namespace Screen
 
 
 
 void Screen::Methods::displayFirstScreen()
 {
-    lcdSetCursor0_0();
     printCharge();
     AnalogInputs::printRealValue(AnalogInputs::Iout,     7);
     lcdPrintSpaces();
@@ -143,21 +158,8 @@ void Screen::Methods::displayR()
     lcdPrintSpaces();
 }
 
-void Screen::Methods::displayVinput()
-{
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("Vinput="));
-    AnalogInputs::printRealValue(AnalogInputs::Vin, 7);
-    lcdPrintSpaces();
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR(" limit="));
-    lcdPrintAnalog(settings.inputVoltageLow, AnalogInputs::Voltage, 7);
-    lcdPrintSpaces();
-}
-
 void Screen::Methods::displayVout()
 {
-    lcdSetCursor0_0();
     lcdPrint_P(PSTR("Vout ="));
     AnalogInputs::printRealValue(AnalogInputs::Vout, 7);
     lcdPrintSpaces();

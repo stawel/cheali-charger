@@ -22,6 +22,7 @@
 #include <inttypes.h>
 #include <Utils.h>
 
+#define CP_TYPE_END             0
 #define CP_TYPE_TEMPERATURE     1
 #define CP_TYPE_UNSIGNED        2
 #define CP_TYPE_STRING_ARRAY    3
@@ -37,8 +38,15 @@
 #define CP_TYPE_METHOD         13
 #define CP_TYPE_CHARGE		   14
 #define CP_TYPE_CHARGE_TIME    15
+#define CP_TYPE_STRING         16
+#define CP_TYPE_NEWLINE        17
 
-#define CPRINTF_METHOD(method) {CP_TYPE_METHOD, 0, {.methodPtr = method}}
+#define CPRINTF_METHOD(method)      {CP_TYPE_METHOD, 0, {.methodPtr = method}}
+#define CPRINTF_STRING(string)      {CP_TYPE_STRING, 0, {.charPtr = string_ ## string}}
+#define CPRINTF_END                 {CP_TYPE_END, 0, 0}
+#define CPRINTF_NEWLINE             {CP_TYPE_NEWLINE, 0, 0}
+#define CPRINTF_VOLT(value, size)   {CP_TYPE_V, size, &value}
+
 namespace cprintf {
 
     struct ArrayData;
@@ -49,6 +57,7 @@ namespace cprintf {
         uint16_t uint16;
         int16_t  * int16Ptr;
         uint32_t * uint32Ptr;
+        const char * charPtr;
         const char * const* stringArrayPtr;
         VoidMethod methodPtr;
         ArrayData * arrayPtr;
@@ -65,8 +74,16 @@ namespace cprintf {
         Data data;
     };
 
-    void cprintf(const PrintData * p, uint8_t dig);
-
+    uint8_t cprintf(const PrintData * p, uint8_t dig);
+    void cprintf(const PrintData * p);
 }
+
+
+//TODO: move to cprintfAnalogInputs.h ??
+
+#include "AnalogInputs.h"
+#include "AnalogInputsPrivate.h"
+#define CPRINTF_ANALOG_REAL_V(name, size) {CP_TYPE_V, size, &AnalogInputs::real_[name]}
+
 
 #endif /* CPRINTF_H_ */
