@@ -35,16 +35,24 @@
 #define CP_TYPE_ON_OFF         10
 #define CP_TYPE_TEMP_MINUT     11
 #define CP_TYPE_UINT32_ARRAY   12
-#define CP_TYPE_METHOD         13
+#define CP_TYPE_VOID           13
 #define CP_TYPE_CHARGE		   14
 #define CP_TYPE_CHARGE_TIME    15
 #define CP_TYPE_STRING         16
 #define CP_TYPE_NEWLINE        17
+#define CP_TYPE_CHAR           18
+#define CP_TYPE_CHAIN          19
+#define CP_TYPE_SPACES_END     20
+#define CP_TYPE_TIME           21
+#define CP_TYPE_R              22
+
+#define CP_TYPE_METHOD        128
 
 
 namespace cprintf {
 
     struct ArrayData;
+    struct PrintData;
 
     union Data {
         const void * voidPtr;
@@ -54,7 +62,9 @@ namespace cprintf {
         uint32_t * uint32Ptr;
         const char * charPtr;
         const char * const* stringArrayPtr;
-        VoidMethod methodPtr;
+        VoidMethod voidMethodPtr;
+        Uint16Method uint16MethodPtr;
+        PrintData * printDataPtr;
         ArrayData * arrayPtr;
     };
 

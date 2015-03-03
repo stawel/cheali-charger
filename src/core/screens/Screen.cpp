@@ -63,6 +63,7 @@ namespace Screen {
         do {
             info = pgm::read(&Pages::pageInfo[i]);
             ok = ((info.conditionEnable & condition) > 0) && ((info.conditionDisable & condition) == 0);
+            ok = true; //TODO:: only for testing
             if(ok) {
                 page--;
             }

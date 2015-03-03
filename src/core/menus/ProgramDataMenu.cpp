@@ -59,7 +59,7 @@ const cprintf::ArrayData batteryTypeData  PROGMEM = {batteryString, &battery.typ
  */
 const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 {string_batteryType,    COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&batteryTypeData},      {1, 0,LAST_BATTERY_TYPE-1}},
-{string_voltage,        COND_BATTERY,   CPRINTF_METHOD(Screen::StartInfo::printVoltageString), STATIC_EDIT_METHOD(changeVoltage)},
+{string_voltage,        COND_BATTERY,   CPRINTF_VOID_METHOD(Screen::StartInfo::printVoltageString), STATIC_EDIT_METHOD(changeVoltage)},
 {string_capacity,       COND_BATTERY,   {CP_TYPE_CHARGE,0,&battery.C},                  {CE_STEP_TYPE_SMART, PROGRAM_DATA_MIN_CHARGE, PROGRAM_DATA_MAX_CHARGE/2}},
 {string_chargeCurrent,  COND_BATTERY,   {CP_TYPE_A,0,&battery.Ic},                      {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
 {string_dischargeCurrent,COND_BATTERY,  {CP_TYPE_A,0,&battery.Id},                      {CE_STEP_TYPE_SMART, ANALOG_VOLT(0.001), MAX_DISCHARGE_I}},

@@ -40,7 +40,9 @@
 #define CHEALI_CHARGER_STRING2(x)   #x
 #define CHEALI_CHARGER_STRING(x)    CHEALI_CHARGER_STRING2(x)
 
-typedef void(*VoidMethod)();
+typedef void (*VoidMethod)();
+typedef uint16_t (*Uint16Method)();
+
 void callVoidMethod_P(const VoidMethod * method);
 void callVoidMethod(const VoidMethod method);
 

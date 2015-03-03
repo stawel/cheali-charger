@@ -86,103 +86,99 @@ namespace Methods {
     STRING_CPP(Vinput, "Vinput=");
     STRING_CPP(VinLimit, "limit=");
 
-    void displayVinput()
-    {
-        CPRINTF(STR(Vinput),        ANALOG_REAL_V(Vin, 7),              NEWLINE,
-                STR(VinLimit),      VOLT(settings.inputVoltageLow, 7),  END);
+    void displayVinput() {
+        CPRINTF(STR(Vinput),        ANALOG_REAL(V, Vin, 7),                 NEWLINE,
+                STR(VinLimit),      VOLT(settings.inputVoltageLow, 7),      SPACES_END);
     }
+
+    uint16_t getStateChar() {
+        char c = 'N';
+        if(SMPS::isPowerOn()) {
+            c = 'C';
+        } else if(Discharger::isPowerOn()) {
+            c = 'D';
+            if(SMPS::isPowerOn()) c = 'E';
+        } else if(Balancer::isWorking()) {
+            c = 'B';
+        }
+
+        if(DelayStrategy::isDelay()) {
+            c = 'W';
+        }
+        return c;
+    }
+
+
+    CPRINTF_DEF_CHAIN(printCharge2,      ANALOG_REAL(CHARGE, Cout, 8),   SPACE, END);
+    CPRINTF_DEF_CHAIN(printCharAndTime2, METHOD(CHAR, getStateChar, 1),  SPACE, METHOD(TIME, Monitor::getTimeSec, 7), SPACE, END);
+
+    void displayFirstScreen() {
+        CPRINTF(CHAIN(printCharge2),        ANALOG_REAL(A, Iout, 7),            NEWLINE,
+                CHAIN(printCharAndTime2),   ANALOG_REAL(V, VoutBalancer, 7),    END);
+    }
+
+
+    STRING_CPP(Limits, "Limits: ");
+
+    void displayCIVlimits()
+    {
+        CPRINTF(METHOD(CHARGE,ProgramData::getCapacityLimit, 8), SPACE,  AMP(Strategy::maxI, 7), NEWLINE,
+                STR(Limits),   VOLT(Strategy::endV, 7),    SPACES_END);
+    }
+
+    STRING_CPP(timestr, "time:     ");
+    STRING_CPP(bstr,    "b ");
+
+    void displayTime()
+    {
+        CPRINTF(
+#ifdef ENABLE_TIME_LIMIT
+                SPACE, CHARGE_TIME(ProgramData::battery.time, 7), SPACES(2),
+#else
+                STR(timestr),
+#endif
+                METHOD(TIME, Monitor::getTimeSec, 6), NEWLINE,
+                STR(bstr), METHOD(TIME, Monitor::getTotalBalanceTimeSec, 6),
+                SPACES(2), METHOD(TIME, Monitor::getTotalChargeDischargeTimeSec, 6), SPACES_END);
+    }
+
+
+    STRING_CPP(battR,    "batt. R=");
+    STRING_CPP(wiresR,    "wires R=");
+
+    void displayR()
+    {
+        CPRINTF(STR(battR), METHOD(R, TheveninMethod::getReadableBattRth, 8), NEWLINE, END);
+        if(Monitor::isBalancePortConnected) {
+            CPRINTF(STR(wiresR), METHOD(R, TheveninMethod::getReadableWiresRth, 8), END);
+        }
+        CPRINTF(SPACES_END);
+    }
+
+    STRING_CPP(Text,    "Text=");
+    STRING_CPP(non,   "-");
+    STRING_CPP(Tint,   "Tint=");
+
+
+    void displayTemperature()
+    {
+        CPRINTF1(STR(Text));
+        if(settings.externT) {
+            CPRINTF1(ANALOG_REAL(TEMPERATURE, Textern, 5));
+        } else {
+            CPRINTF1(STR(non));
+        }
+
+        CPRINTF(NEWLINE,
+#ifdef ENABLE_T_INTERNAL
+                STR(Tint), ANALOG_REAL(TEMPERATURE, Tintern, 5),
+#endif
+                SPACES_END);
+    }
+
 } // namespace Methods
 } // namespace Screen
 
-
-
-void Screen::Methods::displayFirstScreen()
-{
-    printCharge();
-    AnalogInputs::printRealValue(AnalogInputs::Iout,     7);
-    lcdPrintSpaces();
-
-    lcdSetCursor0_1();
-    printCharAndTime();
-    AnalogInputs::printRealValue(AnalogInputs::VoutBalancer,     7);
-    lcdPrintSpaces();
-}
-
-void Screen::Methods::displayCIVlimits()
-{
-    lcdSetCursor0_0();
-    lcdPrintCharge(ProgramData::getCapacityLimit(), 8);
-    lcdPrintSpace1();
-    lcdPrintCurrent(Strategy::maxI, 7);
-    lcdPrintSpaces();
-
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("Limits: "));
-    lcdPrintVoltage(Strategy::endV, 7);
-    lcdPrintSpaces();
-}
-
-void Screen::Methods::displayTime()
-{
-    lcdSetCursor0_0();
-#ifdef ENABLE_TIME_LIMIT
-    lcdPrintSpace1();
-    ProgramData::printTimeString();
-    lcdPrintSpaces(2);
-#else
-    lcdPrint_P(PSTR("time:     "));
-#endif
-    lcdPrintTime(Monitor::getTimeSec());
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("b "));
-    lcdPrintTime(Monitor::getTotalBalanceTimeSec());
-    lcdPrintSpaces(2);
-    lcdPrintTime(Monitor::getTotalChargeDischargeTimeSec());
-}
-
-
-void Screen::Methods::displayR()
-{
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("batt. R="));
-    lcdPrintResistance(TheveninMethod::getReadableBattRth(), 8);
-    lcdPrintSpaces();
-    lcdSetCursor0_1();
-    if(Monitor::isBalancePortConnected) {
-        lcdPrint_P(PSTR("wires R="));
-        lcdPrintResistance(TheveninMethod::getReadableWiresRth(),8);
-    }
-    lcdPrintSpaces();
-}
-
-void Screen::Methods::displayVout()
-{
-    lcdPrint_P(PSTR("Vout ="));
-    AnalogInputs::printRealValue(AnalogInputs::Vout, 7);
-    lcdPrintSpaces();
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("Vbal.="));
-    AnalogInputs::printRealValue(AnalogInputs::Vbalancer, 7);
-    lcdPrintSpaces();
-}
-
-void Screen::Methods::displayTemperature()
-{
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("Text="));
-    if(settings.externT)
-        AnalogInputs::printRealValue(AnalogInputs::Textern,    5);
-    else
-        lcdPrint_P(PSTR("-"));
-    lcdPrintSpaces();
-
-    lcdSetCursor0_1();
-#ifdef ENABLE_T_INTERNAL
-    lcdPrint_P(PSTR("Tint="));
-    AnalogInputs::printRealValue(AnalogInputs::Tintern,    5);
-#endif
-    lcdPrintSpaces();
-}
 
 void Screen::Methods::displayDeltaFirst()
 {

@@ -27,9 +27,10 @@ using namespace programData;
 namespace cprintf {
 
 
-void cprintf(const PrintData printDataPtr[]) {
+
+
+uint8_t cprintf_size(const PrintData printDataPtr[], uint8_t size) {
     uint8_t type;
-    uint8_t size = LCD_COLUMNS;
     do {
         type = pgm::read(&printDataPtr->type);
         size -= cprintf(printDataPtr++, size);
@@ -37,28 +38,47 @@ void cprintf(const PrintData printDataPtr[]) {
             size = LCD_COLUMNS;
             lcdPrintChar('\n');
         }
-    } while(type != CP_TYPE_END);
+    } while(type != CP_TYPE_END && type != CP_TYPE_SPACES_END);
 
+    return size;
+}
+
+void cprintf(const PrintData printDataPtr[]) {
+    cprintf_size(printDataPtr, LCD_COLUMNS);
 }
 
 
 uint8_t cprintf(const PrintData * printDataPtr, uint8_t dig)
 {
     PrintData p = pgm::read(printDataPtr);
-    if(p.type == CP_TYPE_METHOD) {
+    if(p.type == CP_TYPE_METHOD + CP_TYPE_VOID) {
         //Info: this must be before: uvalue = *p.data.uint16Ptr
-        p.data.methodPtr();
+        p.data.voidMethodPtr();
         return 0;
     } else if (p.type == CP_TYPE_STRING) {
         return lcdPrint_P(p.data.charPtr)-1;
-    }else if (p.type == CP_TYPE_NEWLINE) {
-        p.type = CP_TYPE_END;
+    } else if (p.type == CP_TYPE_CHAIN) {
+        return cprintf_size(p.data.printDataPtr, dig);
+    } else if (p.type == CP_TYPE_NEWLINE) {
+        p.type = CP_TYPE_SPACES_END;
     }
+
+    uint16_t uvalue;
+    bool isMethod = false;
+
+    if(p.type & CP_TYPE_METHOD) {
+        p.type ^= CP_TYPE_METHOD;
+        uvalue = p.data.uint16MethodPtr();
+        isMethod = true;
+    } else {
+        uvalue = *p.data.uint16Ptr;
+    }
+
+
     if(p.size) {
         dig = p.size;
     }
-    const uint16_t uvalue = *p.data.uint16Ptr;
-    const uint16_t ivalue = *p.data.int16Ptr;
+
     uint32_t v;
     uint8_t i;
     ArrayData array;
@@ -93,11 +113,13 @@ uint8_t cprintf(const PrintData * printDataPtr, uint8_t dig)
         break;
 
     case CP_TYPE_UNSIGNED:      lcdPrintUnsigned(uvalue, dig); break;
-    case CP_TYPE_SIGNED_mV:     lcdPrint_mV(ivalue, dig); break;
+    case CP_TYPE_SIGNED_mV:     lcdPrint_mV((int16_t)uvalue, dig); break;
     case CP_TYPE_V:             lcdPrintVoltage(uvalue, dig); break;
     case CP_TYPE_A:             lcdPrintCurrent(uvalue, dig); break;
+    case CP_TYPE_R:             lcdPrintResistance(uvalue, dig); break;
     case CP_TYPE_PROCENTAGE:    lcdPrintPercentage(uvalue, dig); break;
-    case CP_TYPE_END:           lcdPrintSpaces(dig); break;
+    case CP_TYPE_SPACES_END:    lcdPrintSpaces(dig); break;
+    case CP_TYPE_END:           break;
     case CP_TYPE_MINUTES:
         lcdPrintUnsigned(uvalue, dig-1);
         lcdPrintChar('m');
@@ -124,6 +146,16 @@ uint8_t cprintf(const PrintData * printDataPtr, uint8_t dig)
         }
         break;
 #endif
+    case CP_TYPE_CHAR:
+        if(isMethod) p.data.uint16 = uvalue;
+        for(i=0;i<dig;i++) {
+            lcdPrintChar(p.data.uint16);
+        }
+        break;
+    case CP_TYPE_TIME:
+        lcdPrintTime(uvalue);  //TODO: dig??
+        break;
+
     }
     return dig;
 }
