@@ -31,7 +31,7 @@
 #include "ScreenMethods.h"
 #include "Balancer.h"
 
-#include "cprintf.h"
+#include "cprintfhelper.h"
 
 namespace Screen {
 
@@ -85,14 +85,11 @@ namespace Methods {
 
     STRING_CPP(Vinput, "Vinput=");
     STRING_CPP(VinLimit, "limit=");
-    const cprintf::PrintData displayVinputData[] PROGMEM = {
-            CPRINTF_STRING(Vinput),     CPRINTF_ANALOG_REAL_V(AnalogInputs::Vin, 7), CPRINTF_NEWLINE,
-            CPRINTF_STRING(VinLimit),   CPRINTF_VOLT(settings.inputVoltageLow, 7), CPRINTF_END
-    };
 
     void displayVinput()
     {
-        cprintf::cprintf(displayVinputData);
+        CPRINTF(STR(Vinput),        ANALOG_REAL_V(Vin, 7),              NEWLINE,
+                STR(VinLimit),      VOLT(settings.inputVoltageLow, 7),  END);
     }
 } // namespace Methods
 } // namespace Screen

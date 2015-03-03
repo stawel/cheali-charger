@@ -22,6 +22,7 @@
 #include "StaticEditMenu.h"
 #include "ProgramData.h"
 #include "ScreenStartInfo.h"
+#include "cprintfhelper.h"
 
 using namespace programDataMenu;
 using namespace ProgramData;

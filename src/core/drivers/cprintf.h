@@ -41,11 +41,6 @@
 #define CP_TYPE_STRING         16
 #define CP_TYPE_NEWLINE        17
 
-#define CPRINTF_METHOD(method)      {CP_TYPE_METHOD, 0, {.methodPtr = method}}
-#define CPRINTF_STRING(string)      {CP_TYPE_STRING, 0, {.charPtr = string_ ## string}}
-#define CPRINTF_END                 {CP_TYPE_END, 0, 0}
-#define CPRINTF_NEWLINE             {CP_TYPE_NEWLINE, 0, 0}
-#define CPRINTF_VOLT(value, size)   {CP_TYPE_V, size, &value}
 
 namespace cprintf {
 
@@ -77,13 +72,6 @@ namespace cprintf {
     uint8_t cprintf(const PrintData * p, uint8_t dig);
     void cprintf(const PrintData * p);
 }
-
-
-//TODO: move to cprintfAnalogInputs.h ??
-
-#include "AnalogInputs.h"
-#include "AnalogInputsPrivate.h"
-#define CPRINTF_ANALOG_REAL_V(name, size) {CP_TYPE_V, size, &AnalogInputs::real_[name]}
 
 
 #endif /* CPRINTF_H_ */
