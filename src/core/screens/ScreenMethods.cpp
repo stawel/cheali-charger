@@ -35,51 +35,6 @@
 
 namespace Screen {
 
-    void printCharge() {
-        lcdPrintCharge(AnalogInputs::getRealValue(AnalogInputs::Cout), 8);
-        lcdPrintSpace1();
-    }
-
-    void printCharAndTime() {
-        char c = 'N';
-        if(SMPS::isPowerOn()) {
-            c = 'C';
-        } else if(Discharger::isPowerOn()) {
-            c = 'D';
-            if(SMPS::isPowerOn()) c = 'E';
-        } else if(Balancer::isWorking()) {
-            c = 'B';
-        }
-
-        if(DelayStrategy::isDelay()) {
-            c = 'W';
-        }
-        lcdPrintChar(c);
-        lcdPrintSpace1();
-        lcdPrintTime(Monitor::getTimeSec());
-        lcdPrintSpace1();
-    }
-
-    void printDeltaV() {
-        int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
-        lcdPrintSigned(x, 5);
-        lcdPrintChar('m');
-        lcdPrintChar('V');
-        lcdPrintSpaces();
-
-    }
-    void printDeltaT() {
-        if(settings.externT) {
-            int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
-            lcdPrintSigned(x*10, 5);
-            lcdPrintChar('m');
-            lcdPrintChar('C');
-        } else {
-            lcdPrint_P(PSTR("no dT/t"));
-        }
-        lcdPrintSpaces();
-    }
-
 
 namespace Methods {
 
@@ -176,88 +131,58 @@ namespace Methods {
                 SPACES_END);
     }
 
+    void printDeltaT2() {
+        if(settings.externT) {
+            CPRINTF1(ANALOG_REAL(TEMP_MINUT, deltaTextern, 7));
+        } else {
+            lcdPrint_P(PSTR("no dT/t"));
+        }
+    }
+
+    void displayDeltaFirst()
+    {
+        CPRINTF(CHAIN(printCharge2), ANALOG_REAL(SIGNED_mV, deltaVout, 7), NEWLINE,
+                 CHAIN(printCharAndTime2), VOID_METHOD(printDeltaT2), SPACES_END);
+    }
+
+
+
+    STRING_CPP(maxVout,   "maxVout=");
+    STRING_CPP(deltaV,   "delta V= ");
+
+    void displayDeltaVout()
+    {
+        CPRINTF(STR(maxVout), ANALOG_REAL(V, deltaVoutMax, 7), NEWLINE,
+                STR(deltaV), ANALOG_REAL(SIGNED_mV, deltaVout, 7), SPACES_END);
+    }
+
+
+    void printDeltaLastT2() {
+        if(settings.externT) {
+            CPRINTF(METHOD(TEMPERATURE, AnalogInputs::getDeltaLastT, 9));
+        } else {
+            lcdPrint_P(PSTR("no dT/t"));
+        }
+    }
+
+//    STRING_CPP(Text,   "Text=");
+    STRING_CPP(deltaT,   "delta T= ");
+
+    void displayDeltaTextern()
+    {
+        CPRINTF(STR(Text), VOID_METHOD(printDeltaLastT2), NEWLINE,
+                STR(deltaT), VOID_METHOD(printDeltaT2), SPACES_END);
+    }
+
+    void displayEnergy()
+    {
+
+        CPRINTF(ANALOG_REAL(P, Pout, 8), SPACE,     ANALOG_REAL(A, Iout, 7), NEWLINE,
+                ANALOG_REAL(E, Eout, 8), METHOD(PROCENTAGE, Monitor::getChargeProcent, 7), SPACES_END);
+
+    }
+
 } // namespace Methods
 } // namespace Screen
 
-
-void Screen::Methods::displayDeltaFirst()
-{
-    lcdSetCursor0_0();
-    printCharge();
-    printDeltaT();
-
-    lcdSetCursor0_1();
-    printCharAndTime();
-    printDeltaV();
-}
-
-
-void Screen::Methods::displayDeltaVout()
-{
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("maxVout="));
-    AnalogInputs::printRealValue(AnalogInputs::deltaVoutMax, 7);
-    lcdPrintSpaces();
-
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("delta V= "));
-    printDeltaV();
-}
-
-void Screen::Methods::displayDeltaTextern()
-{
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("Text="));
-    if(settings.externT) {
-        lcdPrintTemperature(AnalogInputs::getDeltaLastT(), 9);
-    } else {
-        lcdPrint_P(PSTR("N/A"));
-    }
-    lcdPrintSpaces();
-
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("delta T= "));
-    printDeltaT();
-}
-
-void Screen::Methods::displayEnergy()
-{
-    bool displayBlink_ = (blink.blinkTime_/16)&1;
-
-    lcdSetCursor0_0();
-    if (displayBlink_ == true) {
-        printCharge();
-        AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
-
-        lcdPrintSpaces();
-        lcdSetCursor0_1();
-        printCharAndTime();
-        lcdPrintSpace1();
-    } else {
-        AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
-        lcdPrintSpace1();
-        AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
-        lcdPrintSpaces();
-        lcdSetCursor0_1();
-        AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
-        lcdPrintSpaces(2);
-
-    }
-
-    uint8_t procent = Monitor::getChargeProcent();
-    if (displayBlink_ == true && SMPS::isPowerOn() && procent < 99) {
-        //display calculated simple ETA
-
-        if(Monitor::etaDeltaSec > 20)  //bigger 20sec for ETA calc (is 1C)
-        {
-            lcdPrintTime(Monitor::getETATime()); //TODO_NJ (not accurate for balancing time)
-        } else {
-            lcdPrint_P(PSTR(" --:--"));
-        }
-    } else {
-        lcdPrintUnsigned(procent, 4);
-        lcdPrint_P(PSTR("%"));
-        lcdPrintSpaces();
-    }
-}
 

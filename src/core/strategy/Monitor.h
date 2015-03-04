@@ -35,7 +35,7 @@ namespace Monitor {
     uint16_t getTotalChargeDischargeTimeMin();
     uint16_t getETATime();
 
-    uint8_t getChargeProcent();
+    uint16_t getChargeProcent();
 
     void resetAccumulatedMeasurements();
 

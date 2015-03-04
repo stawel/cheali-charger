@@ -45,6 +45,8 @@
 #define CP_TYPE_SPACES_END     20
 #define CP_TYPE_TIME           21
 #define CP_TYPE_R              22
+#define CP_TYPE_P              23
+#define CP_TYPE_E              24
 
 #define CP_TYPE_METHOD        128
 

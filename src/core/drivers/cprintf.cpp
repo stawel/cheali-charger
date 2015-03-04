@@ -116,6 +116,8 @@ uint8_t cprintf(const PrintData * printDataPtr, uint8_t dig)
     case CP_TYPE_SIGNED_mV:     lcdPrint_mV((int16_t)uvalue, dig); break;
     case CP_TYPE_V:             lcdPrintVoltage(uvalue, dig); break;
     case CP_TYPE_A:             lcdPrintCurrent(uvalue, dig); break;
+    case CP_TYPE_P:             lcdPrintCurrent(uvalue, dig); break; //TODO:??
+    case CP_TYPE_E:             lcdPrintCurrent(uvalue, dig); break;//TODO:??
     case CP_TYPE_R:             lcdPrintResistance(uvalue, dig); break;
     case CP_TYPE_PROCENTAGE:    lcdPrintPercentage(uvalue, dig); break;
     case CP_TYPE_SPACES_END:    lcdPrintSpaces(dig); break;

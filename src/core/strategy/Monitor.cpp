@@ -105,7 +105,7 @@ uint16_t Monitor::getTotalChargeDischargeTimeMin() {
 
 
 
-uint8_t Monitor::getChargeProcent() {
+uint16_t Monitor::getChargeProcent() {
     uint16_t v1,v2, v;
     v2 = ProgramData::getVoltage(ProgramData::VCharge);
     v1 = ProgramData::getVoltage(ProgramData::ValidEmpty);
