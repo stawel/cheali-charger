@@ -352,7 +352,7 @@ void AnalogInputs::printRealValue(Name name, uint8_t dig)
 {
     ValueType x = getRealValue(name);
     Type t = getType(name);
-    lcdPrintAnalog(x, t, dig);
+    lcdPrintAnalog(x, dig, t);
 }
 
 uint16_t AnalogInputs::getCharge()

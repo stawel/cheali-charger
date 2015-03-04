@@ -25,11 +25,12 @@ namespace SerialLog {
 
     void printString(const char *s);
     void printString_P(const char *s);
-    void printInt(int16_t x);
-    void printUInt(uint16_t x);
-    void printULong(uint32_t x);
-    void printChar(char c);
+    void printLong(int32_t x);
     void printNL();
+    void printChar(char c);
+
+    inline void printInt(int16_t x)     { return printLong(x);  }
+    inline void printUInt(uint16_t x)   { return printLong(x);  }
 
 } //namespace SerialLog
 

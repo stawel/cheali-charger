@@ -76,14 +76,18 @@ int8_t sign(int16_t x)
 
 uint8_t digits(uint16_t x)
 {
-    return digits((uint32_t)x);
+    return digits((int32_t)x);
 }
 
-uint8_t digits(uint32_t x)
+uint8_t digits(int32_t x)
 {
     uint8_t retu = 0;
+    if(x < 0) {
+        retu++;
+        x = -x;
+    }
     if(x == 0)
-        x=1;
+        retu=1;
     for(;x!=0; x/=10)
         retu++;
     return retu;

@@ -151,7 +151,7 @@ void Screen::Methods::displayVinput()
     lcdPrintSpaces();
     lcdSetCursor0_1();
     lcdPrint_P(PSTR(" limit="));
-    lcdPrintAnalog(settings.inputVoltageLow, AnalogInputs::Voltage, 7);
+    lcdPrintAnalog(settings.inputVoltageLow, 7, AnalogInputs::Voltage);
     lcdPrintSpaces();
 }
 
@@ -227,42 +227,18 @@ void Screen::Methods::displayDeltaTextern()
 
 void Screen::Methods::displayEnergy()
 {
-    bool displayBlink_ = (blink.blinkTime_/16)&1;
-
     lcdSetCursor0_0();
-    if (displayBlink_ == true) {
-        printCharge();
-        AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
-
-        lcdPrintSpaces();
-        lcdSetCursor0_1();
-        printCharAndTime();
-        lcdPrintSpace1();
-    } else {
-        AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
-        lcdPrintSpace1();
-        AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
-        lcdPrintSpaces();
-        lcdSetCursor0_1();
-        AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
-        lcdPrintSpaces(2);
-
-    }
+    AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
+    lcdPrintSpace1();
+    AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+    lcdPrintSpaces();
+    lcdSetCursor0_1();
+    AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
+    lcdPrintSpaces(2);
 
     uint8_t procent = Monitor::getChargeProcent();
-    if (displayBlink_ == true && SMPS::isPowerOn() && procent < 99) {
-        //display calculated simple ETA
-
-        if(Monitor::etaDeltaSec > 20)  //bigger 20sec for ETA calc (is 1C)
-        {
-            lcdPrintTime(Monitor::getETATime()); //TODO_NJ (not accurate for balancing time)
-        } else {
-            lcdPrint_P(PSTR(" --:--"));
-        }
-    } else {
-        lcdPrintUnsigned(procent, 4);
-        lcdPrint_P(PSTR("%"));
-        lcdPrintSpaces();
-    }
+    lcdPrintUnsigned(procent, 4);
+    lcdPrint_P(PSTR("%"));
+    lcdPrintSpaces();
 }
 

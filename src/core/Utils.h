@@ -47,7 +47,7 @@ void callVoidMethod(const VoidMethod method);
 
 bool testTintern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on);
 uint16_t pow10(uint8_t n);
-uint8_t digits(uint32_t x);
+uint8_t digits(int32_t x);
 uint8_t digits(uint16_t x);
 int8_t sign(int16_t x);
 

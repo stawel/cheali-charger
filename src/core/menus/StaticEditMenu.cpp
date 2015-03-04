@@ -29,7 +29,7 @@ void StaticEditMenu::printItem(uint8_t item)
     const char * str = pgm::read(&staticEditData[index].staticString);
     uint8_t dig = lcdPrint_P(str);
     if(getBlinkIndex() != item) {
-        dig = LCD_COLUMNS - dig;
+        dig = LCD_COLUMNS - dig - 1;
         cprintf::cprintf(&staticEditData[index].print, dig);
     }
 }

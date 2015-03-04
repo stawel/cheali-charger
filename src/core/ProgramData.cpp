@@ -94,7 +94,7 @@ uint16_t ProgramData::getVoltage(VoltageType type)
 
 
 //                              def. capacity          chargei             dischargei       cell   tlimit
-const ProgramData::Battery defaultProgram[] PROGMEM = {
+/*const ProgramData::Battery defaultProgram[] PROGMEM = {
         {ProgramData::None,     ANALOG_CHARGE(0), ANALOG_AMP(0), ANALOG_AMP(0), 0, 0},
         {ProgramData::Unknown,  ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 10000, 600},
         {ProgramData::NiCd,     ANALOG_CHARGE(2.200), ANALOG_AMP(0.500), ANALOG_AMP(1.900),     1, 480},
@@ -106,7 +106,7 @@ const ProgramData::Battery defaultProgram[] PROGMEM = {
         {ProgramData::Li430,    ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
         {ProgramData::Li435,    ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
         {ProgramData::NiZn,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120}
-};
+};*/
 
 const char * const  ProgramData::batteryString[] PROGMEM = {
         string_battery_None,
@@ -128,14 +128,6 @@ ProgramData::BatteryClass ProgramData::getBatteryClass() {
      || battery.type == Li430 || battery.type == Li435) return ClassLiXX;
     if( battery.type == NiCd  || battery.type == NiMH) return ClassNiXX;
     return ClassPb;
-}
-
-
-
-void ProgramData::printIndex(char *&buf, uint8_t &maxSize, uint8_t index)
-{
-    printUInt(buf, maxSize, index);
-    printChar(buf, maxSize, ':');
 }
 
 void ProgramData::loadProgramData(int index)
@@ -169,7 +161,7 @@ int16_t ProgramData::getDeltaVLimit()
 
 void ProgramData::restoreDefault()
 {
-    pgm::read(battery, &defaultProgram[Lipo]);
+  //  pgm::read(battery, &defaultProgram[Lipo]);
     check();
     for(int i=0;i< MAX_PROGRAMS;i++) {
         saveProgramData(i);
@@ -179,8 +171,8 @@ void ProgramData::restoreDefault()
 
 void ProgramData::loadDefault()
 {
-    STATIC_ASSERT(sizeOfArray(defaultProgram) == ProgramData::LAST_BATTERY_TYPE);
-    pgm::read(battery, &defaultProgram[battery.type]);
+//    STATIC_ASSERT(sizeOfArray(defaultProgram) == ProgramData::LAST_BATTERY_TYPE);
+//    pgm::read(battery, &defaultProgram[battery.type]);
 }
 
 

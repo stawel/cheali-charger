@@ -96,8 +96,6 @@ namespace ProgramData {
     void loadProgramData(int index);
     void saveProgramData(int index);
     void restoreDefault();
-
-    void printIndex(char * &buf, uint8_t &maxSize, uint8_t index);
 };
 
 #endif /* PROGRAMDATA_H_ */

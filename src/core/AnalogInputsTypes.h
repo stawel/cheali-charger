@@ -27,6 +27,7 @@
 #define ANALOG_OHM(x) ((AnalogInputs::ValueType)((x)*1000))
 #define ANALOG_WATT(x) ((unsigned long)((x)*1000L))
 
+
 namespace AnalogInputs {
     typedef uint16_t ValueType;
 
@@ -38,6 +39,8 @@ namespace AnalogInputs {
         Temperature,
         Charge,
         Resistance,
+        Procent,
+        SignedVoltage,
         Unknown
     };
 
