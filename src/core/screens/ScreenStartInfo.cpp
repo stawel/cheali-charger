@@ -59,7 +59,7 @@ namespace StartInfo {
         }
     }
 
-    static void printBatteryString() {
+    void printBatteryString() {
         lcdPrint_P(ProgramData::batteryString, ProgramData::battery.type);
     }
 

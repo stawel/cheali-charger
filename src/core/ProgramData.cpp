@@ -92,22 +92,6 @@ uint16_t ProgramData::getVoltage(VoltageType type)
     return cells * voltage;
 }
 
-
-//                              def. capacity          chargei             dischargei       cell   tlimit
-/*const ProgramData::Battery defaultProgram[] PROGMEM = {
-        {ProgramData::None,     ANALOG_CHARGE(0), ANALOG_AMP(0), ANALOG_AMP(0), 0, 0},
-        {ProgramData::Unknown,  ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900), 10000, 600},
-        {ProgramData::NiCd,     ANALOG_CHARGE(2.200), ANALOG_AMP(0.500), ANALOG_AMP(1.900),     1, 480},
-        {ProgramData::NiMH,     ANALOG_CHARGE(2.200), ANALOG_AMP(0.500), ANALOG_AMP(1.900),     1, 480},
-        {ProgramData::Pb,       ANALOG_CHARGE(2.200), ANALOG_AMP(0.220), ANALOG_AMP(1.900),     6, 480},
-        {ProgramData::Life,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
-        {ProgramData::Lilo,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
-        {ProgramData::Lipo,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
-        {ProgramData::Li430,    ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
-        {ProgramData::Li435,    ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120},
-        {ProgramData::NiZn,     ANALOG_CHARGE(2.200), ANALOG_AMP(2.200), ANALOG_AMP(1.900),     3, 120}
-};*/
-
 const char * const  ProgramData::batteryString[] PROGMEM = {
         string_battery_None,
         string_battery_Unknown,
@@ -133,17 +117,6 @@ ProgramData::BatteryClass ProgramData::getBatteryClass() {
     return ClassPb;
 }
 
-void ProgramData::loadProgramData(int index)
-{
-    eeprom::read(battery, &eeprom::data.battery[index]);
-}
-
-void ProgramData::saveProgramData(int index)
-{
-    eeprom::write(&eeprom::data.battery[index], battery);
-    eeprom::restoreProgramDataCRC();
-}
-
 uint16_t ProgramData::getCapacityLimit()
 {
     uint32_t cap = battery.C;
@@ -160,22 +133,6 @@ int16_t ProgramData::getDeltaVLimit()
     if(battery.type == NiCd) v = settings.deltaV_NiCd;
     if(battery.type == NiMH) v = settings.deltaV_NiMH;
     return battery.cells * v;
-}
-
-void ProgramData::restoreDefault()
-{
-  //  pgm::read(battery, &defaultProgram[Lipo]);
-    check();
-    for(int i=0;i< MAX_PROGRAMS;i++) {
-        saveProgramData(i);
-    }
-    eeprom::restoreProgramDataCRC();
-}
-
-void ProgramData::loadDefault()
-{
-//    STATIC_ASSERT(sizeOfArray(defaultProgram) == ProgramData::LAST_BATTERY_TYPE);
-//    pgm::read(battery, &defaultProgram[battery.type]);
 }
 
 uint16_t ProgramData::getMaxIc()
@@ -247,3 +204,52 @@ void ProgramData::check()
     if(battery.Ic < v) battery.Ic = v;
     if(battery.Id < v) battery.Id = v;
 }
+
+void ProgramData::loadProgramData(uint8_t index)
+{
+    eeprom::read(battery, &eeprom::data.battery[index]);
+}
+
+void ProgramData::saveProgramData(uint8_t index)
+{
+    eeprom::write(&eeprom::data.battery[index], battery);
+    eeprom::restoreProgramDataCRC();
+}
+
+void ProgramData::restoreDefault()
+{
+  //  pgm::read(battery, &defaultProgram[Lipo]);
+    check();
+    for(int i=0;i< MAX_PROGRAMS;i++) {
+        saveProgramData(i);
+    }
+    eeprom::restoreProgramDataCRC();
+}
+
+void ProgramData::loadDefault()
+{
+//    STATIC_ASSERT(sizeOfArray(defaultProgram) == ProgramData::LAST_BATTERY_TYPE);
+//    pgm::read(battery, &defaultProgram[battery.type]);
+}
+
+
+//TODO: move print... to ??
+#include "ScreenStartInfo.h"
+void ProgramData::printProgramData(uint8_t index)
+{
+    loadProgramData(index);
+    lcdPrintUInt(index+1);
+    lcdPrintChar(':');
+    if(battery.type != None) {
+        Screen::StartInfo::printBatteryString();
+        lcdPrintSpace1();
+        if(battery.type != Unknown) {
+            lcdPrintUInt(battery.C);
+            lcdPrintChar('/');
+            lcdPrintUInt(battery.cells);
+        } else {
+            Screen::StartInfo::printVoltageString(9);
+        }
+    }
+}
+

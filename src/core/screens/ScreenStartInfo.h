@@ -23,6 +23,7 @@ namespace Screen { namespace StartInfo {
 
     void displayStartInfo();
     void printVoltageString(int8_t dig);
+    void printBatteryString();
 };
 };
 
