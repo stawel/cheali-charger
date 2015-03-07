@@ -146,8 +146,8 @@ uint16_t ProgramData::getCapacityLimit()
     uint32_t cap = battery.C;
     cap *= settings.capCutoff;
     cap/=100;
-    if(cap>PROGRAM_DATA_MAX_CHARGE)
-        cap = PROGRAM_DATA_MAX_CHARGE;
+    if(cap>ANALOG_MAX_CHARGE)
+        cap = ANALOG_MAX_CHARGE;
     return cap;
 }
 
@@ -228,13 +228,13 @@ void ProgramData::check()
 {
     uint16_t v;
 
-    v = PROGRAM_DATA_MIN_CHARGE;
+    v = ANALOG_MIN_CHARGE;
     if(battery.C < v) battery.C = v;
-    v = PROGRAM_DATA_MAX_CHARGE;
+    v = ANALOG_MAX_CHARGE;
     if(battery.C > v) battery.C = v;
 
 #ifdef ENABLE_TIME_LIMIT
-    v = PROGRAM_DATA_MAX_TIME;
+    v = ANALOG_MAX_TIME_LIMIT;
     if(battery.time > v) battery.time = v;
 #endif
 
@@ -251,17 +251,3 @@ void ProgramData::check()
     if(battery.Ic < v) battery.Ic = v;
     if(battery.Id < v) battery.Id = v;
 }
-
-#ifdef ENABLE_TIME_LIMIT
-
-void ProgramData::printTimeString()
-{
-    if(battery.time == PROGRAM_DATA_MAX_TIME) {
-        lcdPrint_P(string_unlimited);
-    } else {
-        lcdPrintUnsigned(battery.time, 3);
-        lcdPrint_P(string_minutes);
-    }
-}
-
-#endif

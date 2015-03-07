@@ -30,6 +30,11 @@ void StaticEditMenu::printItem(uint8_t item)
     uint8_t dig = lcdPrint_P(str);
     if(getBlinkIndex() != item) {
         dig = LCD_COLUMNS - dig - 1;
+        uint8_t size = pgm::read(&staticEditData[index].print.size);
+        if(size) {
+            lcdPrintSpaces(dig - size);
+            dig = size;
+        }
         cprintf::cprintf(&staticEditData[index].print, dig);
     }
 }

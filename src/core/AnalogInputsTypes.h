@@ -27,6 +27,9 @@
 #define ANALOG_OHM(x) ((AnalogInputs::ValueType)((x)*1000))
 #define ANALOG_WATT(x) ((unsigned long)((x)*1000L))
 
+#define ANALOG_MAX_TIME_LIMIT 1000 //infinity
+#define ANALOG_MAX_CHARGE ANALOG_CHARGE(65.000)
+#define ANALOG_MIN_CHARGE ANALOG_CHARGE(0.100)
 
 namespace AnalogInputs {
     typedef uint16_t ValueType;
@@ -41,6 +44,11 @@ namespace AnalogInputs {
         Resistance,
         Procent,
         SignedVoltage,
+        Unsigned,
+        TemperatureMinutes,
+        Minutes,
+        TimeLimitMinutes,
+        YesNo,
         Unknown
     };
 

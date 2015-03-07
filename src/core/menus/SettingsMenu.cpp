@@ -73,7 +73,7 @@ const cprintf::ArrayData UARTSpeedsData PROGMEM = {Settings::UARTSpeedValue, &se
 const char * const SettingsUARTinput[] PROGMEM = {string_temp, string_pin7};
 const cprintf::ArrayData UARTinputData  PROGMEM = {SettingsUARTinput, &settings.UARTinput};
 
-const AnalogInputs::ValueType Tmin = Settings::TempDifference + ANALOG_CELCIUS(1);
+const AnalogInputs::ValueType Tmin = (Settings::TempDifference/ANALOG_CELCIUS(1))*ANALOG_CELCIUS(1) + ANALOG_CELCIUS(1);
 const AnalogInputs::ValueType Tmax = ANALOG_CELCIUS(99);
 const AnalogInputs::ValueType Tstep =  ANALOG_CELCIUS(1);
 
@@ -112,7 +112,7 @@ const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 {string_fanTempOn,      COND_FAN_ON_T,  {CP_TYPE_TEMPERATURE,0,&settings.fanTempOn},    {Tstep, Tmin, Tmax}},
 #endif
 #ifdef ENABLE_T_INTERNAL
-{string_dischOff,       COND_ALWAYS,    {CP_TYPE_TEMPERATURE,0,&settings.dischargeTempOff}, {Tstep, Tmin, Tmax}},
+{string_dischOff,       COND_ALWAYS,    {CP_TYPE_TEMPERATURE,3,&settings.dischargeTempOff}, {Tstep, Tmin, Tmax}},
 #endif
 {string_externT,        COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.externT},           {1, 0, 1}},
 {string_externTCO,      COND_EXTERN_T,  {CP_TYPE_TEMPERATURE,0,&settings.externTCO},    {Tstep, Tmin, Tmax}},
@@ -128,7 +128,7 @@ const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 {string_minIoutDiv,     COND_ALWAYS,    {CP_TYPE_UNSIGNED,0,&settings.minIoutDiv},      {1, 1, 50}},
 {string_minIout,        COND_ALWAYS,    {CP_TYPE_A,0,&settings.minIout},                {ANALOG_AMP(0.001), ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
 {string_capCoff,        COND_ALWAYS,    {CP_TYPE_PROCENTAGE,0,&settings.capCutoff},     {1, 1, 250}},
-{string_inputLow,       COND_ALWAYS,    {CP_TYPE_V2,0,&settings.inputVoltageLow},       {ANALOG_VOLT(1), ANALOG_VOLT(7), ANALOG_VOLT(30)}},
+{string_inputLow,       COND_ALWAYS,    {CP_TYPE_V,3,&settings.inputVoltageLow},       {ANALOG_VOLT(1), ANALOG_VOLT(7), ANALOG_VOLT(30)}},
 {string_overChargeLiXX, COND_ALWAYS,    {CP_TYPE_SIGNED_mV,0,&settings.overCharge_LiXX},        {ANALOG_VOLT(0.001), -ANALOG_VOLT(0.035), ANALOG_VOLT(0.035)}},
 {string_overDischargeLiXX, COND_ALWAYS, {CP_TYPE_SIGNED_mV,0,&settings.overDischarge_LiXX},     {ANALOG_VOLT(0.001), -ANALOG_VOLT(0.999), +ANALOG_VOLT(0.999)}},
 {string_dichAggLiXX,    COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.dischargeAggressive_LiXX},  {1, 0, 1}},

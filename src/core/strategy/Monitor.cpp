@@ -240,13 +240,13 @@ Strategy::statusType Monitor::run()
 
     AnalogInputs::ValueType c = AnalogInputs::getRealValue(AnalogInputs::Cout);
     AnalogInputs::ValueType c_limit  = ProgramData::getCapacityLimit();
-    if(c_limit != PROGRAM_DATA_MAX_CHARGE && c_limit <= c) {
+    if(c_limit != ANALOG_MAX_CHARGE && c_limit <= c) {
         Program::stopReason = string_capacityLimit;
         return Strategy::COMPLETE;
     }
 
 #ifdef ENABLE_TIME_LIMIT
-    if (ProgramData::getTimeLimit() < PROGRAM_DATA_MAX_TIME)  //unlimited
+    if (ProgramData::getTimeLimit() < ANALOG_MAX_TIME_LIMIT)  //unlimited
     {
         uint16_t charge_time = getTotalChargeDischargeTimeMin();
         uint16_t time_limit  = ProgramData::getTimeLimit();

@@ -26,9 +26,6 @@
 
 #define MAX_PROGRAMS 28
 #define PROGRAM_DATA_MAX_NAME 14
-#define PROGRAM_DATA_MAX_CHARGE ANALOG_CHARGE(65.000)
-#define PROGRAM_DATA_MAX_TIME 1000 //infinity
-#define PROGRAM_DATA_MIN_CHARGE ANALOG_CHARGE(0.100)
 
 namespace ProgramData {
 
@@ -70,10 +67,8 @@ namespace ProgramData {
     uint16_t getVoltagePerCell(VoltageType type = VIdle);
     uint16_t getVoltage(VoltageType type = VIdle);
     uint16_t getCapacityLimit();
-#ifdef ENABLE_TIME_LIMIT
     inline uint16_t getTimeLimit() {return battery.time; }
-    void printTimeString();
-#endif
+
     int16_t getDeltaVLimit();
     inline int16_t getDeltaTLimit() {return settings.deltaT;}
 

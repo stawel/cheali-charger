@@ -248,55 +248,90 @@ void lcdPrint_mV(int16_t p, int8_t dig)
     lcdPrintAnalog(p, dig, AnalogInputs::SignedVoltage);
 }
 
+struct Info {
+    uint16_t div;
+    bool mili;
+    const char * symbol;
+};
+
+STRING_CPP(A, "A");
+STRING_CPP(V, "V");
+STRING_CPP(W, "W");
+STRING_CPP(Wh, "Wh");
+STRING_CPP(C, "C");
+STRING_CPP(Ah, "Ah");
+STRING_CPP(Ohm, "\243");
+STRING_CPP(procent, "%");
+STRING_CPP(C_m, "C/m");
+STRING_CPP(minutes, "m");
+STRING_CPP(unsigned, "");
+STRING_CPP(unknown, "U");
+
+static const Info info[] PROGMEM = {
+        // Current
+        {ANALOG_AMP(1.000), true, string_A},
+        //Voltage,
+        {ANALOG_VOLT(1.000), false, string_V},
+        //Power, TODO: ??
+        {100, false,string_W},
+        //Work, TODO: ??
+        {100, false,string_Wh},
+        //Temperature,
+        {ANALOG_CELCIUS(1.00), false, string_C},
+        //Charge,
+        {ANALOG_CHARGE(1.000), true,string_Ah},
+        //Resistance,
+        {ANALOG_OHM(1.000), true, string_Ohm},
+        //Procent,
+        {1, false, string_procent},
+        //SignedVoltage,
+        {ANALOG_VOLT(1.000), true, string_V},
+        //Unsigned
+        {1, false, string_unsigned},
+        //TemperatureMinutes,
+        {ANALOG_CELCIUS(1.00), false, string_C_m},
+        //Minutes
+        {1, false, string_minutes},
+        //TimeLimitMinutes,
+        {1, false, string_minutes},
+        //YesNo
+        {1, false, NULL},
+        //Unknown
+        {1, false, string_unknown},
+};
+
+
 void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type type)
 {
-    struct Info {
-        uint16_t div;
-        bool mili;
-        uint16_t symbol;
-    };
-    static const Info info[] PROGMEM = {
-            // Current
-            {ANALOG_AMP(1.000), true, 'A'},
-            //Voltage,
-            {ANALOG_VOLT(1.000), false,'V'},
-            //Power, TODO: ??
-            {100, false,'W'},
-            //Work, TODO: ??
-            {100, false,'W' + ('h' << 8)},
-            //Temperature,
-            {ANALOG_CELCIUS(1.00), false,'C'},
-            //Charge,
-            {ANALOG_CHARGE(1.000), true, 'A'+ ('h' << 8)},
-            //Resistance,
-            {ANALOG_OHM(1.000), true, 243},
-            //Procent,
-            {1, false, '%'},
-            //SignedVoltage,
-            {ANALOG_VOLT(1.000), true, 'V'},
-            //Unknown
-            {1, false, 'U'},
-    };
     STATIC_ASSERT(sizeOfArray(info) -1 == AnalogInputs::Unknown);
 
-    dig --;
-    if(dig <= 0)
-        return;
+    if(type == AnalogInputs::YesNo) {
+        lcdPrintYesNo(x, dig);
+    } else if(  (type == AnalogInputs::TimeLimitMinutes && x >= ANALOG_MAX_TIME_LIMIT)
+       ||(type == AnalogInputs::Charge && x >= ANALOG_MAX_CHARGE)) {
+            lcdPrintSpaces(dig - programData::string_size_unlimited + 1);
+            //TODO: programData::
+            lcdPrint_P(programData::string_unlimited);
+    } else {
+        const char * symbol = pgm::read(&info[type].symbol);
+        uint8_t symbol_size = pgm::strlen(symbol);
 
-    bool sign = false;
-    uint16_t symbol = pgm::read(&info[type].symbol);
-    if(symbol > 256) dig --;
-    if(type == AnalogInputs::SignedVoltage) {
-        int16_t y = x;
-        if(y < 0) {
-            sign = true;
-            x = -y;
+        dig -= symbol_size;
+        if(dig <= 0)
+            return;
+
+        bool sign = false;
+        if(type == AnalogInputs::SignedVoltage) {
+            int16_t y = x;
+            if(y < 0) {
+                sign = true;
+                x = -y;
+            }
         }
-    }
 
-    lcdPrintValue_(x, (int8_t) dig, pgm::read(&info[type].div), pgm::read(&info[type].mili), sign);
-    lcdPrintChar(symbol & 255);
-    if(symbol > 256)     lcdPrintChar(symbol >> 8);
+        lcdPrintValue_(x, (int8_t) dig, pgm::read(&info[type].div), pgm::read(&info[type].mili), sign);
+        lcdPrint_P(symbol);
+    }
 }
 
 #ifdef ENABLE_LCD_RAM_CG

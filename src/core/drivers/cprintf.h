@@ -21,22 +21,29 @@
 #include <stddef.h>
 #include <inttypes.h>
 #include <Utils.h>
+#include "AnalogInputsTypes.h"
 
-#define CP_TYPE_TEMPERATURE     1
-#define CP_TYPE_UNSIGNED        2
-#define CP_TYPE_STRING_ARRAY    3
-#define CP_TYPE_SIGNED_mV       4
-#define CP_TYPE_V               5
-#define CP_TYPE_MINUTES         6
-#define CP_TYPE_PROCENTAGE      7
-#define CP_TYPE_A               8
-#define CP_TYPE_V2              9
-#define CP_TYPE_ON_OFF         10
-#define CP_TYPE_TEMP_MINUT     11
-#define CP_TYPE_UINT32_ARRAY   12
-#define CP_TYPE_METHOD         13
-#define CP_TYPE_CHARGE		   14
-#define CP_TYPE_CHARGE_TIME    15
+#define CP_TYPE_ANALOG_FLAG    64
+#define CP_TYPE_ANALOG_MASK    63
+
+#define CP_TYPE_ANALOG(x) (x | CP_TYPE_ANALOG_FLAG)
+
+#define CP_TYPE_TEMPERATURE     CP_TYPE_ANALOG(AnalogInputs::Temperature)
+#define CP_TYPE_UNSIGNED        CP_TYPE_ANALOG(AnalogInputs::Unsigned)
+#define CP_TYPE_SIGNED_mV       CP_TYPE_ANALOG(AnalogInputs::SignedVoltage)
+#define CP_TYPE_V               CP_TYPE_ANALOG(AnalogInputs::Voltage)
+#define CP_TYPE_MINUTES         CP_TYPE_ANALOG(AnalogInputs::Minutes)
+#define CP_TYPE_PROCENTAGE      CP_TYPE_ANALOG(AnalogInputs::Procent)
+#define CP_TYPE_A               CP_TYPE_ANALOG(AnalogInputs::Current)
+#define CP_TYPE_TEMP_MINUT      CP_TYPE_ANALOG(AnalogInputs::TemperatureMinutes)
+#define CP_TYPE_CHARGE		    CP_TYPE_ANALOG(AnalogInputs::Charge)
+#define CP_TYPE_CHARGE_TIME     CP_TYPE_ANALOG(AnalogInputs::TimeLimitMinutes)
+#define CP_TYPE_ON_OFF          CP_TYPE_ANALOG(AnalogInputs::YesNo)
+#define CP_TYPE_UINT32_ARRAY    1
+#define CP_TYPE_STRING_ARRAY    2
+//TODO:??
+#define CP_TYPE_METHOD          3
+
 
 #define CPRINTF_METHOD(method) {CP_TYPE_METHOD, 0, {.methodPtr = method}}
 namespace cprintf {

@@ -34,72 +34,31 @@ void cprintf(const PrintData * printDataPtr, uint8_t dig)
         //Info: this must be before: uvalue = *p.data.uint16Ptr
         return p.data.methodPtr();
     }
-    const uint16_t uvalue = *p.data.uint16Ptr;
-    const uint16_t ivalue = *p.data.int16Ptr;
-    uint32_t v;
-    uint8_t i;
-    ArrayData array;
-    const char * strPtr;
-    switch(p.type) {
-    case CP_TYPE_TEMPERATURE:
-        lcdPrintUnsigned(uvalue/100, dig-1);
-        lcdPrintChar('C');
-        break;
+    if(p.type & CP_TYPE_ANALOG_FLAG) {
+        lcdPrintAnalog(*p.data.uint16Ptr, dig, AnalogInputs::Type(p.type & CP_TYPE_ANALOG_MASK));
+    } else {
+        uint32_t v;
+        uint8_t i;
+        ArrayData array;
+        const char * strPtr;
+        switch(p.type) {
+            case CP_TYPE_UINT32_ARRAY:
+                pgm::read(array, p.data.arrayPtr);
+                v = pgm::read(&array.ArrayPtr.uint32Ptr[*array.indexPtr]);
+                v/=100;
+                lcdPrintUnsigned(v, dig-2);
+                lcdPrintChar('0');
+                lcdPrintChar('0');
+                break;
 
-    case CP_TYPE_TEMP_MINUT:
-        lcdPrintUnsigned(uvalue/100, dig-3-2);
-        lcdPrintChar('.');
-        lcdPrintDigit((uvalue%100)/10);
-        lcdPrint_P(settingsMenu::string_unitDeltaT);
-        break;
-    case CP_TYPE_UINT32_ARRAY:
-        pgm::read(array, p.data.arrayPtr);
-        v = pgm::read(&array.ArrayPtr.uint32Ptr[*array.indexPtr]);
-        v/=100;
-        lcdPrintUnsigned(v, dig-2);
-        lcdPrintChar('0');
-        lcdPrintChar('0');
-        break;
-
-    case CP_TYPE_STRING_ARRAY:
-        pgm::read(array, p.data.arrayPtr);
-        strPtr = pgm::read(&array.ArrayPtr.stringArrayPtr[*array.indexPtr]);
-        i = pgm::strlen(strPtr);
-        lcdPrintSpaces(dig-i);
-        lcdPrint_P(array.ArrayPtr.stringArrayPtr, *array.indexPtr);
-        break;
-
-    case CP_TYPE_UNSIGNED:      lcdPrintUnsigned(uvalue, dig); break;
-    case CP_TYPE_SIGNED_mV:     lcdPrint_mV(ivalue, dig); break;
-    case CP_TYPE_V:             lcdPrintVoltage(uvalue, dig); break;
-    case CP_TYPE_A:             lcdPrintCurrent(uvalue, dig); break;
-    case CP_TYPE_PROCENTAGE:    lcdPrintPercentage(uvalue, dig); break;
-    case CP_TYPE_MINUTES:
-        lcdPrintUnsigned(uvalue, dig-1);
-        lcdPrintChar('m');
-        break;
-    case CP_TYPE_V2:
-        lcdPrintUnsigned(uvalue/1000, dig-1);
-        lcdPrintChar('V');
-        break;
-    case CP_TYPE_ON_OFF:        lcdPrintYesNo(uvalue, dig); break;
-    case CP_TYPE_CHARGE:
-        if(uvalue == PROGRAM_DATA_MAX_CHARGE) {
-            lcdPrint_P(string_unlimited);
-        } else {
-            lcdPrintCharge(uvalue, dig);
+            case CP_TYPE_STRING_ARRAY:
+                pgm::read(array, p.data.arrayPtr);
+                strPtr = pgm::read(&array.ArrayPtr.stringArrayPtr[*array.indexPtr]);
+                i = pgm::strlen(strPtr);
+                lcdPrintSpaces(dig-i);
+                lcdPrint_P(array.ArrayPtr.stringArrayPtr, *array.indexPtr);
+                break;
         }
-        break;
-#ifdef ENABLE_TIME_LIMIT
-    case CP_TYPE_CHARGE_TIME:
-        if(uvalue == PROGRAM_DATA_MAX_TIME) {
-            lcdPrint_P(string_unlimited);
-        } else {
-            lcdPrintUnsigned(uvalue, dig - string_size_minutes + 1);
-            lcdPrint_P(string_minutes);
-        }
-        break;
-#endif
     }
 }
 
