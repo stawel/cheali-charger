@@ -82,10 +82,6 @@ namespace settingsMenu {
     STRING(externTCO,   "extrn TCO:");
     STRING(dTdt,        "dT/dt:");
     STRING(enabledV,    "enab dV:");
-    STRING(NiMHdV,      "NiMH dV:");
-    STRING(NiCddV,      "NiCd dV:");
-    STRING(cutoffV_NiMH,"NiMH VCO:");
-    STRING(cutoffV_NiCd,"NiCd VCO:");
     STRING(Rwire,       "Rwire:");
     STRING(DCcycles,    "D/C cycles:");
     STRING(DCRestTime,  "D/C rest:");
@@ -136,12 +132,12 @@ namespace programDataMenu {
     STRING(name,        "Name:");
 
     //menu
-    STRING(batteryType,         "Bat:  ");
-    STRING(voltage,             "V:  ");
-    STRING(capacity,            "Ch: ");
-    STRING(chargeCurrent,       "Ic: ");
-    STRING(dischargeCurrent,    "Id: ");
-    STRING(timeLimit,           "Tlim: ");
+    STRING(batteryType,         "battery:");
+    STRING(voltage,             "V:");
+    STRING(capacity,            "Cap:");
+    STRING(chargeCurrent,       "Ic:");
+    STRING(dischargeCurrent,    "Id:");
+    STRING(timeLimit,           "t lim:");
 }
 
 namespace DeltaChargeStrategy {

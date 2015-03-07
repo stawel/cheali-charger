@@ -27,18 +27,6 @@
 #define SETTINGS_EXTERNAL_T_DEFAULT 0
 #endif
 
-#ifndef SETTINGS_DISCHARGE_AGGRESSIVE_LIXX_DEFAULT
-#define SETTINGS_DISCHARGE_AGGRESSIVE_LIXX_DEFAULT 0
-#endif
-
-#ifndef SETTINGS_DELTA_V_ENABLE_DEFAULT
-#define SETTINGS_DELTA_V_ENABLE_DEFAULT 1
-#endif
-
-#ifndef SETTINGS_FORCE_BALANCE_PORT_DEFAULT
-#define SETTINGS_FORCE_BALANCE_PORT_DEFAULT 1
-#endif
-
 #ifndef SETTINGS_ADC_NOISE_DEFAULT
 #define SETTINGS_ADC_NOISE_DEFAULT 0
 #endif
@@ -50,38 +38,15 @@ const Settings defaultSettings PROGMEM = {
         Settings::FanTemperature, //fanOn
         ANALOG_CELCIUS(50), //fanTempOn
         ANALOG_CELCIUS(60), //dischargeTempOff
-        SETTINGS_EXTERNAL_T_DEFAULT, //externT
-        ANALOG_CELCIUS(60), //externTCO
-
-        ANALOG_CELCIUS(1),  //deltaT
-        SETTINGS_DELTA_V_ENABLE_DEFAULT, //enable_deltaV
-        -ANALOG_VOLT(0.005), //deltaV_NiMH
-        -ANALOG_VOLT(0.015), //deltaV_NiCd
-        ANALOG_VOLT(1.800), //cutoffV_NiMH
-        ANALOG_VOLT(1.800), //cutoffV_NiCd
-        5,                  //DCcycles
-        30,                 //DCRestTime
 
         1,                  //AudioBeep: yes/no
-        10,                 //minIoutDiv
         50,                 //minIout
-        120,                //capCutoff: in "%"
         ANALOG_VOLT(10.000),//inputVoltageLow
 
-        ANALOG_VOLT(0.000), //overCharge_LiXX
-        ANALOG_VOLT(0.000), //overDischarge_LiXX
-        SETTINGS_DISCHARGE_AGGRESSIVE_LIXX_DEFAULT,     //dischargeAggressive_LiXX
-
-        SETTINGS_FORCE_BALANCE_PORT_DEFAULT,            //forceBalancePort
-        ANALOG_VOLT(0.008), //balancerError
         SETTINGS_ADC_NOISE_DEFAULT, //adcNoise
         Settings::Disabled, //UART - disabled
         3,                   //57600
         Settings::Software, //UARTinput
-
-        0,                   //calibratedState
-        0,                   //SMPS_Upperbound_Value
-        0                    //DISCHARGER_Upperbound_Value
 };
 
 
@@ -119,14 +84,10 @@ void Settings::restoreDefault() {
     Settings::save();
 }
 
-void Settings::check() {
-    if(DCcycles>5) DCcycles = 5;
-}
-
 void Settings::apply() {
 #ifdef ENABLE_LCD_BACKLIGHT
     hardware::setLCDBacklight(backlight);
 #endif
-    hardware::setExternalTemperatueOutput(externT);
+//    hardware::setExternalTemperatueOutput(externT);
 }
 

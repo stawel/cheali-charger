@@ -30,7 +30,7 @@ namespace ProgramDCcycle {
 
     Strategy::statusType runDCRestTime()
     {
-        DelayStrategy::setDelay(settings.DCRestTime);
+        DelayStrategy::setDelay(ProgramData::battery.DCRestTime);
         Strategy::strategy = &DelayStrategy::vtable;
         return Strategy::doStrategy();
     }

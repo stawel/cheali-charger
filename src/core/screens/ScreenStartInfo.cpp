@@ -45,14 +45,15 @@ namespace StartInfo {
 
     void printVoltageString(int8_t dig)
     {
+        uint16_t voltage = ProgramData::getDefaultVoltage();
         if(ProgramData::battery.type == ProgramData::Unknown) {
-            lcdPrintVoltage(ProgramData::getVoltage(), dig);
+            lcdPrintVoltage(voltage, dig);
         } else {
             uint8_t cells = ProgramData::battery.cells;
             uint8_t size = 5+3;
             if(cells > 9) size++;
             lcdPrintSpaces(dig - size);
-            lcdPrintVoltage(ProgramData::getVoltage(), 5);
+            lcdPrintVoltage(voltage, 5);
             lcdPrintChar('/');
             lcdPrintUInt(cells);
             lcdPrintChar('C');
@@ -95,7 +96,7 @@ void Screen::StartInfo::displayStartInfo()
         else lcdPrintSpace1();
     } else {
 
-        lcdPrintCharge(ProgramData::battery.C, 6);
+        lcdPrintCharge(ProgramData::battery.capacity, 6);
         lcdPrintSpaces();
     }
 }

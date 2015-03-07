@@ -95,7 +95,6 @@ void Program::setupBalance()
 
 Strategy::statusType Program::runWithoutInfo(ProgramType prog)
 {
-    Strategy::minIdiv = settings.minIoutDiv;
     Strategy::doBalance = false;
 
     switch(prog) {
@@ -117,7 +116,8 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
         setupDischarge();
         break;
     case Program::FastCharge:
-        Strategy::minIdiv = 5;
+        //TODO: ??
+        //Strategy::minIdiv = 5;
         setupTheveninCharge();
         break;
     case Program::Storage:
@@ -131,7 +131,7 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
         return ProgramDCcycle::runDCcycle(1, 3);
 
     case Program::DischargeChargeCycle:
-        return ProgramDCcycle::runDCcycle(0, settings.DCcycles*2 - 1);
+        return ProgramDCcycle::runDCcycle(0, ProgramData::battery.DCcycles*2 - 1);
     default:
         return Strategy::ERROR;
     }

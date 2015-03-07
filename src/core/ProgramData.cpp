@@ -33,11 +33,11 @@ const AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE] PRO
 //          { VIdle,              VCharge,            VDischarge,         VStorage,           ValidEmpty};
 /*None*/    { 1,                  1,                  1,                  1,                  1},
 /*Unknown*/ { 1,                  1,                  1,                  1,                  1},
-/*NiCd*/    { ANALOG_VOLT(1.200), 0/*settings*/,      ANALOG_VOLT(0.850), 0,                  ANALOG_VOLT(0.850)},
+/*NiCd*/    { ANALOG_VOLT(1.200), ANALOG_VOLT(1.800), ANALOG_VOLT(0.850), 0,                  ANALOG_VOLT(0.850)},
 //http://en.wikipedia.org/wiki/Nickel%E2%80%93metal_hydride_battery
 //http://eu.industrial.panasonic.com/sites/default/pidseu/files/downloads/files/ni-mh-handbook-2014_interactive.pdf
 //http://www6.zetatalk.com/docs/Batteries/Chemistry/Duracell_Ni-MH_Rechargeable_Batteries_2007.pdf
-/*NiMH*/    { ANALOG_VOLT(1.200), 0/*settings*/,      ANALOG_VOLT(1.000), 0,                  ANALOG_VOLT(1.000)},
+/*NiMH*/    { ANALOG_VOLT(1.200), ANALOG_VOLT(1.800), ANALOG_VOLT(1.000), 0,                  ANALOG_VOLT(1.000)},
 
 //Pb based on:
 //http://www.battery-usa.com/Catalog/NPAppManual%28Rev0500%29.pdf
@@ -59,29 +59,16 @@ const AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE] PRO
 
 };
 
-uint16_t ProgramData::getVoltagePerCell(VoltageType type)
+uint16_t ProgramData::getDefaultVoltagePerCell(VoltageType type)
 {
     STATIC_ASSERT(sizeOfArray(voltsPerCell) == ProgramData::LAST_BATTERY_TYPE);
     uint16_t result = pgm::read(&voltsPerCell[battery.type][type]);
-    if (type == VCharge) {
-        if (battery.type == NiMH) {
-            result = settings.cutoffV_NiMH;
-        } else if (battery.type == NiCd) {
-            result = settings.cutoffV_NiCd;
-        } else if (isLiXX()) {
-            result += settings.overCharge_LiXX;
-        }
-    } else if (type == VDischarge) {
-        if (isLiXX()) {
-            result += settings.overDischarge_LiXX;
-        }
-    }
     return result;
 }
-uint16_t ProgramData::getVoltage(VoltageType type)
+uint16_t ProgramData::getDefaultVoltage(VoltageType type)
 {
     uint16_t cells = battery.cells;
-    uint16_t voltage = getVoltagePerCell(type);
+    uint16_t voltage = getDefaultVoltagePerCell(type);
 
     if(type == VDischarge && battery.type == NiMH && cells > 6) {
         //based on http://eu.industrial.panasonic.com/sites/default/pidseu/files/downloads/files/ni-mh-handbook-2014_interactive.pdf
@@ -91,6 +78,20 @@ uint16_t ProgramData::getVoltage(VoltageType type)
     }
     return cells * voltage;
 }
+
+uint16_t ProgramData::getVoltage2(VoltageType type) {
+    uint16_t cells = battery.cells;
+    uint16_t voltage = getDefaultVoltagePerCell(type);
+    if (type == VCharge) {
+        voltage = battery.Vc_per_cell;
+    } else if (type == VDischarge) {
+        voltage = battery.Vd_per_cell;
+    }
+    //TODO:type == VDischarge && battery.type == NiMH && cells > 6
+    //see getDefaultVoltage
+    return cells * voltage;
+}
+
 
 const char * const  ProgramData::batteryString[] PROGMEM = {
         string_battery_None,
@@ -119,8 +120,8 @@ ProgramData::BatteryClass ProgramData::getBatteryClass() {
 
 uint16_t ProgramData::getCapacityLimit()
 {
-    uint32_t cap = battery.C;
-    cap *= settings.capCutoff;
+    uint32_t cap = battery.capacity;
+    cap *= battery.capCutoff;
     cap/=100;
     if(cap>ANALOG_MAX_CHARGE)
         cap = ANALOG_MAX_CHARGE;
@@ -129,9 +130,7 @@ uint16_t ProgramData::getCapacityLimit()
 
 int16_t ProgramData::getDeltaVLimit()
 {
-    int16_t v = 0;
-    if(battery.type == NiCd) v = settings.deltaV_NiCd;
-    if(battery.type == NiMH) v = settings.deltaV_NiMH;
+    int16_t v = battery.deltaV;
     return battery.cells * v;
 }
 
@@ -139,7 +138,7 @@ uint16_t ProgramData::getMaxIc()
 {
     uint32_t i;
     uint16_t v;
-    v = getVoltage(VDischarge);
+    v = getDefaultVoltage(VDischarge);
     i = MAX_CHARGE_P;
     i *= ANALOG_VOLT(1);
 #ifdef ENABLE_DYNAMIC_MAX_POWER
@@ -161,7 +160,7 @@ uint16_t ProgramData::getMaxId()
 {
     uint32_t i;
     uint16_t v;
-    v = getVoltage(VDischarge);
+    v = getDefaultVoltage(VDischarge);
     i = MAX_DISCHARGE_P;
     i *= ANALOG_VOLT(1);
     i /= v;
@@ -173,7 +172,7 @@ uint16_t ProgramData::getMaxId()
 
 uint16_t ProgramData::getMaxCells()
 {
-    uint16_t v = getVoltagePerCell(VCharge);
+    uint16_t v = getDefaultVoltagePerCell(VCharge);
     return MAX_CHARGE_V / v;
 }
 
@@ -182,9 +181,9 @@ void ProgramData::check()
     uint16_t v;
 
     v = ANALOG_MIN_CHARGE;
-    if(battery.C < v) battery.C = v;
+    if(battery.capacity < v) battery.capacity = v;
     v = ANALOG_MAX_CHARGE;
-    if(battery.C > v) battery.C = v;
+    if(battery.capacity > v) battery.capacity = v;
 
 #ifdef ENABLE_TIME_LIMIT
     v = ANALOG_MAX_TIME_LIMIT;
@@ -193,16 +192,25 @@ void ProgramData::check()
 
     v = getMaxCells();
     if(battery.cells > v) battery.cells = v;
+    v = 1;
+    if(battery.cells < v) battery.cells = v;
+
 
     v = getMaxIc();
     if(battery.Ic > v) battery.Ic = v;
+    v = battery.Ic;
+    if(battery.minIc > v) battery.minIc = v;
 
     v = getMaxId();
     if(battery.Id > v) battery.Id = v;
+    v = battery.Id;
+    if(battery.minId > v) battery.minId = v;
 
     v = settings.minIout;
     if(battery.Ic < v) battery.Ic = v;
     if(battery.Id < v) battery.Id = v;
+    if(battery.minIc < v) battery.minIc = v;
+    if(battery.minId < v) battery.minId = v;
 }
 
 void ProgramData::loadProgramData(uint8_t index)
@@ -218,18 +226,73 @@ void ProgramData::saveProgramData(uint8_t index)
 
 void ProgramData::restoreDefault()
 {
-  //  pgm::read(battery, &defaultProgram[Lipo]);
-    check();
+    battery.type = None;
+    changedType();
+
     for(int i=0;i< MAX_PROGRAMS;i++) {
         saveProgramData(i);
     }
     eeprom::restoreProgramDataCRC();
 }
 
-void ProgramData::loadDefault()
+void ProgramData::changedType()
 {
-//    STATIC_ASSERT(sizeOfArray(defaultProgram) == ProgramData::LAST_BATTERY_TYPE);
-//    pgm::read(battery, &defaultProgram[battery.type]);
+    battery.Vc_per_cell = getDefaultVoltagePerCell(VCharge);
+    battery.Vd_per_cell = getDefaultVoltagePerCell(VDischarge);
+
+    if(battery.type == None) {
+        battery.type = None;
+        battery.capacity = ANALOG_CHARGE(2.000);
+        battery.cells = 3;
+
+        battery.time = ANALOG_MAX_TIME_LIMIT;
+        battery.enable_externT = false;
+        battery.externTCO = ANALOG_CELCIUS(60);
+
+        battery.dischargeAggressive = false;
+        battery.DCRestTime = 30;
+        battery.capCutoff = 120;
+    }
+
+    if(isNiXX()) {
+        battery.enable_deltaV = true;
+        if(battery.type == NiMH) {
+            battery.deltaV = -ANALOG_VOLT(0.005);
+        } else {
+            battery.deltaV = -ANALOG_VOLT(0.015);
+        }
+        battery.deltaT = ANALOG_CELCIUS(1);
+        battery.DCcycles = 5;
+    } else {
+        battery.forceBalancePort = true;
+        battery.balancerError = ANALOG_VOLT(0.008);
+    }
+    changedCapacity();
+
+}
+
+void ProgramData::changedIc()
+{
+    ProgramData::check();
+    ProgramData::battery.minIc = ProgramData::battery.Ic/10;
+}
+
+void ProgramData::changedId()
+{
+    ProgramData::check();
+    ProgramData::battery.minId = ProgramData::battery.Id/10;
+}
+
+void ProgramData::changedCapacity()
+{
+    ProgramData::check();
+    ProgramData::battery.Ic = ProgramData::battery.capacity;
+    if(ProgramData::battery.type == Pb)
+        ProgramData::battery.Ic/=4;
+
+    changedIc();
+    ProgramData::battery.Id = ProgramData::battery.capacity;
+    changedId();
 }
 
 
@@ -244,7 +307,7 @@ void ProgramData::printProgramData(uint8_t index)
         Screen::StartInfo::printBatteryString();
         lcdPrintSpace1();
         if(battery.type != Unknown) {
-            lcdPrintUInt(battery.C);
+            lcdPrintUInt(battery.capacity);
             lcdPrintChar('/');
             lcdPrintUInt(battery.cells);
         } else {

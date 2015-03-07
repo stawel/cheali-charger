@@ -35,37 +35,15 @@ struct Settings {
     AnalogInputs::ValueType fanOn;
     AnalogInputs::ValueType fanTempOn;
     AnalogInputs::ValueType dischargeTempOff;
-    uint16_t externT;
-    AnalogInputs::ValueType externTCO;
-    AnalogInputs::ValueType deltaT;
-    uint16_t enable_deltaV;
-    int16_t deltaV_NiMH;
-    int16_t deltaV_NiCd;
-    uint16_t cutoffV_NiMH;
-    uint16_t cutoffV_NiCd;
 
-    uint16_t DCcycles;
-    uint16_t DCRestTime;
     uint16_t audioBeep;
-    uint16_t minIoutDiv;
     uint16_t minIout;
-    uint16_t capCutoff;
     AnalogInputs::ValueType inputVoltageLow;
-    int16_t overCharge_LiXX;
-    int16_t overDischarge_LiXX;
-    uint16_t dischargeAggressive_LiXX;
-    uint16_t forceBalancePort;
-    AnalogInputs::ValueType balancerError;
     uint16_t adcNoise;
     uint16_t UART;
     uint16_t UARTspeed;
     uint16_t UARTinput;
 
-    uint16_t calibratedState;
-    uint16_t SMPS_Upperbound_Value;
-    uint16_t DISCHARGER_Upperbound_Value;
-
-    void check();
     void apply();
     void setDefault();
     uint32_t getUARTspeed() const;

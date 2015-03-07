@@ -25,7 +25,7 @@ using namespace lcd_print;
 char* printLong(int32_t value, char * buf) {
     char * end;
     if (value < 0) {
-        *buf='-';
+        *(buf++)='-';
         value = -value;
     }
     buf += digits((int32_t)value);
@@ -115,7 +115,7 @@ int8_t lcdPrint_P(const char *str)
 }
 
 
-void lcdPrintValue_(uint16_t x, int8_t dig, uint16_t div, bool mili, bool minus )
+void lcdPrintValue_(uint16_t x, int8_t dig, uint16_t div, bool mili, bool minus)
 {
     char buf[12];
     char *end, *dot_char;

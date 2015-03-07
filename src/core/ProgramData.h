@@ -24,8 +24,7 @@
 #include "Settings.h"
 
 
-#define MAX_PROGRAMS 28
-#define PROGRAM_DATA_MAX_NAME 14
+#define MAX_PROGRAMS 20
 
 namespace ProgramData {
 
@@ -36,48 +35,65 @@ namespace ProgramData {
 
     struct Battery {
         uint16_t type;
-        uint16_t C;
+        uint16_t capacity;
         uint16_t cells;
+
         uint16_t Ic;
         uint16_t Id;
-        uint16_t Vc;
-        uint16_t Vd;
 
-//        uint16_t extrnTCO;
+        uint16_t Vc_per_cell;
+        uint16_t Vd_per_cell;
+
         uint16_t minIc;
         uint16_t minId;
+
         uint16_t time;
 
+        uint16_t enable_externT;
+        AnalogInputs::ValueType externTCO;
 
-        uint16_t dV;
-        uint16_t dT;
-//        uint16_t DCcycles;
+        uint16_t dischargeAggressive;
         uint16_t DCRestTime;
+        uint16_t capCutoff;
+
+        union {
+            struct { //LiXX
+                uint16_t forceBalancePort;
+                uint16_t balancerError;
+            };
+            struct { //NiXX
+                uint16_t enable_deltaV;
+                int16_t deltaV;
+                uint16_t deltaT;
+                uint16_t DCcycles;
+            };
+        };
 
 
-        uint16_t capCoff;
-
-//        uint16_t forceBalanc;
-//        uint16_t balancErr;
     } CHEALI_EEPROM_PACKED;
 
     extern Battery battery;
     extern const char * const batteryString[];
 
-    uint16_t getVoltagePerCell(VoltageType type = VIdle);
-    uint16_t getVoltage(VoltageType type = VIdle);
+    uint16_t getDefaultVoltagePerCell(VoltageType type = VIdle);
+    uint16_t getDefaultVoltage(VoltageType type = VIdle);
+    uint16_t getVoltage2(VoltageType type = VIdle);
     uint16_t getCapacityLimit();
     inline uint16_t getTimeLimit() {return battery.time; }
 
     int16_t getDeltaVLimit();
-    inline int16_t getDeltaTLimit() {return settings.deltaT;}
+    inline int16_t getDeltaTLimit() {return battery.deltaT;}
 
     uint16_t getMaxCells();
     uint16_t getMaxIc();
     uint16_t getMaxId();
 
     void check();
-    void loadDefault();
+
+    void changedType();
+    void changedCapacity();
+    void changedIc();
+    void changedId();
 
     BatteryClass getBatteryClass();
 

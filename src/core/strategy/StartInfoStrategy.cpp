@@ -83,7 +83,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
         Buzzer::soundOff();
     }
 
-    balance = (v_balance || cell_nr) && settings.forceBalancePort;
+    balance = (v_balance || cell_nr) && ProgramData::battery.forceBalancePort;
 
     if(ProgramData::battery.type == ProgramData::Unknown
             && Program::programType == Program::Charge) {

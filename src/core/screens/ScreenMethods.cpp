@@ -67,7 +67,7 @@ namespace Screen {
 
     }
     void printDeltaT() {
-        if(settings.externT) {
+        if(ProgramData::battery.enable_externT) {
             int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
             lcdPrintSigned(x*10, 5);
             lcdPrintChar('m');
@@ -171,7 +171,7 @@ void Screen::Methods::displayTemperature()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("Text="));
-    if(settings.externT)
+    if(ProgramData::battery.enable_externT)
         AnalogInputs::printRealValue(AnalogInputs::Textern,    5);
     else
         lcdPrint_P(PSTR("-"));
@@ -213,7 +213,7 @@ void Screen::Methods::displayDeltaTextern()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("Text="));
-    if(settings.externT) {
+    if(ProgramData::battery.enable_externT) {
         lcdPrintTemperature(AnalogInputs::getDeltaLastT(), 9);
     } else {
         lcdPrint_P(PSTR("N/A"));

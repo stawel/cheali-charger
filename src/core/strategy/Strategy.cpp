@@ -34,24 +34,19 @@ namespace Strategy {
     AnalogInputs::ValueType endV;
     AnalogInputs::ValueType maxI;
     AnalogInputs::ValueType minI;
-    uint8_t minIdiv;
     bool doBalance;
 
-    void setMinI(AnalogInputs::ValueType i)  {
-        if (i < settings.minIout) i = settings.minIout;
-        minI = i;
-    }
-
     void setVI(ProgramData::VoltageType vt, bool charge) {
-        endV = ProgramData::getVoltage(vt);
+        endV = ProgramData::getVoltage2(vt);
 
         if(charge) {
             maxI = ProgramData::battery.Ic;
+            minI = ProgramData::battery.minIc;
         } else {
             maxI = ProgramData::battery.Id;
+            minI = ProgramData::battery.minId;
         }
 
-        setMinI(maxI/minIdiv);
     }
 
     void strategyPowerOn() {
