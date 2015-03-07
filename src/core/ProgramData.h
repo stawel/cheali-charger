@@ -72,9 +72,6 @@ namespace ProgramData {
     int16_t getDeltaVLimit();
     inline int16_t getDeltaTLimit() {return settings.deltaT;}
 
-    //Info: the print... and change... methods are used in ProgramDataMenu AND Screen
-    void printBatteryString();
-
     uint16_t getMaxCells();
     uint16_t getMaxIc();
     uint16_t getMaxId();

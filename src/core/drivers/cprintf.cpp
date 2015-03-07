@@ -32,7 +32,7 @@ void cprintf(const PrintData * printDataPtr, uint8_t dig)
     const PrintData p = pgm::read(printDataPtr);
     if(p.type == CP_TYPE_METHOD) {
         //Info: this must be before: uvalue = *p.data.uint16Ptr
-        return p.data.methodPtr();
+        return p.data.methodPtr(dig);
     }
     if(p.type & CP_TYPE_ANALOG_FLAG) {
         lcdPrintAnalog(*p.data.uint16Ptr, dig, AnalogInputs::Type(p.type & CP_TYPE_ANALOG_MASK));

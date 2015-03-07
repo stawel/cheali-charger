@@ -49,6 +49,8 @@
 namespace cprintf {
 
     struct ArrayData;
+    typedef void(*PrintMethod)(int8_t);
+
 
     union Data {
         const void * voidPtr;
@@ -57,7 +59,7 @@ namespace cprintf {
         int16_t  * int16Ptr;
         uint32_t * uint32Ptr;
         const char * const* stringArrayPtr;
-        VoidMethod methodPtr;
+        PrintMethod methodPtr;
         ArrayData * arrayPtr;
     };
 

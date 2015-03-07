@@ -122,6 +122,9 @@ const char * const  ProgramData::batteryString[] PROGMEM = {
         string_battery_NiZn
 };
 
+STATIC_ASSERT(sizeOfArray(ProgramData::batteryString) == ProgramData::LAST_BATTERY_TYPE);
+
+
 ProgramData::BatteryClass ProgramData::getBatteryClass() {
     if( battery.type == NiZn) return ClassNiZn;
     if( battery.type == Life  || battery.type == Lilo  || battery.type == Lipo
@@ -173,13 +176,6 @@ void ProgramData::loadDefault()
 {
 //    STATIC_ASSERT(sizeOfArray(defaultProgram) == ProgramData::LAST_BATTERY_TYPE);
 //    pgm::read(battery, &defaultProgram[battery.type]);
-}
-
-
-void ProgramData::printBatteryString()
-{
-    STATIC_ASSERT(sizeOfArray(batteryString) == ProgramData::LAST_BATTERY_TYPE);
-    lcdPrint_P(batteryString, battery.type);
 }
 
 uint16_t ProgramData::getMaxIc()

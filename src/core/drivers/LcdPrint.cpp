@@ -146,7 +146,7 @@ void lcdPrintValue_(uint16_t x, int8_t dig, uint16_t div, bool mili, bool minus 
         *(end++) = '-';
     }
     end = printLong(t, end);
-    if(div > 1) {
+    if(div > 1 && end - buf < dig -1) {
         dot_char = end;
         t = x % div;
         t += div;
