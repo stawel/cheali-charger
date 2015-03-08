@@ -25,7 +25,8 @@
 #define ANALOG_VOLT(x) ((AnalogInputs::ValueType)((x)*1000))
 #define ANALOG_AMP(x) ((AnalogInputs::ValueType)((x)*1000))
 #define ANALOG_OHM(x) ((AnalogInputs::ValueType)((x)*1000))
-#define ANALOG_WATT(x) ((unsigned long)((x)*1000L))
+#define ANALOG_WATT(x) ((AnalogInputs::ValueType)((x)*100))
+#define ANALOG_WATTH(x) ((AnalogInputs::ValueType)((x)*100))
 
 #define ANALOG_MAX_TIME_LIMIT 1000 //infinity
 #define ANALOG_MAX_CHARGE ANALOG_CHARGE(65.000)
@@ -54,6 +55,8 @@ namespace AnalogInputs {
 
     static const ValueType  STABLE_VALUE_ERROR  = 6;
     static const uint16_t   STABLE_MIN_VALUE    = 3;
+
+    AnalogInputs::ValueType evalI(AnalogInputs::ValueType P, AnalogInputs::ValueType U);
 };
 
 #endif /* ANALOGINPUTSTYPES_H_ */

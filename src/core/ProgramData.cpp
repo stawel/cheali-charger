@@ -136,11 +136,7 @@ int16_t ProgramData::getDeltaVLimit()
 
 uint16_t ProgramData::getMaxIc()
 {
-    uint32_t i;
-    uint16_t v;
-    v = getDefaultVoltage(VDischarge);
-    i = MAX_CHARGE_P;
-    i *= ANALOG_VOLT(1);
+    AnalogInputs::ValueType v = getDefaultVoltage(VDischarge);
 #ifdef ENABLE_DYNAMIC_MAX_POWER
     if(v > ANALOG_VOLT(8)) {
         v -= ANALOG_VOLT(8);
@@ -149,7 +145,7 @@ uint16_t ProgramData::getMaxIc()
     }
 #endif
 
-    i /= v;
+    AnalogInputs::ValueType i = AnalogInputs::evalI(MAX_CHARGE_P, v);
 
     if(i > MAX_CHARGE_I)
         i = MAX_CHARGE_I;
@@ -158,12 +154,8 @@ uint16_t ProgramData::getMaxIc()
 
 uint16_t ProgramData::getMaxId()
 {
-    uint32_t i;
-    uint16_t v;
-    v = getDefaultVoltage(VDischarge);
-    i = MAX_DISCHARGE_P;
-    i *= ANALOG_VOLT(1);
-    i /= v;
+    AnalogInputs::ValueType v = getDefaultVoltage(VDischarge);
+    AnalogInputs::ValueType i = AnalogInputs::evalI(MAX_DISCHARGE_P, v);
 
     if(i > MAX_DISCHARGE_I)
         i = MAX_DISCHARGE_I;

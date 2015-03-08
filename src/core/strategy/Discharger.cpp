@@ -41,14 +41,11 @@ namespace Discharger {
             return 0;
 #endif
 
-        uint32_t i = MAX_DISCHARGE_P;
-        uint16_t v = AnalogInputs::getVout();
+        AnalogInputs::ValueType v = AnalogInputs::getVout();
         if (v == 0) {
             v = 1;
         }
-
-        i *= ANALOG_VOLT(1);
-        i /= v;
+        AnalogInputs::ValueType i = AnalogInputs::evalI(MAX_DISCHARGE_P, v);
 
         if(i > MAX_DISCHARGE_I)
             i = MAX_DISCHARGE_I;

@@ -278,10 +278,10 @@ static const Info info[] PROGMEM = {
         {ANALOG_AMP(1.000), true, string_A},
         //Voltage,
         {ANALOG_VOLT(1.000), false, string_V},
-        //Power, TODO: ??
-        {100, false,string_W},
-        //Work, TODO: ??
-        {100, false,string_Wh},
+        //Power,
+        {ANALOG_WATT(1.00), false,string_W},
+        //Work,
+        {ANALOG_WATTH(1.00), false,string_Wh},
         //Temperature,
         {ANALOG_CELCIUS(1.00), false, string_C},
         //Charge,
