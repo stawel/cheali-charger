@@ -22,7 +22,7 @@
 
 #define EEPROM_MAGIC_STRING_LEN 4
 
-#define EEPROM_RESTORE_MAGIC_STRING         1
+#define EEPROM_RESTORE_MAGIC_NUMBER         1
 #define EEPROM_RESTORE_CALIBRATION          2
 #define EEPROM_RESTORE_PROGRAM_DATA         4
 #define EEPROM_RESTORE_SETTINGS             8
@@ -31,6 +31,7 @@
 namespace eeprom {
     struct Data {
         uint8_t magicString[EEPROM_MAGIC_STRING_LEN];
+        uint16_t architecture;
         uint16_t calibrationVersion;
         uint16_t programDataVersion;
         uint16_t settingVersion;
