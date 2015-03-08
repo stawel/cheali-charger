@@ -19,7 +19,7 @@
 #include "Hardware.h"
 #include "memory.h"
 
-using namespace lcd_print;
+using namespace AnalogInputs;
 
 char* printLong(int32_t value, char * buf) {
     char * end;
@@ -259,20 +259,6 @@ struct Info {
     bool mili;
     const char * symbol;
 };
-
-STRING_CPP(A, "A");
-STRING_CPP(V, "V");
-STRING_CPP(W, "W");
-STRING_CPP(Wh, "Wh");
-STRING_CPP(C, "C");
-STRING_CPP(Ah, "Ah");
-STRING_CPP(Ohm, "\xf4");
-STRING_CPP(procent, "%");
-STRING_CPP(C_m, "C/m");
-STRING_CPP(minutes, "m");
-STRING_CPP(unsigned, "");
-STRING_CPP(unknown, "U");
-
 static const Info info[] PROGMEM = {
         // Current
         {ANALOG_AMP(1.000), true, string_A},
@@ -315,9 +301,9 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
         lcdPrintYesNo(x, dig);
     } else if(  (type == AnalogInputs::TimeLimitMinutes && x >= ANALOG_MAX_TIME_LIMIT)
        ||(type == AnalogInputs::Charge && x >= ANALOG_MAX_CHARGE)) {
-            lcdPrintSpaces(dig - programData::string_size_unlimited + 1);
+            lcdPrintSpaces(dig - string_size_unlimited + 1);
             //TODO: programData::
-            lcdPrint_P(programData::string_unlimited);
+            lcdPrint_P(string_unlimited);
     } else {
         const char * symbol = pgm::read(&info[type].symbol);
         uint8_t symbol_size = pgm::strlen(symbol);

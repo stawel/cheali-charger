@@ -22,8 +22,6 @@
 #include "LcdPrint.h"
 #include "ProgramData.h"
 
-using namespace programData;
-
 namespace cprintf {
 
 

@@ -26,8 +26,6 @@
 //#define ENABLE_DEBUG
 #include "debug.h"
 
-using namespace settingsMenu;
-
 namespace SettingsMenu {
 
 

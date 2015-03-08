@@ -23,8 +23,6 @@
 #include "Settings.h"
 #include "eeprom.h"
 
-using namespace programData;
-
 ProgramData::Battery ProgramData::battery;
 
 //battery voltage limits, see also: ProgramData::getVoltagePerCell, ProgramData::getVoltage
@@ -241,7 +239,7 @@ void ProgramData::changedType()
         battery.enable_externT = false;
         battery.externTCO = ANALOG_CELCIUS(60);
 
-        battery.dischargeAggressive = false;
+        battery.adaptiveDis = false;
         battery.DCRestTime = 30;
         battery.capCutoff = 120;
     }
