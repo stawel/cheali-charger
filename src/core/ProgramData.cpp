@@ -264,7 +264,6 @@ void ProgramData::changedType()
         battery.deltaT = ANALOG_CELCIUS(1);
         battery.DCcycles = 5;
     } else {
-        battery.forceBalancePort = true;
         battery.balancerError = ANALOG_VOLT(0.008);
     }
     changedCapacity();

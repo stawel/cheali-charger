@@ -58,7 +58,6 @@ namespace ProgramData {
 
         union {
             struct { //LiXX
-                uint16_t forceBalancePort;
                 uint16_t balancerError;
             };
             struct { //NiXX

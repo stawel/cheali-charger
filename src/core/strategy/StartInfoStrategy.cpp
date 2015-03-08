@@ -50,7 +50,7 @@ void StartInfoStrategy::powerOff()
 
 Strategy::statusType StartInfoStrategy::doStrategy()
 {
-    bool cell_nr, v_balance, v_out, balance;
+    bool cell_nr, v_balance, v_out;
 
     cell_nr = v_balance = false;
     v_out = ! AnalogInputs::isConnected(AnalogInputs::Vout);
@@ -83,8 +83,6 @@ Strategy::statusType StartInfoStrategy::doStrategy()
         Buzzer::soundOff();
     }
 
-    balance = (v_balance || cell_nr) && ProgramData::battery.forceBalancePort;
-
     if(ProgramData::battery.type == ProgramData::Unknown
             && Program::programType == Program::Charge) {
         v_out = false;
@@ -92,7 +90,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 
     if(Keyboard::getPressed() == BUTTON_NONE)
         ok_ = 0;
-    if(!balance && !v_out && Keyboard::getPressed() == BUTTON_START) {
+    if(!v_out && Keyboard::getPressed() == BUTTON_START) {
         ok_++;
     }
     if(ok_ == 2) {
