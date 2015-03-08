@@ -114,7 +114,6 @@ void Screen::Methods::displayTime()
 {
     lcdSetCursor0_0();
 #ifdef ENABLE_TIME_LIMIT
-    lcdPrintSpace1();
     lcdPrintAnalog(ProgramData::battery.time, 8, AnalogInputs::TimeLimitMinutes);
     lcdPrintSpaces(2);
 #else

@@ -23,12 +23,7 @@
 #include "AnalogInputs.h"
 #include "Utils.h"
 
-#ifdef AVR
-#include <stdlib.h>
-inline char* printLong(int32_t value, char * buf) { return buf; }//ltoa(value, buf, 10); }
-#else
 char* printLong(int32_t value, char * buf);
-#endif
 
 #ifdef ENABLE_LCD_RAM_CG
 void lcdCreateCGRam();
@@ -56,6 +51,7 @@ void lcdPrintUnsigned(uint16_t x, int8_t dig, const char prefix);
 void lcdPrintUnsigned(uint16_t x, int8_t dig = 5);
 void lcdPrintSigned(int16_t x, int8_t dig = 5);
 void lcdPrintChar(char c);
+int8_t lcdPrintChar(char c, int8_t dig);
 void lcdPrintDigit(uint8_t d);
 void lcdPrintYesNo(uint8_t yes, int8_t dig);
 
