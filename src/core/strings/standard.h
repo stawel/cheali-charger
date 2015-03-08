@@ -95,7 +95,8 @@ namespace SettingsMenu {
     STRING(fanTempOn,   "|fan T on:");
     STRING(dischOff,    "disch off:");
     STRING(AudioBeep,   "beep:");
-    STRING(minIout,     "min Iout:");
+    STRING(minIc,       "min Ic:");
+    STRING(minId,       "min Id:");
     STRING(inputLow,    "input low: ");
     STRING(adcNoise,    "adc noise:");
     STRING(UARTview,    "UART:");

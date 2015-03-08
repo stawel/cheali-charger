@@ -196,16 +196,19 @@ void ProgramData::check()
     v = battery.Id;
     if(battery.minId > v) battery.minId = v;
 
-    v = settings.minIout;
+    v = settings.minIc;
     if(battery.Ic < v) battery.Ic = v;
-    if(battery.Id < v) battery.Id = v;
     if(battery.minIc < v) battery.minIc = v;
+
+    v = settings.minId;
+    if(battery.Id < v) battery.Id = v;
     if(battery.minId < v) battery.minId = v;
 }
 
 void ProgramData::loadProgramData(uint8_t index)
 {
     eeprom::read(battery, &eeprom::data.battery[index]);
+    check();
 }
 
 void ProgramData::saveProgramData(uint8_t index)

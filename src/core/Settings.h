@@ -38,7 +38,9 @@ struct Settings {
     AnalogInputs::ValueType dischargeTempOff;
 
     uint16_t audioBeep;
-    uint16_t minIout;
+    uint16_t minIc;
+    uint16_t minId;
+
     AnalogInputs::ValueType inputVoltageLow;
     uint16_t adcNoise;
     uint16_t UART;

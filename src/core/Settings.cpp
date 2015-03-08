@@ -40,7 +40,8 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_CELCIUS(60), //dischargeTempOff
 
         1,                  //AudioBeep: yes/no
-        50,                 //minIout
+        50,                 //minIc
+        50,                 //minId
         ANALOG_VOLT(10.000),//inputVoltageLow
 
         SETTINGS_ADC_NOISE_DEFAULT, //adcNoise
