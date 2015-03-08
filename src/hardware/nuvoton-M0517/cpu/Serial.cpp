@@ -37,7 +37,7 @@ void (*end)();
 void  begin(unsigned long baud)
 {
 #ifdef ENABLE_TX_HW_SERIAL
-    if(settings.UARTinput == Settings::Hardware) {
+    if(settings.UARToutput == Settings::Hardware) {
         write = &(TxHardSerial::write);
         flush = &(TxHardSerial::flush);
         end = &(TxHardSerial::end);

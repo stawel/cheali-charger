@@ -76,7 +76,7 @@ namespace settingsMenu {
     //settings menu
     STRING(backlight,   "backlight:");
     STRING(fanOn,       "fan on:");
-    STRING(fanTempOn,   "fan T on:");
+    STRING(fanTempOn,   "|fan T on:");
     STRING(dischOff,    "disch off:");
     STRING(externT,     "extrn T:");
     STRING(externTCO,   "extrn TCO:");
@@ -97,11 +97,12 @@ namespace settingsMenu {
     STRING(balancErr,   "bal. err:");
     STRING(adcNoise,    "adc noise:");
     STRING(UARTview,    "UART:");
-    STRING(UARTspeed,   "speed:");
-    STRING(UARTinput,   "UART inp:");
+    STRING(UARTspeed,   "|speed:");
+    STRING(UARToutput,  "|output:");
+    STRING(MenuType,    "menus:");
     STRING(reset,       "reset");
 
-    //UART input menu
+    //UARToutput menu
     STRING(temp,    "temp");
     STRING(pin7,    "pin7");
 
@@ -118,6 +119,11 @@ namespace settingsMenu {
     STRING(FanProgram,  "program");
     STRING(temperature, "Tempera");
     STRING(tempProgram, "T-progr");
+
+    //MenuType
+    STRING(simple,      "simple");
+    STRING(advanced,    "advanced");
+
 }
 
 namespace lcd_print {

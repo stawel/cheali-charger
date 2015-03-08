@@ -91,6 +91,15 @@ void StaticEditMenu::setSelector(uint16_t s) {
     LogDebug(size_);
 }
 
+static bool predicate(uint16_t condition, uint16_t selector){
+    bool display = true;
+    if(condition & StaticEditMenu::Mandatory) {
+        display = selector & StaticEditMenu::Mandatory;
+        condition ^= StaticEditMenu::Mandatory;
+    }
+    return display && (condition & selector);
+}
+
 uint8_t StaticEditMenu::getSelectedIndexOrSize(uint8_t item)
 {
     uint8_t index = 0, size = 0;
@@ -99,7 +108,7 @@ uint8_t StaticEditMenu::getSelectedIndexOrSize(uint8_t item)
         if(condition == Last) {
             return size;
         }
-        if(condition & selector) {
+        if(predicate(condition, selector)) {
             if(item == 0) {
                 return index;
             }

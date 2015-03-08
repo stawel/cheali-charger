@@ -46,7 +46,8 @@ const Settings defaultSettings PROGMEM = {
         SETTINGS_ADC_NOISE_DEFAULT, //adcNoise
         Settings::Disabled, //UART - disabled
         3,                   //57600
-        Settings::Software, //UARTinput
+        Settings::Software, //UARToutput
+        Settings::MenuSimple, //menuType
 };
 
 

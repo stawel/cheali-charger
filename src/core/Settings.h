@@ -27,7 +27,8 @@ struct Settings {
     enum UARTType {Disabled, Normal,  Debug,  ExtDebug, ExtDebugAdc};
     enum FanOnType {FanDisabled, FanAlways, FanProgram, FanTemperature, FanProgramTemperature};
 
-    enum UARTInput {Software, Hardware};
+    enum UARTOutput {Software, Hardware};
+    enum MenuType  {MenuSimple, MenuAdvanced};
     static const uint16_t UARTSpeeds = 5;
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5.12);
     uint16_t backlight;
@@ -42,7 +43,8 @@ struct Settings {
     uint16_t adcNoise;
     uint16_t UART;
     uint16_t UARTspeed;
-    uint16_t UARTinput;
+    uint16_t UARToutput;
+    uint16_t menuType;
 
     void apply();
     void setDefault();

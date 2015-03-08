@@ -29,7 +29,8 @@
 
 class StaticEditMenu : public EditMenu {
 public:
-    static const uint16_t Always = 0xffff;
+    static const uint16_t Always = 0x7fff;
+    static const uint16_t Mandatory = 0x8000;
     static const uint16_t Last = 0;
     typedef void(*EditCallBack)(StaticEditMenu *, uint16_t * value);
     typedef void(*EditMethod)(int dir);
