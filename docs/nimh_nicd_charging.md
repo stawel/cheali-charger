@@ -35,38 +35,3 @@ for this reason on atmega32 based chargers it is recommended to
 enable artificial noise in [settings](settings/settings.md#nimh-nicd-specific-settings) (`adc noise: yes`), 
 see also [artificial adc noise](artificial_adc_noise.md).
 
-
-charging wires resistance: `Rwire`
-----------------------------------
-To minimize the chance of overcharging cheali-charger uses a charging voltage limit of 1.6V (per cell) for NiMH batteries 
-and 1.82V (per cell) for NiCd, if this limit gets exceeded the charging program stops with a message: `V limit`.
-Since the limit is a safety feature in normal use you shouldn't see this message. If you do, it might be due to
-a voltage drop on your charging wires, in this case you can compensate the wires resistance by setting `Rwire:` in 
-[settings](settings/settings.md#nimh-nicd-specific-settings).
-
-If you set `Rwire` the battery voltage will be equal to:  
-`Vbat = Vout - Rwire * Ic`  
-and the voltage limit will refer to `Vbat`.  
-
-note: `Rwire` is only used during NiMH, NiCd charging.
-
-
-measuring charging wires resistance
------------------------------------
-
-1. go to `edit battery` and set:
-  - battery type to unknown (`Bat: Unkn`)
-  - voltage to 1V (`V: 1.000V`)
-  - charging current to 1A (`Ic: 1000mA`)
-2. connect your charging wires to the charger and connect the end of them to each other (make a loop).
-3. go to `charge` and hold `start` for 2 seconds (ignore beeping)
-4. wait until current reaches 1A
-5. go to `batt. R=`, this is the wires resistance
-
-
-
-
-
-
-
-
