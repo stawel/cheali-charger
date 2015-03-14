@@ -53,6 +53,13 @@ int16_t * StaticEditMenu::getEditAddress(uint8_t item)
     return valuePtr;
 }
 
+uint16_t StaticEditMenu::getEnableCondition(uint8_t item)
+{
+    uint8_t index = getSelectedIndexOrSize(item);
+    return pgm::read(&staticEditData[index].enableCondition);
+}
+
+
 void StaticEditMenu::editItem(uint8_t item, uint8_t key)
 {
     int16_t * valuePtr = getEditAddress(item);

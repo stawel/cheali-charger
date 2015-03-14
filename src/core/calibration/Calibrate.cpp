@@ -31,6 +31,7 @@
 #include "Hardware.h"
 #include "eeprom.h"
 #include "Balancer.h"
+#include "StaticEditMenu.h"
 
 namespace Calibrate {
 
@@ -48,34 +49,7 @@ const char * const calibrateMenu[] PROGMEM = {
     NULL
 };
 
-const char * const voltageMenu[] PROGMEM = {string_v_menu_input, string_v_menu_cell1, string_v_menu_cell2,
-        string_v_menu_cell3, string_v_menu_cell4, string_v_menu_cell5, string_v_menu_cell6,
-        BALANCER_PORTS_GT_6( string_v_menu_cell7, string_v_menu_cell8,)
-        string_v_menu_cellSum, string_v_menu_output, NULL};
-
-const AnalogInputs::Name voltageName[] PROGMEM = {
-       AnalogInputs::Vin,
-       AnalogInputs::Vb1,
-       AnalogInputs::Vb2,
-       AnalogInputs::Vb3,
-       AnalogInputs::Vb4,
-       AnalogInputs::Vb5,
-       AnalogInputs::Vb6,
-       BALANCER_PORTS_GT_6(AnalogInputs::Vb7, AnalogInputs::Vb8,)
-       AnalogInputs::Vbalancer,
-       AnalogInputs::Vout,
-};
-
-const AnalogInputs::Name voltageName2[] PROGMEM = {
-       AnalogInputs::Vin,
-       AnalogInputs::Vb1_pin,
-       AnalogInputs::Vb2_pin,
-       AnalogInputs::Vb3_pin,
-       AnalogInputs::Vb4_pin,
-       AnalogInputs::Vb5_pin,
-       AnalogInputs::Vb6_pin,
-       BALANCER_PORTS_GT_6(AnalogInputs::Vb7_pin, AnalogInputs::Vb8_pin)
-};
+uint16_t calibrationPoint;
 
 const char * const chargeIMenu[]    PROGMEM = { string_ic_menu_current0, string_ic_menu_current1, NULL};
 const char * const dischargeIMenu[] PROGMEM = { string_id_menu_current0, string_id_menu_current1, NULL};
@@ -83,58 +57,8 @@ const AnalogInputs::ValueType chargeIValues[]     PROGMEM = {CALIBRATION_CHARGE_
 const AnalogInputs::ValueType dischargeIValues[]  PROGMEM = {CALIBRATION_DISCHARGE_POINT0_mA, CALIBRATION_DISCHARGE_POINT1_mA};
 
 const char * const currentMenu[] PROGMEM = {string_i_menu_value,        string_i_menu_output,   NULL};
-const char * const pointMenu[]   PROGMEM = {string_tp_menu_point0,      string_tp_menu_point1,  NULL};
-const char * const tempMenu[]    PROGMEM = {string_t_menu_temperature,  string_t_menu_value,    NULL};
-
-#ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
-
-const char * const expertVoltageMenu[] PROGMEM = {
-#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-        string_ev_menu_cell0pin, string_ev_menu_cell1pin, string_ev_menu_cell2pin,
-#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-        string_ev_menu_plusVoltagePin,
-        string_ev_menu_minusVoltagePin,
-        NULL};
-
-const AnalogInputs::Name expertVoltageName[] PROGMEM = {
-#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-        AnalogInputs::Vb0_pin,
-        AnalogInputs::Vb1_pin,
-        AnalogInputs::Vb2_pin,
-#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-        AnalogInputs::Vout_plus_pin,
-        AnalogInputs::Vout_minus_pin
-};
-
-#endif //ENABLE_EXPERT_VOLTAGE_CALIBRATION
 
 /* voltage calibration */
-
-
-class VoltageMenu: public EditMenu {
-public:
-    VoltageMenu(const char * const* vMenu,
-            const AnalogInputs::Name * vNames, uint8_t dig) :
-        EditMenu(vMenu),
-        vNames_(vNames),
-        dig_(dig){};
-    virtual void printItem(uint8_t index) {
-        StaticMenu::printItem(index);
-        if(getBlinkIndex() != index) {
-            AnalogInputs::Name name = pgm::read(&vNames_[index]);
-            AnalogInputs::printRealValue(name, dig_);
-        }
-    }
-    virtual void editItem(uint8_t index, uint8_t key) {
-        int dir = -1;
-        if(key == BUTTON_INC) dir = 1;
-        dir *= Keyboard::getSpeedFactor();
-        AnalogInputs::Name name = pgm::read(&vNames_[index]);
-        AnalogInputs::real_[name] += dir;
-    }
-    const AnalogInputs::Name * vNames_;
-    const uint8_t dig_;
-};
 
 
 void copyVbalVout()
@@ -144,8 +68,8 @@ void copyVbalVout()
     p.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vout_plus_pin);
     p.x -= AnalogInputs::getAvrADCValue(AnalogInputs::Vout_minus_pin);
     p.y = AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout_plus_pin, 1, p);
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout_minus_pin, 1, p);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout_plus_pin, calibrationPoint, p);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout_minus_pin, calibrationPoint, p);
 }
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
@@ -158,11 +82,11 @@ void calibrateSimplifiedVb1_pin(AnalogInputs::ValueType real_v)
     p2.y = p1.y + AnalogInputs::getRealValue(AnalogInputs::Vb2);
 
     //info: we assume that Vb0_pin and Vb1_pin have identically voltage dividers
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb0_pin, 1, p1);
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb1_pin, 1, p1);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb0_pin, calibrationPoint, p1);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb1_pin, calibrationPoint, p1);
 
     if(AnalogInputs::isConnected(AnalogInputs::Vb2)) {
-        AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, 1, p2);
+        AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, calibrationPoint, p2);
     }
 }
 void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
@@ -170,7 +94,7 @@ void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
     AnalogInputs::CalibrationPoint p2;
     p2.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vb2_pin);
     p2.y = real_v + AnalogInputs::getRealValue(AnalogInputs::Vb1_pin);
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, 1, p2);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, calibrationPoint, p2);
 }
 
 #endif
@@ -199,7 +123,7 @@ bool testVout(bool balancePort)
     }while(true);
 }
 
-void saveVoltage(AnalogInputs::Name name1, AnalogInputs::Name name2, AnalogInputs::ValueType adc, AnalogInputs::ValueType newValue)
+void saveCalibration(AnalogInputs::Name name1, AnalogInputs::Name name2, AnalogInputs::ValueType adc, AnalogInputs::ValueType newValue)
 {
     AnalogInputs::CalibrationPoint p;
     p.x = adc;
@@ -211,41 +135,106 @@ void saveVoltage(AnalogInputs::Name name1, AnalogInputs::Name name2, AnalogInput
         else if(name1 == AnalogInputs::Vb2)
             calibrateSimplifiedVb2_pin(p.y);
         else
-            AnalogInputs::setCalibrationPoint(name2, 1, p);
+            AnalogInputs::setCalibrationPoint(name2, calibrationPoint, p);
 #else
-        AnalogInputs::setCalibrationPoint(name2, 1, p);
+        AnalogInputs::setCalibrationPoint(name2, calibrationPoint, p);
 #endif
 }
 
-void saveVoltage(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInputs::Name name2)
+void saveCalibration(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInputs::Name name2)
 {
     Buzzer::soundSelect();
     AnalogInputs::ValueType newValue = AnalogInputs::getRealValue(name1);
-    saveVoltage(name1, name2, AnalogInputs::getAvrADCValue(name2), newValue);
-    AnalogInputs::on_ = true;
-    AnalogInputs::doFullMeasurement();
-    if(doCopyVbalVout)
+    saveCalibration(name1, name2, AnalogInputs::getAvrADCValue(name2), newValue);
+    if (doCopyVbalVout) {
+        AnalogInputs::on_ = true;
+        AnalogInputs::doFullMeasurement();
         copyVbalVout();
+    }
 }
+
+#define COND_ALWAYS StaticEditMenu::StaticEditMenu::Always
+#define COND_COPY_VOUT      128
+#define COND_POINT          4
+#define COND_E_ANALOG       2
+#define COND_E_C_ANALOG     COND_E_ANALOG + COND_COPY_VOUT
+#define EANALOG_V(name) {CP_TYPE_V, 0, &AnalogInputs::real_[AnalogInputs::name]}
+
+void runCalibrationMenu(const StaticEditMenu::StaticEditData * menuData,
+        const AnalogInputs::Name * name1,
+        const AnalogInputs::Name * name2) {
+    StaticEditMenu menu(menuData);
+    menu.setSelector(COND_ALWAYS);
+    int8_t item;
+    do {
+        item = menu.runSimple();
+        if(item < 0) break;
+        uint8_t c = menu.getEnableCondition(item);
+        if(!(c & 1)) {
+            if(c & COND_E_ANALOG) {
+                AnalogInputs::Name Vinput = pgm::read(&name1[item]);
+                if(AnalogInputs::isConnected(Vinput)) {
+                    AnalogInputs::doFullMeasurement();
+                    AnalogInputs::on_ = false;
+                    if(menu.runEdit()) {
+                        bool doCopyVout = c & COND_COPY_VOUT;
+                        saveCalibration(doCopyVout, Vinput, pgm::read(&name2[item]));
+                    }
+                    AnalogInputs::on_ = true;
+                }
+            } else {
+                menu.runEdit();
+            }
+        }
+    } while(true);
+}
+
+const AnalogInputs::Name voltageName[] PROGMEM = {
+       AnalogInputs::Vin,
+       AnalogInputs::Vb1,
+       AnalogInputs::Vb2,
+       AnalogInputs::Vb3,
+       AnalogInputs::Vb4,
+       AnalogInputs::Vb5,
+       AnalogInputs::Vb6,
+       BALANCER_PORTS_GT_6(AnalogInputs::Vb7, AnalogInputs::Vb8,)
+};
+
+const AnalogInputs::Name voltageName2[] PROGMEM = {
+       AnalogInputs::Vin,
+       AnalogInputs::Vb1_pin,
+       AnalogInputs::Vb2_pin,
+       AnalogInputs::Vb3_pin,
+       AnalogInputs::Vb4_pin,
+       AnalogInputs::Vb5_pin,
+       AnalogInputs::Vb6_pin,
+       BALANCER_PORTS_GT_6(AnalogInputs::Vb7_pin, AnalogInputs::Vb8_pin)
+};
+
+const StaticEditMenu::StaticEditData editVoltageData[] PROGMEM = {
+{string_v_menu_input,       COND_E_C_ANALOG,    EANALOG_V(Vin),         {1, 0, ANALOG_VOLT(30)}},
+{string_v_menu_cell1,       COND_E_C_ANALOG,    EANALOG_V(Vb1),         {1, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell2,       COND_E_C_ANALOG,    EANALOG_V(Vb2),         {1, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell3,       COND_E_C_ANALOG,    EANALOG_V(Vb3),         {1, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell4,       COND_E_C_ANALOG,    EANALOG_V(Vb4),         {1, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell5,       COND_E_C_ANALOG,    EANALOG_V(Vb5),         {1, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell6,       COND_E_C_ANALOG,    EANALOG_V(Vb6),         {1, 0, ANALOG_VOLT(5)}},
+BALANCER_PORTS_GT_6(
+{string_v_menu_cell7,       COND_E_C_ANALOG,    EANALOG_V(Vb7),         {1, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell8,       COND_E_C_ANALOG,    EANALOG_V(Vb8),         {1, 0, ANALOG_VOLT(5)}},
+)
+{string_v_menu_cellSum,     COND_ALWAYS,        EANALOG_V(Vbalancer),   {0, 0, 0}},
+{string_v_menu_output,      COND_ALWAYS,        EANALOG_V(Vout),        {0, 0, 0}},
+{string_menu_point,         COND_POINT,         {CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
+{NULL,                      StaticEditMenu::Last}
+};
 
 void calibrateVoltage()
 {
+    calibrationPoint = 1;
     AnalogInputs::powerOn();
     if(testVout(true)) {
-        VoltageMenu v(voltageMenu, voltageName, 9);
-        int8_t index;
-        do {
-            index = v.runSimple(true);
-            if(index < 0) break;
-            AnalogInputs::Name Vinput = pgm::read(&voltageName[index]);
-            if(index <= MAX_BANANCE_CELLS && AnalogInputs::isConnected(Vinput)) {
-                AnalogInputs::doFullMeasurement();
-                AnalogInputs::on_ = false;
-                if(v.runEdit())
-                    saveVoltage(true, Vinput,pgm::read(&voltageName2[index]));
-                AnalogInputs::on_ = true;
-            }
-        } while(true);
+        runCalibrationMenu(editVoltageData, voltageName, voltageName2);
     }
     AnalogInputs::powerOff();
 }
@@ -256,31 +245,42 @@ void calibrateVoltage()
 
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
 
+const StaticEditMenu::StaticEditData editExpertVoltageData[] PROGMEM = {
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+{string_ev_menu_cell0pin,           COND_E_ANALOG,   EANALOG_V(Vb0_pin),         {1, 0, ANALOG_VOLT(10)}},
+{string_ev_menu_cell1pin,           COND_E_ANALOG,   EANALOG_V(Vb1_pin),         {1, 0, ANALOG_VOLT(10)}},
+{string_ev_menu_cell2pin,           COND_E_ANALOG,   EANALOG_V(Vb2_pin),         {1, 0, ANALOG_VOLT(10)}},
+#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+{string_ev_menu_plusVoltagePin,     COND_E_ANALOG,   EANALOG_V(Vout_plus_pin),   {1, 0, MAX_CHARGE_V}},
+{string_ev_menu_minusVoltagePin,    COND_E_ANALOG,   EANALOG_V(Vout_minus_pin),  {1, 0, MAX_CHARGE_V}},
+{string_menu_point,                 COND_POINT,     {CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
+{NULL,                      StaticEditMenu::Last}
+};
+
+
+const AnalogInputs::Name expertVoltageName[] PROGMEM = {
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+        AnalogInputs::Vb0_pin,
+        AnalogInputs::Vb1_pin,
+        AnalogInputs::Vb2_pin,
+#endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+        AnalogInputs::Vout_plus_pin,
+        AnalogInputs::Vout_minus_pin
+};
+
+
+
 void expertCalibrateVoltage()
 {
+    calibrationPoint = 1;
     AnalogInputs::powerOn(false);
     PolarityCheck::checkReversedPolarity_ = false;
-    //TODO: optimization: this method should be merged with calibrateVoltage
-    VoltageMenu v(expertVoltageMenu, expertVoltageName, 7);
-    int8_t index;
-    do {
-        index = v.runSimple(true);
-        if(index < 0) break;
-        AnalogInputs::Name Vinput = pgm::read(&expertVoltageName[index]);
-        if(!AnalogInputs::isConnected(Vinput))
-            continue;
-        AnalogInputs::doFullMeasurement();
-        AnalogInputs::on_ = false;
-        if(v.runEdit())
-            saveVoltage(false, Vinput, Vinput);
-        AnalogInputs::on_ = true;
-    } while(true);
-
+    runCalibrationMenu(editExpertVoltageData, expertVoltageName, expertVoltageName);
     PolarityCheck::checkReversedPolarity_ = true;
     AnalogInputs::powerOff();
 
 }
-#endif
+#endif //ENABLE_EXPERT_VOLTAGE_CALIBRATION
 
 
 /* current calibration */
@@ -288,7 +288,7 @@ void expertCalibrateVoltage()
 
 void setCurrentValue(AnalogInputs::Name name, AnalogInputs::ValueType value)
 {
-    if(name == AnalogInputs::IsmpsSet)    SMPS::setValue(value);
+    if(name == AnalogInputs::IsmpsSet)      SMPS::setValue(value);
     else                                    Discharger::setValue(value);
 }
 
@@ -399,66 +399,42 @@ void calibrateI(const char * const textMenu[], const AnalogInputs::ValueType  va
 
 /* temperature calibration */
 
+#define EANALOG_T(name) {CP_TYPE_TEMPERATURE, 0, &AnalogInputs::real_[AnalogInputs::name]}
+#define EANALOG_ADC(name) {CP_TYPE_UNSIGNED, 0, &AnalogInputs::avrAdc_[AnalogInputs::name]}
 
-class TempMenu: public EditMenu {
-public:
-    AnalogInputs::Name tName_;
-    TempMenu(AnalogInputs::Name name) : EditMenu(tempMenu), tName_(name){};
-    virtual void printItem(uint8_t index) {
-        StaticMenu::printItem(index);
-        if(getBlinkIndex() != index) {
-            if(index == 0) {
-                AnalogInputs::printRealValue(tName_, 7);
-            } else {
-                lcdPrintUnsigned(AnalogInputs::getAvrADCValue(tName_), 7);
-            }
-        }
-    }
-    virtual void editItem(uint8_t index, uint8_t key) {
-        int dir = -1;
-        if(key == BUTTON_INC) dir = 1;
-        dir *= Keyboard::getSpeedFactor();
-        AnalogInputs::real_[tName_] += dir;
-    }
+const StaticEditMenu::StaticEditData editExternTData[] PROGMEM = {
+{string_t_menu_temperature,     COND_E_ANALOG,  EANALOG_T(Textern),             {1, 0, ANALOG_CELCIUS(100)}},
+{string_t_menu_adc,             COND_ALWAYS,    EANALOG_ADC(Textern),           {0,0,0}},
+{string_menu_point,             COND_POINT,     {CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
+{NULL,                      StaticEditMenu::Last}
 };
 
-void saveTemp(AnalogInputs::Name name, uint8_t point)
-{
-    AnalogInputs::CalibrationPoint p;
-    p.x = AnalogInputs::getAvrADCValue(name);
-    p.y = AnalogInputs::getRealValue(name);
-    AnalogInputs::setCalibrationPoint(name, point, p);
-}
+const StaticEditMenu::StaticEditData editInternTData[] PROGMEM = {
+{string_t_menu_temperature,     COND_E_ANALOG,  EANALOG_T(Tintern),             {1, 0, ANALOG_CELCIUS(100)}},
+{string_t_menu_adc,             COND_ALWAYS,    EANALOG_ADC(Tintern),           {0,0,0}},
+{string_menu_point,             COND_POINT,     {CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
+{NULL,                      StaticEditMenu::Last}
+};
 
-void calibrateTemp(AnalogInputs::Name name, uint8_t point)
+const AnalogInputs::Name externTName[] PROGMEM = { AnalogInputs::Textern };
+const AnalogInputs::Name internTName[] PROGMEM = { AnalogInputs::Tintern };
+
+
+void calibrateExternT()
 {
+    calibrationPoint = 0;
     AnalogInputs::powerOn(false);
-    TempMenu v(name);
-    int8_t index;
-    do {
-        index = v.runSimple(true);
-        if(index < 0) break;
-        if(index == 0) {
-            AnalogInputs::on_ = false;
-            if(v.runEdit())
-                saveTemp(name, point);
-            AnalogInputs::on_ = true;
-        }
-    } while(true);
+    runCalibrationMenu(editExternTData, externTName, externTName);
     AnalogInputs::powerOff();
 }
 
-void calibrateTemp(AnalogInputs::Name name)
+void calibrateInternT()
 {
-    StaticMenu menu(pointMenu);
-    int8_t i;
-    do {
-        i = menu.runSimple();
-        if(i<0) break;
-        calibrateTemp(name, i);
-    } while(true);
+    calibrationPoint = 0;
+    AnalogInputs::powerOn(false);
+    runCalibrationMenu(editInternTData, internTName, internTName);
+    AnalogInputs::powerOff();
 }
-
 
 /* calibration menu */
 
@@ -476,9 +452,9 @@ void run()
         case NEXT_CASE: calibrateVoltage(); break;
         case NEXT_CASE: calibrateI(chargeIMenu, chargeIValues); break;
         case NEXT_CASE: calibrateI(dischargeIMenu, dischargeIValues); break;
-        case NEXT_CASE: calibrateTemp(AnalogInputs::Textern); break;
+        case NEXT_CASE: calibrateExternT(); break;
 #ifdef ENABLE_T_INTERNAL
-        case NEXT_CASE: calibrateTemp(AnalogInputs::Tintern); break;
+        case NEXT_CASE: calibrateInternT(); break;
 #endif
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
         case NEXT_CASE: expertCalibrateVoltage(); break;
