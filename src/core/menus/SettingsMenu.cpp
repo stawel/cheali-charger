@@ -49,7 +49,7 @@ const cprintf::ArrayData UARTData  PROGMEM = {SettingsUART, &settings.UART};
 const cprintf::ArrayData UARTSpeedsData PROGMEM = {Settings::UARTSpeedValue, &settings.UARTspeed};
 
 
-const char * const SettingsUARToutput[] PROGMEM = {string_temp, string_pin7};
+const char * const SettingsUARToutput[] PROGMEM = {string_temp, string_pin7, string_pin38};
 const cprintf::ArrayData UARToutputData  PROGMEM = {SettingsUARToutput, &settings.UARToutput};
 
 
@@ -102,7 +102,7 @@ const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 {string_UARTview,       COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&UARTData},             {1, 0, Settings::ExtDebugAdc}},
 {string_UARTspeed,      COND_UART_ON,   {CP_TYPE_UINT32_ARRAY,0,&UARTSpeedsData},       {1, 0, Settings::UARTSpeeds-1}},
 #ifdef ENABLE_TX_HW_SERIAL
-{string_UARToutput,     COND_UART_ON,   {CP_TYPE_STRING_ARRAY,0,&UARToutputData},        {1, 0, 1}},
+{string_UARToutput,     COND_UART_ON,   {CP_TYPE_STRING_ARRAY,0,&UARToutputData},        {1, 0, 2}},
 #endif
 {string_MenuType,       COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&menuTypeData},         {1, 0, 1}},
 

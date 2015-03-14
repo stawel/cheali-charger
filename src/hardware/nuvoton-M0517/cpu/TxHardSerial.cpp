@@ -22,6 +22,7 @@
 #include "Hardware.h"
 #include "TxHardSerial.h"
 #include "irq_priority.h"
+#include "Settings.h"
 
 #include "IO.h"
 
@@ -40,16 +41,15 @@ void initialize()
 {
     CLK_EnableModuleClock(UART0_MODULE);
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART_S_HXT, CLK_CLKDIV_UART(1));
-
-#if TX_HW_SERIAL_PIN == 7
-    SYS->P3_MFP = (SYS->P3_MFP & (~SYS_MFP_P31_Msk)) | SYS_MFP_P31_TXD0; //Tx on pin 7
-#else
-    SYS->P0_MFP = (SYS->P0_MFP & (~SYS_MFP_P02_Msk)) | SYS_MFP_P02_TXD0; //Tx on pin 38
-#endif
 }
 
 void begin(unsigned long baud)
 {
+    if(settings.UARToutput == Settings::HardwarePin7) {
+        SYS->P3_MFP = (SYS->P3_MFP & (~SYS_MFP_P31_Msk)) | SYS_MFP_P31_TXD0; //Tx on pin 7
+    } else {
+        SYS->P0_MFP = (SYS->P0_MFP & (~SYS_MFP_P02_Msk)) | SYS_MFP_P02_TXD0; //Tx on pin 38
+    }
     /* Configure UART0 and set UART0 Baudrate */
     UART0->BAUD = UART_BAUD_MODE2 | UART_BAUD_MODE2_DIVIDER(__HXT, baud);
     UART0->LCR = UART_WORD_LEN_8 | UART_PARITY_NONE | UART_STOP_BIT_1;
