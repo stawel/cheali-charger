@@ -31,7 +31,6 @@ NiMH, NiCd specific settings:
 |enab dV: *yes/no*<br>![enab dV:](enab_dV.jpeg)    | enable ΔV method to determine end of charging, should be always "yes"!| all |
 |NiMH dV: *X*mV<br>![NiMH dV:](NiMH_dV.jpeg)       | ΔV value for NiMH, see also: "enab dV:"| all |
 |NiCd dV: *X*mV<br>![NiCd dV:](NiCd_dV.jpeg)       | ΔV value for NiCd, see also: "enab dV:"| all |
-|Rwire: *X*mΩ<br>![Rwire:](Rwire.jpeg)             | take into account charging cable resistance when charging NiMH, NiCd, see 1. | all |
 |D/C cycles: *N*<br>![D/C cycles:](D_C_cycles.jpeg)| number of discharges/charges when cycling (formatting) battery| all |
 |D/C rest: *t*m<br>![D/C rest:](D_C_rest.jpeg)     | rest time between discharge and charge during cycling in minutes| all |
 |adc noise: *yes/no*                               | add *noise* to batteries main-leads input connector, see 1. | atmega32 based chargers |
