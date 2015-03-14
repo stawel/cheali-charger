@@ -87,6 +87,7 @@ const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 {string_voltage,        COND_BATTERY,       CPRINTF_METHOD(Screen::StartInfo::printVoltageString), STATIC_EDIT_METHOD(changeVoltage)},
 {string_Vc_per_cell,    ADV(LiXX_NiZn_Pb),  {CP_TYPE_V,0,&battery.Vc_per_cell},             {1,ANALOG_VOLT(0.0),ANALOG_VOLT(5.0)}},
 {string_Vcutoff,        ADV(NiXX),          {CP_TYPE_V,0,&battery.Vc_per_cell},             {ANALOG_VOLT(0.001), ANALOG_VOLT(1.200), ANALOG_VOLT(2.000)}},
+{string_Vs_per_cell,    ADV(LiXX),          {CP_TYPE_V,0,&battery.Vs_per_cell},             {1,ANALOG_VOLT(0.0),ANALOG_VOLT(5.0)}},
 {string_Vd_per_cell,    ADV(BATTERY),       {CP_TYPE_V,0,&battery.Vd_per_cell},             {1,ANALOG_VOLT(0.0),ANALOG_VOLT(5.0)}},
 {string_capacity,       COND_BATTERY,       {CP_TYPE_CHARGE,0,&battery.capacity},           {CE_STEP_TYPE_SMART, ANALOG_MIN_CHARGE, ANALOG_MAX_CHARGE/2}},
 {string_Ic,             COND_BATTERY,       {CP_TYPE_A,0,&battery.Ic},                      {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},

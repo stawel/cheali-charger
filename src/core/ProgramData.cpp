@@ -77,13 +77,15 @@ uint16_t ProgramData::getDefaultVoltage(VoltageType type)
     return cells * voltage;
 }
 
-uint16_t ProgramData::getVoltage2(VoltageType type) {
+uint16_t ProgramData::getVoltage(VoltageType type) {
     uint16_t cells = battery.cells;
     uint16_t voltage = getDefaultVoltagePerCell(type);
     if (type == VCharge) {
         voltage = battery.Vc_per_cell;
     } else if (type == VDischarge) {
         voltage = battery.Vd_per_cell;
+    } else if (type == VStorage) {
+        voltage = battery.Vs_per_cell;
     }
     //TODO:type == VDischarge && battery.type == NiMH && cells > 6
     //see getDefaultVoltage
@@ -258,6 +260,7 @@ void ProgramData::changedType()
         battery.DCcycles = 5;
     } else {
         battery.balancerError = ANALOG_VOLT(0.008);
+        battery.Vs_per_cell = getDefaultVoltagePerCell(VStorage);
     }
     changedCapacity();
 

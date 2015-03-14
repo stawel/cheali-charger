@@ -134,6 +134,7 @@ namespace ProgramDataMenu {
     STRING(batteryType, "battery:");
     STRING(voltage,     "V:");
     STRING(Vc_per_cell, "Vc:");
+    STRING(Vs_per_cell, "Vs:");
     STRING(Vd_per_cell, "Vd:");
     STRING(Vcutoff,     "Vco:");
     STRING(capacity,    "Cap:");

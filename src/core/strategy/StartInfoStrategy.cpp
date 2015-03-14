@@ -55,9 +55,9 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 
     cell_nr = v_balance = false;
     v_out = ! AnalogInputs::isConnected(AnalogInputs::Vout);
+    is_cells = AnalogInputs::getConnectedBalancePorts();
 
     if(Strategy::doBalance) {
-        is_cells = AnalogInputs::getConnectedBalancePorts();
         should_be_cells = ProgramData::battery.cells;
         cell_nr = (should_be_cells != is_cells);
         v_balance = (is_cells == 0);

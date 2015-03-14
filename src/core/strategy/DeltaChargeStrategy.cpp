@@ -43,7 +43,7 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
     SimpleChargeStrategy::calculateThevenin();
     AnalogInputs::ValueType Vout = AnalogInputs::getVbattery();
 
-    if(ProgramData::getVoltage2(ProgramData::VDischarge) < Vout) {
+    if(ProgramData::getVoltage(ProgramData::VDischarge) < Vout) {
         SMPS::trySetIout(Strategy::maxI);
     }
 

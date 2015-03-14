@@ -58,6 +58,7 @@ namespace ProgramData {
 
         union {
             struct { //LiXX
+                uint16_t Vs_per_cell; // storage
                 uint16_t balancerError;
             };
             struct { //NiXX
@@ -76,7 +77,7 @@ namespace ProgramData {
 
     uint16_t getDefaultVoltagePerCell(VoltageType type = VIdle);
     uint16_t getDefaultVoltage(VoltageType type = VIdle);
-    uint16_t getVoltage2(VoltageType type = VIdle);
+    uint16_t getVoltage(VoltageType type = VIdle);
     uint16_t getCapacityLimit();
     inline uint16_t getTimeLimit() {return battery.time; }
 

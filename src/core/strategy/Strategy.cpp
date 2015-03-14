@@ -37,7 +37,7 @@ namespace Strategy {
     bool doBalance;
 
     void setVI(ProgramData::VoltageType vt, bool charge) {
-        endV = ProgramData::getVoltage2(vt);
+        endV = ProgramData::getVoltage(vt);
 
         if(charge) {
             maxI = ProgramData::battery.Ic;

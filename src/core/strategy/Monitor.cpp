@@ -107,8 +107,8 @@ uint16_t Monitor::getTotalChargeDischargeTimeMin() {
 
 uint8_t Monitor::getChargeProcent() {
     uint16_t v1,v2, v;
-    v2 = ProgramData::getVoltage2(ProgramData::VCharge);
-    v1 = ProgramData::getVoltage2(ProgramData::ValidEmpty);
+    v2 = ProgramData::getVoltage(ProgramData::VCharge);
+    v1 = ProgramData::getVoltage(ProgramData::ValidEmpty);
     v =  AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
 
     if(v >= v2) return 99;
@@ -154,7 +154,7 @@ void Monitor::powerOn()
 
     {
         //Make sure Vout_plus gets not higher VCharge + 3V (additional safety limit for protection ICs)
-        AnalogInputs::ValueType Vmax = ProgramData::getVoltage2(ProgramData::VCharge);
+        AnalogInputs::ValueType Vmax = ProgramData::getVoltage(ProgramData::VCharge);
         Vmax += ANALOG_VOLT(3.000);
         if(Vmax > MAX_CHARGE_V) {
             Vmax = MAX_CHARGE_V;
