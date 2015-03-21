@@ -36,7 +36,7 @@ namespace Utils
         );
     }
 
-    //This method should only used by the LCD
+    //This method should be only used by the LCD
     void delayMicroseconds(uint16_t value)
     {
         uint32_t x = value;
