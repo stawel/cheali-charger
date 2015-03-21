@@ -25,7 +25,8 @@
 #undef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
 
 #define MAX_CHARGE_V            ANALOG_VOLT(27.000)
-#define MAX_CHARGE_I            ANALOG_AMP(6.000)
+//#define MAX_CHARGE_I            ANALOG_AMP(6.000)     //documentation says 6A, but the ADC sees maximum 5.9A
+#define MAX_CHARGE_I            ANALOG_AMP(5.900)       //based on trashmaster9000 eeprom
 #define MAX_CHARGE_P            ANALOG_WATT(80.000)
 
 #define MAX_DISCHARGE_P         ANALOG_WATT(10.000)
