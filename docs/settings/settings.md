@@ -28,9 +28,9 @@ NiMH, NiCd specific settings:
 | name                                             | description | charger type|
 |--------------------------------------------------|-------------|------------:|
 |dT/dt: *X*°C/m<br>![dT/dt:](dT_dt.jpeg)           | stop charging when external temperature increases more than *X*°C per minute, see also: "extrn T:"| all |
-|enab dV: *yes/no*<br>![enab dV:](enab_dV.jpeg)    | enable ΔV method to determine end of charging, should be always "yes"!| all |
-|NiMH dV: *X*mV<br>![NiMH dV:](NiMH_dV.jpeg)       | ΔV value for NiMH, see also: "enab dV:"| all |
-|NiCd dV: *X*mV<br>![NiCd dV:](NiCd_dV.jpeg)       | ΔV value for NiCd, see also: "enab dV:"| all |
+|enab dV: *yes/no*<br>![enab dV:](enab_dV.jpeg)    | enable ΔV method to determine end of charging for NiMH and NiCd, should be always "yes"!| all |
+|NiMH dV: *X*mV<br>![NiMH dV:](NiMH_dV.jpeg)       | ΔV value for NiMH (per cell), see also: "enab dV:"| all |
+|NiCd dV: *X*mV<br>![NiCd dV:](NiCd_dV.jpeg)       | ΔV value for NiCd (per cell), see also: "enab dV:"| all |
 |D/C cycles: *N*<br>![D/C cycles:](D_C_cycles.jpeg)| number of discharges/charges when cycling (formatting) battery| all |
 |D/C rest: *t*m<br>![D/C rest:](D_C_rest.jpeg)     | rest time between discharge and charge during cycling in minutes| all |
 |adc noise: *yes/no*                               | add *noise* to batteries main-leads input connector, see 1. | atmega32 based chargers |
@@ -45,8 +45,8 @@ LiXX, NiZn, Pb specific settings:
 |----------------------------------------------------|----------------------|------------------:|
 |min Iout: I/*X*<br>![min Iout: I/](min_Iout_I.jpeg) | stop charging (discharging) when current is lower than Ic/*X* (Id/*X*), see 1., 2.| all see 3.|
 |min Iout: *Y*mA<br>![min Iout:](min_Iout.jpeg)      | minimum allowed output current, see 4.| all |
-|o.charge: *X*mV<br>![o.charge:](o_charge.jpeg)      | over-charge LiXX battery, for lipo endV = 4.20V + *X* mV | LiXX, see 5.| 
-|o.disch: *X*mV<br>![o.disch:](o_disch.jpeg)         | over-discharge LiXX battery, for lipo endV = 3.00V + *X* mV | LiXX, see 5.|
+|o.charge: *X*mV<br>![o.charge:](o_charge.jpeg)      | over-charge LiXX battery, for lipo endV = 4.20V + *X* mV (per cell) | LiXX, see 5.| 
+|o.disch: *X*mV<br>![o.disch:](o_disch.jpeg)         | over-discharge LiXX battery, for lipo endV = 3.00V + *X* mV (per cell) | LiXX, see 5.|
 |dis agres: *yes/no*<br>![dis agres:](dis_agres.jpeg)| aggressive discharging:<br>*off*: stop discharging immediately after battery reaches endV<br>*on*: when battery reaches endV, go down with the discharge current, see "min Iout: I/*X*" and 2.| all |
 |force bal: *yes/no*<br>![force bal:](force_bal.jpeg)| force user to connect balance port before starting any program | LiXX, see 5.|
 |bal. err: *X*mV<br>![bal. err:](bal_err.jpeg)       | acceptable voltage error between cells when balancing | LiXX, see 5.|
