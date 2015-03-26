@@ -20,7 +20,7 @@
 
 #ifdef ENABLE_STACK_INFO
 
-extern unsigned long * pulStack;
+extern unsigned long pulStack[];
 
 #define HEAP_END pulStack
 
