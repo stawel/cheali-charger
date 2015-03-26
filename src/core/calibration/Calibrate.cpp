@@ -31,6 +31,7 @@
 #include "Hardware.h"
 #include "eeprom.h"
 #include "Balancer.h"
+#include "Serial.h"
 
 namespace Calibrate {
 
@@ -221,11 +222,14 @@ void saveVoltage(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInputs::N
 {
     Buzzer::soundSelect();
     AnalogInputs::ValueType newValue = AnalogInputs::getRealValue(name1);
+    Serial::flush();
     saveVoltage(name1, name2, AnalogInputs::getAvrADCValue(name2), newValue);
     AnalogInputs::on_ = true;
     AnalogInputs::doFullMeasurement();
-    if(doCopyVbalVout)
+    if(doCopyVbalVout) {
+        Serial::flush();
         copyVbalVout();
+    }
 }
 
 void calibrateVoltage()
@@ -301,9 +305,7 @@ public:
 
     CurrentMenu(AnalogInputs::Name name, uint8_t point, AnalogInputs::ValueType maxValue)
             : EditMenu(currentMenu), cName_(name), point_(point), maxValue_(maxValue) {}
-    void refreshValue() {
-        AnalogInputs::CalibrationPoint p;
-        AnalogInputs::getCalibrationPoint(p, cName_, point_);
+    void refreshValue(AnalogInputs::CalibrationPoint &p) {
         value_ = p.x;
     };
     virtual void printItem(uint8_t index) {
@@ -364,7 +366,7 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
         CurrentMenu menu(name1, point, maxValue);
         int8_t index;
         do {
-            menu.refreshValue();
+            menu.refreshValue(pName1);
             index = menu.runSimple(true);
             if(index < 0) break;
             if(index == 0) {
@@ -434,6 +436,7 @@ void saveTemp(AnalogInputs::Name name, uint8_t point)
     AnalogInputs::CalibrationPoint p;
     p.x = AnalogInputs::getAvrADCValue(name);
     p.y = AnalogInputs::getRealValue(name);
+    Serial::flush();
     AnalogInputs::setCalibrationPoint(name, point, p);
 }
 
