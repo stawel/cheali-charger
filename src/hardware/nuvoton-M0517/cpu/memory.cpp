@@ -18,6 +18,7 @@
 #include "memory.h"
 
 #include "M051Series.h"
+#include "atomic.h"
 
 #define PAGE_SIZE         512
 #define PAGE_SIZE_32B     128
@@ -35,12 +36,22 @@ void write_impl_less(uint8_t * addressE, const uint8_t * data, int size)
     for(i=0; i<PAGE_SIZE_32B; i++)
         buf[i] = p_adr_start[i];
 
+
+    //check if update is needed
+    bool ok = true;
+    for(i=0; i<size; i++) {
+        ok = ok && (p_adr_pos[i] == ((uint8_t*)data)[i]);
+    }
+
+    if (ok)
+        return;
+
     for(i=0; i<size; i++)
         p_adr_pos[i] = ((uint8_t*)data)[i];
 
 
     // Erase page
-    FMC_Erase((uint32_t)p_adr_start);
+    while(FMC_Erase((uint32_t)p_adr_start));
 
     for(i = 0; i < PAGE_SIZE_32B; i++)
         FMC_Write((uint32_t)&p_adr_start[i], buf[i]);
@@ -49,29 +60,32 @@ void write_impl_less(uint8_t * addressE, const uint8_t * data, int size)
 
 void write_impl(uint8_t * addressE, const uint8_t * data, int size)
 {
-    SYS_UnlockReg();
+    //don't interrupt the eeprom write operation
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+        SYS_UnlockReg();
 
-    /* Enable FMC ISP function */
-    FMC_Open();
+        /* Enable FMC ISP function */
+        FMC_Open();
 
-    while(size > 0) {
-        int adr = (int) addressE & (PAGE_SIZE - 1);
-        int less_size;
-        if(adr+size > PAGE_SIZE) {
-            less_size = PAGE_SIZE - adr;
-        } else {
-            less_size = size;
+        while(size > 0) {
+            int adr = (int) addressE & (PAGE_SIZE - 1);
+            int less_size;
+            if(adr+size > PAGE_SIZE) {
+                less_size = PAGE_SIZE - adr;
+            } else {
+                less_size = size;
+            }
+            write_impl_less(addressE, data, less_size);
+            addressE += less_size;
+            data += less_size;
+            size -= less_size;
         }
-        write_impl_less(addressE, data, less_size);
-        addressE += less_size;
-        data += less_size;
-        size -= less_size;
-    }
 
-    /* Disable FMC ISP function */
-    FMC_Close();
+        /* Disable FMC ISP function */
+        FMC_Close();
 
-    SYS_LockReg();
+        SYS_LockReg();
+    } // enable interrupts
 }
 
 } // namespace eeprom
