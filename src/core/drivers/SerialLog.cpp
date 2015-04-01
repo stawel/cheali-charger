@@ -122,6 +122,14 @@ void send()
     sendTime();
 }
 
+void flush()
+{
+    if(state == Off)
+        return;
+    Serial::flush();
+}
+
+
 void doIdle()
 {
     static uint16_t analogCount;
@@ -147,6 +155,7 @@ void powerOn(){}
 void powerOff(){}
 void send(){}
 void doIdle(){}
+void flush(){}
 
 
 #endif

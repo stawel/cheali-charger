@@ -31,7 +31,6 @@
 #include "Hardware.h"
 #include "eeprom.h"
 #include "Balancer.h"
-#include "Serial.h"
 
 namespace Calibrate {
 
@@ -222,12 +221,12 @@ void saveVoltage(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInputs::N
 {
     Buzzer::soundSelect();
     AnalogInputs::ValueType newValue = AnalogInputs::getRealValue(name1);
-    Serial::flush();
+    SerialLog::flush();
     saveVoltage(name1, name2, AnalogInputs::getAvrADCValue(name2), newValue);
     AnalogInputs::on_ = true;
     AnalogInputs::doFullMeasurement();
     if(doCopyVbalVout) {
-        Serial::flush();
+        SerialLog::flush();
         copyVbalVout();
     }
 }
@@ -436,7 +435,7 @@ void saveTemp(AnalogInputs::Name name, uint8_t point)
     AnalogInputs::CalibrationPoint p;
     p.x = AnalogInputs::getAvrADCValue(name);
     p.y = AnalogInputs::getRealValue(name);
-    Serial::flush();
+    SerialLog::flush();
     AnalogInputs::setCalibrationPoint(name, point, p);
 }
 
