@@ -25,6 +25,7 @@
 #include "TheveninChargeStrategy.h"
 #include "TheveninDischargeStrategy.h"
 #include "DeltaChargeStrategy.h"
+#include "PulseChargeStrategy.h"
 #include "StorageStrategy.h"
 #include "Balancer.h"
 #include "Monitor.h"
@@ -76,6 +77,15 @@ void Program::setupTheveninCharge()
     Strategy::strategy = &TheveninChargeStrategy::vtable;
 }
 
+#ifdef ENABLE_PULSE_CHARGE_STRATEGY
+void Program::setupPulseCharge()
+{
+    PulseChargeStrategy::setPeriodAndDuty(settings.pulsePeriod, settings.pulseDuty);
+    Strategy::setVI(ProgramData::VCharge, true);
+    Strategy::strategy = &PulseChargeStrategy::vtable;
+}
+#endif
+
 void Program::setupDeltaCharge()
 {
     Strategy::setVI(ProgramData::VCharge, true);
@@ -100,6 +110,11 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
 
     switch(prog) {
     case Program::Charge:
+#ifdef ENABLE_PULSE_CHARGE_STRATEGY
+        if(ProgramData::currentProgramData.isPb() && settings.preferableChargeMethod != Settings::CCCV) {
+            setupPulseCharge();
+        } else 
+#endif
         if(ProgramData::currentProgramData.isNiXX()) {
             setupDeltaCharge();
         } else {
