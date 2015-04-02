@@ -31,7 +31,9 @@ public:
 
     Settings p_;
 private:
-
+#ifdef ENABLE_PULSE_CHARGE_STRATEGY	
+	void printChargeMethod() const;
+#endif
     void printUART() const;
     void printUARTSpeed() const;
     void printUARTinput() const;

@@ -24,6 +24,7 @@
 
 struct Settings {
 
+	enum ChargeMethod {CCCV, Pulse};
     enum UARTType {Disabled, Normal,  Debug,  ExtDebug, ExtDebugAdc};
     enum UARTInput {Software, Hardware};
     static const uint8_t UARTSpeeds = 5;
@@ -50,6 +51,13 @@ struct Settings {
     uint16_t forceBalancePort;
     AnalogInputs::ValueType balancerError;
     uint16_t adcNoise;
+    int16_t overDischarge_Pb;
+    int16_t overCharge_Pb;
+#ifdef ENABLE_PULSE_CHARGE_STRATEGY
+    uint16_t preferableChargeMethod;
+    uint16_t pulsePeriod;
+    uint16_t pulseDuty;
+#endif
     uint16_t UART;
     uint16_t UARTspeed;
     uint16_t UARTinput;

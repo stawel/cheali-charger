@@ -24,6 +24,7 @@
 #include "Hardware.h"
 #include "Program.h"
 #include "DelayStrategy.h"
+#include "PulseChargeStrategy.h"
 #include "Version.h"
 #include "ProgramDCcycle.h"
 #include "Monitor.h"
@@ -48,8 +49,11 @@ namespace Screen {
         } else if(Balancer::isWorking()) {
             c = 'B';
         }
-
-        if(DelayStrategy::isDelay()) {
+#ifdef ENABLE_PULSE_CHARGE_STRATEGY
+		if(DelayStrategy::isDelay() || PulseChargeStrategy::isPause()) {
+#else
+		if(DelayStrategy::isDelay()) {
+#endif
             c = 'W';
         }
         lcdPrintChar(c);

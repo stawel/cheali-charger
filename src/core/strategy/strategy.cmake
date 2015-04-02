@@ -8,6 +8,7 @@ set(CORE_SOURCE
     DelayStrategy.cpp        Discharger.h           SimpleDischargeStrategy.cpp  StartInfoStrategy.h    TheveninChargeStrategy.cpp  Thevenin.h
     DelayStrategy.h          Monitor.cpp            SimpleDischargeStrategy.h    StorageStrategy.cpp    TheveninChargeStrategy.h    TheveninMethod.cpp
     DeltaChargeStrategy.cpp  Monitor.h              SMPS.cpp                     StorageStrategy.h      Thevenin.cpp                TheveninMethod.h
+	PulseChargeStrategy.cpp  PulseChargeStrategy.h
 )
 
 include_directories(${CURRENT_DIR})
