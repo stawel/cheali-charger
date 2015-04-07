@@ -69,6 +69,13 @@ const Settings defaultSettings PROGMEM = {
         SETTINGS_FORCE_BALANCE_PORT_DEFAULT,            //forceBalancePort
         ANALOG_VOLT(0.008), //balancerError
         SETTINGS_ADC_NOISE_DEFAULT, //adcNoise
+        0,					// overDischarge_Pb
+        0,					// overCharge_Pb
+#ifdef ENABLE_PULSE_CHARGE_STRATEGY
+        0,					// preferableChargeMethod
+        6,					// pulsePeriod
+        33,					// pulseDuty
+#endif
         Settings::Disabled, //UART - disabled
         3,                   //57600
         Settings::Software, //UARTinput

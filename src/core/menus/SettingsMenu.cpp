@@ -58,6 +58,13 @@ const char * const SettingsStaticMenu[] PROGMEM =
 #ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
         string_adcNoise,
 #endif
+        string_overDischarge_Pb,
+        string_overCharge_Pb,
+#ifdef ENABLE_PULSE_CHARGE_STRATEGY
+        string_preferableChargeMethod,
+        string_pulsePeriod,
+        string_pulseDuty,
+#endif
         string_UARTview,
         string_UARTspeed,
 #ifdef ENABLE_TX_HW_SERIAL
@@ -114,6 +121,13 @@ void SettingsMenu::printItem(uint8_t index)
 #ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
             case NEXT_CASE:     lcdPrintYesNo(p_.adcNoise);             break;
 #endif
+            case NEXT_CASE:     lcdPrint_mV(p_.overDischarge_Pb,6);       break;
+            case NEXT_CASE:     lcdPrint_mV(p_.overCharge_Pb,6);       break;
+#ifdef ENABLE_PULSE_CHARGE_STRATEGY
+            case NEXT_CASE:     printChargeMethod();       break;
+            case NEXT_CASE:     lcdPrintUnsigned(p_.pulsePeriod, 2);       break;
+            case NEXT_CASE:     lcdPrintPercentage(p_.pulseDuty,3);       break;
+#endif
             case NEXT_CASE:     printUART();                            break;
             case NEXT_CASE:     printUARTSpeed();                       break;
 #ifdef ENABLE_TX_HW_SERIAL
@@ -161,6 +175,13 @@ void SettingsMenu::editItem(uint8_t index, uint8_t key)
         case NEXT_CASE:     changeBalanceError(&p_.balancerError, dir);              break;
 #ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
         case NEXT_CASE:     change0ToMax(&p_.adcNoise, dir, 1);                      break;
+#endif
+        case NEXT_CASE:     changeMinToMax(&p_.overDischarge_Pb, dir, -400, 400);					break;
+        case NEXT_CASE:     changeMinToMax(&p_.overCharge_Pb, dir, -400, 400);					break;
+#ifdef ENABLE_PULSE_CHARGE_STRATEGY
+        case NEXT_CASE:     change0ToMax(&p_.preferableChargeMethod, dir, 1);					break;
+        case NEXT_CASE:     change1ToMax(&p_.pulsePeriod, dir, 65);					break;
+        case NEXT_CASE:     change1ToMax(&p_.pulseDuty, dir, 99);					break;
 #endif
         case NEXT_CASE:     changeUART(dir);                                         break;
         case NEXT_CASE:     change0ToMax(&p_.UARTspeed, dir, Settings::UARTSpeeds-1);break;
@@ -255,6 +276,17 @@ const char * const SettingsUARTinput[] PROGMEM = {
         string_temp,
         string_pin7,
 };
+
+#ifdef ENABLE_PULSE_CHARGE_STRATEGY	
+const char * const SettingsChargeMethod[] PROGMEM = {
+        string_methodCCCV,
+        string_methodPulse,
+};
+void SettingsMenu::printChargeMethod() const
+{
+    lcdPrint_P(SettingsChargeMethod, p_.preferableChargeMethod);
+}
+#endif
 
 void SettingsMenu::printUART() const
 {

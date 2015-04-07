@@ -47,14 +47,20 @@ namespace Strategy {
 
         if(charge) {
             maxI = ProgramData::currentProgramData.battery.Ic;
-            if(vt == ProgramData::VCharge && ProgramData::currentProgramData.isLiXX()) {
-                endV += settings.overCharge_LiXX * ProgramData::currentProgramData.battery.cells;
-            }
+			if (vt == ProgramData::VCharge)
+	            if(ProgramData::currentProgramData.isLiXX()) {
+	                endV += settings.overCharge_LiXX * ProgramData::currentProgramData.battery.cells;
+	            }else if (ProgramData::currentProgramData.isPb()){
+	            	endV += settings.overCharge_Pb * ProgramData::currentProgramData.battery.cells;
+	            }
         } else {
             maxI = ProgramData::currentProgramData.battery.Id;
-            if(vt == ProgramData::VDischarge && ProgramData::currentProgramData.isLiXX()) {
-                endV += settings.overDischarge_LiXX * ProgramData::currentProgramData.battery.cells;
-            }
+			if(vt == ProgramData::VDischarge)
+	            if(ProgramData::currentProgramData.isLiXX()) {
+	                endV += settings.overDischarge_LiXX * ProgramData::currentProgramData.battery.cells;
+	            }else if (ProgramData::currentProgramData.isPb()){
+	            	endV += settings.overDischarge_Pb * ProgramData::currentProgramData.battery.cells;
+	            }
         }
 
         setMinI(maxI/minIdiv);

@@ -95,6 +95,15 @@ namespace settingsMenu {
     STRING(forceBalanc, "force bal: ");
     STRING(balancErr,   "bal. err:");
     STRING(adcNoise,    "adc noise: ");
+    STRING(overDischarge_Pb, "PbOVdis:");
+    STRING(overCharge_Pb, "PbOVchg:");
+#ifdef ENABLE_PULSE_CHARGE_STRATEGY
+    STRING(methodCCCV, "CCCV");
+    STRING(methodPulse, "Pulse");
+    STRING(preferableChargeMethod, "PrefPbCh:");
+    STRING(pulsePeriod, "PulsePeriod:");
+    STRING(pulseDuty, "Pulse duty:");
+#endif
     STRING(UARTview,    "UART: ");
     STRING(UARTspeed,   "speed: ");
     STRING(UARTinput,   "UART inp: ");

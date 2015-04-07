@@ -106,6 +106,17 @@ void changeMinToMaxSmart(uint16_t *v, int dir, uint16_t min, uint16_t max)
     changeMinToMaxStep(v, dir, min, max, step);
 }
 
+void changeMinToMax(int16_t *v, int dir, int16_t min, int16_t max)
+{
+	/*uint8_t dv = digits((uint16_t)((*v)>=0? *v : -*v));
+    int16_t step = 1;
+    if(dv>1) step = pow10(dv-2);
+	*/
+    if(dir > 0) ADD_MAX(*v, 1, max);
+    else SUB_MIN(*v, 1, min);
+}
+
+
 void changeMinToMaxStep(uint16_t *v, int dir, uint16_t min, uint16_t max, uint16_t step)
 {
     uint16_t r = (*v)%step;

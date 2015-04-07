@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2013  Pawel Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,35 +15,22 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef PROGRAM_H_
-#define PROGRAM_H_
+#ifndef PULSESTRATEGY_H_
+#define PULSESTRATEGY_H_
 
-#include "ProgramData.h"
 #include "Strategy.h"
-
-namespace Program {
-
-    enum ProgramType {
-        Charge, ChargeBalance, Balance, Discharge, FastCharge,
-        Storage, StorageBalance, DischargeChargeCycle,
-        EditBattery,
-        Calibrate,
-        LAST_PROGRAM_TYPE};
-
-    enum ProgramState {
-        Done, InProgress, Error, Info
-    };
-
-    extern ProgramType programType;
-    extern ProgramState programState;
-    extern const char * stopReason;
-
-    void selectProgram(int index);
-    void run(ProgramType prog);
-
-	void setupPulseCharge();
-    Strategy::statusType runWithoutInfo(ProgramType prog);
+#ifdef ENABLE_PULSE_CHARGE_STRATEGY
+namespace PulseChargeStrategy {
+    extern const Strategy::VTable vtable;
+	enum ActionType {NONE, WORKING, PAUSE};
+	void switchMode();
+    void powerOn();
+    void powerOff();
+	bool isPause();
+	Strategy::statusType tuneCurrent();
+	Strategy::statusType doStrategy();
+    void setPeriodAndDuty(uint8_t seconds, uint8_t duty_); // duty from 1..99%
 };
+#endif
 
-
-#endif /* PROGRAM_H_ */
+#endif /* PULSESTRATEGY_H_ */

@@ -51,6 +51,7 @@ int8_t sign(int16_t x);
 
 void change0ToInfSmart(uint16_t *v, int dir);
 void changeMinToMaxSmart(uint16_t *v, int dir, uint16_t min, uint16_t max);
+void changeMinToMax(int16_t *v, int dir, int16_t min, int16_t max);
 void changeMinToMaxStep(uint16_t *v, int dir, uint16_t min, uint16_t max, uint16_t step);
 void change0ToMax(uint16_t *v, int dir, uint8_t max);
 void change1ToMax(uint16_t *v, int dir, uint8_t max);
