@@ -21,27 +21,9 @@
 
 namespace Utils
 {
-    void Delay(uint32_t x)
-    {
-        asm volatile(
-         ".syntax unified;"
-         "ldr r3, %[in];"
-         "loop:; "
-         "subs r3, #1;"
-         "bne loop;"
-         ".syntax divided;"
-         :
-         :[in] "m" (x)
-         :"r3","cc","memory"
-        );
-    }
-
     //This method should be only used by the LCD
     void delayMicroseconds(uint16_t value)
     {
-        uint32_t x = value;
-        x*=26982;
-        x/=4096;
-        Delay(x);
+    	CLK_SysTickDelay(value);
     }
 }
