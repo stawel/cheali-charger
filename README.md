@@ -51,6 +51,9 @@ Please [CALIBRATE](README.md#calibration) charger before use!
 Use an external temperature probe  
 (if You like your house ;) )
 
+**ALWAYS** connect the power supply **first**, then the battery!
+
+**ALWAYS** disconnect the battery **before** disconnecting the power supply!
 
 Hardware
 --------
