@@ -119,6 +119,7 @@ namespace IO
         inline void digitalWrite(uint8_t pinNumber, uint8_t value) {
             if(value)   value = 1;
             *(getPinAddress(pinNumber)) = value;
+            __DSB();
         };
 
         inline uint8_t digitalRead(uint8_t pinNumber) {
