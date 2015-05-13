@@ -77,8 +77,11 @@ atmega32 - windows
 nuvoton M0517 - windows
 -----------------------
 - install [CooCox CoIDE](http://www.coocox.org/)
-- import project: cheali-charger\CoIDE\cheali-charger.coproj
-- build
+- install [GNU Tools for ARM Embedded Processors](https://launchpad.net/gcc-arm-embedded)
+- open CoIDE, go to Project -> Open Project and select cheali-charger\CoIDE\cheali-charger.coproj
+- go to Project -> Select Toolchain Path and select bin folder of [GNU Tools for ARM Embedded Processors](ex. C:\Program Files (x86)\GNU Tools ARM Embedded\4.9 2015q1\bin)
+- go to Project -> Build
+- hex file should be in cheali-charger\CoIDE\cheali-charger\Debug\bin
 
 
 atmega32 - OSX
