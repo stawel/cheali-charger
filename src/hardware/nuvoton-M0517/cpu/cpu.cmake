@@ -6,6 +6,7 @@ set(CPU_SOURCE
     cpu.cpp   IO.h   memory.cpp      Serial.cpp  Timer0.cpp  TxHardSerial.h    TxSoftSerial.h    other.c
     startup_M051Series.c
     StackInfo.cpp
+    IO.cpp
 )
 
 include_directories(${CURRENT_PATH})

@@ -30,16 +30,52 @@
 #define HIGH 1
 #define LOW 0
 
-#define PORT_OFFSET   0x40
-
-//#define INLINE_ATTR __attribute__((always_inline))
+#define INLINE_ATTR __attribute__((always_inline))
 //#define INLINE_ATTR
 
 namespace IO
 {
+    inline uint32_t getADCChannel(uint8_t pinNumber) INLINE_ATTR;
+    inline void digitalWrite(uint8_t pinNumber, uint32_t value) INLINE_ATTR;
+    inline uint8_t digitalRead(uint8_t pinNumber) INLINE_ATTR;
+    inline void enableFuncADC(uint32_t adc) INLINE_ATTR;
+    inline void disableFuncADC(uint32_t adc) INLINE_ATTR;
+    inline void pinMode(uint8_t pinNumber, uint8_t mode) INLINE_ATTR;
+    inline uint32_t getPinBit_(volatile uint32_t * pinAddress) INLINE_ATTR;
+    inline volatile uint32_t * getPinAddress_(uint8_t pinNumber) INLINE_ATTR;
 
-        inline volatile uint32_t * getPinAddress(uint8_t pinNumber) {
-            switch(pinNumber) {
+
+    inline uint32_t getADCChannel(uint8_t pinNumber) {
+        return getPinBit_(getPinAddress_(pinNumber));
+    }
+
+    inline void digitalWrite(uint8_t pinNumber, uint32_t value) {
+        if(value)   value = 1;
+        *(getPinAddress_(pinNumber)) = value;
+        __DSB();
+    };
+
+    inline uint8_t digitalRead(uint8_t pinNumber) {
+        return *(getPinAddress_(pinNumber));
+    }
+
+    inline void enableFuncADC(uint32_t adc) {
+        outpw(&SYS->P1_MFP, (inpw(&SYS->P1_MFP) & ~(0x1<<((adc) +8))) | (0x1<<(adc)));
+    }
+    inline void disableFuncADC(uint32_t adc) {
+        outpw(&SYS->P1_MFP, inpw(&SYS->P1_MFP) & ~( (0x1<<(adc+8)) | (0x1<<adc)));
+    }
+
+    void pinMode_(volatile uint32_t * pinAddress, uint8_t mode);
+
+    inline void pinMode(uint8_t pinNumber, uint8_t mode) {
+        pinMode_(getPinAddress_(pinNumber), mode);
+
+    };
+
+
+    inline volatile uint32_t * getPinAddress_(uint8_t pinNumber) {
+        switch(pinNumber) {
             case 40: return &P00;
             case 39: return &P01;
             case 38: return &P02;
@@ -88,69 +124,13 @@ namespace IO
             //virtual pins
             case 3+128: return &P17;
             case 3+64:  return &P17;
-            }
-            return &P46; //not used
         }
+        return &P46; //not used
+    }
 
-//#define GPIO_PIN_ADDR(port, pin)    (*((volatile uint32_t *)((GPIO_PIN_DATA_BASE+(0x20*(port))) + ((pin)<<2))))
-
-        inline uint32_t getPinBit(uint8_t pinNumber) {
-            uint32_t adr = (uint32_t) getPinAddress(pinNumber);
-            return (adr >> 2) & 7;
-        }
-
-        inline uint32_t getPortNr(uint8_t pinNumber) {
-            uint32_t adr = (uint32_t) getPinAddress(pinNumber);
-            return (adr / 0x20) & 7;
-        }
-
-        inline GPIO_T * getPort(uint8_t pinNumber) {
-            return (GPIO_T *) (((uint32_t)P0) + (getPortNr(pinNumber) * PORT_OFFSET));
-        }
-
-        inline uint8_t getADCChannel(uint8_t pinNumber) {
-            return getPinBit(pinNumber);
-        }
-
-
-
-
-        // Core IO functions to be implemented in proper target folder
-        inline void digitalWrite(uint8_t pinNumber, uint8_t value) {
-            if(value)   value = 1;
-            *(getPinAddress(pinNumber)) = value;
-            __DSB();
-        };
-
-        inline uint8_t digitalRead(uint8_t pinNumber) {
-            return *(getPinAddress(pinNumber));
-        }
-
-        //based on coocox DrvGPIO
-        inline void enableFuncADC(uint8_t adc) {
-            outpw(&SYS->P1_MFP, (inpw(&SYS->P1_MFP) & ~(0x1<<((adc) +8))) | (0x1<<(adc)));
-        }
-        inline void disableFuncADC(uint8_t adc) {
-            outpw(&SYS->P1_MFP, inpw(&SYS->P1_MFP) & ~( (0x1<<(adc+8)) | (0x1<<adc)) );
-        }
-
-        inline void pinMode(uint8_t pinNumber, uint8_t mode) {
-            GPIO_T * port = getPort(pinNumber);
-            uint8_t pin = getPinBit(pinNumber);
-
-            if(mode == ANALOG_INPUT) {
-                GPIO_SetMode(port, 1 << pin, GPIO_PMD_INPUT);
-                GPIO_DISABLE_DIGITAL_PATH(port, 1 << pin);
-                enableFuncADC(pin);
-            } else if(mode == ANALOG_INPUT_DISCHARGE) {
-                GPIO_SetMode(port, 1 << pin, GPIO_PMD_OPEN_DRAIN);
-                GPIO_DISABLE_DIGITAL_PATH(port, 1 << pin);
-                enableFuncADC(pin);
-            } else {
-                GPIO_SetMode(port, 1 << pin, mode);
-                GPIO_ENABLE_DIGITAL_PATH(port, 1 << pin);
-            }
-        };
+    inline uint32_t getPinBit_(volatile uint32_t * pinAddress) {
+        return (((uint32_t) pinAddress) >> 2) & 7;
+    }
 }
 #endif /* IO_H_ */
 

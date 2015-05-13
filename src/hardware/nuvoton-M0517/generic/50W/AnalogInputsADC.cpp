@@ -140,7 +140,7 @@ void setMuxAddressAndDischarge(int8_t address)
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         //start mux ADC C discharge
         _setMuxAddress(ADC_CAPACITOR_DISCHARGE_ADDRESS);
-        IO::disableFuncADC(IO::getPinBit(MUX0_Z_D_PIN));
+        IO::disableFuncADC(IO::getADCChannel(MUX0_Z_D_PIN));
     }
     TIMER_Start(TIMER1);             /* Start counting */
 }
@@ -153,7 +153,7 @@ void TMR1_IRQHandler(void)
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         _setMuxAddress(g_muxAddress);
         //stop mux ADC C discharge
-        IO::enableFuncADC(IO::getPinBit(MUX0_Z_D_PIN));
+        IO::enableFuncADC(IO::getADCChannel(MUX0_Z_D_PIN));
     }
 }
 } //extern "C"
