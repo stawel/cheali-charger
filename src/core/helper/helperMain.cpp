@@ -38,6 +38,11 @@
 #include "atomic.h"
 
 
+namespace AnalogInputsAnalyzer {
+    void run();
+}
+
+
 namespace BalancePortAnalyzer {
     void run();
 }
@@ -50,6 +55,11 @@ namespace LCDAnalyzer {
 
 void helperMain()
 {
+
+#ifdef ENABLE_HELPER_ANALOG_INPUTS_ANALYZER
+    AnalogInputsAnalyzer::run();
+#endif
+
 #ifdef ENABLE_HELPER_BALANCE_PORT_ANALYZER
     BalancePortAnalyzer::run();
 #endif

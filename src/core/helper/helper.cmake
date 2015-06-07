@@ -2,7 +2,7 @@
 
 set(CURRENT_DIR ${CORE_DIR}/helper)
 
-set(CORE_SOURCE BalancePortAnalyzer.cpp helperMain.cpp LCDAnalyzer.cpp
+set(CORE_SOURCE AnalogInputsAnalyzer.cpp BalancePortAnalyzer.cpp helperMain.cpp LCDAnalyzer.cpp
 )
 
 include_directories(${CURRENT_DIR})
