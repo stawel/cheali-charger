@@ -148,8 +148,7 @@ void run() {
     int8_t index;
     do {
         index = v.runSimple(true);
-        if(index < 1) continue;
-        if(index < sizeOfArray(voltageMenu)-2) {
+        if((uint8_t)index < sizeOfArray(voltageMenu)-2) {
             type ++;
             if(type >= MAX_TYPE) {
                 type = 0;
