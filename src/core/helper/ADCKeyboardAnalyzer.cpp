@@ -38,41 +38,24 @@
 #include "atomic.h"
 
 namespace ADCKeyboardAnalyzer {
-    void run();
+
+void run() {
+    SerialLog::powerOn();
+    AnalogInputs::powerOn();
+    Balancer::powerOn();
+
+    while(1) {
+        lcdSetCursor(0,0);
+        for(int i=0;i<4;i++) {
+            lcdPrintUnsigned(AnalogInputs::getADCValue(AnalogInputs::Name(AnalogInputs::Vb1_pin+i)), 7);
+            lcdPrintSpace1();
+            if(i==1) {
+                lcdSetCursor(0,1);
+            }
+        }
+        Time::delayDoIdle(100);
+    }
 }
 
-namespace AnalogInputsAnalyzer {
-    void run();
-}
+} //namespace ADCKeyboardAnalyzer
 
-
-namespace BalancePortAnalyzer {
-    void run();
-}
-
-namespace LCDAnalyzer {
-    void run();
-}
-
-
-
-void helperMain()
-{
-
-#ifdef ENABLE_HELPER_ANALOG_INPUTS_ANALYZER
-    AnalogInputsAnalyzer::run();
-#endif
-
-#ifdef ENABLE_HELPER_BALANCE_PORT_ANALYZER
-    BalancePortAnalyzer::run();
-#endif
-
-#ifdef ENABLE_HELPER_LCD_ANALYZER
-    LCDAnalyzer::run();
-#endif
-
-#ifdef ENABLE_HELPER_ADC_KEYBOARD_ANALYZER
-    ADCKeyboardAnalyzer::run();
-#endif
-
-}
