@@ -24,6 +24,12 @@
 #define ENABLE_HELPER
 #define ENABLE_HELPER_ADC_KEYBOARD_ANALYZER
 
+#define LCD_D3_PIN              22
+#define LCD_D2_PIN              21
+#define LCD_D1_PIN              20
+#define LCD_D0_PIN              19
+#define LCD_ENABLE_PIN          23
+#define LCD_RS_PIN              24
 
 #define MAX_CHARGE_V            ANALOG_VOLT(27.000)
 #define MAX_CHARGE_I            ANALOG_AMP(10.000)
