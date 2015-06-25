@@ -36,8 +36,6 @@
  * program flow: see conversionDone()
  */
 
-#define ADC_KEY_BORDER 128
-
 namespace adc {
 
 void setupNextInput();
