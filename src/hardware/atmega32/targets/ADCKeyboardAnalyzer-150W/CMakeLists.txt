@@ -4,7 +4,7 @@ set(SOURCE_FILES
     HardwareConfig.h
 )
 
-CHEALI_HARDWARE(ADCKeyboardAnalyzer-200W)
+CHEALI_HARDWARE(ADCKeyboardAnalyzer-150W)
 CHEALI_CPU(atmega32)
 CHEALI_GENERIC_CHARGER(adc_key_test)
 

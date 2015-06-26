@@ -1,5 +1,5 @@
 
-add_subdirectory(targets/ADCKeyboardAnalyzer-200W)
+add_subdirectory(targets/ADCKeyboardAnalyzer-150W)
 add_subdirectory(targets/BalancePortAnalyzer-200W)
 add_subdirectory(targets/Dual-Power-B6AC-80W-RC)
 add_subdirectory(targets/imaxB6-clone)
