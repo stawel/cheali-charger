@@ -50,6 +50,7 @@ namespace Program {
     void setupDischarge();
     void setupBalance();
     void setupDeltaCharge();
+    void setupProgramType(ProgramType prog);
 
 } //namespace Program
 
@@ -93,11 +94,11 @@ void Program::setupBalance()
     Strategy::strategy = &Balancer::vtable;
 }
 
-Strategy::statusType Program::runWithoutInfo(ProgramType prog)
-{
+void Program::setupProgramType(ProgramType prog) {
     Strategy::doBalance = false;
 
     switch(prog) {
+    case Program::CapacityCheck:
     case Program::Charge:
         if(ProgramData::isNiXX()) {
             setupDeltaCharge();
@@ -112,6 +113,7 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
     case Program::Balance:
         setupBalance();
         break;
+    case Program::DischargeChargeCycle:
     case Program::Discharge:
         setupDischarge();
         break;
@@ -127,15 +129,23 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
         Strategy::doBalance = true;
         setupStorage();
         break;
-    case Program::CapacityCheck:
-        return ProgramDCcycle::runDCcycle(1, 3);
-
-    case Program::DischargeChargeCycle:
-        return ProgramDCcycle::runDCcycle(0, ProgramData::battery.DCcycles*2 - 1);
     default:
-        return Strategy::ERROR;
+        break;
     }
-    return Strategy::doStrategy();
+}
+
+
+Strategy::statusType Program::runWithoutInfo(ProgramType prog)
+{
+    setupProgramType(prog);
+    switch(prog) {
+        case Program::CapacityCheck:
+            return ProgramDCcycle::runDCcycle(1, 3);
+        case Program::DischargeChargeCycle:
+            return ProgramDCcycle::runDCcycle(0, ProgramData::battery.DCcycles*2 - 1);
+        default:
+            return Strategy::doStrategy();
+    }
 }
 
 void Program::run(ProgramType prog)
@@ -144,6 +154,7 @@ void Program::run(ProgramType prog)
         return;
 
     programType = prog;
+    setupProgramType(prog);
     stopReason = NULL;
 
     programState = Info;
