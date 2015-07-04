@@ -153,6 +153,7 @@ void saveCalibration(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInput
         SerialLog::flush();
         copyVbalVout();
     }
+    eeprom::restoreCalibrationCRC();
 }
 
 #define COND_ALWAYS StaticEditMenu::StaticEditMenu::Always
@@ -386,6 +387,7 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
         //Info: we save eeprom data only when no current is flowing
         AnalogInputs::setCalibrationPoint(name1, point, pName1);
         AnalogInputs::setCalibrationPoint(name2, point, pName2);
+        eeprom::restoreCalibrationCRC();
     }
     AnalogInputs::powerOff();
 }
@@ -467,8 +469,6 @@ void run()
         case NEXT_CASE: expertCalibrateVoltage(); break;
 #endif
         }
-        eeprom::restoreCalibrationCRC();
-
         SerialLog::powerOff();
 
     } while(true);
