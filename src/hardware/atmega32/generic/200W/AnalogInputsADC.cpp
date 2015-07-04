@@ -85,36 +85,40 @@ struct adc_correlation {
 
 #define NO_NOISE 0
 
+//reorder multiplexer addresses based on MUX_ADR?_PIN to simplify getPortBAddress()
+#define GET_BIT(x,nr) (((x)&(1<<nr))>>nr)
+#define MADDR_REORDER(x) ((GET_BIT(x,0)<<(MUX_ADR0_PIN-1)) + (GET_BIT(x,1)<<(MUX_ADR1_PIN-1)) + (GET_BIT(x,2)<<(MUX_ADR2_PIN-1)))
+
 const adc_correlation order_analogInputs_on[] PROGMEM = {
-    {-1,                    OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,    0,              10},
-    {MADDR_V_OUTMUX,        MUX0_Z_A_PIN ,          AnalogInputs::VoutMux,          0,              NO_NOISE},
-    {MADDR_V_BALANSER1,     MUX1_Z_A_PIN,           AnalogInputs::Vb1_pin,          0,              NO_NOISE},
-    {-1,                    OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin,  0,              10},
-    {MADDR_T_INTERN,        MUX0_Z_A_PIN,           AnalogInputs::Tintern,          0,              NO_NOISE},
-    {MADDR_V_BALANSER2,     MUX1_Z_A_PIN,           AnalogInputs::Vb2_pin,          0,              NO_NOISE},
-    {-1,                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0,              NO_NOISE},
-    {MADDR_V_IN,            MUX0_Z_A_PIN,           AnalogInputs::Vin,              0,              NO_NOISE},
-    {MADDR_V_BALANSER3,     MUX1_Z_A_PIN,           AnalogInputs::Vb3_pin,          0,              NO_NOISE},
-    {-1,                    DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       0,              NO_NOISE},
-    {MADDR_T_EXTERN,        MUX0_Z_A_PIN,           AnalogInputs::Textern,          0,              NO_NOISE},
-    {MADDR_V_BALANSER4,     MUX1_Z_A_PIN,           AnalogInputs::Vb4_pin,          0,              NO_NOISE},
-    {-1,                    OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,    0,              10},
-    {MADDR_BUTTON_DEC,      MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_DEC,     NO_NOISE},
-    {MADDR_V_BALANSER5,     MUX1_Z_A_PIN,           AnalogInputs::Vb5_pin,          0,              NO_NOISE},
-    {-1,                    OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin,  0,              10},
-    {MADDR_BUTTON_INC,      MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_INC,     NO_NOISE},
-    {MADDR_V_BALANSER6,     MUX1_Z_A_PIN,           AnalogInputs::Vb6_pin,          0,              NO_NOISE},
+    {-1,                                    OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,    0,              10},
+    {MADDR_REORDER(MADDR_V_OUTMUX),         MUX0_Z_A_PIN ,          AnalogInputs::VoutMux,          0,              NO_NOISE},
+    {MADDR_REORDER(MADDR_V_BALANSER1),      MUX1_Z_A_PIN,           AnalogInputs::Vb1_pin,          0,              NO_NOISE},
+    {-1,                                    OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin,  0,              10},
+    {MADDR_REORDER(MADDR_T_INTERN),         MUX0_Z_A_PIN,           AnalogInputs::Tintern,          0,              NO_NOISE},
+    {MADDR_REORDER(MADDR_V_BALANSER2),      MUX1_Z_A_PIN,           AnalogInputs::Vb2_pin,          0,              NO_NOISE},
+    {-1,                                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0,              NO_NOISE},
+    {MADDR_REORDER(MADDR_V_IN),             MUX0_Z_A_PIN,           AnalogInputs::Vin,              0,              NO_NOISE},
+    {MADDR_REORDER(MADDR_V_BALANSER3),      MUX1_Z_A_PIN,           AnalogInputs::Vb3_pin,          0,              NO_NOISE},
+    {-1,                                    DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       0,              NO_NOISE},
+    {MADDR_REORDER(MADDR_T_EXTERN),         MUX0_Z_A_PIN,           AnalogInputs::Textern,          0,              NO_NOISE},
+    {MADDR_REORDER(MADDR_V_BALANSER4),      MUX1_Z_A_PIN,           AnalogInputs::Vb4_pin,          0,              NO_NOISE},
+    {-1,                                    OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,    0,              10},
+    {MADDR_REORDER(MADDR_BUTTON_DEC),       MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_DEC,     NO_NOISE},
+    {MADDR_REORDER(MADDR_V_BALANSER5),      MUX1_Z_A_PIN,           AnalogInputs::Vb5_pin,          0,              NO_NOISE},
+    {-1,                                    OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin,  0,              10},
+    {MADDR_REORDER(MADDR_BUTTON_INC),       MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_INC,     NO_NOISE},
+    {MADDR_REORDER(MADDR_V_BALANSER6),      MUX1_Z_A_PIN,           AnalogInputs::Vb6_pin,          0,              NO_NOISE},
 #if MAX_BANANCE_CELLS > 6
-    {-1,                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0,              NO_NOISE},
-    {MADDR_BUTTON_STOP,     MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_STOP,    NO_NOISE},
-    {MADDR_V_BALANSER7,     MUX1_Z_A_PIN,           AnalogInputs::Vb7_pin,          0,              NO_NOISE},
-    {-1,                    DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       0,              NO_NOISE},
-    {MADDR_BUTTON_START,    MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_START,   NO_NOISE},
-    {MADDR_V_BALANSER8,     MUX1_Z_A_PIN,           AnalogInputs::Vb8_pin,          0,              NO_NOISE},
+    {-1,                                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0,              NO_NOISE},
+    {MADDR_REORDER(MADDR_BUTTON_STOP),      MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_STOP,    NO_NOISE},
+    {MADDR_REORDER(MADDR_V_BALANSER7),      MUX1_Z_A_PIN,           AnalogInputs::Vb7_pin,          0,              NO_NOISE},
+    {-1,                                    DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       0,              NO_NOISE},
+    {MADDR_REORDER(MADDR_BUTTON_START),     MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_START,   NO_NOISE},
+    {MADDR_REORDER(MADDR_V_BALANSER8),      MUX1_Z_A_PIN,           AnalogInputs::Vb8_pin,          0,              NO_NOISE},
 #else
-    {MADDR_BUTTON_STOP,     MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_STOP,    NO_NOISE},
-    {-1,                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0,              NO_NOISE},
-    {MADDR_BUTTON_START,    MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_START,   NO_NOISE},
+    {MADDR_REORDER(MADDR_BUTTON_STOP),      MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_STOP,    NO_NOISE},
+    {-1,                                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0,              NO_NOISE},
+    {MADDR_REORDER(MADDR_BUTTON_START),     MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_START,   NO_NOISE},
 #endif
 };
 
@@ -138,12 +142,10 @@ inline void setADC(uint8_t pin) {
             | pin;
 }
 
-inline uint8_t getPortBAddress(int8_t address)
+inline uint8_t getPortBAddress(uint8_t address)
 {
-    uint8_t port_adr =  ((address&1) << 2) | (address&2) | ((address&4) >>2);
-    return (PORTB & 0x1f) | (port_adr) << 5;
+    return (PORTB & 0x1f) | (address & 7) << 5;
 }
-
 
 uint16_t processConversion()
 {
