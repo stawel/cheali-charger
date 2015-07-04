@@ -74,10 +74,13 @@
 
 // pin 38,39 - Vcc, GND
 
+#ifndef BUTTON_STOP_PIN
 #define BUTTON_STOP_PIN         40
 #define BUTTON_DEC_PIN          41
 #define BUTTON_INC_PIN          42
 #define BUTTON_START_PIN        43
+#endif //BUTTON_STOP_PIN
+
 #define BUZZER_PIN              44
 
 

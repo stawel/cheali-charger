@@ -46,7 +46,7 @@ void initialize()
     CLK_SetModuleClock(TMR2_MODULE,CLK_CLKSEL1_TMR2_S_HCLK,CLK_CLKDIV_UART(1));
     NVIC_SetPriority(TMR2_IRQn, SOFTWARE_SERIAL_IRQ_PRIORITY);
     NVIC_EnableIRQ(TMR2_IRQn);
-    txPin_ = IO::getPinAddress(UART_TX_PIN);
+    txPin_ = IO::getPinAddress_(UART_TX_PIN);
 
 #ifndef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
     IO::pinMode(UART_TX_PIN, GPIO_PMD_OUTPUT);
@@ -57,7 +57,7 @@ void initialize()
 void begin(unsigned long baud)
 {
 #ifdef ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
-    IO::disableFuncADC(IO::getPinBit(UART_TX_PIN));
+    IO::disableFuncADC(IO::getADCChannel(UART_TX_PIN));
     IO::pinMode(UART_TX_PIN, GPIO_PMD_OUTPUT);
 #endif
 

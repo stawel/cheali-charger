@@ -76,8 +76,6 @@ void setup()
     Screen::initialize();
 
     Screen::runWelcomeScreen();
-
-    eeprom::check();
 }
 
 
@@ -87,6 +85,7 @@ int main()
 #ifdef ENABLE_HELPER
     helperMain();
 #else
+    eeprom::check();
     while(true) {
         loop();
     }

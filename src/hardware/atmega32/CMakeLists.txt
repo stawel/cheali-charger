@@ -1,4 +1,5 @@
 
+add_subdirectory(targets/ADCKeyboardAnalyzer-150W)
 add_subdirectory(targets/BalancePortAnalyzer-200W)
 add_subdirectory(targets/Dual-Power-B6AC-80W-RC)
 add_subdirectory(targets/imaxB6-clone)
@@ -9,3 +10,5 @@ add_subdirectory(targets/imaxB6-original)
 add_subdirectory(targets/Turnigy-Accucel-6-50W-5A)
 add_subdirectory(targets/Turnigy-MEGA-400Wx2)
 add_subdirectory(targets/Turnigy-MEGA-200Wx2)
+add_subdirectory(targets/Turnigy-MAX80W-7A)
+add_subdirectory(targets/Turnigy-Mega-300W-8s)

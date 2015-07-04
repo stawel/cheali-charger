@@ -30,7 +30,7 @@
 //drops below 0V so the ADC doesn't see it.
 //This is why we see a bigger Vb1 resistance.
 #define ENABLE_B0_DISCHARGE_VOLTAGE_CORRECTION
-//#define ENABLE_STACK_INFO
+#define ENABLE_STACK_INFO
 
 #define ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
 

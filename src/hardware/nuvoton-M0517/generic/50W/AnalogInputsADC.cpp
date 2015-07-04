@@ -64,7 +64,7 @@
 //discharge ADC capacitor on Vb6 - there is an operational amplifier
 #define ADC_CAPACITOR_DISCHARGE_ADDRESS MADDR_V_BALANSER6
 #define ADC_CAPACITOR_DISCHARGE_DELAY_US 20
-#define ADC_CLOCK_DIVIDER 4
+#define ADC_CLOCK_FREQUENCY 4000000UL
 
 
 
@@ -140,7 +140,7 @@ void setMuxAddressAndDischarge(int8_t address)
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         //start mux ADC C discharge
         _setMuxAddress(ADC_CAPACITOR_DISCHARGE_ADDRESS);
-        IO::disableFuncADC(IO::getPinBit(MUX0_Z_D_PIN));
+        IO::disableFuncADC(IO::getADCChannel(MUX0_Z_D_PIN));
     }
     TIMER_Start(TIMER1);             /* Start counting */
 }
@@ -153,7 +153,7 @@ void TMR1_IRQHandler(void)
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         _setMuxAddress(g_muxAddress);
         //stop mux ADC C discharge
-        IO::enableFuncADC(IO::getPinBit(MUX0_Z_D_PIN));
+        IO::enableFuncADC(IO::getADCChannel(MUX0_Z_D_PIN));
     }
 }
 } //extern "C"
@@ -181,7 +181,7 @@ void initialize()
     CLK_EnableModuleClock(TMR1_MODULE);
     CLK_SetModuleClock(TMR1_MODULE,CLK_CLKSEL1_TMR1_S_HCLK,CLK_CLKDIV_UART(1));
     //TODO: 50kHz ??
-    TIMER_Open(TIMER1, TIMER_ONESHOT_MODE, 1000000 / ADC_CAPACITOR_DISCHARGE_DELAY_US);//50000);//2000);
+    TIMER_Open(TIMER1, TIMER_ONESHOT_MODE, 1000000 / ADC_CAPACITOR_DISCHARGE_DELAY_US);
     TIMER_EnableInt(TIMER1);
     NVIC_EnableIRQ(TMR1_IRQn);
     NVIC_SetPriority(TMR1_IRQn, ADC_C_DISCHARGE_IRQ_PRIORITY);
@@ -189,7 +189,8 @@ void initialize()
     //initialize ADC
     //init clock
     CLK_EnableModuleClock(ADC_MODULE);
-    CLK_SetModuleClock(ADC_MODULE, CLK_CLKSEL1_ADC_S_HXT, CLK_CLKDIV_ADC(ADC_CLOCK_DIVIDER));
+    CLK_SetModuleClock(ADC_MODULE, CLK_CLKSEL1_ADC_S_HCLK, CLK_CLKDIV_ADC(CLK_GetHCLKFreq()/ADC_CLOCK_FREQUENCY));
+            //__HXT/ADC_CLOCK_FREQUENCY));
 
     /* Set the ADC operation mode as burst, input mode as single-end and enable the analog input channel 2 */
     ADC_Open(ADC, ADC_ADCR_DIFFEN_SINGLE_END, ADC_ADCR_ADMD_BURST, 0x1 << 2);

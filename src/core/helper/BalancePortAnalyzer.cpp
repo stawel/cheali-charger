@@ -127,12 +127,3 @@ void run() {
 
 } //namespace BalancePortAnalyzer
 
-
-
-
-void helperMain()
-{
-//#ifdef ENABLE_HELPER_BALANCE_PORT_ANALYZER
-    BalancePortAnalyzer::run();
-//#endif
-}

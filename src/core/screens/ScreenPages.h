@@ -52,7 +52,7 @@ namespace Screen { namespace Pages {
             {Screen::Balancer::displayVoltage1_3,   PAGE_START_INFO + PAGE_BALANCE_PORT , PAGE_NONE},
             {Screen::Balancer::displayVoltage4_6,   PAGE_START_INFO + PAGE_BALANCE_PORT , PAGE_NONE},
 BALANCER_PORTS_GT_6(
-            {Screen::Balancer::displayVoltage4_6,   PAGE_START_INFO + PAGE_BALANCE_PORT , PAGE_NONE},)
+            {Screen::Balancer::displayVoltage7_9,   PAGE_START_INFO + PAGE_BALANCE_PORT , PAGE_NONE},)
 
             {Screen::Balancer::displayResistance1_3,PAGE_BALANCE_PORT, PAGE_START_INFO + PAGE_PROGRAM(Program::Balance)},
             {Screen::Balancer::displayResistance4_6,PAGE_BALANCE_PORT, PAGE_START_INFO + PAGE_PROGRAM(Program::Balance)},

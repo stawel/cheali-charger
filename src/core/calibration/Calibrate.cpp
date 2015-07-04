@@ -145,10 +145,12 @@ void saveCalibration(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInput
 {
     Buzzer::soundSelect();
     AnalogInputs::ValueType newValue = AnalogInputs::getRealValue(name1);
+    SerialLog::flush();
     saveCalibration(name1, name2, AnalogInputs::getAvrADCValue(name2), newValue);
-    if (doCopyVbalVout) {
-        AnalogInputs::on_ = true;
-        AnalogInputs::doFullMeasurement();
+    if(doCopyVbalVout) {
+	    AnalogInputs::on_ = true;
+	    AnalogInputs::doFullMeasurement();
+        SerialLog::flush();
         copyVbalVout();
     }
 }
@@ -301,9 +303,7 @@ public:
 
     CurrentMenu(AnalogInputs::Name name, uint8_t point, AnalogInputs::ValueType maxValue)
             : EditMenu(currentMenu), cName_(name), point_(point), maxValue_(maxValue) {}
-    void refreshValue() {
-        AnalogInputs::CalibrationPoint p;
-        AnalogInputs::getCalibrationPoint(p, cName_, point_);
+    void refreshValue(AnalogInputs::CalibrationPoint &p) {
         value_ = p.x;
     };
     virtual void printItem(uint8_t index) {
@@ -338,6 +338,8 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
     AnalogInputs::ValueType maxValue;
     AnalogInputs::Name name1;
     AnalogInputs::Name name2;
+    AnalogInputs::CalibrationPoint pName1;
+    AnalogInputs::CalibrationPoint pName2;
 
     AnalogInputs::powerOn();
     if(testVout(false)) {
@@ -356,22 +358,23 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
             Discharger::powerOn();
         }
 
+        getCalibrationPoint(pName1, name1, point);
+        getCalibrationPoint(pName2, name2, point);
+
         CurrentMenu menu(name1, point, maxValue);
         int8_t index;
         do {
-            menu.refreshValue();
+            menu.refreshValue(pName1);
             index = menu.runSimple(true);
             if(index < 0) break;
             if(index == 0) {
                 setCurrentValue(name1, menu.value_);
                 if(menu.runEdit()) {
                     AnalogInputs::doFullMeasurement();
-                    AnalogInputs::CalibrationPoint p;
-                    p.y = current;
-                    p.x = menu.value_;
-                    AnalogInputs::setCalibrationPoint(name1, point, p);
-                    p.x = AnalogInputs::getAvrADCValue(name2);
-                    AnalogInputs::setCalibrationPoint(name2, point, p);
+                    pName1.y = current;
+                    pName1.x = menu.value_;
+                    pName2.y = current;
+                    pName2.x = AnalogInputs::getAvrADCValue(name2);
                 }
                 setCurrentValue(name1, 0);
             }
@@ -379,6 +382,10 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
 
         if(charging)   SMPS::powerOff();
         else           Discharger::powerOff();
+
+        //Info: we save eeprom data only when no current is flowing
+        AnalogInputs::setCalibrationPoint(name1, point, pName1);
+        AnalogInputs::setCalibrationPoint(name2, point, pName2);
     }
     AnalogInputs::powerOff();
 }

@@ -51,6 +51,9 @@ Please [CALIBRATE](README.md#calibration) charger before use!
 Use an external temperature probe  
 (if You like your house ;) )
 
+**ALWAYS** connect the power supply **first**, then the battery!
+
+**ALWAYS** disconnect the battery **before** disconnecting the power supply!
 
 Hardware
 --------
@@ -68,6 +71,8 @@ Hardware
 **Nuvoton NuMicro M0517LBN CPU:**
 - IMAX B6 Charger/Discharger 1-6 Cells
 
+**Unsupported**
+- [Turnigy Accucel-6 80W Balancer/Charger](http://www.hobbyking.com/hobbyking/store/__64345__Turnigy_Accucel_6_80W_10A_Balancer_Charger_LiHV_Capable.html) - Based on an older, uncommon CPU. See [#106](https://github.com/stawel/cheali-charger/issues/106)
 
 Usage:
 ------

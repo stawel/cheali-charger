@@ -35,10 +35,8 @@ namespace cpu {
         /* Waiting for external XTAL clock ready */
         CLK_WaitClockReady(CLK_CLKSTATUS_XTL12M_STB_Msk);
 
-//        CLK_SetHCLK(CLK_CLKSEL0_HCLK_S_HXT, CLK_CLKDIV_HCLK(1));
         CLK_SetCoreClock(FREQ_50MHZ);
         SYS_LockReg();
-
     }
 }
 
