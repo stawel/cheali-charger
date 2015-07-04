@@ -50,6 +50,7 @@ namespace Program {
     void setupDischarge();
     void setupBalance();
     void setupDeltaCharge();
+    void setupPowerSupplyCharge();
     void setupProgramType(ProgramType prog);
 
 } //namespace Program
@@ -89,6 +90,13 @@ void Program::setupDischarge()
     Strategy::strategy = &TheveninDischargeStrategy::vtable;
 }
 
+void Program::setupPowerSupplyCharge()
+{
+    Strategy::setVI(ProgramData::VCharge, true);
+    Strategy::strategy = &SimpleChargeStrategy::vtable;
+}
+
+
 void Program::setupBalance()
 {
     Strategy::strategy = &Balancer::vtable;
@@ -102,6 +110,8 @@ void Program::setupProgramType(ProgramType prog) {
     case Program::Charge:
         if(ProgramData::isNiXX()) {
             setupDeltaCharge();
+        } else if (ProgramData::isPowerSupply()) {
+            setupPowerSupplyCharge();
         } else {
             setupTheveninCharge();
         }

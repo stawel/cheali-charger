@@ -55,6 +55,11 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 
     cell_nr = v_balance = false;
     v_out = ! AnalogInputs::isConnected(AnalogInputs::Vout);
+
+    if(ProgramData::battery.type == ProgramData::Unknown || ProgramData::battery.type == ProgramData::LED) {
+        v_out = false;
+    }
+
     is_cells = AnalogInputs::getConnectedBalancePorts();
 
     if(Strategy::doBalance) {
@@ -84,11 +89,6 @@ Strategy::statusType StartInfoStrategy::doStrategy()
     }
 
     balance = (v_balance || cell_nr) && (is_cells != 0);
-
-    if(ProgramData::battery.type == ProgramData::Unknown
-            && Program::programType == Program::Charge) {
-        v_out = false;
-    }
 
     if(Keyboard::getPressed() == BUTTON_NONE)
         ok_ = 0;

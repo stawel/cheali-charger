@@ -75,6 +75,10 @@ namespace ProgramMenus {
             Program::EditBattery,
     };
 
+    const Program::ProgramType programLEDMenu[] PROGMEM = {
+            Program::Charge,
+            Program::EditBattery,
+    };
 
 // ProgramType -> strings
     const char * const programMenus_strings[] PROGMEM = {
@@ -118,6 +122,7 @@ namespace ProgramMenus {
     ProgramTypeMenu selectNiXXMenu(programNiXXMenu);
     ProgramTypeMenu selectNiZnMenu(programNiZnMenu);
     ProgramTypeMenu selectPbMenu(programPbMenu);
+    ProgramTypeMenu selectLEDMenu(programLEDMenu);
 
     ProgramTypeMenu * getSelectProgramMenu() {
         ProgramData::BatteryClass bc = ProgramData::getBatteryClass();
@@ -129,6 +134,8 @@ namespace ProgramMenus {
             return &selectLiXXMenu;
         if(bc == ProgramData::ClassNiXX)
             return &selectNiXXMenu;
+        if(bc == ProgramData::ClassLED)
+            return &selectLEDMenu;
         else return &selectPbMenu;
     }
 }

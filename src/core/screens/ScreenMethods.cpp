@@ -31,7 +31,7 @@
 #include "ScreenMethods.h"
 #include "Balancer.h"
 
-namespace Screen {
+namespace Screen { namespace Methods {
 
     void printCharge() {
         lcdPrintCharge(AnalogInputs::getRealValue(AnalogInputs::Cout), 8);
@@ -79,9 +79,7 @@ namespace Screen {
     }
 
 
-} // namespace Screen
-
-
+} }// namespace Screen::Methods
 
 void Screen::Methods::displayFirstScreen()
 {

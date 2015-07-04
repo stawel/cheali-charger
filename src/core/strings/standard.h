@@ -86,6 +86,7 @@ namespace ProgramData {
     STRING(battery_Li430,   "L430");
     STRING(battery_Li435,   "L435");
     STRING(battery_NiZn,    "NiZn");
+    STRING(battery_LED,     "LED");
 }
 
 namespace SettingsMenu {

@@ -33,10 +33,10 @@
 #endif
 
 #define PAGE_NONE 0
-#define PAGE_ALWAYS                 0xffff
+#define PAGE_ALWAYS                 0x7fffffff
 
-#define PAGE_START_INFO             (1<<15)
-#define PAGE_BALANCE_PORT           (1<<14)
+#define PAGE_START_INFO             (1L<<30)
+#define PAGE_BALANCE_PORT           (1L<<29)
 #define PAGE_PROGRAM(program)       (1<<(program))
 #define PAGE_BATTERY(_class)        ((1<<9)<<(_class))
 

@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2015  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,17 +15,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef DELTACHARGESTRATEGY_H_
-#define DELTACHARGESTRATEGY_H_
+#ifndef SCREEN_EDITABLE_H_
+#define SCREEN_EDITABLE_H_
 
 
-#include "SimpleChargeStrategy.h"
+namespace Screen { namespace Editable {
 
-namespace DeltaChargeStrategy
-{
-    extern const Strategy::VTable vtable;
-};
+    void displayLEDScreen();
 
+} };
 
-#endif /* DELTACHARGESTRATEGY_H_ */
-
+#endif /* SCREEN_EDITABLE_H_ */
