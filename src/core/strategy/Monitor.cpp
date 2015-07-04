@@ -141,6 +141,9 @@ void Monitor::doIdle()
             fan = false;
         } else if (t > settings.fanTempOn) {
             fan = true;
+        } else {
+            // don't update fan (hysteresis)
+            return;
         }
     }
     hardware::setFan(fan);
