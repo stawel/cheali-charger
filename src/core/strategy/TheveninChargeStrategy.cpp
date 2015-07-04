@@ -54,7 +54,6 @@ Strategy::statusType TheveninChargeStrategy::doStrategy()
 
     //balance, test if charge complete
     if(TheveninMethod::balance_isComplete(isendVout, I)) {
-        SMPS::powerOff(SMPS::CHARGING_COMPLETE);
         return Strategy::COMPLETE;
     }
     AnalogInputs::ValueType newI = TheveninMethod::calculateNewI(isendVout, I);

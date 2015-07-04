@@ -21,15 +21,11 @@
 #include "Hardware.h"
 
 namespace Discharger {
-    enum STATE { DISCHARGING, DISCHARGING_COMPLETE, ERROR};
-
 
     void initialize();
 
-    STATE getState();
     bool isPowerOn();
     bool isWorking();
-
 
     //returns the truly set Iout
     AnalogInputs::ValueType getIout();
@@ -39,7 +35,7 @@ namespace Discharger {
     void setValue(uint16_t value);
 
     void powerOn();
-    void powerOff(STATE reason = DISCHARGING_COMPLETE);
+    void powerOff();
 };
 
 

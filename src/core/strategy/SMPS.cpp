@@ -30,12 +30,11 @@
 #define SMPS_MAX_CURRENT_CHANGE_dM  ((AnalogInputs::ValueType)(SMPS_MAX_CURRENT_CHANGE*0.7))
 
 namespace SMPS {
-    STATE state_;
+    bool on_ = false;
     uint16_t value_;
     AnalogInputs::ValueType IoutSet_;
 
-    STATE getState()    { return state_; }
-    bool isPowerOn()    { return getState() == CHARGING; }
+    bool isPowerOn()    { return on_; }
     bool isWorking()    { return value_ != 0; }
     uint16_t getValue() { return value_; }
     AnalogInputs::ValueType getIout() { return IoutSet_; }
@@ -73,7 +72,8 @@ void SMPS::initialize()
     value_ = 0;
     IoutSet_ = 0;
     setValue(0);
-    powerOff(CHARGING_COMPLETE);
+    on_ = true;
+    powerOff();
 }
 
 
@@ -115,13 +115,13 @@ void SMPS::powerOn()
     IoutSet_ = 0;
     setValue(0);
     hardware::setChargerOutput(true);
-    state_ = CHARGING;
+    on_ = true;
 }
 
 
-void SMPS::powerOff(STATE reason)
+void SMPS::powerOff()
 {
-    if(!isPowerOn() || reason == CHARGING)
+    if(!isPowerOn())
         return;
 
     setValue(0);
@@ -129,5 +129,5 @@ void SMPS::powerOff(STATE reason)
     value_ = 0;
     IoutSet_ = 0;
     hardware::setChargerOutput(false);
-    state_ = reason;
+    on_ = false;
 }

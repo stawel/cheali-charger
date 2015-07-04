@@ -65,7 +65,6 @@ Strategy::statusType TheveninDischargeStrategy::doStrategy()
         end = TheveninMethod::balance_isComplete(isendVout, I);
     }
     if(end) {
-        Discharger::powerOff(Discharger::DISCHARGING_COMPLETE);
         return Strategy::COMPLETE;
     }
 

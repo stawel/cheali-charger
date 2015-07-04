@@ -21,12 +21,11 @@
 
 
 namespace Discharger {
-    STATE state_;
+    bool on_ = false;
     uint16_t value_;
     AnalogInputs::ValueType IoutSet_;
 
-    STATE getState()    { return state_; }
-    bool isPowerOn()    { return getState() == DISCHARGING; }
+    bool isPowerOn()    { return on_; }
     bool isWorking()    { return value_ != 0; }
     uint16_t getValue() { return value_; }
     AnalogInputs::ValueType getIout() { return IoutSet_; }
@@ -56,7 +55,8 @@ namespace Discharger {
 void Discharger::initialize()
 {
     setValue(0);
-    powerOff(DISCHARGING_COMPLETE);
+    on_ = true;
+    powerOff();
 }
 
 void Discharger::setValue(uint16_t value)
@@ -87,15 +87,15 @@ void Discharger::powerOn()
 
     setValue(0);
     hardware::setDischargerOutput(true);
-    state_ = DISCHARGING;
+    on_ = true;
 }
 
-void Discharger::powerOff(STATE reason)
+void Discharger::powerOff()
 {
-    if(!isPowerOn() || reason == DISCHARGING)
+    if(!isPowerOn())
         return;
 
     setValue(0);
     hardware::setDischargerOutput(false);
-    state_ = reason;
+    on_ = false;
 }
