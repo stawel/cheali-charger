@@ -34,7 +34,7 @@
 
 #include "Monitor.h"
 
-namespace adc {
+namespace AnalogInputsADC {
     void debug();
 }
 
@@ -142,7 +142,8 @@ void doIdle()
             send();
         }
     }
-    adc::debug();
+    //TODO: remove
+    //AnalogInputsADC::debug();
 }
 
 #else //ENABLE_SERIAL_LOG

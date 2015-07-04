@@ -22,7 +22,6 @@
 #include "atomic.h"
 #include "Hardware.h"
 #include "GTPowerA6-10-pins.h"
-#include "adc.h"
 #include "Utils.h"
 #include "memory.h"
 #include "IO.h"
@@ -36,7 +35,7 @@
  * program flow: see conversionDone()
  */
 
-namespace adc {
+namespace AnalogInputsADC {
 
 void setupNextInput();
 
@@ -296,14 +295,14 @@ void setupNextInput() {
     }
 }
 
-}// namespace adc
+}// namespace AnalogInputsADC
 
 uint8_t hardware::getKeyPressed()
 {
-    return adc::adc_keyboard_;
+    return AnalogInputsADC::adc_keyboard_;
 }
 
 ISR(ADC_vect)
 {
-    adc::conversionDone();
+    AnalogInputsADC::conversionDone();
 }

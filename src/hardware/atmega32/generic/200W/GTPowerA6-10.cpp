@@ -17,7 +17,7 @@
 */
 
 #include "Hardware.h"
-#include "adc.h"
+#include "AnalogInputsADC.h"
 #include "IO.h"
 
 void hardware::initializePins()
@@ -57,7 +57,7 @@ void hardware::initialize()
 {
     lcd.begin(LCD_COLUMNS, LCD_LINES);
     Timer1::initialize();
-    adc::initialize();
+    AnalogInputsADC::initialize();
     setVoutCutoff(MAX_CHARGE_V);
 }
 

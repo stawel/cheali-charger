@@ -19,7 +19,7 @@
 #include "Timer1.h"
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
-#include "adc.h"
+#include "AnalogInputsADC.h"
 #include "SerialLog.h"
 #include "IO.h"
 #include "Keyboard.h"
@@ -73,7 +73,7 @@ void hardware::initialize()
     lcd.begin(LCD_COLUMNS, LCD_LINES);
 
     Timer1::initialize();
-    adc::initialize();
+    AnalogInputsADC::initialize();
     setVoutCutoff(MAX_CHARGE_V);
 }
 

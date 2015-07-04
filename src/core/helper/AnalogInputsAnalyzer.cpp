@@ -36,6 +36,7 @@
 #include "Balancer.h"
 #include STRINGS_HEADER
 #include "atomic.h"
+#include "SettingsMenu.h"
 
 namespace AnalogInputsAnalyzer {
 
@@ -157,7 +158,7 @@ void run() {
             Balancer::powerOff();
             AnalogInputs::powerOff();
             SerialLog::powerOff();
-            settings.edit();
+            SettingsMenu::run();
             SerialLog::powerOn();
             AnalogInputs::powerOn();
             Balancer::powerOn();

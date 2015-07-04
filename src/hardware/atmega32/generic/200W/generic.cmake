@@ -5,8 +5,8 @@ set(CURRENT_PATH ${CMAKE_SOURCE_DIR}/src/hardware/${TARGET_CPU}/generic/${TARGET
 set(GENERIC_SOURCE
     GTPowerA6-10.cpp
     GTPowerA6-10.h
-    adc.cpp
-    adc.h
+    AnalogInputsADC.cpp
+    AnalogInputsADC.h
 
     Hardware.h
     HardwareConfigGeneric.h

@@ -8,8 +8,8 @@ set(GENERIC_SOURCE
     imaxB6-pins.h
     SMPS_PID.h
     SMPS_PID.cpp
-    adc.cpp
-    adc.h
+    AnalogInputsADC.h
+    AnalogInputsADC.cpp
 
     Hardware.h
     HardwareConfigGeneric.h
