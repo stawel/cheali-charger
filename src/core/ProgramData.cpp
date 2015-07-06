@@ -303,14 +303,15 @@ void ProgramData::changedCapacity()
 void ProgramData::printProgramData(uint8_t index)
 {
     loadProgramData(index);
-    lcdPrintUInt(index+1);
-    lcdPrintChar(':');
     if(battery.type != None) {
         Screen::StartInfo::printBatteryString();
         lcdPrintSpace1();
     }
+
     switch(battery.type) {
     case None:
+        lcdPrintUInt(index+1);
+        lcdPrintChar(':');
         break;
     case Unknown:
         Screen::StartInfo::printVoltageString(9);
