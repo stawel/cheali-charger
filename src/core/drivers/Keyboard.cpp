@@ -45,12 +45,6 @@ uint8_t Keyboard::getPressed()
 
 static const uint16_t speedTable[]  PROGMEM = {1, 2, 4, 6,  8, 10, 15};//, 4096, 16384, 65535};
 static const uint16_t thisSpeedT[]  PROGMEM = {1, 3, 8, 9, 10,100, 12};//,    7,     7,     7};
-static const uint16_t speedFactor[] PROGMEM = {1, 1, 1, 1,  1,  5, 10};//,   16,    64,   256};
-
-uint16_t Keyboard::getSpeedFactor()
-{
-    return pgm::read(&speedFactor[speed_]);
-}
 
 uint8_t Keyboard::keyChanged(uint8_t key)
 {

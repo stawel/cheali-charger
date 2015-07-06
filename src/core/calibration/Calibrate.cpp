@@ -328,8 +328,7 @@ public:
     virtual void editItem(uint8_t index, uint8_t key) {
         int dir = -1;
         if(key == BUTTON_INC) dir = 1;
-        dir *= Keyboard::getSpeedFactor();
-        changeMinToMaxStep(&value_, dir, 1, maxValue_, Keyboard::getSpeedFactor());
+        changeMinToMaxStep(&value_, dir, 1, maxValue_, 1);
         setCurrentValue(cName_, value_);
     }
 };
