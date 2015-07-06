@@ -1,6 +1,6 @@
 #!/bin/bash
 
 
-IN=$1
+IN="$1"
 
-avr-objcopy -I ihex -O binary $IN $IN.bin
+avr-objcopy -I ihex -O binary "$IN" "$IN.bin"
