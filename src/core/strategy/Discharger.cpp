@@ -89,6 +89,7 @@ void Discharger::powerOn()
         return;
 
     setValue(0);
+    IoutSet_ = 0;
     hardware::setDischargerOutput(true);
     state_ = DISCHARGING;
 }
@@ -99,6 +100,7 @@ void Discharger::powerOff(STATE reason)
         return;
 
     setValue(0);
+    IoutSet_ = 0;
     hardware::setDischargerOutput(false);
     state_ = reason;
 }
