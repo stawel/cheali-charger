@@ -20,6 +20,9 @@
 #include "outputPWM.h"
 #include "irq_priority.h"
 
+//#define ENABLE_DEBUG
+#include "debug.h"
+
 extern "C" {
 #include "M051Series.h"
 }
@@ -93,6 +96,7 @@ void initialize(void)
 
 void setPWM(uint8_t pin, uint32_t value)
 {
+    LogDebug("setPWM pin:", pin, "value:", value);
     if(pin == 20) {
         PWM_valueA = value;
         SYS->P2_MFP |= SYS_MFP_P21_PWM1;

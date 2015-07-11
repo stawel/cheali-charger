@@ -29,10 +29,12 @@
 #include "TxSoftSerial.h"
 
 namespace Serial {
+void empty(){}
+void emptyUint8(uint8_t c){}
 
-void (*write)(uint8_t c);
-void (*flush)();
-void (*end)();
+void (*write)(uint8_t c) = emptyUint8;
+void (*flush)() = empty;
+void (*end)() = empty;
 
 void  begin(unsigned long baud)
 {

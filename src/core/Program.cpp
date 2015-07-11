@@ -53,6 +53,8 @@ namespace Program {
     void setupPowerSupplyCharge();
     void setupProgramType(ProgramType prog);
 
+    void dischargeOutputCapacitor();
+
 } //namespace Program
 
 bool Program::startInfo()
@@ -158,10 +160,21 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
     }
 }
 
+void Program::dischargeOutputCapacitor()
+{
+    Discharger::powerOn();
+    Discharger::trySetIout(MAX_DISCHARGE_I);
+    Time::delayDoIdle(100);
+    Discharger::powerOff();
+}
+
+
 void Program::run(ProgramType prog)
 {
     if(!Calibrate::check())
         return;
+
+    dischargeOutputCapacitor();
 
     programType = prog;
     setupProgramType(prog);

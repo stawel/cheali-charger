@@ -54,7 +54,6 @@ namespace Discharger {
 
 void Discharger::initialize()
 {
-    setValue(0);
     on_ = true;
     powerOff();
 }
