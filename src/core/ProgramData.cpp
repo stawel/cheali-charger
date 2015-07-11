@@ -329,7 +329,7 @@ void ProgramData::printProgramData(uint8_t index)
         break;
     case LED:
         lcdPrintCurrent(battery.Ic,5);
-        lcdPrintChar('/');
+        lcdPrintSpace1();
         Screen::StartInfo::printVoltageString(4);
         break;
     default:
