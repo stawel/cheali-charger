@@ -134,8 +134,7 @@ void Monitor::doIdle()
         fan = on_;
     } else if ((settings.fanOn == Settings::FanProgramTemperature && on_ == true)
                || settings.fanOn == Settings::FanTemperature) {
-        AnalogInputs::ValueType t_adc = AnalogInputs::getADCValue(AnalogInputs::Tintern);
-        AnalogInputs::ValueType t = AnalogInputs::calibrateValue(AnalogInputs::Tintern, t_adc);
+        AnalogInputs::ValueType t = AnalogInputs::getRealValue(AnalogInputs::Tintern);
 
         if (t < settings.fanTempOn - Settings::TempDifference) {
             fan = false;
