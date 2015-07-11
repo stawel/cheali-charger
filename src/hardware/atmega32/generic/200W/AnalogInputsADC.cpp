@@ -31,6 +31,27 @@
 //#define ENABLE_DEBUG
 #include "debug.h"
 
+
+#ifdef ENABLE_DEBUG
+#define MAX_DEBUG_DATA 10
+uint16_t adcDebugData[MAX_DEBUG_DATA];
+uint8_t adcDebugSize = MAX_DEBUG_DATA;
+bool adcDebugStart = false;
+#endif
+
+#ifdef ENABLE_DEBUG
+void LogDebug_run() {
+    if(adcDebugSize == 0){
+        for (int i=0;i<MAX_DEBUG_DATA;i++) {
+            LogDebug(i, ':', adcDebugData[MAX_DEBUG_DATA - i - 1]);
+        }
+        LogDebug('-');
+        adcDebugStart = false;
+        adcDebugSize = MAX_DEBUG_DATA - 1;
+    }
+}
+#endif
+
 /* ADC - measurement:
  * program flow: see conversionDone()
  */
@@ -76,11 +97,19 @@ struct adc_correlation {
     uint8_t noise;
 };
 
-#define ADC_STANDARD_PER_ROUND 2
+#define ADC_VOLTAGE_PLUS_PER_ROUND      2
 #if MAX_BANANCE_CELLS > 6
-#define ADC_I_DISCHARGE_PER_ROUND 2
+#define ADC_DISCHARGE_CURRENT_PER_ROUND 2
+#define ADC_SMPS_CURRENT_PER_ROUND      3
 #else
-#define ADC_I_DISCHARGE_PER_ROUND 1
+#define ADC_DISCHARGE_CURRENT_PER_ROUND 1
+#define ADC_SMPS_CURRENT_PER_ROUND      2
+#endif
+
+#if OUTPUT_VOLTAGE_PLUS_PIN == A0 and OUTPUT_VOLTAGE_MINUS_PIN == A1
+#define ADC_VOUT_DIFFENTIAL 0b10000    //A0 - A1
+#else
+#error "ADC differential input not defined"
 #endif
 
 #define NO_NOISE 0
@@ -90,34 +119,33 @@ struct adc_correlation {
 #define MADDR_REORDER(x) ((GET_BIT(x,0)<<(MUX_ADR0_PIN-1)) + (GET_BIT(x,1)<<(MUX_ADR1_PIN-1)) + (GET_BIT(x,2)<<(MUX_ADR2_PIN-1)))
 
 const adc_correlation order_analogInputs_on[] PROGMEM = {
-    {-1,                                    OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,    0,              10},
+    {-1,                                    ADC_VOUT_DIFFENTIAL,    AnalogInputs::Vout_plus_pin,    0,              10},
     {MADDR_REORDER(MADDR_V_OUTMUX),         MUX0_Z_A_PIN ,          AnalogInputs::VoutMux,          0,              NO_NOISE},
     {MADDR_REORDER(MADDR_V_BALANSER1),      MUX1_Z_A_PIN,           AnalogInputs::Vb1_pin,          0,              NO_NOISE},
-    {-1,                                    OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin,  0,              10},
+    {-1,                                    ADC_VOUT_DIFFENTIAL,    AnalogInputs::Vout_plus_pin,    0,              10},
     {MADDR_REORDER(MADDR_T_INTERN),         MUX0_Z_A_PIN,           AnalogInputs::Tintern,          0,              NO_NOISE},
     {MADDR_REORDER(MADDR_V_BALANSER2),      MUX1_Z_A_PIN,           AnalogInputs::Vb2_pin,          0,              NO_NOISE},
     {-1,                                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0,              NO_NOISE},
     {MADDR_REORDER(MADDR_V_IN),             MUX0_Z_A_PIN,           AnalogInputs::Vin,              0,              NO_NOISE},
     {MADDR_REORDER(MADDR_V_BALANSER3),      MUX1_Z_A_PIN,           AnalogInputs::Vb3_pin,          0,              NO_NOISE},
-    {-1,                                    DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       0,              NO_NOISE},
+    {-1,                                    ADC_VOUT_DIFFENTIAL,    AnalogInputs::Vout_plus_pin,    0,              10},
     {MADDR_REORDER(MADDR_T_EXTERN),         MUX0_Z_A_PIN,           AnalogInputs::Textern,          0,              NO_NOISE},
     {MADDR_REORDER(MADDR_V_BALANSER4),      MUX1_Z_A_PIN,           AnalogInputs::Vb4_pin,          0,              NO_NOISE},
-    {-1,                                    OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,    0,              10},
     {MADDR_REORDER(MADDR_BUTTON_DEC),       MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_DEC,     NO_NOISE},
     {MADDR_REORDER(MADDR_V_BALANSER5),      MUX1_Z_A_PIN,           AnalogInputs::Vb5_pin,          0,              NO_NOISE},
-    {-1,                                    OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin,  0,              10},
+    {-1,                                    ADC_VOUT_DIFFENTIAL,    AnalogInputs::Vout_plus_pin,    0,              10},
     {MADDR_REORDER(MADDR_BUTTON_INC),       MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_INC,     NO_NOISE},
     {MADDR_REORDER(MADDR_V_BALANSER6),      MUX1_Z_A_PIN,           AnalogInputs::Vb6_pin,          0,              NO_NOISE},
 #if MAX_BANANCE_CELLS > 6
-    {-1,                                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0,              NO_NOISE},
+    {-1,                                    ADC_VOUT_DIFFENTIAL,    AnalogInputs::Vout_plus_pin,    0,              10},
     {MADDR_REORDER(MADDR_BUTTON_STOP),      MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_STOP,    NO_NOISE},
     {MADDR_REORDER(MADDR_V_BALANSER7),      MUX1_Z_A_PIN,           AnalogInputs::Vb7_pin,          0,              NO_NOISE},
     {-1,                                    DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       0,              NO_NOISE},
     {MADDR_REORDER(MADDR_BUTTON_START),     MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_START,   NO_NOISE},
     {MADDR_REORDER(MADDR_V_BALANSER8),      MUX1_Z_A_PIN,           AnalogInputs::Vb8_pin,          0,              NO_NOISE},
 #else
-    {MADDR_REORDER(MADDR_BUTTON_STOP),      MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_STOP,    NO_NOISE},
     {-1,                                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0,              NO_NOISE},
+    {MADDR_REORDER(MADDR_BUTTON_STOP),      MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_STOP,    NO_NOISE},
     {MADDR_REORDER(MADDR_BUTTON_START),     MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_START,   NO_NOISE},
 #endif
 };
@@ -156,8 +184,21 @@ uint16_t processConversion()
 
     AnalogInputs::Name name = adc_input.ai_name;
     if(name != AnalogInputs::VirtualInputs) {
+        v = (high << 8) | low;
+        //we use a ADC differential measurement method
+        if(name == AnalogInputs::Vout_plus_pin) {
+            int v2 = v;
+#ifdef ENABLE_DEBUG
+            if(adcDebugSize > 0) {
+                adcDebugData[adcDebugSize--] = v;
+            }
+#endif
+            if(v2 < 0) {
+                v = -v2;
+                name = AnalogInputs::Vout_minus_pin;
+            }
+        }
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-            v = (high << 8) | low;
             AnalogInputs::i_adc_[name] = v;
             if(g_addSumToInput)
                 AnalogInputs::i_avrSum_[name] += v;
@@ -181,35 +222,15 @@ void finalizeMeasurement()
         AnalogInputs::i_avrSum_[AnalogInputs::IsmpsSet]        += SMPS::getValue();
         AnalogInputs::i_avrSum_[AnalogInputs::IdischargeSet]   += Discharger::getValue();
         if(AnalogInputs::i_avrCount_ == 1) {
-            AnalogInputs::i_avrSum_[AnalogInputs::Ismps]            /= ADC_STANDARD_PER_ROUND;
-            AnalogInputs::i_avrSum_[AnalogInputs::Vout_plus_pin]    /= ADC_STANDARD_PER_ROUND;
-            AnalogInputs::i_avrSum_[AnalogInputs::Vout_minus_pin]   /= ADC_STANDARD_PER_ROUND;
-            AnalogInputs::i_avrSum_[AnalogInputs::Idischarge]       /= ADC_I_DISCHARGE_PER_ROUND;
+            AnalogInputs::i_avrSum_[AnalogInputs::Ismps]            /= ADC_SMPS_CURRENT_PER_ROUND;
+            AnalogInputs::i_avrSum_[AnalogInputs::Vout_plus_pin]    /= ADC_VOLTAGE_PLUS_PER_ROUND;
+            AnalogInputs::i_avrSum_[AnalogInputs::Vout_minus_pin]   /= ADC_VOLTAGE_PLUS_PER_ROUND;
+            AnalogInputs::i_avrSum_[AnalogInputs::Idischarge]       /= ADC_DISCHARGE_CURRENT_PER_ROUND;
         }
         //TODO: maybe intterruptFinalizeMeasurement should be removed
         AnalogInputs::intterruptFinalizeMeasurement();
     }
 
-}
-
-#ifdef ENABLE_DEBUG
-#define MAX_DEBUG_DATA 160
-uint16_t adcDebugData[MAX_DEBUG_DATA];
-uint8_t adcDebugCount = 0;
-bool adcDebugStart = false;
-#endif
-
-void debug() {
-#ifdef ENABLE_DEBUG
-    if(adcDebugCount == MAX_DEBUG_DATA){
-        for (int i=0;i<MAX_DEBUG_DATA;i++) {
-            LogDebug(i, ':', adcDebugData[i]);
-        }
-        LogDebug('-');
-        adcDebugStart = false;
-        adcDebugCount = 0;
-    }
-#endif
 }
 
 void addAdcNoise()
@@ -242,7 +263,7 @@ void conversionDone()
 {
     uint16_t v = processConversion();
 
-#ifdef ENABLE_DEBUG
+#ifdef ENABLE_DEBUG_ADC
     if(g_adcBurstCount_ == 0 && adc_input.ai_name == AnalogInputs::Vout_plus_pin) {
         if(adcDebugCount < MAX_DEBUG_DATA) {
             adcDebugStart = true;
