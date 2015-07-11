@@ -54,7 +54,7 @@ const AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE] PRO
 //based on "mars" settings, TODO: find datasheet
 /*NiZn*/    { ANALOG_VOLT(1.600), ANALOG_VOLT(1.900), ANALOG_VOLT(1.300), ANALOG_VOLT(1.600), ANALOG_VOLT(1.400)},
 
-/*Unknown*/ { 1,                  ANALOG_VOLT(1.900), 1,                  1,                  1},
+/*Unknown*/ { 1,                  ANALOG_VOLT(4.000), ANALOG_VOLT(2.000), 1,                  1},
 //PowerSupply
 /*LED*/     { 1,                  ANALOG_VOLT(4.000), 1,                  1,                  1},
 
@@ -113,14 +113,25 @@ const char * const  ProgramData::batteryString[] PROGMEM = {
 
 STATIC_ASSERT(sizeOfArray(ProgramData::batteryString) == ProgramData::LAST_BATTERY_TYPE);
 
+const ProgramData::BatteryClass ProgramData::batteryClassMap[] PROGMEM = {
+/*None*/    ClassUnknown,
+/*NiCd*/    ClassNiXX,
+/*NiMH*/    ClassNiXX,
+/*Pb*/      ClassPb,
+/*Life*/    ClassLiXX,
+/*Lilo*/    ClassLiXX,
+/*Lipo*/    ClassLiXX,
+/*Li430*/   ClassLiXX,
+/*Li435*/   ClassLiXX,
+/*NiZn*/    ClassNiZn,
+/*Unknown*/ ClassUnknown,
+/*LED*/     ClassLED
+};
+
 
 ProgramData::BatteryClass ProgramData::getBatteryClass() {
-    if( battery.type == NiZn) return ClassNiZn;
-    if( battery.type == Life  || battery.type == Lilo  || battery.type == Lipo
-     || battery.type == Li430 || battery.type == Li435) return ClassLiXX;
-    if( battery.type == NiCd  || battery.type == NiMH) return ClassNiXX;
-    if( battery.type == LED) return ClassLED;
-    return ClassPb;
+    STATIC_ASSERT(sizeOfArray(ProgramData::batteryClassMap) == ProgramData::LAST_BATTERY_TYPE);
+    return pgm::read(&ProgramData::batteryClassMap[battery.type]);
 }
 
 uint16_t ProgramData::getCapacityLimit()
@@ -169,7 +180,7 @@ uint16_t ProgramData::getMaxId()
 
 uint16_t ProgramData::getMaxCells()
 {
-    if(battery.type == Unknown || battery.type)
+    if(battery.type == Unknown || battery.type == LED)
         return 1;
     uint16_t v = getDefaultVoltagePerCell(VCharge);
     return MAX_CHARGE_V / v;
@@ -322,7 +333,7 @@ void ProgramData::printProgramData(uint8_t index)
         Screen::StartInfo::printVoltageString(4);
         break;
     default:
-        lcdPrintUInt(battery.capacity);
+        lcdPrintCharge(battery.capacity, 7);
         lcdPrintChar('/');
         lcdPrintUInt(battery.cells);
         break;

@@ -125,6 +125,8 @@ namespace ProgramMenus {
     ProgramTypeMenu selectLEDMenu(programLEDMenu);
 
     ProgramTypeMenu * getSelectProgramMenu() {
+        STATIC_ASSERT(ProgramData::LAST_BATTERY_CLASS == 6);
+
         ProgramData::BatteryClass bc = ProgramData::getBatteryClass();
         if(ProgramData::battery.type == ProgramData::None)
             return &selectNoneMenu;

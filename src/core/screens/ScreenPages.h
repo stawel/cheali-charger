@@ -31,7 +31,7 @@ namespace Screen { namespace Pages {
 
 /*condition bits:
  * 0..8:    PAGE_PROGRAM(..)
- * 9..15:   PAGE_BATTERY(CLASS)
+ * 9..16:   PAGE_BATTERY(CLASS)
  * 29:      PAGE_START_INFO
  * 30:      PAGE_BALANCE_PORT
 */

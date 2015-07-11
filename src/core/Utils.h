@@ -34,8 +34,13 @@
 #define NEXT_CASE (__COUNTER__ - _case_counter - 1)
 
 //assert
+#if __cplusplus <= 199711L
 #define STATIC_ASSERT(x) typedef char __STATIC_ASSERT__[( x )?1:-1] __attribute__((unused))
-
+#define STATIC_ASSERT_MSG(x, msg) STATIC_ASSERT(x)
+#else
+#define STATIC_ASSERT(x) static_assert(x, #x)
+#define STATIC_ASSERT_MSG(x, msg) static_assert(x, msg)
+#endif
 //Preprocessor: concatenate int to string
 #define CHEALI_CHARGER_STRING2(x)   #x
 #define CHEALI_CHARGER_STRING(x)    CHEALI_CHARGER_STRING2(x)

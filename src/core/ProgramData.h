@@ -28,7 +28,7 @@
 
 namespace ProgramData {
 
-    enum BatteryClass {ClassNiXX, ClassPb, ClassLiXX, ClassNiZn, ClassLED, LAST_BATTERY_CLASS};
+    enum BatteryClass {ClassNiXX, ClassPb, ClassLiXX, ClassNiZn, ClassUnknown, ClassLED, LAST_BATTERY_CLASS};
     enum BatteryType {None, NiCd, NiMH, Pb, Life, Lilo, Lipo, Li430, Li435, NiZn, Unknown, LED, LAST_BATTERY_TYPE};
     enum VoltageType {VIdle, VCharge, VDischarge, VStorage, ValidEmpty, LAST_VOLTAGE_TYPE};
 
@@ -74,6 +74,7 @@ namespace ProgramData {
 
     extern Battery battery;
     extern const char * const batteryString[];
+    extern const BatteryClass batteryClassMap[];
 
     uint16_t getDefaultVoltagePerCell(VoltageType type = VIdle);
     uint16_t getDefaultVoltage(VoltageType type = VIdle);

@@ -22,6 +22,7 @@
 #include "EditMenu.h"
 #include "cprintf.h"
 
+
 #define CE_STEP_TYPE_SMART  0x7fff
 #define CE_STEP_TYPE_METHOD 0x7ffe
 
