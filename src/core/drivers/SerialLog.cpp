@@ -34,9 +34,9 @@
 
 #include "Monitor.h"
 
-namespace AnalogInputsADC {
-    void debug();
-}
+void LogDebug_run() __attribute__((weak));
+void LogDebug_run()
+{}
 
 namespace SerialLog {
     enum State { On, Off, Starting };
@@ -143,7 +143,7 @@ void doIdle()
         }
     }
     //TODO: remove
-    //AnalogInputsADC::debug();
+    LogDebug_run();
 }
 
 #else //ENABLE_SERIAL_LOG

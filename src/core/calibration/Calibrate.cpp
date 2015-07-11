@@ -170,7 +170,7 @@ void runCalibrationMenu(const StaticEditMenu::StaticEditData * menuData,
     menu.setSelector(COND_ALWAYS);
     int8_t item;
     do {
-        item = menu.runSimple();
+        item = menu.runSimple(true);
         if(item < 0) break;
         uint8_t c = menu.getEnableCondition(item);
         if(!(c & 1)) {
