@@ -274,6 +274,7 @@ void ProgramData::changedType()
         } else {
             battery.deltaV = -ANALOG_VOLT(0.015);
         }
+        battery.deltaVIgnoreTime = 3;
         battery.deltaT = ANALOG_CELCIUS(1);
         battery.DCcycles = 5;
     } else {

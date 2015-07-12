@@ -64,6 +64,7 @@ namespace ProgramData {
             struct { //NiXX
                 uint16_t enable_deltaV;
                 int16_t deltaV;
+                uint16_t deltaVIgnoreTime;
                 uint16_t deltaT;
                 uint16_t DCcycles;
             };

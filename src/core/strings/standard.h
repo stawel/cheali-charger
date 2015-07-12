@@ -148,6 +148,7 @@ namespace ProgramDataMenu {
 
     STRING(enabledV,    "enab dV:");
     STRING(deltaV,      "|dV:");
+    STRING(ignoreFirst, "|ignr frst:");
 
     STRING(externT,     "extrn T:");
     STRING(dTdt,        "|dT/dt:");

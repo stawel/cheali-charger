@@ -146,9 +146,17 @@ void Program::setupProgramType(ProgramType prog) {
     }
 }
 
+void Program::resetAccumulatedMeasurements()
+{
+    Monitor::resetAccumulatedMeasurements();
+    AnalogInputs::resetAccumulatedMeasurements();
+}
+
 
 Strategy::statusType Program::runWithoutInfo(ProgramType prog)
 {
+    resetAccumulatedMeasurements();
+
     setupProgramType(prog);
     switch(prog) {
         case Program::CapacityCheck:

@@ -105,6 +105,7 @@ const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 
 {string_enabledV,       COND_NiXX,          {CP_TYPE_ON_OFF,0,&battery.enable_deltaV},      {1, 0, 1}},
 {string_deltaV,         COND_enable_dV,     {CP_TYPE_SIGNED_mV,0,&battery.deltaV},          {ANALOG_VOLT(0.001), -ANALOG_VOLT(0.020), ANALOG_VOLT(0.000)}},
+{string_ignoreFirst,    COND_enable_dV,     {CP_TYPE_MINUTES,0,&battery.deltaVIgnoreTime},  {1, 1, 10}},
 
 {string_externT,        COND_BATTERY,       {CP_TYPE_ON_OFF,0,&battery.enable_externT},     {1, 0, 1}},
 {string_dTdt,           COND_enable_dT,     {CP_TYPE_TEMP_MINUT,6,&battery.deltaT},         {ANALOG_CELCIUS(0.1), ANALOG_CELCIUS(0.1), ANALOG_CELCIUS(9)}},

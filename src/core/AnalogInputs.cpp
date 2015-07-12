@@ -71,6 +71,7 @@ namespace AnalogInputs {
     uint16_t    deltaCount_;
     ValueType   deltaLastT_;
     uint16_t    deltaStartTimeU16_;
+    bool        enable_deltaVoutMax_;
 
     uint32_t    i_charge_;
 
@@ -89,6 +90,7 @@ namespace AnalogInputs {
     uint16_t getFullMeasurementCount()      { return calculationCount_; }
     ValueType getDeltaLastT()               { return deltaLastT_;}
     ValueType getDeltaCount()               { return deltaCount_;}
+    void enableDeltaVoutMax(bool enable)    { enable_deltaVoutMax_ = enable; }
 
     uint16_t getStableCount(Name name)      { return stableCount_[name]; };
     bool isStable(Name name)                { return getStableCount(name) >= STABLE_MIN_VALUE; };
@@ -245,7 +247,6 @@ void AnalogInputs::resetAccumulatedMeasurements()
     setReal(deltaVoutMax, 0);
     setReal(deltaTextern, 0);
 }
-
 
 void AnalogInputs::reset()
 {
@@ -461,8 +462,9 @@ void AnalogInputs::finalizeDeltaMeasurement()
             real = VoutPlus - VoutMinus;
 
         old = getRealValue(deltaVoutMax);
-        if(real >= old)
+        if(real >= old || (!enable_deltaVoutMax_)) {
             setReal(deltaVoutMax, real);
+        }
         setReal(deltaVout, real - old);
 
         //calculate deltaTextern

@@ -24,6 +24,8 @@
 #include "memory.h"
 #include "Settings.h"
 
+#define DELTA_COUNTS_PER_MINUTE (60/(ANALOG_INPUTS_DELTA_TIME_MILISECONDS/1000))
+
 namespace DeltaChargeStrategy {
 
     void powerOn();
@@ -55,21 +57,28 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
         return Strategy::COMPLETE;
     }
 
-    if(AnalogInputs::getDeltaCount() <= 1)
+    //we don't have enough data to compute delta values (we need at least 2)
+    if(AnalogInputs::getDeltaCount() < 2)
         return Strategy::RUNNING;
 
-    if(ProgramData::battery.enable_deltaV) {
-        int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
-        if(x < ProgramData::getDeltaVLimit()) {
-            Program::stopReason = string_batteryVoltageReachedDeltaVLimit;
-            return Strategy::COMPLETE;
-        }
-    }
     if(ProgramData::battery.enable_externT) {
         int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
         if(x > ProgramData::getDeltaTLimit()) {
             Program::stopReason = string_externalTemperatureReachedDeltaTLimit;
             return Strategy::COMPLETE;
+        }
+    }
+
+    //ignore few first -dV values until output voltage is stable
+    bool dontIgnore = AnalogInputs::getDeltaCount() >= ProgramData::battery.deltaVIgnoreTime * DELTA_COUNTS_PER_MINUTE;
+    AnalogInputs::enableDeltaVoutMax(dontIgnore);
+    if(dontIgnore) {
+        if(ProgramData::battery.enable_deltaV) {
+            int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
+            if(x < ProgramData::getDeltaVLimit()) {
+                Program::stopReason = string_batteryVoltageReachedDeltaVLimit;
+                return Strategy::COMPLETE;
+            }
         }
     }
 
