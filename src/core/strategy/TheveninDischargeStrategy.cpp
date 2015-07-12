@@ -50,7 +50,7 @@ void TheveninDischargeStrategy::powerOn()
     Discharger::powerOn();
     Balancer::powerOn();
     //end on minimum Voltage reached or TheveninMethodComplete
-    endOnTheveninMethodComplete_ = ProgramData::battery.adaptiveDis;
+    endOnTheveninMethodComplete_ = ProgramData::battery.enable_adaptiveDischarge;
     TheveninMethod::initialize(false);
 }
 

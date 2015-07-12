@@ -52,7 +52,7 @@ namespace ProgramData {
         uint16_t enable_externT;
         AnalogInputs::ValueType externTCO;
 
-        uint16_t adaptiveDis;
+        uint16_t enable_adaptiveDischarge;
         uint16_t DCRestTime;
         uint16_t capCutoff;
 
