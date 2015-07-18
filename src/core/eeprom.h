@@ -15,6 +15,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#ifndef EEPROM_H_
+#define EEPROM_H_
 
 #include "AnalogInputs.h"
 #include "ProgramData.h"
@@ -68,3 +70,5 @@ namespace eeprom {
 
 
 }
+#endif //EEPROM_H_
+

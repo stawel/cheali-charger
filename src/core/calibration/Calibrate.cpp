@@ -543,4 +543,4 @@ bool check() {
 
 
 } // namespace Calibrate
-
+#undef COND_ALWAYS

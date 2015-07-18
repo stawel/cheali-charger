@@ -45,7 +45,7 @@ namespace Screen { namespace Methods {
         } else if(Discharger::isPowerOn()) {
             c = 'D';
             if(SMPS::isPowerOn()) c = 'E';
-        } else if(Balancer::isWorking()) {
+        } else if(::Balancer::isWorking()) {
             c = 'B';
         }
 

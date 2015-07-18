@@ -254,12 +254,12 @@ void lcdPrint_mV(int16_t p, int8_t dig)
     lcdPrintAnalog(p, dig, AnalogInputs::SignedVoltage);
 }
 
-struct Info {
+struct UnitsInfo {
     uint16_t div;
     bool mili;
     const char * symbol;
 };
-static const Info info[] PROGMEM = {
+static const UnitsInfo unitsInfo[] PROGMEM = {
         // Current
         {ANALOG_AMP(1.000), true, string_A},
         //Voltage,
@@ -283,19 +283,19 @@ static const Info info[] PROGMEM = {
         //TemperatureMinutes,
         {ANALOG_CELCIUS(1.00), false, string_C_m},
         //Minutes
-        {1, false, string_minutes},
+        {1, false, AnalogInputs::string_minutes},
         //TimeLimitMinutes,
-        {1, false, string_minutes},
+        {1, false, AnalogInputs::string_minutes},
         //YesNo
         {1, false, NULL},
         //Unknown
-        {1, false, string_unknown},
+        {1, false, AnalogInputs::string_unknown},
 };
 
 
 void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type type)
 {
-    STATIC_ASSERT(sizeOfArray(info) -1 == AnalogInputs::Unknown);
+    STATIC_ASSERT(sizeOfArray(unitsInfo) -1 == AnalogInputs::Unknown);
 
     if(type == AnalogInputs::YesNo) {
         lcdPrintYesNo(x, dig);
@@ -305,7 +305,7 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
             //TODO: programData::
             lcdPrint_P(string_unlimited);
     } else {
-        const char * symbol = pgm::read(&info[type].symbol);
+        const char * symbol = pgm::read(&unitsInfo[type].symbol);
         uint8_t symbol_size = pgm::strlen(symbol);
 
         dig -= symbol_size;
@@ -321,7 +321,7 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
             }
         }
 
-        lcdPrintValue_(x, (int8_t) dig, pgm::read(&info[type].div), pgm::read(&info[type].mili), sign);
+        lcdPrintValue_(x, (int8_t) dig, pgm::read(&unitsInfo[type].div), pgm::read(&unitsInfo[type].mili), sign);
         lcdPrint_P(symbol);
     }
 }

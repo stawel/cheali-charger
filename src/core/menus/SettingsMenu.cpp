@@ -155,4 +155,5 @@ void run() {
     settings.save();
 }
 
+#undef COND_ALWAYS
 } //namespace SettingsMenu

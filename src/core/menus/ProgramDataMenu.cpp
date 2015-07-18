@@ -156,3 +156,5 @@ void run() {
 }
 
 } //namespace ProgramDataMenu
+
+#undef COND_ALWAYS
