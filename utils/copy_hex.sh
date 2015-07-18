@@ -12,4 +12,10 @@ do
     cp $FILE $OUTPUT
 done
 
+for FILE in `find $FIND_DIR -iname '*.bin'`
+do
+    echo "file: $FILE"
+    cp $FILE $OUTPUT
+done
+
 ./gen_sha1.sh $OUTPUT
