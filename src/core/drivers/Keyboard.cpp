@@ -92,16 +92,3 @@ uint8_t Keyboard::getPressedWithSpeed()
     return last_key_;
 }
 
-uint8_t Keyboard::getPressTime(uint8_t limit)
-{
-    uint8_t last = last_key_;
-    uint8_t key;
-    do {
-        key = getPressedWithSpeed();
-        if(speed_ == limit)
-            return speed_;
-    } while(key == last);
-    return speed_;
-}
-
-

@@ -35,8 +35,6 @@
 namespace Keyboard {
     uint8_t getPressed();
     uint8_t getPressedWithSpeed();
-    uint8_t getSpeed();
-    uint8_t getPressTime(uint8_t limit = 2);
     bool isLongPressTime();
 };
 

@@ -15,27 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "ChealiCharger2.h"
-#include "MainMenu.h"
-#include "ProgramData.h"
-#include "AnalogInputs.h"
-#include "EditName.h"
-#include "ProgramMenus.h"
-#include "Options.h"
-#include "Utils.h"
-#include "Buzzer.h"
-#include "Version.h"
-#include "Settings.h"
-#include "StackInfo.h"
 #include "Hardware.h"
-#include "SerialLog.h"
-#include "eeprom.h"
-#include "cpu.h"
-#include "Serial.h"
-#include "Screen.h"
-#include "Balancer.h"
-#include STRINGS_HEADER
-#include "atomic.h"
 
 namespace ADCKeyboardAnalyzer {
     void run();
