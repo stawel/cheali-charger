@@ -43,6 +43,29 @@ namespace StartInfo {
         }
     }
 
+    void printVoltageString(int8_t dig)
+    {
+        uint16_t voltage = ProgramData::getDefaultVoltage();
+        if(ProgramData::battery.type == ProgramData::Unknown || ProgramData::battery.type == ProgramData::LED) {
+            voltage = ProgramData::getVoltage(ProgramData::VCharge);
+            lcdPrintVoltage(voltage, dig);
+        } else {
+            uint8_t cells = ProgramData::battery.cells;
+            uint8_t size = 5+3;
+            if(cells > 9) size++;
+            lcdPrintSpaces(dig - size);
+            lcdPrintVoltage(voltage, 5);
+            lcdPrintChar('/');
+            lcdPrintUInt(cells);
+            lcdPrintChar('C');
+        }
+    }
+
+    void printBatteryString() {
+        lcdPrint_P(ProgramData::batteryString, ProgramData::battery.type);
+    }
+
+
 } // namespace Screen
 } // namespace StartInfo
 
@@ -50,11 +73,12 @@ namespace StartInfo {
 void Screen::StartInfo::displayStartInfo()
 {
     lcdSetCursor0_0();
-    ProgramData::currentProgramData.printBatteryString();
+    printBatteryString();
     lcdPrintSpace1();
-    ProgramData::currentProgramData.printVoltageString();
+    printVoltageString(8);
     lcdPrintSpace1();
     printProgram2chars(Program::programType);
+    lcdPrintSpace1();
 
     lcdSetCursor0_1();
     lcdPrintUnsigned(Monitor::getChargeProcent(), 2);
@@ -65,7 +89,7 @@ void Screen::StartInfo::displayStartInfo()
     else lcdPrintSpaces(5);
 
     lcdPrintChar(' ');
-    if(ProgramData::currentProgramData.isLiXX()) {
+    if(ProgramData::isLiXX()) {
         //display balance port
         if(bindex & 2) AnalogInputs::printRealValue(AnalogInputs::Vbalancer, 5);
         else lcdPrintSpaces(5);
@@ -74,7 +98,11 @@ void Screen::StartInfo::displayStartInfo()
         else lcdPrintSpace1();
     } else {
 
-        lcdPrintCharge(ProgramData::currentProgramData.battery.C, 6);
+        if(ProgramData::battery.type == ProgramData::LED) {
+            lcdPrintCurrent(ProgramData::battery.Ic, 6);
+        } else {
+            lcdPrintCharge(ProgramData::battery.capacity, 6);
+        }
         lcdPrintSpaces();
     }
 }

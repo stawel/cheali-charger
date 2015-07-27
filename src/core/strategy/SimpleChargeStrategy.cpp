@@ -20,12 +20,23 @@
 #include "Screen.h"
 #include "Hardware.h"
 #include "TheveninMethod.h"
+#include "Program.h"
+
+namespace SimpleChargeStrategy {
+
+    Strategy::statusType doStrategy();
+
+    const Strategy::VTable vtable PROGMEM = {
+        powerOn,
+        powerOff,
+        doStrategy
+    };
+}
 
 
 void SimpleChargeStrategy::powerOn()
 {
     SMPS::powerOn();
-    Strategy::setVI(ProgramData::VCharge, true);
     TheveninMethod::initialize(true);
     SMPS::trySetIout(Strategy::minI);
 }
@@ -34,6 +45,22 @@ void SimpleChargeStrategy::powerOff()
 {
     SMPS::powerOff();
 }
+
+Strategy::statusType SimpleChargeStrategy::doStrategy()
+{
+    SimpleChargeStrategy::calculateThevenin();
+    AnalogInputs::ValueType Vout = AnalogInputs::getVbattery();
+
+    if(Vout > Strategy::endV) {
+        Program::stopReason = DeltaChargeStrategy::string_batteryVoltageReachedUpperLimit;
+        return Strategy::ERROR;
+    }
+    SMPS::trySetIout(Strategy::maxI);
+
+    return Strategy::RUNNING;
+}
+
+
 
 void SimpleChargeStrategy::calculateThevenin()
 {

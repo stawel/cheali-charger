@@ -30,7 +30,7 @@ namespace ProgramDCcycle {
 
     Strategy::statusType runDCRestTime()
     {
-        DelayStrategy::setDelay(settings.DCRestTime);
+        DelayStrategy::setDelay(ProgramData::battery.DCRestTime);
         Strategy::strategy = &DelayStrategy::vtable;
         return Strategy::doStrategy();
     }
@@ -39,7 +39,7 @@ namespace ProgramDCcycle {
 
 Strategy::statusType ProgramDCcycle::runDCcycle(uint8_t firstCycle, uint8_t lastCycle)
 {
-    Strategy::statusType status = Strategy::COMPLETE;
+    Strategy::statusType status;
     Strategy::exitImmediately = true;
     currentCycle = firstCycle;
     while(true) {
@@ -51,11 +51,9 @@ Strategy::statusType ProgramDCcycle::runDCcycle(uint8_t firstCycle, uint8_t last
         if(status != Strategy::COMPLETE || (!Strategy::exitImmediately)) break;
 
         currentCycle++;
-
-        Monitor::resetAccumulatedMeasurements();
-        AnalogInputs::resetAccumulatedMeasurements();
-
+        Program::resetAccumulatedMeasurements();
         status = runDCRestTime();
+
         if(status != Strategy::COMPLETE) break;
     }
     return status;

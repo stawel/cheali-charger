@@ -51,14 +51,19 @@ void StartInfoStrategy::powerOff()
 Strategy::statusType StartInfoStrategy::doStrategy()
 {
     bool cell_nr, v_balance, v_out, balance;
+    uint8_t is_cells, should_be_cells;
 
     cell_nr = v_balance = false;
     v_out = ! AnalogInputs::isConnected(AnalogInputs::Vout);
 
+    if(ProgramData::battery.type == ProgramData::Unknown || ProgramData::battery.type == ProgramData::LED) {
+        v_out = false;
+    }
+
+    is_cells = AnalogInputs::getConnectedBalancePorts();
+
     if(Strategy::doBalance) {
-        uint8_t is_cells, should_be_cells;
-        is_cells = AnalogInputs::getConnectedBalancePorts();
-        should_be_cells = ProgramData::currentProgramData.battery.cells;
+        should_be_cells = ProgramData::battery.cells;
         cell_nr = (should_be_cells != is_cells);
         v_balance = (is_cells == 0);
 
@@ -83,16 +88,11 @@ Strategy::statusType StartInfoStrategy::doStrategy()
         Buzzer::soundOff();
     }
 
-    balance = (v_balance || cell_nr) && settings.forceBalancePort;
+    balance = (v_balance || cell_nr) && (is_cells != 0);
 
-    if(ProgramData::currentProgramData.battery.type == ProgramData::Unknown
-            && Program::programType == Program::Charge) {
-        v_out = false;
-    }
-
-    if(Keyboard::getPressed() == BUTTON_NONE)
+    if(Keyboard::getLast() == BUTTON_NONE)
         ok_ = 0;
-    if(!balance && !v_out && Keyboard::getPressed() == BUTTON_START) {
+    if(!balance && !v_out && Keyboard::getLast() == BUTTON_START) {
         ok_++;
     }
     if(ok_ == 2) {

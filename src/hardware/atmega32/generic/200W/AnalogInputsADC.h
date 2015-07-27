@@ -15,12 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef ADC_H_
-#define ADC_H_
+#ifndef ANALOG_INPUTS_ADC_H_
+#define ANALOG_INPUTS_ADC_H_
 
-namespace adc
-{
+namespace AnalogInputsADC {
+
     void initialize();
 };
 
-#endif /* ADC_H_ */
+#endif /* ANALOG_INPUTS_ADC_H_ */

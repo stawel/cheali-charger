@@ -41,15 +41,15 @@ namespace Screen {
 
     //see PAGE_PROGRAM
     //see PAGE_BATTERY
-    STATIC_ASSERT(ProgramData::LAST_BATTERY_CLASS == 4 && Program::LAST_PROGRAM_TYPE == 9 + 2);
+    STATIC_ASSERT_MSG(ProgramData::LAST_BATTERY_CLASS == 6 && Program::LAST_PROGRAM_TYPE == 9 + 2, "see ScreenPages.h");
 
-    uint16_t getConditions() {
-        uint16_t c = 0;
+    uint32_t getConditions() {
+        uint32_t c = 0;
         if(Program::programState == Program::Info)
             c += PAGE_START_INFO;
         if(Monitor::isBalancePortConnected)
             c += PAGE_BALANCE_PORT;
-        c += PAGE_BATTERY(ProgramData::currentProgramData.getBatteryClass());
+        c += PAGE_BATTERY(ProgramData::getBatteryClass());
         c += PAGE_PROGRAM(Program::programType);
         return c;
     }
@@ -57,7 +57,7 @@ namespace Screen {
     VoidMethod getPage(uint8_t page) {
         uint8_t i = 0;
         Pages::PageInfo info;
-        uint16_t condition = getConditions();
+        uint32_t condition = getConditions();
         bool ok;
         page++;
         do {

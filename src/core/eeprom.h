@@ -15,6 +15,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#ifndef EEPROM_H_
+#define EEPROM_H_
 
 #include "AnalogInputs.h"
 #include "ProgramData.h"
@@ -22,7 +24,7 @@
 
 #define EEPROM_MAGIC_STRING_LEN 4
 
-#define EEPROM_RESTORE_MAGIC_STRING         1
+#define EEPROM_RESTORE_MAGIC_NUMBER         1
 #define EEPROM_RESTORE_CALIBRATION          2
 #define EEPROM_RESTORE_PROGRAM_DATA         4
 #define EEPROM_RESTORE_SETTINGS             8
@@ -31,6 +33,7 @@
 namespace eeprom {
     struct Data {
         uint8_t magicString[EEPROM_MAGIC_STRING_LEN];
+        uint16_t architecture;
         uint16_t calibrationVersion;
         uint16_t programDataVersion;
         uint16_t settingVersion;
@@ -38,7 +41,7 @@ namespace eeprom {
         AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS];
         uint16_t calibrationCRC;
 
-        ProgramData programData[MAX_PROGRAMS];
+        ProgramData::Battery battery[MAX_PROGRAMS];
         uint16_t programDataCRC;
 
         Settings settings;
@@ -67,3 +70,5 @@ namespace eeprom {
 
 
 }
+#endif //EEPROM_H_
+

@@ -19,39 +19,9 @@
 #define SETTINGSMENU_H_
 
 #include "Settings.h"
-#include "EditMenu.h"
 
-class SettingsMenu : public EditMenu {
-public:
-    SettingsMenu(const Settings &p);
-    virtual void printItem(uint8_t i);
-    virtual void editItem(uint8_t i, uint8_t key);
-
+namespace SettingsMenu {
     void run();
-
-    Settings p_;
-private:
-    void printFanOn(uint8_t dig) const;
-    void printUART(uint8_t dig) const;
-    void printUARTSpeed(uint8_t dig) const;
-    void printUARTinput(uint8_t dig) const;
-
-    void changeBacklight(int dir);
-    void changeUART(int dir);
-    void changeExternTemp(int dir);
-
-    void changeOverCharge(int dir);
-    void changeOverDischarge(int dir);
-
-    static void printTemp(AnalogInputs::ValueType t, uint8_t dig);
-    static void printDeltaT(AnalogInputs::ValueType dt, uint8_t dig);
-    static void printVolt(AnalogInputs::ValueType v, uint8_t dig);
-    static void changeTemp(AnalogInputs::ValueType *v, int dir);
-    static void changeDeltaTemp(AnalogInputs::ValueType *v, int dir);
-    static void changeInputVolt(AnalogInputs::ValueType *v, int dir);
-    static void changeBalanceError(AnalogInputs::ValueType *v, int dir);
-    static void changeCutoffNiXX(AnalogInputs::ValueType *v,int dir);
-    static void changeDeltaV(int16_t *v, int dir);
 };
 
 #endif /* SETTINGSMENU_H_ */

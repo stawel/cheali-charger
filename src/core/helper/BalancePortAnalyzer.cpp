@@ -19,7 +19,6 @@
 #include "MainMenu.h"
 #include "ProgramData.h"
 #include "AnalogInputs.h"
-#include "EditName.h"
 #include "ProgramMenus.h"
 #include "Options.h"
 #include "Utils.h"
@@ -34,6 +33,7 @@
 #include "Serial.h"
 #include "Screen.h"
 #include "Balancer.h"
+#include "SettingsMenu.h"
 #include STRINGS_HEADER
 #include "atomic.h"
 
@@ -116,7 +116,7 @@ void run() {
             Balancer::powerOff();
             AnalogInputs::powerOff();
             SerialLog::powerOff();
-            settings.edit();
+            SettingsMenu::run();
             SerialLog::powerOn();
             AnalogInputs::powerOn();
             Balancer::powerOn();

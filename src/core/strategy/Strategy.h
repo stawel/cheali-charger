@@ -34,7 +34,6 @@ namespace Strategy {
     extern AnalogInputs::ValueType endV;
     extern AnalogInputs::ValueType maxI;
     extern AnalogInputs::ValueType minI;
-    extern uint8_t minIdiv;
     extern bool doBalance;
 
     void setVI(ProgramData::VoltageType vt, bool charge);

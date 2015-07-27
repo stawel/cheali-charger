@@ -64,7 +64,7 @@ bool Balancer::isCalibrationRequired() {
         if(vi < Vmin) Vmin = vi;
     }
 
-    return Vmax - Vmin > settings.balancerError;
+    return Vmax - Vmin > ProgramData::battery.balancerError;
 }
 
 
@@ -153,7 +153,7 @@ void Balancer::startBalacing()
 
     //test if we can still discharge
     bool off = true;
-    AnalogInputs::ValueType VdisMin =  ProgramData::currentProgramData.getVoltagePerCell(ProgramData::VDischarge);
+    AnalogInputs::ValueType VdisMin =  ProgramData::battery.Vd_per_cell;
     for(int i = 0; i < cells; i++) {
         //save voltage values
         AnalogInputs::ValueType v = getV(i);

@@ -27,20 +27,10 @@
 #define BUTTON_INC          4
 #define BUTTON_START        8
 
-#define BUTTON_DELAY_TIMES          250
-#define BUTTON_DELAY                1
-#define BUTTON_CHANGE_DELAY         50
-
-
 namespace Keyboard {
-    uint8_t getPressed();
-    uint8_t getPressedWithSpeed();
-    uint8_t getSpeed();
-    uint8_t getPressTime(uint8_t limit = 2);
+    uint8_t getLast();
+    uint8_t getPressedWithDelay();
     bool isLongPressTime();
-
-    uint16_t getSpeedFactor();
-
 };
 
 

@@ -31,7 +31,7 @@
 #include "ScreenMethods.h"
 #include "Balancer.h"
 
-namespace Screen {
+namespace Screen { namespace Methods {
 
     void printCharge() {
         lcdPrintCharge(AnalogInputs::getRealValue(AnalogInputs::Cout), 8);
@@ -45,7 +45,7 @@ namespace Screen {
         } else if(Discharger::isPowerOn()) {
             c = 'D';
             if(SMPS::isPowerOn()) c = 'E';
-        } else if(Balancer::isWorking()) {
+        } else if(::Balancer::isWorking()) {
             c = 'B';
         }
 
@@ -67,7 +67,7 @@ namespace Screen {
 
     }
     void printDeltaT() {
-        if(settings.externT) {
+        if(ProgramData::battery.enable_externT) {
             int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
             lcdPrintSigned(x*10, 5);
             lcdPrintChar('m');
@@ -79,9 +79,7 @@ namespace Screen {
     }
 
 
-} // namespace Screen
-
-
+} }// namespace Screen::Methods
 
 void Screen::Methods::displayFirstScreen()
 {
@@ -99,7 +97,7 @@ void Screen::Methods::displayFirstScreen()
 void Screen::Methods::displayCIVlimits()
 {
     lcdSetCursor0_0();
-    lcdPrintCharge(ProgramData::currentProgramData.getCapacityLimit(), 8);
+    lcdPrintCharge(ProgramData::getCapacityLimit(), 8);
     lcdPrintSpace1();
     lcdPrintCurrent(Strategy::maxI, 7);
     lcdPrintSpaces();
@@ -114,8 +112,7 @@ void Screen::Methods::displayTime()
 {
     lcdSetCursor0_0();
 #ifdef ENABLE_TIME_LIMIT
-    lcdPrintSpace1();
-    ProgramData::currentProgramData.printTimeString();
+    lcdPrintAnalog(ProgramData::battery.time, 8, AnalogInputs::TimeLimitMinutes);
     lcdPrintSpaces(2);
 #else
     lcdPrint_P(PSTR("time:     "));
@@ -151,7 +148,7 @@ void Screen::Methods::displayVinput()
     lcdPrintSpaces();
     lcdSetCursor0_1();
     lcdPrint_P(PSTR(" limit="));
-    lcdPrintAnalog(settings.inputVoltageLow, AnalogInputs::Voltage, 7);
+    lcdPrintAnalog(settings.inputVoltageLow, 7, AnalogInputs::Voltage);
     lcdPrintSpaces();
 }
 
@@ -171,7 +168,7 @@ void Screen::Methods::displayTemperature()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("Text="));
-    if(settings.externT)
+    if(ProgramData::battery.enable_externT)
         AnalogInputs::printRealValue(AnalogInputs::Textern,    5);
     else
         lcdPrint_P(PSTR("-"));
@@ -213,7 +210,7 @@ void Screen::Methods::displayDeltaTextern()
 {
     lcdSetCursor0_0();
     lcdPrint_P(PSTR("Text="));
-    if(settings.externT) {
+    if(ProgramData::battery.enable_externT) {
         lcdPrintTemperature(AnalogInputs::getDeltaLastT(), 9);
     } else {
         lcdPrint_P(PSTR("N/A"));
@@ -227,42 +224,18 @@ void Screen::Methods::displayDeltaTextern()
 
 void Screen::Methods::displayEnergy()
 {
-    bool displayBlink_ = (blink.blinkTime_/16)&1;
-
     lcdSetCursor0_0();
-    if (displayBlink_ == true) {
-        printCharge();
-        AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
-
-        lcdPrintSpaces();
-        lcdSetCursor0_1();
-        printCharAndTime();
-        lcdPrintSpace1();
-    } else {
-        AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
-        lcdPrintSpace1();
-        AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
-        lcdPrintSpaces();
-        lcdSetCursor0_1();
-        AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
-        lcdPrintSpaces(2);
-
-    }
+    AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
+    lcdPrintSpace1();
+    AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+    lcdPrintSpaces();
+    lcdSetCursor0_1();
+    AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
+    lcdPrintSpaces(2);
 
     uint8_t procent = Monitor::getChargeProcent();
-    if (displayBlink_ == true && SMPS::isPowerOn() && procent < 99) {
-        //display calculated simple ETA
-
-        if(Monitor::etaDeltaSec > 20)  //bigger 20sec for ETA calc (is 1C)
-        {
-            lcdPrintTime(Monitor::getETATime()); //TODO_NJ (not accurate for balancing time)
-        } else {
-            lcdPrint_P(PSTR(" --:--"));
-        }
-    } else {
-        lcdPrintUnsigned(procent, 4);
-        lcdPrint_P(PSTR("%"));
-        lcdPrintSpaces();
-    }
+    lcdPrintUnsigned(procent, 4);
+    lcdPrint_P(PSTR("%"));
+    lcdPrintSpaces();
 }
 

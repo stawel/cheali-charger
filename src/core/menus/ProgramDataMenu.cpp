@@ -17,136 +17,144 @@
 */
 #include "ProgramDataMenu.h"
 #include "LcdPrint.h"
-#include "EditName.h"
 #include "Utils.h"
 #include "Buzzer.h"
+#include "StaticEditMenu.h"
+#include "ProgramData.h"
+#include "ScreenStartInfo.h"
 
-using namespace programDataMenu;
+using namespace ProgramData;
 
-const char * const ProgramDataStaticMenu[] PROGMEM =
-{
-        string_batteryType,
-        string_voltage,
-        string_capacity,
-        string_chargeCurrent,
-        string_dischargeCurrent,
-#ifdef ENABLE_TIME_LIMIT
-        string_timeLimit,
-#endif
-        string_createName,
-#ifdef ENABLE_PROGRAM_MENU_EDIT_NAME
-        string_editName,
-#endif
-#ifdef ENABLE_PROGRAM_MENU_RESET_NAME
-        string_resetName,
-#endif
-        NULL
-};
+namespace ProgramDataMenu {
 
+/*condition bits:*/
+#define COND_ALWAYS         StaticEditMenu::Always
+#define COND_NiXX           1
+#define COND_Pb             2
+#define COND_LiXX           4
+#define COND_NiZn           8
+#define COND_Unknown        16
+#define COND_LED            32
 
-ProgramDataMenu::ProgramDataMenu(const ProgramData &p, int programIndex):
-        EditMenu(ProgramDataStaticMenu), p_(p), programIndex_(programIndex){};
+#define COND_enableT        256
+#define COND_enable_dV      512
+#define COND_enable_dT      1024
+#define COND_advanced       32768
+#define ADV(x)              (COND_advanced + COND_ ## x)
 
+#define COND_LiXX_NiZn              (COND_LiXX + COND_NiZn)
+#define COND_LiXX_NiZn_Pb           (COND_LiXX + COND_NiZn + COND_Pb)
+#define COND_LiXX_NiZn_Pb_Unkn      (COND_LiXX + COND_NiZn + COND_Pb + COND_Unknown)
+#define COND_NiXX_Pb                (COND_NiXX + COND_Pb)
 
-void ProgramDataMenu::editName()
-{
-    EditName editName(p_.name, PROGRAM_DATA_MAX_NAME, string_editedName);
-    editName.run();
-    render();
-}
+#define COND_BATTERY                (COND_NiXX + COND_Pb + COND_LiXX + COND_NiZn + COND_Unknown)
+#define COND_BATT_UNKN              (COND_NiXX + COND_Pb + COND_LiXX + COND_NiZn)
 
-void ProgramDataMenu::createName()
-{
-    p_.createName(programIndex_+1);
-    waitName();
-}
+uint16_t getSelector() {
+    STATIC_ASSERT(LAST_BATTERY_CLASS == 6);
+    uint16_t result = 1<<14;
+    if(battery.type != None) {
+        result += 1 << getBatteryClass();
 
-void ProgramDataMenu::resetName()
-{
-    p_.resetName(programIndex_+1);
-    waitName();
-}
-void ProgramDataMenu::waitName()
-{
-    lcdClear();
-    lcdSetCursor0_0();
-    lcdPrint_P(string_name);
-    lcdSetCursor0_1();
-    lcdPrint(p_.name, PROGRAM_DATA_MAX_NAME);
-    waitButtonPressed();
-    Buzzer::soundSelect();
-}
-
-
-void ProgramDataMenu::printItem(uint8_t index)
-{
-    StaticMenu::printItem(index);
-    if(getBlinkIndex() != index) {
-        START_CASE_COUNTER;
-        switch (index) {
-            case NEXT_CASE:    p_.printBatteryString(); break;
-            case NEXT_CASE:    p_.printVoltageString(); break;
-            case NEXT_CASE:    p_.printChargeString();  break;
-            case NEXT_CASE:    p_.printIcString();      break;
-            case NEXT_CASE:    p_.printIdString();      break;
-#ifdef ENABLE_TIME_LIMIT
-            case NEXT_CASE:    p_.printTimeString();    break;
-#endif
+        if(battery.enable_externT) {
+            result += COND_enableT;
+            if(isNiXX()) {
+                result += COND_enable_dT;
+            }
+        }
+        if(isNiXX() && battery.enable_deltaV) {
+            result += COND_enable_dV;
+        }
+        if(settings.menuType) {
+            result += COND_advanced;
         }
     }
+    return result;
 }
 
-void ProgramDataMenu::editItem(uint8_t index, uint8_t key)
+void changeVoltage(int dir)
 {
-    int dir = -1;
-    if(key == BUTTON_INC) dir = 1;
-
-    START_CASE_COUNTER;
-    switch(index) {
-        case NEXT_CASE: p_.changeBatteryType(dir);    break;
-        case NEXT_CASE: p_.changeVoltage(dir);    break;
-        case NEXT_CASE: p_.changeCharge(dir);     break;
-        case NEXT_CASE: p_.changeIc(dir);         break;
-        case NEXT_CASE: p_.changeId(dir);         break;
-#ifdef ENABLE_TIME_LIMIT
-        case NEXT_CASE: p_.changeTime(dir);       break;
-#endif
-    }
+    changeMinToMaxStep(&battery.cells, dir, 1, getMaxCells(), 1);
 }
 
-void ProgramDataMenu::run() {
-    int8_t index;
+const cprintf::ArrayData batteryTypeData  PROGMEM = {batteryString, &battery.type};
+
+
+const AnalogInputs::ValueType Tmin = (Settings::TempDifference/ANALOG_CELCIUS(1))*ANALOG_CELCIUS(1) + ANALOG_CELCIUS(1);
+const AnalogInputs::ValueType Tmax = ANALOG_CELCIUS(99);
+const AnalogInputs::ValueType Tstep =  ANALOG_CELCIUS(1);
+/*
+|static string          |when to display    | how to display, see cprintf                   | how to edit |
+ */
+const StaticEditMenu::StaticEditData editData[] PROGMEM = {
+{string_batteryType,    COND_ALWAYS,        {CP_TYPE_STRING_ARRAY,0,&batteryTypeData},      {1, 0,LAST_BATTERY_TYPE-1}},
+{string_voltage,        COND_BATT_UNKN,     CPRINTF_METHOD(Screen::StartInfo::printVoltageString), STATIC_EDIT_METHOD(changeVoltage)},
+{string_Vc_per_cell,    ADV(LiXX_NiZn_Pb),  {CP_TYPE_V,0,&battery.Vc_per_cell},             {1,ANALOG_VOLT(0.0),ANALOG_VOLT(5.0)}},
+{string_Vc_per_cell,    COND_Unknown,       {CP_TYPE_V,0,&battery.Vc_per_cell},             {50,ANALOG_VOLT(0.0),MAX_CHARGE_V}},
+{string_Vcutoff,        ADV(NiXX),          {CP_TYPE_V,0,&battery.Vc_per_cell},             {ANALOG_VOLT(0.001), ANALOG_VOLT(1.200), ANALOG_VOLT(2.000)}},
+{string_Vcutoff,        COND_LED,           {CP_TYPE_V,0,&battery.Vc_per_cell},             {CE_STEP_TYPE_SMART, ANALOG_VOLT(0.001), MAX_CHARGE_V}},
+{string_Vs_per_cell,    ADV(LiXX),          {CP_TYPE_V,0,&battery.Vs_per_cell},             {1,ANALOG_VOLT(0.0),ANALOG_VOLT(5.0)}},
+{string_Vd_per_cell,    COND_BATT_UNKN+COND_advanced,{CP_TYPE_V,0,&battery.Vd_per_cell},    {1,ANALOG_VOLT(0.0),ANALOG_VOLT(5.0)}},
+{string_Vd_per_cell,    COND_Unknown,       {CP_TYPE_V,0,&battery.Vd_per_cell},             {50,ANALOG_VOLT(0.0),MAX_CHARGE_V}},
+{string_capacity,       COND_BATTERY,       {CP_TYPE_CHARGE,0,&battery.capacity},           {CE_STEP_TYPE_SMART, ANALOG_MIN_CHARGE, ANALOG_MAX_CHARGE/2}},
+{string_Ic,             COND_BATTERY+COND_LED,{CP_TYPE_A,0,&battery.Ic},                    {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
+{string_minIc,          ADV(LiXX_NiZn_Pb_Unkn),{CP_TYPE_A,0,&battery.minIc},           {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
+{string_Id,             COND_BATTERY,       {CP_TYPE_A,0,&battery.Id},                      {CE_STEP_TYPE_SMART, ANALOG_VOLT(0.001), MAX_DISCHARGE_I}},
+{string_minId,          ADV(BATTERY),       {CP_TYPE_A,0,&battery.minId},                   {CE_STEP_TYPE_SMART, ANALOG_VOLT(0.001), MAX_DISCHARGE_I}},
+{string_balancErr,      ADV(LiXX_NiZn),     {CP_TYPE_SIGNED_mV,0,&battery.balancerError},   {ANALOG_VOLT(0.001), ANALOG_VOLT(0.003), ANALOG_VOLT(0.200)}},
+
+{string_enabledV,       COND_NiXX,          {CP_TYPE_ON_OFF,0,&battery.enable_deltaV},      {1, 0, 1}},
+{string_deltaV,         COND_enable_dV,     {CP_TYPE_SIGNED_mV,0,&battery.deltaV},          {ANALOG_VOLT(0.001), -ANALOG_VOLT(0.020), ANALOG_VOLT(0.000)}},
+{string_ignoreFirst,    COND_enable_dV,     {CP_TYPE_MINUTES,0,&battery.deltaVIgnoreTime},  {1, 1, 10}},
+
+{string_externT,        COND_BATTERY,       {CP_TYPE_ON_OFF,0,&battery.enable_externT},     {1, 0, 1}},
+{string_dTdt,           COND_enable_dT,     {CP_TYPE_TEMP_MINUT,6,&battery.deltaT},         {ANALOG_CELCIUS(0.1), ANALOG_CELCIUS(0.1), ANALOG_CELCIUS(9)}},
+{string_externTCO,      COND_enableT,       {CP_TYPE_TEMPERATURE,3,&battery.externTCO},     {Tstep, Tmin, Tmax}},
+
+{string_timeLimit,      COND_BATTERY+COND_LED,{CP_TYPE_CHARGE_TIME,0,&battery.time},        {CE_STEP_TYPE_SMART, 0, ANALOG_MAX_TIME_LIMIT}},
+{string_capCoff,        COND_BATTERY,       {CP_TYPE_PROCENTAGE,0,&battery.capCutoff},      {1, 1, 250}},
+{string_DCcycles,       COND_NiXX_Pb,       {CP_TYPE_UNSIGNED,0,&battery.DCcycles},         {1, 0, 5}},
+{string_DCRestTime,     ADV(BATTERY),       {CP_TYPE_MINUTES,0,&battery.DCRestTime},        {1, 1, 99}},
+{string_adaptiveDis,    ADV(BATTERY),       {CP_TYPE_ON_OFF,0,&battery.enable_adaptiveDischarge},{1, 0, 1}},
+
+
+{NULL,                  StaticEditMenu::Last}
+
+};
+
+void editCallback(StaticEditMenu * menu, uint16_t * value) {
+    if(value == &ProgramData::battery.type) {
+        ProgramData::changedType();
+    } else if(value == &ProgramData::battery.capacity) {
+        ProgramData::changedCapacity();
+    } else if(value == &ProgramData::battery.Ic) {
+        ProgramData::changedIc();
+    } else if(value == &ProgramData::battery.Id) {
+        ProgramData::changedId();
+    }
+    ProgramData::check();
+    menu->setSelector(getSelector());
+}
+
+void run() {
+    StaticEditMenu menu(editData, editCallback);
+    int8_t item;
+
     do {
-        index = runSimple();
+        menu.setSelector(getSelector());
+        item = menu.runSimple();
 
-        if(index < 0) return;
-
-        START_CASE_COUNTER_FROM(sizeOfArray(ProgramDataStaticMenu)
-#ifdef ENABLE_PROGRAM_MENU_EDIT_NAME
-                  -1
-#endif
-#ifdef ENABLE_PROGRAM_MENU_RESET_NAME
-                  -1
-#endif
-                  -1 -1);
-        switch(index) {
-            case NEXT_CASE: createName(); break;
-#ifdef ENABLE_PROGRAM_MENU_EDIT_NAME
-            case NEXT_CASE: editName();   break;
-#endif
-#ifdef ENABLE_PROGRAM_MENU_RESET_NAME
-            case NEXT_CASE: resetName();  break;
-#endif
-        default:
-            ProgramData undo(p_);
-            if(!runEdit(index)) {
-                p_ = undo;
-            } else {
-                Buzzer::soundSelect();
-                p_.check();
-            }
-            break;
+        if(item < 0) break;
+        ProgramData::Battery undo(ProgramData::battery);
+        if(!menu.runEdit()) {
+            ProgramData::battery = undo;
+        } else {
+            Buzzer::soundSelect();
+            ProgramData::check();
         }
     } while(true);
 }
 
+} //namespace ProgramDataMenu
+
+#undef COND_ALWAYS

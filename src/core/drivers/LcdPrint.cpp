@@ -19,135 +19,62 @@
 #include "Hardware.h"
 #include "memory.h"
 
-using namespace lcd_print;
+using namespace AnalogInputs;
 
-void lcdSetCursor(uint8_t x, uint8_t y)
-{
-    lcd.setCursor(x, y);
-}
-void lcdSetCursor0_0()
-{
-    lcdSetCursor(0,0);
-}
-void lcdSetCursor0_1()
-{
-    lcdSetCursor(0,1);
-}
-
-void lcdClear()
-{
-    lcd.clear();
-}
-
-
-uint8_t lcdPrintSpace1()
-{
-    return lcdPrintSpaces(1);
-}
-
-uint8_t lcdPrintSpaces()
-{
-    return lcdPrintSpaces(16);
-}
-
-uint8_t lcdPrintSpaces(uint8_t n)
-{
-    for(uint8_t i=0;i<n;i++)
-        lcdPrintChar(' ');
-    return n;
-}
-
-void printChar(char * &buf, uint8_t &maxSize, char chr)
-{
-    if(maxSize>0) {
-        *buf = chr; buf++; maxSize--;
-        if(maxSize>0)
-            *buf = 0;
+char* printLong(int32_t value, char * buf) {
+    char * end;
+    if (value < 0) {
+        *(buf++)='-';
+        value = -value;
     }
+    buf += digits((int32_t)value);
+    *buf = 0;
+    end = buf;
+    buf--;
+    do {
+        *buf = (value%10) + '0';
+        value /= 10;
+        buf--;
+    } while(value);
+    return end;
 }
 
+void lcdSetCursor(uint8_t x, uint8_t y) { lcd.setCursor(x, y); }
+void lcdSetCursor0_0() { lcdSetCursor(0,0); }
+void lcdSetCursor0_1() { lcdSetCursor(0,1); }
+void lcdClear() { lcd.clear(); }
 
-void print_P(char * &buf, uint8_t &maxSize, const char *str)
+int8_t lcdPrintSpace1() {   return lcdPrintSpaces(1); }
+int8_t lcdPrintSpaces() {   return lcdPrintSpaces(16);}
+int8_t lcdPrintSpaces(int8_t n)
 {
-    if(str) {
-        uint8_t s = pgm::strlen(str);
-        if(s>maxSize) s = maxSize;
-        pgm::strncpy(buf, str, s);
-        buf+=s;
-        maxSize-=s;
-        if(maxSize>0)
-            *buf = 0;
-    }
-}
-
-void print(char * &buf, uint8_t &maxSize, const char *str)
-{
-    if(str) {
-        uint8_t s = strlen(str);
-        if(s>maxSize) s = maxSize;
-        strncpy(buf, str, s);
-        buf+=s;
-        maxSize-=s;
-        if(maxSize>0)
-            *buf = 0;
-    }
-}
-
-void printUInt(char * &buf, uint8_t &maxSize, uint16_t value)
-{
-    //TODO: use printULong - for some reason the program size is smaller now!?
-    uint8_t dig = digits(value);
-    if(dig > maxSize) {
-        printChar(buf, maxSize,'?');
-    } else {
-        buf+=dig;
-        char * str = buf;
-        maxSize-=dig;
-        if(maxSize > 0)
-            *buf = 0;
-        while(dig) {
-            uint16_t m = value;
-            value /= 10;
-            char c = m - 10 * value;
-            *--str = c + '0';
-            dig--;
-        }
-    }
-}
-
-
-void printULong(char * &buf, uint8_t &maxSize, uint32_t value)
-{
-    uint8_t dig = digits(value);
-    if(dig > maxSize) {
-        printChar(buf, maxSize,'?');
-    } else {
-        buf+=dig;
-        char * str = buf;
-        maxSize-=dig;
-        if(maxSize > 0)
-            *buf = 0;
-        while(dig) {
-            uint32_t m = value;
-            value /= 10;
-            char c = m - 10 * value;
-            *--str = c + '0';
-            dig--;
-        }
-    }
+    return lcdPrintChar(' ', n);
 }
 
 void lcdPrintUInt(uint16_t x)
 {
-    char buf[8];
-    char *str = buf;
-    uint8_t maxSize = 7;
-    printUInt(str, maxSize, x);
-    lcdPrint(buf, 8);
+    char buf[11];
+    printLong(x, buf);
+    lcdPrint(buf, 11);
+}
+
+void lcdPrintLong(int32_t x, int8_t dig)
+{
+    char buf[11];
+    printLong(x, buf);
+    lcdPrintR(buf, dig);
 }
 
 
-uint8_t lcdPrint(const char *str, uint8_t size)
+void lcdPrintR(const char *str, int8_t size)
+{
+    uint8_t str_size = strlen(str);
+    lcdPrintSpaces(size - str_size);
+    lcdPrint(str, size);
+}
+
+
+int8_t lcdPrint(const char *str, int8_t size)
 {
     uint8_t n = 0;
     if(str) {
@@ -164,125 +91,73 @@ uint8_t lcdPrint(const char *str, uint8_t size)
     return n;
 }
 
-uint8_t lcdPrint_P(const char * const str[], uint8_t index) {
+int8_t lcdPrint_P(const char * const str[], uint8_t index) {
     return lcdPrint_P(pgm::read(&str[index]));
 }
 
 
-uint8_t lcdPrint_P(const char *str)
+int8_t lcdPrint_P(const char *str)
 {
-    uint8_t n = 0;
+    int8_t n = 0;
+    char c;
     if(str) {
-        while(true) {
-            n++;
-            char c = pgm::read(str);
-            str++;
-            if (c == 0) {
-                break;
-            }
+        while((c = pgm::read(str++)) != 0) {
             lcdPrintChar(c);
-        }
-    }
-    return n;
-}
-
-uint8_t lcdPrint_E(const char *str, uint8_t size)
-{
-    uint8_t n = 0;
-    if(str) {
-        while(n < size) {
             n++;
-            char c = eeprom::read((const uint8_t*)str);
-            str++;
-            if (c == 0) {
-                break;
-            } else {
-                lcdPrintChar(c);
-            }
         }
     }
     return n;
 }
 
-namespace {
-void lcdPrintInf(int8_t dig)
-{
-    for(; dig > 3; dig--)
-        lcdPrintChar(' ');
-
-    lcdPrint_P(string_infinity + 3 - dig);
-}
+static uint16_t div10(uint16_t div) {
+    if(div <= 100)
+        return 100;
+    return 1000;
 }
 
-void lcdPrintValue1000(uint16_t x, int8_t dig, bool dot)
+void lcdPrintValue_(uint16_t x, int8_t dig, uint16_t div, bool mili, bool minus)
 {
-    const char prefix = ' ';
-    if(dig<=0)
-        return;
+    char buf[12];
+    char *end, *dot_char;
+    int32_t t;
 
-    int8_t xdig = digits(x);
-    xdig++; // m or .
+    uint8_t size;
 
-    if(dig<xdig || dot){
-        dot = true;
-        xdig = digits((uint16_t)(x/1000));
-        xdig+=1+3; // "."
+    if(mili) {
+        t = x;
+        t *= 1000;
+        t /= div;
+        if(minus) {
+            t = -t;
+        }
+        size = digits(t) + 1;
+        if(size <= dig) {
+            dig--;
+            lcdPrintLong(t, dig);
+            lcdPrintChar('m');
+            return;
+        }
     }
 
-    for(;xdig<dig;dig--)
-        lcdPrintChar(prefix);
+    end = buf;
 
-    if(!dot) {
-        lcdPrintUInt(x);
-        lcdPrintChar('m');
-    } else if(dig < xdig - 4) {
-        lcdPrintInf(dig);
-    } else {
-        lcdPrintUInt(x/1000);
-        x%=1000;
-        dig -= xdig - 4;
-        if(dig-- >0) lcdPrintChar('.');
-        if(dig-- >0) lcdPrintDigit(x/100);
-        x%=100;
-        if(dig-- >0) lcdPrintDigit(x/10);
-        x%=10;
-        if(dig-- >0) lcdPrintDigit(x);
+    t = x / div;
+    if(minus) {
+        *(end++) = '-';
     }
-}
-
-void lcdPrintValue100(uint16_t x, int8_t dig, bool dot)
-{
-    const char prefix = ' ';
-    if(dig<=0)
-        return;
-
-    int8_t xdig = digits(x);
-    xdig+=2; // m and last '0'
-
-    if(dig<xdig || dot){
-        dot = true;
-        xdig = digits((uint16_t)(x/100));
-        xdig+=1+2; // "."
+    end = printLong(t, end);
+    if(div > 1 && end - buf < dig -1) {
+        dot_char = end;
+        t = x % div;
+        t += div;
+        t *= div10(div);
+        t /= div;
+        printLong(t, end);
+        *dot_char = '.';
     }
 
-    for(;xdig<dig;dig--)
-        lcdPrintChar(prefix);
+    lcdPrintR(buf, dig);
 
-    if(!dot) {
-        lcdPrintUInt(x);
-        lcdPrintChar('0');
-        lcdPrintChar('m');
-    } else if(dig < xdig - 3) {
-        lcdPrintInf(dig);
-    } else {
-        lcdPrintUInt(x/100);
-        x%=100;
-        dig -= xdig - 3;
-        if(dig-- >0) lcdPrintChar('.');
-        if(dig-- >0) lcdPrintDigit(x/10);
-        x%=10;
-        if(dig-- >0) lcdPrintDigit(x);
-    }
 }
 
 void lcdPrintTime(uint16_t timeSec)
@@ -293,21 +168,15 @@ void lcdPrintTime(uint16_t timeSec)
 }
 
 
-void lcdPrintYesNo(uint8_t yes, uint8_t dig)
+void lcdPrintYesNo(uint8_t yes, int8_t dig)
 {
-    for(;dig>3;dig--)
-        lcdPrintChar(' ');
+    lcdPrintSpaces(dig - 3);
 
     const char * str = string_no;
     if(yes) str = string_yes;
-
     lcdPrint_P(str);
 }
 
-void lcdPrintUnsigned(uint16_t x, int8_t dig)
-{
-    lcdPrintUnsigned(x,dig, ' ');
-}
 
 void lcdPrintChar(char c)
 {
@@ -318,130 +187,143 @@ void lcdPrintChar(char c)
     }
 }
 
+int8_t lcdPrintChar(char c, int8_t dig)
+{
+    int8_t i = 0;
+    for (; i < dig; i++)
+        lcdPrintChar(c);
+    return i;
+}
+
 
 void lcdPrintDigit(uint8_t d)
 {
-    d%=10;
     lcdPrintChar('0'+ d);
 }
 
-void lcdPrintUnsigned_sign(uint16_t x, int8_t dig, const char prefix, bool minus)
-{
-    if(dig<=0)
-        return;
-
-    if(minus)
-        dig--;
-
-    uint8_t xdig = digits(x);
-
-    for(;xdig<dig;dig--)
-        lcdPrintChar(prefix);
-
-    if(minus) lcdPrintChar('-');
-    if(dig < xdig) {
-        lcdPrintInf(dig);
-    } else {
-        lcdPrintUInt(x);
-    }
-}
 
 void lcdPrintUnsigned(uint16_t x, int8_t dig, const char prefix)
 {
-    lcdPrintUnsigned_sign(x,dig,prefix, false);
+
+    uint8_t s = digits(x);
+    lcdPrintChar(prefix, dig - s);
+    lcdPrintUInt(x);
+}
+
+void lcdPrintUnsigned(uint16_t x, int8_t dig)
+{
+    lcdPrintLong(x, dig);
 }
 
 void lcdPrintSigned(int16_t x, int8_t dig)
 {
-    bool minus = x < 0;
-    if(minus) x=-x;
-    lcdPrintUnsigned_sign(x,dig, ' ', minus);
+    lcdPrintLong(x,dig);
 }
 
 void lcdPrintTemperature(AnalogInputs::ValueType t, int8_t dig)
 {
-    lcdPrintAnalog(t, AnalogInputs::Temperature, dig);
+    lcdPrintAnalog(t, dig, AnalogInputs::Temperature);
 }
 
 void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig)
 {
-    lcdPrintAnalog(c, AnalogInputs::Charge, dig);
+    lcdPrintAnalog(c, dig, AnalogInputs::Charge);
 }
 void lcdPrintCurrent(AnalogInputs::ValueType i, int8_t dig)
 {
-    lcdPrintAnalog(i, AnalogInputs::Current, dig);
+    lcdPrintAnalog(i, dig, AnalogInputs::Current);
 }
 
 void lcdPrintVoltage(AnalogInputs::ValueType v, int8_t dig)
 {
-    lcdPrintAnalog(v, AnalogInputs::Voltage, dig);
+    lcdPrintAnalog(v, dig, AnalogInputs::Voltage);
 }
 
 void lcdPrintResistance(AnalogInputs::ValueType r, int8_t dig)
 {
-    lcdPrintAnalog(r, AnalogInputs::Resistance, dig);
+    lcdPrintAnalog(r, dig, AnalogInputs::Resistance);
 }
 
 void lcdPrintPercentage(AnalogInputs::ValueType p, int8_t dig)
 {
-    if(dig > 0) {
-        lcdPrintUnsigned(p,--dig);
-        lcdPrintChar('%');
-    }
+    lcdPrintAnalog(p, dig, AnalogInputs::Procent);
 }
+
 void lcdPrint_mV(int16_t p, int8_t dig)
 {
-    if(dig > 2) {
-        lcdPrintSigned(p,dig-2);
-        lcdPrint_P(string_unit_mV);
-    }
+    lcdPrintAnalog(p, dig, AnalogInputs::SignedVoltage);
 }
 
-void lcdPrintAnalog(AnalogInputs::ValueType x, AnalogInputs::Type type, int8_t dig)
-{
-    if(dig <= 0)
-        return;
-    bool dot = true;
-    bool div100 = false;
-    bool h = false;
-    char unit = 'U';
-    dig--;
-    switch (type) {
-    case AnalogInputs::Charge:
-        dig--;
-        h = true;
-    case AnalogInputs::Current:
-        dot = false;
-        unit ='A';
-        break;
-    case AnalogInputs::Voltage:
-        unit ='V';
-        break;
-    case AnalogInputs::Work:
-        h = true;
-        dig--;
-    case AnalogInputs::Power:
-        div100 = true;
-        unit = 'W';
-        break;
-    case AnalogInputs::Temperature:
-        dot = true;
-        div100 = true;
-        unit = 'C';
-        break;
-    case AnalogInputs::Resistance:
-        dot = false;
-        //TODO: ??Ohm
-        unit ='!'-45;
-        break;
-    default:
-        break;
-    }
-    if(div100)  lcdPrintValue100 (x, (int8_t) dig, dot);
-    else        lcdPrintValue1000(x, (int8_t) dig, dot);
-    lcdPrintChar(unit);
+struct UnitsInfo {
+    uint16_t div;
+    bool mili;
+    const char * symbol;
+};
+static const UnitsInfo unitsInfo[] PROGMEM = {
+        // Current
+        {ANALOG_AMP(1.000), true, string_A},
+        //Voltage,
+        {ANALOG_VOLT(1.000), false, string_V},
+        //Power,
+        {ANALOG_WATT(1.00), false,string_W},
+        //Work,
+        {ANALOG_WATTH(1.00), false,string_Wh},
+        //Temperature,
+        {ANALOG_CELCIUS(1.00), false, string_C},
+        //Charge,
+        {ANALOG_CHARGE(1.000), true,string_Ah},
+        //Resistance,
+        {ANALOG_OHM(1.000), true, string_Ohm},
+        //Procent,
+        {1, false, string_procent},
+        //SignedVoltage,
+        {ANALOG_VOLT(1.000), true, string_V},
+        //Unsigned
+        {1, false, string_unsigned},
+        //TemperatureMinutes,
+        {ANALOG_CELCIUS(1.00), false, string_C_m},
+        //Minutes
+        {1, false, AnalogInputs::string_minutes},
+        //TimeLimitMinutes,
+        {1, false, AnalogInputs::string_minutes},
+        //YesNo
+        {1, false, NULL},
+        //Unknown
+        {1, false, AnalogInputs::string_unknown},
+};
 
-    if(h)     lcdPrintChar('h');
+
+void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type type)
+{
+    STATIC_ASSERT(sizeOfArray(unitsInfo) -1 == AnalogInputs::Unknown);
+
+    if(type == AnalogInputs::YesNo) {
+        lcdPrintYesNo(x, dig);
+    } else if(  (type == AnalogInputs::TimeLimitMinutes && x >= ANALOG_MAX_TIME_LIMIT)
+       ||(type == AnalogInputs::Charge && x >= ANALOG_MAX_CHARGE)) {
+            lcdPrintSpaces(dig - string_size_unlimited + 1);
+            //TODO: programData::
+            lcdPrint_P(string_unlimited);
+    } else {
+        const char * symbol = pgm::read(&unitsInfo[type].symbol);
+        uint8_t symbol_size = pgm::strlen(symbol);
+
+        dig -= symbol_size;
+        if(dig <= 0)
+            return;
+
+        bool sign = false;
+        if(type == AnalogInputs::SignedVoltage) {
+            int16_t y = x;
+            if(y < 0) {
+                sign = true;
+                x = -y;
+            }
+        }
+
+        lcdPrintValue_(x, (int8_t) dig, pgm::read(&unitsInfo[type].div), pgm::read(&unitsInfo[type].mili), sign);
+        lcdPrint_P(symbol);
+    }
 }
 
 #ifdef ENABLE_LCD_RAM_CG

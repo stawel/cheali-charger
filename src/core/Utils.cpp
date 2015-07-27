@@ -23,16 +23,22 @@
 
 void callVoidMethod_P(const VoidMethod * method)
 {
-    VoidMethod voidMethod = pgm::read(method);
-    voidMethod();
+    const VoidMethod voidMethod = pgm::read(method);
+    callVoidMethod(voidMethod);
+}
+void callVoidMethod(const VoidMethod method)
+{
+    method();
 }
 
 
 uint8_t countElements(const void * const array[])
 {
     uint8_t retu=0;
-    while(pgm::read(array++))
-        retu++;
+    if(array != 0) {
+        while(pgm::read(array++))
+            retu++;
+    }
 
     return retu;
 }
@@ -70,14 +76,18 @@ int8_t sign(int16_t x)
 
 uint8_t digits(uint16_t x)
 {
-    return digits((uint32_t)x);
+    return digits((int32_t)x);
 }
 
-uint8_t digits(uint32_t x)
+uint8_t digits(int32_t x)
 {
     uint8_t retu = 0;
+    if(x < 0) {
+        retu++;
+        x = -x;
+    }
     if(x == 0)
-        x=1;
+        retu=1;
     for(;x!=0; x/=10)
         retu++;
     return retu;
@@ -122,10 +132,10 @@ uint8_t waitButtonPressed()
 {
     uint8_t key;
 
-    while(Keyboard::getPressedWithSpeed() != BUTTON_NONE);
+    while(Keyboard::getPressedWithDelay() != BUTTON_NONE);
 
     do {
-        key = Keyboard::getPressedWithSpeed();
+        key = Keyboard::getPressedWithDelay();
     } while(key == BUTTON_NONE);
 
     return key;

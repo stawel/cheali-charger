@@ -26,6 +26,7 @@
 #include "Settings.h"
 #include "ProgramData.h"
 #include "eeprom.h"
+#include "SettingsMenu.h"
 
 using namespace options;
 
@@ -52,7 +53,7 @@ void Options::run()
         i = optionsMenu.runSimple();
         START_CASE_COUNTER;
         switch(i) {
-            case NEXT_CASE: settings.edit(); break;
+            case NEXT_CASE: SettingsMenu::run(); break;
 #ifdef ENABLE_CALIBRATION
             case NEXT_CASE: Calibrate::run(); break;
 #endif

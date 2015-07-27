@@ -33,6 +33,7 @@ namespace Screen { namespace Methods {
     void displayDeltaFirst();
     void displayEnergy();
 
+    void printCharAndTime();
 } };
 
 #endif /* SCREEN_METHODS_H_ */

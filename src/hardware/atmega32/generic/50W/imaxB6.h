@@ -26,7 +26,6 @@
 #include "SMPS.h"
 #include "Discharger.h"
 #include "Buzzer.h"
-#include "adc.h"
 
 #include "Timer1.h"
 #include "imaxB6-pins.h"

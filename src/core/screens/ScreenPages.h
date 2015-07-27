@@ -24,24 +24,26 @@
 #include "ScreenCycle.h"
 #include "ScreenBalancer.h"
 #include "ScreenMethods.h"
+#include "ScreenEditable.h"
 #include "Balancer.h"
 
 namespace Screen { namespace Pages {
 
 /*condition bits:
  * 0..8:    PAGE_PROGRAM(..)
- * 9..13:   PAGE_BATTERY(CLASS)
- * 14:      PAGE_START_INFO
- * 15:      PAGE_BALANCE_PORT
+ * 9..16:   PAGE_BATTERY(CLASS)
+ * 29:      PAGE_START_INFO
+ * 30:      PAGE_BALANCE_PORT
 */
     struct PageInfo {
         VoidMethod displayMethod;
-        uint16_t conditionEnable;
-        uint16_t conditionDisable;
+        uint32_t conditionEnable;
+        uint32_t conditionDisable;
     };
 
     const PageInfo pageInfo[] PROGMEM = {
             {Screen::StartInfo::displayStartInfo,   PAGE_START_INFO,                      PAGE_NONE},
+            {Screen::Editable::displayLEDScreen,     PAGE_BATTERY(ProgramData::ClassLED), PAGE_START_INFO},
             {Screen::Methods::displayFirstScreen,   PAGE_ALWAYS, PAGE_START_INFO + PAGE_PROGRAM(Program::Balance)},
             {Screen::Methods::displayEnergy,        PAGE_ALWAYS, PAGE_START_INFO + PAGE_PROGRAM(Program::Balance)},
 
@@ -64,7 +66,7 @@ BALANCER_PORTS_GT_6(
             {Screen::Methods::displayTime,          PAGE_ALWAYS, PAGE_START_INFO},
             {Screen::Methods::displayTemperature,   PAGE_ALWAYS, PAGE_NONE},
             {Screen::Cycle::displayCycles,          PAGE_PROGRAM(Program::CapacityCheck)+PAGE_PROGRAM(Program::DischargeChargeCycle), PAGE_START_INFO},
-            {Screen::Methods::displayCIVlimits,     PAGE_ALWAYS, PAGE_PROGRAM(Program::Balance) + PAGE_START_INFO},
+            {Screen::Methods::displayCIVlimits,     PAGE_ALWAYS, PAGE_PROGRAM(Program::Balance)},
             {Screen::Methods::displayVinput,        PAGE_ALWAYS, PAGE_NONE},
 
             {NULL, PAGE_ALWAYS, PAGE_NONE}

@@ -23,7 +23,6 @@
 #include "Hardware.h"
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
-#include "adc.h"
 #include "Utils.h"
 #include "memory.h"
 #include "Settings.h"
@@ -44,7 +43,7 @@
 //discharge ADC capacitor on Vb6 - there is an operational amplifier
 #define ADC_CAPACITOR_DISCHARGE_ADDRESS MADDR_V_BALANSER6
 
-namespace adc {
+namespace AnalogInputsADC {
 
 void setupNextInput();
 
@@ -284,11 +283,11 @@ void setupNextInput() {
     }
 }
 
-} // namespace adc
+} // namespace AnalogInputsADC
 
 ISR(ADC_vect)
 {
-    adc::conversionDone();
+    AnalogInputsADC::conversionDone();
 }
 
 

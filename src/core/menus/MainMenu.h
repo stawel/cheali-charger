@@ -31,7 +31,7 @@ public:
         if(i < staticMenuSize) {
             StaticMenu::printItem(i);
         } else {
-            lcdPrint_E(ProgramData::getName_E(i - staticMenuSize), PROGRAM_DATA_MAX_NAME);
+            ProgramData::printProgramData(i - staticMenuSize);
         }
     }
 };

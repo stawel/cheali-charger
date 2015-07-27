@@ -34,24 +34,19 @@ namespace Strategy {
     AnalogInputs::ValueType endV;
     AnalogInputs::ValueType maxI;
     AnalogInputs::ValueType minI;
-    uint8_t minIdiv;
     bool doBalance;
 
-    void setMinI(AnalogInputs::ValueType i)  {
-        if (i < settings.minIout) i = settings.minIout;
-        minI = i;
-    }
-
     void setVI(ProgramData::VoltageType vt, bool charge) {
-        endV = ProgramData::currentProgramData.getVoltage(vt);
+        endV = ProgramData::getVoltage(vt);
 
         if(charge) {
-            maxI = ProgramData::currentProgramData.battery.Ic;
+            maxI = ProgramData::battery.Ic;
+            minI = ProgramData::battery.minIc;
         } else {
-            maxI = ProgramData::currentProgramData.battery.Id;
+            maxI = ProgramData::battery.Id;
+            minI = ProgramData::battery.minId;
         }
 
-        setMinI(maxI/minIdiv);
     }
 
     void strategyPowerOn() {
@@ -76,7 +71,7 @@ namespace Strategy {
             if(Time::diffU16(time, Time::getSecondsU16()) > STRATEGY_DISABLE_OUTPUT_AFTER_SECONDS) {
                 AnalogInputs::powerOff();
             }
-        } while(Keyboard::getPressedWithSpeed() == BUTTON_NONE);
+        } while(Keyboard::getPressedWithDelay() == BUTTON_NONE);
 
         Buzzer::soundOff();
     }
@@ -125,7 +120,7 @@ namespace Strategy {
         Strategy::statusType status = Strategy::RUNNING;
         strategyPowerOn();
         do {
-            Screen::keyboardButton =  Keyboard::getPressedWithSpeed();
+            Screen::keyboardButton =  Keyboard::getPressedWithDelay();
             Screen::doStrategy();
 
             if(run) {

@@ -15,44 +15,19 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Hardware.h"
 
-namespace ADCKeyboardAnalyzer {
-    void run();
-}
+#define __STDC_LIMIT_MACROS
+#include <stdint.h>
 
-namespace AnalogInputsAnalyzer {
-    void run();
-}
+#include "AnalogInputsTypes.h"
 
-
-namespace BalancePortAnalyzer {
-    void run();
-}
-
-namespace LCDAnalyzer {
-    void run();
-}
-
-
-
-void helperMain()
-{
-
-#ifdef ENABLE_HELPER_ANALOG_INPUTS_ANALYZER
-    AnalogInputsAnalyzer::run();
-#endif
-
-#ifdef ENABLE_HELPER_BALANCE_PORT_ANALYZER
-    BalancePortAnalyzer::run();
-#endif
-
-#ifdef ENABLE_HELPER_LCD_ANALYZER
-    LCDAnalyzer::run();
-#endif
-
-#ifdef ENABLE_HELPER_ADC_KEYBOARD_ANALYZER
-    ADCKeyboardAnalyzer::run();
-#endif
-
+AnalogInputs::ValueType AnalogInputs::evalI(AnalogInputs::ValueType P, AnalogInputs::ValueType U) {
+    uint32_t i = P;
+    i *= ANALOG_VOLT(1);
+    i /= U;
+    i *= ANALOG_AMP(1);
+    i /= ANALOG_WATT(1);
+    if (i > UINT16_MAX)
+        i = UINT16_MAX;
+    return i;
 }

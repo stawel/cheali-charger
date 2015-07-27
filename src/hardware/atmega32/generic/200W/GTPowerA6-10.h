@@ -27,7 +27,6 @@
 #include "Timer1.h"
 #include "Time.h"
 #include "Buzzer.h"
-#include "adc.h"
 
 #include "GTPowerA6-10-pins.h"
 

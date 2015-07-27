@@ -71,6 +71,7 @@ namespace AnalogInputs {
     uint16_t    deltaCount_;
     ValueType   deltaLastT_;
     uint16_t    deltaStartTimeU16_;
+    bool        enable_deltaVoutMax_;
 
     uint32_t    i_charge_;
 
@@ -89,10 +90,12 @@ namespace AnalogInputs {
     uint16_t getFullMeasurementCount()      { return calculationCount_; }
     ValueType getDeltaLastT()               { return deltaLastT_;}
     ValueType getDeltaCount()               { return deltaCount_;}
+    void enableDeltaVoutMax(bool enable)    { enable_deltaVoutMax_ = enable; }
 
     uint16_t getStableCount(Name name)      { return stableCount_[name]; };
     bool isStable(Name name)                { return getStableCount(name) >= STABLE_MIN_VALUE; };
     void setReal(Name name, ValueType real);
+    void setRealBasedOnAvr(AnalogInputs::Name name);
 
     void finalizeDeltaMeasurement();
     void finalizeFullMeasurement();
@@ -245,14 +248,10 @@ void AnalogInputs::resetAccumulatedMeasurements()
     setReal(deltaTextern, 0);
 }
 
-
 void AnalogInputs::reset()
 {
     calculationCount_ = 0;
     resetAccumulatedMeasurements();
-    ANALOG_INPUTS_FOR_ALL(name){
-        real_[name] = 0;
-    }
 }
 
 void AnalogInputs::powerOn(bool enableBatteryOutput)
@@ -352,7 +351,7 @@ void AnalogInputs::printRealValue(Name name, uint8_t dig)
 {
     ValueType x = getRealValue(name);
     Type t = getType(name);
-    lcdPrintAnalog(x, t, dig);
+    lcdPrintAnalog(x, dig, t);
 }
 
 uint16_t AnalogInputs::getCharge()
@@ -388,9 +387,14 @@ void AnalogInputs::intterruptFinalizeMeasurement()
 
 void AnalogInputs::doIdle()
 {
-    if(isPowerOn()) {
-        finalizeFullMeasurement();
-    }
+    finalizeFullMeasurement();
+}
+
+void AnalogInputs::setRealBasedOnAvr(AnalogInputs::Name name)
+{
+    avrAdc_[name] = i_avrSum_[name] / ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT;
+    ValueType real = calibrateValue(name, avrAdc_[name]);
+    setReal(name, real);
 }
 
 void AnalogInputs::finalizeFullMeasurement()
@@ -402,20 +406,23 @@ void AnalogInputs::finalizeFullMeasurement()
 
     if(avrCount == 0) {
         if(!ignoreLastResult_) {
-            calculationCount_++;
+            if(isPowerOn()) {
+                calculationCount_++;
 
-            i_deltaAvrSumVoutPlus_    += i_avrSum_[Vout_plus_pin] >> ANALOG_INPUTS_ADC_DELTA_SHIFT;
-            i_deltaAvrSumVoutMinus_   += i_avrSum_[Vout_minus_pin] >> ANALOG_INPUTS_ADC_DELTA_SHIFT;
-            i_deltaAvrSumTextern_     += i_avrSum_[Textern] >> ANALOG_INPUTS_ADC_DELTA_SHIFT;
-            i_deltaAvrCount_ ++;
-            finalizeDeltaMeasurement();
+                i_deltaAvrSumVoutPlus_    += i_avrSum_[Vout_plus_pin] >> ANALOG_INPUTS_ADC_DELTA_SHIFT;
+                i_deltaAvrSumVoutMinus_   += i_avrSum_[Vout_minus_pin] >> ANALOG_INPUTS_ADC_DELTA_SHIFT;
+                i_deltaAvrSumTextern_     += i_avrSum_[Textern] >> ANALOG_INPUTS_ADC_DELTA_SHIFT;
+                i_deltaAvrCount_ ++;
+                finalizeDeltaMeasurement();
 
-            ANALOG_INPUTS_FOR_ALL_PHY(name) {
-                avrAdc_[name] = i_avrSum_[name] / ANALOG_INPUTS_ADC_MEASUREMENTS_COUNT;
-                ValueType real = calibrateValue(name, avrAdc_[name]);
-                setReal(name, real);
+                ANALOG_INPUTS_FOR_ALL_PHY(name) {
+                    setRealBasedOnAvr(name);
+                }
+                finalizeFullVirtualMeasurement();
+            } else {
+                //we need internal temperature all the time to control the fan
+                setRealBasedOnAvr(AnalogInputs::Tintern);
             }
-            finalizeFullVirtualMeasurement();
         }
         _resetAvr();
     }
@@ -455,8 +462,9 @@ void AnalogInputs::finalizeDeltaMeasurement()
             real = VoutPlus - VoutMinus;
 
         old = getRealValue(deltaVoutMax);
-        if(real >= old)
+        if(real >= old || (!enable_deltaVoutMax_)) {
             setReal(deltaVoutMax, real);
+        }
         setReal(deltaVout, real - old);
 
         //calculate deltaTextern

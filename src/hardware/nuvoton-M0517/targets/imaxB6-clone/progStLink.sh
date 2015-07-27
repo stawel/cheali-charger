@@ -6,7 +6,7 @@ PROGRAMMER=interface/stlink-v2.cfg
 TARGET=target/m051.cfg
 
 
-HEX=`ls *.hex`
+HEX=`ls *.hex | head -1`
 echo "HEX=$HEX"
 
 function exit_backup()

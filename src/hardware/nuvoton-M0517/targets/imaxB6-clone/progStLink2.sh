@@ -7,7 +7,7 @@ PROGRAMMER="interface/stlink-v2.cfg"
 TARGET="target_MO517_linux.cfg"
 FLASH_PGM="M0517_flash.tcl"
 
-BIN=`ls *M0517.hex`
+BIN=`ls *M0517.hex | head -1`
 echo "BIN=$BIN"
 
 [ ! -f $BIN ] && echo "file not found: $BIN" && exit 1
@@ -19,7 +19,7 @@ function exit_backup()
     exit 1
 }
 
-if [ "$1" != "--no-backup" ]; then
+if [ "$1" = "--no-backup" ]; then
     NOW=`date +"%F_%T"`
     DIR="backup/$NOW"
     echo "creating buckup: $DIR"

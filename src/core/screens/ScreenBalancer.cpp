@@ -47,7 +47,7 @@ namespace Screen { namespace Balancer {
 
     void printBalancer(uint8_t cell, AnalogInputs::Type type) {
         if(AnalogInputs::isConnected(AnalogInputs::Name(AnalogInputs::Vb1+cell))) {
-            lcdPrintAnalog(getBalanceValue(cell, type), type, 6);
+            lcdPrintAnalog(getBalanceValue(cell, type), 6, type);
         } else {
             lcdPrint_P(PSTR("  --  "));
         }

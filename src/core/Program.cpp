@@ -50,6 +50,10 @@ namespace Program {
     void setupDischarge();
     void setupBalance();
     void setupDeltaCharge();
+    void setupPowerSupplyCharge();
+    void setupProgramType(ProgramType prog);
+
+    void dischargeOutputCapacitor();
 
 } //namespace Program
 
@@ -59,7 +63,7 @@ bool Program::startInfo()
     Strategy::strategy = &StartInfoStrategy::vtable;
     Strategy::exitImmediately = true;
     Strategy::doBalance = false;
-    if(ProgramData::currentProgramData.isLiXX()) {
+    if(ProgramData::isLiXX()) {
         //usues balance port
         Strategy::doBalance = true;
     }
@@ -88,20 +92,28 @@ void Program::setupDischarge()
     Strategy::strategy = &TheveninDischargeStrategy::vtable;
 }
 
+void Program::setupPowerSupplyCharge()
+{
+    Strategy::setVI(ProgramData::VCharge, true);
+    Strategy::strategy = &SimpleChargeStrategy::vtable;
+}
+
+
 void Program::setupBalance()
 {
     Strategy::strategy = &Balancer::vtable;
 }
 
-Strategy::statusType Program::runWithoutInfo(ProgramType prog)
-{
-    Strategy::minIdiv = settings.minIoutDiv;
+void Program::setupProgramType(ProgramType prog) {
     Strategy::doBalance = false;
 
     switch(prog) {
+    case Program::CapacityCheck:
     case Program::Charge:
-        if(ProgramData::currentProgramData.isNiXX()) {
+        if(ProgramData::isNiXX()) {
             setupDeltaCharge();
+        } else if (ProgramData::isPowerSupply()) {
+            setupPowerSupplyCharge();
         } else {
             setupTheveninCharge();
         }
@@ -113,11 +125,13 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
     case Program::Balance:
         setupBalance();
         break;
+    case Program::DischargeChargeCycle:
     case Program::Discharge:
         setupDischarge();
         break;
     case Program::FastCharge:
-        Strategy::minIdiv = 5;
+        //TODO: ??
+        //Strategy::minIdiv = 5;
         setupTheveninCharge();
         break;
     case Program::Storage:
@@ -127,23 +141,51 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
         Strategy::doBalance = true;
         setupStorage();
         break;
-    case Program::CapacityCheck:
-        return ProgramDCcycle::runDCcycle(1, 3);
-
-    case Program::DischargeChargeCycle:
-        return ProgramDCcycle::runDCcycle(0, settings.DCcycles*2 - 1);
     default:
-        return Strategy::ERROR;
+        break;
     }
-    return Strategy::doStrategy();
 }
+
+void Program::resetAccumulatedMeasurements()
+{
+    Monitor::resetAccumulatedMeasurements();
+    AnalogInputs::resetAccumulatedMeasurements();
+}
+
+
+Strategy::statusType Program::runWithoutInfo(ProgramType prog)
+{
+    resetAccumulatedMeasurements();
+
+    setupProgramType(prog);
+    switch(prog) {
+        case Program::CapacityCheck:
+            return ProgramDCcycle::runDCcycle(1, 3);
+        case Program::DischargeChargeCycle:
+            return ProgramDCcycle::runDCcycle(0, ProgramData::battery.DCcycles*2 - 1);
+        default:
+            return Strategy::doStrategy();
+    }
+}
+
+void Program::dischargeOutputCapacitor()
+{
+    Discharger::powerOn();
+    Discharger::trySetIout(MAX_DISCHARGE_I);
+    Time::delayDoIdle(100);
+    Discharger::powerOff();
+}
+
 
 void Program::run(ProgramType prog)
 {
     if(!Calibrate::check())
         return;
 
+    dischargeOutputCapacitor();
+
     programType = prog;
+    setupProgramType(prog);
     stopReason = NULL;
 
     programState = Info;

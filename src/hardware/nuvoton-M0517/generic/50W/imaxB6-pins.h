@@ -25,10 +25,10 @@
 #define DISCHARGE_CURRENT_PIN           3  //(3)        P1.7 - SPICLK0, AIN7, ACMP2_P
 //pin 4 - nRST                             //(4)        nRST (debug wire)
 //[HW Uart Rx pin: 5(P3.0) or 37(P0.3) - selectable (not connected)]
-#define RX_HW_SERIAL_PIN                5  //(5)        P3.0 - RXD[2], ACMP1_N
+#define RX_HW_SERIAL_PIN5               5  //(5)        P3.0 - RXD[2], ACMP1_N
 //pin 6 - AVSS                             //(6)        AVSS
 //[HW Uart Tx pin: 7(P3.1) or 38(P0.2) - selectable (not connected)]
-#define TX_HW_SERIAL_PIN                7  //(7)        P3.1 - TXD[2], ACMP1_P
+#define TX_HW_SERIAL_PIN7               7  //(7)        P3.1 - TXD[2], ACMP1_P
 #define BUTTON_STOP_PIN                 8  //(8)        P3.2 - nINT0, STADC, T0EX
 #define BUTTON_DEC_PIN                  9  //(9)        P3.3 - nINT1, MCLK, T1EX
 #define BUTTON_INC_PIN                  10 //(10)       P3.4 - T0, SDA
@@ -68,7 +68,7 @@
 
 #define LCD_RS_PIN                      37 //(1+3*12)   P0.3 - RTS0, AD3, RXD[2]
 //[HW Uart Tx pin: 7(P3.1) or 38(P0.2) - selectable (not connected)]
-//pin 38 - UART TX (not connected)         //(2+3*12)   P0.2 - TXD, CTS0, AD2
+#define TX_HW_SERIAL_PIN38              38 //(2+3*12)   P0.2 - TXD, CTS0, AD2
 //pin 39 - UNKNOWN                         //(3+3*12)   P0.1 - ACMP3_N, RXD1, RTS1, AD1
 //pin 40 - UNKNOWN                         //(4+3*12)   P0.0 - ACMP3_P, TXD1, CTS1, AD0
 //pin 41 - VDD                             //(5+3*12)   VDD

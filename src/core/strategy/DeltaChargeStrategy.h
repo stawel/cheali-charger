@@ -24,10 +24,6 @@
 namespace DeltaChargeStrategy
 {
     extern const Strategy::VTable vtable;
-
-    void powerOn();
-    Strategy::statusType doStrategy();
-    void setTestTV(bool t, bool v);
 };
 
 

@@ -47,29 +47,25 @@ namespace pgm {
 
     template<class Type>
     struct read_impl<Type, 4> {
-        union Type_union{
-            Type t;
-            uint32_t u;
-        };
         inline Type operator()(const Type * addressP) {
-            Type_union tu;
-            tu.u = pgm_read_dword(addressP);
-            return tu.t;
+            uint32_t u = pgm_read_dword(addressP);
+            return reinterpret_cast<Type&>(u);
         }
         inline void operator()(Type &t, const Type * addressP) {
-            Type_union tu;
-            tu.u = pgm_read_dword(addressP);
-            t = tu.t;
+            uint32_t u = pgm_read_dword(addressP);
+            t = reinterpret_cast<Type&>(u);
         }
     };
 
     template<class Type>
     struct read_impl<Type, 2> {
         inline Type operator()(const Type * addressP) {
-            return (Type)pgm_read_word(addressP);
+            uint16_t v = pgm_read_word(addressP);
+            return reinterpret_cast<Type&>(v);
         }
         inline void operator()(Type &t, const Type * addressP) {
-            t = (Type)pgm_read_word(addressP);
+            uint16_t v = pgm_read_word(addressP);
+            t = reinterpret_cast<Type&>(v);
         }
     };
 
