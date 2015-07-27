@@ -132,10 +132,10 @@ uint8_t waitButtonPressed()
 {
     uint8_t key;
 
-    while(Keyboard::getPressedWithSpeed() != BUTTON_NONE);
+    while(Keyboard::getPressedWithDelay() != BUTTON_NONE);
 
     do {
-        key = Keyboard::getPressedWithSpeed();
+        key = Keyboard::getPressedWithDelay();
     } while(key == BUTTON_NONE);
 
     return key;

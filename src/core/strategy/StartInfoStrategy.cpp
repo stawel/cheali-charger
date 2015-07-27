@@ -90,9 +90,9 @@ Strategy::statusType StartInfoStrategy::doStrategy()
 
     balance = (v_balance || cell_nr) && (is_cells != 0);
 
-    if(Keyboard::getPressed() == BUTTON_NONE)
+    if(Keyboard::getLast() == BUTTON_NONE)
         ok_ = 0;
-    if(!balance && !v_out && Keyboard::getPressed() == BUTTON_START) {
+    if(!balance && !v_out && Keyboard::getLast() == BUTTON_START) {
         ok_++;
     }
     if(ok_ == 2) {

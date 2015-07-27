@@ -118,7 +118,7 @@ bool testVout(bool balancePort)
             }
             displayed = true;
         }
-        if(Keyboard::getPressedWithSpeed() == BUTTON_STOP)
+        if(Keyboard::getPressedWithDelay() == BUTTON_STOP)
             return false;
     }while(true);
 }

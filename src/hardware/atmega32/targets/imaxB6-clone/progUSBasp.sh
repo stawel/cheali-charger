@@ -10,7 +10,7 @@ PROGRAMMER=usbasp
 
 PARTNO=atmega32
 
-HEX=`ls *.hex`
+HEX=`ls *.hex | head -1`
 echo "HEX=$HEX"
 echo "TTY=$TTY"
 

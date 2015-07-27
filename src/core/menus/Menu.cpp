@@ -26,7 +26,7 @@ Menu::Menu(uint8_t size):
 {}
 
 uint8_t Menu::run() {
-    uint8_t button = Keyboard::getPressedWithSpeed();
+    uint8_t button = Keyboard::getPressedWithDelay();
 
     if(runReversedPolarityInfo()) {
         render_ = true;

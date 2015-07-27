@@ -71,7 +71,7 @@ namespace Strategy {
             if(Time::diffU16(time, Time::getSecondsU16()) > STRATEGY_DISABLE_OUTPUT_AFTER_SECONDS) {
                 AnalogInputs::powerOff();
             }
-        } while(Keyboard::getPressedWithSpeed() == BUTTON_NONE);
+        } while(Keyboard::getPressedWithDelay() == BUTTON_NONE);
 
         Buzzer::soundOff();
     }
@@ -120,7 +120,7 @@ namespace Strategy {
         Strategy::statusType status = Strategy::RUNNING;
         strategyPowerOn();
         do {
-            Screen::keyboardButton =  Keyboard::getPressedWithSpeed();
+            Screen::keyboardButton =  Keyboard::getPressedWithDelay();
             Screen::doStrategy();
 
             if(run) {
