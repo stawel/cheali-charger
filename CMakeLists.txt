@@ -33,8 +33,6 @@ message(STATUS "cheali-charger-buildnumber: ${cheali-charger-buildnumber}")
 
 configure_file(src/core/Version.h.in src/core/Version.h)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/src/core)
-
 if(ARM-Cortex-M0)
     message(STATUS "target architecture: ARM-Cortex-M0")
     include(arm-compiler.cmake)
