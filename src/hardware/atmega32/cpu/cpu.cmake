@@ -1,5 +1,5 @@
 
-set(CURRENT_PATH ${CMAKE_SOURCE_DIR}/src/hardware/${TARGET_CPU}/cpu)
+set(CURRENT_PATH ${CMAKE_CURRENT_LIST_DIR})
 
 set(CPU_SOURCE
         memory.h
