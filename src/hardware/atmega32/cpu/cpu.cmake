@@ -1,6 +1,4 @@
 
-set(CURRENT_PATH ${CMAKE_CURRENT_LIST_DIR})
-
 set(CPU_SOURCE
         memory.h
         Timer2.cpp
@@ -25,9 +23,7 @@ set(CPU_SOURCE
 
 )
 
-include_directories(${CURRENT_PATH})
-
-CHEALI_FIND(CPU_SOURCE_FILES "${CPU_SOURCE}" "${CURRENT_PATH}")
+CHEALI_ADD(CPU_SOURCE_FILES "${CPU_SOURCE}")
 
 include_directories(/usr/lib/avr/include/)
 link_libraries(m)

@@ -1,5 +1,5 @@
 
-set(CMSIS_ROOT ${CURRENT_PATH}/CMSIS)
+set(CMSIS_ROOT ${CMAKE_CURRENT_LIST_DIR})
 set(CMSIS_DIRS
     ${CMSIS_ROOT}/CMSIS/Include
     ${CMSIS_ROOT}/Device/Nuvoton/M051Series/Include
