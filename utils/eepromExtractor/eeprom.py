@@ -1,31 +1,30 @@
 #!/usr/bin/python
 
 import sys
-from ehelper import *
+#sys.path.append('helper/')
+
+from ehelper.ehelper import *
 from dformatter import *
+import importlib
 
-from v9_2_9 import *
-
-hexFile = 'eeprom.bin'
+binFile = 'eeprom.bin'
 
 if len(sys.argv) > 1:
-    hexFile = sys.argv[1]
+    binFile = sys.argv[1]
 
-x = Data()
-f = open(hexFile, 'r')
+
+version = getVersion(binFile)
+print 'version: ', version
+
+module = importlib.import_module('ehelper.'+version);
+printModuleInfo(module)
+
+x = module.Data()
+f = open(binFile, 'r')
 f.readinto(x)
 
-
-checkVersion(x, CHEALI_CHARGER_EPPROM_VERSION_STRING)
-
-def checkAllCRC():
-    checkCRC(x, 'calibration')
-    checkCRC(x, 'programData')
-    checkCRC(x, 'settings')
-
-
 print dump(x)
-checkAllCRC();
+checkAllCRC(x);
 
 
 #save defaultCalibration.cpp file
@@ -41,11 +40,10 @@ f.write(out)
 
 sys.exit()
 
-#example
+#example deprecated
 
 x.programData[5].name = 'zosia'
 restoreCRC(x,'programData');
 checkAllCRC();
-
 f = open('output.bin', 'wb')
 f.write(x);

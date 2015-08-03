@@ -50,7 +50,7 @@ namespace eeprom {
 
         if(testOrRestore((uint16_t*) &data.magicString[0], CHARS_TO_UINT16('c','h'), restore & EEPROM_RESTORE_MAGIC_NUMBER)) test |= EEPROM_RESTORE_MAGIC_NUMBER;
         if(testOrRestore((uint16_t*) &data.magicString[2], CHARS_TO_UINT16('l','i'), restore & EEPROM_RESTORE_MAGIC_NUMBER)) test |= EEPROM_RESTORE_MAGIC_NUMBER;
-        if(testOrRestore((uint16_t*) &data.architecture, EEPROM_ARCHITECTURE, restore & EEPROM_RESTORE_MAGIC_NUMBER)) test |= EEPROM_RESTORE_MAGIC_NUMBER;
+        if(testOrRestore((uint16_t*) &data.architecture, CHEALI_CHARGER_ARCHITECTURE, restore & EEPROM_RESTORE_MAGIC_NUMBER)) test |= EEPROM_RESTORE_MAGIC_NUMBER;
 
         if(testOrRestore(&data.calibrationVersion, CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION, restore & EEPROM_RESTORE_CALIBRATION))    test |= EEPROM_RESTORE_CALIBRATION;
         if(testOrRestore(&data.programDataVersion, CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION, restore & EEPROM_RESTORE_PROGRAM_DATA))   test |= EEPROM_RESTORE_PROGRAM_DATA;

@@ -34,13 +34,31 @@ def error(s):
     print s
     sys.exit()
 
-def checkVersion(d, str_version):
+def getVersion(filename):
+    import v9_2_6
+    d = v9_2_6.Data()
+    f = open(filename, 'r')
+    f.readinto(d)
     if not checkHeader(d):
         error('checkHeader error!')
-    v =  '' + str(d.calibrationVersion) + '.'  + str(d.programDataVersion) + '.' + str(d. settingVersion)
-    print 'version:', v
-    if str_version != v:
-        error('checkVersion: ' + v +' != ' + str_version)
+
+    if(d.calibrationVersion < 10):
+        return 'v' + str(d.calibrationVersion) + '_'  + str(d.programDataVersion) + '_' + str(d. settingVersion)
+    else:
+        import v_a0x4001_9_3_10
+        d = v_a0x4001_9_3_10.Data()
+        f = open(filename, 'r')
+        f.readinto(d)
+        return 'v_a' + hex(d.architecture) + '_' + str(d.calibrationVersion) + '_' + str(d.programDataVersion) + '_' + str(d. settingVersion)
+
+def printModuleInfo(module):
+    if hasattr(module, 'CHEALI_CHARGER_ARCHITECTURE'):
+        print 'architecture: '+hex(module.CHEALI_CHARGER_ARCHITECTURE)
+        print 'cpu: ', module.CHEALI_CHARGER_ARCHITECTURE_CPU_STRING
+        print 'generic: ', module.CHEALI_CHARGER_ARCHITECTURE_GENERIC_STRING
+    else:
+        print 'no module info'
+
 
 def dumpRaw(d):
     s = BytesIO()
@@ -53,6 +71,14 @@ def CRC(d):
     crc16 = crcmod.predefined.mkCrcFun('modbus')
     crc =  crc16(dumpRaw(d))
     return crc;
+
+def checkAllCRC(x):
+    checkCRC(x, 'calibration')
+    if hasattr(x, 'programData'):
+        checkCRC(x, 'programData')
+    else:
+        checkCRC(x, 'battery')
+    checkCRC(x, 'settings')
 
 
 def checkCRC(d, field):

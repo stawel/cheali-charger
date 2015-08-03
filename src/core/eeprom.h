@@ -21,6 +21,7 @@
 #include "AnalogInputs.h"
 #include "ProgramData.h"
 #include "Settings.h"
+#include "cpu.h"
 
 #define EEPROM_MAGIC_STRING_LEN 4
 
@@ -42,7 +43,7 @@ namespace eeprom {
         uint16_t calibrationCRC;
 
         ProgramData::Battery battery[MAX_PROGRAMS];
-        uint16_t programDataCRC;
+        uint16_t batteryCRC;
 
         Settings settings;
         uint16_t settingsCRC;

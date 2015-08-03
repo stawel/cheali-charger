@@ -20,6 +20,10 @@
 
 #include <avr/interrupt.h>
 
+#define CHEALI_CHARGER_ARCHITECTURE_CPU         0x1000
+#define CHEALI_CHARGER_ARCHITECTURE_CPU_STRING  "atmega32"
+
+
 namespace cpu {
     inline void init() {
         sei();
