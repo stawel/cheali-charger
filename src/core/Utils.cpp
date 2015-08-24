@@ -70,7 +70,8 @@ uint16_t pow10(uint8_t n)
 
 int8_t sign(int16_t x)
 {
-    if(x>=0) return 1;
+    if(x == 0) return 0;
+    if(x >  0) return 1;
     return -1;
 }
 
