@@ -28,6 +28,7 @@ namespace Serial {
     extern void (*flush)();
     extern void (*end)();
     void  initialize();
+    extern uint8_t txBuffer[];
 } // namespace Serial
 
 #endif //  Serial_H_

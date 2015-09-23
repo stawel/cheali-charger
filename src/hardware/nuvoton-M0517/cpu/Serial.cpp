@@ -36,6 +36,9 @@ void (*write)(uint8_t c) = emptyUint8;
 void (*flush)() = empty;
 void (*end)() = empty;
 
+#define Tx_BUFFER_SIZE  256
+uint8_t  txBuffer[Tx_BUFFER_SIZE];
+
 void  begin(unsigned long baud)
 {
 #ifdef ENABLE_TX_HW_SERIAL

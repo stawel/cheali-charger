@@ -22,6 +22,7 @@
 #include "Hardware.h"
 #include "TxSoftSerial.h"
 #include "irq_priority.h"
+#include "Serial.h"
 
 #include "IO.h"
 
@@ -32,7 +33,8 @@ namespace TxSoftSerial {
 #define START_BIT 0
 #define STOP_BIT 512
 
-uint8_t  txBuffer_[Tx_BUFFER_SIZE];
+uint8_t  *txBuffer_=Serial::txBuffer;
+
 uint16_t txData_;
 volatile uint32_t *txPin_;
 

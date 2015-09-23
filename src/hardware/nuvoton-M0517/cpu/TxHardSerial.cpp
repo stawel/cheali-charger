@@ -23,6 +23,7 @@
 #include "TxHardSerial.h"
 #include "irq_priority.h"
 #include "Settings.h"
+#include "Serial.h"
 
 #include "IO.h"
 
@@ -31,7 +32,7 @@ namespace TxHardSerial {
 
 #define Tx_BUFFER_SIZE  256
 
-uint8_t  txBuffer_[Tx_BUFFER_SIZE];
+uint8_t  *txBuffer_= Serial::txBuffer;
 
 std::atomic<uint16_t> tail_(0);
 std::atomic<uint16_t> head_(0);
