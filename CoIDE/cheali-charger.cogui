@@ -58,14 +58,14 @@
 </editors>
 <views>
 <view id="org.coocox.builder.ui.views.ProjectView" partName="Project">
-<viewState CommonNavigator.LINKING_ENABLED="0" horizontalPosition="0" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0" verticalPosition="3">
+<viewState CommonNavigator.LINKING_ENABLED="0" horizontalPosition="0" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0" verticalPosition="6">
 <expanded>
 <element path="/cheali-charger"/>
-<element path="/cheali-charger/hardware"/>
-<element path="/cheali-charger/hardware/cpu"/>
+<element path="/cheali-charger/core"/>
+<element path="/cheali-charger/core/screens"/>
 </expanded>
 <selection>
-<element path="/cheali-charger/hardware/cpu"/>
+<element path="/cheali-charger/core/screens"/>
 </selection>
 </viewState>
 </view>
@@ -303,10 +303,10 @@
 <editor factoryID="org.coocox.builder.ui.persistent.PersistentElementFactory" id="org.coocox.builder.ui.editors.ConfigEditor">
 <org.coocox.builder.ui.editors.ConfigEditor horizontalPosition="0" subTagIndex="1" verticalPosition="219"/>
 </editor>
+<editor factoryID="org.coocox.builder.ui.persistent.PersistentElementFactory" id="org.coocox.builder.ui.editors.ConfigEditor">
+<org.coocox.builder.ui.editors.ConfigEditor horizontalPosition="0" subTagIndex="1" verticalPosition="219"/>
+</editor>
 </editors>
-<item historyLabel="TxHardSerial.cpp" index="1">
-<position info="not_deleted" x="0" y="0"/>
-</item>
 <item historyLabel="Serial.cpp" index="2">
 <position info="not_deleted" x="0" y="0"/>
 </item>
@@ -445,7 +445,8 @@
 </item>
 <item historyLabel="Configuration" index="9"/>
 <item historyLabel="Configuration" index="10"/>
-<item active="true" historyLabel="Configuration" index="11"/>
+<item historyLabel="Configuration" index="11"/>
+<item active="true" historyLabel="Configuration" index="12"/>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
 </page>
