@@ -32,6 +32,9 @@
 #include "SMPS.h"
 #include "Discharger.h"
 
+//we need ProgramData::battery.enable_externT
+#include "ProgramData.h"
+
 //#define ENABLE_DEBUG
 #include "debug.h"
 
@@ -273,7 +276,7 @@ void setupNextInput() {
     adc_input = adc_input_next;
     pgm::read(adc_input_next, &order_analogInputs_on[nextInput(g_input_)]);
 
-    if(settings.UART != Settings::Disabled && adc_input_next.mux == MADDR_T_EXTERN) {
+    if((!ProgramData::battery.enable_externT) && adc_input_next.mux == MADDR_T_EXTERN) {
         adc_input_next.mux = MADDR_V_BALANSER6;
     }
 

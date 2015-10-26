@@ -431,9 +431,16 @@ const AnalogInputs::Name internTName[] PROGMEM = { AnalogInputs::Tintern };
 void calibrateExternT()
 {
     calibrationPoint = 0;
+
+    SerialLog::powerOff();
+    //TODO: rewrite
+    ProgramData::battery.enable_externT = 1;
+
     AnalogInputs::powerOn(false);
     runCalibrationMenu(editExternTData, externTName, externTName);
     AnalogInputs::powerOff();
+
+    SerialLog::powerOn();
 }
 
 void calibrateInternT()
@@ -454,7 +461,11 @@ void run()
     do {
         i = menu.runSimple();
         if(i<0) break;
+
+        //TODO: rewrite
+        ProgramData::battery.enable_externT = 0;
         SerialLog::powerOn();
+
         START_CASE_COUNTER;
         switch(i) {
         case NEXT_CASE: calibrateVoltage(); break;
