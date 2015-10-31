@@ -43,6 +43,8 @@ namespace Program {
 
     Strategy::statusType runWithoutInfo(ProgramType prog);
     void resetAccumulatedMeasurements();
+
+    void dischargeOutputCapacitor();
 };
 
 

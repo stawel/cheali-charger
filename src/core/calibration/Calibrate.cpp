@@ -241,6 +241,7 @@ BALANCER_PORTS_GT_6(
 void calibrateVoltage()
 {
     calibrationPoint = 1;
+    Program::dischargeOutputCapacitor();
     AnalogInputs::powerOn();
     if(testVout(true)) {
         runCalibrationMenu(editVoltageData, voltageName, voltageName2);
@@ -282,6 +283,7 @@ const AnalogInputs::Name expertVoltageName[] PROGMEM = {
 void expertCalibrateVoltage()
 {
     calibrationPoint = 1;
+    Program::dischargeOutputCapacitor();
     AnalogInputs::powerOn(false);
     PolarityCheck::checkReversedPolarity_ = false;
     runCalibrationMenu(editExpertVoltageData, expertVoltageName, expertVoltageName);
@@ -347,6 +349,7 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
     AnalogInputs::CalibrationPoint pName1;
     AnalogInputs::CalibrationPoint pName2;
 
+    Program::dischargeOutputCapacitor();
     AnalogInputs::powerOn();
     if(testVout(false)) {
 
