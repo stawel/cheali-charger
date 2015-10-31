@@ -88,9 +88,11 @@ void TheveninMethod::initialize(bool charge)
 
     AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(Strategy::endV);
 
-    for(uint8_t c = 0; c < Balancer::getCells(); c++) {
-        AnalogInputs::ValueType v = Balancer::getPresumedV(c);
-        tBal_[c].init(v, Vend_per_cell, Strategy::minI, charge);
+    for(uint8_t c = 0; c < MAX_BANANCE_CELLS; c++) {
+        if(Balancer::connectedCells & (1<<c)) {
+            AnalogInputs::ValueType v = Balancer::getPresumedV(c);
+            tBal_[c].init(v, Vend_per_cell, Strategy::minI, charge);
+        }
     }
 
     state_ = ConstantCurrentBalancing;
@@ -205,8 +207,9 @@ void TheveninMethod::calculateRthVth(AnalogInputs::ValueType I)
 {
     tVout_.calculateRthVth(AnalogInputs::getVbattery(),I);
 
-    for(uint8_t c = 0; c < Balancer::getCells(); c++) {
-        tBal_[c].calculateRthVth(Balancer::getPresumedV(c),I);
+    for(uint8_t c = 0; c < MAX_BANANCE_CELLS; c++) {
+        if(Balancer::connectedCells & (1<<c))
+            tBal_[c].calculateRthVth(Balancer::getPresumedV(c),I);
     }
 }
 
@@ -214,8 +217,10 @@ AnalogInputs::ValueType TheveninMethod::calculateI()
 {
     AnalogInputs::ValueType i = tVout_.calculateI(Strategy::endV);
     AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(Strategy::endV);
-    for(uint8_t c = 0; c < Balancer::getCells(); c++) {
-        i = min(i, tBal_[c].calculateI(Vend_per_cell));
+    for(uint8_t c = 0; c < MAX_BANANCE_CELLS; c++) {
+        if(Balancer::connectedCells & (1<<c)) {
+            i = min(i, tBal_[c].calculateI(Vend_per_cell));
+        }
     }
     return i;
 }
@@ -251,8 +256,10 @@ void TheveninMethod::storeI(AnalogInputs::ValueType I)
 {
     tVout_.storeLast(AnalogInputs::getVbattery(), I);
 
-    for(uint8_t i = 0; i < Balancer::getCells(); i++) {
-        AnalogInputs::ValueType vi = Balancer::getPresumedV(i);
-        tBal_[i].storeLast(vi, I);
+    for(uint8_t i = 0; i < MAX_BANANCE_CELLS; i++) {
+        if(Balancer::connectedCells & (1<<i)) {
+            AnalogInputs::ValueType vi = Balancer::getPresumedV(i);
+            tBal_[i].storeLast(vi, I);
+        }
     }
 }

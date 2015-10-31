@@ -23,12 +23,15 @@
 #include "AnalogInputsPrivate.h"
 #include "Hardware.h"
 #include "memory.h"
+#include "Utils.h"
 
+//#define ENABLE_DEBUG
+#include "debug.h"
 
 namespace Balancer {
-    uint8_t cells;
+    uint16_t connectedCells;
     int8_t minCell;
-    uint8_t balance;
+    uint16_t balance;
     bool done;
     AnalogInputs::ValueType Von_[MAX_BANANCE_CELLS], Voff_[MAX_BANANCE_CELLS];
     bool savedVon;
@@ -48,6 +51,11 @@ namespace Balancer {
         return isOff < balancerStartStableCount/2;
     }
 
+    uint8_t getConnectedCellsCount() {
+        return countBits(getConnectedCells());
+    }
+
+
     const Strategy::VTable vtable PROGMEM = {
         powerOn,
         powerOff,
@@ -58,10 +66,12 @@ namespace Balancer {
 
 bool Balancer::isCalibrationRequired() {
     AnalogInputs::ValueType Vmin = UINT16_MAX, Vmax = 0;
-    for(int i = 0; i < cells; i++) {
-        AnalogInputs::ValueType vi = getPresumedV(i);
-        if(Vmax < vi) Vmax = vi;
-        if(vi < Vmin) Vmin = vi;
+    for(uint8_t i = 0; i < MAX_BANANCE_CELLS; i++) {
+        if(connectedCells & (1<<i)) {
+            AnalogInputs::ValueType vi = getPresumedV(i);
+            if(Vmax < vi) Vmax = vi;
+            if(vi < Vmin) Vmin = vi;
+        }
     }
 
     return Vmax - Vmin > ProgramData::battery.balancerError;
@@ -72,8 +82,8 @@ void Balancer::powerOn()
 {
     hardware::setBalancerOutput(true);
 
-    cells = AnalogInputs::getRealValue(AnalogInputs::VbalanceInfo);
-    for(int i = 0; i < cells; i++) {
+    connectedCells = AnalogInputs::getConnectedBalancePorts();
+    for(uint8_t i = 0; i < MAX_BANANCE_CELLS; i++) {
         AnalogInputs::ValueType vi = getV(i);
         Voff_[i] = Von_[i] = vi;
     }
@@ -86,13 +96,15 @@ void Balancer::powerOn()
 
 uint8_t Balancer::getCellMinV()
 {
-    uint8_t c = 0;
-    AnalogInputs::ValueType vmin = 65535;
-    for(uint8_t i = 0; i < cells; i++) {
-        AnalogInputs::ValueType v = getV(i);
-        if(vmin > v) {
-            c = i;
-            vmin = v;
+    int8_t c = -1;
+    AnalogInputs::ValueType vmin = UINT16_MAX;
+    for(uint8_t i = 0; i < MAX_BANANCE_CELLS; i++) {
+        if(connectedCells & (1<<i)) {
+            AnalogInputs::ValueType v = getV(i);
+            if(vmin > v) {
+                c = i;
+                vmin = v;
+            }
         }
     }
     return c;
@@ -129,9 +141,9 @@ void Balancer::powerOff()
 }
 
 
-void Balancer::setBalance(uint8_t v)
+void Balancer::setBalance(uint16_t v)
 {
-    if(balance && v == 0)
+    if(balance != 0 && v == 0)
         balancingEnded = AnalogInputs::getFullMeasurementCount();
 
     balance = v;
@@ -154,18 +166,21 @@ void Balancer::startBalacing()
     //test if we can still discharge
     bool off = true;
     AnalogInputs::ValueType VdisMin =  ProgramData::battery.Vd_per_cell;
-    for(int i = 0; i < cells; i++) {
-        //save voltage values
-        AnalogInputs::ValueType v = getV(i);
-        if(v < VdisMin) {
-            off = true;
-            break;
+    for(uint8_t i = 0; i < MAX_BANANCE_CELLS; i++) {
+        if(connectedCells & (1<<i)) {
+            //save voltage values
+            AnalogInputs::ValueType v = getV(i);
+            if(v < VdisMin) {
+                off = true;
+                break;
+            }
+            if(v > vmin) {
+                off = false;
+            }
+            Von_[i] = Voff_[i] = v;
         }
-        if(v > vmin) {
-            off = false;
-        }
-        Von_[i] = Voff_[i] = v;
     }
+    LogDebug("off:", off);
 
     savedVon = false;
     startBalanceTimeSecondsU16_ = Time::getSecondsU16();
@@ -176,27 +191,32 @@ void Balancer::startBalacing()
     }
 }
 
-uint8_t Balancer::calculateBalance()
+uint16_t Balancer::calculateBalance()
 {
     if(minCell < 0) {
         return 0;
     }
     AnalogInputs::ValueType vmin = getPresumedV(minCell);
-    uint8_t retu = 0, b = 1;
-    for(uint8_t c = 0; c < cells; c++) {
-        AnalogInputs::ValueType v = getPresumedV(c);
-        if(v > vmin)
-            retu |=b;
-        b<<=1;
+    uint16_t retu = 0, cell = 1;
+    for(uint8_t c = 0; c < MAX_BANANCE_CELLS; c++) {
+        if(connectedCells & cell) {
+            AnalogInputs::ValueType v = getPresumedV(c);
+            if(v > vmin) {
+                retu |= cell;
+            }
+        }
+        cell <<= 1;
     }
     return retu;
 }
 
 bool Balancer::isStable(const uint16_t stableCount)
 {
-    for(uint8_t c = 0; c < cells; c++) {
-        if(AnalogInputs::getStableCount(AnalogInputs::Name(AnalogInputs::Vb1+c)) < stableCount)
-            return false;
+    for(uint8_t c = 0; c < MAX_BANANCE_CELLS; c++) {
+        if(connectedCells & (1<<c)) {
+            if(AnalogInputs::getStableCount(AnalogInputs::Name(AnalogInputs::Vb1+c)) < stableCount)
+                return false;
+        }
     }
     return true;
 }
@@ -205,7 +225,7 @@ void Balancer::trySaveVon() {
     if(savedVon)
         return;
     savedVon = true;
-    for(uint8_t c = 0; c < cells; c++) {
+    for(uint8_t c = 0; c < MAX_BANANCE_CELLS; c++) {
         Von_[c] = getV(c);
     }
 }
@@ -218,6 +238,7 @@ uint16_t Balancer::getBalanceTime()
 
 Strategy::statusType Balancer::doStrategy()
 {
+    LogDebug("minCell=", minCell, " balance=", balance, " conCells=", connectedCells);
     if(balance == 0) {
             startBalacing();
     } else {
@@ -234,9 +255,11 @@ Strategy::statusType Balancer::doStrategy()
 
 bool Balancer::isMaxVout(AnalogInputs::ValueType maxV)
 {
-    for(uint8_t c = 0; c < cells; c++) {
-        if(getPresumedV(c) >= maxV)
-            return true;
+    for(uint8_t c = 0; c < MAX_BANANCE_CELLS; c++) {
+        if(connectedCells & (1<<c)) {
+            if(getPresumedV(c) >= maxV)
+                return true;
+        }
 
     }
     return false;
@@ -244,16 +267,18 @@ bool Balancer::isMaxVout(AnalogInputs::ValueType maxV)
 
 bool Balancer::isMinVout(AnalogInputs::ValueType minV)
 {
-    for(uint8_t c = 0; c < cells; c++) {
-        if(getPresumedV(c) <= minV)
-            return true;
-
+    for(uint8_t c = 0; c < MAX_BANANCE_CELLS; c++) {
+        if(connectedCells & (1<<c)) {
+            if(getPresumedV(c) <= minV)
+                return true;
+        }
     }
     return false;
 }
 
 AnalogInputs::ValueType Balancer::calculatePerCell(AnalogInputs::ValueType v)
 {
+    uint8_t cells = getConnectedCellsCount();
     if(cells == 0)
         return 0;
     return v/cells;

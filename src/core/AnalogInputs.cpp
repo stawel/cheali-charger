@@ -140,13 +140,24 @@ void AnalogInputs::setCalibrationPoint(Name name, uint8_t i, const CalibrationPo
     eeprom::write<CalibrationPoint>(&eeprom::data.calibration[name].p[i], x);
 }
 
-uint8_t AnalogInputs::getConnectedBalancePorts()
+uint16_t AnalogInputs::getConnectedBalancePorts()
 {
+    uint16_t ports = 0, port = 1;
     for(uint8_t i=0; i < MAX_BANANCE_CELLS; i++){
-        if(!isConnected(Name(Vb1+i))) return i;
+        if(isConnected(Name(Vb1+i))) {
+            ports |= port;
+        }
+        port <<= 1;
     }
-    return MAX_BANANCE_CELLS;
+    return ports;
 }
+
+uint8_t AnalogInputs::getConnectedBalancePortsCount()
+{
+     return countBits(getConnectedBalancePorts());
+}
+
+
 bool AnalogInputs::isConnected(Name name)
 {
     if(name == Vbalancer) {
@@ -512,10 +523,11 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
     }
 #endif
 
-    uint8_t ports = getConnectedBalancePorts();
+    uint16_t connectedCells = getConnectedBalancePorts();
 
-    for(uint8_t i=0; i < ports; i++) {
-        balancer += getRealValue(Name(Vb1+i));
+    for(uint8_t i = 0; i < MAX_BANANCE_CELLS; i++) {
+        if(connectedCells & (1<<i))
+            balancer += getRealValue(Name(Vb1+i));
     }
 
     setReal(Vbalancer, balancer);
@@ -523,13 +535,13 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
     if(balancer == 0 || absDiff(out, balancer) > ANALOG_VOLT(3.000)) {
         //balancer not connected or big error in calibration
         obInfo = Vout;
-        ports = 0;
+        connectedCells = 0;
     } else {
         out = balancer;
         obInfo = Vbalancer;
     }
     setReal(VoutBalancer, out);
-    setReal(VbalanceInfo, ports);
+    setReal(VbalanceInfo, connectedCells);
     setReal(VobInfo, obInfo);
 
     AnalogInputs::ValueType IoutValue = 0;

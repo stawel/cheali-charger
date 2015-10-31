@@ -22,6 +22,7 @@
 #include "memory.h"
 #include "Settings.h"
 #include "Program.h"
+#include "Utils.h"
 
 namespace StartInfoStrategy {
     uint8_t ok_;
@@ -60,7 +61,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
         v_out = false;
     }
 
-    is_cells = AnalogInputs::getConnectedBalancePorts();
+    is_cells = AnalogInputs::getConnectedBalancePortsCount();
 
     if(Strategy::doBalance) {
         should_be_cells = ProgramData::battery.cells;

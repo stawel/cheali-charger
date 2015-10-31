@@ -74,31 +74,6 @@ namespace Screen { namespace Balancer {
 
         if (::Balancer::balance == 0) {
             lcdPrintChar(c);
-        }
-
-        if (::Balancer::balance != 0) {
-            uint8_t  j = 1;
-            for(uint8_t i = 0; i < ::Balancer::getCells(); i++) {
-                if(i == ::Balancer::minCell) {
-                    c = SCREEN_EMPTY_CELL_CHAR; //lowest cell
-                } else {
-                    if(::Balancer::balance&j) {
-                        if (blink.blinkTime_ & 1) {
-                            c = SCREEN_FULL_CELL_CHAR; //flash full/empty cells
-                        } else {
-                            c = SCREEN_EMPTY_CELL_CHAR; //flash full/empty cells
-                        }
-                    } else {
-                     c = SCREEN_AVR_CELL_CHAR; //average cells
-                    }
-                }
-                lcdPrintChar(c);
-                if(j!=128)  j <<= 1;
-                else        j = 0;
-            }
-            lcdPrintSpaces(8 - ::Balancer::getCells());
-
-        } else {
 #ifdef ENABLE_SCREEN_KNIGHTRIDEREFFECT
             char knightRiderArrow;
             if (knightRiderDir > 0) knightRiderArrow='>'; else knightRiderArrow='<';
@@ -114,6 +89,30 @@ namespace Screen { namespace Balancer {
 #else
         lcdPrintSpaces(7);
 #endif
+        } else {
+            uint16_t cell = 1;
+            for(uint8_t i = 0; i < MAX_BANANCE_CELLS; i++) {
+                if(::Balancer::connectedCells & cell) {
+                    if(i == ::Balancer::minCell) {
+                        c = SCREEN_EMPTY_CELL_CHAR; //lowest cell
+                    } else {
+                        if(::Balancer::balance & cell) {
+                            if (blink.blinkTime_ & 1) {
+                                c = SCREEN_FULL_CELL_CHAR; //flash full/empty cells
+                            } else {
+                                c = SCREEN_EMPTY_CELL_CHAR; //flash full/empty cells
+                            }
+                        } else {
+                         c = SCREEN_AVR_CELL_CHAR; //average cells
+                        }
+                    }
+                } else {
+                    c = ' ';
+                }
+                lcdPrintChar(c);
+                cell <<= 1;
+            }
+            lcdPrintSpaces(8 - MAX_BANANCE_CELLS);
         }
         lcdPrintDigit(from+1);
         lcdPrintChar(':');

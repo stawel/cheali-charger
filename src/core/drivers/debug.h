@@ -26,7 +26,9 @@
 
 namespace debug {
     inline void print(char x) { SerialLog::printChar(x); }
+    inline void print(bool x) { SerialLog::printUInt(x); }
     inline void print(uint8_t x) { SerialLog::printUInt(x); }
+    inline void print(int8_t x) { SerialLog::printInt(x); }
     inline void print(uint16_t x) { SerialLog::printUInt(x); }
     inline void print(int16_t x) { SerialLog::printInt(x); }
     inline void print(uint32_t x) { SerialLog::printUInt(x); }

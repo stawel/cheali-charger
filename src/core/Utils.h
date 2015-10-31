@@ -55,6 +55,7 @@ uint16_t pow10(uint8_t n);
 uint8_t digits(int32_t x);
 uint8_t digits(uint16_t x);
 int8_t sign(int16_t x);
+uint8_t countBits(uint16_t v);
 
 void change0ToInfSmart(uint16_t *v, int dir);
 void changeMinToMaxSmart(uint16_t *v, int dir, uint16_t min, uint16_t max);
@@ -63,6 +64,7 @@ void change0ToMax(uint16_t *v, int dir, uint8_t max);
 void change1ToMax(uint16_t *v, int dir, uint8_t max);
 
 uint8_t waitButtonPressed();
+
 uint8_t countElements(const void * const array[]);
 template<typename T>
 uint8_t countElements(const T array[]) {return countElements((const void * const *)array); }

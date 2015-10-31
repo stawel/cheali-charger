@@ -38,12 +38,12 @@ namespace Balancer {
 
     extern const Strategy::VTable vtable;
 
-    extern uint8_t balance;
+    extern uint16_t balance;
     extern bool savedVon;
     extern int8_t minCell;
     extern bool done;
     extern uint16_t balancingEnded;
-    extern uint8_t cells;
+    extern uint16_t connectedCells;
 
     void powerOn();
     void powerOff();
@@ -52,10 +52,12 @@ namespace Balancer {
     void trySaveVon();
     uint16_t getBalanceTime();
 
-    uint8_t calculateBalance();
-    void setBalance(uint8_t v);
+    uint16_t calculateBalance();
+    void setBalance(uint16_t v);
     uint8_t getCellMinV();
-    inline uint8_t getCells() { return cells; }
+    inline uint16_t getConnectedCells() { return connectedCells; }
+    uint8_t getConnectedCellsCount();
+
     AnalogInputs::ValueType getV(uint8_t cell);
     AnalogInputs::ValueType getPresumedV(uint8_t cell);
     inline AnalogInputs::ValueType getRealV(uint8_t cell) { return getPresumedV(cell); }

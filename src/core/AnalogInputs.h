@@ -131,8 +131,8 @@ namespace AnalogInputs {
     uint16_t getCharge();
     void enableDeltaVoutMax(bool enable);
 
-
-    uint8_t getConnectedBalancePorts();
+    uint16_t getConnectedBalancePorts();
+    uint8_t getConnectedBalancePortsCount();
 
     uint16_t getFullMeasurementCount();
     uint16_t getStableCount(Name name);

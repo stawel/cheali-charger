@@ -75,6 +75,16 @@ int8_t sign(int16_t x)
     return -1;
 }
 
+uint8_t countBits(uint16_t v)
+{
+    uint8_t bits = 0;
+    for(int8_t i = 0; i < 16; i++) {
+        if(v&1) bits++;
+        v>>=1;
+    }
+    return bits;
+}
+
 uint8_t digits(uint16_t x)
 {
     return digits((int32_t)x);
