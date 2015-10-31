@@ -23,7 +23,6 @@
 namespace TheveninDischargeStrategy
 {
     extern const Strategy::VTable vtable;
-    extern bool endOnTheveninMethodComplete_;
 
     void powerOn();
     Strategy::statusType doStrategy();

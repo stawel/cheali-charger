@@ -262,7 +262,6 @@ void ProgramData::changedType()
         battery.enable_externT = false;
         battery.externTCO = ANALOG_CELCIUS(60);
 
-        battery.enable_adaptiveDischarge = false;
         battery.DCRestTime = 30;
         battery.capCutoff = 120;
     }

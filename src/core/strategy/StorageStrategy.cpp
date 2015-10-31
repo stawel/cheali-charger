@@ -60,7 +60,6 @@ void StorageStrategy::powerOn()
     } else {
         Strategy::setVI(ProgramData::VStorage, false);
         TheveninDischargeStrategy::powerOn();
-        TheveninDischargeStrategy::endOnTheveninMethodComplete_ = true;
         state = Discharge;
     }
 }

@@ -158,7 +158,6 @@ namespace ProgramDataMenu {
     STRING(capCoff,     "cap COff:");
     STRING(DCcycles,    "D/C cycles:");
     STRING(DCRestTime,  "D/C rest:");
-    STRING(adaptiveDis, "adapt dis:");
 }
 
 namespace DeltaChargeStrategy {

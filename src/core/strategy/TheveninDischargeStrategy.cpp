@@ -31,7 +31,6 @@ namespace TheveninDischargeStrategy {
         doStrategy
     };
 
-    bool endOnTheveninMethodComplete_;
     bool isEndVout();
 
 }
@@ -49,8 +48,6 @@ void TheveninDischargeStrategy::powerOn()
 {
     Discharger::powerOn();
     Balancer::powerOn();
-    //end on minimum Voltage reached or TheveninMethodComplete
-    endOnTheveninMethodComplete_ = ProgramData::battery.enable_adaptiveDischarge;
     TheveninMethod::initialize(false);
 }
 
@@ -59,12 +56,7 @@ Strategy::statusType TheveninDischargeStrategy::doStrategy()
     bool isendVout = isEndVout();
     AnalogInputs::ValueType I = Discharger::getIout();
 
-    //test for charge complete
-    bool end = isendVout;
-    if(endOnTheveninMethodComplete_) {
-        end = TheveninMethod::balance_isComplete(isendVout, I);
-    }
-    if(end) {
+    if(TheveninMethod::balance_isComplete(isendVout, I)) {
         return Strategy::COMPLETE;
     }
 
