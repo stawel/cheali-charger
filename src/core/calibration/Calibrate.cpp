@@ -165,9 +165,15 @@ void saveCalibration(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInput
 
 void runCalibrationMenu(const StaticEditMenu::StaticEditData * menuData,
         const AnalogInputs::Name * name1,
-        const AnalogInputs::Name * name2) {
+        const AnalogInputs::Name * name2,
+        uint8_t calibrationPoint = false) {
     StaticEditMenu menu(menuData);
-    menu.setSelector(COND_ALWAYS);
+
+    uint16_t selector = COND_ALWAYS ^ COND_POINT;
+    if(calibrationPoint || settings.menuType == Settings::MenuAdvanced) {
+        selector |= COND_POINT;
+    }
+    menu.setSelector(selector);
     int8_t item;
     do {
         item = menu.runSimple(true);
@@ -437,7 +443,7 @@ void calibrateExternT()
     ProgramData::battery.enable_externT = 1;
 
     AnalogInputs::powerOn(false);
-    runCalibrationMenu(editExternTData, externTName, externTName);
+    runCalibrationMenu(editExternTData, externTName, externTName, true);
     AnalogInputs::powerOff();
 
     SerialLog::powerOn();
@@ -447,7 +453,7 @@ void calibrateInternT()
 {
     calibrationPoint = 0;
     AnalogInputs::powerOn(false);
-    runCalibrationMenu(editInternTData, internTName, internTName);
+    runCalibrationMenu(editInternTData, internTName, internTName, true);
     AnalogInputs::powerOff();
 }
 
