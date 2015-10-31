@@ -33,9 +33,10 @@ NiMH, NiCd specific settings:
 |NiCd dV: *X*mV<br>![NiCd dV:](NiCd_dV.jpeg)       | ΔV value for NiCd (per cell), see also: "enab dV:"| all |
 |D/C cycles: *N*<br>![D/C cycles:](D_C_cycles.jpeg)| number of discharges/charges when cycling (formatting) battery| all |
 |D/C rest: *t*m<br>![D/C rest:](D_C_rest.jpeg)     | rest time between discharge and charge during cycling in minutes| all |
-|adc noise: *yes/no*                               | add *noise* to batteries main-leads input connector, see 1. | atmega32 based chargers |
+|adc noise: *yes/no*                               | add *noise* to batteries main-leads input connector, see 1,2. | atmega32 based chargers |
 
 1. see also [NiMH, NiCd charging](../nimh_nicd_charging.md).
+2. see also [artificial adc noise](../artificial_adc_noise.md).
 
 
 LiXX, NiZn, Pb specific settings:
