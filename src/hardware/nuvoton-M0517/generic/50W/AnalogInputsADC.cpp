@@ -265,11 +265,11 @@ void conversionDone()
 
 void finalizeMeasurement()
 {
-    AnalogInputs::i_adc_[AnalogInputs::IsmpsSet]        = SMPS::getValue();
+    AnalogInputs::i_adc_[AnalogInputs::IsmpsSet]        = SMPS::getIoutPWM();
     AnalogInputs::i_adc_[AnalogInputs::IdischargeSet]   = Discharger::getValue();
 
     if(g_addSumToInput) {
-        AnalogInputs::i_avrSum_[AnalogInputs::IsmpsSet]        += SMPS::getValue() * ANALOG_INPUTS_ADC_BURST_COUNT;
+        AnalogInputs::i_avrSum_[AnalogInputs::IsmpsSet]        += SMPS::getIoutPWM() * ANALOG_INPUTS_ADC_BURST_COUNT;
         AnalogInputs::i_avrSum_[AnalogInputs::IdischargeSet]   += Discharger::getValue() * ANALOG_INPUTS_ADC_BURST_COUNT;
         if(AnalogInputs::i_avrCount_ == 1) {
             AnalogInputs::i_avrSum_[AnalogInputs::Ismps]          /= ADC_I_SMPS_PER_ROUND;

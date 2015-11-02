@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2014  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,17 +15,20 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SIMPLECHARGESTRATEGY_H_
-#define SIMPLECHARGESTRATEGY_H_
+#ifndef OUTPUT_PWM_H_
+#define OUTPUT_PWM_H_
+
+#include "Timer1.h"
+
+#define OUTPUT_PWM_PRECISION_PERIOD TIMER1_PRECISION_PERIOD
+
+namespace outputPWM {
+
+    inline void initialize(void)                    {}
+    inline void setPWM(uint8_t pin, uint32_t value) {   Timer1::setPWM(pin, value); }
+    inline void disablePWM(uint8_t pin)             {   Timer1::disablePWM(pin);    }
+
+} //namespace outputPWM
 
 
-#include "Strategy.h"
-
-namespace SimpleChargeStrategy {
-
-    extern const Strategy::VTable vtable;
-
-};
-
-#endif /* SIMPLECHARGESTRATEGY_H_ */
-
+#endif //OUTPUT_PWM_H_

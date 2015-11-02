@@ -38,6 +38,12 @@ namespace Screen { namespace Methods {
         lcdPrintSpace1();
     }
 
+    void printTime() {
+        lcdPrintSpace1();
+        lcdPrintTime(Monitor::getTimeSec());
+        lcdPrintSpace1();
+    }
+
     void printCharAndTime() {
         char c = 'N';
         if(SMPS::isPowerOn()) {
@@ -53,9 +59,7 @@ namespace Screen { namespace Methods {
             c = 'W';
         }
         lcdPrintChar(c);
-        lcdPrintSpace1();
-        lcdPrintTime(Monitor::getTimeSec());
-        lcdPrintSpace1();
+        printTime();
     }
 
     void printDeltaV() {

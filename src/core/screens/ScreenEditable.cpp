@@ -50,29 +50,47 @@ namespace Screen { namespace Editable {
 
 void Screen::Editable::displayLEDScreen()
 {
-    static uint8_t displayMaxI = 0;
+    static uint8_t displaySet = 0, setIorV = 0;
+
     int dir = getKeyboardDir();
     if(dir) {
-        change0ToInfSmart(&Strategy::maxI, dir);
+        if(setIorV) {
+            changeMinToMaxStep(&Strategy::endV, dir, 0, MAX_CHARGE_V, ANALOG_VOLT(0.050));
+        } else {
+            change0ToInfSmart(&Strategy::maxI, dir);
+        }
         Screen::keyboardButton = BUTTON_NONE;
-        displayMaxI = 10;
+        displaySet = 10;
+    }
+
+    if(Screen::keyboardButton == BUTTON_START) {
+        Screen::keyboardButton = BUTTON_NONE;
+        setIorV = !setIorV;
+        displaySet = 0;
     }
 
     lcdSetCursor0_0();
-    if(displayMaxI) {
-        displayMaxI--;
-        lcdPrintCurrent(Strategy::maxI, 8);
+    if(displaySet && setIorV == 0) {
+        displaySet--;
+        lcdPrintCurrent(Strategy::maxI, 7);
         lcdPrintSpace1();
     } else {
-        Screen::Methods::printCharAndTime();
+        Screen::Methods::printTime();
     }
     AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+    if(!setIorV) lcdPrintChar('<');
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
-    AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
+    if(displaySet && setIorV == 1) {
+        displaySet--;
+        lcdPrintVoltage(Strategy::endV, 7);
+    } else {
+        AnalogInputs::printRealValue(AnalogInputs::Pout, 7);
+    }
     lcdPrintSpace1();
-    AnalogInputs::printRealValue(AnalogInputs::VoutBalancer,     7);
+    AnalogInputs::printRealValue(AnalogInputs::VoutBalancer, 7);
+    if(setIorV) lcdPrintChar('<');
     lcdPrintSpaces();
 }
 

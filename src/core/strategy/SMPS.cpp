@@ -22,6 +22,7 @@
 #include "LcdPrint.h"
 #include "Screen.h"
 #include "Settings.h"
+#include "SMPS_PID.h"
 
 #ifndef SMPS_MAX_CURRENT_CHANGE
 #define SMPS_MAX_CURRENT_CHANGE     ANALOG_AMP(0.200)
@@ -31,15 +32,15 @@
 
 namespace SMPS {
     bool on_ = false;
-    uint16_t value_;
+    uint16_t IoutPWM_;
     AnalogInputs::ValueType IoutSet_;
 
     bool isPowerOn()    { return on_; }
-    bool isWorking()    { return value_ != 0; }
-    uint16_t getValue() { return value_; }
+    bool isWorking()    { return IoutPWM_ != 0; }
+    uint16_t getIoutPWM() { return IoutPWM_; }
     AnalogInputs::ValueType getIout() { return IoutSet_; }
 
-    void setValue(uint16_t value);
+    void setIoutPWM(uint16_t IoutPWM);
 
     AnalogInputs::ValueType getMaxIout()
     {
@@ -69,21 +70,28 @@ namespace SMPS {
 
 void SMPS::initialize()
 {
-    value_ = 0;
+    IoutPWM_ = 0;
     IoutSet_ = 0;
-    setValue(0);
+    setIoutPWM(0);
     on_ = true;
     powerOff();
 }
 
 
-void SMPS::setValue(uint16_t value)
+void SMPS::setIoutPWM(uint16_t IoutPWM)
 {
-    if(value > SMPS_UPPERBOUND_VALUE)
-        value = SMPS_UPPERBOUND_VALUE;
-    value_ = value;
+    if(IoutPWM > SMPS_MAX_I_OUT_PWM)
+        IoutPWM = SMPS_MAX_I_OUT_PWM;
+    IoutPWM_ = IoutPWM;
 
-    hardware::setChargerValue(value_);
+    SMPS_PID::setIoutPWM(IoutPWM_);
+    AnalogInputs::resetMeasurement();
+}
+
+void SMPS::setVout(AnalogInputs::ValueType V)
+{
+    uint16_t adcVout = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, V);
+    SMPS_PID::setVoutPWM(adcVout);
     AnalogInputs::resetMeasurement();
 }
 
@@ -103,7 +111,7 @@ void SMPS::trySetIout(AnalogInputs::ValueType I)
     if(IoutSet_ == I) return;
     IoutSet_ = I;
     uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsSet, I);
-    setValue(value);
+    setIoutPWM(value);
 }
 
 void SMPS::powerOn()
@@ -111,10 +119,10 @@ void SMPS::powerOn()
     if(isPowerOn())
         return;
     //reset rising value
-    value_ = 0;
+    IoutPWM_ = 0;
     IoutSet_ = 0;
-    setValue(0);
-    hardware::setChargerOutput(true);
+    setIoutPWM(0);
+    SMPS_PID::powerOn();
     on_ = true;
 }
 
@@ -124,10 +132,10 @@ void SMPS::powerOff()
     if(!isPowerOn())
         return;
 
-    setValue(0);
+    setIoutPWM(0);
     //reset rising value
-    value_ = 0;
+    IoutPWM_ = 0;
     IoutSet_ = 0;
-    hardware::setChargerOutput(false);
+    SMPS_PID::powerOff();
     on_ = false;
 }

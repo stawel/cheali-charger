@@ -25,6 +25,9 @@
 namespace SimpleChargeStrategy {
 
     Strategy::statusType doStrategy();
+    void powerOn();
+    void powerOff();
+
 
     const Strategy::VTable vtable PROGMEM = {
         powerOn,
@@ -37,7 +40,6 @@ namespace SimpleChargeStrategy {
 void SimpleChargeStrategy::powerOn()
 {
     SMPS::powerOn();
-    TheveninMethod::initialize(true);
     SMPS::trySetIout(Strategy::minI);
 }
 
@@ -48,24 +50,14 @@ void SimpleChargeStrategy::powerOff()
 
 Strategy::statusType SimpleChargeStrategy::doStrategy()
 {
-    SimpleChargeStrategy::calculateThevenin();
-    AnalogInputs::ValueType Vout = AnalogInputs::getVbattery();
-
-    if(Vout > Strategy::endV) {
-        Program::stopReason = DeltaChargeStrategy::string_batteryVoltageReachedUpperLimit;
-        return Strategy::ERROR;
-    }
     SMPS::trySetIout(Strategy::maxI);
+    SMPS::setVout(Strategy::endV);
 
     return Strategy::RUNNING;
 }
 
 
 
-void SimpleChargeStrategy::calculateThevenin()
-{
-    if(AnalogInputs::isOutStable()) TheveninMethod::calculateRthVth(SMPS::getIout());
-}
 
 
 

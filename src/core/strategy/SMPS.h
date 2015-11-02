@@ -33,8 +33,11 @@ namespace SMPS {
     AnalogInputs::ValueType getIout();
     void trySetIout(AnalogInputs::ValueType I);
 
-    uint16_t getValue();
-    void setValue(uint16_t value);
+    void setVout(AnalogInputs::ValueType V);
+
+
+    uint16_t getIoutPWM();
+    void setIoutPWM(uint16_t IoutPWM);
 
     void powerOn();
     void powerOff();

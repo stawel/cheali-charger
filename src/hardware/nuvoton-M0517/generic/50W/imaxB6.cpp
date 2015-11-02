@@ -75,6 +75,7 @@ void hardware::initialize()
     AnalogInputsADC::initialize();
     outputPWM::initialize();
     setVoutCutoff(MAX_CHARGE_V);
+    SMPS_PID::initialize();
 }
 
 
@@ -90,7 +91,8 @@ void hardware::setBatteryOutput(bool enable)
 {
     IO::digitalWrite(OUTPUT_DISABLE_PIN, !enable);
     if(!enable) {
-        setChargerOutput(false);
+        //TODO:??
+//        setChargerOutput(false);
         setDischargerOutput(false);
     }
 }

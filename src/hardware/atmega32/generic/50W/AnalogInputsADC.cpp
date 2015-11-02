@@ -151,10 +151,10 @@ uint16_t processConversion()
 
 void finalizeMeasurement()
 {
-    AnalogInputs::i_adc_[AnalogInputs::IsmpsSet]        = SMPS::getValue();
+    AnalogInputs::i_adc_[AnalogInputs::IsmpsSet]        = SMPS::getIoutPWM();
     AnalogInputs::i_adc_[AnalogInputs::IdischargeSet]   = Discharger::getValue();
     if(g_addSumToInput) {
-        AnalogInputs::i_avrSum_[AnalogInputs::IsmpsSet]        += ANALOG_INPUTS_ADC_BURST_COUNT * SMPS::getValue();
+        AnalogInputs::i_avrSum_[AnalogInputs::IsmpsSet]        += ANALOG_INPUTS_ADC_BURST_COUNT * SMPS::getIoutPWM();
         AnalogInputs::i_avrSum_[AnalogInputs::IdischargeSet]   += ANALOG_INPUTS_ADC_BURST_COUNT * Discharger::getValue();
         if(AnalogInputs::i_avrCount_ == 1) {
             AnalogInputs::i_avrSum_[AnalogInputs::Ismps]          /= ADC_I_SMPS_PER_ROUND;

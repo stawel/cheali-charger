@@ -29,7 +29,7 @@
 #define MAX_DISCHARGE_I         ANALOG_AMP(1.000)
 
 //1-13? correlation
-#define SMPS_UPPERBOUND_VALUE               (60000)
+#define SMPS_MAX_I_OUT_PWM               (60000)
 //TODO: ?? pwm_n in outputPWM.cpp
 #define DISCHARGER_UPPERBOUND_VALUE         32760
 

@@ -34,6 +34,7 @@ namespace Screen { namespace Methods {
     void displayEnergy();
 
     void printCharAndTime();
+    void printTime();
 } };
 
 #endif /* SCREEN_METHODS_H_ */

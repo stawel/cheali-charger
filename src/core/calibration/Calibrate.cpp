@@ -299,7 +299,7 @@ void expertCalibrateVoltage()
 
 void setCurrentValue(AnalogInputs::Name name, AnalogInputs::ValueType value)
 {
-    if(name == AnalogInputs::IsmpsSet)      SMPS::setValue(value);
+    if(name == AnalogInputs::IsmpsSet)      SMPS::setIoutPWM(value);
     else                                    Discharger::setValue(value);
 }
 
@@ -354,7 +354,7 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
     if(testVout(false)) {
 
         if(charging) {
-            maxValue = SMPS_UPPERBOUND_VALUE;
+            maxValue = SMPS_MAX_I_OUT_PWM;
             name1 = AnalogInputs::IsmpsSet;
             name2 = AnalogInputs::Ismps;
             SMPS::powerOn();

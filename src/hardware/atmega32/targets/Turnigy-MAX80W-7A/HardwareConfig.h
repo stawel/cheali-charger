@@ -35,7 +35,7 @@
 
 
 //1-13? correlation
-#define SMPS_UPPERBOUND_VALUE               (MAX_CHARGE_I*13)
+#define SMPS_MAX_I_OUT_PWM               (MAX_CHARGE_I*13)
 #define DISCHARGER_UPPERBOUND_VALUE         TIMER1_PRECISION_PERIOD
 
 

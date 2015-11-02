@@ -34,7 +34,7 @@
 
 
 //1-13? correlation
-#define SMPS_UPPERBOUND_VALUE               65000
+#define SMPS_MAX_I_OUT_PWM               65000
 #define DISCHARGER_UPPERBOUND_VALUE         TIMER1_PRECISION_PERIOD
 
 #endif /* HARDWARE_CONFIG_H_ */

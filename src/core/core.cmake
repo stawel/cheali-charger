@@ -14,6 +14,7 @@ include_directories(${CORE_DIR_BIN})
 CHEALI_ADD("CORE_SOURCE_FILES" "${CORE_SOURCE}")
 
 include(${CORE_DIR}/strategy/strategy.cmake)
+include(${CORE_DIR}/strategy/pid/pid.cmake)
 include(${CORE_DIR}/calibration/calibration.cmake)
 include(${CORE_DIR}/menus/menus.cmake)
 include(${CORE_DIR}/screens/screens.cmake)

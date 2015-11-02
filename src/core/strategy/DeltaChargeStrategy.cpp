@@ -29,23 +29,37 @@
 namespace DeltaChargeStrategy {
 
     void powerOn();
+    void powerOff();
     Strategy::statusType doStrategy();
 
     const Strategy::VTable vtable PROGMEM = {
         powerOn,
-        SimpleChargeStrategy::powerOff,
+        powerOff,
         doStrategy
     };
+
+    void calculateThevenin() {
+        if(AnalogInputs::isOutStable()) TheveninMethod::calculateRthVth(SMPS::getIout());
+    }
+
 }
 
 void DeltaChargeStrategy::powerOn()
 {
-    SimpleChargeStrategy::powerOn();
+    SMPS::powerOn();
+    TheveninMethod::initialize(true);
+    SMPS::trySetIout(Strategy::minI);
 }
+
+void DeltaChargeStrategy::powerOff()
+{
+    SMPS::powerOff();
+}
+
 
 Strategy::statusType DeltaChargeStrategy::doStrategy()
 {
-    SimpleChargeStrategy::calculateThevenin();
+    calculateThevenin();
     AnalogInputs::ValueType Vout = AnalogInputs::getVbattery();
 
     if(ProgramData::getVoltage(ProgramData::VDischarge) < Vout) {
@@ -84,5 +98,6 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
 
     return Strategy::RUNNING;
 }
+
 
 
