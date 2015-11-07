@@ -22,23 +22,22 @@
 #include "Utils.h"
 
 #define BUTTON_DELAY                 1
-#define BUTTON_DEBOUNCE_COUNT       10
+#define BUTTON_DEBOUNCE_COUNT        4
 
 
 namespace Keyboard {
-    static const uint8_t stateDelay[]   PROGMEM = {1, 250, 125, 60,   30,  10, 1};
-    static const uint8_t stayInState[]  PROGMEM = {1,   1,   3,  8,   20,  30, 1};
+    static const uint8_t stateDelay[]   PROGMEM = {BUTTON_DEBOUNCE_COUNT, 250, 125, 60,   30,  10,   1};
+    static const uint8_t stayInState[]  PROGMEM = {                    1,   1,   3,  8,   20,  30,   1};
+    static const uint8_t speedFactor[]  PROGMEM = {                    1,   1,   1,  1,    1,  10, 100};
 
     uint8_t last_key_ = BUTTON_NONE;
-    uint8_t last_key_count_ = 0;
+    uint8_t inState_ = 0;
+
+    //state_ - "key pressed" state
+    //state_ == 0 - Denounce state
+    //state_ == 1 - new key pressed (or we are in key == BUTTON_NONE)
+    //state_ == n - key is pressed and hold
     uint8_t state_ = 0;
-    uint8_t delay_ = 0;
-
-    uint8_t keyChanged(uint8_t key);
-
-    uint8_t getSpeed()  {
-        return state_;
-    };
 
     bool isLongPressTime() {
         return state_ > 2;
@@ -47,43 +46,39 @@ namespace Keyboard {
     uint8_t getLast() {
         return last_key_;
     }
+
+    uint16_t getSpeedFactor() {
+        return pgm::read(&speedFactor[state_]);
+    }
 }
 
 uint8_t Keyboard::getPressedWithDelay()
 {
-    uint8_t key, i = 0;
+    uint8_t key, delay = 0;
 
     do {
+        delay++;
         Time::delayDoIdle(BUTTON_DELAY);
         key = hardware::getKeyPressed();
-        if(last_key_count_ == 0) {
+        if(last_key_ != key) {
+            //key changed
             last_key_ = key;
             state_ = 0;
-            delay_ = 0;
+            inState_ = 0;
+            delay = 0;
         }
-        last_key_count_ += (last_key_ == key)? 1: -1;
-
-        if(last_key_count_ > BUTTON_DEBOUNCE_COUNT) {
-            // button pressed
-            last_key_count_ = BUTTON_DEBOUNCE_COUNT;
-            i++;
-        } else {
-            //button changed
-            i = 0;
-        }
-    } while (i <= pgm::read(&stateDelay[state_]));
+    } while (delay <= pgm::read(&stateDelay[state_]));
 
     if(state_ < sizeOfArray(stateDelay) - 1) {
-        delay_++;
-        if(delay_ >= pgm::read(&stayInState[state_])) {
+        inState_++;
+        if(inState_ >= pgm::read(&stayInState[state_])) {
+            state_ ++;
+            inState_ = 0;
             if(last_key_ == BUTTON_NONE) {
-                state_ = 0; //we stay at state == 1 while last_key_ == BUTTON_NONE
-            } else if(state_ == 0) {
+                state_ = 1; //we stay at state := 1 while last_key_ == BUTTON_NONE
+            } else if(state_ == 1) { //key pressed (changed)
                     Buzzer::soundKeyboard();
             }
-
-            state_ ++;
-            delay_ = 0;
         }
     }
 
