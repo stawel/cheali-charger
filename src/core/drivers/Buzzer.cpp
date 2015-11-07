@@ -54,6 +54,12 @@ void Buzzer::sound(Buzzer::SoundType s)
     Time::delayDoIdle(50);
 }
 
+void Buzzer::soundOff()
+{
+    sound_ = Off;
+}
+
+
 void Buzzer::soundIfSilence(Buzzer::SoundType s)
 {
     if(sound_ == Off)

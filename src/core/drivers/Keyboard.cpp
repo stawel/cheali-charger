@@ -20,6 +20,8 @@
 #include "Buzzer.h"
 #include "memory.h"
 #include "Utils.h"
+//#define ENABLE_DEBUG
+#include "debug.h"
 
 #define BUTTON_DELAY                 1
 #define BUTTON_DEBOUNCE_COUNT        4
@@ -77,7 +79,8 @@ uint8_t Keyboard::getPressedWithDelay()
             if(last_key_ == BUTTON_NONE) {
                 state_ = 1; //we stay at state := 1 while last_key_ == BUTTON_NONE
             } else if(state_ == 1) { //key pressed (changed)
-                    Buzzer::soundKeyboard();
+                //this method has also a small delay
+                Buzzer::soundKeyboard();
             }
         }
     }
