@@ -1,3 +1,4 @@
+#include "PID.h"
 #include "Hardware.h"
 #include "SMPS_PID.h"
 #include "IO.h"
@@ -5,42 +6,42 @@
 #include "outputPWM.h"
 #include "atomic.h"
 
-//MV - manipulated variable in PID
-#define MAX_PID_MV_FACTOR 1.5
-#define MAX_PID_MV ((uint16_t) (OUTPUT_PWM_PRECISION_PERIOD * MAX_PID_MV_FACTOR))
-#define PID_MV_PRECISION 8
-#define MAX_PID_MV_PRECISION (((uint32_t) MAX_PID_MV)<<PID_MV_PRECISION)
-
-
 #define MIN( a, b ) ( ((a) < (b)) ? (a) : (b) )
 
 namespace SMPS_PID {
+    PID pidVoltage;
+    PID pidCurrent;
     //prefix "i" - variable is used in interrupts
-    volatile uint16_t i_setpoint_adcIout;
-    volatile uint16_t i_setpoint_adcVout;
     //we have to use i_PID_CutOffVoltage, on some chargers (M0516) ADC can read up to 60V
     volatile uint16_t i_cutOffVoltage;
-    volatile long i_MV;
-    volatile bool i_enable;
+    volatile bool i_enabled;
 
-    void setPID_MV(uint16_t value);
+    void setManipulatedVariable(uint16_t value);
 }
 
 #define A 4
 
+void SMPS_PID::initialize()
+{
+    pidVoltage.setK(PID_KVALUE(0), PID_KVALUE(0.016), PID_KVALUE(0));
+    pidCurrent.setK(PID_KVALUE(0), PID_KVALUE(0.016), PID_KVALUE(0));
+    powerOff();
+}
+
+
 uint16_t hardware::getPIDValue()
 {
-    uint16_t v;
+/*    uint16_t v;
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        v = SMPS_PID::i_MV>>PID_MV_PRECISION;
+        v = SMPS_PID::i_ManipulatedVariable>>PID_MV_PRECISION;
     }
-    return v;
+    return v;*/
 }
 
 
 void SMPS_PID::update()
 {
-    if(!i_enable) return;
+    if(!i_enabled) return;
     //if Vout is too high disable PID
 
     AnalogInputs::ValueType adcVoutPlus  = AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin);
@@ -52,31 +53,29 @@ void SMPS_PID::update()
         return;
     }
 
-    //PID
-    //TODO: rewrite PID
-    //this is the PID - actually it is an I (Integral part) - should be rewritten
+    AnalogInputs::ValueType adcVout = 0;
+    if(adcVoutPlus > adcVoutMinus) adcVout = adcVoutPlus - adcVoutMinus;
 
-    long error_Iout = i_setpoint_adcIout;
-    error_Iout -= AnalogInputs::getADCValue(AnalogInputs::Ismps);
+    pidVoltage.calculateOutput(adcVout);
+    pidCurrent.calculateOutput(AnalogInputs::getADCValue(AnalogInputs::Ismps));
 
+    pidCurrent.normalizeOutput(MAX_PID_MV);
+    pidVoltage.normalizeOutput(MAX_PID_MV);
 
-    long error_Vout = error_Iout;
-    if(i_setpoint_adcVout) {
-        error_Vout = i_setpoint_adcVout;
-        error_Vout -= adcVoutPlus;
-        error_Vout += adcVoutMinus;
+    uint16_t output = pidCurrent.getOutput();
+    if(pidVoltage.setpoint_) {
+        //voltage is set
+        if(pidCurrent.output_ > pidVoltage.output_) {
+            output = pidVoltage.getOutput();
+            //yet another normalization, TODO: rewrite
+            pidCurrent.output_ = pidVoltage.output_;
+        } else {
+            //yet another normalization, TODO: rewrite
+            pidVoltage.output_ = pidCurrent.output_;
+        }
     }
 
-    long error = MIN(error_Iout, error_Vout);
-
-    i_MV += error*A;
-
-    if(i_MV<0) i_MV = 0;
-    if((uint32_t)i_MV > MAX_PID_MV_PRECISION) {
-        i_MV = MAX_PID_MV_PRECISION;
-    }
-
-    SMPS_PID::setPID_MV(i_MV>>PID_MV_PRECISION);
+    SMPS_PID::setManipulatedVariable(output);
 }
 
 namespace {
@@ -95,15 +94,10 @@ namespace {
 }
 
 
-void SMPS_PID::initialize()
-{
-    powerOff();
-}
-
 void SMPS_PID::powerOff()
 {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        i_enable = false;
+        i_enabled = false;
         disableBuckTransistor();
         disableBoostTransistor();
     }
@@ -115,24 +109,24 @@ void SMPS_PID::powerOn()
 {
     uint16_t Vin = AnalogInputs::getRealValue(AnalogInputs::Vin);
     uint16_t Vout = AnalogInputs::getRealValue(AnalogInputs::Vout_plus_pin);
+    uint16_t output = 0;
 
     //turn on SMPS transistor
     IO::digitalWrite(SMPS_DISABLE_PIN, false);
 
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        i_setpoint_adcIout = 0;
-        i_setpoint_adcVout = 0;
+        pidVoltage.setSetpoint(0);
+        pidCurrent.setSetpoint(0);
         if(Vout>Vin) {
-            i_MV = OUTPUT_PWM_PRECISION_PERIOD;
-        } else {
-            i_MV = 0;
+            output = OUTPUT_PWM_PRECISION_PERIOD;
         }
-        i_MV <<= PID_MV_PRECISION;
-        i_enable = true;
+        pidVoltage.initialize(output);
+        pidCurrent.initialize(output);
+        i_enabled = true;
     }
 }
 
-void SMPS_PID::setPID_MV(uint16_t value) {
+void SMPS_PID::setManipulatedVariable(uint16_t value) {
     if(value > MAX_PID_MV)
         value = MAX_PID_MV;
 
@@ -164,7 +158,7 @@ void hardware::setVoutCutoff(AnalogInputs::ValueType v) {
 void SMPS_PID::setIoutPWM(uint16_t adcIout)
 {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        i_setpoint_adcIout = adcIout;
+        pidCurrent.setSetpoint(adcIout);
     }
 
 //  TODO: test without PID
@@ -175,7 +169,7 @@ void SMPS_PID::setIoutPWM(uint16_t adcIout)
 void SMPS_PID::setVoutPWM(uint16_t adcVout)
 {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        i_setpoint_adcVout = adcVout;
+        pidVoltage.setSetpoint(adcVout);
     }
 }
 
