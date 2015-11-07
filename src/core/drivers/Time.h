@@ -33,6 +33,9 @@ namespace Time {
     uint16_t getSecondsU16();
     uint16_t getMinutesU16();
     void delay(uint16_t ms);
+
+    //warning: this method runs stuff in background,
+    //delay may take significantly longer than "ms"
     void delayDoIdle(uint16_t ms);
 
     inline uint16_t diffU16(uint16_t start, uint16_t end) {

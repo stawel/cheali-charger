@@ -24,6 +24,9 @@
 #include "AnalogInputsPrivate.h"
 #include "atomic.h"
 
+//#define ENABLE_DEBUG
+#include "debug.h"
+
 
 // time measurement
 
@@ -97,12 +100,17 @@ void Time::delay(uint16_t ms)
     while(diffU16(start, getMilisecondsU16()) < ms) {};
 }
 
+//warning: this method runs stuff in background,
+//delay may take significantly longer than "ms"
 void Time::delayDoIdle(uint16_t ms)
 {
     uint16_t start = getMilisecondsU16();
-
+    uint16_t delay;
     do {
         doIdle();
-    } while (diffU16(start, getMilisecondsU16()) < ms);
+        delay = diffU16(start, getMilisecondsU16());
+    } while (delay < ms);
+
+    LogDebug("delayDoIdle ms:", ms, " delay:", delay);
 }
 

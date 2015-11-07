@@ -28,10 +28,10 @@ namespace Buzzer {
     inline void soundSave()                 {sound(Save); }
     inline void soundSelect()               {sound(Select); }
     inline void soundProgramComplete()      {sound(ProgramComplete); }
-    inline void soundStartProgram()        {sound(StartProgram); }
+    inline void soundStartProgram()         {sound(StartProgram); }
     inline void soundReversedPolarity()     {sound(ReversedPolarity); }
     inline void soundError()                {sound(Error); }
-    inline void soundOff()                  {sound(Off); }
+    void soundOff();
     void begin();
 
     void doIdle();

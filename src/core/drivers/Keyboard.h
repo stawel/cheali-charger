@@ -28,8 +28,9 @@
 #define BUTTON_START        8
 
 namespace Keyboard {
-    uint8_t getLast();
-    uint8_t getPressedWithDelay();
+    uint8_t  getLast();
+    uint16_t getSpeedFactor();
+    uint8_t  getPressedWithDelay();
     bool isLongPressTime();
 };
 
