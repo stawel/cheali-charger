@@ -6,6 +6,41 @@
 #include "outputPWM.h"
 #include "atomic.h"
 
+#define ENABLE_DEBUG
+#define DEBUG_DISABLE_PREFIX
+#include "debug.h"
+
+#ifdef ENABLE_DEBUG
+
+#define MAX_DEBUG_DATA 120
+uint16_t debugData[MAX_DEBUG_DATA];
+volatile uint8_t debugCount = 0;
+
+void LogDebug_run() {
+    if(debugCount >= MAX_DEBUG_DATA){
+        for (int16_t i=0;i<MAX_DEBUG_DATA;i+=2) {
+            LogDebug(debugData[i],":",debugData[i+1]);
+        }
+        LogDebug('-');
+        debugCount = 0;
+    }
+}
+void debugAdd(uint16_t x)
+{
+    if(debugCount < MAX_DEBUG_DATA) {
+        debugData[debugCount++] = x;
+    }
+}
+void debugAdd(uint16_t x, uint16_t y)
+{
+    if(debugCount < MAX_DEBUG_DATA) {
+        debugData[debugCount++] = x;
+        debugData[debugCount++] = Time::getMilisecondsU16();//y;
+    }
+}
+
+#endif //ENABLE_DEBUG
+
 #define MIN( a, b ) ( ((a) < (b)) ? (a) : (b) )
 
 namespace SMPS_PID {
@@ -14,7 +49,7 @@ namespace SMPS_PID {
     //prefix "i" - variable is used in interrupts
     //we have to use i_PID_CutOffVoltage, on some chargers (M0516) ADC can read up to 60V
     volatile uint16_t i_cutOffVoltage;
-    volatile bool i_enabled;
+    volatile bool i_enabled = false;
 
     void setManipulatedVariable(uint16_t value);
 }
@@ -23,8 +58,8 @@ namespace SMPS_PID {
 
 void SMPS_PID::initialize()
 {
-    pidVoltage.setK(PID_KVALUE(0), PID_KVALUE(0.016), PID_KVALUE(0));
-    pidCurrent.setK(PID_KVALUE(0), PID_KVALUE(0.016), PID_KVALUE(0));
+    pidVoltage.setK(PID_KVALUE(2.0), PID_KVALUE(0.0), PID_KVALUE(0), 1000);
+    pidCurrent.setK(PID_KVALUE(0), PID_KVALUE(0.016), PID_KVALUE(0), 1000);
     powerOff();
 }
 
@@ -39,31 +74,43 @@ uint16_t hardware::getPIDValue()
 }
 
 
-void SMPS_PID::update()
+void SMPS_PID::update(uint8_t type)
 {
     if(!i_enabled) return;
-    //if Vout is too high disable PID
 
-    AnalogInputs::ValueType adcVoutPlus  = AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin);
-    AnalogInputs::ValueType adcVoutMinus = AnalogInputs::getADCValue(AnalogInputs::Vout_minus_pin);
+    if(type & SMPS_PID_UPDATE_TYPE_VOLTAGE) {
+        //update voltage PID
+        //we do ANALOG_INPUTS_ADC_ROUND_MAX_COUNT (=100) updates per ~0.7 second
 
-    //safety check
-    if(adcVoutPlus >= i_cutOffVoltage) {
-        powerOff();
-        return;
+        AnalogInputs::ValueType adcVoutPlus  = AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin);
+        AnalogInputs::ValueType adcVoutMinus = AnalogInputs::getADCValue(AnalogInputs::Vout_minus_pin);
+
+        //safety check
+        //if Vout is too high disable PID
+        if(adcVoutPlus >= i_cutOffVoltage) {
+            powerOff();
+            return;
+        }
+
+        AnalogInputs::ValueType adcVout = 0;
+        if(adcVoutPlus > adcVoutMinus) adcVout = adcVoutPlus - adcVoutMinus;
+
+        pidVoltage.calculateOutput(adcVout);
+        pidVoltage.normalizeOutput(MAX_PID_MV);
+
+        DEBUG(debugAdd(adcVout, pidVoltage.getOutput()));
     }
 
-    AnalogInputs::ValueType adcVout = 0;
-    if(adcVoutPlus > adcVoutMinus) adcVout = adcVoutPlus - adcVoutMinus;
 
-    pidVoltage.calculateOutput(adcVout);
     pidCurrent.calculateOutput(AnalogInputs::getADCValue(AnalogInputs::Ismps));
 
     pidCurrent.normalizeOutput(MAX_PID_MV);
-    pidVoltage.normalizeOutput(MAX_PID_MV);
 
     uint16_t output = pidCurrent.getOutput();
-    if(pidVoltage.setpoint_) {
+
+    output = pidVoltage.getOutput();
+
+/*    if(pidVoltage.setpoint_) {
         //voltage is set
         if(pidCurrent.output_ > pidVoltage.output_) {
             output = pidVoltage.getOutput();
@@ -74,7 +121,7 @@ void SMPS_PID::update()
             pidVoltage.output_ = pidCurrent.output_;
         }
     }
-
+*/
     SMPS_PID::setManipulatedVariable(output);
 }
 

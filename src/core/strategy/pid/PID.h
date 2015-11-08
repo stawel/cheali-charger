@@ -14,6 +14,7 @@
 struct PID
 {
     int16_t Kp_, Ki_, Kd_;
+    int16_t errorLimit_;
     uint16_t setpoint_;
 
     int16_t lastError_;
@@ -22,10 +23,14 @@ struct PID
 
     PID(){}
     void initialize(uint16_t output) {output_ = output<<PID_MV_PRECISION; lastError_ = lastDerivative_ = 0;}
-    void setK(int16_t Kp, int16_t Ki, int16_t Kd) { Kp_ = Kp; Ki_= Ki; Kd_ = Kd;}
+    void setK(int16_t Kp, int16_t Ki, int16_t Kd, int16_t errorLimit) { Kp_ = Kp; Ki_= Ki; Kd_ = Kd; errorLimit_ = errorLimit;}
     void setSetpoint(uint16_t sp) {setpoint_ = sp;}
     int16_t subtract(uint16_t a, uint16_t b) {
-        if (a - b > INT16_MAX) return INT16_MAX;
+        if(a > b) {
+            if(a - b > errorLimit_) return errorLimit_;
+        } else {
+            if(b - a > errorLimit_) return -errorLimit_;
+        }
         return a - b;
     }
 
@@ -33,6 +38,7 @@ struct PID
         int16_t error = subtract(setpoint_, measuredValue);
 
         //we do some magic here because we don't want to store the integral part
+        //see: https://en.wikipedia.org/wiki/Integral_windup
         //this is necessary because we "normalize" the PID's output
 
         long v;

@@ -89,27 +89,27 @@ struct adc_correlation {
     int8_t mux_;
     uint8_t adc_pin_;
     AnalogInputs::Name ai_name_;
-    bool trigger_PID_;
+    uint8_t trigger_PID_;
 };
 
 const adc_correlation order_analogInputs_on[] PROGMEM = {
-    {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_D_PIN,           AnalogInputs::Vb0_pin,         false},
-    {-1,                            OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin, false},
-    {MADDR_V_BALANSER1,             MUX0_Z_D_PIN,           AnalogInputs::Vb1_pin,         false},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true},
-    {MADDR_V_BALANSER2,             MUX0_Z_D_PIN,           AnalogInputs::Vb2_pin,         false},
-    {-1,                            OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,   false},
-    {MADDR_V_BALANSER6,             MUX0_Z_D_PIN,           AnalogInputs::Vb6_pin,         false},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true},
-    {MADDR_V_BALANSER5,             MUX0_Z_D_PIN,           AnalogInputs::Vb5_pin,         false},
-    {-1,                            DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,      false},
-    {MADDR_V_BALANSER4,             MUX0_Z_D_PIN,           AnalogInputs::Vb4_pin,         false},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true},
-    {MADDR_V_BALANSER3,             MUX0_Z_D_PIN,           AnalogInputs::Vb3_pin,         false},
-    {-1,                            V_IN_PIN,               AnalogInputs::Vin,             false},
-    {-1,                            T_EXTERNAL_PIN,         AnalogInputs::Textern,         false},
-    {-1,                            T_INTERNAL_PIN,         AnalogInputs::Tintern,         false},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           true},
+    {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_D_PIN,           AnalogInputs::Vb0_pin,         0},
+    {-1,                            OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin, 0},
+    {MADDR_V_BALANSER1,             MUX0_Z_D_PIN,           AnalogInputs::Vb1_pin,         0},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           SMPS_PID_UPDATE_TYPE_CURRENT},
+    {MADDR_V_BALANSER2,             MUX0_Z_D_PIN,           AnalogInputs::Vb2_pin,         0},
+    {-1,                            OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,   0},
+    {MADDR_V_BALANSER6,             MUX0_Z_D_PIN,           AnalogInputs::Vb6_pin,         0},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           SMPS_PID_UPDATE_TYPE_VOLTAGE | SMPS_PID_UPDATE_TYPE_CURRENT},
+    {MADDR_V_BALANSER5,             MUX0_Z_D_PIN,           AnalogInputs::Vb5_pin,         0},
+    {-1,                            DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,      0},
+    {MADDR_V_BALANSER4,             MUX0_Z_D_PIN,           AnalogInputs::Vb4_pin,         0},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           SMPS_PID_UPDATE_TYPE_CURRENT},
+    {MADDR_V_BALANSER3,             MUX0_Z_D_PIN,           AnalogInputs::Vb3_pin,         0},
+    {-1,                            V_IN_PIN,               AnalogInputs::Vin,             0},
+    {-1,                            T_EXTERNAL_PIN,         AnalogInputs::Textern,         0},
+    {-1,                            T_INTERNAL_PIN,         AnalogInputs::Tintern,         0},
+    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           SMPS_PID_UPDATE_TYPE_CURRENT},
 };
 
 
@@ -257,10 +257,9 @@ void conversionDone()
     }
     startConversion();
 
-    if(order_analogInputs_on[current_input_].trigger_PID_)
-        SMPS_PID::update();
-
-
+    uint8_t trigger_pid = order_analogInputs_on[current_input_].trigger_PID_;
+    if(trigger_pid)
+        SMPS_PID::update(trigger_pid);
 }
 
 void finalizeMeasurement()
