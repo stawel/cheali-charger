@@ -234,11 +234,11 @@ Strategy::statusType Monitor::run()
         return Strategy::ERROR;
     }
 
-    AnalogInputs::ValueType Vin = AnalogInputs::getRealValue(AnalogInputs::Vin);
+/*    AnalogInputs::ValueType Vin = AnalogInputs::getRealValue(AnalogInputs::Vin);
     if(Vin < settings.inputVoltageLow) {
         Program::stopReason = string_inputVoltageToLow;
         return Strategy::ERROR;
-    }
+    }*/
 
     AnalogInputs::ValueType c = AnalogInputs::getRealValue(AnalogInputs::Cout);
     AnalogInputs::ValueType c_limit  = ProgramData::getCapacityLimit();

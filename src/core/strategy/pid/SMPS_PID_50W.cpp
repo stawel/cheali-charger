@@ -15,14 +15,16 @@
 #define MAX_DEBUG_DATA 120
 uint16_t debugData[MAX_DEBUG_DATA];
 volatile uint8_t debugCount = 0;
+volatile uint8_t ok = 1;
 
 void LogDebug_run() {
-    if(debugCount >= MAX_DEBUG_DATA){
+    if(debugCount >= MAX_DEBUG_DATA && ok){
         for (int16_t i=0;i<MAX_DEBUG_DATA;i+=2) {
-            LogDebug(debugData[i],":",debugData[i+1]);
+            LogDebug(debugData[i], ":", debugData[i+1]);
         }
         LogDebug('-');
         debugCount = 0;
+        ok = 0;
     }
 }
 void debugAdd(uint16_t x)
@@ -35,9 +37,20 @@ void debugAdd(uint16_t x, uint16_t y)
 {
     if(debugCount < MAX_DEBUG_DATA) {
         debugData[debugCount++] = x;
-        debugData[debugCount++] = Time::getMilisecondsU16();//y;
+        debugData[debugCount++] = y;
     }
 }
+
+void debugAdd(uint16_t x, uint16_t y, uint16_t z, int16_t e)
+{
+    if(debugCount < MAX_DEBUG_DATA) {
+        debugData[debugCount++] = x;
+        debugData[debugCount++] = y;
+        debugData[debugCount++] = z;
+        debugData[debugCount++] = e;
+    }
+}
+
 
 #endif //ENABLE_DEBUG
 
@@ -58,7 +71,11 @@ namespace SMPS_PID {
 
 void SMPS_PID::initialize()
 {
-    pidVoltage.setK(PID_KVALUE(2.0), PID_KVALUE(0.0), PID_KVALUE(0), 1000);
+//    pidVoltage.setK(PID_KVALUE(1.0), PID_KVALUE(0.4), PID_KVALUE(0.0), 30000);
+
+//    pidVoltage.setK(PID_KVALUE(1.0), PID_KVALUE(0.2), PID_KVALUE(10), 30000);
+
+    pidVoltage.setK(PID_KVALUE(2.0), PID_KVALUE(0), PID_KVALUE(0), 30000);
     pidCurrent.setK(PID_KVALUE(0), PID_KVALUE(0.016), PID_KVALUE(0), 1000);
     powerOff();
 }
@@ -87,22 +104,42 @@ void SMPS_PID::update(uint8_t type)
 
         //safety check
         //if Vout is too high disable PID
-        if(adcVoutPlus >= i_cutOffVoltage) {
-            powerOff();
-            return;
-        }
 
         AnalogInputs::ValueType adcVout = 0;
         if(adcVoutPlus > adcVoutMinus) adcVout = adcVoutPlus - adcVoutMinus;
 
+/*        long v1 = pidVoltage.Kp_;
+        v1*= pidVoltage.lastError_;
+        v1>>=PID_MV_PRECISION;
+
         pidVoltage.calculateOutput(adcVout);
         pidVoltage.normalizeOutput(MAX_PID_MV);
 
-        DEBUG(debugAdd(adcVout, pidVoltage.getOutput()));
+        long v2 = pidVoltage.Kp_;
+        v2*= pidVoltage.lastError_;
+        v2>>=PID_MV_PRECISION;
+
+        DEBUG(debugAdd(adcVout, pidVoltage.getOutput(), pidVoltage.setpoint_, pidVoltage.lastError_));
+        DEBUG(debugAdd(v1, v2));*/
+
+        if(pidVoltage.setpoint_ > 0) {
+            pidVoltage.calculateOutput(adcVout);
+            uint16_t output = pidVoltage.normalizeOutput(MAX_PID_MV);
+
+            SMPS_PID::setManipulatedVariable(output);
+
+            DEBUG(debugAdd(adcVout, output));//, pidVoltage.setpoint_, pidVoltage.lastError_));
+        }
+
+        if(adcVoutPlus >= i_cutOffVoltage) {
+            DEBUG(debugCount = MAX_DEBUG_DATA);
+            powerOff();
+            return;
+        }
+
     }
 
-
-    pidCurrent.calculateOutput(AnalogInputs::getADCValue(AnalogInputs::Ismps));
+/*    pidCurrent.calculateOutput(AnalogInputs::getADCValue(AnalogInputs::Ismps));
 
     pidCurrent.normalizeOutput(MAX_PID_MV);
 
@@ -110,7 +147,7 @@ void SMPS_PID::update(uint8_t type)
 
     output = pidVoltage.getOutput();
 
-/*    if(pidVoltage.setpoint_) {
+    if(pidVoltage.setpoint_) {
         //voltage is set
         if(pidCurrent.output_ > pidVoltage.output_) {
             output = pidVoltage.getOutput();
@@ -122,7 +159,6 @@ void SMPS_PID::update(uint8_t type)
         }
     }
 */
-    SMPS_PID::setManipulatedVariable(output);
 }
 
 namespace {
@@ -154,6 +190,7 @@ void SMPS_PID::powerOff()
 
 void SMPS_PID::powerOn()
 {
+    DEBUG(ok = 1);
     uint16_t Vin = AnalogInputs::getRealValue(AnalogInputs::Vin);
     uint16_t Vout = AnalogInputs::getRealValue(AnalogInputs::Vout_plus_pin);
     uint16_t output = 0;

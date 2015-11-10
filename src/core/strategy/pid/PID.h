@@ -18,11 +18,11 @@ struct PID
     uint16_t setpoint_;
 
     int16_t lastError_;
-    int16_t lastDerivative_;
+    long output_minus_integral_;
     long output_;
 
     PID(){}
-    void initialize(uint16_t output) {output_ = output<<PID_MV_PRECISION; lastError_ = lastDerivative_ = 0;}
+    void initialize(uint16_t output) {output_ = output<<PID_MV_PRECISION; lastError_ = 0; output_minus_integral_ = 0;}
     void setK(int16_t Kp, int16_t Ki, int16_t Kd, int16_t errorLimit) { Kp_ = Kp; Ki_= Ki; Kd_ = Kd; errorLimit_ = errorLimit;}
     void setSetpoint(uint16_t sp) {setpoint_ = sp;}
     int16_t subtract(uint16_t a, uint16_t b) {
@@ -33,58 +33,60 @@ struct PID
         }
         return a - b;
     }
+    int16_t subtract2(int16_t a, int16_t b) {
+        if(a > b) {
+            if(a - b > errorLimit_) return errorLimit_;
+        } else {
+            if(b - a > errorLimit_) return -errorLimit_;
+        }
+        return a - b;
+    }
 
     void calculateOutput(uint16_t measuredValue) {
         int16_t error = subtract(setpoint_, measuredValue);
-
-        //we do some magic here because we don't want to store the integral part
-        //see: https://en.wikipedia.org/wiki/Integral_windup
-        //this is necessary because we "normalize" the PID's output
-
+        int16_t derivative = subtract2(error, lastError_);
         long v;
         {
-            //restore integral part
-            v = Kp_; v *= lastError_;
-            output_ -= v;
-            v = Kd_; v *= lastDerivative_;
-            output_ -= v;
-        }
+            //calculate integral part
+            output_ -= output_minus_integral_;
 
-        //now output_ contains only the last time calculated integral part (Ki_ * integral_)
-        {
-            //add to the integral part the current error
-            v = error; v*= Ki_;
+            v = Ki_; v *= error;
             output_ += v;
+            //output_ contains only the integral part now.
         }
 
-
-        int16_t derivative = subtract(error, lastError_);
         {
-            //calculate output
-
             // add proportional part
             v = Kp_; v *= error;
-            output_ += v;
+            output_minus_integral_ = v;
 
             // add derivative part
             v = Kd_; v *= derivative;
-            output_ += v;
+            output_minus_integral_ += v;
         }
 
-        //store "last" values
+        output_ += output_minus_integral_;
+
+        //store "last" error
         lastError_ = error;
-        lastDerivative_ = derivative;
     }
-    void normalizeOutput(uint16_t maxOutput) {
-        if(output_ < 0) output_ = 0;
+    uint16_t normalizeOutput(uint16_t maxOutput) {
+        if(output_ < 0) {
+            output_ = 0;
+            output_minus_integral_ = 0;
+            return 0;
+        }
         if((output_ >> PID_MV_PRECISION) > maxOutput) {
+//            return maxOutput;
             output_ = maxOutput;
             output_ <<= PID_MV_PRECISION;
+            output_minus_integral_ = 0;
         }
-    }
-    uint16_t getOutput() {
         return output_ >> PID_MV_PRECISION;
     }
+/*    uint16_t getOutput() {
+        return output_ >> PID_MV_PRECISION;
+    }*/
 };
 
 #endif //PID_H_

@@ -32,132 +32,51 @@
 
 #include "adc.h"
 
-/* ADC - measurement:
- * uses Timer1 to discharge Multiplexer Capacitor
- * program flow:
- *     ADC routine                          |  multiplexer routine
- * -----------------------------------------------------------------------------
- * start ADC (no MUX) conversion            |  1. switch MUX to op-amp (cell 6)
- *                                          |  2. start discharging C_adc (MUX capacitor), start Timer1
- *                                          |  3. wait 20us (timer1 50kHz)
- *                                          |  4. switch to MUX desired output, stop disch. C_adc
- *                                          |  (wait - for C_adc to charge)
- *                                          |
- *                                          |
- * start ADC (MUX) conversion               |
- *                                          |
- *                                          |
- *                                          |
- *                                          |
- *                                          |
- *                                          |
- * start ADC (no MUX) conversion            |  repeat 1..4
- * ...
- *
- * note: 1-4 are in setMuxAddress()
- * note: for each ADC pin (start ADC) we do 70 measurements,
- *       all in all we do 70*100=7000 measurements for a "fullMeasurement" per input.
- */
-
-
-#define ADC_I_SMPS_PER_ROUND 4
-//discharge ADC capacitor on Vb6 - there is an operational amplifier
-#define ADC_CAPACITOR_DISCHARGE_ADDRESS MADDR_V_BALANSER6
-#define ADC_CAPACITOR_DISCHARGE_DELAY_US 20
 #define ADC_CLOCK_FREQUENCY 4000000UL
-
-
-
-volatile uint8_t g_adcBurstCount = 0;
-volatile uint8_t g_adcInputName = 0;
-volatile uint8_t g_muxAddress = 0;
-volatile uint8_t g_addSumToInput = 0;
-volatile uint32_t g_adcSum = 0;
-volatile uint32_t g_adcValue = 0;
-
 
 
 namespace AnalogInputsADC {
 
-static uint8_t current_input_;
+//AnalogInputs::VirtualInputs == not used
+const AnalogInputs::Name order_analogInputs_on[8]  = {
+//MUX0_Z_D_PIN                    43 //(7+3*12)   P1.0 - T2, AIN0, nWRL
+        AnalogInputs::Vb0_pin,
+//DISCHARGE_DISABLE_PIN           44 //(8+3*12)   P1.1 - T3, AIN1, nWRH
+        AnalogInputs::VirtualInputs,
+//UART_TX_PIN,T_EXTERNAL_PIN      45 //(9+3*12)   P1.2 - RXD1[2], AIN2
+        AnalogInputs::Textern,
+//V_IN_PIN                        46 //(10+3*12)  P1.3 - TXD1[2], AIN3
+        AnalogInputs::Vin,
+//SMPS_CURRENT_PIN                47 //(11+3*12)  P1.4 - SPISS0, AIN4, ACMP0_N
+        AnalogInputs::Ismps,
+//OUTPUT_VOLTAGE_MINUS_PIN        1  //(1)        P1.5 - MOSI_0, AIN5, ACMP0_P
+        AnalogInputs::Vout_minus_pin,
+//OUTPUT_VOLTAGE_PLUS_PIN         2  //(2)        P1.6 - MISO_0, AIN6, ACMP2_N
+        AnalogInputs::Vout_plus_pin,
+//DISCHARGE_CURRENT_PIN           3  //(3)        P1.7 - SPICLK0, AIN7, ACMP2_P
+        AnalogInputs::Idischarge,
 
-void startConversion();
-
-
-
-struct adc_correlation {
-    int8_t mux_;
-    uint8_t adc_pin_;
-    AnalogInputs::Name ai_name_;
-    uint8_t trigger_PID_;
-};
-
-const adc_correlation order_analogInputs_on[] PROGMEM = {
-    {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_D_PIN,           AnalogInputs::Vb0_pin,         0},
+/*
+//    {MADDR_V_BALANSER_BATT_MINUS,   MUX0_Z_D_PIN,           AnalogInputs::Vb0_pin,         0},
     {-1,                            OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin, 0},
-    {MADDR_V_BALANSER1,             MUX0_Z_D_PIN,           AnalogInputs::Vb1_pin,         0},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           SMPS_PID_UPDATE_TYPE_CURRENT},
-    {MADDR_V_BALANSER2,             MUX0_Z_D_PIN,           AnalogInputs::Vb2_pin,         0},
+//    {MADDR_V_BALANSER1,             MUX0_Z_D_PIN,           AnalogInputs::Vb1_pin,         0},
+//    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           SMPS_PID_UPDATE_TYPE_CURRENT},
+//    {MADDR_V_BALANSER2,             MUX0_Z_D_PIN,           AnalogInputs::Vb2_pin,         0},
     {-1,                            OUTPUT_VOLTAGE_PLUS_PIN,AnalogInputs::Vout_plus_pin,   0},
-    {MADDR_V_BALANSER6,             MUX0_Z_D_PIN,           AnalogInputs::Vb6_pin,         0},
+//    {MADDR_V_BALANSER6,             MUX0_Z_D_PIN,           AnalogInputs::Vb6_pin,         0},
     {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           SMPS_PID_UPDATE_TYPE_VOLTAGE | SMPS_PID_UPDATE_TYPE_CURRENT},
-    {MADDR_V_BALANSER5,             MUX0_Z_D_PIN,           AnalogInputs::Vb5_pin,         0},
-    {-1,                            DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,      0},
-    {MADDR_V_BALANSER4,             MUX0_Z_D_PIN,           AnalogInputs::Vb4_pin,         0},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           SMPS_PID_UPDATE_TYPE_CURRENT},
-    {MADDR_V_BALANSER3,             MUX0_Z_D_PIN,           AnalogInputs::Vb3_pin,         0},
+//    {MADDR_V_BALANSER5,             MUX0_Z_D_PIN,           AnalogInputs::Vb5_pin,         0},
+//    {-1,                            DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,      0},
+//    {MADDR_V_BALANSER4,             MUX0_Z_D_PIN,           AnalogInputs::Vb4_pin,         0},
+//    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           SMPS_PID_UPDATE_TYPE_CURRENT},
+//    {MADDR_V_BALANSER3,             MUX0_Z_D_PIN,           AnalogInputs::Vb3_pin,         0},
     {-1,                            V_IN_PIN,               AnalogInputs::Vin,             0},
-    {-1,                            T_EXTERNAL_PIN,         AnalogInputs::Textern,         0},
-    {-1,                            T_INTERNAL_PIN,         AnalogInputs::Tintern,         0},
-    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           SMPS_PID_UPDATE_TYPE_CURRENT},
+//    {-1,                            T_EXTERNAL_PIN,         AnalogInputs::Textern,         0},
+//    {-1,                            T_INTERNAL_PIN,         AnalogInputs::Tintern,         0},
+//    {-1,                            SMPS_CURRENT_PIN,       AnalogInputs::Ismps,           SMPS_PID_UPDATE_TYPE_CURRENT},
+*/
+
 };
-
-
-
-inline uint8_t nextInput(uint8_t i) {
-    i++;
-    if(i >= sizeOfArray(order_analogInputs_on)) i=0;
-    return i;
-}
-
-
-void setADC(uint8_t pin) {
-    ADC_SET_INPUT_CHANNEL(ADC, 1 << IO::getADCChannel(pin));
-}
-
-void _setMuxAddress(int8_t address)
-{
-    IO::digitalWrite(MUX_ADR0_PIN, address&1);
-    IO::digitalWrite(MUX_ADR1_PIN, address&2);
-    IO::digitalWrite(MUX_ADR2_PIN, address&4);
-}
-
-void setMuxAddressAndDischarge(int8_t address)
-{
-    if(address < 0)
-        return;
-    g_muxAddress = address;
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        //start mux ADC C discharge
-        _setMuxAddress(ADC_CAPACITOR_DISCHARGE_ADDRESS);
-        IO::disableFuncADC(IO::getADCChannel(MUX0_Z_D_PIN));
-    }
-    TIMER_Start(TIMER1);             /* Start counting */
-}
-extern "C" {
-void TMR1_IRQHandler(void)
-{
-    /* Clear Timer1 time-out interrupt flag */
-    TIMER_ClearIntFlag(TIMER1);
-
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        _setMuxAddress(g_muxAddress);
-        //stop mux ADC C discharge
-        IO::enableFuncADC(IO::getADCChannel(MUX0_Z_D_PIN));
-    }
-}
-} //extern "C"
-
 
 void initialize()
 {
@@ -171,20 +90,9 @@ void initialize()
     IO::pinMode(OUTPUT_VOLTAGE_PLUS_PIN, ANALOG_INPUT);
     IO::pinMode(DISCHARGE_CURRENT_PIN, ANALOG_INPUT);
 
-    IO::pinMode(MUX0_Z_D_PIN, ANALOG_INPUT_DISCHARGE);
+    IO::pinMode(MUX0_Z_D_PIN, DISCHARGE_CURRENT_PIN);
     IO::digitalWrite(MUX0_Z_D_PIN, 0);
 
-    //initialize internal temperature sensor
-    SYS->TEMPCR |= 1;
-
-    //initialize TIMER 1 (mux ADC capacitor discharge)
-    CLK_EnableModuleClock(TMR1_MODULE);
-    CLK_SetModuleClock(TMR1_MODULE,CLK_CLKSEL1_TMR1_S_HCLK,CLK_CLKDIV_UART(1));
-    //TODO: 50kHz ??
-    TIMER_Open(TIMER1, TIMER_ONESHOT_MODE, 1000000 / ADC_CAPACITOR_DISCHARGE_DELAY_US);
-    TIMER_EnableInt(TIMER1);
-    NVIC_EnableIRQ(TMR1_IRQn);
-    NVIC_SetPriority(TMR1_IRQn, ADC_C_DISCHARGE_IRQ_PRIORITY);
 
     //initialize ADC
     //init clock
@@ -192,8 +100,7 @@ void initialize()
     CLK_SetModuleClock(ADC_MODULE, CLK_CLKSEL1_ADC_S_HCLK, CLK_CLKDIV_ADC(CLK_GetHCLKFreq()/ADC_CLOCK_FREQUENCY));
             //__HXT/ADC_CLOCK_FREQUENCY));
 
-    /* Set the ADC operation mode as burst, input mode as single-end and enable the analog input channel 2 */
-    ADC_Open(ADC, ADC_ADCR_DIFFEN_SINGLE_END, ADC_ADCR_ADMD_BURST, 0x1 << 2);
+    ADC_Open(ADC, ADC_ADCR_DIFFEN_SINGLE_END, ADC_ADCR_ADMD_CONTINUOUS, 0xff);
     ADC_SET_DMOF(ADC, ADC_ADCR_DMOF_UNSIGNED_OUTPUT);
 
     /* Power on ADC module */
@@ -207,107 +114,45 @@ void initialize()
     NVIC_EnableIRQ(ADC_IRQn);
     NVIC_SetPriority(ADC_IRQn, ADC_IRQ_PRIORITY);
 
-    current_input_ = 0;
-    startConversion();
-}
-
-void setNextMuxAddress()
-{
-    uint8_t next_input = nextInput(current_input_);
-    int8_t mux = order_analogInputs_on[next_input].mux_;
-
-    setMuxAddressAndDischarge(mux);
-}
-
-
-void startConversion()
-{
-    setNextMuxAddress();
-
-    g_adcInputName = order_analogInputs_on[current_input_].ai_name_;
-    g_adcBurstCount = 0;
-    g_adcSum = 0;
-    uint8_t adc_pin = order_analogInputs_on[current_input_].adc_pin_;
-    setADC(adc_pin);
-    if(adc_pin > 64) {
-        ADC_CONFIG_CH7(ADC, (adc_pin >> 6) << ADC_ADCHER_PRESEL_Pos);
-    } else {
-        ADC_CONFIG_CH7(ADC, ADC_ADCHER_PRESEL_EXT_INPUT_SIGNAL);
-    }
     ADC_START_CONV(ADC);
 }
 
-void finalizeMeasurement();
-
 #define ADC_GET_CONVERSION_DATA2(adc, u32ChNum) ((inpw(&(ADC->ADDR[(u32ChNum)])) & ADC_ADDR_RSLT_Msk)>>ADC_ADDR_RSLT_Pos)
-#define ADC_IS_BUSY2(adc) (inpw(&ADC->ADSR) & ADC_ADSR_BUSY_Msk ? 1 : 0)
-#define ADC_IS_DATA_VALID2(adc, u32ChNum) (inpw(&ADC->ADSR) & (0x1<<(ADC_ADSR_VALID_Pos+u32ChNum)) ? 1 : 0)
-
 
 void conversionDone()
-{
-    while(ADC_IS_BUSY2(ADC));
-    while(ADC_IS_DATA_VALID2(ADC, 0)) ADC_GET_CONVERSION_DATA2(ADC, 0);
-
-    current_input_ = nextInput(current_input_);
-
-    if(current_input_ == 0) {
-        finalizeMeasurement();
-        g_addSumToInput = AnalogInputs::i_avrCount_ > 0;
-    }
-    startConversion();
-
-    uint8_t trigger_pid = order_analogInputs_on[current_input_].trigger_PID_;
-    if(trigger_pid)
-        SMPS_PID::update(trigger_pid);
-}
-
-void finalizeMeasurement()
 {
     AnalogInputs::i_adc_[AnalogInputs::IsmpsSet]        = SMPS::getIoutPWM();
     AnalogInputs::i_adc_[AnalogInputs::IdischargeSet]   = Discharger::getValue();
 
-    if(g_addSumToInput) {
-        AnalogInputs::i_avrSum_[AnalogInputs::IsmpsSet]        += SMPS::getIoutPWM() * ANALOG_INPUTS_ADC_BURST_COUNT;
-        AnalogInputs::i_avrSum_[AnalogInputs::IdischargeSet]   += Discharger::getValue() * ANALOG_INPUTS_ADC_BURST_COUNT;
-        if(AnalogInputs::i_avrCount_ == 1) {
-            AnalogInputs::i_avrSum_[AnalogInputs::Ismps]          /= ADC_I_SMPS_PER_ROUND;
-        }
-        //TODO: maybe intterruptFinalizeMeasurement should be removed
+    if(AnalogInputs::i_avrCount_ > 0) {
+        AnalogInputs::i_avrSum_[AnalogInputs::IsmpsSet]        += SMPS::getIoutPWM();
+        AnalogInputs::i_avrSum_[AnalogInputs::IdischargeSet]   += Discharger::getValue();
         AnalogInputs::intterruptFinalizeMeasurement();
     }
 
+    SMPS_PID::update(SMPS_PID_UPDATE_TYPE_VOLTAGE | SMPS_PID_UPDATE_TYPE_CURRENT);
 }
 
 
 } // namespace AnalogInputsADC
 
-namespace adc {
-void debug() {}
-}
 
 extern "C" {
 
     void ADC_IRQHandler(void)
     {
-        while(ADC_IS_DATA_VALID2(ADC, 0)) /* Check the VALID bits */
-        {
-            /* In burst mode, the software always gets the conversion result of the specified channel from channel 0 */
-            g_adcValue = ADC_GET_CONVERSION_DATA2(ADC, 0);
-            if(g_adcBurstCount > 1) {
-                g_adcSum += g_adcValue;
-            }
-            if(++g_adcBurstCount > ANALOG_INPUTS_ADC_BURST_COUNT+1) {
-                ADC_STOP_CONV(ADC);
-                // pretend 16bit adc
-                AnalogInputs::i_adc_[g_adcInputName] = g_adcValue << 4;
-                if(g_addSumToInput)
-                    AnalogInputs::i_avrSum_[g_adcInputName] += g_adcSum << 4;
-                AnalogInputsADC::conversionDone();
-                break;
-            }
+        for(int i = 0; i < 8; i++) {
+            uint16_t v = ADC_GET_CONVERSION_DATA2(ADC, i);
+            AnalogInputs::i_adc_[AnalogInputsADC::order_analogInputs_on[i]] = v << 4;
         }
 
+        if(AnalogInputs::i_avrCount_ > 0) {
+            for(int i = 0; i < 8; i++) {
+                AnalogInputs::Name name = AnalogInputsADC::order_analogInputs_on[i];
+                AnalogInputs::i_avrSum_[name] += AnalogInputs::i_adc_[name];
+            }
+        }
+        AnalogInputsADC::conversionDone();
         ADC_CLR_INT_FLAG(ADC0, ADC_ADF_INT);
     }
 } //extern "C"
