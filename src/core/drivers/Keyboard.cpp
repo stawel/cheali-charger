@@ -30,7 +30,7 @@
 namespace Keyboard {
     static const uint8_t stateDelay[]   PROGMEM = {BUTTON_DEBOUNCE_COUNT, 250, 125, 60,   30,  10,   1};
     static const uint8_t stayInState[]  PROGMEM = {                    1,   1,   3,  8,   20,  30,   1};
-    static const uint8_t speedFactor[]  PROGMEM = {                    1,   1,   1,  1,    1,  10, 100};
+    static const uint8_t speedFactor[]  PROGMEM = {                    1,   1,   1, 11,   11,  10, 100};
 
     uint8_t last_key_ = BUTTON_NONE;
     uint8_t inState_ = 0;
