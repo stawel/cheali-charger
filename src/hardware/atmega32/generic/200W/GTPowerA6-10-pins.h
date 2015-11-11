@@ -91,10 +91,13 @@
 #define MADDR_T_INTERN          (1 + MUXINPUT0)
 #define MADDR_V_IN              (2 + MUXINPUT0)
 #define MADDR_T_EXTERN          (3 + MUXINPUT0)
+
+#ifndef   MADDR_BUTTON_DEC
 #define MADDR_BUTTON_DEC        (4 + MUXINPUT0)
 #define MADDR_BUTTON_INC        (5 + MUXINPUT0)
 #define MADDR_BUTTON_STOP       (6 + MUXINPUT0)
 #define MADDR_BUTTON_START      (7 + MUXINPUT0)
+#endif    //MADDR_BUTTON_DEC
 
 #define MADDR_V_BALANSER1       (0 + MUXINPUT1)
 #define MADDR_V_BALANSER2       (1 + MUXINPUT1)
