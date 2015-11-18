@@ -5,6 +5,9 @@ Flashing
 Flashing: atmega32 CPU charger
 -------------------------------
 
+Flashing tutorial by PascalRZ for the [GTPower A6-10 charger](GTPowerA6-10/Tutorial GTPower A6-10.pdf).
+
+
 check ISP pins (at least GND and VCC) on your chargers PCB board:
 - G.T. POWER A6-10 200W:  
   ![isp](connectors/isp_GTPowerA6-10.jpeg)
@@ -37,7 +40,6 @@ WARNING: Don't touch the AVR fuses, setting them wrong may destroy your charger.
 Flashing: nuvoton M0517LBN CPU charger
 --------------------------------------
 
-Flashing tutorial by [Jarno](Flashing m0517.doc).
 
 
 check ISP pins (at least GND and VCC) on your chargers PCB board:  
