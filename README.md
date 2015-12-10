@@ -57,15 +57,18 @@ Use an external temperature probe
 
 Hardware
 --------
+
+**WARNING:** You can get two chargers with the same name but different CPUs even if you buy from the same seller.  
+ Only chargers with a atmega32 or M0517LBN CPU are supported.
+
 **Atmega32 CPU:**
 - G.T. POWER A6-10 200W
-- IMAX B6 Charger/Discharger 1-6 Cells ([clone](http://www.hobbyking.com/hobbyking/store/__15379__IMAX_B6_Charger_Discharger_1_6_Cells_COPY_.html), 
-                                      [original](http://www.hobbyking.com/hobbyking/store/__5548__IMAX_B6_Charger_Discharger_1_6_Cells_GENUINE_.html))
-- [AC/DC Dual Power B6AC 80W RC Balance Charger/Discharger](http://www.dx.com/p/2-5-lcd-ac-dc-dual-power-b6ac-80w-rc-balance-charger-discharger-123252)
-- [Turnigy A-6-10 200W Balance charger & discharger](http://www.hobbyking.com/hobbyking/store/__11444__Turnigy_A_6_10_200W_Balance_charger_discharger.html)
+- IMAX B6 Charger/Discharger 1-6 Cells
+- AC/DC Dual Power B6AC 80W RC Balance Charger/Discharger
+- Turnigy A-6-10 200W Balance charger & discharger
 - Turnigy Accucel-6 50W 5A Balancer/Charger w/ Accessories
-- [Turnigy Accucel-8 150W 7A Balancer/Charger](http://www.hobbyking.com/hobbyking/store/__49059__Turnigy_Accucel_8_150W_7A_Balancer_Charger_CN_Warehouse_.html)
-- [Turnigy MEGA 400Wx2 Battery Charger/Discharger (800W)](http://www.hobbyking.com/hobbyking/store/__41183__Turnigy_MEGA_400Wx2_Battery_Charger_Discharger_800W_US_Warehouse_.html)
+- Turnigy Accucel-8 150W 7A Balancer/Charger
+- Turnigy MEGA 400Wx2 Battery Charger/Discharger (800W)
 - ... many more
 
 **Nuvoton NuMicro M0517LBN CPU:**
@@ -73,6 +76,7 @@ Hardware
 
 **Unsupported**
 - [Turnigy Accucel-6 80W Balancer/Charger](http://www.hobbyking.com/hobbyking/store/__64345__Turnigy_Accucel_6_80W_10A_Balancer_Charger_LiHV_Capable.html) - Based on an older, uncommon CPU. See [#106](https://github.com/stawel/cheali-charger/issues/106)
+- **any charger listed above with an unknown CPU** (CPU not labeled)
 
 Usage:
 ------
