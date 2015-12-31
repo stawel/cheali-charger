@@ -57,7 +57,10 @@ const AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE] PRO
 /*Unknown*/ { 1,                  ANALOG_VOLT(4.000), ANALOG_VOLT(2.000), 1,                  1},
 //PowerSupply
 /*LED*/     { 1,                  ANALOG_VOLT(4.000), 1,                  1,                  1},
-
+#ifdef ENABLE_IRON_HAKKO907
+/*IronHakko907*/
+            { 1,                  ANALOG_VOLT(4.000), 1,                  1,                  1},
+#endif
 };
 
 uint16_t ProgramData::getDefaultVoltagePerCell(VoltageType type)
@@ -109,6 +112,9 @@ const char * const  ProgramData::batteryString[] PROGMEM = {
         string_battery_NiZn,
         string_battery_Unknown,
         string_battery_LED,
+#ifdef ENABLE_IRON_HAKKO907
+        string_battery_HAKKO907,
+#endif
 };
 
 STATIC_ASSERT(sizeOfArray(ProgramData::batteryString) == ProgramData::LAST_BATTERY_TYPE);
@@ -125,7 +131,10 @@ const ProgramData::BatteryClass ProgramData::batteryClassMap[] PROGMEM = {
 /*Li435*/   ClassLiXX,
 /*NiZn*/    ClassNiZn,
 /*Unknown*/ ClassUnknown,
-/*LED*/     ClassLED
+/*LED*/     ClassCustomDevice,
+#ifdef ENABLE_IRON_HAKKO907
+/*IronHakko907*/ ClassCustomDevice
+#endif
 };
 
 
@@ -139,7 +148,7 @@ uint16_t ProgramData::getCapacityLimit()
     uint32_t cap = battery.capacity;
     cap *= battery.capCutoff;
     cap/=100;
-    if(cap>ANALOG_MAX_CHARGE || isPowerSupply())
+    if(cap>ANALOG_MAX_CHARGE || isCustomDevice())
         cap = ANALOG_MAX_CHARGE;
     return cap;
 }

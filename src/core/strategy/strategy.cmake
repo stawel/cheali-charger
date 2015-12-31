@@ -6,6 +6,7 @@ set(CORE_SOURCE
     DelayStrategy.cpp        Discharger.h           SimpleDischargeStrategy.cpp  StartInfoStrategy.h    TheveninChargeStrategy.cpp  Thevenin.h
     DelayStrategy.h          Monitor.cpp            SimpleDischargeStrategy.h    StorageStrategy.cpp    TheveninChargeStrategy.h    TheveninMethod.cpp
     DeltaChargeStrategy.cpp  Monitor.h              SMPS.cpp                     StorageStrategy.h      Thevenin.cpp                TheveninMethod.h
+    Hakko907Strategy.cpp     Hakko907Strategy.h
 )
 
 CHEALI_ADD("CORE_SOURCE_FILES" "${CORE_SOURCE}")

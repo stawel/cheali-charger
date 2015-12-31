@@ -57,7 +57,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
     cell_nr = v_balance = false;
     v_out = ! AnalogInputs::isConnected(AnalogInputs::Vout);
 
-    if(ProgramData::battery.type == ProgramData::Unknown || ProgramData::battery.type == ProgramData::LED) {
+    if(ProgramData::battery.type == ProgramData::Unknown || ProgramData::getBatteryClass() == ProgramData::ClassCustomDevice) {
         v_out = false;
     }
 

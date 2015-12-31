@@ -31,7 +31,7 @@
 #include "ScreenMethods.h"
 #include "Balancer.h"
 #include "ScreenEditable.h"
-
+#include "Hakko907Strategy.h"
 
 namespace Screen { namespace Editable {
 
@@ -45,11 +45,15 @@ namespace Screen { namespace Editable {
         return 0;
     }
 
+    void displayLEDScreen();
+    void displayHakko907Screen();
+
 } } //namespace Screen::Editable
 
 
 void Screen::Editable::displayLEDScreen()
 {
+
     static uint8_t displayMaxI = 0;
     int dir = getKeyboardDir();
     if(dir) {
@@ -76,3 +80,44 @@ void Screen::Editable::displayLEDScreen()
     lcdPrintSpaces();
 }
 
+void Screen::Editable::displayHakko907Screen()
+{
+
+    static uint8_t displayMaxI = 0;
+    int dir = getKeyboardDir();
+    if(dir) {
+        change0ToInfSmart(&ProgramData::battery.T1, dir);
+        Screen::keyboardButton = BUTTON_NONE;
+        displayMaxI = 10;
+    }
+
+    lcdSetCursor0_0();
+    lcdPrintTemperature(Hakko907Strategy::getTemperature(), 8);
+    lcdPrintSpace1();
+    if(displayMaxI) {
+        displayMaxI--;
+        lcdPrintTemperature(ProgramData::battery.T1, 7);
+    } else {
+        AnalogInputs::printRealValue(AnalogInputs::Iout, 7);
+    }
+    lcdPrintSpaces();
+
+    lcdSetCursor0_1();
+    AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
+    lcdPrintSpace1();
+    AnalogInputs::printRealValue(AnalogInputs::VoutBalancer,     7);
+    lcdPrintSpaces();
+}
+
+
+
+void Screen::Editable::displayCustomDeviceScreen()
+{
+#ifdef ENABLE_IRON_HAKKO907
+    if(ProgramData::battery.type == ProgramData::IronHakko907) {
+        displayHakko907Screen();
+        return;
+    }
+#endif
+    displayLEDScreen();
+}

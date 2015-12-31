@@ -21,7 +21,7 @@
 
 namespace Screen { namespace Editable {
 
-    void displayLEDScreen();
+    void displayCustomDeviceScreen();
 
 } };
 

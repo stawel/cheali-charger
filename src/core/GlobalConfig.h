@@ -41,6 +41,9 @@
  */
 //#define ENABLE_DYNAMIC_MAX_POWER
 
+//enable soldering iron HAKKO 907
+#define ENABLE_IRON_HAKKO907
+
 #define STRINGS_HEADER "strings/standard.h"
 
 #endif /* GLOBAL_CONFIG_H_ */

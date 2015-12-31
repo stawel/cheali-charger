@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2016  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,29 +15,20 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#ifndef HAKKO907STRATEGY_H_
+#define HAKKO907STRATEGY_H_
 
-#define __STDC_LIMIT_MACROS
-#include <stdint.h>
 
-#include "AnalogInputsTypes.h"
+#include "Strategy.h"
 
-AnalogInputs::ValueType AnalogInputs::evalI(AnalogInputs::ValueType P, AnalogInputs::ValueType U) {
-    uint32_t i = P;
-    i *= ANALOG_VOLT(1);
-    i /= U;
-    i *= ANALOG_AMP(1);
-    i /= ANALOG_WATT(1);
-    if (i > UINT16_MAX)
-        i = UINT16_MAX;
-    return i;
-}
+namespace Hakko907Strategy {
 
-AnalogInputs::ValueType AnalogInputs::evalP(AnalogInputs::ValueType U, AnalogInputs::ValueType I) {
-    uint32_t p = I;
-    p *= U;
-    p /= ANALOG_AMP(1)/ANALOG_WATT(1);
-    p /= ANALOG_VOLT(1);
-    if (p > UINT16_MAX)
-        p = UINT16_MAX;
-    return p;
-}
+    extern const Strategy::VTable vtable;
+
+    void powerOn();
+    void powerOff();
+    AnalogInputs::ValueType getTemperature();
+};
+
+#endif /* HAKKO907STRATEGY_H_ */
+

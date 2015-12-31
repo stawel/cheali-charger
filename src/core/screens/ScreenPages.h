@@ -43,7 +43,7 @@ namespace Screen { namespace Pages {
 
     const PageInfo pageInfo[] PROGMEM = {
             {Screen::StartInfo::displayStartInfo,   PAGE_START_INFO,                      PAGE_NONE},
-            {Screen::Editable::displayLEDScreen,     PAGE_BATTERY(ProgramData::ClassLED), PAGE_START_INFO},
+            {Screen::Editable::displayCustomDeviceScreen, PAGE_BATTERY(ProgramData::ClassCustomDevice), PAGE_START_INFO},
             {Screen::Methods::displayFirstScreen,   PAGE_ALWAYS, PAGE_START_INFO + PAGE_PROGRAM(Program::Balance)},
             {Screen::Methods::displayEnergy,        PAGE_ALWAYS, PAGE_START_INFO + PAGE_PROGRAM(Program::Balance)},
 

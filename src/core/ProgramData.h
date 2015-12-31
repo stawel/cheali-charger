@@ -28,8 +28,12 @@
 
 namespace ProgramData {
 
-    enum BatteryClass {ClassNiXX, ClassPb, ClassLiXX, ClassNiZn, ClassUnknown, ClassLED, LAST_BATTERY_CLASS};
-    enum BatteryType {None, NiCd, NiMH, Pb, Life, Lilo, Lipo, Li430, Li435, NiZn, Unknown, LED, LAST_BATTERY_TYPE};
+    enum BatteryClass {ClassNiXX, ClassPb, ClassLiXX, ClassNiZn, ClassUnknown, ClassCustomDevice, LAST_BATTERY_CLASS};
+    enum BatteryType {None, NiCd, NiMH, Pb, Life, Lilo, Lipo, Li430, Li435, NiZn, Unknown, LED,
+#ifdef ENABLE_IRON_HAKKO907
+        IronHakko907,
+#endif
+        LAST_BATTERY_TYPE};
     enum VoltageType {VIdle, VCharge, VDischarge, VStorage, ValidEmpty, LAST_VOLTAGE_TYPE};
 
 
@@ -68,6 +72,11 @@ namespace ProgramData {
                 uint16_t deltaT;
                 uint16_t DCcycles;
             };
+            struct { //hakko 907 soldering iron
+                uint16_t power;
+                uint16_t R;
+                uint16_t T1;
+            };
         };
 
 
@@ -99,7 +108,7 @@ namespace ProgramData {
 
     BatteryClass getBatteryClass();
 
-    inline bool isPowerSupply() { return getBatteryClass() == ClassLED; };
+    inline bool isCustomDevice() { return getBatteryClass() == ClassCustomDevice; };
     inline bool isLiXX() { return getBatteryClass() == ClassLiXX; };
     inline bool isNiXX() { return getBatteryClass() == ClassNiXX; };
     inline bool isPb() { return getBatteryClass() == ClassPb; };

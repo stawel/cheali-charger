@@ -37,6 +37,7 @@
 #include "DelayStrategy.h"
 #include "ProgramDCcycle.h"
 #include "Calibrate.h"
+#include "Hakko907Strategy.h"
 
 namespace Program {
     ProgramType programType;
@@ -50,7 +51,7 @@ namespace Program {
     void setupDischarge();
     void setupBalance();
     void setupDeltaCharge();
-    void setupPowerSupplyCharge();
+    void setupCustomDeviceCharge();
     void setupProgramType(ProgramType prog);
 
     void dischargeOutputCapacitor();
@@ -92,10 +93,19 @@ void Program::setupDischarge()
     Strategy::strategy = &TheveninDischargeStrategy::vtable;
 }
 
-void Program::setupPowerSupplyCharge()
+void Program::setupCustomDeviceCharge()
 {
-    Strategy::setVI(ProgramData::VCharge, true);
-    Strategy::strategy = &SimpleChargeStrategy::vtable;
+    if(ProgramData::battery.type == ProgramData::LED) {
+        Strategy::setVI(ProgramData::VCharge, true);
+        Strategy::strategy = &SimpleChargeStrategy::vtable;
+    }
+#ifdef ENABLE_IRON_HAKKO907
+    if(ProgramData::battery.type == ProgramData::IronHakko907) {
+        Strategy::setVI(ProgramData::VCharge, true);
+        Strategy::strategy = &Hakko907Strategy::vtable;
+    }
+#endif
+
 }
 
 
@@ -112,8 +122,8 @@ void Program::setupProgramType(ProgramType prog) {
     case Program::Charge:
         if(ProgramData::isNiXX()) {
             setupDeltaCharge();
-        } else if (ProgramData::isPowerSupply()) {
-            setupPowerSupplyCharge();
+        } else if (ProgramData::isCustomDevice()) {
+            setupCustomDeviceCharge();
         } else {
             setupTheveninCharge();
         }

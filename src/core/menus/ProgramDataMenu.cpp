@@ -35,6 +35,7 @@ namespace ProgramDataMenu {
 #define COND_NiZn           8
 #define COND_Unknown        16
 #define COND_LED            32
+#define COND_HAKKO907       64
 
 #define COND_enableT        256
 #define COND_enable_dV      512
@@ -54,7 +55,11 @@ uint16_t getSelector() {
     STATIC_ASSERT(LAST_BATTERY_CLASS == 6);
     uint16_t result = 1<<14;
     if(battery.type != None) {
-        result += 1 << getBatteryClass();
+        uint16_t batteryType = getBatteryClass();
+        if(batteryType == ProgramData::ClassCustomDevice) {
+            batteryType = ProgramData::battery.type - ProgramData::LED + 5;
+        }
+        result += 1 << batteryType;
 
         if(battery.enable_externT) {
             result += COND_enableT;
@@ -82,6 +87,7 @@ const cprintf::ArrayData batteryTypeData  PROGMEM = {batteryString, &battery.typ
 
 const AnalogInputs::ValueType Tmin = (Settings::TempDifference/ANALOG_CELCIUS(1))*ANALOG_CELCIUS(1) + ANALOG_CELCIUS(1);
 const AnalogInputs::ValueType Tmax = ANALOG_CELCIUS(99);
+const AnalogInputs::ValueType TmaxIron = ANALOG_CELCIUS(299);
 const AnalogInputs::ValueType Tstep =  ANALOG_CELCIUS(1);
 /*
 |static string          |when to display    | how to display, see cprintf                   | how to edit |
@@ -92,7 +98,11 @@ const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 {string_Vc_per_cell,    ADV(LiXX_NiZn_Pb),  {CP_TYPE_V,0,&battery.Vc_per_cell},             {1,ANALOG_VOLT(0.0),ANALOG_VOLT(5.0)}},
 {string_Vc_per_cell,    COND_Unknown,       {CP_TYPE_V,0,&battery.Vc_per_cell},             {50,ANALOG_VOLT(0.0),MAX_CHARGE_V}},
 {string_Vcutoff,        ADV(NiXX),          {CP_TYPE_V,0,&battery.Vc_per_cell},             {ANALOG_VOLT(0.001), ANALOG_VOLT(1.200), ANALOG_VOLT(2.000)}},
-{string_Vcutoff,        COND_LED,           {CP_TYPE_V,0,&battery.Vc_per_cell},             {CE_STEP_TYPE_SMART, ANALOG_VOLT(0.001), MAX_CHARGE_V}},
+{string_Vcutoff,        COND_LED+COND_HAKKO907,{CP_TYPE_V,0,&battery.Vc_per_cell},          {CE_STEP_TYPE_SMART, ANALOG_VOLT(0.001), MAX_CHARGE_V}},
+//TODO: ?
+{string_P,              COND_HAKKO907,      {CP_TYPE_W,0,&battery.power},                   {CE_STEP_TYPE_SMART, ANALOG_WATT(0.01), MAX_CHARGE_P}},
+{string_T1,             COND_HAKKO907,      {CP_TYPE_TEMPERATURE,0,&battery.T1},            {Tstep, Tmin, TmaxIron}},
+//{string_R,              COND_HAKKO907,      {CP_TYPE_OHM,0,&battery.R},                     {1, 0, 2000}},
 {string_Vs_per_cell,    ADV(LiXX),          {CP_TYPE_V,0,&battery.Vs_per_cell},             {1,ANALOG_VOLT(0.0),ANALOG_VOLT(5.0)}},
 {string_Vd_per_cell,    COND_BATT_UNKN+COND_advanced,{CP_TYPE_V,0,&battery.Vd_per_cell},    {1,ANALOG_VOLT(0.0),ANALOG_VOLT(5.0)}},
 {string_Vd_per_cell,    COND_Unknown,       {CP_TYPE_V,0,&battery.Vd_per_cell},             {50,ANALOG_VOLT(0.0),MAX_CHARGE_V}},

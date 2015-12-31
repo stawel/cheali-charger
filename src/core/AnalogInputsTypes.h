@@ -57,6 +57,7 @@ namespace AnalogInputs {
     static const uint16_t   STABLE_MIN_VALUE    = 3;
 
     AnalogInputs::ValueType evalI(AnalogInputs::ValueType P, AnalogInputs::ValueType U);
+    AnalogInputs::ValueType evalP(AnalogInputs::ValueType U, AnalogInputs::ValueType I);
 };
 
 #endif /* ANALOGINPUTSTYPES_H_ */

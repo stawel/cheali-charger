@@ -32,6 +32,7 @@ namespace SMPS {
     //returns the truly set Iout
     AnalogInputs::ValueType getIout();
     void trySetIout(AnalogInputs::ValueType I);
+    void setIout(AnalogInputs::ValueType I);
 
     uint16_t getValue();
     void setValue(uint16_t value);

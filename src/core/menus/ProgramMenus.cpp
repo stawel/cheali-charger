@@ -75,7 +75,7 @@ namespace ProgramMenus {
             Program::EditBattery,
     };
 
-    const Program::ProgramType programLEDMenu[] PROGMEM = {
+    const Program::ProgramType programCustomDeviceMenu[] PROGMEM = {
             Program::Charge,
             Program::EditBattery,
     };
@@ -122,7 +122,7 @@ namespace ProgramMenus {
     ProgramTypeMenu selectNiXXMenu(programNiXXMenu);
     ProgramTypeMenu selectNiZnMenu(programNiZnMenu);
     ProgramTypeMenu selectPbMenu(programPbMenu);
-    ProgramTypeMenu selectLEDMenu(programLEDMenu);
+    ProgramTypeMenu selectCustomDeviceMenu(programCustomDeviceMenu);
 
     ProgramTypeMenu * getSelectProgramMenu() {
         STATIC_ASSERT(ProgramData::LAST_BATTERY_CLASS == 6);
@@ -136,8 +136,8 @@ namespace ProgramMenus {
             return &selectLiXXMenu;
         if(bc == ProgramData::ClassNiXX)
             return &selectNiXXMenu;
-        if(bc == ProgramData::ClassLED)
-            return &selectLEDMenu;
+        if(bc == ProgramData::ClassCustomDevice)
+            return &selectCustomDeviceMenu;
         else return &selectPbMenu;
     }
 }

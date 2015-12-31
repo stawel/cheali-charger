@@ -99,12 +99,20 @@ void SMPS::trySetIout(AnalogInputs::ValueType I)
         if(SMPS_MAX_CURRENT_CHANGE_dM < I - IoutSet_)
             I = IoutSet_ + SMPS_MAX_CURRENT_CHANGE_dM;
     }
+    setIout(I);
+}
+
+void SMPS::setIout(AnalogInputs::ValueType I)
+{
+    AnalogInputs::ValueType maxI = getMaxIout();
+    if(maxI < I) I = maxI;
 
     if(IoutSet_ == I) return;
     IoutSet_ = I;
     uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsSet, I);
     setValue(value);
 }
+
 
 void SMPS::powerOn()
 {

@@ -87,6 +87,7 @@ namespace ProgramData {
     STRING(battery_Li435,   "L435");
     STRING(battery_NiZn,    "NiZn");
     STRING(battery_LED,     "LED");
+    STRING(battery_HAKKO907,"HAKKO907");
 }
 
 namespace SettingsMenu {
@@ -139,6 +140,9 @@ namespace ProgramDataMenu {
     STRING(Vs_per_cell, "Vs:");
     STRING(Vd_per_cell, "Vd:");
     STRING(Vcutoff,     "Vco:");
+    STRING(P,           "P:");
+    STRING(T1,          "T1:");
+    STRING(R,           "R:");
     STRING(capacity,    "Cap:");
     STRING(Ic,          "Ic:");
     STRING(minIc,       "minIc:");
