@@ -86,6 +86,8 @@ namespace Hakko907Strategy {
         i *= ANALOG_VOLT(1) * ANALOG_AMP(1) / ANALOG_WATT(1);
         return isqrt(i);
     }
+
+    void setIout(int32_t i);
 }
 
 
@@ -115,10 +117,24 @@ void Hakko907Strategy::powerOff()
     SMPS::powerOff();
 }
 
+#define PID_precision 5
+#define Ki 3
+#define Kp 64
+
+void Hakko907Strategy::setIout(int32_t i) {
+    if(i<0) i=0;
+    int16_t maxI = maxCurrent(AnalogInputs::getVbattery(), AnalogInputs::getIout());
+
+    i >>= PID_precision;
+    if(i > maxI) i = maxI;
+
+    SMPS::setIout(i);
+
+}
+
 Strategy::statusType Hakko907Strategy::doStrategy()
 {
     AnalogInputs::ValueType T = getTemperature();
-    AnalogInputs::ValueType Vout = AnalogInputs::getVbattery();
     if (T > ANALOG_CELCIUS(400)) {
         Program::stopReason = Monitor::string_externalTemperatureCutOff;
         return Strategy::ERROR;
@@ -126,24 +142,21 @@ Strategy::statusType Hakko907Strategy::doStrategy()
 
     //simple PID (I) - TODO: rewrite
 
-    int32_t T_error = ProgramData::battery.T1;
+    int32_t Iout, T_error;
+    T_error = ProgramData::battery.T1;
     T_error -= getTemperature();
-    if(T_error > 0) {
-        T_error *= 4;
-    } else {
-        T_error *= 8;
-    }
 
-    PID_I += T_error;
+    PID_I += Ki*T_error;
 
+    Iout = PID_I + Kp *T_error;
+
+    // truncate I part
     if(PID_I < 0) PID_I = 0;
+    //MAX_CHARGE_I ??
+    if(PID_I > (MAX_CHARGE_I<<PID_precision)) PID_I = MAX_CHARGE_I<<PID_precision;
 
+    setIout(Iout);
     //make sure output power is smaller than ProgramData::battery.power
-    int32_t maxI = maxCurrent(Vout, AnalogInputs::getIout());
-    maxI <<= 4;
-    if(PID_I > maxI) PID_I = maxI;
-
-    SMPS::setIout(PID_I>>4);
 
     return Strategy::RUNNING;
 }
