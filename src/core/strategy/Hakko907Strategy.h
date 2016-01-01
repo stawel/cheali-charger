@@ -28,6 +28,7 @@ namespace Hakko907Strategy {
     void powerOn();
     void powerOff();
     AnalogInputs::ValueType getTemperature();
+
 };
 
 #endif /* HAKKO907STRATEGY_H_ */

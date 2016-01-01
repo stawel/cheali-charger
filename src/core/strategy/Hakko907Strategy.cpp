@@ -59,6 +59,33 @@ namespace Hakko907Strategy {
         if(a<b)return a;
         return b;
     }
+
+    inline uint16_t isqrt(uint32_t x) {
+        uint16_t retu = 0, b = 1<<15;
+        while(b) {
+            retu |= b;
+            if(uint32_t(retu)*retu > x) {
+                retu ^= b;
+            }
+            b >>= 1;
+        }
+        return retu;
+    }
+
+    uint16_t maxCurrent(AnalogInputs::ValueType Vout, AnalogInputs::ValueType Iout) {
+        if(Vout == 0) {
+            //assume 4 Ohms resistance
+            Vout = ANALOG_VOLT(4);
+            Iout = ANALOG_AMP(1);
+        }
+
+        uint32_t i = ProgramData::battery.power;
+        //i =  (P/R)^0.5, R = Vout/Iout
+        i *= Iout;
+        i /= Vout;
+        i *= ANALOG_VOLT(1) * ANALOG_AMP(1) / ANALOG_WATT(1);
+        return isqrt(i);
+    }
 }
 
 
@@ -69,9 +96,9 @@ AnalogInputs::ValueType Hakko907Strategy::getTemperature()
     // B) 100Ohm - 250C
     int32_t t = getTprobeOhms_x100();
     t -= 5200;
-    t *= 25000 - 2300;
+    t *= ANALOG_CELCIUS(250) - ANALOG_CELCIUS(23);
     t /= 10000 - 5200;
-    t += 2300;
+    t += ANALOG_CELCIUS(23);
     return t;
 }
 
@@ -80,6 +107,7 @@ void Hakko907Strategy::powerOn()
 {
     SMPS::powerOn();
     PID_I = 0;
+    SMPS::trySetIout(ANALOG_AMP(0.5));
 }
 
 void Hakko907Strategy::powerOff()
@@ -98,7 +126,7 @@ Strategy::statusType Hakko907Strategy::doStrategy()
 
     //simple PID (I) - TODO: rewrite
 
-    int T_error = ProgramData::battery.T1;
+    int32_t T_error = ProgramData::battery.T1;
     T_error -= getTemperature();
     if(T_error > 0) {
         T_error *= 4;
@@ -111,10 +139,7 @@ Strategy::statusType Hakko907Strategy::doStrategy()
     if(PID_I < 0) PID_I = 0;
 
     //make sure output power is smaller than ProgramData::battery.power
-    int maxI = MAX_CHARGE_I;
-    if(Vout > 0) {
-        maxI = AnalogInputs::evalI(ProgramData::battery.power, Vout);
-    }
+    int32_t maxI = maxCurrent(Vout, AnalogInputs::getIout());
     maxI <<= 4;
     if(PID_I > maxI) PID_I = maxI;
 
