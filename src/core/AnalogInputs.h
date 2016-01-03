@@ -20,7 +20,7 @@
 
 #include "AnalogInputsTypes.h"
 #include "HardwareConfig.h"
-#include "memory.h"
+#include "cpu/config.h"
 
 #define ANALOG_INPUTS_MAX_CALIBRATION_POINTS    2
 #define ANALOG_INPUTS_DELTA_TIME_MILISECONDS    30000

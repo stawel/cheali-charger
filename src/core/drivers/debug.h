@@ -22,7 +22,6 @@
 
 #include "SerialLog.h"
 #include "Time.h"
-#include "memory.h"
 
 namespace debug {
     inline void print(char x) { SerialLog::printChar(x); }

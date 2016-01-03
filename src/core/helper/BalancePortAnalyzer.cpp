@@ -36,6 +36,7 @@
 #include "SettingsMenu.h"
 #include STRINGS_HEADER
 #include "atomic.h"
+#include "memory.h"
 
 namespace BalancePortAnalyzer {
 

@@ -36,6 +36,7 @@
 #include STRINGS_HEADER
 #include "atomic.h"
 #include "SettingsMenu.h"
+#include "memory.h"
 
 namespace AnalogInputsAnalyzer {
 

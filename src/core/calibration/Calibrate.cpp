@@ -32,6 +32,7 @@
 #include "eeprom.h"
 #include "Balancer.h"
 #include "StaticEditMenu.h"
+#include "memory.h"
 
 namespace Calibrate {
 

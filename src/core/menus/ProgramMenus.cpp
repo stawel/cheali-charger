@@ -21,6 +21,7 @@
 #include "StaticMenu.h"
 #include "eeprom.h"
 #include "ProgramDataMenu.h"
+#include "memory.h"
 
 // Program selection depending on the battery type
 

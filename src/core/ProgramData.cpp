@@ -28,7 +28,7 @@ ProgramData::Battery ProgramData::battery;
 //battery voltage limits, see also: ProgramData::getVoltagePerCell, ProgramData::getVoltage
 const AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
 {
-//          { VIdle,              VCharge,            VDischarge,         VStorage,           ValidEmpty};
+//          { VNominal,           VCharged,           VDischarged,        VStorage,           VvalidEmpty};
 /*None*/    { 1,                  1,                  1,                  1,                  1},
 /*NiCd*/    { ANALOG_VOLT(1.200), ANALOG_VOLT(1.800), ANALOG_VOLT(0.850), 0,                  ANALOG_VOLT(0.850)},
 //http://en.wikipedia.org/wiki/Nickel%E2%80%93metal_hydride_battery

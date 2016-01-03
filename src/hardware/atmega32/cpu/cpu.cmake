@@ -25,6 +25,7 @@ set(CPU_SOURCE
 
 CHEALI_ADD(CPU_SOURCE_FILES "${CPU_SOURCE}")
 
+include_directories(${CMAKE_CURRENT_LIST_DIR}/..)
 include_directories(/usr/lib/avr/include/)
 link_libraries(m)
 
