@@ -47,7 +47,7 @@ namespace StartInfo {
     {
         uint16_t voltage = ProgramData::getDefaultVoltage();
         if(ProgramData::battery.type == ProgramData::Unknown || ProgramData::battery.type == ProgramData::LED) {
-            voltage = ProgramData::getVoltage(ProgramData::VCharge);
+            voltage = ProgramData::getVoltage(ProgramData::VCharged);
             lcdPrintVoltage(voltage, dig);
         } else {
             uint8_t cells = ProgramData::battery.cells;

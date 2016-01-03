@@ -76,25 +76,25 @@ void Program::setupStorage()
 }
 void Program::setupTheveninCharge()
 {
-    Strategy::setVI(ProgramData::VCharge, true);
+    Strategy::setVI(ProgramData::VCharged, true);
     Strategy::strategy = &TheveninChargeStrategy::vtable;
 }
 
 void Program::setupDeltaCharge()
 {
-    Strategy::setVI(ProgramData::VCharge, true);
+    Strategy::setVI(ProgramData::VCharged, true);
     Strategy::strategy = &DeltaChargeStrategy::vtable;
 }
 
 void Program::setupDischarge()
 {
-    Strategy::setVI(ProgramData::VDischarge, false);
+    Strategy::setVI(ProgramData::VDischarged, false);
     Strategy::strategy = &TheveninDischargeStrategy::vtable;
 }
 
 void Program::setupPowerSupplyCharge()
 {
-    Strategy::setVI(ProgramData::VCharge, true);
+    Strategy::setVI(ProgramData::VCharged, true);
     Strategy::strategy = &SimpleChargeStrategy::vtable;
 }
 
