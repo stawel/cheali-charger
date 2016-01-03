@@ -517,10 +517,11 @@ bool checkVout()
 bool checkIcharge(AnalogInputs::Name name)
 {
     // rev point: MAX_CHARGE_I
-    AnalogInputs::ValueType adcMax;
+    uint32_t adcMax;
     adcMax = AnalogInputs::reverseCalibrateValue(name, CALIBRATION_CHARGE_POINT1_mA);
-    adcMax *= MAX_CHARGE_I/CALIBRATION_CHARGE_POINT1_mA;
-    return checkMax(MAX_CHARGE_I, adcMax, name);
+    adcMax *= settings.maxIc;
+    adcMax /= CALIBRATION_CHARGE_POINT1_mA;
+    return checkMax(settings.maxIc, adcMax, name);
 }
 
 bool checkIdischarge(AnalogInputs::Name name)

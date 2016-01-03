@@ -171,7 +171,7 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
 void Program::dischargeOutputCapacitor()
 {
     Discharger::powerOn();
-    Discharger::trySetIout(MAX_DISCHARGE_I);
+    Discharger::trySetIout(settings.maxId);
     Time::delayDoIdle(100);
     Discharger::powerOff();
 }

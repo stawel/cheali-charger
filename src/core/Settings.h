@@ -33,13 +33,15 @@ struct Settings {
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5.12);
     uint16_t backlight;
 
-    AnalogInputs::ValueType fanOn;
+    uint16_t fanOn;
     AnalogInputs::ValueType fanTempOn;
     AnalogInputs::ValueType dischargeTempOff;
 
     uint16_t audioBeep;
-    uint16_t minIc;
-    uint16_t minId;
+    AnalogInputs::ValueType minIc;
+    AnalogInputs::ValueType maxIc;
+    AnalogInputs::ValueType minId;
+    AnalogInputs::ValueType maxId;
 
     AnalogInputs::ValueType inputVoltageLow;
     uint16_t adcNoise;
@@ -55,7 +57,9 @@ struct Settings {
 
     static void load();
     static void save();
+    static void check();
     static void restoreDefault();
+
 };
 
 extern Settings settings;

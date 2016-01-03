@@ -98,7 +98,7 @@ const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 {string_Vd_per_cell,    COND_Unknown,       {CP_TYPE_V,0,&battery.Vd_per_cell},             {50,ANALOG_VOLT(0.0),MAX_CHARGE_V}},
 {string_capacity,       COND_BATTERY,       {CP_TYPE_CHARGE,0,&battery.capacity},           {CE_STEP_TYPE_SMART, ANALOG_MIN_CHARGE, ANALOG_MAX_CHARGE/2}},
 {string_Ic,             COND_BATTERY+COND_LED,{CP_TYPE_A,0,&battery.Ic},                    {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
-{string_minIc,          ADV(LiXX_NiZn_Pb_Unkn),{CP_TYPE_A,0,&battery.minIc},           {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
+{string_minIc,          ADV(LiXX_NiZn_Pb_Unkn),{CP_TYPE_A,0,&battery.minIc},                {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
 {string_Id,             COND_BATTERY,       {CP_TYPE_A,0,&battery.Id},                      {CE_STEP_TYPE_SMART, ANALOG_VOLT(0.001), MAX_DISCHARGE_I}},
 {string_minId,          ADV(BATTERY),       {CP_TYPE_A,0,&battery.minId},                   {CE_STEP_TYPE_SMART, ANALOG_VOLT(0.001), MAX_DISCHARGE_I}},
 {string_balancErr,      ADV(LiXX_NiZn),     {CP_TYPE_SIGNED_mV,0,&battery.balancerError},   {ANALOG_VOLT(0.001), ANALOG_VOLT(0.003), ANALOG_VOLT(0.200)}},

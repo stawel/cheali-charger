@@ -97,7 +97,9 @@ namespace SettingsMenu {
     STRING(dischOff,    "disch off:");
     STRING(AudioBeep,   "beep:");
     STRING(minIc,       "min Ic:");
+    STRING(maxIc,       "max Ic:");
     STRING(minId,       "min Id:");
+    STRING(maxId,       "max Id:");
     STRING(inputLow,    "input low: ");
     STRING(adcNoise,    "adc noise:");
     STRING(UARTview,    "UART:");
