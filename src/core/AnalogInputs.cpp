@@ -163,15 +163,10 @@ bool AnalogInputs::isConnected(Name name)
     if(name == Vbalancer) {
         return getRealValue(VobInfo) == Vbalancer;
     }
-    AnalogInputs::ValueType x = getRealValue(name);
-    switch(getType(name)) {
-    case Current:
-        return x > CONNECTED_MIN_CURRENT;
-    case Voltage:
-        return x > CONNECTED_MIN_VOLTAGE;
-    default:
-        return true;
+    if(getType(name) == Voltage) {
+        return getRealValue(name) > CONNECTED_MIN_VOLTAGE;
     }
+    return true;
 }
 
 bool AnalogInputs::isBalancePortConnected()
