@@ -130,9 +130,8 @@ void Program::setupProgramType(ProgramType prog) {
         setupDischarge();
         break;
     case Program::FastCharge:
-        //TODO: ??
-        //Strategy::minIdiv = 5;
         setupTheveninCharge();
+        Strategy::minI = ProgramData::battery.Ic / 5;
         break;
     case Program::Storage:
         setupStorage();
