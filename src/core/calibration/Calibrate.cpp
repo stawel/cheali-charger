@@ -306,13 +306,14 @@ void setCurrentValue(AnalogInputs::Name name, AnalogInputs::ValueType value)
 
 class CurrentMenu: public EditMenu {
 public:
-    AnalogInputs::Name cName_;
+    AnalogInputs::Name cName1_;
+    AnalogInputs::Name cName2_;
     uint8_t point_;
     AnalogInputs::ValueType value_;
     AnalogInputs::ValueType maxValue_;
 
-    CurrentMenu(AnalogInputs::Name name, uint8_t point, AnalogInputs::ValueType maxValue)
-            : EditMenu(currentMenu), cName_(name), point_(point), maxValue_(maxValue) {}
+    CurrentMenu(AnalogInputs::Name name1, AnalogInputs::Name name2, uint8_t point, AnalogInputs::ValueType maxValue)
+            : EditMenu(currentMenu), cName1_(name1), cName2_(name2), point_(point), maxValue_(maxValue) {}
     void refreshValue(AnalogInputs::CalibrationPoint &p) {
         value_ = p.x;
     };
@@ -320,16 +321,17 @@ public:
         //TODO: hack, should be improved ... Gyuri: R138 burned.
         if(!AnalogInputs::isConnected(AnalogInputs::Vout)) {
             Screen::displayStrings(string_connect, string_battery);
-            if(cName_ == AnalogInputs::IdischargeSet) {
+            if(cName1_ == AnalogInputs::IdischargeSet) {
                 Discharger::powerOff();
             }
         } else {
             StaticMenu::printItem(index);
             if(getBlinkIndex() != index) {
                 if(index == 0) {
-                    lcdPrintUnsigned(value_, 5);
+                    lcdPrintUnsigned(value_, 9);
                 } else {
                     lcdPrintCurrent(AnalogInputs::getIout(), 7);
+                    lcdPrintUnsigned(AnalogInputs::getAvrADCValue(cName2_), 6);
                 }
             }
         }
@@ -338,7 +340,7 @@ public:
         int dir = -1;
         if(key == BUTTON_INC) dir = 1;
         changeMinToMaxStep(&value_, dir, 1, maxValue_, 1);
-        setCurrentValue(cName_, value_);
+        setCurrentValue(cName1_, value_);
     }
 };
 
@@ -371,7 +373,7 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
         getCalibrationPoint(pName1, name1, point);
         getCalibrationPoint(pName2, name2, point);
 
-        CurrentMenu menu(name1, point, maxValue);
+        CurrentMenu menu(name1, name2, point, maxValue);
         int8_t index;
         do {
             menu.refreshValue(pName1);

@@ -211,8 +211,8 @@ namespace Calibrate {
     STRING(id_menu_current1,    CHEALI_CHARGER_STRING(CALIBRATION_DISCHARGE_POINT1_mA) "mA");
 
     //calibration common current menu
-    STRING(i_menu_value,    "value: ");
-    STRING(i_menu_output,   "Iout:  ");
+    STRING(i_menu_value,    "value:");
+    STRING(i_menu_output,   "I:");
 
 
     //calibration temperature select point menu
