@@ -69,17 +69,15 @@ void StaticEditMenu::editItem(uint8_t item, uint8_t key)
     if(key == BUTTON_DEC) dir = -1;
 
     if(d.step == CE_STEP_TYPE_SMART) {
-        change0ToInfSmart((uint16_t*)valuePtr, dir);
+        changeMinToMaxSmart((uint16_t*)valuePtr, dir, d.minValue, d.maxValue);
     } else if(d.step == CE_STEP_TYPE_METHOD) {
         d.editMethod(dir);
-        goto callback; //TODO:: ?? rewrite
     } else {
          *valuePtr += dir*d.step;
+         if(*valuePtr < d.minValue) *valuePtr = d.minValue;
+         if(*valuePtr > d.maxValue) *valuePtr = d.maxValue;
     }
-    if(*valuePtr < d.minValue) *valuePtr = d.minValue;
-    if(*valuePtr > d.maxValue) *valuePtr = d.maxValue;
 
-callback:
     if(editCallback) {
         editCallback(this, (uint16_t*)valuePtr);
     }
