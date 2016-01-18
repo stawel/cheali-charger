@@ -302,6 +302,7 @@ AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
     y += p0.y;
 
     if(y < 0) y = 0;
+    if(y > UINT16_MAX) y = UINT16_MAX;
     return y;
 }
 
@@ -321,6 +322,7 @@ AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType
     x += p0.x;
 
     if(x < 0) x = 0;
+    if(x > UINT16_MAX) x = UINT16_MAX;
     return x;
 }
 

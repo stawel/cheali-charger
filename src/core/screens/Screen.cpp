@@ -227,8 +227,9 @@ void Screen::runResetEepromDone(uint8_t before, uint8_t after) {
     }
 }
 
-void Screen::runCalibrationError(const char *s) {
-    displayStrings(PSTR("calibation error"), s);
+void Screen::runCalibrationError(const char *s, uint8_t error) {
+    displayStrings(PSTR("calib. error"), s);
+    lcdPrintUnsigned(error, 3);
     waitButtonPressed();
 }
 

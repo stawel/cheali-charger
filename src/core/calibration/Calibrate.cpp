@@ -15,6 +15,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#define __STDC_LIMIT_MACROS
+#include <stdint.h>
+
 #include "Options.h"
 #include "LcdPrint.h"
 #include "StaticMenu.h"
@@ -532,59 +535,61 @@ void run()
 
 /* calibration check */
 
-bool checkMax(AnalogInputs::ValueType maxVal, uint16_t maxAdc, AnalogInputs::Name name)
+#define CHECK_MAGIC_CONST 10
+
+uint8_t check(AnalogInputs::Name name, AnalogInputs::ValueType min, AnalogInputs::ValueType max)
 {
-    AnalogInputs::ValueType t = AnalogInputs::calibrateValue(name, maxAdc);
-    if(t < maxVal+maxVal/2
-        && maxVal-maxVal/2 < t)
-        return true;
-    return false;
+    AnalogInputs::ValueType adcMin, adcMax, adcAvr;
+    adcMax = AnalogInputs::reverseCalibrateValue(name, max);
+    adcMin = AnalogInputs::reverseCalibrateValue(name, min);
+    adcAvr = AnalogInputs::reverseCalibrateValue(name, (min+max)/2);
+    if(adcMin == 0)             return 1;
+    if(adcMin == UINT16_MAX)    return 2;
+    if(adcMax == 0)             return 3;
+    if(adcMax == UINT16_MAX)    return 4;
+    if(adcMax <= adcMin)        return 5;
+    if(adcAvr-CHECK_MAGIC_CONST <= adcMin)  return 6;
+    if(adcMax <= adcAvr+CHECK_MAGIC_CONST)  return 7;
+    return 0;
 }
 
-bool checkVout()
-{
-    // rev point: MAX_CHARGE_V
-    AnalogInputs::ValueType adcMax;
-    adcMax = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, ANALOG_VOLT(1.000));
-    adcMax *= MAX_CHARGE_V/ANALOG_VOLT(1.000);
-    return checkMax(MAX_CHARGE_V, adcMax, AnalogInputs::Vout_plus_pin);
+uint8_t checkIcharge() {
+    uint8_t error;
+    error = check(AnalogInputs::IsmpsSet, settings.minIc, settings.maxIc);
+    if(error) return error+10;
+    error = check(AnalogInputs::Ismps, settings.minIc, settings.maxIc);
+    return error;
 }
 
-bool checkIcharge(AnalogInputs::Name name)
-{
-    // rev point: MAX_CHARGE_I
-    uint32_t adcMax;
-    adcMax = AnalogInputs::reverseCalibrateValue(name, CALIBRATION_CHARGE_POINT1_mA);
-    adcMax *= settings.maxIc;
-    adcMax /= CALIBRATION_CHARGE_POINT1_mA;
-    return checkMax(settings.maxIc, adcMax, name);
-}
-
-bool checkIdischarge(AnalogInputs::Name name)
-{
-    // rev point: CALIBRATION_DISCHARGE_POINT1_mA
-    // we don't use MAX_DISCHARGE_I because on some chargers (imaxB6-clone) it's very off.
-    AnalogInputs::ValueType adcMax;
-    adcMax = AnalogInputs::reverseCalibrateValue(name, CALIBRATION_DISCHARGE_POINT0_mA);
-    adcMax *= CALIBRATION_DISCHARGE_POINT1_mA/CALIBRATION_DISCHARGE_POINT0_mA;
-    return checkMax(CALIBRATION_DISCHARGE_POINT1_mA, adcMax, name);
+uint8_t checkIdischarge() {
+    uint8_t error;
+    error = check(AnalogInputs::IdischargeSet, settings.minId, settings.maxId);
+    if(error) return error+10;
+    error = check(AnalogInputs::Idischarge, settings.minId, settings.maxId);
+    return error;
 }
 
 bool checkAll() {
+    uint8_t error;
     if(!eeprom::check())
         return false;
-    if(!checkVout()) {
-        Screen::runCalibrationError(string_voltage);
+    error = check(AnalogInputs::Vout_plus_pin, ANALOG_VOLT(1.000), MAX_CHARGE_V);
+    if(error) {
+        Screen::runCalibrationError(string_voltage, error);
         return false;
     }
-    if(!checkIcharge(AnalogInputs::IsmpsSet) || !checkIcharge(AnalogInputs::Ismps)) {
-        Screen::runCalibrationError(string_chargeCurrent);
+    error = checkIcharge();
+    if(error) {
+        Screen::runCalibrationError(string_chargeCurrent, error);
         return false;
     }
-    if(!checkIdischarge(AnalogInputs::IdischargeSet) || !checkIdischarge(AnalogInputs::Idischarge)) {
-        Screen::runCalibrationError(string_dischargeCurrent);
+
+    error = checkIdischarge();
+    if(error) {
+        Screen::runCalibrationError(string_dischargeCurrent, error);
         return false;
     }
+
     return true;
 }
 
