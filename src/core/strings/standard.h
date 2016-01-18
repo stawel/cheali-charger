@@ -202,17 +202,10 @@ namespace Calibrate {
     STRING(v_menu_output,   "Vout:");
     STRING(menu_point,      "calib. p.:");
 
-    //calibration charge current menu
-    STRING(ic_menu_current0,    CHEALI_CHARGER_STRING(CALIBRATION_CHARGE_POINT0_mA) "mA");
-    STRING(ic_menu_current1,    CHEALI_CHARGER_STRING(CALIBRATION_CHARGE_POINT1_mA) "mA");
-
-    //calibration discharge current menu
-    STRING(id_menu_current0,    CHEALI_CHARGER_STRING(CALIBRATION_DISCHARGE_POINT0_mA) "mA");
-    STRING(id_menu_current1,    CHEALI_CHARGER_STRING(CALIBRATION_DISCHARGE_POINT1_mA) "mA");
-
     //calibration common current menu
     STRING(i_menu_value,    "value:");
     STRING(i_menu_output,   "I:");
+    STRING(i_menu_expected, "Iexpec:");
 
 
     //calibration temperature select point menu
