@@ -33,9 +33,6 @@
 
 namespace AnalogInputs {
 
-    extern uint32_t tmp_time_;
-    extern uint32_t tmp_time_last_;
-
     struct CalibrationPoint {
         ValueType x;
         ValueType y;

@@ -95,9 +95,4 @@ void Menu::display() {
 
 void Menu::debug()
 {
-/*    lcdSetCursor0_0();
-    lcdPrintUInt(AnalogInputs::tmp_time_);
-    lcdPrintChar(' ');
-    Utils::delayMicroseconds(50000);
-*/
 }

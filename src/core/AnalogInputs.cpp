@@ -60,8 +60,6 @@ namespace AnalogInputs {
     uint16_t stableCount_[ALL_INPUTS];
 
     uint16_t calculationCount_;
-    uint32_t tmp_time_;
-    uint32_t tmp_time_last_;
 
     uint16_t    i_deltaAvrCount_;
     uint32_t    i_deltaAvrSumVoutPlus_;
