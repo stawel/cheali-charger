@@ -124,7 +124,8 @@ namespace AnalogInputs {
     ValueType getIout();
     ValueType getDeltaLastT();
     ValueType getDeltaCount();
-    uint16_t getCharge();
+    ValueType getCharge();
+    ValueType getEout();
     void enableDeltaVoutMax(bool enable);
 
     uint16_t getConnectedBalancePorts();
