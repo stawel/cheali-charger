@@ -184,11 +184,13 @@ void runCalibrationMenu(const StaticEditMenu::StaticEditData * menuData,
                 if(AnalogInputs::isConnected(Vinput)) {
                     AnalogInputs::doFullMeasurement();
                     AnalogInputs::on_ = false;
+                    AnalogInputs::onTintern_ = false;
                     if(menu.runEdit()) {
                         bool doCopyVout = c & COND_COPY_VOUT;
                         saveCalibration(doCopyVout, Vinput, pgm::read(&name2[item]));
                     }
                     AnalogInputs::on_ = true;
+                    AnalogInputs::onTintern_ = true;
                 }
             } else {
                 menu.runEdit();

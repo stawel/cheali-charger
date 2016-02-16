@@ -31,6 +31,7 @@ namespace AnalogInputs {
     extern volatile uint32_t  i_avrSum_[PHYSICAL_INPUTS];
 
     extern volatile bool on_;
+    extern volatile bool onTintern_;
 
     void intterruptFinalizeMeasurement();
     void resetStable();

@@ -52,6 +52,8 @@
 namespace AnalogInputs {
 
     volatile bool on_;
+    volatile bool onTintern_ = true;
+
     volatile bool ignoreLastResult_;
     volatile uint16_t  i_avrCount_;
     volatile uint32_t  i_avrSum_[PHYSICAL_INPUTS];
@@ -270,6 +272,7 @@ void AnalogInputs::powerOn(bool enableBatteryOutput)
         hardware::setBatteryOutput(enableBatteryOutput);
         reset();
         on_ = true;
+        onTintern_ = true;
         doFullMeasurement();
     }
 }
@@ -461,7 +464,9 @@ void AnalogInputs::finalizeFullMeasurement()
                 finalizeFullVirtualMeasurement();
             } else {
                 //we need internal temperature all the time to control the fan
-                setRealBasedOnAvr(AnalogInputs::Tintern);
+                if(onTintern_) {
+                    setRealBasedOnAvr(AnalogInputs::Tintern);
+                }
             }
         }
         _resetAvr();
