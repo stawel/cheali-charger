@@ -157,8 +157,9 @@ If you have any problems with calibration, go to "options"->"reset default" and 
 Troubleshooting
 ---------------
 
-1. After flashing I see "options" and some strange characters in the seccnd line (for example: squares), what should I do?
+1. After flashing I see "options" and some strange characters in the second line (for example: squares), what should I do?
   - reset the charger to default settings (go to: "options"->"reset default" and press the "start" button)
+2. I get **"calib. error"**: see [this.](docs/calibration_error_codes.md)
 
 **Atmega32 CPU:**
 
