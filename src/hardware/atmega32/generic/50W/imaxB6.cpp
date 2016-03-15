@@ -23,7 +23,7 @@
 #include "SerialLog.h"
 #include "IO.h"
 #include "Keyboard.h"
-
+#include "LiquidCrystal.h"
 
 uint8_t hardware::getKeyPressed()
 {
@@ -70,7 +70,8 @@ void hardware::initializePins()
 
 void hardware::initialize()
 {
-    lcd.begin(LCD_COLUMNS, LCD_LINES);
+	LiquidCrystal::init();
+    LiquidCrystal::begin(LCD_COLUMNS, LCD_LINES);
 
     Timer1::initialize();
     AnalogInputsADC::initialize();
@@ -121,6 +122,4 @@ void hardware::setBalancer(uint8_t v)
     IO::digitalWrite(BALANCER5_LOAD_PIN, v&16);
     IO::digitalWrite(BALANCER6_LOAD_PIN, v&32);
 }
-
-LiquidCrystal lcd;
 

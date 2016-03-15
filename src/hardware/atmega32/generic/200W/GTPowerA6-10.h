@@ -20,7 +20,6 @@
 
 #include "HardwareConfig.h"
 
-#include "LiquidCrystal.h"
 #include "Keyboard.h"
 #include "SMPS.h"
 #include "Discharger.h"
@@ -31,8 +30,6 @@
 #include "GTPowerA6-10-pins.h"
 
 #include STRINGS_HEADER
-
-extern LiquidCrystal lcd;
 
 namespace hardware {
     void initializePins();

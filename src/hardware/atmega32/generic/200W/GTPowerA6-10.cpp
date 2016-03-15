@@ -19,6 +19,7 @@
 #include "Hardware.h"
 #include "AnalogInputsADC.h"
 #include "IO.h"
+#include "LiquidCrystal.h"
 
 void hardware::initializePins()
 {
@@ -55,7 +56,8 @@ void hardware::initializePins()
 
 void hardware::initialize()
 {
-    lcd.begin(LCD_COLUMNS, LCD_LINES);
+	LiquidCrystal::init();
+    LiquidCrystal::begin(LCD_COLUMNS, LCD_LINES);
     Timer1::initialize();
     AnalogInputsADC::initialize();
     setVoutCutoff(MAX_CHARGE_V);
@@ -151,7 +153,4 @@ void hardware::setBalancer(uint8_t v)
 void hardware::setBalancerOutput(bool enable)
 {
 }
-
-
-LiquidCrystal lcd;
 
