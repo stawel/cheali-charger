@@ -18,7 +18,7 @@
 #ifndef POLARITYCHECK_H_
 #define POLARITYCHECK_H_
 
-#include <inttypes.h>
+#include <stdint.h>
 
 #define POLARITY_CHECK_REVERSED_POLARITY    127
 

@@ -20,7 +20,7 @@
 #ifndef SMPS_H_
 #define SMPS_H_
 
-#include <inttypes.h>
+#include <stdint.h>
 #include "AnalogInputsTypes.h"
 
 namespace SMPS {

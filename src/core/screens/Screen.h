@@ -18,7 +18,7 @@
 #ifndef SCREEN_H_
 #define SCREEN_H_
 
-#include <inttypes.h>
+#include <stdint.h>
 #include "Blink.h"
 #include "Hardware.h"
 
