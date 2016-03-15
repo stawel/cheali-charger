@@ -39,7 +39,7 @@ void LogDebug_run()
 {}
 
 namespace SerialLog {
-    enum State { On, Off, Starting };
+    typedef enum { On, Off, Starting } State;
     uint32_t startTime;
     uint32_t currentTime;
 

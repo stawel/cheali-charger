@@ -35,7 +35,7 @@
 namespace AnalogInputs {
     typedef uint16_t ValueType;
 
-    enum Type {
+    typedef enum {
         Current,
         Voltage,
         Power,
@@ -51,7 +51,7 @@ namespace AnalogInputs {
         TimeLimitMinutes,
         YesNo,
         Unknown
-    };
+    } Type;
 
     static const ValueType  STABLE_VALUE_ERROR  = 6;
     static const uint16_t   STABLE_MIN_VALUE    = 3;

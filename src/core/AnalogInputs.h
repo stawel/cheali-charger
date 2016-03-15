@@ -47,7 +47,7 @@ namespace AnalogInputs {
         CalibrationPoint p[ANALOG_INPUTS_MAX_CALIBRATION_POINTS];
     } Calibration;
 
-    enum Name {
+    typedef enum {
         Vout_plus_pin,
         Vout_minus_pin,
         Ismps,
@@ -104,7 +104,7 @@ namespace AnalogInputs {
 #endif
 
         LastInput,
-    };
+    } Name;
     static const uint8_t    PHYSICAL_INPUTS     = VirtualInputs - Vout_plus_pin;
     static const uint8_t    ALL_INPUTS          = LastInput - Vout_plus_pin;
     static const ValueType  REVERSE_POLARITY_MIN_VOLTAGE = ANALOG_VOLT(1.000);

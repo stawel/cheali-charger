@@ -19,7 +19,7 @@
 #define BUZZER_H_
 
 namespace Buzzer {
-    enum SoundType { Keyboard, Info, Save, Select, StartProgram, ProgramComplete, Error, ReversedPolarity, Off };
+    typedef enum { Keyboard, Info, Save, Select, StartProgram, ProgramComplete, Error, ReversedPolarity, Off } SoundType;
 
     void sound(SoundType s);
     void soundIfSilence(SoundType s);

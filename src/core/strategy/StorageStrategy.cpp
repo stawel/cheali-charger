@@ -24,7 +24,7 @@
 
 namespace StorageStrategy {
 
-    enum State  {Charge, Discharge, Balance};
+    typedef enum {Charge, Discharge, Balance} State;
     State state;
 
     const Strategy::VTable vtable PROGMEM = {

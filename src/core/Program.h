@@ -23,16 +23,16 @@
 
 namespace Program {
 
-    enum ProgramType {
+    typedef enum {
         Charge, ChargeBalance, Balance, Discharge, FastCharge,
         Storage, StorageBalance, DischargeChargeCycle, CapacityCheck,
         EditBattery,
         Calibrate,
-        LAST_PROGRAM_TYPE};
+        LAST_PROGRAM_TYPE} ProgramType ;
 
-    enum ProgramState {
+    typedef enum {
         Done, InProgress, Error, Info
-    };
+    } ProgramState;
 
     extern ProgramType programType;
     extern ProgramState programState;

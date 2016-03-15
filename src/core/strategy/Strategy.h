@@ -23,7 +23,7 @@
 #include "ProgramData.h"
 
 namespace Strategy {
-    enum statusType {ERROR, COMPLETE, RUNNING };
+    typedef enum {ERROR, COMPLETE, RUNNING} statusType;
     typedef struct {
         void (*powerOn)();
         void (*powerOff)();

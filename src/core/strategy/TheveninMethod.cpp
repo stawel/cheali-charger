@@ -30,8 +30,8 @@
 
 namespace TheveninMethod {
 
-    enum State {ConstantCurrentBalancing, ConstantCurrent,
-                RthMesurment, LastRthMesurment, LastConstantCurrent, ConstantVoltageBalancing};
+    typedef enum {ConstantCurrentBalancing, ConstantCurrent,
+                RthMesurment, LastRthMesurment, LastConstantCurrent, ConstantVoltageBalancing} State;
     /* possible transitions:
      *   RthMesurment <--> ConstantCurrentBalancing --> ConstantCurrent -->
      *   LastRthMesurment --> LastConstantCurrent --> ConstantVoltageBalancing

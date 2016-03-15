@@ -28,9 +28,9 @@
 
 namespace ProgramData {
 
-    enum BatteryClass {ClassNiXX, ClassPb, ClassLiXX, ClassNiZn, ClassUnknown, ClassLED, LAST_BATTERY_CLASS};
-    enum BatteryType {None, NiCd, NiMH, Pb, Life, Lilo, Lipo, Li430, Li435, NiZn, Unknown, LED, LAST_BATTERY_TYPE};
-    enum VoltageType {VNominal, VCharged, VDischarged, VStorage, VvalidEmpty, LAST_VOLTAGE_TYPE};
+    typedef enum {ClassNiXX, ClassPb, ClassLiXX, ClassNiZn, ClassUnknown, ClassLED, LAST_BATTERY_CLASS} BatteryClass;
+    typedef enum {None, NiCd, NiMH, Pb, Life, Lilo, Lipo, Li430, Li435, NiZn, Unknown, LED, LAST_BATTERY_TYPE} BatteryType;
+    typedef enum {VNominal, VCharged, VDischarged, VStorage, VvalidEmpty, LAST_VOLTAGE_TYPE} VoltageType;
 
 
     typedef struct CHEALI_EEPROM_PACKED {
