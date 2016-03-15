@@ -18,6 +18,7 @@
 #include "LcdPrint.h"
 #include "Hardware.h"
 #include "memory.h"
+#include "LiquidCrystal.h"
 
 using namespace AnalogInputs;
 
@@ -39,10 +40,10 @@ char* printLong(int32_t value, char * buf) {
     return end;
 }
 
-void lcdSetCursor(uint8_t x, uint8_t y) { lcd.setCursor(x, y); }
+void lcdSetCursor(uint8_t x, uint8_t y) { LiquidCrystal::setCursor(x, y); }
 void lcdSetCursor0_0() { lcdSetCursor(0,0); }
 void lcdSetCursor0_1() { lcdSetCursor(0,1); }
-void lcdClear() { lcd.clear(); }
+void lcdClear() { LiquidCrystal::clear(); }
 
 int8_t lcdPrintSpace1() {   return lcdPrintSpaces(1); }
 int8_t lcdPrintSpaces() {   return lcdPrintSpaces(16);}
@@ -183,7 +184,7 @@ void lcdPrintChar(char c)
     if(c == '\n') {
         lcdSetCursor0_1();
     } else {
-        lcd.print(c);
+    	LiquidCrystal::print(c);
     }
 }
 
@@ -338,7 +339,7 @@ void lcdCreateCGRam()
    CGRAM[5] = 0b10001;
    CGRAM[6] = 0b10001;
    CGRAM[7] = 0b11111;
-   lcd.createChar(0, CGRAM); //empty
+   LiquidCrystal::createChar(0, CGRAM); //empty
 
    CGRAM[0] = 0b01110;
    CGRAM[1] = 0b11111;
@@ -348,7 +349,7 @@ void lcdCreateCGRam()
    CGRAM[5] = 0b11111;
    CGRAM[6] = 0b11111;
    CGRAM[7] = 0b11111;
-   lcd.createChar(1, CGRAM); //half
+   LiquidCrystal::createChar(1, CGRAM); //half
 
    CGRAM[0] = 0b01110;
    CGRAM[1] = 0b11111;
@@ -358,7 +359,7 @@ void lcdCreateCGRam()
    CGRAM[5] = 0b11111;
    CGRAM[6] = 0b11111;
    CGRAM[7] = 0b11111;
-   lcd.createChar(2, CGRAM); //full
+   LiquidCrystal::createChar(2, CGRAM); //full
 }
 #endif
 

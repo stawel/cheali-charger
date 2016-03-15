@@ -26,6 +26,22 @@
 
 #ifndef DummyLiquidCrystal_h
 
+namespace LiquidCrystal {
+    void send(uint8_t, uint8_t);
+    void write4bits(uint8_t);
+    void write8bits(uint8_t);
+    void pulseEnable();
+
+    uint8_t _displayfunction;
+    uint8_t _displaycontrol;
+    uint8_t _displaymode;
+
+    uint8_t _initialized;
+
+    uint8_t _numlines, _currline;
+}
+
+
 // When the display powers up, it is configured as follows:
 //
 // 1. Display clear
@@ -45,11 +61,6 @@
 // can't assume that its in that state when a sketch starts (and the
 // LiquidCrystal constructor is called).
 
-
-LiquidCrystal::LiquidCrystal()
-{
-  init();
-}
 
 void LiquidCrystal::init()
 {
