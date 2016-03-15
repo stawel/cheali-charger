@@ -22,46 +22,53 @@
 #include "AnalogInputs.h"
 
 
-struct Settings {
+namespace Settings {
 
-    enum UARTType {Disabled, Normal,  Debug,  ExtDebug, ExtDebugAdc};
-    enum FanOnType {FanDisabled, FanAlways, FanProgram, FanTemperature, FanProgramTemperature};
+	static const uint16_t UARTSpeeds = 5;
+	static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5.12);
 
-    enum UARTOutput {Software, HardwarePin7, HardwarePin38};
-    enum MenuType  {MenuSimple, MenuAdvanced};
-    static const uint16_t UARTSpeeds = 5;
-    static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5.12);
-    uint16_t backlight;
+	enum UARTType {Disabled, Normal,  Debug,  ExtDebug, ExtDebugAdc};
+	enum FanOnType {FanDisabled, FanAlways, FanProgram, FanTemperature, FanProgramTemperature};
 
-    uint16_t fanOn;
-    AnalogInputs::ValueType fanTempOn;
-    AnalogInputs::ValueType dischargeTempOff;
+	enum UARTOutput {Software, HardwarePin7, HardwarePin38};
+	enum MenuType  {MenuSimple, MenuAdvanced};
 
-    uint16_t audioBeep;
-    AnalogInputs::ValueType minIc;
-    AnalogInputs::ValueType maxIc;
-    AnalogInputs::ValueType minId;
-    AnalogInputs::ValueType maxId;
+	typedef struct {
 
-    AnalogInputs::ValueType inputVoltageLow;
-    uint16_t adcNoise;
-    uint16_t UART;
-    uint16_t UARTspeed;
-    uint16_t UARToutput;
-    uint16_t menuType;
+		uint16_t backlight;
 
-    void apply();
-    void setDefault();
-    uint32_t getUARTspeed() const;
-    static const uint32_t UARTSpeedValue[];
+		uint16_t fanOn;
+		AnalogInputs::ValueType fanTempOn;
+		AnalogInputs::ValueType dischargeTempOff;
 
-    static void load();
-    static void save();
-    static void check();
-    static void restoreDefault();
+		uint16_t audioBeep;
+		AnalogInputs::ValueType minIc;
+		AnalogInputs::ValueType maxIc;
+		AnalogInputs::ValueType minId;
+		AnalogInputs::ValueType maxId;
 
-};
+		AnalogInputs::ValueType inputVoltageLow;
+		uint16_t adcNoise;
+		uint16_t UART;
+		uint16_t UARTspeed;
+		uint16_t UARToutput;
+		uint16_t menuType;
 
-extern Settings settings;
+	} Data;
+
+
+	extern const uint32_t UARTSpeedValue[];
+
+	void apply();
+	void setDefault();
+	uint32_t getUARTspeed();
+
+	void load();
+	void save();
+	void check();
+	void restoreDefault();
+}
+
+extern Settings::Data settings;
 
 #endif /* SETTINGS_H_ */

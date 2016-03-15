@@ -138,7 +138,7 @@ void run() {
 #ifdef ENABLE_SETTINGS_MENU_RESET
         if(menu.getEditAddress(item) == NULL)  //reset
         {
-            settings.setDefault();
+            Settings::setDefault();
 #ifdef ENABLE_DEBUG
             settings.UART = Settings::Normal;
             LogDebug("Reset");
@@ -147,16 +147,16 @@ void run() {
         } else
 #endif
         {
-            Settings undo(settings);
+            Settings::Data undo(settings);
             if(!menu.runEdit()) {
                 settings = undo;
             } else {
                 Buzzer::soundSelect();
             }
-            settings.apply();
+            Settings::apply();
         }
     } while(true);
-    settings.save();
+    Settings::save();
 }
 
 #undef COND_ALWAYS
