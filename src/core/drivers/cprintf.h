@@ -48,11 +48,11 @@
 #define CPRINTF_METHOD(method) {CP_TYPE_METHOD, 0, {.methodPtr = method}}
 namespace cprintf {
 
-    struct ArrayData;
+    struct ArrayData_;
     typedef void(*PrintMethod)(int8_t);
 
 
-    union Data {
+    typedef union {
         const void * voidPtr;
         uint16_t * uint16Ptr;
         uint16_t uint16;
@@ -60,19 +60,19 @@ namespace cprintf {
         uint32_t * uint32Ptr;
         const char * const* stringArrayPtr;
         PrintMethod methodPtr;
-        ArrayData * arrayPtr;
-    };
+        struct ArrayData_ * arrayPtr;
+    } Data;
 
-    struct ArrayData {
+    typedef struct ArrayData_{
         Data ArrayPtr;
         uint16_t * indexPtr;
-    };
+    } ArrayData;
 
-    struct PrintData {
+    typedef struct {
         uint8_t type;
         uint8_t size;
         Data data;
-    };
+    } PrintData;
 
     void cprintf(const PrintData * p, uint8_t dig);
 

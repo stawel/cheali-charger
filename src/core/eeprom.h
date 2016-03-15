@@ -32,7 +32,7 @@
 
 
 namespace eeprom {
-    struct Data {
+    typedef struct CHEALI_EEPROM_PACKED {
         uint8_t magicString[EEPROM_MAGIC_STRING_LEN];
         uint16_t architecture;
         uint16_t architectureInfo;
@@ -48,7 +48,7 @@ namespace eeprom {
 
         Settings::Data settings;
         uint16_t settingsCRC;
-    } CHEALI_EEPROM_PACKED;
+    } Data;
 
     extern Data data;
 

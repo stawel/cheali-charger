@@ -36,7 +36,7 @@ public:
     typedef void(*EditCallBack)(StaticEditMenu *, uint16_t * value);
     typedef void(*EditMethod)(int dir);
 
-	struct EditData {
+    typedef struct {
         int16_t step;
         union {
             struct {
@@ -45,18 +45,18 @@ public:
             };
             EditMethod editMethod;
         };
-	};
+    } EditData;
 
-	struct StaticEditData {
-	    const char * staticString;
-	    uint16_t enableCondition;
-		cprintf::PrintData print;
-		EditData edit;
-	};
+    typedef struct {
+        const char * staticString;
+        uint16_t enableCondition;
+        cprintf::PrintData print;
+        EditData edit;
+    } StaticEditData;
 
 public:
-	StaticEditMenu(const StaticEditData * staticEditData, const EditCallBack callback = NULL)
-			: EditMenu(NULL), staticEditData(staticEditData), selector(Always), editCallback(callback) {};
+    StaticEditMenu(const StaticEditData * staticEditData, const EditCallBack callback = NULL)
+                    : EditMenu(NULL), staticEditData(staticEditData), selector(Always), editCallback(callback) {};
     virtual void printItem(uint8_t item);
     virtual void editItem(uint8_t item, uint8_t key);
 

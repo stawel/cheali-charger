@@ -24,11 +24,11 @@
 
 namespace Strategy {
     enum statusType {ERROR, COMPLETE, RUNNING };
-    struct VTable {
+    typedef struct {
         void (*powerOn)();
         void (*powerOff)();
         statusType (*doStrategy)();
-    };
+    } VTable;
 
     //variables common to all Strategies
     extern AnalogInputs::ValueType endV;

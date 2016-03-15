@@ -33,19 +33,19 @@
 
 namespace AnalogInputs {
 
-    struct CalibrationPoint {
+    typedef struct CHEALI_EEPROM_PACKED {
         ValueType x;
         ValueType y;
-    } CHEALI_EEPROM_PACKED;
+    } CalibrationPoint;
 
-    struct DefaultValues {
+    typedef struct CHEALI_EEPROM_PACKED {
         CalibrationPoint p0;
         CalibrationPoint p1;
-    } CHEALI_EEPROM_PACKED;
+    } DefaultValues;
 
-    struct Calibration {
+    typedef struct CHEALI_EEPROM_PACKED {
         CalibrationPoint p[ANALOG_INPUTS_MAX_CALIBRATION_POINTS];
-    } CHEALI_EEPROM_PACKED;
+    } Calibration;
 
     enum Name {
         Vout_plus_pin,

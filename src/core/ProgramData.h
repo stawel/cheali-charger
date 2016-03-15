@@ -33,7 +33,7 @@ namespace ProgramData {
     enum VoltageType {VNominal, VCharged, VDischarged, VStorage, VvalidEmpty, LAST_VOLTAGE_TYPE};
 
 
-    struct Battery {
+    typedef struct CHEALI_EEPROM_PACKED {
         uint16_t type;
         uint16_t capacity;
         uint16_t cells;
@@ -71,7 +71,7 @@ namespace ProgramData {
         };
 
 
-    } CHEALI_EEPROM_PACKED;
+    } Battery;
 
     extern Battery battery;
     extern const char * const batteryString[];

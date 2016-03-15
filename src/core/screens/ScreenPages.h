@@ -35,11 +35,11 @@ namespace Screen { namespace Pages {
  * 29:      PAGE_START_INFO
  * 30:      PAGE_BALANCE_PORT
 */
-    struct PageInfo {
+    typedef struct {
         VoidMethod displayMethod;
         uint32_t conditionEnable;
         uint32_t conditionDisable;
-    };
+    } PageInfo;
 
     const PageInfo pageInfo[] PROGMEM = {
             {Screen::StartInfo::displayStartInfo,   PAGE_START_INFO,                      PAGE_NONE},

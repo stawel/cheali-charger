@@ -255,11 +255,11 @@ void lcdPrint_mV(int16_t p, int8_t dig)
     lcdPrintAnalog(p, dig, AnalogInputs::SignedVoltage);
 }
 
-struct UnitsInfo {
+typedef struct {
     uint16_t div;
     bool mili;
     const char * symbol;
-};
+} UnitsInfo;
 static const UnitsInfo unitsInfo[] PROGMEM = {
         // Current
         {ANALOG_AMP(1.000), true, string_A},
