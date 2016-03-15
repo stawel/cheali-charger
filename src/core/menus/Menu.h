@@ -18,7 +18,7 @@
 #ifndef MENU_H_
 #define MENU_H_
 
-#include <inttypes.h>
+#include <stdint.h>
 #include "PolarityCheck.h"
 
 class Menu : public PolarityCheck {

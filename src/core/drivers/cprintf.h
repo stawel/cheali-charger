@@ -19,7 +19,7 @@
 #define CPRINTF_H_
 
 #include <stddef.h>
-#include <inttypes.h>
+#include <stdint.h>
 #include <Utils.h>
 #include "AnalogInputsTypes.h"
 

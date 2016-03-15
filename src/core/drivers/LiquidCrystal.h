@@ -19,7 +19,7 @@
 #ifndef LiquidCrystal_h
 #define LiquidCrystal_h
 
-#include <inttypes.h>
+#include <stdint.h>
 #include <string.h>
 
 // commands

@@ -18,7 +18,7 @@
 #ifndef POLARITYCHECK_H_
 #define POLARITYCHECK_H_
 
-#include <inttypes.h>
+#include <stdint.h>
 
 class PolarityCheck {
 public:

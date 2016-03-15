@@ -18,7 +18,7 @@
 #ifndef STRATEGY_H_
 #define STRATEGY_H_
 
-#include <inttypes.h>
+#include <stdint.h>
 #include "AnalogInputs.h"
 #include "ProgramData.h"
 

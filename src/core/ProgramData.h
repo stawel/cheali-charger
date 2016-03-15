@@ -18,7 +18,7 @@
 #ifndef PROGRAMDATA_H_
 #define PROGRAMDATA_H_
 
-#include <inttypes.h>
+#include <stdint.h>
 #include "AnalogInputs.h"
 #include "Hardware.h"
 #include "Settings.h"
