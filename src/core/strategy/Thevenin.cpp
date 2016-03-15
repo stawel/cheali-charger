@@ -23,17 +23,17 @@
 #include "Thevenin.h"
 #include "Utils.h"
 
-AnalogInputs::ValueType Resistance::getReadableRth()
+AnalogInputs::ValueType Thevenin::getReadableRth(Resistance r)
 {
-    if(uI == 0)
+    if(r.uI == 0)
         return 0;
-    uint32_t R = abs(iV);
+    uint32_t R = abs(r.iV);
     R *= ANALOG_VOLT(1.0);
-    R/=uI;
+    R/=r.uI;
     return R;
 }
 
-void Thevenin::init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i, bool charge)
+void Thevenin::init(Data *d, AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i, bool charge)
 {
     AnalogInputs::ValueType Vfrom, Vto;
     if(charge) {
@@ -44,63 +44,63 @@ void Thevenin::init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, An
         Vfrom = max(Vth, Vmax);
         Vto = min(Vth, Vmax);
     }
-    VLast_ = Vth_ = Vfrom;
-    ILastDiff_ = ILast_ = 0;
+    d->VLast_ = d->Vth_ = Vfrom;
+    d->ILastDiff_ = d->ILast_ = 0;
 
-    Rth.uI = i;
-    Rth.iV = Vto;  Rth.iV -= Vfrom;
+    d->Rth.uI = i;
+    d->Rth.iV = Vto;  d->Rth.iV -= Vfrom;
 }
 
-AnalogInputs::ValueType Thevenin::calculateI(AnalogInputs::ValueType v) const
+AnalogInputs::ValueType Thevenin::calculateI(Data *d, AnalogInputs::ValueType v)
 {
     int32_t i;
     i  = v;
-    i -= Vth_;
-    i *= Rth.uI;
-    if(Rth.iV == 0) return UINT16_MAX;
-    i /= Rth.iV;
+    i -= d->Vth_;
+    i *= d->Rth.uI;
+    if(d->Rth.iV == 0) return UINT16_MAX;
+    i /= d->Rth.iV;
     if(i >  UINT16_MAX) return  UINT16_MAX;
     if(i < 0) return 0;
     return i;
 }
 
-void Thevenin::calculateRthVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
+void Thevenin::calculateRthVth(Data *d, AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
-    calculateRth(v, i);
-    calculateVth(v, i);
+    calculateRth(d, v, i);
+    calculateVth(d, v, i);
 }
 
-void Thevenin::calculateRth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
+void Thevenin::calculateRth(Data *d, AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
-    if(absDiff(i, ILast_) > ILastDiff_/2) {
+    if(absDiff(i, d->ILast_) > d->ILastDiff_/2) {
         int16_t rth_v;
         uint16_t rth_i;
-        if(i > ILast_) {
+        if(i > d->ILast_) {
             rth_i  = i;
-            rth_i -= ILast_;
+            rth_i -= d->ILast_;
             rth_v  = v;
-            rth_v -= VLast_;
+            rth_v -= d->VLast_;
         } else {
-            rth_v  = VLast_;
+            rth_v  = d->VLast_;
             rth_v -= v;
-            rth_i  = ILast_;
+            rth_i  = d->ILast_;
             rth_i  -= i;
         }
-        if(sign(rth_v) == sign(Rth.iV)) {
-            ILastDiff_ = rth_i;
-            Rth.iV = rth_v;
-            Rth.uI = rth_i;
+        if(sign(rth_v) == sign(d->Rth.iV)) {
+        	d->ILastDiff_ = rth_i;
+        	d->Rth.iV = rth_v;
+        	d->Rth.uI = rth_i;
         }
     }
 }
 
-void Thevenin::calculateVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
+void Thevenin::calculateVth(Data *d, AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
     int32_t VRth;
     VRth = i;
-    VRth *= Rth.iV;
-    VRth /= Rth.uI;
-    if(v < VRth) Vth_ = 0;
-    else Vth_ = v - VRth;
+    VRth *= d->Rth.iV;
+    VRth /= d->Rth.uI;
+    if(v < VRth) d->Vth_ = 0;
+    else d->Vth_ = v - VRth;
 }
 

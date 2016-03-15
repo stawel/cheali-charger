@@ -20,37 +20,39 @@
 
 #include "AnalogInputs.h"
 
-class Resistance {
-public:
-   //R = iV/uI;
-   //when discharging the resistance is negative (iV_ < 0)
-   //in a Thevenin model this is mathematically equivalent
-   //to a positive resistance and a current flowing in the opposite direction
+namespace Thevenin {
 
-    int16_t iV;
-    uint16_t uI;
+	typedef struct {
+	   //R = iV/uI;
+	   //when discharging the resistance is negative (iV_ < 0)
+	   //in a Thevenin model this is mathematically equivalent
+	   //to a positive resistance and a current flowing in the opposite direction
 
-    AnalogInputs::ValueType getReadableRth();
-};
+		int16_t iV;
+		uint16_t uI;
 
-class Thevenin {
-public:
-    AnalogInputs::ValueType VLast_;
-    AnalogInputs::ValueType ILast_;
-    AnalogInputs::ValueType ILastDiff_;
-    AnalogInputs::ValueType Vth_;
-public:
-    Resistance Rth;
+	} Resistance;
 
-    Thevenin(){};
-    void storeLast(AnalogInputs::ValueType VLast, AnalogInputs::ValueType ILast) { VLast_ = VLast; ILast_ = ILast; }
+	AnalogInputs::ValueType getReadableRth(Resistance R);
 
-    void calculateRthVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
-    void calculateRth(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
-    void calculateVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
-    AnalogInputs::ValueType calculateI(AnalogInputs::ValueType Vc) const;
 
-    void init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i, bool charge);
-};
+	typedef struct {
+		AnalogInputs::ValueType VLast_;
+		AnalogInputs::ValueType ILast_;
+		AnalogInputs::ValueType ILastDiff_;
+		AnalogInputs::ValueType Vth_;
 
+		Resistance Rth;
+	} Data;
+
+
+    inline void storeLast(Data *d, AnalogInputs::ValueType VLast, AnalogInputs::ValueType ILast) { d->VLast_ = VLast; d->ILast_ = ILast; }
+
+    void calculateRthVth(Data *d, AnalogInputs::ValueType v, AnalogInputs::ValueType i);
+    void calculateRth(Data *d, AnalogInputs::ValueType v, AnalogInputs::ValueType i);
+    void calculateVth(Data *d, AnalogInputs::ValueType v, AnalogInputs::ValueType i);
+    AnalogInputs::ValueType calculateI(Data *d, AnalogInputs::ValueType Vc);
+
+    void init(Data *d, AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i, bool charge);
+}
 #endif /* THEVENIN_H_ */
