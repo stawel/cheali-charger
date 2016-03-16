@@ -40,8 +40,8 @@ namespace AnalogInputs {
     void doSlowInterrupt();
 
     //calibration
-    void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);
-    void setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &p);
+    void getCalibrationPoint(CalibrationPoint *p, Name name, uint8_t i);
+    void setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint *p);
 
 
 };

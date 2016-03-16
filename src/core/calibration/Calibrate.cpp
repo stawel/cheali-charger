@@ -67,8 +67,8 @@ void copyVbalVout()
     p.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vout_plus_pin);
     p.x -= AnalogInputs::getAvrADCValue(AnalogInputs::Vout_minus_pin);
     p.y = AnalogInputs::getRealValue(AnalogInputs::Vbalancer);
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout_plus_pin, calibrationPoint, p);
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout_minus_pin, calibrationPoint, p);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout_plus_pin, calibrationPoint, &p);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vout_minus_pin, calibrationPoint, &p);
 }
 
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
@@ -81,11 +81,11 @@ void calibrateSimplifiedVb1_pin(AnalogInputs::ValueType real_v)
     p2.y = p1.y + AnalogInputs::getRealValue(AnalogInputs::Vb2);
 
     //info: we assume that Vb0_pin and Vb1_pin have identically voltage dividers
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb0_pin, calibrationPoint, p1);
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb1_pin, calibrationPoint, p1);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb0_pin, calibrationPoint, &p1);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb1_pin, calibrationPoint, &p1);
 
     if(AnalogInputs::isConnected(AnalogInputs::Vb2)) {
-        AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, calibrationPoint, p2);
+        AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, calibrationPoint, &p2);
     }
 }
 void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
@@ -93,7 +93,7 @@ void calibrateSimplifiedVb2_pin(AnalogInputs::ValueType real_v)
     AnalogInputs::CalibrationPoint p2;
     p2.x = AnalogInputs::getAvrADCValue(AnalogInputs::Vb2_pin);
     p2.y = real_v + AnalogInputs::getRealValue(AnalogInputs::Vb1_pin);
-    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, calibrationPoint, p2);
+    AnalogInputs::setCalibrationPoint(AnalogInputs::Vb2_pin, calibrationPoint, &p2);
 }
 
 #endif
@@ -134,9 +134,9 @@ void saveCalibration(AnalogInputs::Name name1, AnalogInputs::Name name2, AnalogI
         else if(name1 == AnalogInputs::Vb2)
             calibrateSimplifiedVb2_pin(p.y);
         else
-            AnalogInputs::setCalibrationPoint(name2, calibrationPoint, p);
+            AnalogInputs::setCalibrationPoint(name2, calibrationPoint, &p);
 #else
-        AnalogInputs::setCalibrationPoint(name2, calibrationPoint, p);
+        AnalogInputs::setCalibrationPoint(name2, calibrationPoint, &p);
 #endif
 }
 
@@ -147,8 +147,8 @@ void saveCalibration(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInput
     SerialLog::flush();
     saveCalibration(name1, name2, AnalogInputs::getAvrADCValue(name2), newValue);
     if(doCopyVbalVout) {
-	    AnalogInputs::on_ = true;
-	    AnalogInputs::doFullMeasurement();
+        AnalogInputs::on_ = true;
+        AnalogInputs::doFullMeasurement();
         SerialLog::flush();
         copyVbalVout();
     }
@@ -392,8 +392,8 @@ void calibrateI(bool charging, uint8_t point)
             Discharger::powerOn();
         }
 
-        getCalibrationPoint(pSet, nameSet, point);
-        getCalibrationPoint(p, name, point);
+        getCalibrationPoint(&pSet, nameSet, point);
+        getCalibrationPoint(&p, name, point);
 
         CurrentMenu menu(nameSet, name, point, maxValue, maxIexpected);
         menu.resetIexpected(pSet);
@@ -424,8 +424,8 @@ void calibrateI(bool charging, uint8_t point)
 
         //Info: we save eeprom data only when no current is flowing
         if(save) {
-            AnalogInputs::setCalibrationPoint(nameSet, point, pSet);
-            AnalogInputs::setCalibrationPoint(name, point, p);
+            AnalogInputs::setCalibrationPoint(nameSet, point, &pSet);
+            AnalogInputs::setCalibrationPoint(name, point, &p);
             eeprom::restoreCalibrationCRC();
         }
     }
@@ -438,7 +438,7 @@ public:
     CurrentPointMenu(AnalogInputs::Name name): Menu(2), nameSet_(name) {}
     virtual void printItem(uint8_t index) {
         AnalogInputs::CalibrationPoint pSet;
-        getCalibrationPoint(pSet, nameSet_, index);
+        getCalibrationPoint(&pSet, nameSet_, index);
         lcdPrintCurrent(pSet.y, 7);
     }
 };

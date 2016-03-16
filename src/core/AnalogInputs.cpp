@@ -123,25 +123,25 @@ void AnalogInputs::restoreDefault()
     CalibrationPoint p;
     ANALOG_INPUTS_FOR_ALL_PHY(name) {
         p = pgm::read(&inputsP_[name].p0);
-        setCalibrationPoint(name, 0, p);
+        setCalibrationPoint(name, 0, &p);
         p = pgm::read(&inputsP_[name].p1);
-        setCalibrationPoint(name, 1, p);
+        setCalibrationPoint(name, 1, &p);
     }
     eeprom::restoreCalibrationCRC();
 }
 
-void AnalogInputs::getCalibrationPoint(CalibrationPoint &x, Name name, uint8_t i)
+void AnalogInputs::getCalibrationPoint(CalibrationPoint *x, Name name, uint8_t i)
 {
     if(name >= PHYSICAL_INPUTS || i >= ANALOG_INPUTS_MAX_CALIBRATION_POINTS) {
-        x.x = x.y = 1;
+        x->x = x->y = 1;
         return;
     }
-    eeprom::read(x,&eeprom::data.calibration[name].p[i]);
+    eeprom::read(*x,&eeprom::data.calibration[name].p[i]);
 }
-void AnalogInputs::setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &x)
+void AnalogInputs::setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint *x)
 {
     if(name >= PHYSICAL_INPUTS || i >= ANALOG_INPUTS_MAX_CALIBRATION_POINTS) return;
-    eeprom::write(&eeprom::data.calibration[name].p[i], x);
+    eeprom::write(&eeprom::data.calibration[name].p[i], *x);
 }
 
 uint16_t AnalogInputs::getConnectedBalancePorts()
@@ -298,8 +298,8 @@ AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
     //TODO: do this with more points
     if (x == 0) return 0;
     CalibrationPoint p0, p1;
-    getCalibrationPoint(p0, name, 0);
-    getCalibrationPoint(p1, name, 1);
+    getCalibrationPoint(&p0, name, 0);
+    getCalibrationPoint(&p1, name, 1);
     int32_t y,a;
     y  = p1.y; y -= p0.y;
     a  =  x;   a -= p0.x;
@@ -318,8 +318,8 @@ AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType
     if (y == 0) return 0;
     //TODO: do this with more points
     CalibrationPoint p0, p1;
-    getCalibrationPoint(p0, name, 0);
-    getCalibrationPoint(p1, name, 1);
+    getCalibrationPoint(&p0, name, 0);
+    getCalibrationPoint(&p1, name, 1);
     int32_t x,a;
     x  = p1.x; x -= p0.x;
     a  =  y;   a -= p0.y;
