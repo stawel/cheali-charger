@@ -122,9 +122,9 @@ void AnalogInputs::restoreDefault()
 {
     CalibrationPoint p;
     ANALOG_INPUTS_FOR_ALL_PHY(name) {
-        p = pgm::read<CalibrationPoint>(&inputsP_[name].p0);
+        p = pgm::read(&inputsP_[name].p0);
         setCalibrationPoint(name, 0, p);
-        p = pgm::read<CalibrationPoint>(&inputsP_[name].p1);
+        p = pgm::read(&inputsP_[name].p1);
         setCalibrationPoint(name, 1, p);
     }
     eeprom::restoreCalibrationCRC();
@@ -136,12 +136,12 @@ void AnalogInputs::getCalibrationPoint(CalibrationPoint &x, Name name, uint8_t i
         x.x = x.y = 1;
         return;
     }
-    eeprom::read<CalibrationPoint>(x,&eeprom::data.calibration[name].p[i]);
+    eeprom::read(x,&eeprom::data.calibration[name].p[i]);
 }
 void AnalogInputs::setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &x)
 {
     if(name >= PHYSICAL_INPUTS || i >= ANALOG_INPUTS_MAX_CALIBRATION_POINTS) return;
-    eeprom::write<CalibrationPoint>(&eeprom::data.calibration[name].p[i], x);
+    eeprom::write(&eeprom::data.calibration[name].p[i], x);
 }
 
 uint16_t AnalogInputs::getConnectedBalancePorts()
