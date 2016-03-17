@@ -19,8 +19,6 @@
 #include "MainMenu.h"
 #include "ProgramData.h"
 #include "AnalogInputs.h"
-#include "ProgramMenus.h"
-#include "Options.h"
 #include "Utils.h"
 #include "Buzzer.h"
 #include "Version.h"
@@ -34,26 +32,6 @@
 #include "Screen.h"
 #include "helper.h"
 #include "memory.h"
-
-const char string_options[] PROGMEM = "options";
-const char * const progmemMainMenu[] PROGMEM =
-{string_options, NULL };
-
-MainMenu mainMenu(progmemMainMenu, 1);
-
-void loop()
-{
-    int8_t index = mainMenu.runSimple();
-    if(index >= 0)  {
-        switch(index) {
-        case 0:
-            Options::run();
-            break;
-        default:
-            ProgramMenus::selectProgram(index - 1);
-        }
-    }
-}
 
 
 void setup()
@@ -82,12 +60,11 @@ void setup()
 int main()
 {
     setup();
+
 #ifdef ENABLE_HELPER
     helperMain();
 #else
     eeprom::check();
-    while(true) {
-        loop();
-    }
+    MainMenu::run();
 #endif
 }
