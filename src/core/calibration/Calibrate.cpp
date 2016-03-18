@@ -155,7 +155,7 @@ void saveCalibration(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInput
     eeprom::restoreCalibrationCRC();
 }
 
-#define COND_ALWAYS StaticEditMenu::StaticEditMenu::Always
+#define COND_ALWAYS StaticEditMenu::Always
 #define COND_COPY_VOUT      128
 #define COND_POINT          4
 #define COND_E_ANALOG       2
@@ -166,18 +166,20 @@ void runCalibrationMenu(const StaticEditMenu::StaticEditData * menuData,
         const AnalogInputs::Name * name1,
         const AnalogInputs::Name * name2,
         uint8_t calibrationPoint = false) {
-    StaticEditMenu menu(menuData);
+
+	StaticEditMenu::Data menu;
+	StaticEditMenu::initialize(&menu, menuData);
 
     uint16_t selector = COND_ALWAYS ^ COND_POINT;
     if(calibrationPoint || settings.menuType == Settings::MenuAdvanced) {
         selector |= COND_POINT;
     }
-    menu.setSelector(selector);
+    StaticEditMenu::setSelector(&menu, selector);
     int8_t item;
     do {
-        item = menu.runSimple(true);
+        item = StaticEditMenu::runSimple(&menu, true);
         if(item < 0) break;
-        uint8_t c = menu.getEnableCondition(item);
+        uint8_t c = StaticEditMenu::getEnableCondition(&menu, item);
         if(!(c & 1)) {
             if(c & COND_E_ANALOG) {
                 AnalogInputs::Name Vinput = pgm::read(&name1[item]);
@@ -185,7 +187,7 @@ void runCalibrationMenu(const StaticEditMenu::StaticEditData * menuData,
                     AnalogInputs::doFullMeasurement();
                     AnalogInputs::on_ = false;
                     AnalogInputs::onTintern_ = false;
-                    if(menu.runEdit()) {
+                    if(StaticEditMenu::runEdit(&menu)) {
                         bool doCopyVout = c & COND_COPY_VOUT;
                         saveCalibration(doCopyVout, Vinput, pgm::read(&name2[item]));
                     }
@@ -193,7 +195,7 @@ void runCalibrationMenu(const StaticEditMenu::StaticEditData * menuData,
                     AnalogInputs::onTintern_ = true;
                 }
             } else {
-                menu.runEdit();
+                StaticEditMenu::runEdit(&menu);
             }
         }
     } while(true);
@@ -304,8 +306,8 @@ void setCurrentValue(AnalogInputs::Name name, AnalogInputs::ValueType value)
     else                                    Discharger::setValue(value);
 }
 
-class CurrentMenu: public EditMenu {
-public:
+struct CurrentMenu {
+	EditMenu::Data menu;
     AnalogInputs::Name cNameSet_;
     AnalogInputs::Name cName_;
     uint8_t point_;
@@ -313,54 +315,64 @@ public:
     AnalogInputs::ValueType maxValue_;
     AnalogInputs::ValueType Iexpected_;
     AnalogInputs::ValueType maxIexpected_;
+};
+//class CurrentMenu: public EditMenu {
+//public:
 
-
-    CurrentMenu(AnalogInputs::Name nameSet, AnalogInputs::Name name, uint8_t point, AnalogInputs::ValueType maxValue, AnalogInputs::ValueType maxI)
-            : EditMenu(currentMenu), cNameSet_(nameSet), cName_(name), point_(point), maxValue_(maxValue), maxIexpected_(maxI) {}
-
-    void resetValue(AnalogInputs::CalibrationPoint &p) {
-        value_ = p.x;
+    void CurrentMenu_resetValue(CurrentMenu * d, AnalogInputs::CalibrationPoint &p) {
+        d->value_ = p.x;
     };
-    void resetIexpected(AnalogInputs::CalibrationPoint &p) {
-        Iexpected_ = p.y;
+    void CurrentMenu_resetIexpected(CurrentMenu * d, AnalogInputs::CalibrationPoint &p) {
+        d->Iexpected_ = p.y;
     };
 
-    virtual void printItem(uint8_t index) {
+    void CurrentMenu_printItem(CurrentMenu * d, uint8_t index) {
         //TODO: hack, should be improved ... Gyuri: R138 burned.
         if(!AnalogInputs::isConnected(AnalogInputs::Vout)) {
             Screen::displayStrings(string_connect, string_battery);
-            if(cNameSet_ == AnalogInputs::IdischargeSet) {
+            if(d->cNameSet_ == AnalogInputs::IdischargeSet) {
                 Discharger::powerOff();
             }
         } else {
-            StaticMenu::printItem(index);
-            if(getBlinkIndex() != index) {
+            StaticMenu::printItem(&d->menu.menu, index);
+            if(Blink::getBlinkIndex() != index) {
                 switch (index) {
                     case 0:
-                        lcdPrintUnsigned(value_, 9);
+                        lcdPrintUnsigned(d->value_, 9);
                         break;
                     case 1:
                         lcdPrintCurrent(AnalogInputs::getIout(), 7);
-                        lcdPrintUnsigned(AnalogInputs::getAvrADCValue(cName_), 6);
+                        lcdPrintUnsigned(AnalogInputs::getAvrADCValue(d->cName_), 6);
                         break;
                     default:
-                        lcdPrintCurrent(Iexpected_, 8);
+                        lcdPrintCurrent(d->Iexpected_, 8);
                         break;
                 }
             }
         }
     }
-    virtual void editItem(uint8_t index, uint8_t key) {
+
+    void CurrentMenu_editItem(CurrentMenu * d, uint8_t index, uint8_t key) {
         int dir = -1;
         if(key == BUTTON_INC) dir = 1;
         if(index == 0) {
-            changeMinToMaxStep(&value_, dir, 1, maxValue_, 1);
-            setCurrentValue(cNameSet_, value_);
+            changeMinToMaxStep(&d->value_, dir, 1, d->maxValue_, 1);
+            setCurrentValue(d->cNameSet_, d->value_);
         } else {
-            changeMinToMaxStep(&Iexpected_, dir, 1, maxIexpected_, 1);
+            changeMinToMaxStep(&d->Iexpected_, dir, 1, d->maxIexpected_, 1);
         }
     }
-};
+
+    void CurrentMenu_initialize(CurrentMenu * d, AnalogInputs::Name nameSet, AnalogInputs::Name name, uint8_t point, AnalogInputs::ValueType maxValue, AnalogInputs::ValueType maxI) {
+		EditMenu::initialize(&d->menu, currentMenu, (EditMenu::EditMethod)CurrentMenu_editItem);
+		EditMenu::setPrintMethod(&d->menu, (EditMenu::PrintMethod)CurrentMenu_printItem);
+		d->cNameSet_ = nameSet;
+		d->cName_ = name;
+		d->point_ = point;
+		d->maxValue_ = maxValue;
+		d->maxIexpected_ = maxI;
+    }
+
 
 void calibrateI(bool charging, uint8_t point)
 {
@@ -395,16 +407,17 @@ void calibrateI(bool charging, uint8_t point)
         getCalibrationPoint(&pSet, nameSet, point);
         getCalibrationPoint(&p, name, point);
 
-        CurrentMenu menu(nameSet, name, point, maxValue, maxIexpected);
-        menu.resetIexpected(pSet);
+        CurrentMenu menu;
+		CurrentMenu_initialize(&menu, nameSet, name, point, maxValue, maxIexpected);
+		CurrentMenu_resetIexpected(&menu, pSet);
         int8_t index;
         do {
-            menu.resetValue(pSet);
-            index = menu.runSimple(true);
+        	CurrentMenu_resetValue(&menu, pSet);
+            index = EditMenu::runSimple(&menu.menu, true);
             if(index < 0) break;
             if(index == 0) {
                 setCurrentValue(nameSet, menu.value_);
-                if(menu.runEdit()) {
+                if(EditMenu::runEdit(&menu.menu)) {
                     AnalogInputs::doFullMeasurement();
                     pSet.y = menu.Iexpected_;
                     pSet.x = menu.value_;
@@ -414,8 +427,8 @@ void calibrateI(bool charging, uint8_t point)
                 }
                 setCurrentValue(nameSet, 0);
             }
-            if(index == 2 && !menu.runEdit()) {
-                menu.resetIexpected(pSet);
+            if(index == 2 && !EditMenu::runEdit(&menu.menu)) {
+            	CurrentMenu_resetIexpected(&menu, pSet);
             }
         } while(true);
 
@@ -432,23 +445,26 @@ void calibrateI(bool charging, uint8_t point)
     AnalogInputs::powerOff();
 }
 
-class CurrentPointMenu : public Menu {
-public:
+typedef struct {
+	Menu::Data menu;
     AnalogInputs::Name nameSet_;
-    CurrentPointMenu(AnalogInputs::Name name): Menu(2), nameSet_(name) {}
-    virtual void printItem(uint8_t index) {
-        AnalogInputs::CalibrationPoint pSet;
-        getCalibrationPoint(&pSet, nameSet_, index);
-        lcdPrintCurrent(pSet.y, 7);
-    }
-};
+} CurrentPointMenu;
+
+void CurrentPointMenu_printItem(Menu::Data *menu, int8_t index) {
+	CurrentPointMenu * pmenu = (CurrentPointMenu *) menu;
+	AnalogInputs::CalibrationPoint pSet;
+	getCalibrationPoint(&pSet, pmenu->nameSet_, index);
+	lcdPrintCurrent(pSet.y, 7);
+}
 
 void calibrateI(bool charging)
 {
-    CurrentPointMenu menu(charging ? AnalogInputs::IsmpsSet : AnalogInputs::IdischargeSet);
+    CurrentPointMenu menu;
+    Menu::initialize(&menu.menu, 2, CurrentPointMenu_printItem);
+    menu.nameSet_ = (charging ? AnalogInputs::IsmpsSet : AnalogInputs::IdischargeSet);
     int8_t i;
     do {
-        i = menu.runSimple();
+        i = Menu::runSimple(&menu.menu);
         if(i<0) break;
         calibrateI(charging, i);
     } while(true);
@@ -506,10 +522,11 @@ void calibrateInternT()
 
 void run()
 {
-    StaticMenu menu(calibrateMenu);
+	StaticMenu::Data menu;
+	StaticMenu::initialize(&menu, calibrateMenu);
     int8_t i;
     do {
-        i = menu.runSimple();
+        i = StaticMenu::runSimple(&menu);
         if(i<0) break;
 
         //TODO: rewrite

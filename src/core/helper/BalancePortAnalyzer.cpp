@@ -56,31 +56,6 @@ STRING_CPP(v_menu_output_minus,"V-_pin:  ");
 STRING_CPP(v_menu_settings, "settings");
 
 
-class VoltageMenu: public StaticMenu {
-public:
-    VoltageMenu(const char * const* vMenu,
-            const AnalogInputs::Name * vNames, uint8_t dig) :
-        StaticMenu(vMenu),
-        vNames_(vNames),
-        dig_(dig){};
-    virtual void printItem(uint16_t index) {
-        StaticMenu::printItem(index);
-        AnalogInputs::Name name = pgm::read(&vNames_[index]);
-        if(index < MAX_BANANCE_CELLS +3) {
-//            ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-                lcdPrintUnsigned(AnalogInputs::getADCValue(name), dig_);
-//            }
-
-            if(index > 0) {
-                if((Balancer::balance >> (index-1)) & 1)
-                    lcdPrintChar('*');
-            }
-        }
-    }
-    const AnalogInputs::Name * vNames_;
-    const uint8_t dig_;
-};
-
 const char * const voltageMenu[] PROGMEM = {string_v_menu_cell0, string_v_menu_cell1, string_v_menu_cell2,
         string_v_menu_cell3, string_v_menu_cell4, string_v_menu_cell5, string_v_menu_cell6,
         BALANCER_PORTS_GT_6( string_v_menu_cell7, string_v_menu_cell8,)
@@ -99,16 +74,35 @@ const AnalogInputs::Name voltageName[] PROGMEM = {
        AnalogInputs::Vout_minus_pin,
 };
 
+const uint8_t dig_ = 5;
+
+
+	void VoltageMenu_printItem(StaticMenu::Data *d, uint16_t index) {
+        StaticMenu::printItem(d, index);
+        AnalogInputs::Name name = pgm::read(&voltageName[index]);
+        if(index < MAX_BANANCE_CELLS +3) {
+//            ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+                lcdPrintUnsigned(AnalogInputs::getADCValue(name), dig_);
+//            }
+
+            if(index > 0) {
+                if((Balancer::balance >> (index-1)) & 1)
+                    lcdPrintChar('*');
+            }
+        }
+    }
 
 void run() {
     SerialLog::powerOn();
     AnalogInputs::powerOn();
     Balancer::powerOn();
 
-    VoltageMenu v(voltageMenu, voltageName, 5);
+    StaticMenu::Data v;
+    StaticMenu::initialize(&v, voltageMenu);
+    v.d.printItem = (Menu::PrintMethod) VoltageMenu_printItem;
     int16_t index;
     do {
-        index = v.runSimple(true);
+        index = StaticMenu::runSimple(&v, true);
         if(index < 1) continue;
         if(index < MAX_BANANCE_CELLS+1) {
             Balancer::setBalance(Balancer::balance ^ (1<<(index-1)));

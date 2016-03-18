@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2014  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,37 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Time.h"
-#include "Blink.h"
+#ifndef PROGRAM_MENUS_H_
+#define PROGRAM_MENUS_H_
 
-namespace Blink {
-
-	int8_t blinkIndex_;
-	uint8_t blinkTime_;
-
-}  // namespace Blink
+namespace ProgramMenus {
+    void selectProgram(int index);
+};
 
 
-bool Blink::getBlinkOff()
-{
-    if(blinkIndex_ >= 0) {
-        uint8_t mili = blinkTime_;
-        mili/=getBlinkTime();
-        if((mili+1)%2) return true;
-    }
-    return false;
-}
-
-bool Blink::getBlinkChanged()
-{
-    if(blinkIndex_ >= 0) {
-        uint8_t mili1 = blinkTime_-1;
-        mili1/=getBlinkTime();
-        uint8_t mili2 = blinkTime_;
-        mili2/=getBlinkTime();
-        return mili1 != mili2;
-    }
-    return false;
-}
-
-
+#endif /* PROGRAM_MENUS_H_ */

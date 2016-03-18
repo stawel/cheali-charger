@@ -15,37 +15,34 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Time.h"
-#include "Blink.h"
+#ifndef MENU_H_
+#define MENU_H_
 
-namespace Blink {
-
-	int8_t blinkIndex_;
-	uint8_t blinkTime_;
-
-}  // namespace Blink
+#include <stdint.h>
+#include "PolarityCheck.h"
 
 
-bool Blink::getBlinkOff()
-{
-    if(blinkIndex_ >= 0) {
-        uint8_t mili = blinkTime_;
-        mili/=getBlinkTime();
-        if((mili+1)%2) return true;
-    }
-    return false;
+namespace Menu {
+	static const int8_t MENU_EXIT = -1;
+	struct Data_;
+	typedef void(*PrintMethod)(struct Data_ *, int8_t);
+
+	typedef struct Data_{
+	    uint8_t pos_;
+	    uint8_t begin_;
+	    uint8_t size_;
+	    bool render_;
+	    bool waitRelease_;
+	    PrintMethod printItem;
+	} Data;
+
+	void initialize(Data *d, uint8_t size, PrintMethod printItem);
+	uint8_t run(Data *d);
+    int8_t runSimple(Data *d, bool animate = false);
+    uint8_t getIndex(Data *d);
+    void display(Data *d);
 }
 
-bool Blink::getBlinkChanged()
-{
-    if(blinkIndex_ >= 0) {
-        uint8_t mili1 = blinkTime_-1;
-        mili1/=getBlinkTime();
-        uint8_t mili2 = blinkTime_;
-        mili2/=getBlinkTime();
-        return mili1 != mili2;
-    }
-    return false;
-}
 
+#endif /* MENU_H_ */
 

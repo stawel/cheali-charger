@@ -43,7 +43,7 @@ namespace Screen { namespace Cycle {
 
 void Screen::Cycle::displayCycles()
 {
-    uint8_t c, time = blink.blinkTime_/8;
+    uint8_t c, time = Blink::blinkTime_/8;
     uint8_t all_scr = ProgramDCcycle::currentCycle/2 + 1;
     c = time % all_scr;
     lcdSetCursor0_0();

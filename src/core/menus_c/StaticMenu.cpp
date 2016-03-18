@@ -15,37 +15,20 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Time.h"
-#include "Blink.h"
-
-namespace Blink {
-
-	int8_t blinkIndex_;
-	uint8_t blinkTime_;
-
-}  // namespace Blink
+#include <stdint.h>
+#include "LcdPrint.h"
+#include "Menu.h"
+#include "StaticMenu.h"
 
 
-bool Blink::getBlinkOff()
-{
-    if(blinkIndex_ >= 0) {
-        uint8_t mili = blinkTime_;
-        mili/=getBlinkTime();
-        if((mili+1)%2) return true;
-    }
-    return false;
+
+void StaticMenu::printItem(StaticMenu::Data *md, int8_t i) {
+	StaticMenu::Data * d = md;
+	lcdPrint_P(d->staticMenu_, i);
 }
 
-bool Blink::getBlinkChanged()
-{
-    if(blinkIndex_ >= 0) {
-        uint8_t mili1 = blinkTime_-1;
-        mili1/=getBlinkTime();
-        uint8_t mili2 = blinkTime_;
-        mili2/=getBlinkTime();
-        return mili1 != mili2;
-    }
-    return false;
+void StaticMenu::initialize(Data *d, const char * const staticMenu[]) {
+	Menu::initialize(&d->d, countElements(staticMenu), (Menu::PrintMethod) printItem);
 }
 
 

@@ -15,37 +15,27 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Time.h"
-#include "Blink.h"
+#ifndef STATICMENU_H_
+#define STATICMENU_H_
 
-namespace Blink {
-
-	int8_t blinkIndex_;
-	uint8_t blinkTime_;
-
-}  // namespace Blink
+#include "LcdPrint.h"
+#include "Menu.h"
+#include "Utils.h"
 
 
-bool Blink::getBlinkOff()
-{
-    if(blinkIndex_ >= 0) {
-        uint8_t mili = blinkTime_;
-        mili/=getBlinkTime();
-        if((mili+1)%2) return true;
-    }
-    return false;
+namespace StaticMenu {
+
+	typedef struct {
+		Menu::Data d;
+		const char * const* staticMenu_;
+	} Data;
+
+	void initialize(Data *d, const char * const staticMenu[]);
+	void printItem(StaticMenu::Data *md, int8_t i);
+	inline int8_t runSimple(Data *d, bool animate = false) {
+		return Menu::runSimple(&d->d, animate);
+	}
 }
 
-bool Blink::getBlinkChanged()
-{
-    if(blinkIndex_ >= 0) {
-        uint8_t mili1 = blinkTime_-1;
-        mili1/=getBlinkTime();
-        uint8_t mili2 = blinkTime_;
-        mili2/=getBlinkTime();
-        return mili1 != mili2;
-    }
-    return false;
-}
-
+#endif /* STATICMENU_H_ */
 

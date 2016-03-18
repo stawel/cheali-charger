@@ -15,37 +15,32 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Time.h"
+#ifndef EDITMENU_H_
+#define EDITMENU_H_
+
+#include "StaticMenu.h"
 #include "Blink.h"
 
-namespace Blink {
 
-	int8_t blinkIndex_;
-	uint8_t blinkTime_;
+namespace EditMenu {
 
-}  // namespace Blink
+	struct Data_;
+	typedef void(*EditMethod)(struct Data_ *, int8_t, uint8_t);
+	typedef void(*PrintMethod)(struct Data_ *, int8_t);
 
+	typedef struct Data_{
+		StaticMenu::Data menu;
+		EditMethod editItem;
+	} Data;
 
-bool Blink::getBlinkOff()
-{
-    if(blinkIndex_ >= 0) {
-        uint8_t mili = blinkTime_;
-        mili/=getBlinkTime();
-        if((mili+1)%2) return true;
-    }
-    return false;
-}
+	void initialize(Data *d, const char * const* staticMenu, EditMethod editItem);
+	void setPrintMethod(Data *d, PrintMethod printItem);
+    bool runEdit(Data *d);
 
-bool Blink::getBlinkChanged()
-{
-    if(blinkIndex_ >= 0) {
-        uint8_t mili1 = blinkTime_-1;
-        mili1/=getBlinkTime();
-        uint8_t mili2 = blinkTime_;
-        mili2/=getBlinkTime();
-        return mili1 != mili2;
-    }
-    return false;
-}
+    inline int8_t runSimple(Data *d, bool animate = false) {
+		return StaticMenu::runSimple(&d->menu, animate);
+	}
 
+};
 
+#endif /* EDITMENU_H_ */

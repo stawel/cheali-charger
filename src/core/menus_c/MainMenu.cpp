@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2016  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,37 +15,40 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Time.h"
-#include "Blink.h"
-
-namespace Blink {
-
-	int8_t blinkIndex_;
-	uint8_t blinkTime_;
-
-}  // namespace Blink
 
 
-bool Blink::getBlinkOff()
-{
-    if(blinkIndex_ >= 0) {
-        uint8_t mili = blinkTime_;
-        mili/=getBlinkTime();
-        if((mili+1)%2) return true;
-    }
-    return false;
+#include "MainMenu.h"
+#include "memory.h"
+#include "Options.h"
+#include "ProgramMenus.h"
+
+namespace MainMenu {
+
+	const char string_options[] PROGMEM = "options";
+
+	void printItem(Menu::Data *d, int8_t i) {
+		if(i == 0) {
+			lcdPrint_P(string_options);
+		} else {
+			ProgramData::printProgramData(i - 1);
+		}
+	}
 }
 
-bool Blink::getBlinkChanged()
+void MainMenu::run()
 {
-    if(blinkIndex_ >= 0) {
-        uint8_t mili1 = blinkTime_-1;
-        mili1/=getBlinkTime();
-        uint8_t mili2 = blinkTime_;
-        mili2/=getBlinkTime();
-        return mili1 != mili2;
-    }
-    return false;
+	Menu::Data menu;
+	Menu::initialize(&menu, MAX_PROGRAMS + 1, printItem);
+	while(true) {
+		int8_t index = Menu::runSimple(&menu);
+		if(index >= 0)  {
+			switch(index) {
+			case 0:
+				Options::run();
+				break;
+			default:
+				ProgramMenus::selectProgram(index - 1);
+			}
+		}
+	}
 }
-
-

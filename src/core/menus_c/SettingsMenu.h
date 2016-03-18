@@ -15,37 +15,13 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "Time.h"
-#include "Blink.h"
+#ifndef SETTINGSMENU_H_
+#define SETTINGSMENU_H_
 
-namespace Blink {
+#include "Settings.h"
 
-	int8_t blinkIndex_;
-	uint8_t blinkTime_;
+namespace SettingsMenu {
+    void run();
+};
 
-}  // namespace Blink
-
-
-bool Blink::getBlinkOff()
-{
-    if(blinkIndex_ >= 0) {
-        uint8_t mili = blinkTime_;
-        mili/=getBlinkTime();
-        if((mili+1)%2) return true;
-    }
-    return false;
-}
-
-bool Blink::getBlinkChanged()
-{
-    if(blinkIndex_ >= 0) {
-        uint8_t mili1 = blinkTime_-1;
-        mili1/=getBlinkTime();
-        uint8_t mili2 = blinkTime_;
-        mili2/=getBlinkTime();
-        return mili1 != mili2;
-    }
-    return false;
-}
-
-
+#endif /* SETTINGSMENU_H_ */

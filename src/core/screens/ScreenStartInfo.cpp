@@ -84,7 +84,7 @@ void Screen::StartInfo::displayStartInfo()
     lcdPrintUnsigned(Monitor::getChargeProcent(), 2);
     lcdPrint_P(PSTR("% "));
 
-    int8_t bindex = Screen::blink.getBlinkIndex();
+    int8_t bindex = Blink::getBlinkIndex();
     if(bindex & 1) AnalogInputs::printRealValue(AnalogInputs::Vout, 5);
     else lcdPrintSpaces(5);
 

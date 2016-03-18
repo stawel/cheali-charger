@@ -108,14 +108,11 @@ const AnalogInputs::Name voltageName[] PROGMEM = {
 
 uint8_t type = 0;
 #define MAX_TYPE 3
+const uint8_t dig_ = 5;
 
-class VoltageMenu: public StaticMenu {
-public:
-    VoltageMenu(const char * const* vMenu,  uint8_t dig) :
-        StaticMenu(vMenu),
-        dig_(dig){};
-    virtual void printItem(uint8_t index) {
-        StaticMenu::printItem(index);
+
+	void VoltageMenu_printItem(StaticMenu::Data *d, uint8_t index) {
+        StaticMenu::printItem(d, index);
         if(index < sizeOfArray(voltageName)) {
             AnalogInputs::Name name = pgm::read(&voltageName[index]);
             uint16_t value;
@@ -136,8 +133,6 @@ public:
             lcdPrintUnsigned(type, dig_);
         }
     }
-    const uint8_t dig_;
-};
 
 void run() {
     SerialLog::powerOn();
@@ -145,10 +140,12 @@ void run() {
     Balancer::powerOn();
     PolarityCheck::checkReversedPolarity_ = false;
 
-    VoltageMenu v(voltageMenu, 5);
+    StaticMenu::Data v;
+    StaticMenu::initialize(&v, voltageMenu);
+    v.d.printItem = (Menu::PrintMethod) VoltageMenu_printItem;
     int8_t index;
     do {
-        index = v.runSimple(true);
+        index = StaticMenu::runSimple(&v, true);
         if((uint8_t)index < sizeOfArray(voltageMenu)-2) {
             type ++;
             if(type >= MAX_TYPE) {

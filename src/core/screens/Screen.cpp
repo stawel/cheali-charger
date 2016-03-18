@@ -34,8 +34,6 @@
 
 namespace Screen {
 
-    Blink blink;
-
     uint8_t pageNr_;
     uint8_t keyboardButton;
 
@@ -73,7 +71,7 @@ namespace Screen {
 
     void displayPage() {
         Screen::Cycle::storeCycleHistoryInfo();
-        blink.incBlinkTime();
+        Blink::incBlinkTime();
 
         getPage(pageNr_)();
     }
@@ -106,7 +104,7 @@ void Screen::doStrategy()
 
 void Screen::powerOn()
 {
-    Screen::blink.startBlinkOn(0);
+    Blink::startBlinkOn(0);
     pageNr_ = 0;
     Screen::Cycle::resetCycleHistory();
 }
