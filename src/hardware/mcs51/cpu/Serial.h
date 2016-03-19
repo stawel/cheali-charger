@@ -21,14 +21,15 @@
 #ifndef Serial_H_
 #define Serial_H_
 
+//#include "HardwareSerial.h"
+#include <stdint.h>
 
 namespace Serial {
-    void  begin(unsigned long baud);
-    extern void (*put)(uint8_t c);
-    extern void (*flush)();
-    extern void (*end)();
-    void  initialize();
-    extern uint8_t txBuffer[];
+    inline void  begin(unsigned long baud)     { /*Serial0.begin(baud); */}
+    inline void  put(uint8_t c)                { /*Serial0.write(c); */}
+    inline void  flush()                       { /*Serial0.flush(); */}
+    inline void  end()                         { /*Serial0.end(); */}
+    inline void  initialize()                  {}
 } // namespace Serial
 
 #endif //  Serial_H_

@@ -66,12 +66,12 @@ void change1ToMax(uint16_t *v, int dir, uint8_t max);
 uint8_t waitButtonPressed();
 
 uint8_t countElements(const void * const array[]);
+
 template<typename T>
 uint8_t countElements(const T array[]) {return countElements((const void * const *)array); }
 
 // Platform specific delays. Implemented in Utils.cpp located in platform folder
-namespace Utils
-{
+namespace Utils {
     void delayTenMicroseconds(uint16_t value);
     void delayMicroseconds(uint16_t value);
     void delayMilliseconds(uint16_t value);

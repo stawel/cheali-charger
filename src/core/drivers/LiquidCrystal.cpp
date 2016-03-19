@@ -27,18 +27,18 @@
 #ifndef DummyLiquidCrystal_h
 
 namespace LiquidCrystal {
-	void send(uint8_t, uint8_t);
-	void write4bits(uint8_t);
-	void write8bits(uint8_t);
-	void pulseEnable();
+    void send(uint8_t, uint8_t);
+    void write4bits(uint8_t);
+    void write8bits(uint8_t);
+    void pulseEnable();
 
-	uint8_t _displayfunction;
-	uint8_t _displaycontrol;
-	uint8_t _displaymode;
+    uint8_t _displayfunction;
+    uint8_t _displaycontrol;
+    uint8_t _displaymode;
 
-	uint8_t _initialized;
+    uint8_t _initialized;
 
-	uint8_t _numlines, _currline;
+    uint8_t _numlines, _currline;
 }
 
 

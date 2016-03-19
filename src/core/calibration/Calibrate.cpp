@@ -182,14 +182,17 @@ void runCalibrationMenu(const StaticEditMenu::StaticEditData * menuData,
         uint8_t c = StaticEditMenu::getEnableCondition(&menu, item);
         if(!(c & 1)) {
             if(c & COND_E_ANALOG) {
-                AnalogInputs::Name Vinput = pgm::read(&name1[item]);
+                AnalogInputs::Name Vinput;
+                pgm::read(Vinput, &name1[item]);
                 if(AnalogInputs::isConnected(Vinput)) {
                     AnalogInputs::doFullMeasurement();
                     AnalogInputs::on_ = false;
                     AnalogInputs::onTintern_ = false;
                     if(StaticEditMenu::runEdit(&menu)) {
                         bool doCopyVout = c & COND_COPY_VOUT;
-                        saveCalibration(doCopyVout, Vinput, pgm::read(&name2[item]));
+                        AnalogInputs::Name name2val;
+                        pgm::read(name2val, &name2[item]);
+                        saveCalibration(doCopyVout, Vinput, name2val);
                     }
                     AnalogInputs::on_ = true;
                     AnalogInputs::onTintern_ = true;

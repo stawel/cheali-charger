@@ -17,8 +17,8 @@
 */
 #include "LcdPrint.h"
 #include "Hardware.h"
-#include "memory.h"
 #include "LiquidCrystal.h"
+#include "memory.h"
 
 using namespace AnalogInputs;
 
@@ -93,7 +93,9 @@ int8_t lcdPrint(const char *str, int8_t size)
 }
 
 int8_t lcdPrint_P(const char * const str[], uint8_t index) {
-    return lcdPrint_P(pgm::read(&str[index]));
+    const char * adr;
+    pgm::read(adr, &str[index]);
+    return lcdPrint_P(adr);
 }
 
 
@@ -102,10 +104,13 @@ int8_t lcdPrint_P(const char *str)
     int8_t n = 0;
     char c;
     if(str) {
-        while((c = pgm::read(str++)) != 0) {
-            lcdPrintChar(c);
-            n++;
-        }
+        do {
+            pgm::read(c, str++);
+            if(c) {
+                lcdPrintChar(c);
+                n++;
+            }
+        } while(c);
     }
     return n;
 }
@@ -306,7 +311,8 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
             //TODO: programData::
             lcdPrint_P(string_unlimited);
     } else {
-        const char * symbol = pgm::read(&unitsInfo[type].symbol);
+        const char * symbol;
+        pgm::read(symbol, &unitsInfo[type].symbol);
         uint8_t symbol_size = pgm::strlen(symbol);
 
         dig -= symbol_size;
@@ -322,7 +328,11 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
             }
         }
 
-        lcdPrintValue_(x, (int8_t) dig, pgm::read(&unitsInfo[type].div), pgm::read(&unitsInfo[type].mili), sign);
+        uint16_t div;
+        bool mili;
+        pgm::read(div,  &unitsInfo[type].div);
+        pgm::read(mili, &unitsInfo[type].mili);
+        lcdPrintValue_(x, (int8_t) dig, div, mili, sign);
         lcdPrint_P(symbol);
     }
 }

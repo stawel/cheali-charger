@@ -122,9 +122,9 @@ void AnalogInputs::restoreDefault()
 {
     CalibrationPoint p;
     ANALOG_INPUTS_FOR_ALL_PHY(name) {
-        p = pgm::read(&inputsP_[name].p0);
+        pgm::read(p, &inputsP_[name].p0);
         setCalibrationPoint(name, 0, &p);
-        p = pgm::read(&inputsP_[name].p1);
+        pgm::read(p, &inputsP_[name].p1);
         setCalibrationPoint(name, 1, &p);
     }
     eeprom::restoreCalibrationCRC();

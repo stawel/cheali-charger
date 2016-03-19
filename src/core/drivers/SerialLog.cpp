@@ -15,6 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 #include "Hardware.h"
 #include "LcdPrint.h"
 #include "Program.h"
@@ -28,11 +29,14 @@
 #include "AnalogInputsPrivate.h"
 #include "Balancer.h"
 
+#include "Monitor.h"
+
+
 #ifdef ENABLE_SERIAL_LOG
 #include "Serial.h"
 #endif //ENABLE_SERIAL_LOG
 
-#include "Monitor.h"
+
 
 void LogDebug_run() __attribute__((weak));
 void LogDebug_run()
@@ -81,7 +85,7 @@ void serialEnd()
 
 void printChar(char c)
 {
-    Serial::write(c);
+    Serial::put(c);
     CRC^=c;
 }
 
@@ -188,7 +192,7 @@ void printString_P(const char *s)
 {
     char c;
     while(1) {
-        c = pgm::read(s);
+        pgm::read(c, s);
         if(!c)
             return;
 
@@ -242,7 +246,8 @@ void sendChannel1()
     sendHeader(1);
     //analog inputs
     for(uint8_t i=0;i < sizeOfArray(channel1);i++) {
-        AnalogInputs::Name name = pgm::read(&channel1[i]);
+        AnalogInputs::Name name;
+        pgm::read(name, &channel1[i]);
         uint16_t v = AnalogInputs::getRealValue(name);
         printUInt(v);
         printD();

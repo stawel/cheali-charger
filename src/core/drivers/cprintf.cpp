@@ -27,7 +27,8 @@ namespace cprintf {
 
 void cprintf(const PrintData * printDataPtr, uint8_t dig)
 {
-    const PrintData p = pgm::read(printDataPtr);
+    PrintData p;
+    pgm::read(p, printDataPtr);
     if(p.type == CP_TYPE_METHOD) {
         //Info: this must be before: uvalue = *p.data.uint16Ptr
         return p.data.methodPtr(dig);
@@ -42,7 +43,7 @@ void cprintf(const PrintData * printDataPtr, uint8_t dig)
         switch(p.type) {
             case CP_TYPE_UINT32_ARRAY:
                 pgm::read(array, p.data.arrayPtr);
-                v = pgm::read(&array.ArrayPtr.uint32Ptr[*array.indexPtr]);
+                pgm::read(v, &array.ArrayPtr.uint32Ptr[*array.indexPtr]);
                 v/=100;
                 lcdPrintUnsigned(v, dig-2);
                 lcdPrintChar('0');
@@ -51,7 +52,7 @@ void cprintf(const PrintData * printDataPtr, uint8_t dig)
 
             case CP_TYPE_STRING_ARRAY:
                 pgm::read(array, p.data.arrayPtr);
-                strPtr = pgm::read(&array.ArrayPtr.stringArrayPtr[*array.indexPtr]);
+                pgm::read(strPtr, &array.ArrayPtr.stringArrayPtr[*array.indexPtr]);
                 i = pgm::strlen(strPtr);
                 lcdPrintSpaces(dig-i);
                 lcdPrint_P(array.ArrayPtr.stringArrayPtr, *array.indexPtr);

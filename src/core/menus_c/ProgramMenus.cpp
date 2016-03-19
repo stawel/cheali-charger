@@ -104,7 +104,9 @@ namespace ProgramMenus {
     struct ProgramMenus programMenu;
 
     Program::ProgramType getProgramType(struct ProgramMenus *d, uint8_t i) {
-        return pgm::read(&d->typeMenu_[i]);
+        Program::ProgramType v;
+        pgm::read(v, &d->typeMenu_[i]);
+        return v;
     }
 
     void printItem(struct ProgramMenus *d, int8_t i) {
@@ -112,19 +114,22 @@ namespace ProgramMenus {
         lcdPrint_P(programMenus_strings, getProgramType(d, i));
     }
 
-    uint8_t countElements(const Program::ProgramType * typeMenu) {
+    uint8_t countElements(const Program::ProgramType typeMenu[]) {
         uint8_t retu = 0;
-        while(pgm::read(&typeMenu[retu++]) != Program::EditBattery);
+        Program::ProgramType type;
+        do {
+            pgm::read(type, &typeMenu[retu++]);
+        } while(type != Program::EditBattery);
         return retu;
     }
 
 
     void initialize(const Program::ProgramType *typeMenu) {
-    	uint8_t size = countElements(typeMenu);
-    	programMenu.menu.size_ = size;
-    	programMenu.menu.render_ = true;
-    	programMenu.menu.waitRelease_ = true;
-    	programMenu.menu.printItem = (Menu::PrintMethod) printItem;
+        uint8_t size = countElements(typeMenu);
+        programMenu.menu.size_ = size;
+        programMenu.menu.render_ = true;
+        programMenu.menu.waitRelease_ = true;
+        programMenu.menu.printItem = (Menu::PrintMethod) printItem;
     }
 
     void changeSelectProgramMenu() {
@@ -137,13 +142,13 @@ namespace ProgramMenus {
         } else if(bc == ProgramData::ClassNiZn) {
             typeMenu = programNiZnMenu;
         } else if(bc == ProgramData::ClassLiXX) {
-        	typeMenu = programLiXXMenu;
+            typeMenu = programLiXXMenu;
         } else if(bc == ProgramData::ClassNiXX) {
             typeMenu = programNiXXMenu;
         } else if(bc == ProgramData::ClassLED) {
             typeMenu = programLEDMenu;
         } else {
-        	typeMenu = programPbMenu;
+            typeMenu = programPbMenu;
         }
 
         initialize(typeMenu);
@@ -155,7 +160,7 @@ void ProgramMenus::selectProgram(int index)
     ProgramData::loadProgramData(index);
     int8_t menuIndex;
     do {
-    	changeSelectProgramMenu();
+        changeSelectProgramMenu();
         menuIndex = Menu::runSimple(&programMenu.menu);
         if(menuIndex >= 0)  {
             Program::ProgramType prog = getProgramType(&programMenu, menuIndex);

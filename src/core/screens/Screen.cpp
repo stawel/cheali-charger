@@ -59,7 +59,7 @@ namespace Screen {
         bool ok;
         page++;
         do {
-            info = pgm::read(&Pages::pageInfo[i]);
+            pgm::read(info, &Pages::pageInfo[i]);
             ok = ((info.conditionEnable & condition) > 0) && ((info.conditionDisable & condition) == 0);
             if(ok) {
                 page--;

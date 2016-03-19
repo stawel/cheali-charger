@@ -63,7 +63,8 @@ const AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE] PRO
 uint16_t ProgramData::getDefaultVoltagePerCell(VoltageType type)
 {
     STATIC_ASSERT(sizeOfArray(voltsPerCell) == ProgramData::LAST_BATTERY_TYPE);
-    uint16_t result = pgm::read(&voltsPerCell[battery.type][type]);
+    uint16_t result;
+    pgm::read(result, &voltsPerCell[battery.type][type]);
     return result;
 }
 uint16_t ProgramData::getDefaultVoltage(VoltageType type)
@@ -131,7 +132,9 @@ const ProgramData::BatteryClass ProgramData::batteryClassMap[] PROGMEM = {
 
 ProgramData::BatteryClass ProgramData::getBatteryClass() {
     STATIC_ASSERT(sizeOfArray(ProgramData::batteryClassMap) == ProgramData::LAST_BATTERY_TYPE);
-    return pgm::read(&ProgramData::batteryClassMap[battery.type]);
+    ProgramData::BatteryClass x;
+    pgm::read(x, &ProgramData::batteryClassMap[battery.type]);
+    return x;
 }
 
 uint16_t ProgramData::getCapacityLimit()

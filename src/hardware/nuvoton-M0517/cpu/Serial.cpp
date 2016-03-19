@@ -32,7 +32,7 @@ namespace Serial {
 void empty(){}
 void emptyUint8(uint8_t c){}
 
-void (*write)(uint8_t c) = emptyUint8;
+void (*put)(uint8_t c) = emptyUint8;
 void (*flush)() = empty;
 void (*end)() = empty;
 
@@ -43,18 +43,18 @@ void  begin(unsigned long baud)
 {
 #ifdef ENABLE_TX_HW_SERIAL
     if(settings.UARToutput != Settings::Software) {
-        write = &(TxHardSerial::write);
+        put = &(TxHardSerial::write);
         flush = &(TxHardSerial::flush);
         end = &(TxHardSerial::end);
         TxHardSerial::begin(baud);
     } else {
-        write = &(TxSoftSerial::write);
+        put = &(TxSoftSerial::write);
         flush = &(TxSoftSerial::flush);
         end = &(TxSoftSerial::end);
         TxSoftSerial::begin(baud);
     }
 #else
-    write = &(TxSoftSerial::write);
+    put = &(TxSoftSerial::write);
     flush = &(TxSoftSerial::flush);
     end = &(TxSoftSerial::end);
     TxSoftSerial::begin(baud);

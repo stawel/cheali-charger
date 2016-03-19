@@ -79,7 +79,8 @@ const uint8_t dig_ = 5;
 
 	void VoltageMenu_printItem(StaticMenu::StaticMenu *d, uint16_t index) {
         StaticMenu::printItem(d, index);
-        AnalogInputs::Name name = pgm::read(&voltageName[index]);
+        AnalogInputs::Name name;
+        pgm::read(name, &voltageName[index]);
         if(index < MAX_BANANCE_CELLS +3) {
 //            ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
                 lcdPrintUnsigned(AnalogInputs::getADCValue(name), dig_);

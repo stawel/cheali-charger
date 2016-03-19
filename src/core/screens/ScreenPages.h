@@ -16,6 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <stddef.h>
+
 #include "memory.h"
 #include "Utils.h"
 
@@ -26,6 +28,7 @@
 #include "ScreenMethods.h"
 #include "ScreenEditable.h"
 #include "Balancer.h"
+#include "Program.h"
 
 namespace Screen { namespace Pages {
 

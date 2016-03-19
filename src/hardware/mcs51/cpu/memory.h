@@ -1,7 +1,4 @@
 /*
-    Serial - wrapper for Hardware OR Software serial library (transmit only)
-    Copyright (c) 2014 Sasa Mihajlovic.  All right reserved.
-
     cheali-charger - open source firmware for a variety of LiPo chargers
     Copyright (C) 2013  Paweł Stawicki. All right reserved.
 
@@ -18,18 +15,34 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef Serial_H_
-#define Serial_H_
+#ifndef MEMORY_H_
+#define MEMORY_H_
+
+#define PSTR(x) x
+#define PROGMEM
+#define EEMEM
+//#define CHEALI_EEPROM_PACKED
 
 
-namespace Serial {
-    void  begin(unsigned long baud);
-    extern void (*put)(uint8_t c);
-    extern void (*flush)();
-    extern void (*end)();
-    void  initialize();
-    extern uint8_t txBuffer[];
-} // namespace Serial
+//#include <avr/pgmspace.h>
+//#include <avr/eeprom.h>
+//#include <cstddef>
+#include <stdint.h>
 
-#endif //  Serial_H_
+#define write(adr, x) write_(adr, &(x), sizeof(x))
+#define read(x, adr) read_(&(x), adr, sizeof(x))
 
+namespace eeprom {
+
+    void write_(void * adr, const void * const x, uint8_t size);
+    void read_(void *x, const void * const adr, uint8_t size);
+
+}
+
+namespace pgm {
+    void read_(void *x, const void * const adr, uint8_t size);
+    uint8_t strlen(const char * str);
+}
+
+
+#endif /* MEMORY_H_ */

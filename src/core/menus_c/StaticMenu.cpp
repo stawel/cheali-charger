@@ -19,7 +19,7 @@
 #include "LcdPrint.h"
 #include "Menu.h"
 #include "StaticMenu.h"
-
+#include "Utils.h"
 
 
 void StaticMenu::printItem(struct StaticMenu *md, int8_t i) {

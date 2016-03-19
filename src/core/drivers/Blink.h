@@ -18,15 +18,17 @@
 #ifndef BLINK_H
 #define BLINK_H
 
+#include <stdint.h>
 
 #define BLINK_SPEED_TIME 2
 
+
 namespace Blink {
 
-	extern int8_t blinkIndex_;
-	extern uint8_t blinkTime_;
+    extern int8_t blinkIndex_;
+    extern uint8_t blinkTime_;
 
-	inline void initialize() { blinkIndex_ = -1; }
+    inline void initialize() { blinkIndex_ = -1; }
 
     bool getBlinkOff();
     bool getBlinkChanged();

@@ -23,7 +23,8 @@
 
 void callVoidMethod_P(const VoidMethod * method)
 {
-    const VoidMethod voidMethod = pgm::read(method);
+    VoidMethod voidMethod;
+    pgm::read(voidMethod, method);
     callVoidMethod(voidMethod);
 }
 void callVoidMethod(const VoidMethod method)
@@ -34,10 +35,13 @@ void callVoidMethod(const VoidMethod method)
 
 uint8_t countElements(const void * const array[])
 {
-    uint8_t retu=0;
+    uint8_t retu=-1;
     if(array != 0) {
-        while(pgm::read(array++))
+        const void * elem;
+        do {
+            pgm::read(elem, array++);
             retu++;
+        } while(elem);
     }
 
     return retu;

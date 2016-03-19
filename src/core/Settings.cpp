@@ -64,7 +64,9 @@ const uint32_t Settings::UARTSpeedValue[Settings::UARTSpeeds] PROGMEM = {
 
 
 uint32_t Settings::getUARTspeed() {
-    return pgm::read(&UARTSpeedValue[settings.UARTspeed]);
+    uint32_t x;
+    pgm::read(x, &UARTSpeedValue[settings.UARTspeed]);
+    return x;
 }
 
 void Settings::load() {
