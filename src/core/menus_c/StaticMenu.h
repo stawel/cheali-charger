@@ -25,15 +25,15 @@
 
 namespace StaticMenu {
 
-	typedef struct {
-		Menu::Data d;
+	struct StaticMenu {
+		struct Menu::Menu menu;
 		const char * const* staticMenu_;
-	} Data;
+	};
 
-	void initialize(Data *d, const char * const staticMenu[]);
-	void printItem(StaticMenu::Data *md, int8_t i);
-	inline int8_t runSimple(Data *d, bool animate = false) {
-		return Menu::runSimple(&d->d, animate);
+	void initialize(struct StaticMenu *d, const char * const staticMenu[]);
+	void printItem(struct StaticMenu *md, int8_t i);
+	inline int8_t runSimple(struct StaticMenu *d, bool animate = false) {
+		return Menu::runSimple(&d->menu, animate);
 	}
 }
 

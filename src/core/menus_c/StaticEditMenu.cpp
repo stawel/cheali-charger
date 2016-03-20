@@ -25,22 +25,22 @@
 
 
 namespace StaticEditMenu {
-    uint8_t getSelectedIndexOrSize(Data *d, uint8_t item);
-    void printItem(Data *d, int8_t item);
-    void editItem(Data *d, uint8_t item, uint8_t key);
+    uint8_t getSelectedIndexOrSize(struct StaticEditMenu *d, uint8_t item);
+    void printItem(struct StaticEditMenu *d, int8_t item);
+    void editItem(struct StaticEditMenu *d, uint8_t item, uint8_t key);
 
 }
 
-void StaticEditMenu::initialize(Data *d, const StaticEditData * staticEditData, const EditCallBack callback) {
-    	EditMenu::initialize(&d->menu, NULL, (EditMenu::EditMethod)editItem);
-    	EditMenu::setPrintMethod(&d->menu, (EditMenu::PrintMethod)printItem);
+void StaticEditMenu::initialize(struct StaticEditMenu *d, const StaticEditData * staticEditData, const EditCallBack callback) {
+    	EditMenu::initialize(&d->editMenu, NULL, (EditMenu::EditMethod)editItem);
+    	EditMenu::setPrintMethod(&d->editMenu, (EditMenu::PrintMethod)printItem);
     	d->staticEditData = staticEditData;
     	d->selector = Always;
     	d->editCallback = callback;
 };
 
 
-void StaticEditMenu::printItem(Data *d, int8_t item)
+void StaticEditMenu::printItem(struct StaticEditMenu *d, int8_t item)
 {
     uint8_t index = getSelectedIndexOrSize(d, item);
     const char * str = pgm::read(&d->staticEditData[index].staticString);
@@ -56,7 +56,7 @@ void StaticEditMenu::printItem(Data *d, int8_t item)
     }
 }
 
-int16_t * StaticEditMenu::getEditAddress(Data *d, uint8_t item)
+int16_t * StaticEditMenu::getEditAddress(struct StaticEditMenu *d, uint8_t item)
 {
     uint8_t index = getSelectedIndexOrSize(d, item);
     cprintf::Data data = pgm::read(&d->staticEditData[index].print.data);
@@ -70,14 +70,14 @@ int16_t * StaticEditMenu::getEditAddress(Data *d, uint8_t item)
     return valuePtr;
 }
 
-uint16_t StaticEditMenu::getEnableCondition(Data *d, uint8_t item)
+uint16_t StaticEditMenu::getEnableCondition(struct StaticEditMenu *d, uint8_t item)
 {
     uint8_t index = getSelectedIndexOrSize(d, item);
     return pgm::read(&d->staticEditData[index].enableCondition);
 }
 
 
-void StaticEditMenu::editItem(Data *menu, uint8_t item, uint8_t key)
+void StaticEditMenu::editItem(struct StaticEditMenu *menu, uint8_t item, uint8_t key)
 {
     int16_t * valuePtr = getEditAddress(menu, item);
     uint8_t index = getSelectedIndexOrSize(menu, item);
@@ -100,15 +100,15 @@ void StaticEditMenu::editItem(Data *menu, uint8_t item, uint8_t key)
     }
 }
 
-void StaticEditMenu::setSelector(Data *menu, uint16_t s) {
-	uint8_t index = Menu::getIndex(&menu->menu.menu.d);
+void StaticEditMenu::setSelector(struct StaticEditMenu *menu, uint16_t s) {
+	uint8_t index = Menu::getIndex(&menu->editMenu.staticMenu.menu);
     uint8_t currentIndex = getSelectedIndexOrSize(menu, index);
     menu->selector = s;
     uint8_t size = getSelectedIndexOrSize(menu, 0xff);
-    menu->menu.menu.d.size_ = size;
+    menu->editMenu.staticMenu.menu.size_ = size;
     for(uint8_t item = 0; item < size ; item++) {
         if(getSelectedIndexOrSize(menu, item) == currentIndex) {
-        	menu->menu.menu.d.begin_ = item - menu->menu.menu.d.pos_;
+        	menu->editMenu.staticMenu.menu.begin_ = item - menu->editMenu.staticMenu.menu.pos_;
             break;
         }
     }
@@ -124,7 +124,7 @@ static bool predicate(uint16_t condition, uint16_t selector){
     return display && (condition & selector);
 }
 
-uint8_t StaticEditMenu::getSelectedIndexOrSize(Data *menu, uint8_t item)
+uint8_t StaticEditMenu::getSelectedIndexOrSize(struct StaticEditMenu *menu, uint8_t item)
 {
     uint8_t index = 0, size = 0;
     do {

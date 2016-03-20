@@ -47,7 +47,7 @@ void Options::resetDefault()
 
 void Options::run()
 {
-    StaticMenu::Data menu;
+    StaticMenu::StaticMenu menu;
     StaticMenu::initialize(&menu, optionsStaticMenu);
     int8_t i;
 

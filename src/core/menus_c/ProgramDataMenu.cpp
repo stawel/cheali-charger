@@ -123,7 +123,7 @@ const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 
 };
 
-void editCallback(StaticEditMenu::Data * menu, uint16_t * value) {
+void editCallback(struct StaticEditMenu::StaticEditMenu * menu, uint16_t * value) {
     if(value == &ProgramData::battery.type) {
         ProgramData::changedType();
     } else if(value == &ProgramData::battery.capacity) {
@@ -138,7 +138,7 @@ void editCallback(StaticEditMenu::Data * menu, uint16_t * value) {
 }
 
 void run() {
-	StaticEditMenu::Data menu;
+	struct StaticEditMenu::StaticEditMenu menu;
 	StaticEditMenu::initialize(&menu, editData, editCallback);
     int8_t item;
 

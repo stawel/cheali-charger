@@ -24,23 +24,23 @@
 
 namespace Menu {
 	static const int8_t MENU_EXIT = -1;
-	struct Data_;
-	typedef void(*PrintMethod)(struct Data_ *, int8_t);
+	struct Menu;
+	typedef void(*PrintMethod)(struct Menu *, int8_t);
 
-	typedef struct Data_{
+	struct Menu {
 	    uint8_t pos_;
 	    uint8_t begin_;
 	    uint8_t size_;
 	    bool render_;
 	    bool waitRelease_;
 	    PrintMethod printItem;
-	} Data;
+	};
 
-	void initialize(Data *d, uint8_t size, PrintMethod printItem);
-	uint8_t run(Data *d);
-    int8_t runSimple(Data *d, bool animate = false);
-    uint8_t getIndex(Data *d);
-    void display(Data *d);
+	void initialize(struct Menu *d, uint8_t size, PrintMethod printItem);
+	uint8_t run(struct Menu *d);
+    int8_t runSimple(struct Menu *d, bool animate = false);
+    uint8_t getIndex(struct Menu *d);
+    void display(struct Menu *d);
 }
 
 

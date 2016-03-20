@@ -96,18 +96,18 @@ namespace ProgramMenus {
     };
 
 
-    typedef struct {
-    	Menu::Data menu;
+    struct ProgramMenus {
+    	struct Menu::Menu menu;
         const Program::ProgramType * typeMenu_;
-    } Data;
+    };
 
-    Data programMenu;
+    struct ProgramMenus programMenu;
 
-    Program::ProgramType getProgramType(Data *d, uint8_t i) {
+    Program::ProgramType getProgramType(struct ProgramMenus *d, uint8_t i) {
         return pgm::read(&d->typeMenu_[i]);
     }
 
-    void printItem(Data *d, int8_t i) {
+    void printItem(struct ProgramMenus *d, int8_t i) {
         STATIC_ASSERT(sizeOfArray(programMenus_strings)-1 == Program::EditBattery);
         lcdPrint_P(programMenus_strings, getProgramType(d, i));
     }

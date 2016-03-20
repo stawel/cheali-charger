@@ -77,7 +77,7 @@ const AnalogInputs::Name voltageName[] PROGMEM = {
 const uint8_t dig_ = 5;
 
 
-	void VoltageMenu_printItem(StaticMenu::Data *d, uint16_t index) {
+	void VoltageMenu_printItem(StaticMenu::StaticMenu *d, uint16_t index) {
         StaticMenu::printItem(d, index);
         AnalogInputs::Name name = pgm::read(&voltageName[index]);
         if(index < MAX_BANANCE_CELLS +3) {
@@ -97,9 +97,9 @@ void run() {
     AnalogInputs::powerOn();
     Balancer::powerOn();
 
-    StaticMenu::Data v;
+    StaticMenu::StaticMenu v;
     StaticMenu::initialize(&v, voltageMenu);
-    v.d.printItem = (Menu::PrintMethod) VoltageMenu_printItem;
+    v.menu.printItem = (Menu::PrintMethod) VoltageMenu_printItem;
     int16_t index;
     do {
         index = StaticMenu::runSimple(&v, true);

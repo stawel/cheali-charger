@@ -33,7 +33,7 @@ namespace Settings {
     typedef enum {Software, HardwarePin7, HardwarePin38} UARTOutput;
     typedef enum {MenuSimple, MenuAdvanced} MenuType;
 
-    typedef struct {
+    struct SettingsData {
 
         uint16_t backlight;
 
@@ -54,7 +54,7 @@ namespace Settings {
         uint16_t UARToutput;
         uint16_t menuType;
 
-    } Data;
+    };
 
 
     extern const uint32_t UARTSpeedValue[];
@@ -69,6 +69,6 @@ namespace Settings {
     void restoreDefault();
 }
 
-extern Settings::Data settings;
+extern Settings::SettingsData settings;
 
 #endif /* SETTINGS_H_ */

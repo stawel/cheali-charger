@@ -22,17 +22,17 @@
 
 
 namespace Menu {
-	void incIndex(Data *d);
-	void decIndex(Data *d);
-	void display(Data *d);
+	void incIndex(struct Menu *d);
+	void decIndex(struct Menu *d);
+	void display(struct Menu *d);
 
 	void debug() {}
 }
 
-uint8_t Menu::getIndex(Data *d) { return d->begin_ + d->pos_; }
+uint8_t Menu::getIndex(struct Menu *d) { return d->begin_ + d->pos_; }
 
 
-void Menu::initialize(Data *d, uint8_t size, PrintMethod printItem) {
+void Menu::initialize(struct Menu *d, uint8_t size, PrintMethod printItem) {
 	d->pos_=0;
 	d->begin_=0;
 	d->size_ = size;
@@ -41,7 +41,7 @@ void Menu::initialize(Data *d, uint8_t size, PrintMethod printItem) {
 	d->printItem = printItem;
 }
 
-uint8_t Menu::run(Data *d) {
+uint8_t Menu::run(struct Menu *d) {
     uint8_t button = Keyboard::getPressedWithDelay();
 
     if(PolarityCheck::runReversedPolarityInfo()) {
@@ -66,7 +66,7 @@ uint8_t Menu::run(Data *d) {
 
     return button;
 }
-int8_t Menu::runSimple(Data *d, bool animate) {
+int8_t Menu::runSimple(struct Menu *d, bool animate) {
     uint8_t key;
     d->render_ = true;
     do {
@@ -83,18 +83,18 @@ int8_t Menu::runSimple(Data *d, bool animate) {
 }
 
 
-void Menu::incIndex(Data *d) {
+void Menu::incIndex(struct Menu *d) {
     uint8_t lines = LCD_LINES;
     if(d->size_ < lines) lines = d->size_;
     if(d->pos_ < lines - 1) d->pos_++;
     else if(d->begin_ + d->pos_ < d->size_ - 1) d->begin_++;
 }
-void Menu::decIndex(Data *d) {
+void Menu::decIndex(struct Menu *d) {
     if(d->pos_ > 0) d->pos_--;
     else if(d->begin_ > 0) d->begin_--;
 }
 
-void Menu::display(Data *d) {
+void Menu::display(struct Menu *d) {
     uint8_t lines = LCD_LINES;
     for(uint8_t i = 0; i < lines; i++) {
         lcdSetCursor(0, i);

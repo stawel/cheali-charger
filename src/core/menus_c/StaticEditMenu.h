@@ -32,11 +32,11 @@ namespace StaticEditMenu {
     static const uint16_t Always = 0x7fff;
     static const uint16_t Mandatory = 0x8000;
     static const uint16_t Last = 0;
-    struct Data_;
-    typedef void(*EditCallBack)(struct Data_ *, uint16_t * value);
+    struct StaticEditMenu;
+    typedef void(*EditCallBack)(struct StaticEditMenu *, uint16_t * value);
     typedef void(*EditMethod)(int dir);
 
-    typedef struct {
+    struct EditData {
         int16_t step;
         union {
             struct {
@@ -45,29 +45,29 @@ namespace StaticEditMenu {
             };
             EditMethod editMethod;
         };
-    } EditData;
+    };
 
-    typedef struct {
+    struct StaticEditData {
         const char * staticString;
         uint16_t enableCondition;
         cprintf::PrintData print;
         EditData edit;
-    } StaticEditData;
+    };
 
-    typedef struct Data_{
-    	EditMenu::Data menu;
-        const StaticEditData * staticEditData;
+    struct StaticEditMenu {
+    	struct EditMenu::EditMenu editMenu;
+        const struct StaticEditData * staticEditData;
         uint16_t selector;
         EditCallBack editCallback;
-    } Data;
+    };
 
-    void initialize(Data *d, const StaticEditData * staticEditData, const EditCallBack callback = NULL);
-    int16_t * getEditAddress(Data *d, uint8_t item);
-    uint16_t getEnableCondition(Data *d, uint8_t item);
+    void initialize(struct StaticEditMenu *d, const StaticEditData * staticEditData, const EditCallBack callback = NULL);
+    int16_t * getEditAddress(struct StaticEditMenu *d, uint8_t item);
+    uint16_t getEnableCondition(struct StaticEditMenu *d, uint8_t item);
 
-    void setSelector(Data *d, uint16_t selector);
-    inline int8_t runSimple(Data *d, bool animate = false) { return Menu::runSimple(&d->menu.menu.d, animate); }
-    inline bool runEdit(Data *d) { return EditMenu::runEdit(&d->menu); }
+    void setSelector(struct StaticEditMenu *d, uint16_t selector);
+    inline int8_t runSimple(struct StaticEditMenu *d, bool animate = false) { return Menu::runSimple(&d->editMenu.staticMenu.menu, animate); }
+    inline bool runEdit(struct StaticEditMenu *d) { return EditMenu::runEdit(&d->editMenu); }
 };
 
 #endif /* STATICEDITMENU_H_ */

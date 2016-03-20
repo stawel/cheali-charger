@@ -31,9 +31,9 @@
 #define SETTINGS_ADC_NOISE_DEFAULT 0
 #endif
 
-Settings::Data settings;
+struct Settings::SettingsData settings;
 
-const Settings::Data defaultSettings PROGMEM = {
+const struct Settings::SettingsData defaultSettings PROGMEM = {
         70,                 //backlight
         Settings::FanTemperature, //fanOn
         ANALOG_CELCIUS(50), //fanTempOn

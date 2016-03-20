@@ -112,13 +112,13 @@ const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 {NULL,                  StaticEditMenu::Last}
 };
 
-void editCallback(StaticEditMenu::Data * menu, uint16_t * adr) {
+void editCallback(struct StaticEditMenu::StaticEditMenu * menu, uint16_t * adr) {
 	StaticEditMenu::setSelector(menu, getSelector());
     Settings::check();
 }
 
 void run() {
-	StaticEditMenu::Data menu;
+	struct StaticEditMenu::StaticEditMenu menu;
 	StaticEditMenu::initialize(&menu, editData, editCallback);
     int8_t item;
 
@@ -136,7 +136,7 @@ void run() {
         } else
 #endif
         {
-            Settings::Data undo(settings);
+            struct Settings::SettingsData undo(settings);
             if(!StaticEditMenu::runEdit(&menu)) {
                 settings = undo;
             } else {

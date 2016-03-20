@@ -46,7 +46,7 @@ namespace eeprom {
         ProgramData::Battery battery[MAX_PROGRAMS];
         uint16_t batteryCRC;
 
-        Settings::Data settings;
+        Settings::SettingsData settings;
         uint16_t settingsCRC;
     } Data;
 

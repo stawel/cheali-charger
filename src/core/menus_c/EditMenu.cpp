@@ -20,39 +20,39 @@
 
 
 
-void EditMenu::initialize(Data *d, const char * const* staticMenu, EditMethod editItem) {
-	StaticMenu::initialize(&d->menu, staticMenu);
+void EditMenu::initialize(struct EditMenu *d, const char * const* staticMenu, EditMethod editItem) {
+	StaticMenu::initialize(&d->staticMenu, staticMenu);
 	Blink::initialize();
 }
 
-void EditMenu::setPrintMethod(Data *d, PrintMethod printItem) {
-	d->menu.d.printItem = (Menu::PrintMethod)printItem;
+void EditMenu::setPrintMethod(struct EditMenu *d, PrintMethod printItem) {
+	d->staticMenu.menu.printItem = (Menu::PrintMethod)printItem;
 }
 
-bool EditMenu::runEdit(Data *d)
+bool EditMenu::runEdit(struct EditMenu *d)
 {
-    Blink::startBlinkOff(getIndex(&d->menu.d));
+    Blink::startBlinkOff(getIndex(&d->staticMenu.menu));
     uint8_t key;
-    d->menu.d.render_ = true;
+    d->staticMenu.menu.render_ = true;
     do {
         key =  Keyboard::getPressedWithDelay();
         if(key == BUTTON_DEC || key == BUTTON_INC) {
-        	uint8_t index = getIndex(&d->menu.d);
+        	uint8_t index = getIndex(&d->staticMenu.menu);
             d->editItem(d, index, key);
             Blink::startBlinkOn(index);
-            d->menu.d.render_ = true;
+            d->staticMenu.menu.render_ = true;
         } else if(key == BUTTON_STOP || key == BUTTON_START) {
             break;
         }
         if(Blink::getBlinkChanged())
-        	d->menu.d.render_ = true;
-        if(d->menu.d.render_)
-            display(&d->menu.d);
+        	d->staticMenu.menu.render_ = true;
+        if(d->staticMenu.menu.render_)
+            display(&d->staticMenu.menu);
         Blink::incBlinkTime();
     } while(true);
 
     Blink::stopBlink();
-    d->menu.d.waitRelease_ = true;
-    d->menu.d.render_ = true;
+    d->staticMenu.menu.waitRelease_ = true;
+    d->staticMenu.menu.render_ = true;
     return key == BUTTON_START;
 }

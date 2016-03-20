@@ -111,7 +111,7 @@ uint8_t type = 0;
 const uint8_t dig_ = 5;
 
 
-	void VoltageMenu_printItem(StaticMenu::Data *d, uint8_t index) {
+	void VoltageMenu_printItem(StaticMenu::StaticMenu *d, uint8_t index) {
         StaticMenu::printItem(d, index);
         if(index < sizeOfArray(voltageName)) {
             AnalogInputs::Name name = pgm::read(&voltageName[index]);
@@ -140,9 +140,9 @@ void run() {
     Balancer::powerOn();
     PolarityCheck::checkReversedPolarity_ = false;
 
-    StaticMenu::Data v;
+    StaticMenu::StaticMenu v;
     StaticMenu::initialize(&v, voltageMenu);
-    v.d.printItem = (Menu::PrintMethod) VoltageMenu_printItem;
+    v.menu.printItem = (Menu::PrintMethod) VoltageMenu_printItem;
     int8_t index;
     do {
         index = StaticMenu::runSimple(&v, true);

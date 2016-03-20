@@ -26,7 +26,7 @@ namespace MainMenu {
 
 	const char string_options[] PROGMEM = "options";
 
-	void printItem(Menu::Data *d, int8_t i) {
+	void printItem(struct Menu::Menu *d, int8_t i) {
 		if(i == 0) {
 			lcdPrint_P(string_options);
 		} else {
@@ -37,7 +37,7 @@ namespace MainMenu {
 
 void MainMenu::run()
 {
-	Menu::Data menu;
+	struct Menu::Menu menu;
 	Menu::initialize(&menu, MAX_PROGRAMS + 1, printItem);
 	while(true) {
 		int8_t index = Menu::runSimple(&menu);

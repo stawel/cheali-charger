@@ -22,13 +22,13 @@
 
 
 
-void StaticMenu::printItem(StaticMenu::Data *md, int8_t i) {
-	StaticMenu::Data * d = md;
+void StaticMenu::printItem(struct StaticMenu *md, int8_t i) {
+	StaticMenu * d = md;
 	lcdPrint_P(d->staticMenu_, i);
 }
 
-void StaticMenu::initialize(Data *d, const char * const staticMenu[]) {
-	Menu::initialize(&d->d, countElements(staticMenu), (Menu::PrintMethod) printItem);
+void StaticMenu::initialize(struct StaticMenu *d, const char * const staticMenu[]) {
+	Menu::initialize(&d->menu, countElements(staticMenu), (Menu::PrintMethod) printItem);
 }
 
 

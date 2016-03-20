@@ -167,7 +167,7 @@ void runCalibrationMenu(const StaticEditMenu::StaticEditData * menuData,
         const AnalogInputs::Name * name2,
         uint8_t calibrationPoint = false) {
 
-	StaticEditMenu::Data menu;
+	struct StaticEditMenu::StaticEditMenu menu;
 	StaticEditMenu::initialize(&menu, menuData);
 
     uint16_t selector = COND_ALWAYS ^ COND_POINT;
@@ -307,7 +307,7 @@ void setCurrentValue(AnalogInputs::Name name, AnalogInputs::ValueType value)
 }
 
 struct CurrentMenu {
-	EditMenu::Data menu;
+	struct EditMenu::EditMenu editMenu;
     AnalogInputs::Name cNameSet_;
     AnalogInputs::Name cName_;
     uint8_t point_;
@@ -334,7 +334,7 @@ struct CurrentMenu {
                 Discharger::powerOff();
             }
         } else {
-            StaticMenu::printItem(&d->menu.menu, index);
+            StaticMenu::printItem(&d->editMenu.staticMenu, index);
             if(Blink::getBlinkIndex() != index) {
                 switch (index) {
                     case 0:
@@ -364,8 +364,8 @@ struct CurrentMenu {
     }
 
     void CurrentMenu_initialize(CurrentMenu * d, AnalogInputs::Name nameSet, AnalogInputs::Name name, uint8_t point, AnalogInputs::ValueType maxValue, AnalogInputs::ValueType maxI) {
-		EditMenu::initialize(&d->menu, currentMenu, (EditMenu::EditMethod)CurrentMenu_editItem);
-		EditMenu::setPrintMethod(&d->menu, (EditMenu::PrintMethod)CurrentMenu_printItem);
+		EditMenu::initialize(&d->editMenu, currentMenu, (EditMenu::EditMethod)CurrentMenu_editItem);
+		EditMenu::setPrintMethod(&d->editMenu, (EditMenu::PrintMethod)CurrentMenu_printItem);
 		d->cNameSet_ = nameSet;
 		d->cName_ = name;
 		d->point_ = point;
@@ -413,11 +413,11 @@ void calibrateI(bool charging, uint8_t point)
         int8_t index;
         do {
         	CurrentMenu_resetValue(&menu, pSet);
-            index = EditMenu::runSimple(&menu.menu, true);
+            index = EditMenu::runSimple(&menu.editMenu, true);
             if(index < 0) break;
             if(index == 0) {
                 setCurrentValue(nameSet, menu.value_);
-                if(EditMenu::runEdit(&menu.menu)) {
+                if(EditMenu::runEdit(&menu.editMenu)) {
                     AnalogInputs::doFullMeasurement();
                     pSet.y = menu.Iexpected_;
                     pSet.x = menu.value_;
@@ -427,7 +427,7 @@ void calibrateI(bool charging, uint8_t point)
                 }
                 setCurrentValue(nameSet, 0);
             }
-            if(index == 2 && !EditMenu::runEdit(&menu.menu)) {
+            if(index == 2 && !EditMenu::runEdit(&menu.editMenu)) {
             	CurrentMenu_resetIexpected(&menu, pSet);
             }
         } while(true);
@@ -446,11 +446,11 @@ void calibrateI(bool charging, uint8_t point)
 }
 
 typedef struct {
-	Menu::Data menu;
+	struct Menu::Menu menu;
     AnalogInputs::Name nameSet_;
 } CurrentPointMenu;
 
-void CurrentPointMenu_printItem(Menu::Data *menu, int8_t index) {
+void CurrentPointMenu_printItem(struct Menu::Menu *menu, int8_t index) {
 	CurrentPointMenu * pmenu = (CurrentPointMenu *) menu;
 	AnalogInputs::CalibrationPoint pSet;
 	getCalibrationPoint(&pSet, pmenu->nameSet_, index);
@@ -459,12 +459,12 @@ void CurrentPointMenu_printItem(Menu::Data *menu, int8_t index) {
 
 void calibrateI(bool charging)
 {
-    CurrentPointMenu menu;
-    Menu::initialize(&menu.menu, 2, CurrentPointMenu_printItem);
-    menu.nameSet_ = (charging ? AnalogInputs::IsmpsSet : AnalogInputs::IdischargeSet);
+    CurrentPointMenu cpmenu;
+    Menu::initialize(&cpmenu.menu, 2, CurrentPointMenu_printItem);
+    cpmenu.nameSet_ = (charging ? AnalogInputs::IsmpsSet : AnalogInputs::IdischargeSet);
     int8_t i;
     do {
-        i = Menu::runSimple(&menu.menu);
+        i = Menu::runSimple(&cpmenu.menu);
         if(i<0) break;
         calibrateI(charging, i);
     } while(true);
@@ -522,7 +522,7 @@ void calibrateInternT()
 
 void run()
 {
-	StaticMenu::Data menu;
+	StaticMenu::StaticMenu menu;
 	StaticMenu::initialize(&menu, calibrateMenu);
     int8_t i;
     do {

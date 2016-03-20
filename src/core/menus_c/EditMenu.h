@@ -24,21 +24,21 @@
 
 namespace EditMenu {
 
-	struct Data_;
-	typedef void(*EditMethod)(struct Data_ *, int8_t, uint8_t);
-	typedef void(*PrintMethod)(struct Data_ *, int8_t);
+	struct EditMenu;
+	typedef void(*EditMethod)(struct EditMenu *, int8_t, uint8_t);
+	typedef void(*PrintMethod)(struct EditMenu *, int8_t);
 
-	typedef struct Data_{
-		StaticMenu::Data menu;
+	struct EditMenu {
+		struct StaticMenu::StaticMenu staticMenu;
 		EditMethod editItem;
-	} Data;
+	};
 
-	void initialize(Data *d, const char * const* staticMenu, EditMethod editItem);
-	void setPrintMethod(Data *d, PrintMethod printItem);
-    bool runEdit(Data *d);
+	void initialize(struct EditMenu *d, const char * const* staticMenu, EditMethod editItem);
+	void setPrintMethod(struct EditMenu *d, PrintMethod printItem);
+    bool runEdit(struct EditMenu *d);
 
-    inline int8_t runSimple(Data *d, bool animate = false) {
-		return StaticMenu::runSimple(&d->menu, animate);
+    inline int8_t runSimple(struct EditMenu *d, bool animate = false) {
+		return StaticMenu::runSimple(&d->staticMenu, animate);
 	}
 
 };
