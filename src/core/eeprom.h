@@ -40,13 +40,13 @@ namespace eeprom {
         uint16_t programDataVersion;
         uint16_t settingVersion;
 
-        AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS];
+        AnalogInputs::Calibration calibration[ANALOG_INPUTS_PHYSICAL_INPUTS];
         uint16_t calibrationCRC;
 
         ProgramData::Battery battery[MAX_PROGRAMS];
         uint16_t batteryCRC;
 
-        Settings::SettingsData settings;
+        struct Settings::SettingsData settings;
         uint16_t settingsCRC;
     } Data;
 

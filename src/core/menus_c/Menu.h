@@ -20,12 +20,12 @@
 
 #include <stdint.h>
 #include "PolarityCheck.h"
-
+#include "memory.h"
 
 namespace Menu {
 	static const int8_t MENU_EXIT = -1;
 	struct Menu;
-	typedef void(*PrintMethod)(struct Menu *, int8_t);
+	typedef void(*PrintMethod)(struct Menu *, int8_t) __reentrant;
 
 	struct Menu {
 	    uint8_t pos_;

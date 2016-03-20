@@ -34,7 +34,7 @@ namespace StorageStrategy {
     };
 
 
-}// namespace StorageStrategy
+} // namespace StorageStrategy
 
 void StorageStrategy::powerOff()
 {
@@ -45,10 +45,12 @@ void StorageStrategy::powerOff()
 
 void StorageStrategy::powerOn()
 {
+    AnalogInputs::ValueType V;
+    bool charge;
+
     Balancer::powerOn();
     Strategy::setVI(ProgramData::VStorage, true);
-    AnalogInputs::ValueType V = Strategy::endV;
-    bool charge;
+    V = Strategy::endV;
     if(Balancer::getConnectedCellsCount() == 0) {
         charge = AnalogInputs::getVbattery() <= V;
     } else {

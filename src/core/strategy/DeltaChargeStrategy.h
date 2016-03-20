@@ -21,10 +21,9 @@
 
 #include "SimpleChargeStrategy.h"
 
-namespace DeltaChargeStrategy
-{
+namespace DeltaChargeStrategy {
     extern const Strategy::VTable vtable;
-};
+}
 
 
 #endif /* DELTACHARGESTRATEGY_H_ */

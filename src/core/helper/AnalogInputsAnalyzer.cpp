@@ -115,7 +115,7 @@ const uint8_t dig_ = 5;
         StaticMenu::printItem(d, index);
         if(index < sizeOfArray(voltageName)) {
             AnalogInputs::Name name;
-            pgm::read(name, &voltageName[index]);
+            pgm_read(name, &voltageName[index]);
             uint16_t value;
             if(type == 0) {
                 value = AnalogInputs::getAvrADCValue(name);

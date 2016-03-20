@@ -9,6 +9,7 @@ import pprint
 import fileinput
 from operator import itemgetter
 
+debug_mangled = False
 
 def s(n):
     return " "*(n*4)
@@ -48,7 +49,7 @@ def print_cursor(node, n):
     print s(n), "spelling     : ", node.spelling
     print s(n), "kind         : ", node.kind
     print s(n), "displayname  : ", node.displayname
-    print s(n), "mangled_name : ", node.mangled_name
+    if debug_mangled: print s(n), "mangled_name : ", node.mangled_name
     print s(n), "get_usr()    : ", node.get_usr()
     print s(n), "storage_class: ", node.storage_class
     print s(n), "access_specif: ", node.access_specifier
@@ -64,7 +65,7 @@ def print_cursor(node, n):
 
     if node.referenced is not None:
         print s(n), "referenced   : ", node.referenced.location
-    if not (defin is None):
+    if not (defin is None) and debug_mangled:
         print s(n), "defin    : " , defin.spelling, " ", defin.mangled_name
     if node.kind.is_reference():
         print s(n), "ref      : ", get(node.referenced)

@@ -35,7 +35,7 @@ namespace debug {
     inline void print(void * x) { SerialLog::printLong((long)x); }
     inline void begin() { print('D'); print(Time::getMiliseconds()); print(':'); };
     inline void end() { SerialLog::printNL(); }
-};
+}
 
 #define LogDebug_();
 #define LogDebug_1(x) debug::print(x);

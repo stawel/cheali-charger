@@ -58,6 +58,7 @@ Strategy::statusType TheveninDischargeStrategy::doStrategy()
 {
     bool isendVout = isEndVout();
     AnalogInputs::ValueType I = Discharger::getIout();
+    AnalogInputs::ValueType newI;
 
     //test for charge complete
     bool end = isendVout;
@@ -68,7 +69,7 @@ Strategy::statusType TheveninDischargeStrategy::doStrategy()
         return Strategy::COMPLETE;
     }
 
-    AnalogInputs::ValueType newI = TheveninMethod::calculateNewI(isendVout, I);
+    newI = TheveninMethod::calculateNewI(isendVout, I);
     Discharger::trySetIout(newI);
 
     return Strategy::RUNNING;

@@ -42,7 +42,7 @@ namespace Strategy {
     extern bool exitImmediately;
 
     statusType doStrategy();
-};
+}
 
 
 #endif /* STRATEGY_H_ */

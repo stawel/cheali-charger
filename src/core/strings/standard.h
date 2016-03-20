@@ -20,7 +20,7 @@
 
 #include "strings_common.h"
 
-namespace AnalogInputs {
+//namespace AnalogInputs {
     //units
     STRING(A,           "A");
     STRING(V,           "V");
@@ -38,9 +38,9 @@ namespace AnalogInputs {
     STRING(yes,         "yes");
     STRING(no,          " no");
     STRING_SIZE(unlimited,  "nolimit");
-}
+//}
 
-namespace Monitor {
+//namespace Monitor {
     STRING(batteryDisconnected,         "battery disc.");
     STRING(internalTemperatureToHigh,   "int.temp.cutoff");
     STRING(balancePortDisconnected,     "balancer disc.");
@@ -50,9 +50,9 @@ namespace Monitor {
     STRING(capacityLimit,               "capacity cutoff");
     STRING(timeLimit,                   "time limit");
     STRING(externalTemperatureCutOff,   "ext.temp.cutoff");
-};
+//};
 
-namespace ProgramMenus {
+//namespace ProgramMenus {
     STRING(charge,              "charge");
     STRING(chargeAndBalance,    "charge+balance");
     STRING(balance,             "balance");
@@ -63,15 +63,15 @@ namespace ProgramMenus {
     STRING(dcCycle,             "D>C format");
     STRING(capacityCheck,       "capacity check");
     STRING(editBattery,         "edit battery");
-}
+//}
 
-namespace options {
+//namespace options {
     STRING(settings, "settings");
     STRING(calibrate, "calibrate");
     STRING(resetDefault, "reset default");
-}
+//}
 
-namespace ProgramData {
+//namespace ProgramData {
     STRING_SIZE(minutes,    "min.");
 
     //battery types
@@ -87,9 +87,9 @@ namespace ProgramData {
     STRING(battery_Li435,   "L435");
     STRING(battery_NiZn,    "NiZn");
     STRING(battery_LED,     "LED");
-}
+//}
 
-namespace SettingsMenu {
+//namespace SettingsMenu {
     //settings menu
     STRING(backlight,   "backlight:");
     STRING(fanOn,       "fan on:");
@@ -131,9 +131,9 @@ namespace SettingsMenu {
     STRING(simple,      "simple");
     STRING(advanced,    "advanced");
 
-}
+//}
 
-namespace ProgramDataMenu {
+//namespace ProgramDataMenu {
     //menu
     STRING(batteryType, "battery:");
     STRING(voltage,     "V:");
@@ -161,15 +161,15 @@ namespace ProgramDataMenu {
     STRING(DCcycles,    "D/C cycles:");
     STRING(DCRestTime,  "D/C rest:");
     STRING(adaptiveDis, "adapt dis:");
-}
+//}
 
-namespace DeltaChargeStrategy {
+//namespace DeltaChargeStrategy {
     STRING(batteryVoltageReachedUpperLimit,         "V limit");
     STRING(batteryVoltageReachedDeltaVLimit,        "-dV");
     STRING(externalTemperatureReachedDeltaTLimit,   "dT/dt");
-}
+//}
 
-namespace Calibrate {
+//namespace Calibrate {
     STRING(connect,     "connect");
     STRING(disconnect,  "disconnect");
     STRING(battery,     "battery!");
@@ -223,6 +223,6 @@ namespace Calibrate {
     STRING(ev_menu_cell2pin,        "Vb2pin:");
     STRING(ev_menu_plusVoltagePin,  "Vplus:");
     STRING(ev_menu_minusVoltagePin, "Vminus:");
-}
+//}
 
 #endif /* STRINGS_H_ */

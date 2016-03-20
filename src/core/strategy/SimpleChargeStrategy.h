@@ -28,7 +28,7 @@ namespace SimpleChargeStrategy {
     void powerOn();
     void powerOff();
     void calculateThevenin();
-};
+}
 
 #endif /* SIMPLECHARGESTRATEGY_H_ */
 

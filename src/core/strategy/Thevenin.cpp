@@ -23,13 +23,14 @@
 #include "Thevenin.h"
 #include "Utils.h"
 
-AnalogInputs::ValueType Thevenin::getReadableRth(Resistance r)
+AnalogInputs::ValueType Thevenin::getReadableRth(const Resistance * r)
 {
-    if(r.uI == 0)
+    uint32_t R;
+    if(r->uI == 0)
         return 0;
-    uint32_t R = abs(r.iV);
+    R = abs(r->iV);
     R *= ANALOG_VOLT(1.0);
-    R/=r.uI;
+    R/=r->uI;
     return R;
 }
 

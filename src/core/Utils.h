@@ -30,17 +30,30 @@
 #define SUB_MIN(x,v,min) (x) = (x)>(min)+(v)? (x)-(v) : (min)
 
 //info: I use __ COUNTER__ which is not supported by some compilers
+#ifdef SDCC_COMPILER
+//TODO: sdcc implement
+#define START_CASE_COUNTER
+#define START_CASE_COUNTER_FROM(x)
+#define NEXT_CASE (__COUNTER__ -  1)
+#else
 #define START_CASE_COUNTER const uint8_t _case_counter = __COUNTER__
 #define START_CASE_COUNTER_FROM(x) const uint8_t _case_counter = __COUNTER__ - (x)
 #define NEXT_CASE (__COUNTER__ - _case_counter - 1)
-
+#endif
 //assert
-#if __cplusplus <= 199711L
-#define STATIC_ASSERT(x) typedef char __STATIC_ASSERT__[( x )?1:-1] __attribute__((unused))
-#define STATIC_ASSERT_MSG(x, msg) STATIC_ASSERT(x)
-#else
+#if __cplusplus > 199711L
 #define STATIC_ASSERT(x) static_assert(x, #x)
 #define STATIC_ASSERT_MSG(x, msg) static_assert(x, msg)
+#else
+
+#if SDCC_COMPILER
+#define STATIC_ASSERT(x)
+#define STATIC_ASSERT_MSG(x, msg)
+#else
+#define STATIC_ASSERT(x) typedef char __STATIC_ASSERT__[( x )?1:-1] __attribute__((unused))
+#define STATIC_ASSERT_MSG(x, msg) STATIC_ASSERT(x)
+#endif
+
 #endif
 //Preprocessor: concatenate int to string
 #define CHEALI_CHARGER_STRING2(x)   #x
@@ -68,8 +81,14 @@ uint8_t waitButtonPressed();
 
 uint8_t countElements(const void * const array[]);
 
-template<typename T>
-uint8_t countElements(const T array[]) {return countElements((const void * const *)array); }
+//template<typename T>
+//uint8_t countElements(const T array[]) {return countElements((const void * const *)array); }
+
+inline uint16_t absDiff(uint16_t x, uint16_t y)
+{
+    if(x > y) return x - y;
+    return y - x;
+}
 
 // Platform specific delays. Implemented in Utils.cpp located in platform folder
 namespace Utils {

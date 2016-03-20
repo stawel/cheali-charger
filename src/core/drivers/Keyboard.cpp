@@ -51,7 +51,7 @@ namespace Keyboard {
 
     uint16_t getSpeedFactor() {
         uint8_t v;
-        pgm::read(v, &speedFactor[state_]);
+        pgm_read(v, &speedFactor[state_]);
         return v;
     }
 }
@@ -71,7 +71,7 @@ uint8_t Keyboard::getPressedWithDelay()
             inState_ = 0;
             delay = 0;
         }
-        pgm::read(stateDelayVal, &stateDelay[state_]);
+        pgm_read(stateDelayVal, &stateDelay[state_]);
     } while (delay <= stateDelayVal);
 
     if(state_ < sizeOfArray(stateDelay) - 1) {

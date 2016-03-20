@@ -66,11 +66,11 @@ namespace Balancer {
 
     bool isMaxVout(AnalogInputs::ValueType maxV);
     bool isMinVout(AnalogInputs::ValueType minV);
-    bool isStable(const uint16_t stableCount = AnalogInputs::STABLE_MIN_VALUE);
+    bool isStable(const uint16_t stableCount = ANALOG_INPUTS_STABLE_MIN_COUNT);
     bool isCalibrationRequired();
     void endBalancing();
 
     AnalogInputs::ValueType calculatePerCell(AnalogInputs::ValueType v);
-};
+}
 
 #endif /* BALANCER_H_ */

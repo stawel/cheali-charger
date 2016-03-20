@@ -22,15 +22,14 @@
 #include "Thevenin.h"
 #include "TheveninMethod.h"
 
-namespace TheveninChargeStrategy
-{
+namespace TheveninChargeStrategy {
     extern const Strategy::VTable vtable;
 
     void powerOn();
     Strategy::statusType doStrategy();
     void powerOff();
 
-};
+}
 
 
 #endif /* THEVENINCHARGESTRATEGY_H_ */

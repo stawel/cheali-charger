@@ -40,7 +40,7 @@ namespace StartInfo {
         STATIC_ASSERT(sizeOfArray(programString)-1 == Program::EditBattery*2);
         for(uint8_t i = 0; i < 2; i++) {
             char c;
-            pgm::read(c, &programString[prog*2+i]);
+            pgm_read(c, &programString[prog*2+i]);
             lcdPrintChar(c);
         }
     }

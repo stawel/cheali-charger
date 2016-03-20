@@ -105,7 +105,7 @@ namespace ProgramMenus {
 
     Program::ProgramType getProgramType(struct ProgramMenus *d, uint8_t i) {
         Program::ProgramType v;
-        pgm::read(v, &d->typeMenu_[i]);
+        pgm_read(v, &d->typeMenu_[i]);
         return v;
     }
 
@@ -118,7 +118,7 @@ namespace ProgramMenus {
         uint8_t retu = 0;
         Program::ProgramType type;
         do {
-            pgm::read(type, &typeMenu[retu++]);
+            pgm_read(type, &typeMenu[retu++]);
         } while(type != Program::EditBattery);
         return retu;
     }
@@ -133,10 +133,10 @@ namespace ProgramMenus {
     }
 
     void changeSelectProgramMenu() {
-        STATIC_ASSERT(ProgramData::LAST_BATTERY_CLASS == 6);
-
         ProgramData::BatteryClass bc = ProgramData::getBatteryClass();
         const Program::ProgramType *typeMenu;
+
+        STATIC_ASSERT(ProgramData::LAST_BATTERY_CLASS == 6);
         if(ProgramData::battery.type == ProgramData::None) {
             typeMenu = programNoneMenu;
         } else if(bc == ProgramData::ClassNiZn) {
@@ -157,8 +157,8 @@ namespace ProgramMenus {
 
 void ProgramMenus::selectProgram(int index)
 {
-    ProgramData::loadProgramData(index);
     int8_t menuIndex;
+    ProgramData::loadProgramData(index);
     do {
         changeSelectProgramMenu();
         menuIndex = Menu::runSimple(&programMenu.menu);

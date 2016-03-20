@@ -23,7 +23,6 @@
 #include "Monitor.h"
 #include "ScreenCycle.h"
 
-using namespace Program;
 
 namespace ProgramDCcycle {
     uint8_t currentCycle;

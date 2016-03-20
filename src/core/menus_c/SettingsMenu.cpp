@@ -54,18 +54,18 @@ const cprintf::ArrayData UARToutputData  PROGMEM = {SettingsUARToutput, &setting
 const char * const SettingsMenuType[] PROGMEM = {string_simple, string_advanced};
 const cprintf::ArrayData menuTypeData  PROGMEM = {SettingsMenuType, &settings.menuType};
 
-const AnalogInputs::ValueType Tmin = (Settings::TempDifference/ANALOG_CELCIUS(1) + 1)*ANALOG_CELCIUS(1);
-const AnalogInputs::ValueType Tmax = ANALOG_CELCIUS(99);
-const AnalogInputs::ValueType Tstep =  ANALOG_CELCIUS(1);
+#define Tmin    ((Settings::TempDifference/ANALOG_CELCIUS(1) + 1)*ANALOG_CELCIUS(1))
+#define Tmax    ANALOG_CELCIUS(99)
+#define Tstep   ANALOG_CELCIUS(1)
 
 
 /*condition bits:*/
 #define COND_FAN_ON_T       1
 #define COND_UART_ON        2
-#define COND_ALWAYS         StaticEditMenu::Always
+#define COND_ALWAYS         STATIC_EDIT_MENU_ALWAYS
 
 uint16_t getSelector() {
-    uint16_t result = StaticEditMenu::Always;
+    uint16_t result = STATIC_EDIT_MENU_ALWAYS;
 #ifdef ENABLE_FAN
     if(settings.fanOn != Settings::FanProgramTemperature && settings.fanOn != Settings::FanTemperature)
         result -= COND_FAN_ON_T;
@@ -100,7 +100,7 @@ const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 {string_adcNoise,       COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.adcNoise},          {1, 0, 1}},
 #endif
 {string_UARTview,       COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&UARTData},             {1, 0, Settings::ExtDebugAdc}},
-{string_UARTspeed,      COND_UART_ON,   {CP_TYPE_UINT32_ARRAY,0,&UARTSpeedsData},       {1, 0, Settings::UARTSpeeds-1}},
+{string_UARTspeed,      COND_UART_ON,   {CP_TYPE_UINT32_ARRAY,0,&UARTSpeedsData},       {1, 0, SETTINGS_UART_SPEEDS_COUNT-1}},
 #ifdef ENABLE_TX_HW_SERIAL
 {string_UARToutput,     COND_UART_ON,   {CP_TYPE_STRING_ARRAY,0,&UARToutputData},        {1, 0, 2}},
 #endif

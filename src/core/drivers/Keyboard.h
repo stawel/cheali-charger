@@ -33,7 +33,7 @@ namespace Keyboard {
     uint16_t getSpeedFactor();
     uint8_t  getPressedWithDelay();
     bool isLongPressTime();
-};
+}
 
 
 #endif /* KEYBOARD_H_ */

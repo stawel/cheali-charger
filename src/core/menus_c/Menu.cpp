@@ -42,6 +42,7 @@ void Menu::initialize(struct Menu *d, uint8_t size, PrintMethod printItem) {
 }
 
 uint8_t Menu::run(struct Menu *d) {
+    uint8_t index;
     uint8_t button = Keyboard::getPressedWithDelay();
 
     if(PolarityCheck::runReversedPolarityInfo()) {
@@ -49,7 +50,7 @@ uint8_t Menu::run(struct Menu *d) {
         return PolarityCheck::REVERSED_POLARITY;
     }
 
-    uint8_t index = getIndex(d);
+    index = getIndex(d);
     switch (button) {
     case BUTTON_INC:
         incIndex(d);
@@ -95,8 +96,8 @@ void Menu::decIndex(struct Menu *d) {
 }
 
 void Menu::display(struct Menu *d) {
-    uint8_t lines = LCD_LINES;
-    for(uint8_t i = 0; i < lines; i++) {
+    uint8_t i, lines = LCD_LINES;
+    for(i = 0; i < lines; i++) {
         lcdSetCursor(0, i);
         lcdPrintChar(i == d->pos_ ? '>' : ' ');
         if(i + d->begin_ < d->size_) {

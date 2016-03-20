@@ -20,14 +20,13 @@
 
 #include <stdint.h>
 
-class PolarityCheck {
-public:
+namespace PolarityCheck {
     static const uint8_t REVERSED_POLARITY = 127;
 
-    static bool isReversedPolarity_;
-    static bool checkReversedPolarity_;
+    extern bool isReversedPolarity_;
+    extern bool checkReversedPolarity_;
 
-    static bool runReversedPolarityInfo();
-};
+    bool runReversedPolarityInfo();
+}
 
 #endif /* POLARITYCHECK_H_ */

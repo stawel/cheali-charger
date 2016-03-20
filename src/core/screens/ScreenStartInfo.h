@@ -19,11 +19,12 @@
 #define SCREEN_START_INFO_H_
 
 #include <stdint.h>
+#include "memory.h"
 
 namespace Screen { namespace StartInfo {
 
     void displayStartInfo();
-    void printVoltageString(int8_t dig);
+    void printVoltageString(int8_t dig) __reentrant;
     void printBatteryString();
 };
 };

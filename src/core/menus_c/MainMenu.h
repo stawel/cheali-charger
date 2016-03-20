@@ -23,7 +23,7 @@
 
 
 namespace MainMenu {
-	void run() __attribute__((__noreturn__));
+	void run(); //TODO: __attribute__((__noreturn__));
 }
 
 #endif /* MENU_H_ */

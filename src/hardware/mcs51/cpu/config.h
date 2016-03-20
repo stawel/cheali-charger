@@ -23,8 +23,15 @@
 
 #define CHEALI_EEPROM_PACKED
 
-#include <stdbool.h>
+//#include <stdbool.h>
 
-//#define bool int
+#ifdef SDCC_COMPILER
+#include <stdint.h>
+
+#define bool uint8_t
+#define true 1
+#define false 0
+
+#endif
 
 #endif /* CPU_CONFIG_H_ */

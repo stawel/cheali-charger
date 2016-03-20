@@ -51,12 +51,13 @@ Strategy::statusType TheveninChargeStrategy::doStrategy()
 {
     bool isendVout = isEndVout();
     AnalogInputs::ValueType I = SMPS::getIout();
+    AnalogInputs::ValueType newI;
 
     //balance, test if charge complete
     if(TheveninMethod::balance_isComplete(isendVout, I)) {
         return Strategy::COMPLETE;
     }
-    AnalogInputs::ValueType newI = TheveninMethod::calculateNewI(isendVout, I);
+    newI = TheveninMethod::calculateNewI(isendVout, I);
     SMPS::trySetIout(newI);
 
     return Strategy::RUNNING;

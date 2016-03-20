@@ -54,7 +54,7 @@ const struct Settings::SettingsData defaultSettings PROGMEM = {
 };
 
 
-const uint32_t Settings::UARTSpeedValue[Settings::UARTSpeeds] PROGMEM = {
+const uint32_t Settings::UARTSpeedValue[SETTINGS_UART_SPEEDS_COUNT] PROGMEM = {
     9600,
     19200,
     38400,
@@ -65,17 +65,17 @@ const uint32_t Settings::UARTSpeedValue[Settings::UARTSpeeds] PROGMEM = {
 
 uint32_t Settings::getUARTspeed() {
     uint32_t x;
-    pgm::read(x, &UARTSpeedValue[settings.UARTspeed]);
+    pgm_read(x, &UARTSpeedValue[settings.UARTspeed]);
     return x;
 }
 
 void Settings::load() {
-    eeprom::read(settings, &eeprom::data.settings);
+    eeprom_read(settings, &eeprom::data.settings);
     Settings::apply();
 }
 
 void Settings::save() {
-    eeprom::write(&eeprom::data.settings, settings);
+    eeprom_write(&eeprom::data.settings, settings);
     eeprom::restoreSettingsCRC();
 
     Settings::apply();
@@ -83,7 +83,7 @@ void Settings::save() {
 
 void Settings::setDefault()
 {
-    pgm::read(settings, &defaultSettings);
+    pgm_read(settings, &defaultSettings);
 }
 void Settings::restoreDefault() {
     Settings::setDefault();

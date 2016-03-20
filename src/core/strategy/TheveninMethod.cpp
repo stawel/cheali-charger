@@ -67,28 +67,29 @@ namespace TheveninMethod {
     void storeI(AnalogInputs::ValueType I);
 }
 
-AnalogInputs::ValueType TheveninMethod::getReadableRthCell(uint8_t cell) { return Thevenin::getReadableRth(tBal_[cell].Rth); }
-AnalogInputs::ValueType TheveninMethod::getReadableBattRth()             { return Thevenin::getReadableRth(tVout_.Rth); }
+AnalogInputs::ValueType TheveninMethod::getReadableRthCell(uint8_t cell) { return Thevenin::getReadableRth(&tBal_[cell].Rth); }
+AnalogInputs::ValueType TheveninMethod::getReadableBattRth()             { return Thevenin::getReadableRth(&tVout_.Rth); }
 AnalogInputs::ValueType TheveninMethod::getReadableWiresRth()
 {
     Thevenin::Resistance R;
     R.iV =  AnalogInputs::getRealValue(AnalogInputs::Vout);
     R.iV -= AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
     R.uI = AnalogInputs::getRealValue(AnalogInputs::Iout);
-    return Thevenin::getReadableRth(R);
-
+    return Thevenin::getReadableRth(&R);
 }
 
 void TheveninMethod::initialize(bool charge)
 {
+    uint8_t c;
+    AnalogInputs::ValueType Vout, Vend_per_cell;
     bstatus_ = Strategy::COMPLETE;
 
-    AnalogInputs::ValueType Vout = AnalogInputs::getVbattery();
+    Vout = AnalogInputs::getVbattery();
 	Thevenin::init(&tVout_, Vout, Strategy::endV, Strategy::minI, charge);
 
-    AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(Strategy::endV);
+    Vend_per_cell = Balancer::calculatePerCell(Strategy::endV);
 
-    for(uint8_t c = 0; c < MAX_BANANCE_CELLS; c++) {
+    for(c = 0; c < MAX_BANANCE_CELLS; c++) {
         if(Balancer::connectedCells & (1<<c)) {
             AnalogInputs::ValueType v = Balancer::getPresumedV(c);
             Thevenin::init(&tBal_[c], v, Vend_per_cell, Strategy::minI, charge);
@@ -205,9 +206,10 @@ AnalogInputs::ValueType TheveninMethod::calculateNewI(bool isEndVout, AnalogInpu
 
 void TheveninMethod::calculateRthVth(AnalogInputs::ValueType I)
 {
+    uint8_t c;
     Thevenin::calculateRthVth(&tVout_, AnalogInputs::getVbattery(),I);
 
-    for(uint8_t c = 0; c < MAX_BANANCE_CELLS; c++) {
+    for(c = 0; c < MAX_BANANCE_CELLS; c++) {
         if(Balancer::connectedCells & (1<<c))
             Thevenin::calculateRthVth(&tBal_[c], Balancer::getPresumedV(c),I);
     }
@@ -215,9 +217,10 @@ void TheveninMethod::calculateRthVth(AnalogInputs::ValueType I)
 
 AnalogInputs::ValueType TheveninMethod::calculateI()
 {
+    uint8_t c;
     AnalogInputs::ValueType i = Thevenin::calculateI(&tVout_, Strategy::endV);
     AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(Strategy::endV);
-    for(uint8_t c = 0; c < MAX_BANANCE_CELLS; c++) {
+    for(c = 0; c < MAX_BANANCE_CELLS; c++) {
         if(Balancer::connectedCells & (1<<c)) {
             i = min(i, Thevenin::calculateI(&tBal_[c], Vend_per_cell));
         }
@@ -254,9 +257,10 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType newI,
 
 void TheveninMethod::storeI(AnalogInputs::ValueType I)
 {
+    uint8_t i;
     Thevenin::storeLast(&tVout_, AnalogInputs::getVbattery(), I);
 
-    for(uint8_t i = 0; i < MAX_BANANCE_CELLS; i++) {
+    for(i = 0; i < MAX_BANANCE_CELLS; i++) {
         if(Balancer::connectedCells & (1<<i)) {
             AnalogInputs::ValueType vi = Balancer::getPresumedV(i);
             Thevenin::storeLast(&tBal_[i], vi, I);

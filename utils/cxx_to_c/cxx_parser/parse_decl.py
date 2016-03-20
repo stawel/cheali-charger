@@ -12,7 +12,9 @@ import debug
 
 
 pdebug = False
+decldebug = False
 #pdebug = True
+#decldebug = True
 
 decl = {}
 decl_names = {}
@@ -57,6 +59,7 @@ def name_with_namespace(info):
     return name
 
 def add_decl(usr, spelling, type, namespace, default_arg):
+    namespace = reversed(namespace)
     info = (spelling, type, namespace, '', default_arg)
     name = name_with_namespace(info)
     info = (spelling, type, namespace, name, default_arg)
@@ -111,11 +114,11 @@ def find_decl(in_file, node, n, namespace):
 def find_all_decl(in_file, params):
 
     index = clang.cindex.Index.create()
-    tu = index.parse(in_file, args=params, options = 1)
+    tu = index.parse(in_file, args=params, options = TranslationUnit.PARSE_SKIP_FUNCTION_BODIES| TranslationUnit.PARSE_DETAILED_PROCESSING_RECORD)
     #, options=TranslationUnit.PARSE_DETAILED_PROCESSING_RECORD)
 
     find_decl(in_file, tu.cursor, 1, [])
-    if pdebug:
+    if decldebug:
         print_decl_names()
         print '-------------------'
         print_decl()

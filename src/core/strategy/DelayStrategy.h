@@ -31,7 +31,7 @@ namespace DelayStrategy {
     bool isDelay();
     void setDelay(uint16_t minutes);
 
-};
+}
 
 
 #endif /* DELAYSTRATEGY_H_ */

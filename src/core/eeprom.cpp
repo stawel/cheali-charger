@@ -35,11 +35,11 @@ namespace eeprom {
     bool testOrRestore(uint16_t * adr, uint16_t version, bool restore) {
         uint8_t trials = EEPROM_READ_TRIALS;
         if(restore) {
-            eeprom::write(adr, version);
+            eeprom_write(adr, version);
         }
         while(--trials) {
             uint16_t eeprom_version;
-            eeprom::read(eeprom_version, adr);
+            eeprom_read(eeprom_version, adr);
             if(eeprom_version == version)
                 return false;
             Time::delay(100);
@@ -72,13 +72,14 @@ namespace eeprom {
     }
 
     void restoreDefault(uint8_t what) {
+        uint8_t after;
         Screen::runAskResetEeprom(what);
         if(what & EEPROM_RESTORE_MAGIC_NUMBER)  what |= EEPROM_RESTORE_CALIBRATION;
         if(what & EEPROM_RESTORE_CALIBRATION)   what |= EEPROM_RESTORE_PROGRAM_DATA;
         if(what & EEPROM_RESTORE_PROGRAM_DATA)  what |= EEPROM_RESTORE_SETTINGS;
 
         Screen::displayResettingEeprom();
-        uint8_t after = testOrRestore(what);
+        after = testOrRestore(what);
         Screen::runResetEepromDone(what, after);
     }
 
@@ -112,10 +113,10 @@ namespace eeprom {
     }
 
     uint16_t getCRC(uint8_t * adr, uint16_t size) {
-        uint16_t crc = 0xffff;
-        for(uint16_t i = 0; i < size; i++) {
-            uint8_t x;
-            eeprom::read(x, &adr[i]);
+        uint16_t i, crc = 0xffff;
+        uint8_t x;
+        for(i = 0; i < size; i++) {
+            eeprom_read(x, &adr[i]);
             crc = crc16_update(crc, x);
         }
         return crc;

@@ -26,15 +26,21 @@
 #define CE_STEP_TYPE_SMART  0x7fff
 #define CE_STEP_TYPE_METHOD 0x7ffe
 
+#ifdef SDCC_COMPILER
+//TODO: sdcc fix me !!!
+#define STATIC_EDIT_METHOD(method) {CE_STEP_TYPE_METHOD,  {0}}
+#else
 #define STATIC_EDIT_METHOD(method) {CE_STEP_TYPE_METHOD,  {.editMethod=method}}
+#endif
+
+#define STATIC_EDIT_MENU_ALWAYS 0x7fff
+
 
 namespace StaticEditMenu {
-    static const uint16_t Always = 0x7fff;
     static const uint16_t Mandatory = 0x8000;
-    static const uint16_t Last = 0;
     struct StaticEditMenu;
-    typedef void(*EditCallBack)(struct StaticEditMenu *, uint16_t * value);
-    typedef void(*EditMethod)(int dir);
+    typedef void(*EditCallBack)(struct StaticEditMenu *, uint16_t * value) __reentrant;
+    typedef void(*StaticEditMethod)(int dir) __reentrant;
 
     struct EditData {
         int16_t step;
@@ -43,7 +49,7 @@ namespace StaticEditMenu {
                 int16_t minValue;
                 int16_t maxValue;
             };
-            EditMethod editMethod;
+            StaticEditMethod editMethod;
         };
     };
 
@@ -51,7 +57,7 @@ namespace StaticEditMenu {
         const char * staticString;
         uint16_t enableCondition;
         cprintf::PrintData print;
-        EditData edit;
+        struct EditData edit;
     };
 
     struct StaticEditMenu {
@@ -61,7 +67,7 @@ namespace StaticEditMenu {
         EditCallBack editCallback;
     };
 
-    void initialize(struct StaticEditMenu *d, const StaticEditData * staticEditData, const EditCallBack callback = NULL);
+    void initialize(struct StaticEditMenu *d, const struct StaticEditData * staticEditData, const EditCallBack callback = 0);
     int16_t * getEditAddress(struct StaticEditMenu *d, uint8_t item);
     uint16_t getEnableCondition(struct StaticEditMenu *d, uint8_t item);
 

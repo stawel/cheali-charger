@@ -28,8 +28,19 @@
 
 #define ANALOG_INPUTS_MAX_ADC_VALUE      (((1<<(ANALOG_INPUTS_ADC_RESOLUTION_BITS))-1) << ((ANALOG_INPUTS_RESOLUTION) - (ANALOG_INPUTS_ADC_RESOLUTION_BITS)))
 
-#define ANALOG_INPUTS_FOR_ALL_PHY(iterator) for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::PHYSICAL_INPUTS; iterator = AnalogInputs::Name(iterator + 1) )
-#define ANALOG_INPUTS_FOR_ALL(iterator)     for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::ALL_INPUTS;      iterator = AnalogInputs::Name(iterator + 1) )
+#ifdef SDCC_COMPILER
+#define ANALOG_INPUTS_FOR_ALL_PHY(iterator) Name iterator; for(iterator = 0; iterator < ANALOG_INPUTS_PHYSICAL_INPUTS; iterator++)
+#define ANALOG_INPUTS_FOR_ALL(iterator)     Name iterator; for(iterator = 0; iterator < ANALOG_INPUTS_ALL_INPUTS;      iterator++)
+#else
+#define ANALOG_INPUTS_FOR_ALL_PHY(iterator) for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < ANALOG_INPUTS_PHYSICAL_INPUTS; iterator = AnalogInputs::Name(iterator + 1) )
+#define ANALOG_INPUTS_FOR_ALL(iterator)     for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < ANALOG_INPUTS_ALL_INPUTS;      iterator = AnalogInputs::Name(iterator + 1) )
+#endif
+
+#define ANALOG_INPUTS_PHYSICAL_INPUTS               11 + MAX_BANANCE_CELLS
+#define ANALOG_INPUTS_ALL_INPUTS                    14 + MAX_BANANCE_CELLS + ANALOG_INPUTS_PHYSICAL_INPUTS
+#define ANALOG_INPUTS_REVERSE_POLARITY_MIN_VOLTAGE  ANALOG_VOLT(1.000)
+#define ANALOG_INPUTS_CONNECTED_MIN_VOLTAGE         ANALOG_VOLT(0.400)
+
 
 namespace AnalogInputs {
 
@@ -105,10 +116,6 @@ namespace AnalogInputs {
 
         LastInput,
     } Name;
-    static const uint8_t    PHYSICAL_INPUTS     = VirtualInputs - Vout_plus_pin;
-    static const uint8_t    ALL_INPUTS          = LastInput - Vout_plus_pin;
-    static const ValueType  REVERSE_POLARITY_MIN_VOLTAGE = ANALOG_VOLT(1.000);
-    static const ValueType  CONNECTED_MIN_VOLTAGE = ANALOG_VOLT(0.400);
 
     //get the average ADC value
     ValueType getAvrADCValue(Name name);
@@ -161,13 +168,6 @@ namespace AnalogInputs {
     void initialize();
 
     void printRealValue(Name name, uint8_t dig);
-};
-
-template<class T>
-inline T absDiff(T x, T y)
-{
-    if(x > y) return x - y;
-    return y - x;
 }
 
 

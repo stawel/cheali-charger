@@ -23,26 +23,27 @@
 #define EEMEM
 //#define CHEALI_EEPROM_PACKED
 
+#ifndef SDCC_COMPILER
+#define __reentrant
+#define __xdata
+#define __data
+#define __idata
+#define __pdata
+#define __code
+#endif
 
-//#include <avr/pgmspace.h>
-//#include <avr/eeprom.h>
-//#include <cstddef>
 #include <stdint.h>
 
-#define write(adr, x) write_(adr, &(x), sizeof(x))
-#define read(x, adr) read_(&(x), adr, sizeof(x))
+#define eeprom_write(adr, x) eeprom_write_(adr, &(x), sizeof(x))
+#define eeprom_read(x, adr) eeprom_read_(&(x), adr, sizeof(x))
 
-namespace eeprom {
+#define pgm_read(x, adr) pgm_read_(&(x), adr, sizeof(x))
 
-    void write_(void * adr, const void * const x, uint8_t size);
-    void read_(void *x, const void * const adr, uint8_t size);
+void eeprom_write_(void * adr, const void * const x, uint8_t size);
+void eeprom_read_(void *x, const void * const adr, uint8_t size);
 
-}
-
-namespace pgm {
-    void read_(void *x, const void * const adr, uint8_t size);
-    uint8_t strlen(const char * str);
-}
+void pgm_read_(void *x, const void * const adr, uint8_t size);
+uint8_t pgm_strlen(const char * str);
 
 
 #endif /* MEMORY_H_ */

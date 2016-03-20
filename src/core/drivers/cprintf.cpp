@@ -28,7 +28,7 @@ namespace cprintf {
 void cprintf(const PrintData * printDataPtr, uint8_t dig)
 {
     PrintData p;
-    pgm::read(p, printDataPtr);
+    pgm_read(p, printDataPtr);
     if(p.type == CP_TYPE_METHOD) {
         //Info: this must be before: uvalue = *p.data.uint16Ptr
         return p.data.methodPtr(dig);
@@ -42,8 +42,8 @@ void cprintf(const PrintData * printDataPtr, uint8_t dig)
         const char * strPtr;
         switch(p.type) {
             case CP_TYPE_UINT32_ARRAY:
-                pgm::read(array, p.data.arrayPtr);
-                pgm::read(v, &array.ArrayPtr.uint32Ptr[*array.indexPtr]);
+                pgm_read(array, p.data.arrayPtr);
+                pgm_read(v, &array.ArrayPtr.uint32Ptr[*array.indexPtr]);
                 v/=100;
                 lcdPrintUnsigned(v, dig-2);
                 lcdPrintChar('0');
@@ -51,9 +51,9 @@ void cprintf(const PrintData * printDataPtr, uint8_t dig)
                 break;
 
             case CP_TYPE_STRING_ARRAY:
-                pgm::read(array, p.data.arrayPtr);
-                pgm::read(strPtr, &array.ArrayPtr.stringArrayPtr[*array.indexPtr]);
-                i = pgm::strlen(strPtr);
+                pgm_read(array, p.data.arrayPtr);
+                pgm_read(strPtr, &array.ArrayPtr.stringArrayPtr[*array.indexPtr]);
+                i = pgm_strlen(strPtr);
                 lcdPrintSpaces(dig-i);
                 lcdPrint_P(array.ArrayPtr.stringArrayPtr, *array.indexPtr);
                 break;

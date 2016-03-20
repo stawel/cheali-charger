@@ -20,19 +20,20 @@
 
 
 
-void EditMenu::initialize(struct EditMenu *d, const char * const* staticMenu, EditMethod editItem) {
+void EditMenu::initialize(struct EditMenu *d, const char * const staticMenu[], EditMethod editItem) {
 	StaticMenu::initialize(&d->staticMenu, staticMenu);
+	d->editItem = editItem;
 	Blink::initialize();
 }
 
-void EditMenu::setPrintMethod(struct EditMenu *d, PrintMethod printItem) {
+void EditMenu::setPrintMethod(struct EditMenu *d, Menu::PrintMethod printItem) {
 	d->staticMenu.menu.printItem = (Menu::PrintMethod)printItem;
 }
 
 bool EditMenu::runEdit(struct EditMenu *d)
 {
-    Blink::startBlinkOff(getIndex(&d->staticMenu.menu));
     uint8_t key;
+    Blink::startBlinkOff(getIndex(&d->staticMenu.menu));
     d->staticMenu.menu.render_ = true;
     do {
         key =  Keyboard::getPressedWithDelay();

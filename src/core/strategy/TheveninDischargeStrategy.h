@@ -20,8 +20,8 @@
 
 #include "Strategy.h"
 
-namespace TheveninDischargeStrategy
-{
+namespace TheveninDischargeStrategy {
+
     extern const Strategy::VTable vtable;
     extern bool endOnTheveninMethodComplete_;
 
@@ -29,7 +29,7 @@ namespace TheveninDischargeStrategy
     Strategy::statusType doStrategy();
     void powerOff();
 
-};
+}
 
 
 #endif /* THEVENINDISCHARGESTRATEGY_H_ */

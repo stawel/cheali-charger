@@ -34,7 +34,7 @@ namespace DelayStrategy {
     uint16_t start_time_U16_;
     uint16_t delay_;
 
-}// namespace DelayStrategy
+}
 
 void DelayStrategy::powerOn()
 {

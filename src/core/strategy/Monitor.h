@@ -41,7 +41,7 @@ namespace Monitor {
 
 
     void doSlowInterrupt();
-};
+}
 
 
 #endif /* MONITOR_H_ */

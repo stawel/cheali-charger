@@ -40,7 +40,7 @@
 
 namespace Program {
     ProgramType programType;
-    ProgramState programState = Program::Done;
+    ProgramState programState = Program::ProgramDone;
     const char * stopReason;
 
     bool startInfo();
@@ -187,12 +187,12 @@ void Program::run(ProgramType prog)
     setupProgramType(prog);
     stopReason = NULL;
 
-    programState = Info;
+    programState = ProgramInfo;
     SerialLog::powerOn();
     AnalogInputs::powerOn();
 
     if(startInfo()) {
-        programState = InProgress;
+        programState = ProgramInProgress;
 
         Monitor::powerOn();
         Screen::powerOn();

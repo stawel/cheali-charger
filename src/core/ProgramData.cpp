@@ -62,9 +62,9 @@ const AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE] PRO
 
 uint16_t ProgramData::getDefaultVoltagePerCell(VoltageType type)
 {
-    STATIC_ASSERT(sizeOfArray(voltsPerCell) == ProgramData::LAST_BATTERY_TYPE);
     uint16_t result;
-    pgm::read(result, &voltsPerCell[battery.type][type]);
+    STATIC_ASSERT(sizeOfArray(voltsPerCell) == ProgramData::LAST_BATTERY_TYPE);
+    pgm_read(result, &voltsPerCell[battery.type][type]);
     return result;
 }
 uint16_t ProgramData::getDefaultVoltage(VoltageType type)
@@ -112,8 +112,6 @@ const char * const  ProgramData::batteryString[] PROGMEM = {
         string_battery_LED,
 };
 
-STATIC_ASSERT(sizeOfArray(ProgramData::batteryString) == ProgramData::LAST_BATTERY_TYPE);
-
 const ProgramData::BatteryClass ProgramData::batteryClassMap[] PROGMEM = {
 /*None*/    ClassUnknown,
 /*NiCd*/    ClassNiXX,
@@ -131,15 +129,19 @@ const ProgramData::BatteryClass ProgramData::batteryClassMap[] PROGMEM = {
 
 
 ProgramData::BatteryClass ProgramData::getBatteryClass() {
-    STATIC_ASSERT(sizeOfArray(ProgramData::batteryClassMap) == ProgramData::LAST_BATTERY_TYPE);
     ProgramData::BatteryClass x;
-    pgm::read(x, &ProgramData::batteryClassMap[battery.type]);
+    STATIC_ASSERT(sizeOfArray(ProgramData::batteryClassMap) == ProgramData::LAST_BATTERY_TYPE);
+    pgm_read(x, &ProgramData::batteryClassMap[battery.type]);
     return x;
 }
 
 uint16_t ProgramData::getCapacityLimit()
 {
     uint32_t cap = battery.capacity;
+
+    //TODO: move STATIC_ASSERT
+    STATIC_ASSERT(sizeOfArray(ProgramData::batteryString) == ProgramData::LAST_BATTERY_TYPE);
+
     cap *= battery.capCutoff;
     cap/=100;
     if(cap>ANALOG_MAX_CHARGE || isPowerSupply())
@@ -183,9 +185,10 @@ uint16_t ProgramData::getMaxId()
 
 uint16_t ProgramData::getMaxCells()
 {
+    uint16_t v;
     if(battery.type == Unknown || battery.type == LED)
         return 1;
-    uint16_t v = getDefaultVoltagePerCell(VCharged);
+    v = getDefaultVoltagePerCell(VCharged);
     return MAX_CHARGE_V / v;
 }
 
@@ -230,22 +233,24 @@ void ProgramData::check()
 
 void ProgramData::loadProgramData(uint8_t index)
 {
-    eeprom::read(battery, &eeprom::data.battery[index]);
+    eeprom_read(battery, &eeprom::data.battery[index]);
     check();
 }
 
 void ProgramData::saveProgramData(uint8_t index)
 {
-    eeprom::write(&eeprom::data.battery[index], battery);
+    eeprom_write(&eeprom::data.battery[index], battery);
     eeprom::restoreProgramDataCRC();
 }
 
 void ProgramData::restoreDefault()
 {
+    uint8_t i;
+
     battery.type = None;
     changedType();
 
-    for(int i=0;i< MAX_PROGRAMS;i++) {
+    for(i=0;i< MAX_PROGRAMS;i++) {
         saveProgramData(i);
     }
     eeprom::restoreProgramDataCRC();

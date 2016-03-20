@@ -33,7 +33,7 @@ namespace Thevenin {
 
 	} Resistance;
 
-	AnalogInputs::ValueType getReadableRth(Resistance R);
+	AnalogInputs::ValueType getReadableRth(const Resistance * R);
 
 
 	typedef struct {

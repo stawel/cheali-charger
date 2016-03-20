@@ -32,6 +32,11 @@
 #define ANALOG_MAX_CHARGE ANALOG_CHARGE(65.000)
 #define ANALOG_MIN_CHARGE ANALOG_CHARGE(0.100)
 
+#define ANALOG_INPUTS_STABLE_VALUE_ERROR  6
+
+static const uint16_t ANALOG_INPUTS_STABLE_MIN_COUNT = 3;
+
+
 namespace AnalogInputs {
     typedef uint16_t ValueType;
 
@@ -41,8 +46,8 @@ namespace AnalogInputs {
         Power,
         Work,
         Temperature,
-        Charge,
-        Resistance,
+        ChargeUnit,
+        ResistanceUnit,
         Procent,
         SignedVoltage,
         Unsigned,
@@ -50,13 +55,10 @@ namespace AnalogInputs {
         Minutes,
         TimeLimitMinutes,
         YesNo,
-        Unknown
+        UnknownType
     } Type;
 
-    static const ValueType  STABLE_VALUE_ERROR  = 6;
-    static const uint16_t   STABLE_MIN_VALUE    = 3;
-
     AnalogInputs::ValueType evalI(AnalogInputs::ValueType P, AnalogInputs::ValueType U);
-};
+}
 
 #endif /* ANALOGINPUTSTYPES_H_ */

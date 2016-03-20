@@ -72,22 +72,26 @@ def find_typerefs(in_file, node, n):
     if (node.kind == CursorKind.DECL_REF_EXPR 
        or node.kind == CursorKind.VAR_DECL
        )  and len(new_name) > 0:
-            for t in node.get_tokens():
+            tokens = reversed(list(node.get_tokens()))
+            for t in tokens:
                 if t.spelling == node.spelling:
                     if t.location.line == node.location.line:
-                        add(t.location.line, t.location.column, t.location.column + len(t.spelling) -2, new_name, t.spelling)
+                        add2(t.location.line, t.location.column, t.location.column + len(t.spelling) -2, new_name, t.spelling)
                     else:
                         if(rdebug):  print debug.s(n), "macro found"
                     break
 
     if node.kind == CursorKind.NAMESPACE_REF:
-            for t in node.get_tokens():
-                if t.spelling == node.spelling:
-                    if t.location.line == node.location.line:
-                        add(node.extent.start.line, node.extent.start.column, node.extent.end.column, "", node.spelling)
+            tokens = list(node.get_tokens())
+            if len(tokens)>=2:
+                t1 = tokens[0]
+                t2 = tokens[-1]
+                if t1.spelling == node.spelling:
+                    if t1.location.line == node.location.line:
+                        add(t1.extent.start.line, t1.extent.start.column, t2.extent.end.column-2, "", node.spelling)
                     else:
                         if(rdebug):  print debug.s(n), "macro found"
-                    break
+
 
 
     if node.kind == CursorKind.CALL_EXPR:

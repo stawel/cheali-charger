@@ -27,7 +27,7 @@
 #define SMPS_MAX_CURRENT_CHANGE     ANALOG_AMP(0.200)
 #endif
 
-#define SMPS_MAX_CURRENT_CHANGE_dM  ((AnalogInputs::ValueType)(SMPS_MAX_CURRENT_CHANGE*0.7))
+#define SMPS_MAX_CURRENT_CHANGE_dM  ((uint16_t)(SMPS_MAX_CURRENT_CHANGE*0.7))
 
 namespace SMPS {
     bool on_ = false;
@@ -43,6 +43,7 @@ namespace SMPS {
 
     AnalogInputs::ValueType getMaxIout()
     {
+        AnalogInputs::ValueType i;
         AnalogInputs::ValueType v = AnalogInputs::getVout();
         if (v == 0) {
             v = 1;
@@ -60,7 +61,7 @@ namespace SMPS {
         }
 #endif
 
-        AnalogInputs::ValueType i = AnalogInputs::evalI(MAX_CHARGE_P, v);
+        i = AnalogInputs::evalI(MAX_CHARGE_P, v);
         if(i > settings.maxIc)
             i = settings.maxIc;
         return i;
@@ -89,6 +90,7 @@ void SMPS::setValue(uint16_t value)
 
 void SMPS::trySetIout(AnalogInputs::ValueType I)
 {
+    uint16_t value;
     AnalogInputs::ValueType maxI = getMaxIout();
     if(maxI < I) I = maxI;
 
@@ -102,7 +104,7 @@ void SMPS::trySetIout(AnalogInputs::ValueType I)
 
     if(IoutSet_ == I) return;
     IoutSet_ = I;
-    uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsSet, I);
+    value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IsmpsSet, I);
     setValue(value);
 }
 

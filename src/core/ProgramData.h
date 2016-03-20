@@ -111,6 +111,6 @@ namespace ProgramData {
     void printProgramData(uint8_t index);
 
     void restoreDefault();
-};
+}
 
 #endif /* PROGRAMDATA_H_ */

@@ -29,8 +29,6 @@
 #include "SettingsMenu.h"
 #include "memory.h"
 
-using namespace options;
-
 const char * const optionsStaticMenu[] PROGMEM = {
         string_settings,
         string_calibrate,
@@ -47,9 +45,9 @@ void Options::resetDefault()
 
 void Options::run()
 {
-    StaticMenu::StaticMenu menu;
-    StaticMenu::initialize(&menu, optionsStaticMenu);
     int8_t i;
+    struct StaticMenu::StaticMenu menu;
+    StaticMenu::initialize(&menu, optionsStaticMenu);
 
     do {
         i = StaticMenu::runSimple(&menu);

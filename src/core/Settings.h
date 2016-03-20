@@ -21,11 +21,11 @@
 #include <stdint.h>
 #include "AnalogInputs.h"
 
+#define SETTINGS_UART_SPEEDS_COUNT 5
+#define SETTINGS_TempDifference ANALOG_CELCIUS(5.12)
+
 
 namespace Settings {
-
-    static const uint16_t UARTSpeeds = 5;
-    static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5.12);
 
     typedef enum {Disabled, Normal,  Debug,  ExtDebug, ExtDebugAdc} UARTType;
     typedef enum {FanDisabled, FanAlways, FanProgram, FanTemperature, FanProgramTemperature} FanOnType;
@@ -69,6 +69,6 @@ namespace Settings {
     void restoreDefault();
 }
 
-extern Settings::SettingsData settings;
+extern struct Settings::SettingsData settings;
 
 #endif /* SETTINGS_H_ */

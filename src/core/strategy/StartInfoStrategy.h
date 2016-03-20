@@ -26,7 +26,7 @@ namespace StartInfoStrategy {
     void powerOn();
     Strategy::statusType doStrategy();
     void powerOff();
-};
+}
 
 #endif /* STARTINFOSTRATEGY_H_ */
 

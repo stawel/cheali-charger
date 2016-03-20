@@ -94,7 +94,7 @@ namespace Strategy {
 
     Strategy::statusType strategyDoStrategy() {
         Strategy::statusType (*doStrategy)();
-        pgm::read(doStrategy, &strategy->doStrategy);
+        pgm_read(doStrategy, &strategy->doStrategy);
         return doStrategy();
     }
 
@@ -115,10 +115,10 @@ namespace Strategy {
 
     Strategy::statusType doStrategy()
     {
-        Screen::keyboardButton = BUTTON_NONE;
         bool run = true;
         uint16_t newMesurmentData = 0;
         Strategy::statusType status = Strategy::RUNNING;
+        Screen::keyboardButton = BUTTON_NONE;
         strategyPowerOn();
         do {
             Screen::keyboardButton =  Keyboard::getPressedWithDelay();

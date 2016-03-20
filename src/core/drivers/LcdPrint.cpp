@@ -94,7 +94,7 @@ int8_t lcdPrint(const char *str, int8_t size)
 
 int8_t lcdPrint_P(const char * const str[], uint8_t index) {
     const char * adr;
-    pgm::read(adr, &str[index]);
+    pgm_read(adr, &str[index]);
     return lcdPrint_P(adr);
 }
 
@@ -105,7 +105,7 @@ int8_t lcdPrint_P(const char *str)
     char c;
     if(str) {
         do {
-            pgm::read(c, str++);
+            pgm_read(c, str++);
             if(c) {
                 lcdPrintChar(c);
                 n++;
@@ -294,14 +294,14 @@ static const UnitsInfo unitsInfo[] PROGMEM = {
         {1, false, AnalogInputs::string_minutes},
         //YesNo
         {1, false, NULL},
-        //Unknown
+        //UnknownType
         {1, false, AnalogInputs::string_unknown},
 };
 
 
 void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type type)
 {
-    STATIC_ASSERT(sizeOfArray(unitsInfo) -1 == AnalogInputs::Unknown);
+    STATIC_ASSERT(sizeOfArray(unitsInfo) -1 == AnalogInputs::UnknownType);
 
     if(type == AnalogInputs::YesNo) {
         lcdPrintYesNo(x, dig);
@@ -312,8 +312,8 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
             lcdPrint_P(string_unlimited);
     } else {
         const char * symbol;
-        pgm::read(symbol, &unitsInfo[type].symbol);
-        uint8_t symbol_size = pgm::strlen(symbol);
+        pgm_read(symbol, &unitsInfo[type].symbol);
+        uint8_t symbol_size = pgm_strlen(symbol);
 
         dig -= symbol_size;
         if(dig <= 0)
@@ -330,8 +330,8 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
 
         uint16_t div;
         bool mili;
-        pgm::read(div,  &unitsInfo[type].div);
-        pgm::read(mili, &unitsInfo[type].mili);
+        pgm_read(div,  &unitsInfo[type].div);
+        pgm_read(mili, &unitsInfo[type].mili);
         lcdPrintValue_(x, (int8_t) dig, div, mili, sign);
         lcdPrint_P(symbol);
     }

@@ -25,7 +25,7 @@ namespace StorageStrategy {
     void powerOn();
     Strategy::statusType doStrategy();
     void powerOff();
-};
+}
 
 
 

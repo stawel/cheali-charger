@@ -28,7 +28,7 @@ void StaticMenu::printItem(struct StaticMenu *md, int8_t i) {
 }
 
 void StaticMenu::initialize(struct StaticMenu *d, const char * const staticMenu[]) {
-	Menu::initialize(&d->menu, countElements(staticMenu), (Menu::PrintMethod) printItem);
+	Menu::initialize(&d->menu, countElements((const void *const *)staticMenu), (Menu::PrintMethod) printItem);
 }
 
 

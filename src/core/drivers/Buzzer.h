@@ -35,6 +35,6 @@ namespace Buzzer {
     void begin();
 
     void doIdle();
-};
+}
 
 #endif /* BUZZER_H_ */

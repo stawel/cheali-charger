@@ -31,7 +31,7 @@ namespace Program {
         LAST_PROGRAM_TYPE} ProgramType ;
 
     typedef enum {
-        Done, InProgress, Error, Info
+        ProgramDone, ProgramInProgress, ProgramError, ProgramInfo
     } ProgramState;
 
     extern ProgramType programType;
@@ -45,7 +45,7 @@ namespace Program {
     void resetAccumulatedMeasurements();
 
     void dischargeOutputCapacitor();
-};
+}
 
 
 #endif /* PROGRAM_H_ */
