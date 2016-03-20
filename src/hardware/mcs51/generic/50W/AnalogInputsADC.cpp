@@ -15,27 +15,36 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SERIALLOG_H_
-#define SERIALLOG_H_
 
-#include <stdint.h>
+/*#include <util/delay_basic.h>
+#include <avr/interrupt.h>
+#include <avr/io.h>
+#include "atomic.h"
+#include "Hardware.h"
+#include "imaxB6-pins.h"
+#include "SMPS_PID.h"
+#include "Utils.h"
+#include "memory.h"
+#include "Settings.h"
+#include "Timer0.h"
+#include "AnalogInputsPrivate.h"
+#include "IO.h"
+#include "SMPS.h"
+#include "Discharger.h"
+*/
+//we need ProgramData::battery.enable_externT
+#include "ProgramData.h"
 
-namespace SerialLog {
-    void powerOn();
-    void doIdle();
-    void powerOff();
-    void flush();
-
-    void printString(const char *s);
-    void printString_P(const char *s);
-    void printLong(int32_t x);
-    void printNL();
-    void printChar(char c);
-
-    inline void printInt(int16_t x)     { printLong(x);  }
-    inline void printUInt(uint16_t x)   { printLong(x);  }
-
-} //namespace SerialLog
+//#define ENABLE_DEBUG
+#include "debug.h"
 
 
-#endif /* SERIALLOG_H_ */
+namespace AnalogInputsADC {
+
+
+void initialize()
+{
+}
+
+
+}

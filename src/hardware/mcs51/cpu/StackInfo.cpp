@@ -15,27 +15,38 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SERIALLOG_H_
-#define SERIALLOG_H_
 
-#include <stdint.h>
+#include "StackInfo.h"
 
-namespace SerialLog {
-    void powerOn();
-    void doIdle();
-    void powerOff();
-    void flush();
+#ifdef ENABLE_STACK_INFO
 
-    void printString(const char *s);
-    void printString_P(const char *s);
-    void printLong(int32_t x);
-    void printNL();
-    void printChar(char c);
+extern int __heap_start, *__brkval;
 
-    inline void printInt(int16_t x)     { printLong(x);  }
-    inline void printUInt(uint16_t x)   { printLong(x);  }
-
-} //namespace SerialLog
+void StackInfo::initialize()
+{
+    volatile uint8_t * v = (uint8_t *)(__brkval == 0 ?  &__heap_start : __brkval);
+    volatile uint8_t data;
+    for( ; v <= &data; v++ ) {
+        *v = STACK_INFO_MAGIC_NUMBER;
+    }
+}
 
 
-#endif /* SERIALLOG_H_ */
+uint16_t StackInfo::getFreeStackSize()
+{
+    int v;
+    return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+}
+
+uint16_t StackInfo::getNeverUsedStackSize()
+{
+    volatile uint8_t * v = (uint8_t*)(__brkval == 0 ?  &__heap_start : __brkval);
+    volatile uint8_t data;
+    uint16_t size = 0;
+    for(; v <= &data && *v == STACK_INFO_MAGIC_NUMBER; v++ ) {
+        size++;
+    }
+    return size;
+}
+
+#endif

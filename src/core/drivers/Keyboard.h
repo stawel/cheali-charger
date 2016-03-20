@@ -19,6 +19,7 @@
 #define KEYBOARD_H_
 
 #include <stdint.h>
+#include "cpu/config.h"
 
 #define BUTTON_NONE        0
 

@@ -15,27 +15,22 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SERIALLOG_H_
-#define SERIALLOG_H_
+#ifndef HARDWARE_CONFIG_H_
+#define HARDWARE_CONFIG_H_
 
-#include <stdint.h>
+#include "GlobalConfig.h"
+#include "HardwareConfigGeneric.h"
 
-namespace SerialLog {
-    void powerOn();
-    void doIdle();
-    void powerOff();
-    void flush();
+#define MAX_CHARGE_V            ANALOG_VOLT(27.000)
+#define MAX_CHARGE_I            ANALOG_AMP(5.000)
+#define MAX_CHARGE_P            ANALOG_WATT(50.000)
 
-    void printString(const char *s);
-    void printString_P(const char *s);
-    void printLong(int32_t x);
-    void printNL();
-    void printChar(char c);
-
-    inline void printInt(int16_t x)     { printLong(x);  }
-    inline void printUInt(uint16_t x)   { printLong(x);  }
-
-} //namespace SerialLog
+#define MAX_DISCHARGE_P         ANALOG_WATT(5.000)
+#define MAX_DISCHARGE_I         ANALOG_AMP(1.000)
 
 
-#endif /* SERIALLOG_H_ */
+//1-13? correlation
+#define SMPS_UPPERBOUND_VALUE               (MAX_CHARGE_I*13)
+#define DISCHARGER_UPPERBOUND_VALUE         TIMER1_PRECISION_PERIOD
+
+#endif /* HARDWARE_CONFIG_H_ */

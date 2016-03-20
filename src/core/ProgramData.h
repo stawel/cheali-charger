@@ -99,10 +99,10 @@ namespace ProgramData {
 
     BatteryClass getBatteryClass();
 
-    inline bool isPowerSupply() { return getBatteryClass() == ClassLED; };
-    inline bool isLiXX() { return getBatteryClass() == ClassLiXX; };
-    inline bool isNiXX() { return getBatteryClass() == ClassNiXX; };
-    inline bool isPb() { return getBatteryClass() == ClassPb; };
+    inline bool isPowerSupply() { return getBatteryClass() == ClassLED; }
+    inline bool isLiXX() { return getBatteryClass() == ClassLiXX; }
+    inline bool isNiXX() { return getBatteryClass() == ClassNiXX; }
+    inline bool isPb() { return getBatteryClass() == ClassPb; }
 
     void loadProgramData(uint8_t index);
     void saveProgramData(uint8_t index);

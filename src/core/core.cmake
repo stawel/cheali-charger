@@ -6,7 +6,7 @@ set(CORE_DIR_BIN ${CMAKE_BINARY_DIR}/src/core/)
 set(CORE_SOURCE
         AnalogInputs.cpp  AnalogInputsPrivate.h  ChealiCharger2.cpp  eeprom.cpp  Program.cpp      ProgramData.h       ProgramDCcycle.h  Settings.cpp  Utils.cpp
         AnalogInputs.h    AnalogInputsTypes.h    ChealiCharger2.h    eeprom.h    ProgramData.cpp  ProgramDCcycle.cpp  Program.h         Settings.h    Utils.h
-        AnalogInputsTypes.cpp
+        AnalogInputsTypes.cpp GlobalConfig.h
 )
 
 include_directories(${CORE_DIR_BIN})

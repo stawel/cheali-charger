@@ -1,4 +1,4 @@
 #!/bin/bash
 
 
-cmake  -DCMAKE_TOOLCHAIN_FILE=avr-toolchain.cmake -G "Eclipse CDT4 - Unix Makefiles" $*
+cmake  -DCMAKE_TOOLCHAIN_FILE=avr-toolchain.cmake -DAVR=1 -G "Eclipse CDT4 - Unix Makefiles" $*

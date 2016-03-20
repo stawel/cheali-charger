@@ -15,27 +15,53 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SERIALLOG_H_
-#define SERIALLOG_H_
-
-#include <stdint.h>
-
-namespace SerialLog {
-    void powerOn();
-    void doIdle();
-    void powerOff();
-    void flush();
-
-    void printString(const char *s);
-    void printString_P(const char *s);
-    void printLong(int32_t x);
-    void printNL();
-    void printChar(char c);
-
-    inline void printInt(int16_t x)     { printLong(x);  }
-    inline void printUInt(uint16_t x)   { printLong(x);  }
-
-} //namespace SerialLog
+#include "Hardware.h"
+#include "Timer1.h"
+#include "imaxB6-pins.h"
+#include "SMPS_PID.h"
+#include "AnalogInputsADC.h"
+#include "SerialLog.h"
+#include "IO.h"
+#include "Keyboard.h"
 
 
-#endif /* SERIALLOG_H_ */
+uint8_t hardware::getKeyPressed()
+{
+}
+
+
+void hardware::setBalancerOutput(bool enable)
+{
+
+}
+
+
+void hardware::initializePins()
+{
+}
+
+void hardware::initialize()
+{
+}
+
+
+namespace {
+    volatile uint8_t sound_ = 0;
+}
+void hardware::soundInterrupt()
+{
+}
+
+void hardware::setBuzzer(uint8_t val)
+{
+}
+
+void hardware::setBatteryOutput(bool enable)
+{
+}
+
+void hardware::setBalancer(uint8_t v)
+{
+}
+
+

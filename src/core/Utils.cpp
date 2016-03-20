@@ -48,17 +48,17 @@ uint8_t countElements(const void * const array[])
 }
 
 
-bool testTintern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on)
+bool testTintern(bool *more, AnalogInputs::ValueType off, AnalogInputs::ValueType on)
 {
     AnalogInputs::ValueType t = AnalogInputs::getRealValue(AnalogInputs::Tintern);
 
     bool retu = false;
     if(t < off) {
         retu = true;
-        more =  false;
+        *more =  false;
     } else if(t > on) {
         retu = true;
-        more = true;
+        *more = true;
     }
     return retu;
 }

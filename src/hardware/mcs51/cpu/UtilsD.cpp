@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2013  Tucker Kern. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,27 +15,22 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SERIALLOG_H_
-#define SERIALLOG_H_
 
-#include <stdint.h>
+#include "Utils.h"
+// Need F_CPU to be defined. Which is done elsewhere
+//#include <util/delay.h>
 
-namespace SerialLog {
-    void powerOn();
-    void doIdle();
-    void powerOff();
-    void flush();
+namespace Utils {
+    // Accuracy of this is probably low but does that matter for us?
+    void delayTenMicroseconds(uint16_t value)
+    {
+    }
 
-    void printString(const char *s);
-    void printString_P(const char *s);
-    void printLong(int32_t x);
-    void printNL();
-    void printChar(char c);
+    void delayMicroseconds(uint16_t value)
+    {
+    }
 
-    inline void printInt(int16_t x)     { printLong(x);  }
-    inline void printUInt(uint16_t x)   { printLong(x);  }
-
-} //namespace SerialLog
-
-
-#endif /* SERIALLOG_H_ */
+    void delayMilliseconds(uint16_t value)
+    {
+    }
+}

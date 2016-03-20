@@ -19,6 +19,7 @@
 #define UTILS_H_
 
 #include "AnalogInputsTypes.h"
+#include "cpu/config.h"
 
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
@@ -50,7 +51,7 @@ void callVoidMethod_P(const VoidMethod * method);
 void callVoidMethod(const VoidMethod method);
 
 
-bool testTintern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on);
+bool testTintern(bool *more, AnalogInputs::ValueType off, AnalogInputs::ValueType on);
 uint16_t pow10(uint8_t n);
 uint8_t digits(int32_t x);
 uint8_t digits(uint16_t x);

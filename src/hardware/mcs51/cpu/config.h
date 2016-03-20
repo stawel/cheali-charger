@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2016 Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,27 +15,16 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SERIALLOG_H_
-#define SERIALLOG_H_
+#ifndef CPU_CONFIG_H_
+#define CPU_CONFIG_H_
 
-#include <stdint.h>
+#define CHEALI_CHARGER_ARCHITECTURE_CPU         0x1000
+#define CHEALI_CHARGER_ARCHITECTURE_CPU_STRING  "atmega32"
 
-namespace SerialLog {
-    void powerOn();
-    void doIdle();
-    void powerOff();
-    void flush();
+#define CHEALI_EEPROM_PACKED
 
-    void printString(const char *s);
-    void printString_P(const char *s);
-    void printLong(int32_t x);
-    void printNL();
-    void printChar(char c);
+#include <stdbool.h>
 
-    inline void printInt(int16_t x)     { printLong(x);  }
-    inline void printUInt(uint16_t x)   { printLong(x);  }
+//#define bool int
 
-} //namespace SerialLog
-
-
-#endif /* SERIALLOG_H_ */
+#endif /* CPU_CONFIG_H_ */

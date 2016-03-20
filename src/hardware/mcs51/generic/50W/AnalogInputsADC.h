@@ -15,27 +15,11 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SERIALLOG_H_
-#define SERIALLOG_H_
+#ifndef ANALOG_INPUTS_ADC_H_
+#define ANALOG_INPUTS_ADC_H_
 
-#include <stdint.h>
+namespace AnalogInputsADC {
+    void initialize();
+};
 
-namespace SerialLog {
-    void powerOn();
-    void doIdle();
-    void powerOff();
-    void flush();
-
-    void printString(const char *s);
-    void printString_P(const char *s);
-    void printLong(int32_t x);
-    void printNL();
-    void printChar(char c);
-
-    inline void printInt(int16_t x)     { printLong(x);  }
-    inline void printUInt(uint16_t x)   { printLong(x);  }
-
-} //namespace SerialLog
-
-
-#endif /* SERIALLOG_H_ */
+#endif /* ANALOG_INPUTS_ADC_H_ */
