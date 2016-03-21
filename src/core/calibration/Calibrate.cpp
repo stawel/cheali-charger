@@ -222,16 +222,16 @@ const AnalogInputs::Name voltageName2[] PROGMEM = {
 };
 
 const StaticEditMenu::StaticEditData editVoltageData[] PROGMEM = {
-{string_v_menu_input,       COND_E_C_ANALOG,    EANALOG_V(Vin),         {1, 0, ANALOG_VOLT(30)}},
-{string_v_menu_cell1,       COND_E_C_ANALOG,    EANALOG_V(Vb1),         {1, 0, ANALOG_VOLT(5)}},
-{string_v_menu_cell2,       COND_E_C_ANALOG,    EANALOG_V(Vb2),         {1, 0, ANALOG_VOLT(5)}},
-{string_v_menu_cell3,       COND_E_C_ANALOG,    EANALOG_V(Vb3),         {1, 0, ANALOG_VOLT(5)}},
-{string_v_menu_cell4,       COND_E_C_ANALOG,    EANALOG_V(Vb4),         {1, 0, ANALOG_VOLT(5)}},
-{string_v_menu_cell5,       COND_E_C_ANALOG,    EANALOG_V(Vb5),         {1, 0, ANALOG_VOLT(5)}},
-{string_v_menu_cell6,       COND_E_C_ANALOG,    EANALOG_V(Vb6),         {1, 0, ANALOG_VOLT(5)}},
+{string_v_menu_input,       COND_E_C_ANALOG,    EANALOG_V(Vin),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(30)}},
+{string_v_menu_cell1,       COND_E_C_ANALOG,    EANALOG_V(Vb1),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell2,       COND_E_C_ANALOG,    EANALOG_V(Vb2),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell3,       COND_E_C_ANALOG,    EANALOG_V(Vb3),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell4,       COND_E_C_ANALOG,    EANALOG_V(Vb4),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell5,       COND_E_C_ANALOG,    EANALOG_V(Vb5),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell6,       COND_E_C_ANALOG,    EANALOG_V(Vb6),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
 BALANCER_PORTS_GT_6(
-{string_v_menu_cell7,       COND_E_C_ANALOG,    EANALOG_V(Vb7),         {1, 0, ANALOG_VOLT(5)}},
-{string_v_menu_cell8,       COND_E_C_ANALOG,    EANALOG_V(Vb8),         {1, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell7,       COND_E_C_ANALOG,    EANALOG_V(Vb7),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell8,       COND_E_C_ANALOG,    EANALOG_V(Vb8),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
 )
 {string_v_menu_cellSum,     COND_ALWAYS,        EANALOG_V(Vbalancer),   {0, 0, 0}},
 {string_v_menu_output,      COND_ALWAYS,        EANALOG_V(Vout),        {0, 0, 0}},
@@ -258,12 +258,12 @@ void calibrateVoltage()
 
 const StaticEditMenu::StaticEditData editExpertVoltageData[] PROGMEM = {
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-{string_ev_menu_cell0pin,           COND_E_ANALOG,   EANALOG_V(Vb0_pin),         {1, 0, ANALOG_VOLT(10)}},
-{string_ev_menu_cell1pin,           COND_E_ANALOG,   EANALOG_V(Vb1_pin),         {1, 0, ANALOG_VOLT(10)}},
-{string_ev_menu_cell2pin,           COND_E_ANALOG,   EANALOG_V(Vb2_pin),         {1, 0, ANALOG_VOLT(10)}},
+{string_ev_menu_cell0pin,           COND_E_ANALOG,   EANALOG_V(Vb0_pin),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(10)}},
+{string_ev_menu_cell1pin,           COND_E_ANALOG,   EANALOG_V(Vb1_pin),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(10)}},
+{string_ev_menu_cell2pin,           COND_E_ANALOG,   EANALOG_V(Vb2_pin),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(10)}},
 #endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-{string_ev_menu_plusVoltagePin,     COND_E_ANALOG,   EANALOG_V(Vout_plus_pin),   {1, 0, MAX_CHARGE_V}},
-{string_ev_menu_minusVoltagePin,    COND_E_ANALOG,   EANALOG_V(Vout_minus_pin),  {1, 0, MAX_CHARGE_V}},
+{string_ev_menu_plusVoltagePin,     COND_E_ANALOG,   EANALOG_V(Vout_plus_pin),   {CE_STEP_TYPE_KEY_SPEED, 0, MAX_CHARGE_V}},
+{string_ev_menu_minusVoltagePin,    COND_E_ANALOG,   EANALOG_V(Vout_minus_pin),  {CE_STEP_TYPE_KEY_SPEED, 0, MAX_CHARGE_V}},
 {string_menu_point,                 COND_POINT,     {CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
 {NULL,                      StaticEditMenu::Last}
 };
@@ -352,12 +352,13 @@ public:
     }
     virtual void editItem(uint8_t index, uint8_t key) {
         int dir = -1;
+        uint8_t steps = Keyboard::getSpeedFactor();
         if(key == BUTTON_INC) dir = 1;
         if(index == 0) {
-            changeMinToMaxStep(&value_, dir, 1, maxValue_, 1);
+            changeMinToMaxStep(&value_, dir, 1, maxValue_, steps);
             setCurrentValue(cNameSet_, value_);
         } else {
-            changeMinToMaxStep(&Iexpected_, dir, 1, maxIexpected_, 1);
+            changeMinToMaxStep(&Iexpected_, dir, 1, maxIexpected_, steps);
         }
     }
 };
@@ -461,14 +462,14 @@ void calibrateI(bool charging)
 #define EANALOG_ADC(name) {CP_TYPE_UNSIGNED, 0, &AnalogInputs::avrAdc_[AnalogInputs::name]}
 
 const StaticEditMenu::StaticEditData editExternTData[] PROGMEM = {
-{string_t_menu_temperature,     COND_E_ANALOG,  EANALOG_T(Textern),             {1, 0, ANALOG_CELCIUS(100)}},
+{string_t_menu_temperature,     COND_E_ANALOG,  EANALOG_T(Textern),             {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_CELCIUS(100)}},
 {string_t_menu_adc,             COND_ALWAYS,    EANALOG_ADC(Textern),           {0,0,0}},
 {string_menu_point,             COND_POINT,     {CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
 {NULL,                      StaticEditMenu::Last}
 };
 
 const StaticEditMenu::StaticEditData editInternTData[] PROGMEM = {
-{string_t_menu_temperature,     COND_E_ANALOG,  EANALOG_T(Tintern),             {1, 0, ANALOG_CELCIUS(100)}},
+{string_t_menu_temperature,     COND_E_ANALOG,  EANALOG_T(Tintern),             {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_CELCIUS(100)}},
 {string_t_menu_adc,             COND_ALWAYS,    EANALOG_ADC(Tintern),           {0,0,0}},
 {string_menu_point,             COND_POINT,     {CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
 {NULL,                      StaticEditMenu::Last}

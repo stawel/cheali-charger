@@ -73,9 +73,12 @@ void StaticEditMenu::editItem(uint8_t item, uint8_t key)
     } else if(d.step == CE_STEP_TYPE_METHOD) {
         d.editMethod(dir);
     } else {
-         *valuePtr += dir*d.step;
-         if(*valuePtr < d.minValue) *valuePtr = d.minValue;
-         if(*valuePtr > d.maxValue) *valuePtr = d.maxValue;
+        if(d.step == CE_STEP_TYPE_KEY_SPEED) {
+            d.step = Keyboard::getSpeedFactor();
+        }
+        *valuePtr += dir*d.step;
+        if(*valuePtr < d.minValue) *valuePtr = d.minValue;
+        if(*valuePtr > d.maxValue) *valuePtr = d.maxValue;
     }
 
     if(editCallback) {

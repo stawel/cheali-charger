@@ -29,7 +29,7 @@
 
 namespace Keyboard {
     uint8_t  getLast();
-    uint16_t getSpeedFactor();
+    uint8_t getSpeedFactor();
     uint8_t  getPressedWithDelay();
     bool isLongPressTime();
 };

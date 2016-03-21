@@ -94,9 +94,9 @@ const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 {string_dischOff,       COND_ALWAYS,    {CP_TYPE_TEMPERATURE,3,&settings.dischargeTempOff}, {Tstep, Tmin, Tmax}},
 #endif
 {string_AudioBeep,      COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.audioBeep},         {1, 0, 1}},
-{string_minIc,          COND_ALWAYS,    {CP_TYPE_A,0,&settings.minIc},                  {ANALOG_AMP(0.001), ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
+{string_minIc,          COND_ALWAYS,    {CP_TYPE_A,0,&settings.minIc},                  {CE_STEP_TYPE_KEY_SPEED, ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
 {string_maxIc,          COND_ALWAYS,    {CP_TYPE_A,0,&settings.maxIc},                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
-{string_minId,          COND_ALWAYS,    {CP_TYPE_A,0,&settings.minId},                  {ANALOG_AMP(0.001), ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
+{string_minId,          COND_ALWAYS,    {CP_TYPE_A,0,&settings.minId},                  {CE_STEP_TYPE_KEY_SPEED, ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
 {string_maxId,          COND_ALWAYS,    {CP_TYPE_A,0,&settings.maxId},                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_DISCHARGE_I}},
 {string_inputLow,       COND_ALWAYS,    {CP_TYPE_V,3,&settings.inputVoltageLow},        {ANALOG_VOLT(1), ANALOG_VOLT(7), ANALOG_VOLT(30)}},
 #ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE

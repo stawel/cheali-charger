@@ -23,21 +23,27 @@
 //#define ENABLE_DEBUG
 #include "debug.h"
 
-#define BUTTON_DELAY                 1
-#define BUTTON_DEBOUNCE_COUNT        4
+//delay until next key read, must not be smaller than 7ms (see: atmeag32/generic/200W/AnalogInputsADC.cpp:adc_keyboard_)
+#define BUTTON_DELAY                 7
+#define BUTTON_DEBOUNCE_COUNT        3
 
 
 namespace Keyboard {
-    static const uint8_t stateDelay[]   PROGMEM = {BUTTON_DEBOUNCE_COUNT, 250, 125, 60,   30,  10,   1};
-    static const uint8_t stayInState[]  PROGMEM = {                    1,   1,   3,  8,   20,  30,   1};
-    static const uint8_t speedFactor[]  PROGMEM = {                    1,   1,   1, 11,   11,  10, 100};
+    static const uint8_t stateDelay[]   PROGMEM = {   25,    12,     3,     1,     1,     1};
+    static const uint8_t stayInState[]  PROGMEM = {    1,     3,    24,    71,   142,     1};
+    static const uint8_t speedFactor[]  PROGMEM = {    1,     1,     1,     2,    10,    30};
+           //timing (assuming screen is not redrawn)
+           //change per:                           175ms,  84ms,  21ms,   7ms,   7ms,   7ms
+           //inState:                              175ms, 252ms, 504ms, 497ms, 994ms, for ever
+           //changes/second (with speed factor):     5.7,  11.9,  47.6, 285.7,  1428,  4285
 
     uint8_t last_key_ = BUTTON_NONE;
+    uint8_t debounce_ = 0;
+
     uint8_t inState_ = 0;
 
     //state_ - "key pressed" state
-    //state_ == 0 - Denounce state
-    //state_ == 1 - new key pressed (or we are in key == BUTTON_NONE)
+    //state_ == 0 - new key pressed (or we are in key == BUTTON_NONE)
     //state_ == n - key is pressed and hold
     uint8_t state_ = 0;
 
@@ -49,42 +55,50 @@ namespace Keyboard {
         return last_key_;
     }
 
-    uint16_t getSpeedFactor() {
+    uint8_t getSpeedFactor() {
         return pgm::read(&speedFactor[state_]);
     }
 }
 
 uint8_t Keyboard::getPressedWithDelay()
 {
-    uint8_t key, delay = 0;
+    uint8_t key, delay = 0, currentStateDelay;
+
+    pgm::read(currentStateDelay, &stateDelay[state_]);
 
     do {
-        delay++;
         Time::delayDoIdle(BUTTON_DELAY);
         key = hardware::getKeyPressed();
         if(last_key_ != key) {
-            //key changed
-            last_key_ = key;
-            state_ = 0;
-            inState_ = 0;
-            delay = 0;
+            if(debounce_ == 0) {
+                //key changed
+                last_key_ = key;
+                state_ = 0;
+                inState_ = 0;
+                if(key != BUTTON_NONE) {
+                    Buzzer::soundKeyboard();
+                }
+                return key;
+            }
+            debounce_--;
+        } else {
+            debounce_++;
         }
-    } while (delay <= pgm::read(&stateDelay[state_]));
+        if(debounce_ > BUTTON_DEBOUNCE_COUNT) {
+            debounce_ = BUTTON_DEBOUNCE_COUNT;
+            delay++;
+        }
+    } while (delay <= currentStateDelay);
 
-    if(state_ < sizeOfArray(stateDelay) - 1) {
+    //change state if necessary
+    if(state_ < sizeOfArray(stateDelay) - 1 && key != BUTTON_NONE) {
         inState_++;
         if(inState_ >= pgm::read(&stayInState[state_])) {
             state_ ++;
             inState_ = 0;
-            if(last_key_ == BUTTON_NONE) {
-                state_ = 1; //we stay at state := 1 while last_key_ == BUTTON_NONE
-            } else if(state_ == 1) { //key pressed (changed)
-                //this method has also a small delay
-                Buzzer::soundKeyboard();
-            }
         }
     }
 
-    return last_key_;
+    return key;
 }
 
