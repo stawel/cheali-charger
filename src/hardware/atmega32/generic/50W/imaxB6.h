@@ -52,7 +52,6 @@ namespace hardware {
     void setBalancer(uint8_t balance);
     void doInterrupt();
 
-    void soundInterrupt();
     uint16_t getPIDValue();
 
     inline void setExternalTemperatueOutput(bool enable) {};

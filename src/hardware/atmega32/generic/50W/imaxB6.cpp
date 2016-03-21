@@ -17,6 +17,7 @@
 */
 #include "Hardware.h"
 #include "Timer1.h"
+#include "Timer0.h"
 #include "imaxB6-pins.h"
 #include "SMPS_PID.h"
 #include "AnalogInputsADC.h"
@@ -72,36 +73,12 @@ void hardware::initialize()
 {
     lcd.begin(LCD_COLUMNS, LCD_LINES);
 
+    Timer0::initialize();
     Timer1::initialize();
     AnalogInputsADC::initialize();
     setVoutCutoff(MAX_CHARGE_V);
 }
 
-
-namespace {
-    volatile uint8_t sound_ = 0;
-}
-void hardware::soundInterrupt()
-{
-    static uint8_t on = 0;
-
-    uint8_t f = 0;
-    if(sound_ > 0) {
-        on++;
-    } else {
-        on = 0;
-    }
-    if(sound_ >= 10) f=8;
-    if(sound_ >= 20) f=4;
-    if(sound_ >= 30) f=2;
-
-    IO::digitalWrite(BUZZER_PIN, on&f);
-}
-
-void hardware::setBuzzer(uint8_t val)
-{
-    sound_ = val;
-}
 
 void hardware::setBatteryOutput(bool enable)
 {
