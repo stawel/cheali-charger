@@ -1,0 +1,36 @@
+/* XPM */
+static char *_x5C_png[] = {
+/* columns rows colors chars-per-pixel */
+"19 27 3 1 ",
+"  c #17D8F7",
+". c #0877ED",
+"X c #0063D9",
+/* pixels */
+"   .XXX.XXX.XXX.   ",
+"   .XXX.XXX.XXX.   ",
+"   .XXX.XXX.XXX.   ",
+"...................",
+"XXX.   .XXX.   .XXX",
+"XXX.   .XXX.   .XXX",
+"XXX.   .XXX.   .XXX",
+"...................",
+"   .   .   .   .   ",
+"   .   .   .   .   ",
+"   .   .   .   .   ",
+"...................",
+"XXX.XXX.   .XXX.XXX",
+"XXX.XXX.   .XXX.XXX",
+"XXX.XXX.   .XXX.XXX",
+"...................",
+"   .   .   .   .   ",
+"   .   .   .   .   ",
+"   .   .   .   .   ",
+"...................",
+"XXX.XXX.   .XXX.XXX",
+"XXX.XXX.   .XXX.XXX",
+"XXX.XXX.   .XXX.XXX",
+"...................",
+"XXX.XXX.   .XXX.XXX",
+"XXX.XXX.   .XXX.XXX",
+"XXX.XXX.   .XXX.XXX"
+};
