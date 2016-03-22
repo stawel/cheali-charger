@@ -19,10 +19,11 @@
 #define THEVENINDISCHARGESTRATEGY_H_
 
 #include "Strategy.h"
+#include "memory.h"
 
 namespace TheveninDischargeStrategy {
 
-    extern const Strategy::VTable vtable;
+    extern const PROGMEM Strategy::VTable vtable;
     extern bool endOnTheveninMethodComplete_;
 
     void powerOn();

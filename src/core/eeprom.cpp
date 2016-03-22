@@ -30,7 +30,7 @@
 #define EEPROM_READ_TRIALS 5
 
 namespace eeprom {
-    Data data EEMEM;
+    EEMEM Data data;
 
     bool testOrRestore(uint16_t * adr, uint16_t version, bool restore) {
         uint8_t trials = EEPROM_READ_TRIALS;

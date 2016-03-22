@@ -26,7 +26,7 @@
 ProgramData::Battery ProgramData::battery;
 
 //battery voltage limits, see also: ProgramData::getVoltagePerCell, ProgramData::getVoltage
-const AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
+const PROGMEM AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE]  =
 {
 //          { VNominal,           VCharged,           VDischarged,        VStorage,           VvalidEmpty};
 /*None*/    { 1,                  1,                  1,                  1,                  1},
@@ -97,7 +97,7 @@ uint16_t ProgramData::getVoltage(VoltageType type) {
 }
 
 
-const char * const  ProgramData::batteryString[] PROGMEM = {
+const PROGMEM char * const  ProgramData::batteryString[] = {
         string_battery_None,
         string_battery_NiCd,
         string_battery_NiMH,
@@ -112,7 +112,7 @@ const char * const  ProgramData::batteryString[] PROGMEM = {
         string_battery_LED,
 };
 
-const ProgramData::BatteryClass ProgramData::batteryClassMap[] PROGMEM = {
+const PROGMEM ProgramData::BatteryClass ProgramData::batteryClassMap[] = {
 /*None*/    ClassUnknown,
 /*NiCd*/    ClassNiXX,
 /*NiMH*/    ClassNiXX,

@@ -39,11 +39,11 @@ namespace Screen {
 
     //see PAGE_PROGRAM
     //see PAGE_BATTERY
-    STATIC_ASSERT_MSG(ProgramData::LAST_BATTERY_CLASS == 6 && Program::LAST_PROGRAM_TYPE == 9 + 2, "see ScreenPages.h");
 
     uint32_t getConditions() {
         uint32_t c = 0;
-        if(Program::programState == Program::Info)
+        STATIC_ASSERT_MSG(ProgramData::LAST_BATTERY_CLASS == 6 && Program::LAST_PROGRAM_TYPE == 9 + 2, "see ScreenPages.h");
+        if(Program::programState == Program::ProgramInfo)
             c += PAGE_START_INFO;
         if(Monitor::isBalancePortConnected)
             c += PAGE_BALANCE_PORT;
@@ -87,10 +87,11 @@ void Screen::doStrategy()
     if(!PolarityCheck::runReversedPolarityInfo()) {
         Screen::displayPage();
     }
-
+/*
     if(keyboardButton == BUTTON_INC && getPage(pageNr_ + 1) != NULL ) {
 #ifdef ENABLE_SCREEN_ANIMATION
-        Screen::displayAnimation();
+//TODO: sdcc fix
+//        Screen::displayAnimation();
 #endif
         pageNr_++;
     }
@@ -99,7 +100,7 @@ void Screen::doStrategy()
         Screen::displayAnimation();
 #endif
         pageNr_--;
-    }
+    }*/
 }
 
 void Screen::powerOn()
@@ -177,7 +178,8 @@ void Screen::displayScreenReversedPolarity()
 
 void Screen::displayAnimation()
 {
-    for (uint8_t i=0; i<16; i++) {
+    uint8_t i;
+    for (i=0; i<16; i++) {
         lcdSetCursor(15-i,1);
         lcdPrintChar(255);
         lcdSetCursor(i,0);

@@ -50,7 +50,7 @@ uint8_t Menu::run() {
 
     return button;
 }
-int8_t Menu::runSimple(bool animate) {
+int8_t Menu::runSimple(bool2 animate) {
     uint8_t key;
     render();
     do {

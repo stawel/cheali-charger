@@ -48,7 +48,7 @@
 
     STRING(inputVoltageToLow,           "input V to low");
     STRING(capacityLimit,               "capacity cutoff");
-    STRING(timeLimit,                   "time limit");
+    STRING(timeLimitReached,            "time limit");
     STRING(externalTemperatureCutOff,   "ext.temp.cutoff");
 //};
 
@@ -72,7 +72,7 @@
 //}
 
 //namespace ProgramData {
-    STRING_SIZE(minutes,    "min.");
+//    STRING_SIZE(minutes,    "min.");
 
     //battery types
     STRING(battery_None,    "None");
@@ -136,16 +136,14 @@
 //namespace ProgramDataMenu {
     //menu
     STRING(batteryType, "battery:");
-    STRING(voltage,     "V:");
+    STRING(BatteryVolt, "V:");
     STRING(Vc_per_cell, "Vc:");
     STRING(Vs_per_cell, "Vs:");
     STRING(Vd_per_cell, "Vd:");
     STRING(Vcutoff,     "Vco:");
     STRING(capacity,    "Cap:");
     STRING(Ic,          "Ic:");
-    STRING(minIc,       "minIc:");
     STRING(Id,          "Id:");
-    STRING(minId,       "minId:");
     STRING(balancErr,   "bal. err:");
 
     STRING(enabledV,    "enab dV:");

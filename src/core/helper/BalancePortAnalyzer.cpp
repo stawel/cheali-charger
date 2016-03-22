@@ -38,6 +38,9 @@
 #include "atomic.h"
 #include "memory.h"
 
+
+#ifndef SDCC_COMPILER
+
 namespace BalancePortAnalyzer {
 
 STRING_CPP(v_menu_cell0,    "Vb0_pin: ");
@@ -122,3 +125,4 @@ void run() {
 
 } //namespace BalancePortAnalyzer
 
+#endif

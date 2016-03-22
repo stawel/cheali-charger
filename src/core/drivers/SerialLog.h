@@ -21,10 +21,10 @@
 #include <stdint.h>
 
 namespace SerialLog {
-    void powerOn();
-    void doIdle();
-    void powerOff();
-    void flush();
+    inline void powerOn() {}
+    inline void doIdle() {}
+    inline void powerOff() {}
+    inline void flush() {}
 
     void printString(const char *s);
     void printString_P(const char *s);

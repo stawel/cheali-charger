@@ -21,6 +21,14 @@
 #include "AnalogInputs.h"
 #include "memory.h"
 
+
+uint16_t absDiff(uint16_t x, uint16_t y)
+{
+    if(x > y) return x - y;
+    return y - x;
+}
+
+
 void callVoidMethod_P(const VoidMethod * method)
 {
     VoidMethod voidMethod;
@@ -49,7 +57,7 @@ uint8_t countElements(const void * const array[])
 }
 
 
-bool testTintern(bool *more, AnalogInputs::ValueType off, AnalogInputs::ValueType on)
+bool testTintern(bool2 *more, AnalogInputs::ValueType off, AnalogInputs::ValueType on)
 {
     AnalogInputs::ValueType t = AnalogInputs::getRealValue(AnalogInputs::Tintern);
 

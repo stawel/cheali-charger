@@ -27,11 +27,11 @@
 
 namespace ProgramMenus {
 
-    const Program::ProgramType programNoneMenu[] PROGMEM = {
+    const  PROGMEM Program::ProgramType programNoneMenu[] = {
             Program::EditBattery,
     };
 
-    const Program::ProgramType programLiXXMenu[] PROGMEM = {
+    const  PROGMEM Program::ProgramType programLiXXMenu[] = {
             Program::Charge,
             Program::ChargeBalance,
             Program::Balance,
@@ -46,7 +46,7 @@ namespace ProgramMenus {
             Program::EditBattery,
     };
 
-    const Program::ProgramType programNiZnMenu[] PROGMEM = {
+    const PROGMEM Program::ProgramType programNiZnMenu[] = {
             Program::Charge,
             Program::ChargeBalance,
             Program::Balance,
@@ -59,7 +59,7 @@ namespace ProgramMenus {
             Program::EditBattery,
     };
 
-    const Program::ProgramType programNiXXMenu[] PROGMEM = {
+    const PROGMEM Program::ProgramType programNiXXMenu[] = {
             Program::Charge,
             Program::Discharge,
             Program::DischargeChargeCycle,
@@ -67,7 +67,7 @@ namespace ProgramMenus {
             Program::EditBattery,
     };
 
-    const Program::ProgramType programPbMenu[] PROGMEM = {
+    const PROGMEM Program::ProgramType programPbMenu[] = {
             Program::Charge,
             Program::Discharge,
             Program::FastCharge,
@@ -76,13 +76,13 @@ namespace ProgramMenus {
             Program::EditBattery,
     };
 
-    const Program::ProgramType programLEDMenu[] PROGMEM = {
+    const PROGMEM Program::ProgramType programLEDMenu[] = {
             Program::Charge,
             Program::EditBattery,
     };
 
 // ProgramType -> strings
-    const char * const programMenus_strings[] PROGMEM = {
+    const PROGMEM char * const programMenus_strings[] = {
             string_charge,
             string_chargeAndBalance,
             string_balance,

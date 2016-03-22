@@ -14,15 +14,15 @@ out_file = sys.argv[2]
 include_dirs = sys.argv[3:]
 
 
-params = ['-x','c++', '-DCHEALI_EEPROM_PACKED' ]
+params = ['-x','c++', '-DCHEALI_EEPROM_PACKED', '-DENABLE_SETTINGS_MENU_RESET', '-DENABLE_SCREEN_ANIMATION' ]
 for i in include_dirs:
     params.append("-I")
     params.append(i)
 
 
 
-index = clang.cindex.Index.create()
-tu = index.parse(in_file, args=params, options = 1)
+#index = clang.cindex.Index.create()
+#tu = index.parse(in_file, args=params, options = 1)
 
 #print_cursor_tree(tu.cursor, 1)
 

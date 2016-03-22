@@ -18,7 +18,7 @@
 #ifndef STRINGS_COMMON_H_
 #define STRINGS_COMMON_H_
 
-#define STRING_CPP(name, value) extern const char string_ ## name[] PROGMEM = value
+#define STRING_CPP(name, value) extern const PROGMEM char string_ ## name[] = value
 
 #ifdef STRINGS_CPP_
 #define STRING(name, value) STRING_CPP(name, value)

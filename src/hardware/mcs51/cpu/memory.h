@@ -18,9 +18,6 @@
 #ifndef MEMORY_H_
 #define MEMORY_H_
 
-#define PSTR(x) x
-#define PROGMEM
-#define EEMEM
 //#define CHEALI_EEPROM_PACKED
 
 #ifndef SDCC_COMPILER
@@ -30,20 +27,29 @@
 #define __idata
 #define __pdata
 #define __code
+#define __bit bool
+#define PSTR(x) x
+#define PROGMEM
+#define EEMEM
+#else
+#define PSTR(x) x
+#define PROGMEM     __code
+#define EEMEM       __code
 #endif
 
 #include <stdint.h>
+#include <string.h>
 
 #define eeprom_write(adr, x) eeprom_write_(adr, &(x), sizeof(x))
 #define eeprom_read(x, adr) eeprom_read_(&(x), adr, sizeof(x))
 
 #define pgm_read(x, adr) pgm_read_(&(x), adr, sizeof(x))
 
-void eeprom_write_(void * adr, const void * const x, uint8_t size);
-void eeprom_read_(void *x, const void * const adr, uint8_t size);
+static inline void eeprom_write_(void * adr, const void * const x, uint8_t size){}
+static inline void eeprom_read_(void *x, const void * const adr, uint8_t size){}
 
-void pgm_read_(void *x, const void * const adr, uint8_t size);
-uint8_t pgm_strlen(const char * str);
+static inline void pgm_read_(void *x, const void * const adr, uint8_t size){}
+static inline uint8_t pgm_strlen(const char * str) {return strlen(str);}
 
 
 #endif /* MEMORY_H_ */

@@ -31,10 +31,11 @@ void cprintf(const PrintData * printDataPtr, uint8_t dig)
     pgm_read(p, printDataPtr);
     if(p.type == CP_TYPE_METHOD) {
         //Info: this must be before: uvalue = *p.data.uint16Ptr
-        return p.data.methodPtr(dig);
+        p.data.methodPtr(dig);
+        return;
     }
     if(p.type & CP_TYPE_ANALOG_FLAG) {
-        lcdPrintAnalog(*p.data.uint16Ptr, dig, AnalogInputs::Type(p.type & CP_TYPE_ANALOG_MASK));
+        lcdPrintAnalog(*p.data.uint16Ptr, dig, (AnalogInputs::Type)(p.type & CP_TYPE_ANALOG_MASK));
     } else {
         uint32_t v;
         uint8_t i;

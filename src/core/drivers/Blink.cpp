@@ -38,10 +38,11 @@ bool Blink::getBlinkOff()
 
 bool Blink::getBlinkChanged()
 {
+    uint8_t mili1, mili2;
     if(blinkIndex_ >= 0) {
-        uint8_t mili1 = blinkTime_-1;
+        mili1 = blinkTime_-1;
         mili1/=getBlinkTime();
-        uint8_t mili2 = blinkTime_;
+        mili2 = blinkTime_;
         mili2/=getBlinkTime();
         return mili1 != mili2;
     }

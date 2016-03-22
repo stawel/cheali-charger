@@ -36,7 +36,7 @@ namespace EditMenu {
 	void setPrintMethod(struct EditMenu *d, Menu::PrintMethod printItem);
     bool runEdit(struct EditMenu *d);
 
-    inline int8_t runSimple(struct EditMenu *d, bool animate = false) {
+    static inline int8_t runSimple(struct EditMenu *d, bool2 animate = false) {
 		return StaticMenu::runSimple(&d->staticMenu, animate);
 	}
 

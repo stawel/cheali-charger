@@ -37,11 +37,11 @@
 #endif //ENABLE_SERIAL_LOG
 
 
-
+//TODO: sdcc fix
+/*
 void LogDebug_run() __attribute__((weak));
 void LogDebug_run()
 {}
-
 namespace SerialLog {
     typedef enum { On, Off, Starting } State;
     uint32_t startTime;
@@ -327,3 +327,4 @@ void sendTime()
 }
 
 } //namespace SerialLog
+*/

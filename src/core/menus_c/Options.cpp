@@ -29,7 +29,7 @@
 #include "SettingsMenu.h"
 #include "memory.h"
 
-const char * const optionsStaticMenu[] PROGMEM = {
+const  PROGMEM char * const optionsStaticMenu[] = {
         string_settings,
         string_calibrate,
 #ifdef ENABLE_EEPROM_RESTORE_DEFAULT

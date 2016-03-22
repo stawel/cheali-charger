@@ -20,7 +20,7 @@
 #include "LiquidCrystal.h"
 #include "memory.h"
 
-using namespace AnalogInputs;
+
 
 char* printLong(int32_t value, char * buf) {
     char * end;
@@ -77,11 +77,12 @@ void lcdPrintR(const char *str, int8_t size)
 
 int8_t lcdPrint(const char *str, int8_t size)
 {
-    uint8_t n = 0;
+    int8_t n = 0;
+    char c;
     if(str) {
         while(n < size) {
             n++;
-            char c = *str;
+            c = *str;
             str++;
             if (c == 0) {
                 break;
@@ -127,7 +128,7 @@ void lcdPrintValue_(uint16_t x, int8_t dig, uint16_t div, bool mili, bool minus)
     char *end, *dot_char;
     int32_t t;
 
-    uint8_t size;
+    int8_t size;
 
     if(mili) {
         t = x;
@@ -176,9 +177,8 @@ void lcdPrintTime(uint16_t timeSec)
 
 void lcdPrintYesNo(uint8_t yes, int8_t dig)
 {
-    lcdPrintSpaces(dig - 3);
-
     const char * str = string_no;
+    lcdPrintSpaces(dig - 3);
     if(yes) str = string_yes;
     lcdPrint_P(str);
 }
@@ -233,7 +233,7 @@ void lcdPrintTemperature(AnalogInputs::ValueType t, int8_t dig)
 
 void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig)
 {
-    lcdPrintAnalog(c, dig, AnalogInputs::Charge);
+    lcdPrintAnalog(c, dig, AnalogInputs::ChargeUnit);
 }
 void lcdPrintCurrent(AnalogInputs::ValueType i, int8_t dig)
 {
@@ -247,7 +247,7 @@ void lcdPrintVoltage(AnalogInputs::ValueType v, int8_t dig)
 
 void lcdPrintResistance(AnalogInputs::ValueType r, int8_t dig)
 {
-    lcdPrintAnalog(r, dig, AnalogInputs::Resistance);
+    lcdPrintAnalog(r, dig, AnalogInputs::ResistanceUnit);
 }
 
 void lcdPrintPercentage(AnalogInputs::ValueType p, int8_t dig)
@@ -265,7 +265,9 @@ typedef struct {
     bool mili;
     const char * symbol;
 } UnitsInfo;
-static const UnitsInfo unitsInfo[] PROGMEM = {
+
+
+static const PROGMEM UnitsInfo unitsInfo[] = {
         // Current
         {ANALOG_AMP(1.000), true, string_A},
         //Voltage,
@@ -289,13 +291,13 @@ static const UnitsInfo unitsInfo[] PROGMEM = {
         //TemperatureMinutes,
         {ANALOG_CELCIUS(1.00), false, string_C_m},
         //Minutes
-        {1, false, AnalogInputs::string_minutes},
+        {1, false, string_minutes},
         //TimeLimitMinutes,
-        {1, false, AnalogInputs::string_minutes},
+        {1, false, string_minutes},
         //YesNo
         {1, false, NULL},
         //UnknownType
-        {1, false, AnalogInputs::string_unknown},
+        {1, false, string_unknown},
 };
 
 
@@ -306,20 +308,24 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
     if(type == AnalogInputs::YesNo) {
         lcdPrintYesNo(x, dig);
     } else if(  (type == AnalogInputs::TimeLimitMinutes && x >= ANALOG_MAX_TIME_LIMIT)
-       ||(type == AnalogInputs::Charge && x >= ANALOG_MAX_CHARGE)) {
+       ||(type == AnalogInputs::ChargeUnit && x >= ANALOG_MAX_CHARGE)) {
             lcdPrintSpaces(dig - string_size_unlimited + 1);
             //TODO: programData::
             lcdPrint_P(string_unlimited);
     } else {
         const char * symbol;
+        uint8_t symbol_size;
+        bool sign;
+        uint16_t div;
+        bool mili;
         pgm_read(symbol, &unitsInfo[type].symbol);
-        uint8_t symbol_size = pgm_strlen(symbol);
+        symbol_size = pgm_strlen(symbol);
 
         dig -= symbol_size;
         if(dig <= 0)
             return;
 
-        bool sign = false;
+        sign = false;
         if(type == AnalogInputs::SignedVoltage) {
             int16_t y = x;
             if(y < 0) {
@@ -328,8 +334,6 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
             }
         }
 
-        uint16_t div;
-        bool mili;
         pgm_read(div,  &unitsInfo[type].div);
         pgm_read(mili, &unitsInfo[type].mili);
         lcdPrintValue_(x, (int8_t) dig, div, mili, sign);

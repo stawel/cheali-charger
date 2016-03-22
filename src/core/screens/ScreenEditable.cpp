@@ -45,7 +45,7 @@ namespace Screen { namespace Editable {
         return 0;
     }
 
-} } //namespace Screen::Editable
+} }                //namespace Screen::Editable
 
 
 void Screen::Editable::displayLEDScreen()

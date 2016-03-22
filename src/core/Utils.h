@@ -64,7 +64,7 @@ void callVoidMethod_P(const VoidMethod * method);
 void callVoidMethod(const VoidMethod method);
 
 
-bool testTintern(bool *more, AnalogInputs::ValueType off, AnalogInputs::ValueType on);
+bool testTintern(bool2 *more, AnalogInputs::ValueType off, AnalogInputs::ValueType on);
 uint16_t pow10(uint8_t n);
 uint8_t digits(int32_t x);
 uint8_t digits(uint16_t x);
@@ -84,11 +84,7 @@ uint8_t countElements(const void * const array[]);
 //template<typename T>
 //uint8_t countElements(const T array[]) {return countElements((const void * const *)array); }
 
-inline uint16_t absDiff(uint16_t x, uint16_t y)
-{
-    if(x > y) return x - y;
-    return y - x;
-}
+uint16_t absDiff(uint16_t x, uint16_t y);
 
 // Platform specific delays. Implemented in Utils.cpp located in platform folder
 namespace Utils {

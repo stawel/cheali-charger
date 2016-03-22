@@ -26,6 +26,13 @@
 //#include <stdbool.h>
 
 #ifdef SDCC_COMPILER
+typedef uint8_t bool2;
+#else
+typedef bool bool2;
+#endif
+
+
+#ifdef SDCC_COMPILER
 #include <stdint.h>
 
 #define bool uint8_t

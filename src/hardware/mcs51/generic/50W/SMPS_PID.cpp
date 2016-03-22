@@ -17,6 +17,7 @@ namespace {
 
 uint16_t hardware::getPIDValue()
 {
+    return 1;
 }
 
 

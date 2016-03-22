@@ -38,6 +38,8 @@
 #include "SettingsMenu.h"
 #include "memory.h"
 
+#ifndef SDCC_COMPILER
+
 namespace AnalogInputsAnalyzer {
 
 
@@ -166,3 +168,4 @@ void run() {
 
 } //namespace AnalogInputsAnalyzer
 
+#endif

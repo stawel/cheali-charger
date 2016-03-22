@@ -20,9 +20,10 @@
 
 
 #include "Strategy.h"
+#include "memory.h"
 
 namespace StartInfoStrategy {
-    extern const Strategy::VTable vtable;
+    extern const PROGMEM Strategy::VTable vtable;
     void powerOn();
     Strategy::statusType doStrategy();
     void powerOff();

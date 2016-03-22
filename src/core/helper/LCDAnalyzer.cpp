@@ -37,6 +37,9 @@
 #include "atomic.h"
 #include "Time.h"
 
+
+#ifndef SDCC_COMPILER
+
 namespace LCDAnalyzer {
 
 
@@ -64,3 +67,4 @@ void run() {
 
 } //namespace LCDAnalyzer
 
+#endif

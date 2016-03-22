@@ -25,7 +25,7 @@
 #include "memory.h"
 
 namespace TheveninDischargeStrategy {
-    const Strategy::VTable vtable PROGMEM = {
+    const PROGMEM Strategy::VTable vtable = {
         powerOn,
         powerOff,
         doStrategy

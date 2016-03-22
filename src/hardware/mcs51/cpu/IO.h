@@ -43,54 +43,21 @@
 
 namespace IO {
 
-        // Core IO functions to be implemented in proper target folder
-        inline void digitalWrite(uint8_t pinNumber, uint8_t value) INLINE_ATTR;
-        inline uint8_t digitalRead(uint8_t pinNumber) INLINE_ATTR;
-        inline void pinMode(uint8_t pinNumber, uint8_t mode) INLINE_ATTR;
-        inline void analogReference(uint8_t mode) INLINE_ATTR;
 
-        // Auxillery functions utilized for pin to port mapping
-        inline volatile uint8_t* pinToPort(uint8_t pinNumber) INLINE_ATTR;
-        inline uint8_t pinBitmask(uint8_t pinNumber) INLINE_ATTR;
-        inline volatile uint8_t* pinToInputPort(uint8_t pinNumber) INLINE_ATTR;
-        inline volatile uint8_t* pinToDDR(uint8_t pinNumber) INLINE_ATTR;
-
-        inline void digitalWrite(uint8_t pinNumber, uint8_t value)
+        static inline void digitalWrite(uint8_t pinNumber, uint8_t value)
         {
         }
 
-        inline uint8_t digitalRead(uint8_t pinNumber)
+        static inline uint8_t digitalRead(uint8_t pinNumber)
+        {
+            return 1;
+        }
+
+        static inline void pinMode(uint8_t pinNumber, uint8_t mode)
         {
         }
 
-        inline void pinMode(uint8_t pinNumber, uint8_t mode)
-        {
-        }
 
-        inline void analogReference(uint8_t mode)
-        {
-        }
-
-        // Convert physical pin number to logical port address
-        inline volatile uint8_t* pinToPort(uint8_t pinNumber)
-        {
-        }
-
-        // Pin number to bitmask mapping
-        inline uint8_t pinBitmask(uint8_t pinNumber)
-        {
-        }
-
-        // Pin number to input register map
-        inline volatile uint8_t* pinToInputPort(uint8_t pinNumber)
-        {
-
-        }
-
-        // Pin number to data direction register
-        inline volatile uint8_t* pinToDDR(uint8_t pinNumber)
-        {
-        }
 
 
 }

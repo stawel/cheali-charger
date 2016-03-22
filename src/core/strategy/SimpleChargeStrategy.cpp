@@ -27,7 +27,7 @@ namespace SimpleChargeStrategy {
 
     Strategy::statusType doStrategy();
 
-    const Strategy::VTable vtable PROGMEM = {
+    const PROGMEM Strategy::VTable vtable = {
         powerOn,
         powerOff,
         doStrategy

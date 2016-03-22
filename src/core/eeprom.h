@@ -22,6 +22,7 @@
 #include "ProgramData.h"
 #include "Settings.h"
 #include "cpu.h"
+#include "memory.h"
 
 #define EEPROM_MAGIC_STRING_LEN 4
 
@@ -50,24 +51,24 @@ namespace eeprom {
         uint16_t settingsCRC;
     } Data;
 
-    extern Data data;
+    extern EEMEM Data data;
 
 #ifdef ENABLE_EEPROM_CRC
     bool restoreCalibrationCRC(bool restore = true);
     bool restoreProgramDataCRC(bool restore = true);
     bool restoreSettingsCRC(bool restore = true);
 #else
-    inline bool restoreCalibrationCRC(bool restore = true)  { return false; }
-    inline bool restoreProgramDataCRC(bool restore = true)  { return false; }
-    inline bool restoreSettingsCRC(bool restore = true)     { return false; }
+    inline bool restoreCalibrationCRC(bool2 restore = true)  { return false; }
+    inline bool restoreProgramDataCRC(bool2 restore = true)  { return false; }
+    inline bool restoreSettingsCRC(bool2 restore = true)     { return false; }
 #endif
 
 #ifdef ENABLE_EEPROM_RESTORE_DEFAULT
     bool check();
     void restoreDefault();
 #else
-    inline bool check() { return true; /* OK */};
-    inline void restoreDefault() {};
+    inline bool check() { return true; /* OK */}
+    inline void restoreDefault() {}
 #endif
 
 

@@ -24,7 +24,7 @@
 
 namespace MainMenu {
 
-	const char string_options[] PROGMEM = "options";
+	const PROGMEM char string_options[] = "options";
 
 	void printItem(struct Menu::Menu *d, int8_t i) {
 		if(i == 0) {

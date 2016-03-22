@@ -39,7 +39,7 @@
 
 namespace Calibrate {
 
-const char * const calibrateMenu[] PROGMEM = {
+const PROGMEM char * const calibrateMenu[] = {
         string_voltage,
         string_chargeCurrent,
         string_dischargeCurrent,
@@ -55,7 +55,7 @@ const char * const calibrateMenu[] PROGMEM = {
 
 uint16_t calibrationPoint;
 
-const char * const currentMenu[] PROGMEM = {string_i_menu_value, string_i_menu_output, string_i_menu_expected, NULL};
+const PROGMEM char * const currentMenu[] = {string_i_menu_value, string_i_menu_output, string_i_menu_expected, NULL};
 
 /* voltage calibration */
 
@@ -173,11 +173,12 @@ void saveCalibration(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInput
 void runCalibrationMenu(const struct StaticEditMenu::StaticEditData * menuData,
         const AnalogInputs::Name * name1,
         const AnalogInputs::Name * name2,
-        uint8_t calibrationPoint = false) {
+        uint8_t calibrationPoint) {
 
     uint16_t selector;
     int8_t item;
     uint8_t c;
+    uint8_t doCopyVout;
 	struct StaticEditMenu::StaticEditMenu menu;
 
 	StaticEditMenu::initialize(&menu, menuData);
@@ -200,8 +201,8 @@ void runCalibrationMenu(const struct StaticEditMenu::StaticEditData * menuData,
                     AnalogInputs::on_ = false;
                     AnalogInputs::onTintern_ = false;
                     if(StaticEditMenu::runEdit(&menu)) {
-                        bool doCopyVout = c & COND_COPY_VOUT;
                         AnalogInputs::Name name2val;
+                        doCopyVout = c & COND_COPY_VOUT;
                         pgm_read(name2val, &name2[item]);
                         saveCalibration(doCopyVout, Vinput, name2val);
                     }
@@ -212,10 +213,10 @@ void runCalibrationMenu(const struct StaticEditMenu::StaticEditData * menuData,
                 StaticEditMenu::runEdit(&menu);
             }
         }
-    } while(true);
+    } while(1);
 }
 
-const AnalogInputs::Name voltageName[] PROGMEM = {
+const PROGMEM AnalogInputs::Name voltageName[] = {
        AnalogInputs::Vin,
        AnalogInputs::Vb1,
        AnalogInputs::Vb2,
@@ -226,7 +227,7 @@ const AnalogInputs::Name voltageName[] PROGMEM = {
        BALANCER_PORTS_GT_6(AnalogInputs::Vb7, AnalogInputs::Vb8,)
 };
 
-const AnalogInputs::Name voltageName2[] PROGMEM = {
+const PROGMEM AnalogInputs::Name voltageName2[] = {
        AnalogInputs::Vin,
        AnalogInputs::Vb1_pin,
        AnalogInputs::Vb2_pin,
@@ -244,7 +245,7 @@ const AnalogInputs::Name voltageName2[] PROGMEM = {
 #define CALIBRATION_POINT calibrationPoint
 #endif
 
-const struct StaticEditMenu::StaticEditData editVoltageData[] PROGMEM = {
+const PROGMEM struct StaticEditMenu::StaticEditData editVoltageData[] = {
 {string_v_menu_input,       COND_E_C_ANALOG,    EANALOG_V(Vin),          {1, 0, ANALOG_VOLT(30)}},
 {string_v_menu_cell1,       COND_E_C_ANALOG,    EANALOG_V(Vb1),         {1, 0, ANALOG_VOLT(5)}},
 {string_v_menu_cell2,       COND_E_C_ANALOG,    EANALOG_V(Vb2),         {1, 0, ANALOG_VOLT(5)}},
@@ -268,7 +269,7 @@ void calibrateVoltage()
     Program::dischargeOutputCapacitor();
     AnalogInputs::powerOn();
     if(testVout(true)) {
-        runCalibrationMenu(editVoltageData, voltageName, voltageName2);
+        runCalibrationMenu(editVoltageData, voltageName, voltageName2, 1);
     }
     AnalogInputs::powerOff();
 }
@@ -279,7 +280,7 @@ void calibrateVoltage()
 
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
 
-const struct StaticEditMenu::StaticEditData editExpertVoltageData[] PROGMEM = {
+const PROGMEM struct StaticEditMenu::StaticEditData editExpertVoltageData[] = {
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
 {string_ev_menu_cell0pin,           COND_E_ANALOG,   EANALOG_V(Vb0_pin),         {1, 0, ANALOG_VOLT(10)}},
 {string_ev_menu_cell1pin,           COND_E_ANALOG,   EANALOG_V(Vb1_pin),         {1, 0, ANALOG_VOLT(10)}},
@@ -292,7 +293,7 @@ const struct StaticEditMenu::StaticEditData editExpertVoltageData[] PROGMEM = {
 };
 
 
-const AnalogInputs::Name expertVoltageName[] PROGMEM = {
+const PROGMEM AnalogInputs::Name expertVoltageName[] = {
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
         AnalogInputs::Vb0_pin,
         AnalogInputs::Vb1_pin,
@@ -310,7 +311,7 @@ void expertCalibrateVoltage()
     Program::dischargeOutputCapacitor();
     AnalogInputs::powerOn(false);
     PolarityCheck::checkReversedPolarity_ = false;
-    runCalibrationMenu(editExpertVoltageData, expertVoltageName, expertVoltageName);
+    runCalibrationMenu(editExpertVoltageData, expertVoltageName, expertVoltageName, 1);
     PolarityCheck::checkReversedPolarity_ = true;
     AnalogInputs::powerOff();
 
@@ -511,22 +512,22 @@ void calibrateI(bool charging)
 #define EANALOG_ADC(name) {CP_TYPE_UNSIGNED, 0, {&AnalogInputs::avrAdc_[AnalogInputs::name]}}
 #endif
 
-const struct StaticEditMenu::StaticEditData editExternTData[] PROGMEM = {
+const PROGMEM struct StaticEditMenu::StaticEditData editExternTData[] = {
 {string_t_menu_temperature,     COND_E_ANALOG,  EANALOG_T(Textern),             {1, 0, ANALOG_CELCIUS(100)}},
 {string_t_menu_adc,             COND_ALWAYS,    EANALOG_ADC(Textern),           {0,0,0}},
 {string_menu_point,             COND_POINT,     {CP_TYPE_UNSIGNED, 0, {&CALIBRATION_POINT}},        {1, 0, 1}},
 {NULL,                          0}
 };
 
-const struct StaticEditMenu::StaticEditData editInternTData[] PROGMEM = {
+const PROGMEM struct StaticEditMenu::StaticEditData editInternTData[] = {
 {string_t_menu_temperature,     COND_E_ANALOG,  EANALOG_T(Tintern),             {1, 0, ANALOG_CELCIUS(100)}},
 {string_t_menu_adc,             COND_ALWAYS,    EANALOG_ADC(Tintern),           {0,0,0}},
 {string_menu_point,             COND_POINT,     {CP_TYPE_UNSIGNED, 0, {&CALIBRATION_POINT}},        {1, 0, 1}},
 {NULL,                          0}
 };
 
-const AnalogInputs::Name externTName[] PROGMEM = { AnalogInputs::Textern };
-const AnalogInputs::Name internTName[] PROGMEM = { AnalogInputs::Tintern };
+const PROGMEM AnalogInputs::Name externTName[] = { AnalogInputs::Textern };
+const PROGMEM AnalogInputs::Name internTName[] = { AnalogInputs::Tintern };
 
 
 void calibrateExternT()

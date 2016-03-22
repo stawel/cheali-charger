@@ -20,10 +20,11 @@
 
 
 #include "Strategy.h"
+#include "memory.h"
 
 namespace SimpleChargeStrategy {
 
-    extern const Strategy::VTable vtable;
+    extern const PROGMEM Strategy::VTable vtable;
 
     void powerOn();
     void powerOff();

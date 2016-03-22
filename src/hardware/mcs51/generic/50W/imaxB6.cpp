@@ -27,6 +27,7 @@
 
 uint8_t hardware::getKeyPressed()
 {
+    return 0;
 }
 
 

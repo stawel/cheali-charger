@@ -76,7 +76,7 @@ void changeVoltage(int dir)
     changeMinToMaxStep(&ProgramData::battery.cells, dir, 1, ProgramData::getMaxCells(), 1);
 }
 
-const cprintf::ArrayData batteryTypeData  PROGMEM = {{ProgramData::batteryString}, &ProgramData::battery.type};
+const PROGMEM cprintf::ArrayData batteryTypeData  = {{ProgramData::batteryString}, &ProgramData::battery.type};
 
 
 #define Tmin    ((SETTINGS_TempDifference/ANALOG_CELCIUS(1))*ANALOG_CELCIUS(1) + ANALOG_CELCIUS(1))
@@ -101,7 +101,7 @@ const cprintf::ArrayData batteryTypeData  PROGMEM = {{ProgramData::batteryString
 /*
 |static string          |when to display        | how to display, see cprintf                   | how to edit |
  */
-const struct StaticEditMenu::StaticEditData editData[] PROGMEM = {
+const PROGMEM struct StaticEditMenu::StaticEditData editData[] = {
 {string_batteryType,    COND_ALWAYS,            BTD,    {1, 0,LAST_B-1}},
 {string_voltage,        COND_BATT_UNKN,         PRINT_VOLTAGE},
 {string_Vc_per_cell,    ADV(LiXX_NiZn_Pb),      BATTERY(V, Vc_per_cell),                    {1,ANALOG_VOLT(0.0),ANALOG_VOLT(5.0)}},

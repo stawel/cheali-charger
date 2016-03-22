@@ -32,7 +32,7 @@ namespace StaticMenu {
 
 	void initialize(struct StaticMenu *d, const char * const staticMenu[]);
 	void printItem(struct StaticMenu *md, int8_t i);
-	inline int8_t runSimple(struct StaticMenu *d, bool animate = false) {
+	static inline int8_t runSimple(struct StaticMenu *d, bool2 animate = false) {
 		return Menu::runSimple(&d->menu, animate);
 	}
 }

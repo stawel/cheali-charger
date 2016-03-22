@@ -20,9 +20,10 @@
 
 
 #include "SimpleChargeStrategy.h"
+#include "memory.h"
 
 namespace DeltaChargeStrategy {
-    extern const Strategy::VTable vtable;
+    extern const PROGMEM Strategy::VTable vtable;
 }
 
 

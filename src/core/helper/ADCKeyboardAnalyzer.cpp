@@ -36,6 +36,8 @@
 #include STRINGS_HEADER
 #include "atomic.h"
 
+#ifndef SDCC_COMPILER
+
 namespace ADCKeyboardAnalyzer {
 
 void run() {
@@ -57,4 +59,6 @@ void run() {
 }
 
 } //namespace ADCKeyboardAnalyzer
+
+#endif
 

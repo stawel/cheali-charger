@@ -27,32 +27,32 @@
 namespace SettingsMenu {
 
 
-const char * const SettingsFanOn[] PROGMEM = {
+const PROGMEM char * const SettingsFanOn[] = {
         string_disable,
         string_always,
         string_FanProgram,
         string_temperature,
         string_tempProgram
 };
-const cprintf::ArrayData FanOnData  PROGMEM = {SettingsFanOn, &settings.fanOn};
+const PROGMEM cprintf::ArrayData FanOnData = {{SettingsFanOn}, &settings.fanOn};
 
-const char * const SettingsUART[] PROGMEM = {
+const  PROGMEM char * const SettingsUART[] = {
         string_disable,
         string_normal,
         string_debug,
         string_extDebug,
         string_extDebugAdc
 };
-const cprintf::ArrayData UARTData  PROGMEM = {SettingsUART, &settings.UART};
-const cprintf::ArrayData UARTSpeedsData PROGMEM = {Settings::UARTSpeedValue, &settings.UARTspeed};
+const PROGMEM cprintf::ArrayData UARTData  = {{SettingsUART}, &settings.UART};
+const PROGMEM cprintf::ArrayData UARTSpeedsData = {{Settings::UARTSpeedValue}, &settings.UARTspeed};
 
 
-const char * const SettingsUARToutput[] PROGMEM = {string_temp, string_pin7, string_pin38};
-const cprintf::ArrayData UARToutputData  PROGMEM = {SettingsUARToutput, &settings.UARToutput};
+const PROGMEM char * const SettingsUARToutput[] = {string_temp, string_pin7, string_pin38};
+const PROGMEM cprintf::ArrayData UARToutputData  = {{SettingsUARToutput}, &settings.UARToutput};
 
 
-const char * const SettingsMenuType[] PROGMEM = {string_simple, string_advanced};
-const cprintf::ArrayData menuTypeData  PROGMEM = {SettingsMenuType, &settings.menuType};
+const PROGMEM char * const SettingsMenuType[] = {string_simple, string_advanced};
+const PROGMEM cprintf::ArrayData menuTypeData  = {{SettingsMenuType}, &settings.menuType};
 
 #define Tmin    ((Settings::TempDifference/ANALOG_CELCIUS(1) + 1)*ANALOG_CELCIUS(1))
 #define Tmax    ANALOG_CELCIUS(99)
@@ -79,37 +79,38 @@ uint16_t getSelector() {
 /*
 |static string          |when to display| how to display, see cprintf                   | how to edit |
  */
-const StaticEditMenu::StaticEditData editData[] PROGMEM = {
+const PROGMEM struct StaticEditMenu::StaticEditData editData[] = {
 #ifdef ENABLE_LCD_BACKLIGHT
-{string_backlight,      COND_ALWAYS,    {CP_TYPE_UNSIGNED,0,&settings.backlight},       {1, 0, 100}},
+{string_backlight,      COND_ALWAYS,    {CP_TYPE_UNSIGNED,0,{&settings.backlight}},       {1, 0, 100}},
 #endif
 #ifdef ENABLE_FAN
-{string_fanOn,          COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&FanOnData},            {1, 0, Settings::FanProgramTemperature}},
-{string_fanTempOn,      COND_FAN_ON_T,  {CP_TYPE_TEMPERATURE,0,&settings.fanTempOn},    {Tstep, Tmin, Tmax}},
+//{string_fanOn,          COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,{&FanOnData}},            {1, 0, Settings::FanProgramTemperature}},
+{string_fanTempOn,      COND_FAN_ON_T,  {CP_TYPE_TEMPERATURE,0,{&settings.fanTempOn}},    {Tstep, Tmin, Tmax}},
 #endif
 #ifdef ENABLE_T_INTERNAL
-{string_dischOff,       COND_ALWAYS,    {CP_TYPE_TEMPERATURE,3,&settings.dischargeTempOff}, {Tstep, Tmin, Tmax}},
+{string_dischOff,       COND_ALWAYS,    {CP_TYPE_TEMPERATURE,3,{&settings.dischargeTempOff}}, {Tstep, Tmin, Tmax}},
 #endif
-{string_AudioBeep,      COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.audioBeep},         {1, 0, 1}},
-{string_minIc,          COND_ALWAYS,    {CP_TYPE_A,0,&settings.minIc},                  {ANALOG_AMP(0.001), ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
-{string_maxIc,          COND_ALWAYS,    {CP_TYPE_A,0,&settings.maxIc},                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
-{string_minId,          COND_ALWAYS,    {CP_TYPE_A,0,&settings.minId},                  {ANALOG_AMP(0.001), ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
-{string_maxId,          COND_ALWAYS,    {CP_TYPE_A,0,&settings.maxId},                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_DISCHARGE_I}},
-{string_inputLow,       COND_ALWAYS,    {CP_TYPE_V,3,&settings.inputVoltageLow},        {ANALOG_VOLT(1), ANALOG_VOLT(7), ANALOG_VOLT(30)}},
+{string_AudioBeep,      COND_ALWAYS,    {CP_TYPE_ON_OFF,0,{&settings.audioBeep}},         {1, 0, 1}},
+{string_minIc,          COND_ALWAYS,    {CP_TYPE_A,0,{&settings.minIc}},                  {ANALOG_AMP(0.001), ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
+{string_maxIc,          COND_ALWAYS,    {CP_TYPE_A,0,{&settings.maxIc}},                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
+{string_minId,          COND_ALWAYS,    {CP_TYPE_A,0,{&settings.minId}},                  {ANALOG_AMP(0.001), ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
+{string_maxId,          COND_ALWAYS,    {CP_TYPE_A,0,{&settings.maxId}},                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_DISCHARGE_I}},
+{string_inputLow,       COND_ALWAYS,    {CP_TYPE_V,3,{&settings.inputVoltageLow}},        {ANALOG_VOLT(1), ANALOG_VOLT(7), ANALOG_VOLT(30)}},
 #ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
-{string_adcNoise,       COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.adcNoise},          {1, 0, 1}},
+{string_adcNoise,       COND_ALWAYS,    {CP_TYPE_ON_OFF,0,{&settings.adcNoise}},          {1, 0, 1}},
 #endif
-{string_UARTview,       COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&UARTData},             {1, 0, Settings::ExtDebugAdc}},
-{string_UARTspeed,      COND_UART_ON,   {CP_TYPE_UINT32_ARRAY,0,&UARTSpeedsData},       {1, 0, SETTINGS_UART_SPEEDS_COUNT-1}},
+//TODO: sdcc fix
+//{string_UARTview,       COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&UARTData},             {1, 0, Settings::ExtDebugAdc}},
+//{string_UARTspeed,      COND_UART_ON,   {CP_TYPE_UINT32_ARRAY,0,{&UARTSpeedsData}},       {1, 0, SETTINGS_UART_SPEEDS_COUNT-1}},
 #ifdef ENABLE_TX_HW_SERIAL
-{string_UARToutput,     COND_UART_ON,   {CP_TYPE_STRING_ARRAY,0,&UARToutputData},        {1, 0, 2}},
+//{string_UARToutput,     COND_UART_ON,   {CP_TYPE_STRING_ARRAY,0,{&UARToutputData}},        {1, 0, 2}},
 #endif
-{string_MenuType,       COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&menuTypeData},         {1, 0, 1}},
+//{string_MenuType,       COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,{&menuTypeData}},         {1, 0, 1}},
 
 #ifdef ENABLE_SETTINGS_MENU_RESET
-{string_reset,          StaticEditMenu::Always, {0,0,NULL}},
+//{string_reset,          STATIC_EDIT_MENU_ALWAYS, {0,0,NULL}},
 #endif
-{NULL,                  StaticEditMenu::Last}
+{NULL,                  0}
 };
 
 void editCallback(struct StaticEditMenu::StaticEditMenu * menu, uint16_t * adr) {
@@ -118,15 +119,18 @@ void editCallback(struct StaticEditMenu::StaticEditMenu * menu, uint16_t * adr) 
 }
 
 void run() {
+    //TODO: sdcc fix
+/*    int8_t item;
 	struct StaticEditMenu::StaticEditMenu menu;
 	StaticEditMenu::initialize(&menu, editData, editCallback);
-    int8_t item;
 
     do {
     	StaticEditMenu::setSelector(&menu, getSelector());
         item = StaticEditMenu::runSimple(&menu);
 
-        if(item < 0) break;
+        if(item < 0) {
+            break;
+        }
 
 #ifdef ENABLE_SETTINGS_MENU_RESET
         if(StaticEditMenu::getEditAddress(&menu, item) == NULL)  //reset
@@ -145,7 +149,7 @@ void run() {
             Settings::apply();
         }
     } while(true);
-    Settings::save();
+    Settings::save();*/
 }
 
 #undef COND_ALWAYS

@@ -30,13 +30,14 @@
 
 
 #include "Strategy.h"
+#include "memory.h"
 
 namespace Balancer {
 
     const static uint16_t maxBalanceTime = 15; //15s
     const static uint16_t balancerStartStableCount = 6; //6*0.7s
 
-    extern const Strategy::VTable vtable;
+    extern const PROGMEM Strategy::VTable vtable;
 
     extern uint16_t balance;
     extern bool savedVon;

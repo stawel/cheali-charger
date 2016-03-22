@@ -27,7 +27,7 @@
 namespace StartInfoStrategy {
     uint8_t ok_;
 
-    const Strategy::VTable vtable PROGMEM = {
+    const PROGMEM Strategy::VTable vtable = {
         powerOn,
         powerOff,
         doStrategy

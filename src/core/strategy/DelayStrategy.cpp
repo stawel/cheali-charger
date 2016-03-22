@@ -24,7 +24,7 @@
 #include "Buzzer.h"
 
 namespace DelayStrategy {
-     const Strategy::VTable vtable PROGMEM = {
+     const PROGMEM Strategy::VTable vtable = {
         powerOn,
         powerOff,
         doStrategy

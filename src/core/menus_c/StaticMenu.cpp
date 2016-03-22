@@ -22,8 +22,7 @@
 #include "Utils.h"
 
 
-void StaticMenu::printItem(struct StaticMenu *md, int8_t i) {
-	StaticMenu * d = md;
+void StaticMenu::printItem(struct StaticMenu *d, int8_t i) {
 	lcdPrint_P(d->staticMenu_, i);
 }
 

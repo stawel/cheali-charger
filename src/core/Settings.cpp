@@ -33,7 +33,7 @@
 
 struct Settings::SettingsData settings;
 
-const struct Settings::SettingsData defaultSettings PROGMEM = {
+const PROGMEM struct Settings::SettingsData defaultSettings = {
         70,                 //backlight
         Settings::FanTemperature, //fanOn
         ANALOG_CELCIUS(50), //fanTempOn
@@ -54,7 +54,7 @@ const struct Settings::SettingsData defaultSettings PROGMEM = {
 };
 
 
-const uint32_t Settings::UARTSpeedValue[SETTINGS_UART_SPEEDS_COUNT] PROGMEM = {
+const PROGMEM uint32_t Settings::UARTSpeedValue[SETTINGS_UART_SPEEDS_COUNT] = {
     9600,
     19200,
     38400,

@@ -178,14 +178,16 @@ void Program::dischargeOutputCapacitor()
 
 void Program::run(ProgramType prog)
 {
+#ifdef ENABLE_CALIBRATION_CHECK
     if(!Calibrate::check())
         return;
+#endif
 
     dischargeOutputCapacitor();
 
     programType = prog;
     setupProgramType(prog);
-    stopReason = NULL;
+//    stopReason = NULL;
 
     programState = ProgramInfo;
     SerialLog::powerOn();

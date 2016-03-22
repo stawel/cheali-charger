@@ -22,7 +22,7 @@
 #include "AnalogInputs.h"
 #include "Hardware.h"
 #include "Settings.h"
-
+#include "memory.h"
 
 #define MAX_PROGRAMS 20
 
@@ -74,8 +74,8 @@ namespace ProgramData {
     } Battery;
 
     extern Battery battery;
-    extern const char * const batteryString[];
-    extern const BatteryClass batteryClassMap[];
+    extern const PROGMEM char * const batteryString[];
+    extern const PROGMEM BatteryClass batteryClassMap[];
 
     uint16_t getDefaultVoltagePerCell(VoltageType type = VNominal);
     uint16_t getDefaultVoltage(VoltageType type = VNominal);

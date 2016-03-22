@@ -40,13 +40,14 @@ namespace Screen { namespace Balancer {
 
     AnalogInputs::ValueType getBalanceValue(uint8_t cell, AnalogInputs::Type type)
     {
-        if(type == AnalogInputs::Voltage)
-            return ::Balancer::getPresumedV(cell);
+// TODO: sdcc fix
+//        if(type == AnalogInputs::Voltage)
+//            return ::Balancer::getPresumedV(cell);
         return TheveninMethod::getReadableRthCell(cell);
     }
 
     void printBalancer(uint8_t cell, AnalogInputs::Type type) {
-        if(AnalogInputs::isConnected(AnalogInputs::Name(AnalogInputs::Vb1+cell))) {
+        if(AnalogInputs::isConnected((AnalogInputs::Name)(AnalogInputs::Vb1+cell))) {
             lcdPrintAnalog(getBalanceValue(cell, type), 6, type);
         } else {
             lcdPrint_P(PSTR("  --  "));
@@ -55,13 +56,14 @@ namespace Screen { namespace Balancer {
 
     void displayBalanceInfo(uint8_t from, AnalogInputs::Type type)
     {
+        // TODO: sdcc fix
+/*        char c = ' ';
         lcdSetCursor0_0();
 
 #ifdef ENABLE_SCREEN_KNIGHTRIDEREFFECT
         knightRiderCounter += knightRiderDir;
         if (knightRiderCounter==0 || knightRiderCounter>4) knightRiderDir=-knightRiderDir;
 #endif
-        char c = ' ';
         if(!::Balancer::isWorking()) {
             if(!::Balancer::isStable())
                 c = 'm';
@@ -75,16 +77,18 @@ namespace Screen { namespace Balancer {
         if (::Balancer::balance == 0) {
             lcdPrintChar(c);
 #ifdef ENABLE_SCREEN_KNIGHTRIDEREFFECT
-            char knightRiderArrow;
-            if (knightRiderDir > 0) knightRiderArrow='>'; else knightRiderArrow='<';
-            if ((c == 'm') || (c == ' ')) {
-                for (uint8_t i=0; i<6; i++ ) {
-                    if (knightRiderCounter==i) lcdPrintChar(knightRiderArrow);
-                    else lcdPrintChar(' ');
+            {
+                char knightRiderArrow;
+                if (knightRiderDir > 0) knightRiderArrow='>'; else knightRiderArrow='<';
+                if ((c == 'm') || (c == ' ')) {
+                    for (uint8_t i=0; i<6; i++ ) {
+                        if (knightRiderCounter==i) lcdPrintChar(knightRiderArrow);
+                        else lcdPrintChar(' ');
+                    }
+                    lcdPrintChar(' ');
+                } else {
+                    lcdPrintSpaces(7);
                 }
-                lcdPrintChar(' ');
-            } else {
-                lcdPrintSpaces(7);
             }
 #else
         lcdPrintSpaces(7);
@@ -132,10 +136,11 @@ namespace Screen { namespace Balancer {
             printBalancer(from, type);
         }
         lcdPrintSpaces();
+        */
     }
 
-}// namespcae Balancer
-}// namespace Screen
+} // namespcae Balancer
+} // namespace Screen
 
 
 void Screen::Balancer::displayVoltage1_3() {
@@ -149,12 +154,12 @@ void Screen::Balancer::displayVoltage7_9() {
 }
 
 void Screen::Balancer::displayResistance1_3() {
-    displayBalanceInfo(0, AnalogInputs::Resistance);
+    displayBalanceInfo(0, AnalogInputs::ResistanceUnit);
 }
 void Screen::Balancer::displayResistance4_6() {
-    displayBalanceInfo(3, AnalogInputs::Resistance);
+    displayBalanceInfo(3, AnalogInputs::ResistanceUnit);
 }
 void Screen::Balancer::displayResistance7_9() {
-    displayBalanceInfo(6, AnalogInputs::Resistance);
+    displayBalanceInfo(6, AnalogInputs::ResistanceUnit);
 }
 

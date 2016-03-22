@@ -40,7 +40,8 @@ namespace Screen { namespace Methods {
 
     void printCharAndTime() {
         char c = 'N';
-        if(SMPS::isPowerOn()) {
+        //TODO: sdcc fix
+/*        if(SMPS::isPowerOn()) {
             c = 'C';
         } else if(Discharger::isPowerOn()) {
             c = 'D';
@@ -51,7 +52,7 @@ namespace Screen { namespace Methods {
 
         if(DelayStrategy::isDelay()) {
             c = 'W';
-        }
+        }*/
         lcdPrintChar(c);
         lcdPrintSpace1();
         lcdPrintTime(Monitor::getTimeSec());
@@ -79,7 +80,7 @@ namespace Screen { namespace Methods {
     }
 
 
-} }// namespace Screen::Methods
+} }          // namespace Screen::Methods
 
 void Screen::Methods::displayFirstScreen()
 {
@@ -224,6 +225,7 @@ void Screen::Methods::displayDeltaTextern()
 
 void Screen::Methods::displayEnergy()
 {
+    uint8_t procent;
     lcdSetCursor0_0();
     AnalogInputs::printRealValue(AnalogInputs::Pout, 8);
     lcdPrintSpace1();
@@ -233,7 +235,7 @@ void Screen::Methods::displayEnergy()
     AnalogInputs::printRealValue(AnalogInputs::Eout, 8);
     lcdPrintSpaces(2);
 
-    uint8_t procent = Monitor::getChargeProcent();
+    procent = Monitor::getChargeProcent();
     lcdPrintUnsigned(procent, 4);
     lcdPrint_P(PSTR("%"));
     lcdPrintSpaces();

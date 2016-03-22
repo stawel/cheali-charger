@@ -31,7 +31,7 @@ namespace DeltaChargeStrategy {
     void powerOn();
     Strategy::statusType doStrategy();
 
-    const Strategy::VTable vtable PROGMEM = {
+    const PROGMEM Strategy::VTable vtable = {
         powerOn,
         SimpleChargeStrategy::powerOff,
         doStrategy

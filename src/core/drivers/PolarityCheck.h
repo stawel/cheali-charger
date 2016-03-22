@@ -19,6 +19,7 @@
 #define POLARITYCHECK_H_
 
 #include <stdint.h>
+#include "cpu/config.h"
 
 namespace PolarityCheck {
     static const uint8_t REVERSED_POLARITY = 127;

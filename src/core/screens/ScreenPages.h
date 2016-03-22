@@ -44,8 +44,9 @@ namespace Screen { namespace Pages {
         uint32_t conditionDisable;
     } PageInfo;
 
-    const PageInfo pageInfo[] PROGMEM = {
-            {Screen::StartInfo::displayStartInfo,   PAGE_START_INFO,                      PAGE_NONE},
+    const PROGMEM PageInfo pageInfo[] = {
+            //TODO: sdcc fix
+/*            {Screen::StartInfo::displayStartInfo,   PAGE_START_INFO,                      PAGE_NONE},
             {Screen::Editable::displayLEDScreen,     PAGE_BATTERY(ProgramData::ClassLED), PAGE_START_INFO},
             {Screen::Methods::displayFirstScreen,   PAGE_ALWAYS, PAGE_START_INFO + PAGE_PROGRAM(Program::Balance)},
             {Screen::Cycle::displayCycles,          PAGE_PROGRAM(Program::CapacityCheck)+PAGE_PROGRAM(Program::DischargeChargeCycle), PAGE_START_INFO},
@@ -71,7 +72,7 @@ BALANCER_PORTS_GT_6(
             {Screen::Methods::displayTemperature,   PAGE_ALWAYS, PAGE_NONE},
             {Screen::Methods::displayCIVlimits,     PAGE_ALWAYS, PAGE_PROGRAM(Program::Balance)},
             {Screen::Methods::displayVinput,        PAGE_ALWAYS, PAGE_NONE},
-
+*/
             {NULL, PAGE_ALWAYS, PAGE_NONE}
     };
 
