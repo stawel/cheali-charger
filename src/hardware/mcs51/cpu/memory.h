@@ -45,11 +45,11 @@
 
 #define pgm_read(x, adr) pgm_read_(&(x), adr, sizeof(x))
 
-static inline void eeprom_write_(void * adr, const void * const x, uint8_t size){}
-static inline void eeprom_read_(void *x, const void * const adr, uint8_t size){}
+inline void eeprom_write_(void * adr, const void * const x, uint8_t size){}
+inline void eeprom_read_(void *x, const void * const adr, uint8_t size){}
 
-static inline void pgm_read_(void *x, const void * const adr, uint8_t size){}
-static inline uint8_t pgm_strlen(const char * str) {return strlen(str);}
+inline void pgm_read_(void *x, const void * const adr, uint8_t size){}
+inline uint8_t pgm_strlen(const char * str) {return strlen(str);}
 
 
 #endif /* MEMORY_H_ */

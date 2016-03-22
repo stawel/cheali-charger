@@ -38,7 +38,7 @@ namespace Time {
     //delay may take significantly longer than "ms"
     void delayDoIdle(uint16_t ms);
 
-    static inline uint16_t diffU16(uint16_t start, uint16_t end) {
+    inline uint16_t diffU16(uint16_t start, uint16_t end) {
         return end - start;
     }
 

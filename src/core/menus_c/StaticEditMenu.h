@@ -72,7 +72,7 @@ namespace StaticEditMenu {
     uint16_t getEnableCondition(struct StaticEditMenu *d, uint8_t item);
 
     void setSelector(struct StaticEditMenu *d, uint16_t selector);
-    static inline int8_t runSimple(struct StaticEditMenu *d, bool animate = false) { return Menu::runSimple(&d->editMenu.staticMenu.menu, animate); }
+    inline int8_t runSimple(struct StaticEditMenu *d, bool animate = false) { return Menu::runSimple(&d->editMenu.staticMenu.menu, animate); }
     inline bool runEdit(struct StaticEditMenu *d) { return EditMenu::runEdit(&d->editMenu); }
 };
 

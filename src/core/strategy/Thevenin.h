@@ -46,7 +46,7 @@ namespace Thevenin {
 	} Data;
 
 
-    static inline void storeLast(Data *d, AnalogInputs::ValueType VLast, AnalogInputs::ValueType ILast) { d->VLast_ = VLast; d->ILast_ = ILast; }
+    inline void storeLast(Data *d, AnalogInputs::ValueType VLast, AnalogInputs::ValueType ILast) { d->VLast_ = VLast; d->ILast_ = ILast; }
 
     void calculateRthVth(Data *d, AnalogInputs::ValueType v, AnalogInputs::ValueType i);
     void calculateRth(Data *d, AnalogInputs::ValueType v, AnalogInputs::ValueType i);
