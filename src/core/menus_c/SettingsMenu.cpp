@@ -113,7 +113,7 @@ const PROGMEM struct StaticEditMenu::StaticEditData editData[] = {
 {NULL,                  0}
 };
 
-void editCallback(struct StaticEditMenu::StaticEditMenu * menu, uint16_t * adr) {
+void editCallback(StaticEditMenu::StaticEditMenuPtr menu, uint16_t * adr) {
 	StaticEditMenu::setSelector(menu, getSelector());
     Settings::check();
 }

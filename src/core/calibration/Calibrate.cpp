@@ -170,7 +170,7 @@ void saveCalibration(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInput
 #define COND_E_ANALOG       2
 #define COND_E_C_ANALOG     COND_E_ANALOG + COND_COPY_VOUT
 
-void runCalibrationMenu(const struct StaticEditMenu::StaticEditData * menuData,
+void runCalibrationMenu(const PROGMEM struct StaticEditMenu::StaticEditData * menuData,
         const AnalogInputs::Name * name1,
         const AnalogInputs::Name * name2,
         uint8_t calibrationPoint) {
@@ -179,7 +179,7 @@ void runCalibrationMenu(const struct StaticEditMenu::StaticEditData * menuData,
     int8_t item;
     uint8_t c;
     uint8_t doCopyVout;
-	struct StaticEditMenu::StaticEditMenu menu;
+	static struct StaticEditMenu::StaticEditMenu menu;
 
 	StaticEditMenu::initialize(&menu, menuData);
 

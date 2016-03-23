@@ -39,7 +39,9 @@
 namespace StaticEditMenu {
     static const uint16_t Mandatory = 0x8000;
     struct StaticEditMenu;
-    typedef void(*EditCallBack)(struct StaticEditMenu *, uint16_t * value) __reentrant;
+    typedef __xdata struct StaticEditMenu * StaticEditMenuPtr;
+
+    typedef void(*EditCallBack)(StaticEditMenuPtr, uint16_t * value) __reentrant;
     typedef void(*StaticEditMethod)(int dir) __reentrant;
 
     struct EditData {
@@ -54,7 +56,7 @@ namespace StaticEditMenu {
     };
 
     struct StaticEditData {
-        const char * staticString;
+        const PROGMEM char * staticString;
         uint16_t enableCondition;
         cprintf::PrintData print;
         struct EditData edit;
@@ -62,18 +64,19 @@ namespace StaticEditMenu {
 
     struct StaticEditMenu {
     	struct EditMenu::EditMenu editMenu;
-        const struct StaticEditData * staticEditData;
+        const PROGMEM struct StaticEditData * staticEditData;
         uint16_t selector;
         EditCallBack editCallback;
     };
 
-    void initialize(struct StaticEditMenu *d, const struct StaticEditData * staticEditData, const EditCallBack callback = 0);
-    int16_t * getEditAddress(struct StaticEditMenu *d, uint8_t item);
-    uint16_t getEnableCondition(struct StaticEditMenu *d, uint8_t item);
 
-    void setSelector(struct StaticEditMenu *d, uint16_t selector);
-    inline int8_t runSimple(struct StaticEditMenu *d, bool animate = false) { return Menu::runSimple(&d->editMenu.staticMenu.menu, animate); }
-    inline bool runEdit(struct StaticEditMenu *d) { return EditMenu::runEdit(&d->editMenu); }
+    void initialize(StaticEditMenuPtr d, const PROGMEM struct StaticEditData * staticEditData, const EditCallBack callback = 0);
+    int16_t * getEditAddress(StaticEditMenuPtr d, uint8_t item);
+    uint16_t getEnableCondition(StaticEditMenuPtr d, uint8_t item);
+
+    void setSelector(StaticEditMenuPtr d, uint16_t selector);
+    inline int8_t runSimple(StaticEditMenuPtr d, bool animate = false) { return Menu::runSimple(&d->editMenu.staticMenu.menu, animate); }
+    inline bool runEdit(StaticEditMenuPtr d) { return EditMenu::runEdit(&d->editMenu); }
 };
 
 #endif /* STATICEDITMENU_H_ */
