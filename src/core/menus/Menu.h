@@ -21,7 +21,7 @@
 #include <inttypes.h>
 #include "PolarityCheck.h"
 
-class Menu : public PolarityCheck {
+class Menu {
 public:
     static const int8_t MENU_EXIT = -1;
 
