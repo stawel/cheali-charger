@@ -42,7 +42,6 @@
 
 namespace Screen {
 
-    extern Blink blink;
     extern uint8_t keyboardButton;
 
     void displayCalibrationErrorScreen(uint8_t errNo);
