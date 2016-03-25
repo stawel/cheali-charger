@@ -31,10 +31,12 @@
 #define PSTR(x) x
 #define PROGMEM
 #define EEMEM
+#define DATAMEM
 #else
 #define PSTR(x) x
 #define PROGMEM     __code
 #define EEMEM       __code
+#define DATAMEM     __xdata
 #endif
 
 #include <stdint.h>
@@ -51,5 +53,15 @@ inline void eeprom_read_(void *x, const void * const adr, uint8_t size){}
 inline void pgm_read_(void *x, const void * const adr, uint8_t size){}
 inline uint8_t pgm_strlen(const char * str) {return strlen(str);}
 
+
+typedef const PROGMEM char * const_char_ptr;
+typedef const PROGMEM void * const_void_ptr;
+typedef DATAMEM uint16_t * uint16_ptr;
+typedef DATAMEM int16_t  * int16_ptr;
+typedef DATAMEM uint32_t * uint32_ptr;
+/*uint16_t uint16;
+int16_t  * int16Ptr;
+uint32_t * uint32Ptr;
+*/
 
 #endif /* MEMORY_H_ */

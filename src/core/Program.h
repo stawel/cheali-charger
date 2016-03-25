@@ -20,6 +20,7 @@
 
 #include "ProgramData.h"
 #include "Strategy.h"
+#include "memory.h"
 
 namespace Program {
 
@@ -36,7 +37,7 @@ namespace Program {
 
     extern ProgramType programType;
     extern ProgramState programState;
-    extern const char * stopReason;
+    extern const_char_ptr stopReason;
 
     void selectProgram(int index);
     void run(ProgramType prog);

@@ -39,9 +39,8 @@
 namespace StaticEditMenu {
     static const uint16_t Mandatory = 0x8000;
     struct StaticEditMenu;
-    typedef __xdata struct StaticEditMenu * StaticEditMenuPtr;
 
-    typedef void(*EditCallBack)(StaticEditMenuPtr, uint16_t * value) __reentrant;
+    typedef void(*EditCallBack)(uint16_ptr value) __reentrant;
     typedef void(*StaticEditMethod)(int dir) __reentrant;
 
     struct EditData {
@@ -56,27 +55,20 @@ namespace StaticEditMenu {
     };
 
     struct StaticEditData {
-        const PROGMEM char * staticString;
+        const_char_ptr staticString;
         uint16_t enableCondition;
         cprintf::PrintData print;
         struct EditData edit;
     };
 
-    struct StaticEditMenu {
-    	struct EditMenu::EditMenu editMenu;
-        const PROGMEM struct StaticEditData * staticEditData;
-        uint16_t selector;
-        EditCallBack editCallback;
-    };
 
+    void initialize(const PROGMEM struct StaticEditData * staticEditData, const EditCallBack callback = 0);
+    int16_ptr getEditAddress(uint8_t item);
+    uint16_t getEnableCondition(uint8_t item);
 
-    void initialize(StaticEditMenuPtr d, const PROGMEM struct StaticEditData * staticEditData, const EditCallBack callback = 0);
-    int16_t * getEditAddress(StaticEditMenuPtr d, uint8_t item);
-    uint16_t getEnableCondition(StaticEditMenuPtr d, uint8_t item);
-
-    void setSelector(StaticEditMenuPtr d, uint16_t selector);
-    inline int8_t runSimple(StaticEditMenuPtr d, bool animate = false) { return Menu::runSimple(&d->editMenu.staticMenu.menu, animate); }
-    inline bool runEdit(StaticEditMenuPtr d) { return EditMenu::runEdit(&d->editMenu); }
+    void setSelector(uint16_t selector);
+    int8_t runSimple(bool animate = false);
+    bool runEdit();
 };
 
 #endif /* STATICEDITMENU_H_ */

@@ -26,7 +26,7 @@ void StaticMenu::printItem(struct StaticMenu *d, int8_t i) {
 	lcdPrint_P(d->staticMenu_, i);
 }
 
-void StaticMenu::initialize(struct StaticMenu *d, const char * const staticMenu[]) {
+void StaticMenu::initialize(struct StaticMenu *d, const_char_ptr const PROGMEM * staticMenu) {
 	Menu::initialize(&d->menu, countElements((const void *const *)staticMenu), (Menu::PrintMethod) printItem);
 }
 

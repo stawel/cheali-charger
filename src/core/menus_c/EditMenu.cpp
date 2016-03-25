@@ -20,7 +20,7 @@
 
 
 
-void EditMenu::initialize(struct EditMenu *d, const char * const staticMenu[], EditMethod editItem) {
+void EditMenu::initialize(struct EditMenu *d, const_char_ptr const PROGMEM *staticMenu, EditMethod editItem) {
 	StaticMenu::initialize(&d->staticMenu, staticMenu);
 	d->editItem = editItem;
 	Blink::initialize();

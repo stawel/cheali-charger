@@ -81,23 +81,23 @@ uint16_t getSelector() {
  */
 const PROGMEM struct StaticEditMenu::StaticEditData editData[] = {
 #ifdef ENABLE_LCD_BACKLIGHT
-{string_backlight,      COND_ALWAYS,    {CP_TYPE_UNSIGNED,0,{&settings.backlight}},       {1, 0, 100}},
+{string_backlight,      COND_ALWAYS,    {CP_TYPE_UNSIGNED,0,{.uint16Ptr = &settings.backlight}},       {1, 0, 100}},
 #endif
 #ifdef ENABLE_FAN
 //{string_fanOn,          COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,{&FanOnData}},            {1, 0, Settings::FanProgramTemperature}},
-{string_fanTempOn,      COND_FAN_ON_T,  {CP_TYPE_TEMPERATURE,0,{&settings.fanTempOn}},    {Tstep, Tmin, Tmax}},
+{string_fanTempOn,      COND_FAN_ON_T,  {CP_TYPE_TEMPERATURE,0,{.uint16Ptr = &settings.fanTempOn}},    {Tstep, Tmin, Tmax}},
 #endif
 #ifdef ENABLE_T_INTERNAL
-{string_dischOff,       COND_ALWAYS,    {CP_TYPE_TEMPERATURE,3,{&settings.dischargeTempOff}}, {Tstep, Tmin, Tmax}},
+{string_dischOff,       COND_ALWAYS,    {CP_TYPE_TEMPERATURE,3,{.uint16Ptr = &settings.dischargeTempOff}}, {Tstep, Tmin, Tmax}},
 #endif
-{string_AudioBeep,      COND_ALWAYS,    {CP_TYPE_ON_OFF,0,{&settings.audioBeep}},         {1, 0, 1}},
-{string_minIc,          COND_ALWAYS,    {CP_TYPE_A,0,{&settings.minIc}},                  {ANALOG_AMP(0.001), ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
-{string_maxIc,          COND_ALWAYS,    {CP_TYPE_A,0,{&settings.maxIc}},                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
-{string_minId,          COND_ALWAYS,    {CP_TYPE_A,0,{&settings.minId}},                  {ANALOG_AMP(0.001), ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
-{string_maxId,          COND_ALWAYS,    {CP_TYPE_A,0,{&settings.maxId}},                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_DISCHARGE_I}},
-{string_inputLow,       COND_ALWAYS,    {CP_TYPE_V,3,{&settings.inputVoltageLow}},        {ANALOG_VOLT(1), ANALOG_VOLT(7), ANALOG_VOLT(30)}},
+{string_AudioBeep,      COND_ALWAYS,    {CP_TYPE_ON_OFF,0,{.uint16Ptr = &settings.audioBeep}},         {1, 0, 1}},
+{string_minIc,          COND_ALWAYS,    {CP_TYPE_A,0,{.uint16Ptr = &settings.minIc}},                  {ANALOG_AMP(0.001), ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
+{string_maxIc,          COND_ALWAYS,    {CP_TYPE_A,0,{.uint16Ptr = &settings.maxIc}},                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
+{string_minId,          COND_ALWAYS,    {CP_TYPE_A,0,{.uint16Ptr = &settings.minId}},                  {ANALOG_AMP(0.001), ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
+{string_maxId,          COND_ALWAYS,    {CP_TYPE_A,0,{.uint16Ptr = &settings.maxId}},                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_DISCHARGE_I}},
+{string_inputLow,       COND_ALWAYS,    {CP_TYPE_V,3,{.uint16Ptr = &settings.inputVoltageLow}},        {ANALOG_VOLT(1), ANALOG_VOLT(7), ANALOG_VOLT(30)}},
 #ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
-{string_adcNoise,       COND_ALWAYS,    {CP_TYPE_ON_OFF,0,{&settings.adcNoise}},          {1, 0, 1}},
+{string_adcNoise,       COND_ALWAYS,    {CP_TYPE_ON_OFF,0,{.uint16Ptr = &settings.adcNoise}},          {1, 0, 1}},
 #endif
 //TODO: sdcc fix
 //{string_UARTview,       COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&UARTData},             {1, 0, Settings::ExtDebugAdc}},
@@ -113,8 +113,8 @@ const PROGMEM struct StaticEditMenu::StaticEditData editData[] = {
 {NULL,                  0}
 };
 
-void editCallback(StaticEditMenu::StaticEditMenuPtr menu, uint16_t * adr) {
-	StaticEditMenu::setSelector(menu, getSelector());
+void editCallback(uint16_t * adr) {
+	StaticEditMenu::setSelector(getSelector());
     Settings::check();
 }
 

@@ -31,7 +31,7 @@ void cprintf(const PrintData * printDataPtr, uint8_t dig)
     pgm_read(p, printDataPtr);
     if(p.type == CP_TYPE_METHOD) {
         //Info: this must be before: uvalue = *p.data.uint16Ptr
-        p.data.methodPtr(dig);
+//        p.data.methodPtr(dig);
         return;
     }
     if(p.type & CP_TYPE_ANALOG_FLAG) {

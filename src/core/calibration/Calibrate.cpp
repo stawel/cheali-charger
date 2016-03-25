@@ -159,7 +159,7 @@ void saveCalibration(bool doCopyVbalVout, AnalogInputs::Name name1,  AnalogInput
 
 #ifdef SDCC_COMPILER
 //TODO: sdcc remove
-#define EANALOG_V(name)     {CP_TYPE_V, 0, {&AnalogInputs_real_[name]}}
+#define EANALOG_V(name)     {CP_TYPE_V, 0, {.uint16Ptr = &AnalogInputs_real_[name]}}
 #else
 #define EANALOG_V(name)     {CP_TYPE_V, 0, {&AnalogInputs::real_[AnalogInputs::name]}}
 #endif
@@ -179,19 +179,18 @@ void runCalibrationMenu(const PROGMEM struct StaticEditMenu::StaticEditData * me
     int8_t item;
     uint8_t c;
     uint8_t doCopyVout;
-	static struct StaticEditMenu::StaticEditMenu menu;
 
-	StaticEditMenu::initialize(&menu, menuData);
+	StaticEditMenu::initialize(menuData);
 
     selector = COND_ALWAYS ^ COND_POINT;
     if(calibrationPoint || settings.menuType == Settings::MenuAdvanced) {
         selector |= COND_POINT;
     }
-    StaticEditMenu::setSelector(&menu, selector);
+    StaticEditMenu::setSelector(selector);
     do {
-        item = StaticEditMenu::runSimple(&menu, true);
+        item = StaticEditMenu::runSimple(true);
         if(item < 0) break;
-        c = StaticEditMenu::getEnableCondition(&menu, item);
+        c = StaticEditMenu::getEnableCondition(item);
         if(!(c & 1)) {
             if(c & COND_E_ANALOG) {
                 AnalogInputs::Name Vinput;
@@ -200,7 +199,7 @@ void runCalibrationMenu(const PROGMEM struct StaticEditMenu::StaticEditData * me
                     AnalogInputs::doFullMeasurement();
                     AnalogInputs::on_ = false;
                     AnalogInputs::onTintern_ = false;
-                    if(StaticEditMenu::runEdit(&menu)) {
+                    if(StaticEditMenu::runEdit()) {
                         AnalogInputs::Name name2val;
                         doCopyVout = c & COND_COPY_VOUT;
                         pgm_read(name2val, &name2[item]);
@@ -210,7 +209,7 @@ void runCalibrationMenu(const PROGMEM struct StaticEditMenu::StaticEditData * me
                     AnalogInputs::onTintern_ = true;
                 }
             } else {
-                StaticEditMenu::runEdit(&menu);
+                StaticEditMenu::runEdit();
             }
         }
     } while(1);
@@ -259,7 +258,7 @@ BALANCER_PORTS_GT_6(
 )
 {string_v_menu_cellSum,     COND_ALWAYS,        EANALOG_V(Vbalancer),   {0, 0, 0}},
 {string_v_menu_output,      COND_ALWAYS,        EANALOG_V(Vout),        {0, 0, 0}},
-{string_menu_point,         COND_POINT,         {CP_TYPE_UNSIGNED, 0, {&CALIBRATION_POINT}},        {1, 0, 1}},
+{string_menu_point,         COND_POINT,         {CP_TYPE_UNSIGNED, 0, {.uint16Ptr = &CALIBRATION_POINT}},        {1, 0, 1}},
 {NULL,                      0}
 };
 
@@ -288,7 +287,7 @@ const PROGMEM struct StaticEditMenu::StaticEditData editExpertVoltageData[] = {
 #endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
 {string_ev_menu_plusVoltagePin,     COND_E_ANALOG,   EANALOG_V(Vout_plus_pin),   {1, 0, MAX_CHARGE_V}},
 {string_ev_menu_minusVoltagePin,    COND_E_ANALOG,   EANALOG_V(Vout_minus_pin),  {1, 0, MAX_CHARGE_V}},
-{string_menu_point,                 COND_POINT,     {CP_TYPE_UNSIGNED, 0, {&CALIBRATION_POINT}},        {1, 0, 1}},
+{string_menu_point,                 COND_POINT,     {CP_TYPE_UNSIGNED, 0, {.uint16Ptr = &CALIBRATION_POINT}},        {1, 0, 1}},
 {NULL,                              0}
 };
 
@@ -338,64 +337,67 @@ struct CurrentMenu {
     AnalogInputs::ValueType Iexpected_;
     AnalogInputs::ValueType maxIexpected_;
 };
+
+struct CurrentMenu cmenu;
+
 //class CurrentMenu: public EditMenu {
 //public:
 
-    void CurrentMenu_resetValue(struct CurrentMenu * d, AnalogInputs::CalibrationPoint *p) {
-        d->value_ = p->x;
+    void CurrentMenu_resetValue(AnalogInputs::CalibrationPoint *p) {
+        cmenu.value_ = p->x;
     }
-    void CurrentMenu_resetIexpected(struct CurrentMenu * d, AnalogInputs::CalibrationPoint *p) {
-        d->Iexpected_ = p->y;
+    void CurrentMenu_resetIexpected(AnalogInputs::CalibrationPoint *p) {
+        cmenu.Iexpected_ = p->y;
     }
 
-    void CurrentMenu_printItem(struct CurrentMenu * d, uint8_t index) {
+    void CurrentMenu_printItem(uint8_t index) {
         //TODO: hack, should be improved ... Gyuri: R138 burned.
         if(!AnalogInputs::isConnected(AnalogInputs::Vout)) {
             Screen::displayStrings(string_connect, string_battery);
-            if(d->cNameSet_ == AnalogInputs::IdischargeSet) {
+            if(cmenu.cNameSet_ == AnalogInputs::IdischargeSet) {
                 Discharger::powerOff();
             }
         } else {
-            StaticMenu::printItem(&d->editMenu.staticMenu, index);
+            StaticMenu::printItem(&cmenu.editMenu.staticMenu, index);
             if(Blink::getBlinkIndex() != index) {
                 switch (index) {
                     case 0:
-                        lcdPrintUnsigned(d->value_, 9);
+                        lcdPrintUnsigned(cmenu.value_, 9);
                         break;
                     case 1:
                         lcdPrintCurrent(AnalogInputs::getIout(), 7);
-                        lcdPrintUnsigned(AnalogInputs::getAvrADCValue(d->cName_), 6);
+                        lcdPrintUnsigned(AnalogInputs::getAvrADCValue(cmenu.cName_), 6);
                         break;
                     default:
-                        lcdPrintCurrent(d->Iexpected_, 8);
+                        lcdPrintCurrent(cmenu.Iexpected_, 8);
                         break;
                 }
             }
         }
     }
 
-    void CurrentMenu_editItem(struct CurrentMenu * d, uint8_t index, uint8_t key) {
+    void CurrentMenu_editItem(uint8_t index, uint8_t key) {
         int dir = -1;
         if(key == BUTTON_INC) dir = 1;
         if(index == 0) {
-            changeMinToMaxStep(&d->value_, dir, 1, d->maxValue_, 1);
-            setCurrentValue(d->cNameSet_, d->value_);
+            changeMinToMaxStep(&cmenu.value_, dir, 1, cmenu.maxValue_, 1);
+            setCurrentValue(cmenu.cNameSet_, cmenu.value_);
         } else {
-            changeMinToMaxStep(&d->Iexpected_, dir, 1, d->maxIexpected_, 1);
+            changeMinToMaxStep(&cmenu.Iexpected_, dir, 1, cmenu.maxIexpected_, 1);
         }
     }
 
-    void CurrentMenu_initialize(struct CurrentMenu * d, AnalogInputs::Name nameSet, AnalogInputs::Name name, uint8_t point, AnalogInputs::ValueType maxValue, AnalogInputs::ValueType maxI) {
+    void CurrentMenu_initialize(AnalogInputs::Name nameSet, AnalogInputs::Name name, uint8_t point, AnalogInputs::ValueType maxValue, AnalogInputs::ValueType maxI) {
 #ifndef SDCC_COMPILER
         //TODO sdcc !!!!!!!!!!!!!!!!!!!!!!!!
-        EditMenu::initialize(&d->editMenu, (const char * const *)currentMenu, (EditMenu::EditMethod)CurrentMenu_editItem);
+        EditMenu::initialize(&cmenu.editMenu, (const char * const *)currentMenu, (EditMenu::EditMethod)CurrentMenu_editItem);
 #endif
-		EditMenu::setPrintMethod(&d->editMenu, (Menu::PrintMethod)CurrentMenu_printItem);
-		d->cNameSet_ = nameSet;
-		d->cName_ = name;
-		d->point_ = point;
-		d->maxValue_ = maxValue;
-		d->maxIexpected_ = maxI;
+		EditMenu::setPrintMethod(&cmenu.editMenu, (Menu::PrintMethod)CurrentMenu_printItem);
+		cmenu.cNameSet_ = nameSet;
+		cmenu.cName_ = name;
+		cmenu.point_ = point;
+		cmenu.maxValue_ = maxValue;
+		cmenu.maxIexpected_ = maxI;
     }
 
 
@@ -412,7 +414,6 @@ void calibrateI(bool charging, uint8_t point)
     Program::dischargeOutputCapacitor();
     AnalogInputs::powerOn();
     if(testVout(false)) {
-        struct CurrentMenu menu;
         int8_t index;
 
         if(charging) {
@@ -434,27 +435,27 @@ void calibrateI(bool charging, uint8_t point)
         getCalibrationPoint(&pSet, nameSet, point);
         getCalibrationPoint(&p, name, point);
 
-		CurrentMenu_initialize(&menu, nameSet, name, point, maxValue, maxIexpected);
-		CurrentMenu_resetIexpected(&menu, &pSet);
+		CurrentMenu_initialize(nameSet, name, point, maxValue, maxIexpected);
+		CurrentMenu_resetIexpected(&pSet);
 
 		do {
-        	CurrentMenu_resetValue(&menu, &pSet);
-            index = EditMenu::runSimple(&menu.editMenu, true);
+        	CurrentMenu_resetValue(&pSet);
+            index = EditMenu::runSimple(&cmenu.editMenu, true);
             if(index < 0) break;
             if(index == 0) {
-                setCurrentValue(nameSet, menu.value_);
-                if(EditMenu::runEdit(&menu.editMenu)) {
+                setCurrentValue(nameSet, cmenu.value_);
+                if(EditMenu::runEdit(&cmenu.editMenu)) {
                     AnalogInputs::doFullMeasurement();
-                    pSet.y = menu.Iexpected_;
-                    pSet.x = menu.value_;
-                    p.y = menu.Iexpected_;
+                    pSet.y = cmenu.Iexpected_;
+                    pSet.x = cmenu.value_;
+                    p.y = cmenu.Iexpected_;
                     p.x = AnalogInputs::getAvrADCValue(name);
                     save = true;
                 }
                 setCurrentValue(nameSet, 0);
             }
-            if(index == 2 && !EditMenu::runEdit(&menu.editMenu)) {
-            	CurrentMenu_resetIexpected(&menu, &pSet);
+            if(index == 2 && !EditMenu::runEdit(&cmenu.editMenu)) {
+            	CurrentMenu_resetIexpected(&pSet);
             }
         } while(true);
 
@@ -505,24 +506,26 @@ void calibrateI(bool charging)
 /* temperature calibration */
 #ifdef SDCC_COMPILER
 //TODO: sdcc remove
-#define EANALOG_T(name) {CP_TYPE_TEMPERATURE, 0, {&AnalogInputs_real_[name]}}
-#define EANALOG_ADC(name) {CP_TYPE_UNSIGNED, 0, {&AnalogInputs_avrAdc_[name]}}
+#define EANALOG_T(name) {CP_TYPE_TEMPERATURE, 0, {.uint16Ptr = &AnalogInputs_real_[name]}}
+#define EANALOG_ADC(name) {CP_TYPE_UNSIGNED, 0, {.uint16Ptr = &AnalogInputs_avrAdc_[name]}}
 #else
 #define EANALOG_T(name) {CP_TYPE_TEMPERATURE, 0, {&AnalogInputs::real_[AnalogInputs::name]}}
 #define EANALOG_ADC(name) {CP_TYPE_UNSIGNED, 0, {&AnalogInputs::avrAdc_[AnalogInputs::name]}}
 #endif
 
+cprintf::cprintf_data zosia[2];
+
 const PROGMEM struct StaticEditMenu::StaticEditData editExternTData[] = {
 {string_t_menu_temperature,     COND_E_ANALOG,  EANALOG_T(Textern),             {1, 0, ANALOG_CELCIUS(100)}},
 {string_t_menu_adc,             COND_ALWAYS,    EANALOG_ADC(Textern),           {0,0,0}},
-{string_menu_point,             COND_POINT,     {CP_TYPE_UNSIGNED, 0, {&CALIBRATION_POINT}},        {1, 0, 1}},
+{string_menu_point,             COND_POINT,     {CP_TYPE_UNSIGNED, 0, {.uint16Ptr = &CALIBRATION_POINT}},        {1, 0, 1}},
 {NULL,                          0}
 };
 
 const PROGMEM struct StaticEditMenu::StaticEditData editInternTData[] = {
 {string_t_menu_temperature,     COND_E_ANALOG,  EANALOG_T(Tintern),             {1, 0, ANALOG_CELCIUS(100)}},
 {string_t_menu_adc,             COND_ALWAYS,    EANALOG_ADC(Tintern),           {0,0,0}},
-{string_menu_point,             COND_POINT,     {CP_TYPE_UNSIGNED, 0, {&CALIBRATION_POINT}},        {1, 0, 1}},
+{string_menu_point,             COND_POINT,     {CP_TYPE_UNSIGNED, 0, {.uint16Ptr = &CALIBRATION_POINT}},        {1, 0, 1}},
 {NULL,                          0}
 };
 

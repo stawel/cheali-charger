@@ -21,16 +21,17 @@
 #include "LcdPrint.h"
 #include "Menu.h"
 #include "Utils.h"
+#include "memory.h"
 
 
 namespace StaticMenu {
 
 	struct StaticMenu {
 		struct Menu::Menu menu;
-		const char * const* staticMenu_;
+		const_char_ptr const PROGMEM * staticMenu_;
 	};
 
-	void initialize(struct StaticMenu *d, const char * const staticMenu[]);
+	void initialize(struct StaticMenu *d, const_char_ptr const PROGMEM staticMenu[]);
 	void printItem(struct StaticMenu *md, int8_t i);
 	inline int8_t runSimple(struct StaticMenu *d, bool2 animate = false) {
 		return Menu::runSimple(&d->menu, animate);

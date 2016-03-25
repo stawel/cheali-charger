@@ -117,22 +117,22 @@ uint8_t digits(int32_t x)
     return retu;
 }
 
-void change0ToMax(uint16_t *v, int dir, uint8_t max)
+void change0ToMax(uint16_ptr v, int dir, uint8_t max)
 {
     changeMinToMaxStep(v, dir, 0, max, 1);
 }
 
-void change1ToMax(uint16_t *v, int dir, uint8_t max)
+void change1ToMax(uint16_ptr v, int dir, uint8_t max)
 {
     changeMinToMaxStep(v, dir, 1, max, 1);
 }
 
-void change0ToInfSmart(uint16_t *v, int dir)
+void change0ToInfSmart(uint16_ptr v, int dir)
 {
     changeMinToMaxSmart(v, dir, 0, UINT16_MAX);
 }
 
-void changeMinToMaxSmart(uint16_t *v, int dir, uint16_t min, uint16_t max)
+void changeMinToMaxSmart(uint16_ptr v, int dir, uint16_t min, uint16_t max)
 {
     uint8_t dv = digits(*v);
     uint16_t step = 1;
@@ -140,7 +140,7 @@ void changeMinToMaxSmart(uint16_t *v, int dir, uint16_t min, uint16_t max)
     changeMinToMaxStep(v, dir, min, max, step);
 }
 
-void changeMinToMaxStep(uint16_t *v, int dir, uint16_t min, uint16_t max, uint16_t step)
+void changeMinToMaxStep(uint16_ptr v, int dir, uint16_t min, uint16_t max, uint16_t step)
 {
     uint16_t r = (*v)%step;
 

@@ -41,7 +41,7 @@
 namespace Program {
     ProgramType programType;
     ProgramState programState = Program::ProgramDone;
-    const char * stopReason;
+    const_char_ptr stopReason;
 
     bool startInfo();
 

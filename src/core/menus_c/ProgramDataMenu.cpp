@@ -85,8 +85,8 @@ const PROGMEM cprintf::ArrayData batteryTypeData  = {{ProgramData::batteryString
 
 #ifdef SDCC_COMPILER
 //TODO: sdcc remove
-#define BATTERY(type, name)          {CP_TYPE_##type, 0, {&ProgramData_battery.name}}
-#define BATTERY_N(type, n, name)     {CP_TYPE_##type, n, {&ProgramData_battery.name}}
+#define BATTERY(type, name)          {CP_TYPE_##type, 0, {.uint16Ptr = &ProgramData_battery.name}}
+#define BATTERY_N(type, n, name)     {CP_TYPE_##type, n, {.uint16Ptr = &ProgramData_battery.name}}
 #define PRINT_VOLTAGE   CPRINTF_METHOD(Screen_StartInfo_printVoltageString), STATIC_EDIT_METHOD(ProgramDataMenu_changeVoltage)
 #define LAST_B  LAST_BATTERY_TYPE
 #define BTD     {CP_TYPE_STRING_ARRAY,0,{&ProgramDataMenu_batteryTypeData}}
@@ -103,7 +103,7 @@ const PROGMEM cprintf::ArrayData batteryTypeData  = {{ProgramData::batteryString
  */
 const PROGMEM struct StaticEditMenu::StaticEditData editData[] = {
 {string_batteryType,    COND_ALWAYS,            BTD,    {1, 0,LAST_B-1}},
-{string_voltage,        COND_BATT_UNKN,         PRINT_VOLTAGE},
+//{string_voltage,        COND_BATT_UNKN,         PRINT_VOLTAGE},
 {string_Vc_per_cell,    ADV(LiXX_NiZn_Pb),      BATTERY(V, Vc_per_cell),                    {1,ANALOG_VOLT(0.0),ANALOG_VOLT(5.0)}},
 {string_Vc_per_cell,    COND_Unknown,           BATTERY(V, Vc_per_cell),                    {50,ANALOG_VOLT(0.0),MAX_CHARGE_V}},
 {string_Vcutoff,        ADV(NiXX),              BATTERY(V, Vc_per_cell),                    {ANALOG_VOLT(0.001), ANALOG_VOLT(1.200), ANALOG_VOLT(2.000)}},
@@ -137,7 +137,7 @@ const PROGMEM struct StaticEditMenu::StaticEditData editData[] = {
 
 };
 
-void editCallback(StaticEditMenu::StaticEditMenuPtr menu, uint16_t * value) {
+void editCallback(uint16_ptr value) {
     if(value == &ProgramData::battery.type) {
         ProgramData::changedType();
     } else if(value == &ProgramData::battery.capacity) {
@@ -148,24 +148,23 @@ void editCallback(StaticEditMenu::StaticEditMenuPtr menu, uint16_t * value) {
         ProgramData::changedId();
     }
     ProgramData::check();
-    StaticEditMenu::setSelector(menu, getSelector());
+    StaticEditMenu::setSelector(getSelector());
 }
 
 void run() {
     int8_t item;
-	static struct StaticEditMenu::StaticEditMenu menu;
-	StaticEditMenu::initialize(&menu, editData, editCallback);
+	StaticEditMenu::initialize(editData, editCallback);
 
     do {
-        StaticEditMenu::setSelector(&menu, getSelector());
-        item = StaticEditMenu::runSimple(&menu);
+        StaticEditMenu::setSelector(getSelector());
+        item = StaticEditMenu::runSimple();
 
         if(item < 0) break;
 #ifndef SDCC_COMPILER
         //TODO: sdcc remove
         ProgramData::Battery undo(ProgramData::battery);
 #endif
-        if(!StaticEditMenu::runEdit(&menu)) {
+        if(!StaticEditMenu::runEdit()) {
 #ifndef SDCC_COMPILER
             ProgramData::battery = undo;
 #endif

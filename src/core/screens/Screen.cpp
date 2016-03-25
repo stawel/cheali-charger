@@ -122,14 +122,14 @@ void Screen::initialize() {
 #endif
 }
 
-void Screen::displayStrings(const char *s)
+void Screen::displayStrings(const_char_ptr s)
 {
     lcdClear();
     lcdSetCursor0_0();
     lcdPrint_P(s);
 }
 
-void Screen::displayStrings(const char *s1, const char *s2)
+void Screen::displayStrings(const_char_ptr s1, const_char_ptr  s2)
 {
     displayStrings(s1);
     lcdSetCursor0_1();
@@ -138,7 +138,7 @@ void Screen::displayStrings(const char *s1, const char *s2)
 
 
 namespace Screen {
-    void screenEnd(const char * firstLine) {
+    void screenEnd(const_char_ptr firstLine) {
         lcdSetCursor0_0();
         lcdPrint_P(firstLine);
         lcdPrintTime(Monitor::getTimeSec());
@@ -227,7 +227,7 @@ void Screen::runResetEepromDone(uint8_t before, uint8_t after) {
     }
 }
 
-void Screen::runCalibrationError(const char *s, uint8_t error) {
+void Screen::runCalibrationError(const_char_ptr s, uint8_t error) {
     displayStrings(PSTR("calib. error"), s);
     lcdPrintUnsigned(error, 3);
     waitButtonPressed();

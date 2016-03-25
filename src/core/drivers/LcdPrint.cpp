@@ -67,7 +67,7 @@ void lcdPrintLong(int32_t x, int8_t dig)
 }
 
 
-void lcdPrintR(const char *str, int8_t size)
+void lcdPrintR(char *str, int8_t size)
 {
     uint8_t str_size = strlen(str);
     lcdPrintSpaces(size - str_size);
@@ -75,7 +75,7 @@ void lcdPrintR(const char *str, int8_t size)
 }
 
 
-int8_t lcdPrint(const char *str, int8_t size)
+int8_t lcdPrint(char *str, int8_t size)
 {
     int8_t n = 0;
     char c;
@@ -93,14 +93,14 @@ int8_t lcdPrint(const char *str, int8_t size)
     return n;
 }
 
-int8_t lcdPrint_P(const char * const str[], uint8_t index) {
-    const char * adr;
+int8_t lcdPrint_P(const_char_ptr  const PROGMEM * str, uint8_t index) {
+    const_char_ptr adr;
     pgm_read(adr, &str[index]);
     return lcdPrint_P(adr);
 }
 
 
-int8_t lcdPrint_P(const char *str)
+int8_t lcdPrint_P(const_char_ptr str)
 {
     int8_t n = 0;
     char c;
@@ -177,7 +177,7 @@ void lcdPrintTime(uint16_t timeSec)
 
 void lcdPrintYesNo(uint8_t yes, int8_t dig)
 {
-    const char * str = string_no;
+    const_char_ptr str = string_no;
     lcdPrintSpaces(dig - 3);
     if(yes) str = string_yes;
     lcdPrint_P(str);
@@ -313,7 +313,7 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
             //TODO: programData::
             lcdPrint_P(string_unlimited);
     } else {
-        const char * symbol;
+        const_char_ptr symbol;
         uint8_t symbol_size;
         bool sign;
         uint16_t div;

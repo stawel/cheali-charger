@@ -20,7 +20,7 @@
 
 #include "StaticMenu.h"
 #include "Blink.h"
-
+#include "memory.h"
 
 namespace EditMenu {
 
@@ -32,7 +32,7 @@ namespace EditMenu {
 		EditMethod editItem;
 	};
 
-	void initialize(struct EditMenu *d, const char * const staticMenu[], EditMethod editItem);
+	void initialize(struct EditMenu *d, const_char_ptr const PROGMEM staticMenu[], EditMethod editItem);
 	void setPrintMethod(struct EditMenu *d, Menu::PrintMethod printItem);
     bool runEdit(struct EditMenu *d);
 

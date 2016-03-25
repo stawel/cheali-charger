@@ -20,6 +20,7 @@
 
 #include "AnalogInputsTypes.h"
 #include "cpu/config.h"
+#include "memory.h"
 
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
@@ -71,11 +72,11 @@ uint8_t digits(uint16_t x);
 int8_t sign(int16_t x);
 uint8_t countBits(uint16_t v);
 
-void change0ToInfSmart(uint16_t *v, int dir);
-void changeMinToMaxSmart(uint16_t *v, int dir, uint16_t min, uint16_t max);
-void changeMinToMaxStep(uint16_t *v, int dir, uint16_t min, uint16_t max, uint16_t step);
-void change0ToMax(uint16_t *v, int dir, uint8_t max);
-void change1ToMax(uint16_t *v, int dir, uint8_t max);
+void change0ToInfSmart(uint16_ptr v, int dir);
+void changeMinToMaxSmart(uint16_ptr v, int dir, uint16_t min, uint16_t max);
+void changeMinToMaxStep(uint16_ptr v, int dir, uint16_t min, uint16_t max, uint16_t step);
+void change0ToMax(uint16_ptr v, int dir, uint8_t max);
+void change1ToMax(uint16_ptr v, int dir, uint8_t max);
 
 uint8_t waitButtonPressed();
 

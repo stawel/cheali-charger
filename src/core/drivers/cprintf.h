@@ -74,14 +74,14 @@ namespace cprintf {
 
 
     typedef union {
-        const void * voidPtr;
-        uint16_t * uint16Ptr;
+        const_void_ptr voidPtr;
+        uint16_ptr uint16Ptr;
         uint16_t uint16;
-        int16_t  * int16Ptr;
-        uint32_t * uint32Ptr;
-        const char * const* stringArrayPtr;
-        cprintf_PrintMethod methodPtr;
-        struct ArrayData_ * arrayPtr;
+        int16_ptr int16Ptr;
+        uint32_ptr uint32Ptr;
+        const_char_ptr const PROGMEM * stringArrayPtr;
+//        cprintf_PrintMethod methodPtr;
+        PROGMEM struct ArrayData_  * arrayPtr;
     } cprintf_data;
 
     typedef struct ArrayData_{

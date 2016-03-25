@@ -95,7 +95,10 @@ MACRO(CHEALI_GENERATE_MCS51_EXEC)
 #        list (APPEND ${DEST} ${THIS_FILE})
     endforeach()
 
-    add_executable(${execName} ${C_FILES})
+    add_library(${execName}_lib ${C_FILES})
+    add_executable(${execName} main.c)
+    target_link_libraries(${execName} ${execName}_lib)
+
 #    set_property(DIRECTORY ${execName} PROPERTY INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}/out/)
 ENDMACRO(CHEALI_GENERATE_MCS51_EXEC)
 
