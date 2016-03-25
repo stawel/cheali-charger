@@ -18,23 +18,10 @@
 #ifndef MAINMENU_H_
 #define MAINMENU_H_
 
-#include "StaticMenu.h"
-#include "ProgramData.h"
+namespace MainMenu {
+    void run();
+}
 
-class MainMenu : public StaticMenu {
-public:
-    MainMenu(const char * const staticMenu[],uint8_t staticMenuItems):
-            StaticMenu(staticMenu){size_ += MAX_PROGRAMS;}
-
-    virtual void printItem(uint8_t i) {
-        uint8_t staticMenuSize = size_ - MAX_PROGRAMS;
-        if(i < staticMenuSize) {
-            StaticMenu::printItem(i);
-        } else {
-            ProgramData::printProgramData(i - staticMenuSize);
-        }
-    }
-};
 
 #endif /* MENU_H_ */
 

@@ -17,6 +17,7 @@
 */
 #include "ChealiCharger2.h"
 #include "MainMenu.h"
+#include "StaticMenu.h"
 #include "ProgramData.h"
 #include "AnalogInputs.h"
 #include "ProgramMenus.h"
