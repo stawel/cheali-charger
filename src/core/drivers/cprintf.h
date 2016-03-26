@@ -44,7 +44,6 @@
 //TODO:??
 #define CP_TYPE_METHOD          3
 
-
 #define CPRINTF_METHOD(method) {CP_TYPE_METHOD, 0, {.methodPtr = method}}
 namespace cprintf {
 
