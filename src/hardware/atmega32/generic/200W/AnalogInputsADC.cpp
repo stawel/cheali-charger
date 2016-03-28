@@ -289,7 +289,7 @@ void conversionDone()
 void setupNextInput() {
     g_input_ = nextInput(g_input_);
     adc_input = adc_input_next;
-    pgm::read(adc_input_next, &order_analogInputs_on[nextInput(g_input_)]);
+    pgm_read(adc_input_next, &order_analogInputs_on[nextInput(g_input_)]);
 
     if(g_input_ == 0) {
         finalizeMeasurement();

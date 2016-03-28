@@ -35,10 +35,12 @@ namespace eeprom {
     bool testOrRestore(uint16_t * adr, uint16_t version, bool restore) {
         uint8_t trials = EEPROM_READ_TRIALS;
         if(restore) {
-            eeprom::write(adr, version);
+            eeprom_write(adr, version);
         }
         while(--trials) {
-            if(eeprom::read(adr) == version)
+            uint16_t eeprom_version;
+            eeprom_read(eeprom_version, adr);
+            if(eeprom_version == version)
                 return false;
             Time::delay(100);
         }
@@ -111,8 +113,10 @@ namespace eeprom {
 
     uint16_t getCRC(uint8_t * adr, uint16_t size) {
         uint16_t crc = 0xffff;
+        uint8_t byte;
         for(uint16_t i = 0; i < size; i++) {
-            crc = crc16_update(crc, eeprom::read(&adr[i]));
+            eeprom_read(byte, &adr[i]);
+            crc = crc16_update(crc, byte);
         }
         return crc;
     }

@@ -21,34 +21,24 @@
 #include <avr/pgmspace.h>
 #include <avr/eeprom.h>
 
-namespace pgm {
 
-    inline char *strncpy(char * buf, const char *str, size_t s) {
+    inline char *pgm_strncpy(char * buf, const char *str, size_t s) {
         return strncpy_P(buf, str, s);
     }
 
-    inline size_t strlen(const char *s) {
+    inline size_t pgm_strlen(const char *s) {
         return strlen_P(s);
     }
 
     template<class Type, int n>
-    struct read_impl{
-        inline Type operator()(const Type * addressP) {
-            Type t;
-            memcpy_P(&t, addressP, sizeof(Type));
-            return t;
-        }
+    struct pgm_read_impl{
         inline void operator()(Type &t, const Type * addressP) {
             memcpy_P(&t, addressP, sizeof(Type));
         }
     };
 
     template<class Type>
-    struct read_impl<Type, 4> {
-        inline Type operator()(const Type * addressP) {
-            uint32_t u = pgm_read_dword(addressP);
-            return reinterpret_cast<Type&>(u);
-        }
+    struct pgm_read_impl<Type, 4> {
         inline void operator()(Type &t, const Type * addressP) {
             uint32_t u = pgm_read_dword(addressP);
             t = reinterpret_cast<Type&>(u);
@@ -56,11 +46,7 @@ namespace pgm {
     };
 
     template<class Type>
-    struct read_impl<Type, 2> {
-        inline Type operator()(const Type * addressP) {
-            uint16_t v = pgm_read_word(addressP);
-            return reinterpret_cast<Type&>(v);
-        }
+    struct pgm_read_impl<Type, 2> {
         inline void operator()(Type &t, const Type * addressP) {
             uint16_t v = pgm_read_word(addressP);
             t = reinterpret_cast<Type&>(v);
@@ -68,99 +54,60 @@ namespace pgm {
     };
 
     template<class Type>
-    struct read_impl<Type, 1> {
-        inline Type operator()(const Type * addressP) {
-            return (Type)pgm_read_byte(addressP);
-        }
+    struct pgm_read_impl<Type, 1> {
         inline void operator()(Type &t, const Type * addressP) {
             t = (Type)pgm_read_byte(addressP);
         }
     };
 
-    template<class Type>
-    static Type read(const Type * addressP) {
-        return read_impl<Type, sizeof(Type)>() (addressP);
-    }
 
     template<class Type>
-    static void read(Type &t, const Type * addressP) {
-        read_impl<Type, sizeof(Type)>() (t, addressP);
+    static void pgm_read(Type &t, const Type * addressP) {
+        pgm_read_impl<Type, sizeof(Type)>() (t, addressP);
     }
-};
 
 
-namespace eeprom {
+
+
 
     template<class Type, int n>
-    struct read_impl{
-        inline Type operator()(const Type * addressE) {
-            Type t;
-            eeprom_read_block(&t, addressE, sizeof(Type));
-            return t;
-        }
+    struct eeprom_read_impl{
         inline void operator()(Type &t, const Type * addressE) {
             eeprom_read_block(&t, addressE, sizeof(Type));
         }
     };
 
-//    Increases program size
-
-    /*     template<class Type>
-    struct read_n<Type, 4> {
-        union Type_union{
-            Type t;
-            uint32_t u;
-        };
-        inline Type operator()(const Type * addressE) {
-            Type_union tu;
-            tu.u = eeprom_read_dword((const uint32_t*)addressE);
-            return tu.t;
-        }
-        inline void operator()(Type &t, const Type * addressE) {
-            Type_union tu;
-            tu.u = eeprom_read_dword((const uint32_t*)addressE);
-            t = tu.t;
-        }
-    };*/
-
     template<class Type>
-    struct read_impl<Type, 2> {
-        inline Type operator()(const Type * addressE) {
-            return (Type)eeprom_read_word((const uint16_t*)addressE);
-        }
+    struct eeprom_read_impl<Type, 2> {
         inline void operator()(Type &t, const Type * addressE) {
             t = (Type)eeprom_read_word((const uint16_t*)addressE);
         }
     };
 
     template<class Type>
-    struct read_impl<Type, 1> {
-        inline Type operator()(const Type * addressE) {
-            return (Type)eeprom_read_byte(addressE);
-        }
+    struct eeprom_read_impl<Type, 1> {
         inline void operator()(Type &t, const Type * addressE) {
             t = (Type)eeprom_read_byte(addressE);
         }
     };
 
 
-
     template<class Type, int n>
-    struct write_impl{
+    struct eeprom_write_impl{
         inline void operator()(Type * addressE, const Type &t) {
             eeprom_update_block(&t, addressE, sizeof(Type));
         }
     };
 
     template<class Type>
-    struct write_impl<Type, 2> {
+    struct eeprom_write_impl<Type, 2> {
         inline void operator()(Type * addressE, const Type &t) {
             eeprom_update_word((uint16_t*) addressE,(uint16_t) t);
         }
     };
 
     template<class Type>
-    struct write_impl<Type, 1> {
+    struct eeprom_write_impl<Type, 1> {
         inline void operator()(Type * addressE, const Type &t) {
             eeprom_update_byte((const uint8_t*) addressE, t);
         }
@@ -168,18 +115,13 @@ namespace eeprom {
 
 
     template<class Type>
-    static Type read(const Type * addressE) {
-        return read_impl<Type, sizeof(Type)>() (addressE);
-    }
-    template<class Type>
-    static void read(Type &t, const Type * addressE) {
-        return read_impl<Type, sizeof(Type)>() (t, addressE);
+    static void eeprom_read(Type &t, const Type * addressE) {
+        return eeprom_read_impl<Type, sizeof(Type)>() (t, addressE);
     }
 
     template<class Type>
-    static void write(Type * addressE, const Type &t) {
-        return write_impl<Type, sizeof(Type)>() (addressE, t);
+    static void eeprom_write(Type * addressE, const Type &t) {
+        return eeprom_write_impl<Type, sizeof(Type)>() (addressE, t);
     }
-};
 
 #endif /* MEMORY_H_ */

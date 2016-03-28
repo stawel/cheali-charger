@@ -50,11 +50,13 @@ namespace EditMenu {
     void printItem(uint8_t item)
     {
         uint8_t index = getSelectedIndexOrSize(item);
-        const char * str = pgm::read(&staticEditData_[index].staticString);
+        const char * str;
+        pgm_read(str, &staticEditData_[index].staticString);
         uint8_t dig = lcdPrint_P(str);
         if(Blink::getBlinkIndex() != item) {
             dig = LCD_COLUMNS - dig - 1;
-            uint8_t size = pgm::read(&staticEditData_[index].print.size);
+            uint8_t size;
+            pgm_read(size, &staticEditData_[index].print.size);
             if(size) {
                 lcdPrintSpaces(dig - size);
                 dig = size;
@@ -66,12 +68,14 @@ namespace EditMenu {
     int16_t * getEditAddress(uint8_t item)
     {
         uint8_t index = getSelectedIndexOrSize(item);
-        cprintf::Data data = pgm::read(&staticEditData_[index].print.data);
+        cprintf::Data data;
+        pgm_read(data, &staticEditData_[index].print.data);
         int16_t * valuePtr = data.int16Ptr;
-        uint8_t type = pgm::read(&staticEditData_[index].print.type);
+        uint8_t type;
+        pgm_read(type, &staticEditData_[index].print.type);
         if(type == CP_TYPE_STRING_ARRAY || type == CP_TYPE_UINT32_ARRAY) {
             cprintf::ArrayData array;
-            pgm::read(array, data.arrayPtr);
+            pgm_read(array, data.arrayPtr);
             valuePtr = (int16_t*)array.indexPtr;
         }
         return valuePtr;
@@ -80,7 +84,9 @@ namespace EditMenu {
     uint16_t getEnableCondition(uint8_t item)
     {
         uint8_t index = getSelectedIndexOrSize(item);
-        return pgm::read(&staticEditData_[index].enableCondition);
+        uint16_t enableCond;
+        pgm_read(enableCond, &staticEditData_[index].enableCondition);
+        return enableCond;
     }
 
 
@@ -88,8 +94,9 @@ namespace EditMenu {
     {
         int16_t * valuePtr = getEditAddress(item);
         uint8_t index = getSelectedIndexOrSize(item);
-        EditData d = pgm::read(&staticEditData_[index].edit);
         int dir = 1;
+        EditData d;
+        pgm_read(d, &staticEditData_[index].edit);
         if(key == BUTTON_DEC) dir = -1;
 
         if(d.step == CE_STEP_TYPE_SMART) {
@@ -136,7 +143,8 @@ namespace EditMenu {
     {
         uint8_t index = 0, size = 0;
         do {
-            uint16_t condition = pgm::read(&staticEditData_[index].enableCondition);
+            uint16_t condition;
+            pgm_read(condition, &staticEditData_[index].enableCondition);
             if(condition == EDIT_MENU_LAST) {
                 return size;
             }

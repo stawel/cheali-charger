@@ -93,7 +93,8 @@ namespace Strategy {
     }
 
     Strategy::statusType strategyDoStrategy() {
-        Strategy::statusType (*doStrategy)() = pgm::read(&strategy->doStrategy);
+        Strategy::statusType (*doStrategy)();
+        pgm_read(doStrategy, &strategy->doStrategy);
         return doStrategy();
     }
 

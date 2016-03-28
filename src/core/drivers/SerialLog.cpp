@@ -188,7 +188,7 @@ void printString_P(const char *s)
 {
     char c;
     while(1) {
-        c = pgm::read(s);
+        pgm_read(c, s);
         if(!c)
             return;
 
@@ -242,8 +242,10 @@ void sendChannel1()
     sendHeader(1);
     //analog inputs
     for(uint8_t i=0;i < sizeOfArray(channel1);i++) {
-        AnalogInputs::Name name = pgm::read(&channel1[i]);
-        uint16_t v = AnalogInputs::getRealValue(name);
+        AnalogInputs::Name name;
+        uint16_t v;
+        pgm_read(name, &channel1[i]);
+        v = AnalogInputs::getRealValue(name);
         printUInt(v);
         printD();
     }

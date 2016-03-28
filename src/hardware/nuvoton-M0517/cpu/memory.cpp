@@ -24,9 +24,8 @@
 #define PAGE_SIZE_32B     128
 
 
-namespace eeprom {
 
-void write_impl_less(uint8_t * addressE, const uint8_t * data, int size)
+void eeprom_write_impl_less(uint8_t * addressE, const uint8_t * data, int size)
 {
     uint32_t buf[PAGE_SIZE_32B];
     int i;
@@ -58,7 +57,7 @@ void write_impl_less(uint8_t * addressE, const uint8_t * data, int size)
 
 }
 
-void write_impl(uint8_t * addressE, const uint8_t * data, int size)
+void eeprom_write_impl(uint8_t * addressE, const uint8_t * data, int size)
 {
     //don't interrupt the eeprom write operation
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
@@ -75,7 +74,7 @@ void write_impl(uint8_t * addressE, const uint8_t * data, int size)
             } else {
                 less_size = size;
             }
-            write_impl_less(addressE, data, less_size);
+            eeprom_write_impl_less(addressE, data, less_size);
             addressE += less_size;
             data += less_size;
             size -= less_size;
@@ -88,5 +87,4 @@ void write_impl(uint8_t * addressE, const uint8_t * data, int size)
     } // enable interrupts
 }
 
-} // namespace eeprom
 

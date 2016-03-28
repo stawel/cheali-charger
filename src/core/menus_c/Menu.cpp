@@ -37,7 +37,7 @@ namespace Menu {
 
     void printStatic(uint8_t i) {
             const char * string;
-            pgm::read(string, &staticMenu_[i].string);
+            pgm_read(string, &staticMenu_[i].string);
             lcdPrint_P(string);
     }
 
@@ -52,8 +52,11 @@ namespace Menu {
 
     uint8_t countStaticElements() {
         uint8_t retu = 0;
-        while(pgm::read(&staticMenu_[retu].string)) retu++;
-        return retu;
+        const char * string;
+        do {
+            pgm_read(string, &staticMenu_[retu++].string);
+        } while(string);
+        return retu - 1;
     }
 
     void initializeStatic(const struct StaticMenu * staticMenu) {

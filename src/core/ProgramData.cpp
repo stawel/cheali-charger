@@ -63,7 +63,8 @@ const AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE] PRO
 uint16_t ProgramData::getDefaultVoltagePerCell(VoltageType type)
 {
     STATIC_ASSERT(sizeOfArray(voltsPerCell) == ProgramData::LAST_BATTERY_TYPE);
-    uint16_t result = pgm::read(&voltsPerCell[battery.type][type]);
+    uint16_t result;
+    pgm_read(result, &voltsPerCell[battery.type][type]);
     return result;
 }
 uint16_t ProgramData::getDefaultVoltage(VoltageType type)
@@ -131,7 +132,9 @@ const ProgramData::BatteryClass ProgramData::batteryClassMap[] PROGMEM = {
 
 ProgramData::BatteryClass ProgramData::getBatteryClass() {
     STATIC_ASSERT(sizeOfArray(ProgramData::batteryClassMap) == ProgramData::LAST_BATTERY_TYPE);
-    return pgm::read(&ProgramData::batteryClassMap[battery.type]);
+    ProgramData::BatteryClass v;
+    pgm_read(v, &ProgramData::batteryClassMap[battery.type]);
+    return v;
 }
 
 uint16_t ProgramData::getCapacityLimit()
@@ -227,13 +230,13 @@ void ProgramData::check()
 
 void ProgramData::loadProgramData(uint8_t index)
 {
-    eeprom::read(battery, &eeprom::data.battery[index]);
+    eeprom_read(battery, &eeprom::data.battery[index]);
     check();
 }
 
 void ProgramData::saveProgramData(uint8_t index)
 {
-    eeprom::write(&eeprom::data.battery[index], battery);
+    eeprom_write(&eeprom::data.battery[index], battery);
     eeprom::restoreProgramDataCRC();
 }
 

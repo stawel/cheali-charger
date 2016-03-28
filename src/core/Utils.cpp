@@ -23,7 +23,8 @@
 
 void callVoidMethod_P(const VoidMethod * method)
 {
-    const VoidMethod voidMethod = pgm::read(method);
+    VoidMethod voidMethod;
+    pgm_read(voidMethod, method);
     callVoidMethod(voidMethod);
 }
 void callVoidMethod(const VoidMethod method)
@@ -32,7 +33,7 @@ void callVoidMethod(const VoidMethod method)
 }
 
 
-uint8_t countElements(const void * const array[])
+/*uint8_t countElements(const void * const array[])
 {
     uint8_t retu=0;
     if(array != 0) {
@@ -41,7 +42,7 @@ uint8_t countElements(const void * const array[])
     }
 
     return retu;
-}
+}*/
 
 
 bool testTintern(bool &more, AnalogInputs::ValueType off, AnalogInputs::ValueType on)

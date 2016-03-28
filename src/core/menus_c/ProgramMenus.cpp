@@ -120,12 +120,17 @@ namespace ProgramMenus {
 
     static uint8_t countElements() {
         uint8_t retu = 0;
-        while(pgm::read(&currentProgramMenu_[retu++]) != Program::EditBattery);
+        Program::ProgramType type;
+        do {
+            pgm_read(type, &currentProgramMenu_[retu++]);
+        } while(type != Program::EditBattery);
         return retu;
     }
 
     inline Program::ProgramType getProgramType(uint8_t i) {
-        return pgm::read(&currentProgramMenu_[i]);
+        Program::ProgramType type;
+        pgm_read(type, &currentProgramMenu_[i]);
+        return type;
     }
 
 

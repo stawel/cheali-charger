@@ -64,16 +64,18 @@ const uint32_t Settings::UARTSpeedValue[Settings::UARTSpeeds] PROGMEM = {
 
 
 uint32_t Settings::getUARTspeed() const {
-    return pgm::read(&UARTSpeedValue[UARTspeed]);
+    uint32_t v;
+    pgm_read(v, &UARTSpeedValue[UARTspeed]);
+    return v;
 }
 
 void Settings::load() {
-    eeprom::read(settings, &eeprom::data.settings);
+    eeprom_read(settings, &eeprom::data.settings);
     settings.apply();
 }
 
 void Settings::save() {
-    eeprom::write(&eeprom::data.settings, settings);
+    eeprom_write(&eeprom::data.settings, settings);
     eeprom::restoreSettingsCRC();
 
     settings.apply();
@@ -81,7 +83,7 @@ void Settings::save() {
 
 void Settings::setDefault()
 {
-    pgm::read(*this, &defaultSettings);
+    pgm_read(*this, &defaultSettings);
 }
 void Settings::restoreDefault() {
     settings.setDefault();

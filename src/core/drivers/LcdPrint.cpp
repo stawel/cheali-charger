@@ -93,7 +93,9 @@ int8_t lcdPrint(const char *str, int8_t size)
 }
 
 int8_t lcdPrint_P(const char * const str[], uint8_t index) {
-    return lcdPrint_P(pgm::read(&str[index]));
+    const char * string;
+    pgm_read(string, &str[index]);
+    return lcdPrint_P(string);
 }
 
 
@@ -102,9 +104,13 @@ int8_t lcdPrint_P(const char *str)
     int8_t n = 0;
     char c;
     if(str) {
-        while((c = pgm::read(str++)) != 0) {
+        while(true) {
+            pgm_read(c, str);
+            if(c == 0)
+                break;
             lcdPrintChar(c);
             n++;
+            str++;
         }
     }
     return n;
@@ -306,8 +312,11 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
             //TODO: programData::
             lcdPrint_P(string_unlimited);
     } else {
-        const char * symbol = pgm::read(&unitsInfo[type].symbol);
-        uint8_t symbol_size = pgm::strlen(symbol);
+        UnitsInfo info;
+        uint8_t symbol_size;
+
+        pgm_read(info, &unitsInfo[type]);
+        symbol_size = pgm_strlen(info.symbol);
 
         dig -= symbol_size;
         if(dig <= 0)
@@ -322,8 +331,8 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
             }
         }
 
-        lcdPrintValue_(x, (int8_t) dig, pgm::read(&unitsInfo[type].div), pgm::read(&unitsInfo[type].mili), sign);
-        lcdPrint_P(symbol);
+        lcdPrintValue_(x, (int8_t) dig, info.div, info.mili, sign);
+        lcdPrint_P(info.symbol);
     }
 }
 
