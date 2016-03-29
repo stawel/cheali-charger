@@ -71,7 +71,7 @@ void sendTime();
 
 void serialBegin()
 {
-    Serial::begin(settings.getUARTspeed());
+    Serial::begin(Settings::getUARTspeed());
 }
 void serialEnd()
 {

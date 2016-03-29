@@ -56,7 +56,7 @@ const cprintf::ArrayData UARToutputData  PROGMEM = {SettingsUARToutput, &setting
 const char * const SettingsMenuType[] PROGMEM = {string_simple, string_advanced};
 const cprintf::ArrayData menuTypeData  PROGMEM = {SettingsMenuType, &settings.menuType};
 
-const AnalogInputs::ValueType Tmin = (Settings::TempDifference/ANALOG_CELCIUS(1) + 1)*ANALOG_CELCIUS(1);
+const AnalogInputs::ValueType Tmin = (SETTINGS_FAN_TEMPERATURE_DIFF/ANALOG_CELCIUS(1) + 1)*ANALOG_CELCIUS(1);
 const AnalogInputs::ValueType Tmax = ANALOG_CELCIUS(99);
 const AnalogInputs::ValueType Tstep =  ANALOG_CELCIUS(1);
 
@@ -105,7 +105,7 @@ const EditMenu::StaticEditData editData[] PROGMEM = {
 {string_adcNoise,       COND_ALWAYS,    SETTING(ON_OFF, adcNoise),          {1, 0, 1}},
 #endif
 {string_UARTview,       COND_ALWAYS,    EDIT_STRING_ARRAY(UARTData),        {1, 0, Settings::ExtDebugAdc}},
-{string_UARTspeed,      COND_UART_ON,   EDIT_UINT32_ARRAY(UARTSpeedsData),  {1, 0, Settings::UARTSpeeds-1}},
+{string_UARTspeed,      COND_UART_ON,   EDIT_UINT32_ARRAY(UARTSpeedsData),  {1, 0, SETTINGS_UART_SPEEDS-1}},
 #ifdef ENABLE_TX_HW_SERIAL
 {string_UARToutput,     COND_UART_ON,   EDIT_STRING_ARRAY(UARToutputData),  {1, 0, 2}},
 #endif
@@ -140,7 +140,7 @@ void run() {
 #ifdef ENABLE_SETTINGS_MENU_RESET
         if(EditMenu::getEditAddress(item) == NULL)  //reset
         {
-            settings.setDefault();
+            Settings::setDefault();
 #ifdef ENABLE_DEBUG
             settings.UART = Settings::Normal;
             LogDebug("Reset");
@@ -149,16 +149,16 @@ void run() {
         } else
 #endif
         {
-            Settings undo(settings);
+            Settings::Settings undo(settings);
             if(!EditMenu::runEdit()) {
                 settings = undo;
             } else {
                 Buzzer::soundSelect();
             }
-            settings.apply();
+            Settings::apply();
         }
     } while(true);
-    settings.save();
+    Settings::save();
 }
 
 } //namespace SettingsMenu

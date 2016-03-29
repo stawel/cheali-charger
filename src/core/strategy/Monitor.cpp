@@ -136,7 +136,7 @@ void Monitor::doIdle()
                || settings.fanOn == Settings::FanTemperature) {
         AnalogInputs::ValueType t = AnalogInputs::getRealValue(AnalogInputs::Tintern);
 
-        if (t < settings.fanTempOn - Settings::TempDifference) {
+        if (t < settings.fanTempOn - SETTINGS_FAN_TEMPERATURE_DIFF) {
             fan = false;
         } else if (t > settings.fanTempOn) {
             fan = true;
@@ -211,7 +211,7 @@ Strategy::statusType Monitor::run()
 #ifdef ENABLE_T_INTERNAL
     AnalogInputs::ValueType t = AnalogInputs::getRealValue(AnalogInputs::Tintern);
 
-    if(t > settings.dischargeTempOff + Settings::TempDifference) {
+    if(t > settings.dischargeTempOff + SETTINGS_FAN_TEMPERATURE_DIFF) {
         Program::stopReason = string_internalTemperatureToHigh;
         return Strategy::ERROR;
     }

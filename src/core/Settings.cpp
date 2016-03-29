@@ -31,9 +31,9 @@
 #define SETTINGS_ADC_NOISE_DEFAULT 0
 #endif
 
-Settings settings;
+Settings::Settings settings;
 
-const Settings defaultSettings PROGMEM = {
+const Settings::Settings defaultSettings PROGMEM = {
         70,                 //backlight
         Settings::FanTemperature, //fanOn
         ANALOG_CELCIUS(50), //fanTempOn
@@ -54,7 +54,7 @@ const Settings defaultSettings PROGMEM = {
 };
 
 
-const uint32_t Settings::UARTSpeedValue[Settings::UARTSpeeds] PROGMEM = {
+const uint32_t Settings::UARTSpeedValue[SETTINGS_UART_SPEEDS] PROGMEM = {
     9600,
     19200,
     38400,
@@ -63,31 +63,31 @@ const uint32_t Settings::UARTSpeedValue[Settings::UARTSpeeds] PROGMEM = {
 };
 
 
-uint32_t Settings::getUARTspeed() const {
+uint32_t Settings::getUARTspeed() {
     uint32_t v;
-    pgm_read(v, &UARTSpeedValue[UARTspeed]);
+    pgm_read(v, &UARTSpeedValue[settings.UARTspeed]);
     return v;
 }
 
 void Settings::load() {
     eeprom_read(settings, &eeprom::data.settings);
-    settings.apply();
+    apply();
 }
 
 void Settings::save() {
     eeprom_write(&eeprom::data.settings, settings);
     eeprom::restoreSettingsCRC();
 
-    settings.apply();
+    apply();
 }
 
 void Settings::setDefault()
 {
-    pgm_read(*this, &defaultSettings);
+    pgm_read(settings, &defaultSettings);
 }
 void Settings::restoreDefault() {
-    settings.setDefault();
-    Settings::save();
+    setDefault();
+    save();
 }
 
 void Settings::check() {
@@ -109,8 +109,7 @@ void Settings::check() {
 
 void Settings::apply() {
 #ifdef ENABLE_LCD_BACKLIGHT
-    hardware::setLCDBacklight(backlight);
+    hardware::setLCDBacklight(settings.backlight);
 #endif
-//    hardware::setExternalTemperatueOutput(externT);
 }
 

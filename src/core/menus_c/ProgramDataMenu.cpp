@@ -79,7 +79,7 @@ void changeVoltage(int dir)
 const cprintf::ArrayData batteryTypeData  PROGMEM = {batteryString, &battery.type};
 
 
-const AnalogInputs::ValueType Tmin = (Settings::TempDifference/ANALOG_CELCIUS(1))*ANALOG_CELCIUS(1) + ANALOG_CELCIUS(1);
+const AnalogInputs::ValueType Tmin = (SETTINGS_FAN_TEMPERATURE_DIFF/ANALOG_CELCIUS(1))*ANALOG_CELCIUS(1) + ANALOG_CELCIUS(1);
 const AnalogInputs::ValueType Tmax = ANALOG_CELCIUS(99);
 const AnalogInputs::ValueType Tstep =  ANALOG_CELCIUS(1);
 

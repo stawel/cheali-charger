@@ -21,47 +21,50 @@
 #include <stdint.h>
 #include "AnalogInputs.h"
 
+#define SETTINGS_UART_SPEEDS                5
+#define SETTINGS_FAN_TEMPERATURE_DIFF       ANALOG_CELCIUS(5.12)
 
-struct Settings {
+namespace Settings {
 
     enum UARTType {Disabled, Normal,  Debug,  ExtDebug, ExtDebugAdc};
     enum FanOnType {FanDisabled, FanAlways, FanProgram, FanTemperature, FanProgramTemperature};
 
     enum UARTOutput {Software, HardwarePin7, HardwarePin38};
     enum MenuType  {MenuSimple, MenuAdvanced};
-    static const uint16_t UARTSpeeds = 5;
-    static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5.12);
-    uint16_t backlight;
 
-    uint16_t fanOn;
-    AnalogInputs::ValueType fanTempOn;
-    AnalogInputs::ValueType dischargeTempOff;
+    struct Settings {
 
-    uint16_t audioBeep;
-    AnalogInputs::ValueType minIc;
-    AnalogInputs::ValueType maxIc;
-    AnalogInputs::ValueType minId;
-    AnalogInputs::ValueType maxId;
+        uint16_t backlight;
 
-    AnalogInputs::ValueType inputVoltageLow;
-    uint16_t adcNoise;
-    uint16_t UART;
-    uint16_t UARTspeed;
-    uint16_t UARToutput;
-    uint16_t menuType;
+        uint16_t fanOn;
+        AnalogInputs::ValueType fanTempOn;
+        AnalogInputs::ValueType dischargeTempOff;
+
+        uint16_t audioBeep;
+        AnalogInputs::ValueType minIc;
+        AnalogInputs::ValueType maxIc;
+        AnalogInputs::ValueType minId;
+        AnalogInputs::ValueType maxId;
+
+        AnalogInputs::ValueType inputVoltageLow;
+        uint16_t adcNoise;
+        uint16_t UART;
+        uint16_t UARTspeed;
+        uint16_t UARToutput;
+        uint16_t menuType;
+    };
 
     void apply();
     void setDefault();
-    uint32_t getUARTspeed() const;
-    static const uint32_t UARTSpeedValue[];
+    uint32_t getUARTspeed();
+    extern const uint32_t UARTSpeedValue[];
 
-    static void load();
-    static void save();
-    static void check();
-    static void restoreDefault();
-
+    void load();
+    void save();
+    void check();
+    void restoreDefault();
 };
 
-extern Settings settings;
+extern Settings::Settings settings;
 
 #endif /* SETTINGS_H_ */

@@ -34,7 +34,7 @@ namespace Discharger {
     {
 #ifdef ENABLE_T_INTERNAL
         bool tempcutoff;
-        testTintern(tempcutoff, settings.dischargeTempOff - Settings::TempDifference, settings.dischargeTempOff);
+        testTintern(tempcutoff, settings.dischargeTempOff - SETTINGS_FAN_TEMPERATURE_DIFF, settings.dischargeTempOff);
 
         if(tempcutoff)
             return 0;
