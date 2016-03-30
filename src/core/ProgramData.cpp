@@ -81,8 +81,7 @@ uint16_t ProgramData::getDefaultVoltage(VoltageType type)
     return cells * voltage;
 }
 
-uint16_t ProgramData::getVoltage(VoltageType type) {
-    uint16_t cells = battery.cells;
+uint16_t ProgramData::getVoltagePerCell(VoltageType type) {
     uint16_t voltage = getDefaultVoltagePerCell(type);
     if (type == VCharged) {
         voltage = battery.Vc_per_cell;
@@ -91,6 +90,13 @@ uint16_t ProgramData::getVoltage(VoltageType type) {
     } else if (type == VStorage) {
         voltage = battery.Vs_per_cell;
     }
+    return voltage;
+}
+
+
+uint16_t ProgramData::getVoltage(VoltageType type) {
+    uint16_t cells = battery.cells;
+    uint16_t voltage = getVoltagePerCell(type);
     //TODO:type == VDischarge && battery.type == NiMH && cells > 6
     //see getDefaultVoltage
     return cells * voltage;

@@ -52,7 +52,7 @@ void StorageStrategy::powerOn()
     if(Balancer::getConnectedCellsCount() == 0) {
         charge = AnalogInputs::getVbattery() <= V;
     } else {
-        charge = Balancer::isMinVout(Balancer::calculatePerCell(V));
+        charge = Balancer::isMinVout(Strategy::endVperCell);
     }
     if(charge) {
         TheveninChargeStrategy::powerOn();

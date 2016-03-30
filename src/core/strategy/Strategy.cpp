@@ -31,6 +31,7 @@ namespace Strategy {
     const VTable * strategy;
     bool exitImmediately;
 
+    AnalogInputs::ValueType endVperCell;
     AnalogInputs::ValueType endV;
     AnalogInputs::ValueType maxI;
     AnalogInputs::ValueType minI;
@@ -38,6 +39,7 @@ namespace Strategy {
 
     void setVI(ProgramData::VoltageType vt, bool charge) {
         endV = ProgramData::getVoltage(vt);
+        endVperCell = ProgramData::getVoltagePerCell(vt);
 
         if(charge) {
             maxI = ProgramData::battery.Ic;

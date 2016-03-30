@@ -31,6 +31,7 @@ namespace Strategy {
     };
 
     //variables common to all Strategies
+    extern AnalogInputs::ValueType endVperCell;
     extern AnalogInputs::ValueType endV;
     extern AnalogInputs::ValueType maxI;
     extern AnalogInputs::ValueType minI;

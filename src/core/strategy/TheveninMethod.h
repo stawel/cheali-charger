@@ -26,12 +26,14 @@ namespace TheveninMethod {
     void initialize(bool charge);
     bool balance_isComplete(bool isEndVout, AnalogInputs::ValueType I);
 
-    void calculateRthVth(AnalogInputs::ValueType I);
     AnalogInputs::ValueType calculateNewI(bool isEndVout, AnalogInputs::ValueType I);
 
-    AnalogInputs::ValueType getReadableRthCell(uint8_t cell);
-    AnalogInputs::ValueType getReadableBattRth();
     AnalogInputs::ValueType getReadableWiresRth();
+
+    inline AnalogInputs::ValueType getReadableRthCell(uint8_t cell) { return Thevenin::getReadableRth(cell); }
+    inline AnalogInputs::ValueType getReadableBattRth()             { return Thevenin::getReadableRth(THEVENIN_VOUT_IDX); }
+    inline void calculateRthVth(AnalogInputs::ValueType I)          { Thevenin::calculateRthVth(I); }
+
 };
 
 

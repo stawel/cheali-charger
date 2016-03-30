@@ -276,11 +276,11 @@ bool Balancer::isMinVout(AnalogInputs::ValueType minV)
     return false;
 }
 
-AnalogInputs::ValueType Balancer::calculatePerCell(AnalogInputs::ValueType v)
+/*AnalogInputs::ValueType Balancer::calculatePerCell(AnalogInputs::ValueType v)
 {
     uint8_t cells = getConnectedCellsCount();
     if(cells == 0)
         return 0;
     return v/cells;
-}
+}*/
 

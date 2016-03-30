@@ -70,7 +70,6 @@ namespace Balancer {
     bool isCalibrationRequired();
     void endBalancing();
 
-    AnalogInputs::ValueType calculatePerCell(AnalogInputs::ValueType v);
 };
 
 #endif /* BALANCER_H_ */

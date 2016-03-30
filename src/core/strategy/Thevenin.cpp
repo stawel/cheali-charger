@@ -21,9 +21,29 @@
 #include <stdlib.h>
 
 #include "Thevenin.h"
+#include "Balancer.h"
+#include "Strategy.h"
 #include "Utils.h"
 
-AnalogInputs::ValueType Resistance::getReadableRth()
+namespace Thevenin {
+
+    //Thevenin data is stored in T
+    //T[0 .. MAX_BANANCE_CELLS-1]   - Thevenin data per cell
+    //T[MAX_BANANCE_CELLS]          - Thevenin data for Vout
+    struct Thevenin T[MAX_BANANCE_CELLS + 1];
+
+    static AnalogInputs::ValueType calculateI(uint8_t idx, AnalogInputs::ValueType Vc);
+    static void init(uint8_t idx, AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i, bool charge);
+    static void calculateRthVth(uint8_t idx, AnalogInputs::ValueType v, AnalogInputs::ValueType i);
+    static void calculateRth(uint8_t idx, AnalogInputs::ValueType v, AnalogInputs::ValueType i);
+    static void calculateVth(uint8_t idx, AnalogInputs::ValueType v, AnalogInputs::ValueType i);
+    static void storeLast(uint8_t idx, AnalogInputs::ValueType VLast, AnalogInputs::ValueType ILast);
+
+    AnalogInputs::ValueType getV(uint8_t idx);
+    AnalogInputs::ValueType getEndV(uint8_t idx);
+}  // namespace Thevenin
+
+AnalogInputs::ValueType Thevenin::getReadableRth(int16_t iV, uint16_t uI)
 {
     if(uI == 0)
         return 0;
@@ -33,7 +53,58 @@ AnalogInputs::ValueType Resistance::getReadableRth()
     return R;
 }
 
-void Thevenin::init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i, bool charge)
+AnalogInputs::ValueType Thevenin::getReadableRth(uint8_t idx)
+{
+    return getReadableRth(T[idx].Rth.iV, T[idx].Rth.uI);
+}
+
+AnalogInputs::ValueType Thevenin::calculateI(uint8_t idx, AnalogInputs::ValueType v)
+{
+    int32_t i;
+    i  = v;
+    i -= T[idx].Vth_;
+    i *= T[idx].Rth.uI;
+    if(T[idx].Rth.iV == 0) return UINT16_MAX;
+    i /= T[idx].Rth.iV;
+    if(i >  UINT16_MAX) return  UINT16_MAX;
+    if(i < 0) return 0;
+    return i;
+}
+
+AnalogInputs::ValueType Thevenin::getV(uint8_t idx)
+{
+    if(idx >= MAX_BANANCE_CELLS) {
+        return AnalogInputs::getVbattery();
+    } else {
+        return Balancer::getPresumedV(idx);
+    }
+}
+
+AnalogInputs::ValueType Thevenin::getEndV(uint8_t idx)
+{
+    if(idx >= MAX_BANANCE_CELLS) {
+        return Strategy::endV;
+    } else {
+        return Strategy::endVperCell;
+    }
+}
+
+AnalogInputs::ValueType Thevenin::calculateI()
+{
+    AnalogInputs::ValueType i = UINT16_MAX;
+    uint16_t connected = Balancer::connectedCells | (1<<MAX_BANANCE_CELLS);
+
+    for(uint8_t c = 0; c < MAX_BANANCE_CELLS + 1; c++) {
+        if(connected & 1) {
+            i = min(i, calculateI(c, getEndV(c)));
+        }
+        connected >>=1;
+    }
+    return i;
+}
+
+
+void Thevenin::init(uint8_t idx, AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i, bool charge)
 {
     AnalogInputs::ValueType Vfrom, Vto;
     if(charge) {
@@ -44,63 +115,83 @@ void Thevenin::init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, An
         Vfrom = max(Vth, Vmax);
         Vto = min(Vth, Vmax);
     }
-    VLast_ = Vth_ = Vfrom;
-    ILastDiff_ = ILast_ = 0;
+    T[idx].VLast_ = T[idx].Vth_ = Vfrom;
+    T[idx].ILastDiff_ = T[idx].ILast_ = 0;
 
-    Rth.uI = i;
-    Rth.iV = Vto;  Rth.iV -= Vfrom;
+    T[idx].Rth.uI = i;
+    T[idx].Rth.iV = Vto;  T[idx].Rth.iV -= Vfrom;
 }
 
-AnalogInputs::ValueType Thevenin::calculateI(AnalogInputs::ValueType v) const
+void Thevenin::initialize(bool charge)
 {
-    int32_t i;
-    i  = v;
-    i -= Vth_;
-    i *= Rth.uI;
-    if(Rth.iV == 0) return UINT16_MAX;
-    i /= Rth.iV;
-    if(i >  UINT16_MAX) return  UINT16_MAX;
-    if(i < 0) return 0;
-    return i;
+    for(uint8_t c = 0; c < MAX_BANANCE_CELLS + 1; c++) {
+        init(c, getV(c), getEndV(c), Strategy::minI, charge);
+    }
 }
 
-void Thevenin::calculateRthVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
+void Thevenin::calculateRth(uint8_t idx, AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
-    calculateRth(v, i);
-    calculateVth(v, i);
-}
-
-void Thevenin::calculateRth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
-{
-    if(absDiff(i, ILast_) > ILastDiff_/2) {
+    if(absDiff(i, T[idx].ILast_) > T[idx].ILastDiff_/2) {
         int16_t rth_v;
         uint16_t rth_i;
-        if(i > ILast_) {
+        if(i > T[idx].ILast_) {
             rth_i  = i;
-            rth_i -= ILast_;
+            rth_i -= T[idx].ILast_;
             rth_v  = v;
-            rth_v -= VLast_;
+            rth_v -= T[idx].VLast_;
         } else {
-            rth_v  = VLast_;
+            rth_v  = T[idx].VLast_;
             rth_v -= v;
-            rth_i  = ILast_;
+            rth_i  = T[idx].ILast_;
             rth_i  -= i;
         }
-        if(sign(rth_v) == sign(Rth.iV)) {
-            ILastDiff_ = rth_i;
-            Rth.iV = rth_v;
-            Rth.uI = rth_i;
+        if(sign(rth_v) == sign(T[idx].Rth.iV)) {
+            T[idx].ILastDiff_ = rth_i;
+            T[idx].Rth.iV = rth_v;
+            T[idx].Rth.uI = rth_i;
         }
     }
 }
 
-void Thevenin::calculateVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i)
+void Thevenin::calculateVth(uint8_t idx, AnalogInputs::ValueType v, AnalogInputs::ValueType i)
 {
     int32_t VRth;
     VRth = i;
-    VRth *= Rth.iV;
-    VRth /= Rth.uI;
-    if(v < VRth) Vth_ = 0;
-    else Vth_ = v - VRth;
+    VRth *= T[idx].Rth.iV;
+    VRth /= T[idx].Rth.uI;
+    if(v < VRth) T[idx].Vth_ = 0;
+    else T[idx].Vth_ = v - VRth;
 }
 
+void Thevenin::calculateRthVth(uint8_t idx, AnalogInputs::ValueType v, AnalogInputs::ValueType i)
+{
+    calculateRth(idx, v, i);
+    calculateVth(idx, v, i);
+}
+
+
+void Thevenin::calculateRthVth(AnalogInputs::ValueType I)
+{
+    uint16_t connected = Balancer::connectedCells | (1<<MAX_BANANCE_CELLS);
+
+    for(uint8_t c = 0; c < MAX_BANANCE_CELLS + 1; c++) {
+        if(connected & 1) {
+            calculateRthVth(c, Balancer::getV(c), I);
+        }
+        connected >>= 1;
+    }
+}
+
+inline void Thevenin::storeLast(uint8_t idx, AnalogInputs::ValueType VLast, AnalogInputs::ValueType ILast)
+{
+    T[idx].VLast_ = VLast;
+    T[idx].ILast_ = ILast;
+}
+
+
+void Thevenin::storeI(AnalogInputs::ValueType I)
+{
+    for(uint8_t i = 0; i <= MAX_BANANCE_CELLS; i++) {
+        storeLast(i, getV(i), I);
+    }
+}

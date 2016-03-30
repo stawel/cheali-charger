@@ -20,37 +20,39 @@
 
 #include "AnalogInputs.h"
 
-class Resistance {
-public:
-   //R = iV/uI;
-   //when discharging the resistance is negative (iV_ < 0)
-   //in a Thevenin model this is mathematically equivalent
-   //to a positive resistance and a current flowing in the opposite direction
+#define THEVENIN_VOUT_IDX       MAX_BANANCE_CELLS
+#define THEVENIN_CELL_IDX(n)    n
 
-    int16_t iV;
-    uint16_t uI;
+namespace Thevenin {
 
-    AnalogInputs::ValueType getReadableRth();
-};
+    struct Resistance {
+       //R = iV/uI;
+       //when discharging the resistance is negative (iV_ < 0)
+       //in a Thevenin model this is mathematically equivalent
+       //to a positive resistance and a current flowing in the opposite direction
 
-class Thevenin {
-public:
-    AnalogInputs::ValueType VLast_;
-    AnalogInputs::ValueType ILast_;
-    AnalogInputs::ValueType ILastDiff_;
-    AnalogInputs::ValueType Vth_;
-public:
-    Resistance Rth;
+        int16_t iV;
+        uint16_t uI;
+    };
 
-    Thevenin(){};
-    void storeLast(AnalogInputs::ValueType VLast, AnalogInputs::ValueType ILast) { VLast_ = VLast; ILast_ = ILast; }
+    struct Thevenin {
+        AnalogInputs::ValueType VLast_;
+        AnalogInputs::ValueType ILast_;
+        AnalogInputs::ValueType ILastDiff_;
+        AnalogInputs::ValueType Vth_;
+        Resistance Rth;
+    };
 
-    void calculateRthVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
-    void calculateRth(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
-    void calculateVth(AnalogInputs::ValueType v, AnalogInputs::ValueType i);
-    AnalogInputs::ValueType calculateI(AnalogInputs::ValueType Vc) const;
 
-    void init(AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i, bool charge);
-};
+    AnalogInputs::ValueType getReadableRth(int16_t iV, uint16_t uI);
+    AnalogInputs::ValueType getReadableRth(uint8_t idx);
+
+    void storeI(AnalogInputs::ValueType I);
+    void calculateRthVth(AnalogInputs::ValueType I);
+    AnalogInputs::ValueType calculateI();
+
+    void initialize(bool charge);
+
+}
 
 #endif /* THEVENIN_H_ */

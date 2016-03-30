@@ -77,7 +77,7 @@ Strategy::statusType TheveninDischargeStrategy::doStrategy()
 bool TheveninDischargeStrategy::isEndVout()
 {
     AnalogInputs::ValueType Vc = Strategy::endV;
-    AnalogInputs::ValueType Vc_per_cell = Balancer::calculatePerCell(Vc);
+    AnalogInputs::ValueType Vc_per_cell = Strategy::endVperCell;
 
     bool end = Balancer::isMinVout(Vc_per_cell);
     if(!Balancer::isWorking()) {

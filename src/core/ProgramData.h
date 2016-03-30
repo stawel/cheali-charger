@@ -79,6 +79,7 @@ namespace ProgramData {
 
     uint16_t getDefaultVoltagePerCell(VoltageType type = VNominal);
     uint16_t getDefaultVoltage(VoltageType type = VNominal);
+    uint16_t getVoltagePerCell(VoltageType type = VNominal);
     uint16_t getVoltage(VoltageType type = VNominal);
     uint16_t getCapacityLimit();
     inline uint16_t getTimeLimit() {return battery.time; }

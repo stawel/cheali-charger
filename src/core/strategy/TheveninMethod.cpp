@@ -40,17 +40,12 @@ namespace TheveninMethod {
     State state_;
     AnalogInputs::ValueType newI_;
 
-    Thevenin tVout_;
-    Thevenin tBal_[MAX_BANANCE_CELLS];
     uint8_t fullCount_;
 
     uint16_t lastBallancingEnded_;
     Strategy::statusType bstatus_;
 
-    AnalogInputs::ValueType calculateI();
     AnalogInputs::ValueType normalizeI(AnalogInputs::ValueType newI, AnalogInputs::ValueType I);
-
-    void calculateRthVth(AnalogInputs::ValueType I);
 
     uint16_t getMinIwithBalancer() {
         if(bstatus_ != Strategy::COMPLETE)
@@ -64,36 +59,23 @@ namespace TheveninMethod {
             return false;
         return I < Strategy::minI;
     }
-    void storeI(AnalogInputs::ValueType I);
 }
 
-AnalogInputs::ValueType TheveninMethod::getReadableRthCell(uint8_t cell) { return tBal_[cell].Rth.getReadableRth(); }
-AnalogInputs::ValueType TheveninMethod::getReadableBattRth()             { return tVout_.Rth.getReadableRth(); }
 AnalogInputs::ValueType TheveninMethod::getReadableWiresRth()
 {
-    Resistance R;
-    R.iV =  AnalogInputs::getRealValue(AnalogInputs::Vout);
-    R.iV -= AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
-    R.uI = AnalogInputs::getRealValue(AnalogInputs::Iout);
-    return R.getReadableRth();
-
+    int16_t iV;
+    uint16_t uI;
+    iV =  AnalogInputs::getRealValue(AnalogInputs::Vout);
+    iV -= AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
+    uI = AnalogInputs::getRealValue(AnalogInputs::Iout);
+    return Thevenin::getReadableRth(iV, uI);
 }
 
 void TheveninMethod::initialize(bool charge)
 {
     bstatus_ = Strategy::COMPLETE;
 
-    AnalogInputs::ValueType Vout = AnalogInputs::getVbattery();
-    tVout_.init(Vout, Strategy::endV, Strategy::minI, charge);
-
-    AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(Strategy::endV);
-
-    for(uint8_t c = 0; c < MAX_BANANCE_CELLS; c++) {
-        if(Balancer::connectedCells & (1<<c)) {
-            AnalogInputs::ValueType v = Balancer::getPresumedV(c);
-            tBal_[c].init(v, Vend_per_cell, Strategy::minI, charge);
-        }
-    }
+    Thevenin::initialize(charge);
 
     state_ = ConstantCurrentBalancing;
     fullCount_ = 0;
@@ -150,10 +132,10 @@ AnalogInputs::ValueType TheveninMethod::calculateNewI(bool isEndVout, AnalogInpu
 
         LogDebug(" I=", I, " tVout_: Rth=", tVout_.Rth.iV, ',', tVout_.Rth.uI, " Vth=", tVout_.Vth_);
 
-        calculateRthVth(I);
-        storeI(I);
+        Thevenin::calculateRthVth(I);
+        Thevenin::storeI(I);
 
-        newI_ = calculateI();
+        newI_ = Thevenin::calculateI();
 
         LogDebug("newI=", newI_);
 
@@ -202,29 +184,6 @@ AnalogInputs::ValueType TheveninMethod::calculateNewI(bool isEndVout, AnalogInpu
     return newI_;
 }
 
-
-void TheveninMethod::calculateRthVth(AnalogInputs::ValueType I)
-{
-    tVout_.calculateRthVth(AnalogInputs::getVbattery(),I);
-
-    for(uint8_t c = 0; c < MAX_BANANCE_CELLS; c++) {
-        if(Balancer::connectedCells & (1<<c))
-            tBal_[c].calculateRthVth(Balancer::getPresumedV(c),I);
-    }
-}
-
-AnalogInputs::ValueType TheveninMethod::calculateI()
-{
-    AnalogInputs::ValueType i = tVout_.calculateI(Strategy::endV);
-    AnalogInputs::ValueType Vend_per_cell = Balancer::calculatePerCell(Strategy::endV);
-    for(uint8_t c = 0; c < MAX_BANANCE_CELLS; c++) {
-        if(Balancer::connectedCells & (1<<c)) {
-            i = min(i, tBal_[c].calculateI(Vend_per_cell));
-        }
-    }
-    return i;
-}
-
 AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType newI, AnalogInputs::ValueType I)
 {
     if(newI > Strategy::maxI) {
@@ -252,14 +211,3 @@ AnalogInputs::ValueType TheveninMethod::normalizeI(AnalogInputs::ValueType newI,
     return I;
 }
 
-void TheveninMethod::storeI(AnalogInputs::ValueType I)
-{
-    tVout_.storeLast(AnalogInputs::getVbattery(), I);
-
-    for(uint8_t i = 0; i < MAX_BANANCE_CELLS; i++) {
-        if(Balancer::connectedCells & (1<<i)) {
-            AnalogInputs::ValueType vi = Balancer::getPresumedV(i);
-            tBal_[i].storeLast(vi, I);
-        }
-    }
-}
