@@ -38,30 +38,31 @@ namespace Screen { namespace Balancer {
     int8_t knightRiderDir = 1;
 #endif
 
-    AnalogInputs::ValueType getBalanceValue(uint8_t cell, AnalogInputs::Type type)
+    AnalogInputs::ValueType getBalanceValue(uint8_t cell,enum AnalogInputs::Type type)
     {
         if(type == AnalogInputs::Voltage)
             return ::Balancer::getPresumedV(cell);
         return TheveninMethod::getReadableRthCell(cell);
     }
 
-    void printBalancer(uint8_t cell, AnalogInputs::Type type) {
-        if(AnalogInputs::isConnected(AnalogInputs::Name(AnalogInputs::Vb1+cell))) {
+    void printBalancer(uint8_t cell, enum AnalogInputs::Type type) {
+        if(AnalogInputs::isConnected((enum AnalogInputs::Name)(AnalogInputs::Vb1+cell))) {
             lcdPrintAnalog(getBalanceValue(cell, type), 6, type);
         } else {
             lcdPrint_P(PSTR("  --  "));
         }
     }
 
-    void displayBalanceInfo(uint8_t from, AnalogInputs::Type type)
+    void displayBalanceInfo(uint8_t from,enum AnalogInputs::Type type)
     {
+        char c;
         lcdSetCursor0_0();
 
 #ifdef ENABLE_SCREEN_KNIGHTRIDEREFFECT
         knightRiderCounter += knightRiderDir;
         if (knightRiderCounter==0 || knightRiderCounter>4) knightRiderDir=-knightRiderDir;
 #endif
-        char c = ' ';
+        c = ' ';
         if(!::Balancer::isWorking()) {
             if(!::Balancer::isStable())
                 c = 'm';
@@ -91,7 +92,8 @@ namespace Screen { namespace Balancer {
 #endif
         } else {
             uint16_t cell = 1;
-            for(uint8_t i = 0; i < MAX_BANANCE_CELLS; i++) {
+            uint8_t i;
+            for(i = 0; i < MAX_BANANCE_CELLS; i++) {
                 if(::Balancer::connectedCells & cell) {
                     if(i == ::Balancer::minCell) {
                         c = SCREEN_EMPTY_CELL_CHAR; //lowest cell
@@ -149,12 +151,12 @@ void Screen::Balancer::displayVoltage7_9() {
 }
 
 void Screen::Balancer::displayResistance1_3() {
-    displayBalanceInfo(0, AnalogInputs::Resistance);
+    displayBalanceInfo(0, AnalogInputs::ResistanceUnit);
 }
 void Screen::Balancer::displayResistance4_6() {
-    displayBalanceInfo(3, AnalogInputs::Resistance);
+    displayBalanceInfo(3, AnalogInputs::ResistanceUnit);
 }
 void Screen::Balancer::displayResistance7_9() {
-    displayBalanceInfo(6, AnalogInputs::Resistance);
+    displayBalanceInfo(6, AnalogInputs::ResistanceUnit);
 }
 

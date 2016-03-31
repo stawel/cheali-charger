@@ -30,9 +30,9 @@
 #define EEPROM_READ_TRIALS 5
 
 namespace eeprom {
-    Data data EEMEM;
+    EEMEM struct Data data;
 
-    bool testOrRestore(uint16_t * adr, uint16_t version, bool restore) {
+    bool testOrRestore(EEMEM_PTR uint16_t * adr, uint16_t version, bool restore) {
         uint8_t trials = EEPROM_READ_TRIALS;
         if(restore) {
             eeprom_write(adr, version);
@@ -71,14 +71,15 @@ namespace eeprom {
         return test;
     }
 
-    void restoreDefault(uint8_t what) {
+    void restoreDefault_(uint8_t what) {
+        uint8_t after;
         Screen::runAskResetEeprom(what);
         if(what & EEPROM_RESTORE_MAGIC_NUMBER)  what |= EEPROM_RESTORE_CALIBRATION;
         if(what & EEPROM_RESTORE_CALIBRATION)   what |= EEPROM_RESTORE_PROGRAM_DATA;
         if(what & EEPROM_RESTORE_PROGRAM_DATA)  what |= EEPROM_RESTORE_SETTINGS;
 
         Screen::displayResettingEeprom();
-        uint8_t after = testOrRestore(what);
+        after = testOrRestore(what);
         Screen::runResetEepromDone(what, after);
     }
 
@@ -86,13 +87,13 @@ namespace eeprom {
     bool check() {
         uint8_t c = testOrRestore(0);
         if(c == 0) return true;
-        restoreDefault(c);
+        restoreDefault_(c);
         return false;
     }
 
     void restoreDefault() {
         uint8_t what = testOrRestore(0) | EEPROM_RESTORE_MAGIC_NUMBER;
-        restoreDefault(what);
+        restoreDefault_(what);
     }
 #endif
 
@@ -112,11 +113,11 @@ namespace eeprom {
     }
 
     uint16_t getCRC(uint8_t * adr, uint16_t size) {
-        uint16_t crc = 0xffff;
-        uint8_t byte;
-        for(uint16_t i = 0; i < size; i++) {
-            eeprom_read(byte, &adr[i]);
-            crc = crc16_update(crc, byte);
+        uint16_t i, crc = 0xffff;
+        uint8_t x;
+        for(i = 0; i < size; i++) {
+            eeprom_read(x, &adr[i]);
+            crc = crc16_update(crc, x);
         }
         return crc;
     }

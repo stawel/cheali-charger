@@ -34,7 +34,7 @@
 #include "memory.h"
 
 
-void setup()
+void cheali_charger_main()
 {
     hardware::initializePins();
     cpu::init();
@@ -54,12 +54,7 @@ void setup()
     Screen::initialize();
 
     Screen::runWelcomeScreen();
-}
 
-
-int main()
-{
-    setup();
 #ifdef ENABLE_HELPER
     helperMain();
 #else

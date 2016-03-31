@@ -19,6 +19,7 @@
 #define KEYBOARD_H_
 
 #include <stdint.h>
+#include "cpu_config.h"
 
 #define BUTTON_NONE        0
 
@@ -32,7 +33,7 @@ namespace Keyboard {
     uint8_t getSpeedFactor();
     uint8_t  getPressedWithDelay();
     bool isLongPressTime();
-};
+}
 
 
 #endif /* KEYBOARD_H_ */

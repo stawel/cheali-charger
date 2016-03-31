@@ -1,7 +1,7 @@
 
 set(CORE_SOURCE
     ScreenBalancer.cpp  Screen.cpp       ScreenCycle.h  ScreenMethods.cpp  ScreenPages.h  ScreenStartInfo.cpp
-    ScreenBalancer.h    ScreenCycle.cpp  Screen.h       ScreenMethods.h    screens.cmake  ScreenStartInfo.h
+    ScreenBalancer.h    ScreenCycle.cpp  Screen.h       ScreenMethods.h    ScreenStartInfo.h
     ScreenEditable.cpp
     ScreenEditable.h
 )

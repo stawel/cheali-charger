@@ -37,13 +37,13 @@ namespace TheveninMethod {
      *   LastRthMesurment --> LastConstantCurrent --> ConstantVoltageBalancing
      */
 
-    State state_;
+    enum State state_;
     AnalogInputs::ValueType newI_;
 
     uint8_t fullCount_;
 
     uint16_t lastBallancingEnded_;
-    Strategy::statusType bstatus_;
+    enum Strategy::statusType bstatus_;
 
     AnalogInputs::ValueType normalizeI(AnalogInputs::ValueType newI, AnalogInputs::ValueType I);
 

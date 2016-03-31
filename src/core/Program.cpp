@@ -38,9 +38,9 @@
 #include "Calibrate.h"
 
 namespace Program {
-    ProgramType programType;
-    ProgramState programState = Program::Done;
-    const char * stopReason;
+    enum ProgramType programType;
+    enum ProgramState programState = Program::ProgramDone;
+    const_char_ptr stopReason;
 
     bool startInfo();
 
@@ -50,7 +50,7 @@ namespace Program {
     void setupBalance();
     void setupDeltaCharge();
     void setupPowerSupplyCharge();
-    void setupProgramType(ProgramType prog);
+    void setupProgramType(enum ProgramType prog);
 
     void dischargeOutputCapacitor();
 
@@ -103,7 +103,7 @@ void Program::setupBalance()
     Strategy::strategy = &Balancer::vtable;
 }
 
-void Program::setupProgramType(ProgramType prog) {
+void Program::setupProgramType(enum ProgramType prog) {
     Strategy::doBalance = false;
 
     switch(prog) {
@@ -151,7 +151,7 @@ void Program::resetAccumulatedMeasurements()
 }
 
 
-Strategy::statusType Program::runWithoutInfo(ProgramType prog)
+enum Strategy::statusType Program::runWithoutInfo(enum ProgramType prog)
 {
     resetAccumulatedMeasurements();
 
@@ -175,7 +175,7 @@ void Program::dischargeOutputCapacitor()
 }
 
 
-void Program::run(ProgramType prog)
+void Program::run(enum ProgramType prog)
 {
 #ifdef ENABLE_CALIBRATION_CHECK
     if(!Calibrate::check())
@@ -186,14 +186,13 @@ void Program::run(ProgramType prog)
 
     programType = prog;
     setupProgramType(prog);
-    stopReason = NULL;
 
-    programState = Info;
+    programState = ProgramInfo;
     SerialLog::powerOn();
     AnalogInputs::powerOn();
 
     if(startInfo()) {
-        programState = InProgress;
+        programState = ProgramInProgress;
 
         Monitor::powerOn();
         Screen::powerOn();

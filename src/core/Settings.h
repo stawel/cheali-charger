@@ -20,6 +20,7 @@
 
 #include <stdint.h>
 #include "AnalogInputs.h"
+#include "memory.h"
 
 #define SETTINGS_UART_SPEEDS                5
 #define SETTINGS_FAN_TEMPERATURE_DIFF       ANALOG_CELCIUS(5.12)
@@ -57,14 +58,14 @@ namespace Settings {
     void apply();
     void setDefault();
     uint32_t getUARTspeed();
-    extern const uint32_t UARTSpeedValue[];
+    extern PROGMEM const uint32_t UARTSpeedValue[];
 
     void load();
     void save();
     void check();
     void restoreDefault();
-};
+}
 
-extern Settings::Settings settings;
+extern struct Settings::Settings settings;
 
 #endif /* SETTINGS_H_ */

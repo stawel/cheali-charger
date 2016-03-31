@@ -63,7 +63,8 @@ void Screen::Cycle::displayCycles()
 
 void Screen::Cycle::resetCycleHistory()
 {
-    for (uint8_t i = 0; i < 10; i++) {
+    uint8_t i;
+    for (i = 0; i < 10; i++) {
         cyclesHistoryTime[i] = 0;
         cyclesHistoryCapacity[i] = 0;
     }

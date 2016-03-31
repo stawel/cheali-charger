@@ -23,7 +23,7 @@
 namespace Buzzer {
     uint16_t begin_time_U16_;
     uint16_t last_value_;
-    SoundType sound_;
+    enum SoundType sound_;
 
 
     uint8_t getKeyboard(uint16_t time);
@@ -43,7 +43,7 @@ namespace Buzzer {
 } // namespace Buzzer
 
 
-void Buzzer::sound(Buzzer::SoundType s)
+void Buzzer::sound(enum Buzzer::SoundType s)
 {
     if (!settings.audioBeep)
         s = Off;
@@ -60,7 +60,7 @@ void Buzzer::soundOff()
 }
 
 
-void Buzzer::soundIfSilence(Buzzer::SoundType s)
+void Buzzer::soundIfSilence(enum Buzzer::SoundType s)
 {
     if(sound_ == Off)
         sound(s);

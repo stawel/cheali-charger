@@ -40,7 +40,7 @@ namespace Thevenin {
         AnalogInputs::ValueType ILast_;
         AnalogInputs::ValueType ILastDiff_;
         AnalogInputs::ValueType Vth_;
-        Resistance Rth;
+        struct Resistance Rth;
     };
 
 

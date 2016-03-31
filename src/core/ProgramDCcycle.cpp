@@ -23,12 +23,11 @@
 #include "Monitor.h"
 #include "ScreenCycle.h"
 
-using namespace Program;
 
 namespace ProgramDCcycle {
     uint8_t currentCycle;
 
-    Strategy::statusType runDCRestTime()
+    enum Strategy::statusType runDCRestTime()
     {
         DelayStrategy::setDelay(ProgramData::battery.DCRestTime);
         Strategy::strategy = &DelayStrategy::vtable;
@@ -37,9 +36,9 @@ namespace ProgramDCcycle {
 }
 
 
-Strategy::statusType ProgramDCcycle::runDCcycle(uint8_t firstCycle, uint8_t lastCycle)
+enum Strategy::statusType ProgramDCcycle::runDCcycle(uint8_t firstCycle, uint8_t lastCycle)
 {
-    Strategy::statusType status;
+    enum Strategy::statusType status;
     Strategy::exitImmediately = true;
     currentCycle = firstCycle;
     while(true) {

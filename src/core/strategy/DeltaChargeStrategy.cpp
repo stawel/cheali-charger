@@ -29,9 +29,9 @@
 namespace DeltaChargeStrategy {
 
     void powerOn();
-    Strategy::statusType doStrategy();
+    enum Strategy::statusType doStrategy();
 
-    const Strategy::VTable vtable PROGMEM = {
+    const PROGMEM struct Strategy::VTable vtable = {
         powerOn,
         SimpleChargeStrategy::powerOff,
         doStrategy
@@ -43,10 +43,12 @@ void DeltaChargeStrategy::powerOn()
     SimpleChargeStrategy::powerOn();
 }
 
-Strategy::statusType DeltaChargeStrategy::doStrategy()
+enum Strategy::statusType DeltaChargeStrategy::doStrategy()
 {
+    AnalogInputs::ValueType Vout;
+    bool dontIgnore;
     SimpleChargeStrategy::calculateThevenin();
-    AnalogInputs::ValueType Vout = AnalogInputs::getVbattery();
+    Vout = AnalogInputs::getVbattery();
 
     if(ProgramData::getVoltage(ProgramData::VDischarged) < Vout) {
         SMPS::trySetIout(Strategy::maxI);
@@ -70,7 +72,7 @@ Strategy::statusType DeltaChargeStrategy::doStrategy()
     }
 
     //ignore few first -dV values until output voltage is stable
-    bool dontIgnore = AnalogInputs::getDeltaCount() >= ProgramData::battery.deltaVIgnoreTime * DELTA_COUNTS_PER_MINUTE;
+    dontIgnore = AnalogInputs::getDeltaCount() >= ProgramData::battery.deltaVIgnoreTime * DELTA_COUNTS_PER_MINUTE;
     AnalogInputs::enableDeltaVoutMax(dontIgnore);
     if(dontIgnore) {
         if(ProgramData::battery.enable_deltaV) {

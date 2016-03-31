@@ -34,7 +34,7 @@ namespace TheveninMethod {
     inline AnalogInputs::ValueType getReadableBattRth()             { return Thevenin::getReadableRth(THEVENIN_VOUT_IDX); }
     inline void calculateRthVth(AnalogInputs::ValueType I)          { Thevenin::calculateRthVth(I); }
 
-};
+}
 
 
 #endif /* THEVENINCHARGE_H_ */

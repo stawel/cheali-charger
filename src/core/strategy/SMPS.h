@@ -22,6 +22,7 @@
 
 #include <stdint.h>
 #include "AnalogInputsTypes.h"
+#include "cpu_config.h"
 
 namespace SMPS {
     void initialize();
@@ -39,7 +40,7 @@ namespace SMPS {
     void powerOn();
     void powerOff();
 
-};
+}
 
 
 

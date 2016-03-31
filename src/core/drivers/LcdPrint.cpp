@@ -67,7 +67,7 @@ void lcdPrintLong(int32_t x, int8_t dig)
 }
 
 
-void lcdPrintR(const char *str, int8_t size)
+void lcdPrintR(char *str, int8_t size)
 {
     uint8_t str_size = strlen(str);
     lcdPrintSpaces(size - str_size);
@@ -75,13 +75,14 @@ void lcdPrintR(const char *str, int8_t size)
 }
 
 
-int8_t lcdPrint(const char *str, int8_t size)
+int8_t lcdPrint(char *str, int8_t size)
 {
-    uint8_t n = 0;
+    int8_t n = 0;
+    char c;
     if(str) {
         while(n < size) {
             n++;
-            char c = *str;
+            c = *str;
             str++;
             if (c == 0) {
                 break;
@@ -92,26 +93,25 @@ int8_t lcdPrint(const char *str, int8_t size)
     return n;
 }
 
-int8_t lcdPrint_P(const char * const str[], uint8_t index) {
-    const char * string;
-    pgm_read(string, &str[index]);
-    return lcdPrint_P(string);
+int8_t lcdPrint_P(const_char_ptr  const PROGMEM_PTR * str, uint8_t index) {
+    const_char_ptr adr;
+    pgm_read(adr, &str[index]);
+    return lcdPrint_P(adr);
 }
 
 
-int8_t lcdPrint_P(const char *str)
+int8_t lcdPrint_P(const_char_ptr str)
 {
     int8_t n = 0;
     char c;
     if(str) {
-        while(true) {
-            pgm_read(c, str);
-            if(c == 0)
-                break;
-            lcdPrintChar(c);
-            n++;
-            str++;
-        }
+        do {
+            pgm_read(c, str++);
+            if(c) {
+                lcdPrintChar(c);
+                n++;
+            }
+        } while(c);
     }
     return n;
 }
@@ -128,7 +128,7 @@ void lcdPrintValue_(uint16_t x, int8_t dig, uint16_t div, bool mili, bool minus)
     char *end, *dot_char;
     int32_t t;
 
-    uint8_t size;
+    int8_t size;
 
     if(mili) {
         t = x;
@@ -177,9 +177,8 @@ void lcdPrintTime(uint16_t timeSec)
 
 void lcdPrintYesNo(uint8_t yes, int8_t dig)
 {
+    const_char_ptr str = string_no;
     lcdPrintSpaces(dig - 3);
-
-    const char * str = string_no;
     if(yes) str = string_yes;
     lcdPrint_P(str);
 }
@@ -234,7 +233,7 @@ void lcdPrintTemperature(AnalogInputs::ValueType t, int8_t dig)
 
 void lcdPrintCharge(AnalogInputs::ValueType c, int8_t dig)
 {
-    lcdPrintAnalog(c, dig, AnalogInputs::Charge);
+    lcdPrintAnalog(c, dig, AnalogInputs::ChargeUnit);
 }
 void lcdPrintCurrent(AnalogInputs::ValueType i, int8_t dig)
 {
@@ -248,7 +247,7 @@ void lcdPrintVoltage(AnalogInputs::ValueType v, int8_t dig)
 
 void lcdPrintResistance(AnalogInputs::ValueType r, int8_t dig)
 {
-    lcdPrintAnalog(r, dig, AnalogInputs::Resistance);
+    lcdPrintAnalog(r, dig, AnalogInputs::ResistanceUnit);
 }
 
 void lcdPrintPercentage(AnalogInputs::ValueType p, int8_t dig)
@@ -264,9 +263,9 @@ void lcdPrint_mV(int16_t p, int8_t dig)
 struct UnitsInfo {
     uint16_t div;
     bool mili;
-    const char * symbol;
+    const_char_ptr symbol;
 };
-static const UnitsInfo unitsInfo[] PROGMEM = {
+static const PROGMEM struct UnitsInfo unitsInfo[] = {
         // Current
         {ANALOG_AMP(1.000), true, string_A},
         //Voltage,
@@ -290,30 +289,31 @@ static const UnitsInfo unitsInfo[] PROGMEM = {
         //TemperatureMinutes,
         {ANALOG_CELCIUS(1.00), false, string_C_m},
         //Minutes
-        {1, false, AnalogInputs::string_minutes},
+        {1, false, string_minutes},
         //TimeLimitMinutes,
-        {1, false, AnalogInputs::string_minutes},
+        {1, false, string_minutes},
         //YesNo
         {1, false, NULL},
-        //Unknown
-        {1, false, AnalogInputs::string_unknown},
+        //UnknownUnit
+        {1, false, string_unknown},
 };
 
 
-void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type type)
+void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig,enum AnalogInputs::Type type)
 {
-    STATIC_ASSERT(sizeOfArray(unitsInfo) -1 == AnalogInputs::Unknown);
+    STATIC_ASSERT(sizeOfArray(unitsInfo) -1 == AnalogInputs::UnknownUnit);
 
     if(type == AnalogInputs::YesNo) {
         lcdPrintYesNo(x, dig);
     } else if(  (type == AnalogInputs::TimeLimitMinutes && x >= ANALOG_MAX_TIME_LIMIT)
-       ||(type == AnalogInputs::Charge && x >= ANALOG_MAX_CHARGE)) {
+       ||(type == AnalogInputs::ChargeUnit && x >= ANALOG_MAX_CHARGE)) {
             lcdPrintSpaces(dig - string_size_unlimited + 1);
             //TODO: programData::
             lcdPrint_P(string_unlimited);
     } else {
-        UnitsInfo info;
+        struct UnitsInfo info;
         uint8_t symbol_size;
+        bool sign;
 
         pgm_read(info, &unitsInfo[type]);
         symbol_size = pgm_strlen(info.symbol);
@@ -322,7 +322,7 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
         if(dig <= 0)
             return;
 
-        bool sign = false;
+        sign = false;
         if(type == AnalogInputs::SignedVoltage) {
             int16_t y = x;
             if(y < 0) {

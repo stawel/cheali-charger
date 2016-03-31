@@ -20,7 +20,7 @@
 
 namespace ProgramDataMenu {
     void run();
-};
+}
 
 
 #endif /* PROGRAMDATAMENU_H_ */

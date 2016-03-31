@@ -36,7 +36,7 @@ namespace Balancer {
     const static uint16_t maxBalanceTime = 15; //15s
     const static uint16_t balancerStartStableCount = 6; //6*0.7s
 
-    extern const Strategy::VTable vtable;
+    extern const struct Strategy::VTable vtable;
 
     extern uint16_t balance;
     extern bool savedVon;
@@ -47,7 +47,7 @@ namespace Balancer {
 
     void powerOn();
     void powerOff();
-    Strategy::statusType doStrategy();
+    enum Strategy::statusType doStrategy();
     void startBalacing();
     void trySaveVon();
     uint16_t getBalanceTime();
@@ -66,10 +66,11 @@ namespace Balancer {
 
     bool isMaxVout(AnalogInputs::ValueType maxV);
     bool isMinVout(AnalogInputs::ValueType minV);
-    bool isStable(const uint16_t stableCount = AnalogInputs::STABLE_MIN_VALUE);
+    //TODO: sdcc - minor
+    bool isStable(const uint16_t stableCount = 3);//= ANALOG_INPUTS_STABLE_MIN_COUNT);
     bool isCalibrationRequired();
     void endBalancing();
 
-};
+}
 
 #endif /* BALANCER_H_ */

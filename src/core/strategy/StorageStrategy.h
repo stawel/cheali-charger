@@ -19,13 +19,14 @@
 #define STORAGESTRATEGY_H_
 
 #include "SimpleChargeStrategy.h"
+#include "memory.h"
 
 namespace StorageStrategy {
-    extern const Strategy::VTable vtable;
+    extern const PROGMEM struct Strategy::VTable vtable;
     void powerOn();
-    Strategy::statusType doStrategy();
+    enum Strategy::statusType doStrategy();
     void powerOff();
-};
+}
 
 
 

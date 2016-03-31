@@ -27,7 +27,7 @@ namespace Strategy {
     struct VTable {
         void (*powerOn)();
         void (*powerOff)();
-        statusType (*doStrategy)();
+        enum statusType (*doStrategy)();
     };
 
     //variables common to all Strategies
@@ -37,13 +37,13 @@ namespace Strategy {
     extern AnalogInputs::ValueType minI;
     extern bool doBalance;
 
-    void setVI(ProgramData::VoltageType vt, bool charge);
+    void setVI(enum ProgramData::VoltageType vt, bool charge);
 
-    extern const VTable * strategy;
+    extern const PROGMEM_PTR struct VTable * strategy;
     extern bool exitImmediately;
 
-    statusType doStrategy();
-};
+    enum statusType doStrategy();
+}
 
 
 #endif /* STRATEGY_H_ */

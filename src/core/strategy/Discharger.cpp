@@ -32,19 +32,19 @@ namespace Discharger {
 
     AnalogInputs::ValueType getMaxIout()
     {
+        AnalogInputs::ValueType v,i;
 #ifdef ENABLE_T_INTERNAL
-        bool tempcutoff;
-        testTintern(tempcutoff, settings.dischargeTempOff - SETTINGS_FAN_TEMPERATURE_DIFF, settings.dischargeTempOff);
+        AnalogInputs::ValueType t = AnalogInputs::getRealValue(AnalogInputs::Tintern);
 
-        if(tempcutoff)
+        if(t > settings.dischargeTempOff)
             return 0;
 #endif
 
-        AnalogInputs::ValueType v = AnalogInputs::getVout();
+        v = AnalogInputs::getVout();
         if (v == 0) {
             v = 1;
         }
-        AnalogInputs::ValueType i = AnalogInputs::evalI(MAX_DISCHARGE_P, v);
+        i = AnalogInputs::evalI(MAX_DISCHARGE_P, v);
 
         if(i > settings.maxId)
             i = settings.maxId;
@@ -70,12 +70,13 @@ void Discharger::setValue(uint16_t value)
 
 void Discharger::trySetIout(AnalogInputs::ValueType I)
 {
+    uint16_t value;
     AnalogInputs::ValueType maxI = getMaxIout();
     if(maxI < I) I = maxI;
 
     if(IoutSet_ == I) return;
     IoutSet_ = I;
-    uint16_t value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeSet, I);
+    value = AnalogInputs::reverseCalibrateValue(AnalogInputs::IdischargeSet, I);
     setValue(value);
 }
 

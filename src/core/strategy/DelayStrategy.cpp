@@ -24,7 +24,7 @@
 #include "Buzzer.h"
 
 namespace DelayStrategy {
-     const Strategy::VTable vtable PROGMEM = {
+     const PROGMEM struct Strategy::VTable vtable = {
         powerOn,
         powerOff,
         doStrategy
@@ -34,7 +34,7 @@ namespace DelayStrategy {
     uint16_t start_time_U16_;
     uint16_t delay_;
 
-}// namespace DelayStrategy
+}
 
 void DelayStrategy::powerOn()
 {
@@ -46,7 +46,7 @@ void DelayStrategy::powerOff()
     state_ = false;
 }
 
-Strategy::statusType DelayStrategy::doStrategy()
+enum Strategy::statusType DelayStrategy::doStrategy()
 {
     if(Time::diffU16(start_time_U16_, Time::getSecondsU16()) <= delay_) {
         state_ = true;

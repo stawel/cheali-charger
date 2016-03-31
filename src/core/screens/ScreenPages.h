@@ -26,6 +26,7 @@
 #include "ScreenMethods.h"
 #include "ScreenEditable.h"
 #include "Balancer.h"
+#include "Program.h"
 
 namespace Screen { namespace Pages {
 
@@ -41,7 +42,7 @@ namespace Screen { namespace Pages {
         uint32_t conditionDisable;
     };
 
-    const PageInfo pageInfo[] PROGMEM = {
+    const PROGMEM struct PageInfo pageInfo[] = {
             {Screen::StartInfo::displayStartInfo,   PAGE_START_INFO,                      PAGE_NONE},
             {Screen::Editable::displayLEDScreen,     PAGE_BATTERY(ProgramData::ClassLED), PAGE_START_INFO},
             {Screen::Methods::displayFirstScreen,   PAGE_ALWAYS, PAGE_START_INFO + PAGE_PROGRAM(Program::Balance)},

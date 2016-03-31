@@ -18,6 +18,9 @@
 #ifndef SERIALLOG_H_
 #define SERIALLOG_H_
 
+#include <stdint.h>
+#include "memory.h"
+
 namespace SerialLog {
     void powerOn();
     void doIdle();
@@ -25,7 +28,7 @@ namespace SerialLog {
     void flush();
 
     void printString(const char *s);
-    void printString_P(const char *s);
+    void printString_P(const_char_ptr s);
     void printLong(int32_t x);
     void printNL();
     void printChar(char c);

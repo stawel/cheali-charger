@@ -24,6 +24,6 @@ namespace Calibrate {
     void run();
 
     bool check();
-};
+}
 
 #endif /* CALIBRATE_H_ */

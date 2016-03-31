@@ -44,7 +44,7 @@ namespace Time {
 
     //private
     void callback();
-};
+}
 
 
 #endif /* TIME_H_ */

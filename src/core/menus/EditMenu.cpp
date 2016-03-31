@@ -17,30 +17,149 @@
 */
 #include "EditMenu.h"
 #include "Keyboard.h"
+#include "memory.h"
+#include "LcdPrint.h"
+#include "Blink.h"
+#include "Menu.h"
 
-bool EditMenu::runEdit()
-{
-    Blink::startBlinkOff(getIndex());
-    uint8_t key;
-    render_ = true;
-    do {
-        key =  Keyboard::getPressedWithDelay();
-        if(key == BUTTON_DEC || key == BUTTON_INC) {
-            editItem(getIndex(), key);
-            Blink::startBlinkOn(getIndex());
-            render_ = true;
-        } else if(key == BUTTON_STOP || key == BUTTON_START) {
-            break;
+//#define ENABLE_DEBUG
+#include "debug.h"
+
+
+namespace EditMenu {
+
+    uint16_t selector;
+    EditCallBack editCallback;
+    const PROGMEM_PTR struct StaticEditData * staticEditData_;
+
+    void printItem(uint8_t item);
+    void editItem(uint8_t item, uint8_t key);
+    uint8_t getSelectedIndexOrSize(uint8_t item);
+
+    void initialize(const PROGMEM_PTR struct StaticEditData * staticEditData, const EditCallBack callback) {
+        staticEditData_ = staticEditData;
+        selector = EDIT_MENU_ALWAYS;
+        editCallback = callback;
+        Menu::initialize(0);
+        Menu::printMethod_ = printItem;
+        Menu::editMethod_ = editItem;
+        Blink::initialize();
+    }
+
+
+
+    void printItem(uint8_t item)
+    {
+        uint8_t index = getSelectedIndexOrSize(item);
+        const_char_ptr str;
+        uint8_t dig;
+        pgm_read(str, &staticEditData_[index].staticString);
+        dig = lcdPrint_P(str);
+        if(Blink::getBlinkIndex() != item) {
+            uint8_t size;
+            dig = LCD_COLUMNS - dig - 1;
+            pgm_read(size, &staticEditData_[index].print.size);
+            if(size) {
+                lcdPrintSpaces(dig - size);
+                dig = size;
+            }
+            cprintf::cprintf(&staticEditData_[index].print, dig);
         }
-        if(Blink::getBlinkChanged())
-            render_ = true;
-        if(render_)
-            display();
-        Blink::incBlinkTime();
-    } while(true);
+    }
 
-    Blink::stopBlink();
-    waitRelease_ = true;
-    render_ = true;
-    return key == BUTTON_START;
+    int16_ptr getEditAddress(uint8_t item)
+    {
+        union cprintf::Data data;
+        int16_ptr valuePtr;
+        uint8_t type;
+        uint8_t index = getSelectedIndexOrSize(item);
+        pgm_read(data, &staticEditData_[index].print.data);
+        valuePtr = data.int16Ptr;
+        pgm_read(type, &staticEditData_[index].print.type);
+        if(type == CP_TYPE_STRING_ARRAY || type == CP_TYPE_UINT32_ARRAY) {
+            struct cprintf::ArrayData array;
+            pgm_read(array, data.arrayPtr);
+            valuePtr = (int16_ptr)array.indexPtr;
+        }
+        return valuePtr;
+    }
+
+    uint16_t getEnableCondition(uint8_t item)
+    {
+        uint8_t index = getSelectedIndexOrSize(item);
+        uint16_t enableCond;
+        pgm_read(enableCond, &staticEditData_[index].enableCondition);
+        return enableCond;
+    }
+
+
+    void editItem(uint8_t item, uint8_t key)
+    {
+        int16_ptr valuePtr = getEditAddress(item);
+        uint8_t index = getSelectedIndexOrSize(item);
+        int dir = 1;
+        struct EditData d;
+        pgm_read(d, &staticEditData_[index].edit);
+        if(key == BUTTON_DEC) dir = -1;
+
+        if(d.step == CE_STEP_TYPE_SMART) {
+            changeMinToMaxSmart((uint16_ptr)valuePtr, dir, d.minValue, d.maxValue);
+        } else if(d.step == CE_STEP_TYPE_METHOD) {
+            d.editMethod(dir);
+        } else {
+            if(d.step == CE_STEP_TYPE_KEY_SPEED) {
+                d.step = Keyboard::getSpeedFactor();
+            }
+            *valuePtr += dir*d.step;
+            if(*valuePtr < d.minValue) *valuePtr = d.minValue;
+            if(*valuePtr > d.maxValue) *valuePtr = d.maxValue;
+        }
+
+        if(editCallback) {
+            editCallback((uint16_t*)valuePtr);
+        }
+    }
+
+    void setSelector(uint16_t s) {
+//        uint8_t currentIndex = getSelectedIndexOrSize(Menu::getIndex());
+        selector = s;
+        Menu::size_ = getSelectedIndexOrSize(0xff);
+/*        for(uint8_t item = 0; item < Menu::size_ ; item++) {
+            if(getSelectedIndexOrSize(item) == currentIndex) {
+                Menu::setIndex(item);
+                break;
+            }
+        }*/
+        LogDebug(Menu::size_);
+    }
+
+    static bool predicate(uint16_t condition, uint16_t selector){
+        bool display = true;
+        if(condition & EDIT_MENU_MANDATORY) {
+            display = selector & EDIT_MENU_MANDATORY;
+            condition ^= EDIT_MENU_MANDATORY;
+        }
+        return display && (condition & selector);
+    }
+
+    uint8_t getSelectedIndexOrSize(uint8_t item)
+    {
+        uint8_t index = 0, size = 0;
+        do {
+            uint16_t condition;
+            pgm_read(condition, &staticEditData_[index].enableCondition);
+            if(condition == EDIT_MENU_LAST) {
+                return size;
+            }
+            if(predicate(condition, selector)) {
+                if(item == 0) {
+                    return index;
+                }
+                item--;
+                size++;
+            }
+            index++;
+        } while(true);
+    }
+
 }

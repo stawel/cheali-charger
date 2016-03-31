@@ -10,6 +10,8 @@ set(GENERIC_SOURCE
 
     Hardware.h
     HardwareConfigGeneric.h
+
+    main.cpp
 )
 
 CHEALI_ADD(GENERIC_SOURCE_FILES "${GENERIC_SOURCE}")

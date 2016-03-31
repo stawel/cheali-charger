@@ -21,8 +21,8 @@
 namespace Buzzer {
     enum SoundType { Keyboard, Info, Save, Select, StartProgram, ProgramComplete, Error, ReversedPolarity, Off };
 
-    void sound(SoundType s);
-    void soundIfSilence(SoundType s);
+    void sound(enum SoundType s);
+    void soundIfSilence(enum SoundType s);
     inline void soundKeyboard()             {soundIfSilence(Keyboard); }
     inline void soundInfo()                 {sound(Info); }
     inline void soundSave()                 {sound(Save); }
@@ -35,6 +35,6 @@ namespace Buzzer {
     void begin();
 
     void doIdle();
-};
+}
 
 #endif /* BUZZER_H_ */

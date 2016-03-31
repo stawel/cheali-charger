@@ -24,7 +24,7 @@ namespace Monitor {
     extern uint16_t etaDeltaSec;
     extern bool isBalancePortConnected;
 
-    Strategy::statusType run();
+    enum Strategy::statusType run();
     void doIdle();
     void powerOn();
     void powerOff();
@@ -41,7 +41,7 @@ namespace Monitor {
 
 
     void doSlowInterrupt();
-};
+}
 
 
 #endif /* MONITOR_H_ */

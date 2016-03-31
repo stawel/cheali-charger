@@ -19,7 +19,7 @@
 #include "AnalogInputsPrivate.h"
 #include "memory.h"
 
-const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
+const AnalogInputs::DefaultValues AnalogInputs::inputsP_[ANALOG_INPUTS_PHYSICAL_INPUTS] PROGMEM = {
     {{0,0},                         {50816, ANALOG_VOLT(23.118)}},  //Vout
     {{0,0},                         {27516, ANALOG_VOLT(12.552)}},  //VreversePolarity
     {{256,   ANALOG_AMP(0.051)},    {10240, ANALOG_AMP(2.000)}},    //Ismps

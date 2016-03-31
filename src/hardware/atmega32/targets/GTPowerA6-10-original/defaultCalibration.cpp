@@ -51,7 +51,7 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
 
 namespace {
     void assert() {
-        STATIC_ASSERT(sizeOfArray(AnalogInputs::inputsP_) == AnalogInputs::PHYSICAL_INPUTS);
+        STATIC_ASSERT(sizeOfArray(AnalogInputs::inputsP_) == ANALOG_INPUTS_PHYSICAL_INPUTS);
     }
 }
 

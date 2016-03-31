@@ -20,7 +20,7 @@
 
 #include "AnalogInputsTypes.h"
 #include "HardwareConfig.h"
-#include "cpu/config.h"
+#include "cpu_config.h"
 
 #define ANALOG_INPUTS_MAX_CALIBRATION_POINTS    2
 #define ANALOG_INPUTS_DELTA_TIME_MILISECONDS    30000
@@ -28,8 +28,19 @@
 
 #define ANALOG_INPUTS_MAX_ADC_VALUE      (((1<<(ANALOG_INPUTS_ADC_RESOLUTION_BITS))-1) << ((ANALOG_INPUTS_RESOLUTION) - (ANALOG_INPUTS_ADC_RESOLUTION_BITS)))
 
-#define ANALOG_INPUTS_FOR_ALL_PHY(iterator) for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::PHYSICAL_INPUTS; iterator = AnalogInputs::Name(iterator + 1) )
-#define ANALOG_INPUTS_FOR_ALL(iterator)     for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::ALL_INPUTS;      iterator = AnalogInputs::Name(iterator + 1) )
+#ifdef SDCC_COMPILER
+//TODO: sdcc
+#define ANALOG_INPUTS_FOR_ALL_PHY(iterator) enum Name iterator; for(iterator = 0; iterator < ANALOG_INPUTS_PHYSICAL_INPUTS; iterator++)
+#define ANALOG_INPUTS_FOR_ALL(iterator)     enum Name iterator; for(iterator = 0; iterator < ANALOG_INPUTS_ALL_INPUTS;      iterator++)
+#else
+#define ANALOG_INPUTS_FOR_ALL_PHY(iterator) for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < ANALOG_INPUTS_PHYSICAL_INPUTS; iterator = AnalogInputs::Name(iterator + 1) )
+#define ANALOG_INPUTS_FOR_ALL(iterator)     for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < ANALOG_INPUTS_ALL_INPUTS;      iterator = AnalogInputs::Name(iterator + 1) )
+#endif
+
+#define ANALOG_INPUTS_PHYSICAL_INPUTS               11 + MAX_BANANCE_CELLS
+#define ANALOG_INPUTS_ALL_INPUTS                    14 + MAX_BANANCE_CELLS + ANALOG_INPUTS_PHYSICAL_INPUTS
+#define ANALOG_INPUTS_REVERSE_POLARITY_MIN_VOLTAGE  ANALOG_VOLT(1.000)
+#define ANALOG_INPUTS_CONNECTED_MIN_VOLTAGE         ANALOG_VOLT(0.400)
 
 namespace AnalogInputs {
 
@@ -39,12 +50,12 @@ namespace AnalogInputs {
     } CHEALI_EEPROM_PACKED;
 
     struct DefaultValues {
-        CalibrationPoint p0;
-        CalibrationPoint p1;
+        struct CalibrationPoint p0;
+        struct CalibrationPoint p1;
     } CHEALI_EEPROM_PACKED;
 
     struct Calibration {
-        CalibrationPoint p[ANALOG_INPUTS_MAX_CALIBRATION_POINTS];
+        struct CalibrationPoint p[ANALOG_INPUTS_MAX_CALIBRATION_POINTS];
     } CHEALI_EEPROM_PACKED;
 
     enum Name {
@@ -105,17 +116,13 @@ namespace AnalogInputs {
 
         LastInput,
     };
-    static const uint8_t    PHYSICAL_INPUTS     = VirtualInputs - Vout_plus_pin;
-    static const uint8_t    ALL_INPUTS          = LastInput - Vout_plus_pin;
-    static const ValueType  REVERSE_POLARITY_MIN_VOLTAGE = ANALOG_VOLT(1.000);
-    static const ValueType  CONNECTED_MIN_VOLTAGE = ANALOG_VOLT(0.400);
 
     //get the average ADC value
-    ValueType getAvrADCValue(Name name);
+    ValueType getAvrADCValue(enum Name name);
     //get real value (usable) - average, after calibration
-    ValueType getRealValue(Name name);
+    ValueType getRealValue(enum Name name);
     //get the ADC (measured) value - in this particular moment
-    ValueType getADCValue(Name name);
+    ValueType getADCValue(enum Name name);
 
     // get battery voltage, can be Vout or balance port voltage (when connected)
     ValueType getVbattery();
@@ -132,13 +139,13 @@ namespace AnalogInputs {
     uint8_t getConnectedBalancePortsCount();
 
     uint16_t getFullMeasurementCount();
-    uint16_t getStableCount(Name name);
+    uint16_t getStableCount(enum Name name);
 
-    Type getType(Name name);
+    enum Type getType(enum Name name);
 
     bool isOutStable();
-    bool isStable(Name name);
-    bool isConnected(Name name);
+    bool isStable(enum Name name);
+    bool isConnected(enum Name name);
     bool isBalancePortConnected();
     bool isReversePolarity();
     bool isPowerOn();
@@ -154,17 +161,17 @@ namespace AnalogInputs {
 //calibration
     void restoreDefault();
 
-    ValueType calibrateValue(Name name, ValueType x);
-    ValueType reverseCalibrateValue(Name name, ValueType y);
+    ValueType calibrateValue(enum Name name, ValueType x);
+    ValueType reverseCalibrateValue(enum Name name, ValueType y);
 
 //init
     void initialize();
 
-    void printRealValue(Name name, uint8_t dig);
-};
+    void printRealValue(enum Name name, uint8_t dig);
+}
 
-template<class T>
-inline T absDiff(T x, T y)
+
+inline uint16_t absDiff(uint16_t x, uint16_t y)
 {
     if(x > y) return x - y;
     return y - x;

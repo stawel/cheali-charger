@@ -73,8 +73,9 @@ void Monitor::calculateDeltaProcentTimeSec()
 
 uint16_t Monitor::getETATime()
 {
+    uint8_t kx;
     calculateDeltaProcentTimeSec();
-    uint8_t kx = 105;
+    kx = 105;
     if(!Monitor::isBalancePortConnected) {
         //balancer not connected
         kx=100;
@@ -152,7 +153,7 @@ void Monitor::doIdle()
 void Monitor::powerOn()
 {
 
-    Vout_plus_adcMinLimit_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, AnalogInputs::CONNECTED_MIN_VOLTAGE);
+    Vout_plus_adcMinLimit_ = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, ANALOG_INPUTS_CONNECTED_MIN_VOLTAGE);
 
     {
         //Make sure Vout_plus gets not higher VCharge + 3V (additional safety limit for protection ICs)
@@ -203,8 +204,9 @@ void Monitor::doSlowInterrupt()
 }
 
 
-Strategy::statusType Monitor::run()
+enum Strategy::statusType Monitor::run()
 {
+    AnalogInputs::ValueType v;
     if(!on_) {
         return Strategy::RUNNING;
     }
@@ -217,8 +219,8 @@ Strategy::statusType Monitor::run()
     }
 #endif
 
-    AnalogInputs::ValueType VMout = AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin);
-    if(Vout_plus_adcMaxLimit_ <= VMout || (VMout < Vout_plus_adcMinLimit_ && Discharger::isPowerOn())) {
+    v = AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin);
+    if(Vout_plus_adcMaxLimit_ <= v || (v < Vout_plus_adcMinLimit_ && Discharger::isPowerOn())) {
         Program::stopReason = string_batteryDisconnected;
         return Strategy::ERROR;
     }
@@ -228,21 +230,21 @@ Strategy::statusType Monitor::run()
         return Strategy::ERROR;
     }
 
-    AnalogInputs::ValueType i_limit = Strategy::maxI + ANALOG_AMP(1.000);
-    if (i_limit < AnalogInputs::getIout()) {
+    //I (current) limit
+    v = Strategy::maxI + ANALOG_AMP(1.000);
+    if (v < AnalogInputs::getIout()) {
         Program::stopReason = string_outputCurrentToHigh;
         return Strategy::ERROR;
     }
 
-    AnalogInputs::ValueType Vin = AnalogInputs::getRealValue(AnalogInputs::Vin);
-    if(Vin < settings.inputVoltageLow) {
+    v = AnalogInputs::getRealValue(AnalogInputs::Vin);
+    if(v < settings.inputVoltageLow) {
         Program::stopReason = string_inputVoltageToLow;
         return Strategy::ERROR;
     }
 
-    AnalogInputs::ValueType c = AnalogInputs::getRealValue(AnalogInputs::Cout);
-    AnalogInputs::ValueType c_limit  = ProgramData::getCapacityLimit();
-    if(c_limit != ANALOG_MAX_CHARGE && c_limit <= c) {
+    v = ProgramData::getCapacityLimit();
+    if(v != ANALOG_MAX_CHARGE && v <= AnalogInputs::getRealValue(AnalogInputs::Cout)) {
         Program::stopReason = string_capacityLimit;
         return Strategy::COMPLETE;
     }
@@ -260,8 +262,8 @@ Strategy::statusType Monitor::run()
 #endif //ENABLE_TIME_LIMIT
 
     if(ProgramData::battery.enable_externT) {
-        AnalogInputs::ValueType Textern = AnalogInputs::getRealValue(AnalogInputs::Textern);
-        if(ProgramData::battery.externTCO < Textern) {
+        v = AnalogInputs::getRealValue(AnalogInputs::Textern);
+        if(ProgramData::battery.externTCO < v) {
             Program::stopReason = string_externalTemperatureCutOff;
             return Strategy::ERROR;
         }

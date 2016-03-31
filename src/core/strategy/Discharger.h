@@ -36,7 +36,7 @@ namespace Discharger {
 
     void powerOn();
     void powerOff();
-};
+}
 
 
 #endif //DISCHARGER_H

@@ -40,17 +40,17 @@ namespace eeprom {
         uint16_t programDataVersion;
         uint16_t settingVersion;
 
-        AnalogInputs::Calibration calibration[AnalogInputs::PHYSICAL_INPUTS];
+        struct AnalogInputs::Calibration calibration[ANALOG_INPUTS_PHYSICAL_INPUTS];
         uint16_t calibrationCRC;
 
-        ProgramData::Battery battery[MAX_PROGRAMS];
+        struct ProgramData::Battery battery[MAX_PROGRAMS];
         uint16_t batteryCRC;
 
-        Settings::Settings settings;
+        struct Settings::Settings settings;
         uint16_t settingsCRC;
     } CHEALI_EEPROM_PACKED;
 
-    extern Data data;
+    extern EEMEM struct Data data;
 
 #ifdef ENABLE_EEPROM_CRC
     bool restoreCalibrationCRC(bool restore = true);
@@ -66,8 +66,8 @@ namespace eeprom {
     bool check();
     void restoreDefault();
 #else
-    inline bool check() { return true; /* OK */};
-    inline void restoreDefault() {};
+    inline bool check() { return true; /* OK */}
+    inline void restoreDefault() {}
 #endif
 
 

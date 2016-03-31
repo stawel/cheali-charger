@@ -13,8 +13,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-void loop();
-void setup();
+
+void cheali_charger_main();
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

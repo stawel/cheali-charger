@@ -20,15 +20,16 @@
 
 
 #include "Strategy.h"
+#include "memory.h"
 
 namespace SimpleChargeStrategy {
 
-    extern const Strategy::VTable vtable;
+    extern const PROGMEM struct Strategy::VTable vtable;
 
     void powerOn();
     void powerOff();
     void calculateThevenin();
-};
+}
 
 #endif /* SIMPLECHARGESTRATEGY_H_ */
 

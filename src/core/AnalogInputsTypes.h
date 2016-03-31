@@ -20,17 +20,21 @@
 
 #include <stdint.h>
 
-#define ANALOG_CELCIUS(x) ((AnalogInputs::ValueType)((x)*100))
-#define ANALOG_CHARGE(x) ((AnalogInputs::ValueType)((x)*1000))
-#define ANALOG_VOLT(x) ((AnalogInputs::ValueType)((x)*1000))
-#define ANALOG_AMP(x) ((AnalogInputs::ValueType)((x)*1000))
-#define ANALOG_OHM(x) ((AnalogInputs::ValueType)((x)*1000))
-#define ANALOG_WATT(x) ((AnalogInputs::ValueType)((x)*100))
-#define ANALOG_WATTH(x) ((AnalogInputs::ValueType)((x)*100))
+#define ANALOG_CELCIUS(x) ((uint16_t)((x)*100))
+#define ANALOG_CHARGE(x) ((uint16_t)((x)*1000))
+#define ANALOG_VOLT(x) ((uint16_t)((x)*1000))
+#define ANALOG_AMP(x) ((uint16_t)((x)*1000))
+#define ANALOG_OHM(x) ((uint16_t)((x)*1000))
+#define ANALOG_WATT(x) ((uint16_t)((x)*100))
+#define ANALOG_WATTH(x) ((uint16_t)((x)*100))
 
 #define ANALOG_MAX_TIME_LIMIT 1000 //infinity
 #define ANALOG_MAX_CHARGE ANALOG_CHARGE(65.000)
 #define ANALOG_MIN_CHARGE ANALOG_CHARGE(0.100)
+
+#define ANALOG_INPUTS_STABLE_VALUE_ERROR    6
+#define ANALOG_INPUTS_STABLE_MIN_COUNT      3
+
 
 namespace AnalogInputs {
     typedef uint16_t ValueType;
@@ -41,8 +45,8 @@ namespace AnalogInputs {
         Power,
         Work,
         Temperature,
-        Charge,
-        Resistance,
+        ChargeUnit,
+        ResistanceUnit,
         Procent,
         SignedVoltage,
         Unsigned,
@@ -50,13 +54,10 @@ namespace AnalogInputs {
         Minutes,
         TimeLimitMinutes,
         YesNo,
-        Unknown
+        UnknownUnit
     };
 
-    static const ValueType  STABLE_VALUE_ERROR  = 6;
-    static const uint16_t   STABLE_MIN_VALUE    = 3;
-
     AnalogInputs::ValueType evalI(AnalogInputs::ValueType P, AnalogInputs::ValueType U);
-};
+}
 
 #endif /* ANALOGINPUTSTYPES_H_ */

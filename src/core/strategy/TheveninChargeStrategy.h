@@ -21,16 +21,16 @@
 #include "SimpleChargeStrategy.h"
 #include "Thevenin.h"
 #include "TheveninMethod.h"
+#include "memory.h"
 
-namespace TheveninChargeStrategy
-{
-    extern const Strategy::VTable vtable;
+namespace TheveninChargeStrategy {
+    extern const PROGMEM struct Strategy::VTable vtable;
 
     void powerOn();
-    Strategy::statusType doStrategy();
+    enum Strategy::statusType doStrategy();
     void powerOff();
 
-};
+}
 
 
 #endif /* THEVENINCHARGESTRATEGY_H_ */

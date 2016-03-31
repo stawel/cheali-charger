@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include "Blink.h"
 #include "Hardware.h"
+#include "memory.h"
 
 #ifdef ENABLE_LCD_RAM_CG
    #define SCREEN_FULL_CELL_CHAR   2
@@ -48,8 +49,8 @@ namespace Screen {
 
     void displayScreenProgramCompleted();
     void displayMonitorError();
-    void displayStrings(const char *s);
-    void displayStrings(const char *s1, const char *s2);
+    void displayStrings(const_char_ptr s);
+    void displayStrings(const_char_ptr s1, const_char_ptr s2);
 
 
     void displayNotImplemented();
@@ -60,7 +61,7 @@ namespace Screen {
     void runResetEepromDone(uint8_t before, uint8_t after);
     void runNotImplemented();
     void runWelcomeScreen();
-    void runCalibrationError(const char *s, uint8_t error);
+    void runCalibrationError(const_char_ptr s, uint8_t error);
 
     void runNeedForceBalance();
 
@@ -68,6 +69,6 @@ namespace Screen {
     void doStrategy();
     void powerOn();
     void powerOff();
-};
+}
 
 #endif /* SCREEN_H_ */

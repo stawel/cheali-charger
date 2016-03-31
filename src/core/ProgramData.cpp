@@ -23,10 +23,10 @@
 #include "Settings.h"
 #include "eeprom.h"
 
-ProgramData::Battery ProgramData::battery;
+struct ProgramData::Battery ProgramData::battery;
 
 //battery voltage limits, see also: ProgramData::getVoltagePerCell, ProgramData::getVoltage
-const AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
+const PROGMEM AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE]  =
 {
 //          { VNominal,           VCharged,           VDischarged,        VStorage,           VvalidEmpty};
 /*None*/    { 1,                  1,                  1,                  1,                  1},
@@ -60,14 +60,14 @@ const AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE] PRO
 
 };
 
-uint16_t ProgramData::getDefaultVoltagePerCell(VoltageType type)
+uint16_t ProgramData::getDefaultVoltagePerCell(enum VoltageType type)
 {
-    STATIC_ASSERT(sizeOfArray(voltsPerCell) == ProgramData::LAST_BATTERY_TYPE);
     uint16_t result;
+    STATIC_ASSERT(sizeOfArray(voltsPerCell) == ProgramData::LAST_BATTERY_TYPE);
     pgm_read(result, &voltsPerCell[battery.type][type]);
     return result;
 }
-uint16_t ProgramData::getDefaultVoltage(VoltageType type)
+uint16_t ProgramData::getDefaultVoltage(enum VoltageType type)
 {
     uint16_t cells = battery.cells;
     uint16_t voltage = getDefaultVoltagePerCell(type);
@@ -81,7 +81,7 @@ uint16_t ProgramData::getDefaultVoltage(VoltageType type)
     return cells * voltage;
 }
 
-uint16_t ProgramData::getVoltagePerCell(VoltageType type) {
+uint16_t ProgramData::getVoltagePerCell(enum VoltageType type) {
     uint16_t voltage = getDefaultVoltagePerCell(type);
     if (type == VCharged) {
         voltage = battery.Vc_per_cell;
@@ -94,7 +94,7 @@ uint16_t ProgramData::getVoltagePerCell(VoltageType type) {
 }
 
 
-uint16_t ProgramData::getVoltage(VoltageType type) {
+uint16_t ProgramData::getVoltage(enum VoltageType type) {
     uint16_t cells = battery.cells;
     uint16_t voltage = getVoltagePerCell(type);
     //TODO:type == VDischarge && battery.type == NiMH && cells > 6
@@ -103,7 +103,7 @@ uint16_t ProgramData::getVoltage(VoltageType type) {
 }
 
 
-const char * const  ProgramData::batteryString[] PROGMEM = {
+const PROGMEM char * const  ProgramData::batteryString[] = {
         string_battery_None,
         string_battery_NiCd,
         string_battery_NiMH,
@@ -118,9 +118,10 @@ const char * const  ProgramData::batteryString[] PROGMEM = {
         string_battery_LED,
 };
 
-STATIC_ASSERT(sizeOfArray(ProgramData::batteryString) == ProgramData::LAST_BATTERY_TYPE);
+//TODO: sdcc
+//STATIC_ASSERT(sizeOfArray(ProgramData::batteryString) == ProgramData::LAST_BATTERY_TYPE);
 
-const ProgramData::BatteryClass ProgramData::batteryClassMap[] PROGMEM = {
+const PROGMEM enum ProgramData::BatteryClass ProgramData::batteryClassMap[] = {
 /*None*/    ClassUnknown,
 /*NiCd*/    ClassNiXX,
 /*NiMH*/    ClassNiXX,
@@ -136,9 +137,9 @@ const ProgramData::BatteryClass ProgramData::batteryClassMap[] PROGMEM = {
 };
 
 
-ProgramData::BatteryClass ProgramData::getBatteryClass() {
+enum ProgramData::BatteryClass ProgramData::getBatteryClass() {
+    enum ProgramData::BatteryClass v;
     STATIC_ASSERT(sizeOfArray(ProgramData::batteryClassMap) == ProgramData::LAST_BATTERY_TYPE);
-    ProgramData::BatteryClass v;
     pgm_read(v, &ProgramData::batteryClassMap[battery.type]);
     return v;
 }
@@ -189,9 +190,10 @@ uint16_t ProgramData::getMaxId()
 
 uint16_t ProgramData::getMaxCells()
 {
+    uint16_t v;
     if(battery.type == Unknown || battery.type == LED)
         return 1;
-    uint16_t v = getDefaultVoltagePerCell(VCharged);
+    v = getDefaultVoltagePerCell(VCharged);
     return MAX_CHARGE_V / v;
 }
 
@@ -248,10 +250,12 @@ void ProgramData::saveProgramData(uint8_t index)
 
 void ProgramData::restoreDefault()
 {
+    uint8_t i;
+
     battery.type = None;
     changedType();
 
-    for(int i=0;i< MAX_PROGRAMS;i++) {
+    for(i=0;i< MAX_PROGRAMS;i++) {
         saveProgramData(i);
     }
     eeprom::restoreProgramDataCRC();

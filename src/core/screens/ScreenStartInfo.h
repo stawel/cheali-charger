@@ -18,13 +18,14 @@
 #ifndef SCREEN_START_INFO_H_
 #define SCREEN_START_INFO_H_
 
+#include <stdint.h>
 
 namespace Screen { namespace StartInfo {
 
     void displayStartInfo();
     void printVoltageString(int8_t dig);
     void printBatteryString();
-};
-};
+}
+}
 
 #endif /* SCREEN_START_INFO_H_ */

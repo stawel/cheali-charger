@@ -31,21 +31,21 @@ namespace Program {
         LAST_PROGRAM_TYPE};
 
     enum ProgramState {
-        Done, InProgress, Error, Info
+        ProgramDone, ProgramInProgress, ProgramError, ProgramInfo
     };
 
-    extern ProgramType programType;
-    extern ProgramState programState;
-    extern const char * stopReason;
+    extern enum ProgramType programType;
+    extern enum ProgramState programState;
+    extern const_char_ptr stopReason;
 
     void selectProgram(int index);
-    void run(ProgramType prog);
+    void run(enum ProgramType prog);
 
-    Strategy::statusType runWithoutInfo(ProgramType prog);
+    enum Strategy::statusType runWithoutInfo(enum ProgramType prog);
     void resetAccumulatedMeasurements();
 
     void dischargeOutputCapacitor();
-};
+}
 
 
 #endif /* PROGRAM_H_ */

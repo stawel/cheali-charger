@@ -27,10 +27,11 @@ bool PolarityCheck::checkReversedPolarity_ = true;
 
 bool PolarityCheck::runReversedPolarityInfo()
 {
+    bool reversed;
     if(!checkReversedPolarity_)
         return false;
 
-    bool reversed = AnalogInputs::isReversePolarity();
+    reversed = AnalogInputs::isReversePolarity();
     if(reversed) {
         if(!isReversedPolarity_)
             Screen::displayScreenReversedPolarity();

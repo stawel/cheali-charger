@@ -19,19 +19,20 @@
 #define DELAYSTRATEGY_H_
 
 #include "Strategy.h"
+#include "memory.h"
 
 namespace DelayStrategy {
 
-    extern const Strategy::VTable vtable;
+    extern const PROGMEM struct Strategy::VTable vtable;
 
     void powerOn();
-    Strategy::statusType doStrategy();
+    enum Strategy::statusType doStrategy();
     void powerOff();
 
     bool isDelay();
     void setDelay(uint16_t minutes);
 
-};
+}
 
 
 #endif /* DELAYSTRATEGY_H_ */

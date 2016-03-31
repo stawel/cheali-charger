@@ -25,7 +25,7 @@
 #include "memory.h"
 
 namespace TheveninChargeStrategy {
-    const Strategy::VTable vtable PROGMEM = {
+    const PROGMEM struct Strategy::VTable vtable = {
         powerOn,
         powerOff,
         doStrategy
@@ -47,16 +47,17 @@ void TheveninChargeStrategy::powerOff()
     Balancer::powerOff();
 }
 
-Strategy::statusType TheveninChargeStrategy::doStrategy()
+enum Strategy::statusType TheveninChargeStrategy::doStrategy()
 {
     bool isendVout = isEndVout();
     AnalogInputs::ValueType I = SMPS::getIout();
+    AnalogInputs::ValueType newI;
 
     //balance, test if charge complete
     if(TheveninMethod::balance_isComplete(isendVout, I)) {
         return Strategy::COMPLETE;
     }
-    AnalogInputs::ValueType newI = TheveninMethod::calculateNewI(isendVout, I);
+    newI = TheveninMethod::calculateNewI(isendVout, I);
     SMPS::trySetIout(newI);
 
     return Strategy::RUNNING;

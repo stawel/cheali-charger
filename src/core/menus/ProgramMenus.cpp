@@ -18,20 +18,26 @@
 
 #include "Program.h"
 #include "ProgramMenus.h"
-#include "StaticMenu.h"
 #include "eeprom.h"
+#include "Menu.h"
+#include "Utils.h"
+#include "LcdPrint.h"
 #include "ProgramDataMenu.h"
 #include "memory.h"
 
-// Program selection depending on the battery type
+// Program selection, depends on the battery type
 
 namespace ProgramMenus {
 
-    const Program::ProgramType programNoneMenu[] PROGMEM = {
+    const PROGMEM_PTR enum Program::ProgramType * currentProgramMenu_;
+    int8_t programMenuIndex_ = 0;
+
+
+    const PROGMEM enum Program::ProgramType programNoneMenu[] = {
             Program::EditBattery,
     };
 
-    const Program::ProgramType programLiXXMenu[] PROGMEM = {
+    const PROGMEM enum Program::ProgramType programLiXXMenu[] = {
             Program::Charge,
             Program::ChargeBalance,
             Program::Balance,
@@ -46,7 +52,7 @@ namespace ProgramMenus {
             Program::EditBattery,
     };
 
-    const Program::ProgramType programNiZnMenu[] PROGMEM = {
+    const PROGMEM enum Program::ProgramType programNiZnMenu[] = {
             Program::Charge,
             Program::ChargeBalance,
             Program::Balance,
@@ -59,7 +65,7 @@ namespace ProgramMenus {
             Program::EditBattery,
     };
 
-    const Program::ProgramType programNiXXMenu[] PROGMEM = {
+    const PROGMEM enum Program::ProgramType programNiXXMenu[] = {
             Program::Charge,
             Program::Discharge,
             Program::DischargeChargeCycle,
@@ -67,7 +73,7 @@ namespace ProgramMenus {
             Program::EditBattery,
     };
 
-    const Program::ProgramType programPbMenu[] PROGMEM = {
+    const PROGMEM enum Program::ProgramType programPbMenu[] = {
             Program::Charge,
             Program::Discharge,
             Program::FastCharge,
@@ -76,13 +82,13 @@ namespace ProgramMenus {
             Program::EditBattery,
     };
 
-    const Program::ProgramType programLEDMenu[] PROGMEM = {
+    const PROGMEM enum Program::ProgramType programLEDMenu[] = {
             Program::Charge,
             Program::EditBattery,
     };
 
 // ProgramType -> strings
-    const char * const programMenus_strings[] PROGMEM = {
+    const  PROGMEM char * const programMenus_strings[] = {
             string_charge,
             string_chargeAndBalance,
             string_balance,
@@ -95,70 +101,76 @@ namespace ProgramMenus {
             string_editBattery,
     };
 
-    class ProgramTypeMenu : public Menu {
-    public:
-        const Program::ProgramType * typeMenu_;
-        ProgramTypeMenu(const Program::ProgramType  *typeMenu) :
-            Menu(countElements(typeMenu)), typeMenu_(typeMenu){};
-
-        Program::ProgramType getProgramType(uint8_t i) {
-            return pgm::read(&typeMenu_[i]);
-        }
-
-        virtual void printItem(uint8_t i) {
-            STATIC_ASSERT(sizeOfArray(programMenus_strings)-1 == Program::EditBattery);
-
-            lcdPrint_P(programMenus_strings, getProgramType(i));
-        }
-
-        static uint8_t countElements(const Program::ProgramType * typeMenu) {
-            uint8_t retu = 0;
-            while(pgm::read(&typeMenu[retu++]) != Program::EditBattery);
-            return retu;
-        }
-    };
-
-    ProgramTypeMenu selectNoneMenu(programNoneMenu);
-    ProgramTypeMenu selectLiXXMenu(programLiXXMenu);
-    ProgramTypeMenu selectNiXXMenu(programNiXXMenu);
-    ProgramTypeMenu selectNiZnMenu(programNiZnMenu);
-    ProgramTypeMenu selectPbMenu(programPbMenu);
-    ProgramTypeMenu selectLEDMenu(programLEDMenu);
-
-    ProgramTypeMenu * getSelectProgramMenu() {
+    inline const PROGMEM enum Program::ProgramType * getSelectProgramMenu() {
+        enum ProgramData::BatteryClass bc;
         STATIC_ASSERT(ProgramData::LAST_BATTERY_CLASS == 6);
 
-        ProgramData::BatteryClass bc = ProgramData::getBatteryClass();
+        bc = ProgramData::getBatteryClass();
         if(ProgramData::battery.type == ProgramData::None)
-            return &selectNoneMenu;
+            return programNoneMenu;
         if(bc == ProgramData::ClassNiZn)
-            return &selectNiZnMenu;
+            return programNiZnMenu;
         if(bc == ProgramData::ClassLiXX)
-            return &selectLiXXMenu;
+            return programLiXXMenu;
         if(bc == ProgramData::ClassNiXX)
-            return &selectNiXXMenu;
+            return programNiXXMenu;
         if(bc == ProgramData::ClassLED)
-            return &selectLEDMenu;
-        else return &selectPbMenu;
+            return programLEDMenu;
+        else return programPbMenu;
+    }
+
+    static uint8_t countElements() {
+        uint8_t retu = 0;
+        enum Program::ProgramType type;
+        do {
+            pgm_read(type, &currentProgramMenu_[retu++]);
+        } while(type != Program::EditBattery);
+        return retu;
+    }
+
+    static enum Program::ProgramType getProgramType(uint8_t i) {
+        enum Program::ProgramType type;
+        pgm_read(type, &currentProgramMenu_[i]);
+        return type;
+    }
+
+
+    void printItem(uint8_t i) {
+        STATIC_ASSERT(sizeOfArray(programMenus_strings)-1 == Program::EditBattery);
+
+        lcdPrint_P(programMenus_strings, getProgramType(i));
+    }
+
+
+    static void selectProgramMenu() {
+        currentProgramMenu_ = getSelectProgramMenu();
+        Menu::initialize(countElements());
+        Menu::printMethod_ = printItem;
     }
 }
 
-void ProgramMenus::selectProgram(int index)
+void ProgramMenus::selectProgram(uint8_t index)
 {
+    int8_t i;
     ProgramData::loadProgramData(index);
-    ProgramTypeMenu * selectPrograms = getSelectProgramMenu();
-    int8_t menuIndex;
-    do {
-        menuIndex = selectPrograms->runSimple();
-        if(menuIndex >= 0)  {
-            Program::ProgramType prog = selectPrograms->getProgramType(menuIndex);
+    while(true) {
+        selectProgramMenu();
+
+        Menu::setIndex(programMenuIndex_);
+        i = Menu::run();
+        programMenuIndex_ = Menu::getIndex();
+        if(i < 0) {
+            break;
+        } else {
+            enum Program::ProgramType prog = getProgramType(programMenuIndex_);
             if(prog == Program::EditBattery) {
                 ProgramDataMenu::run();
                 ProgramData::saveProgramData(index);
-                selectPrograms = getSelectProgramMenu();
             } else {
                 Program::run(prog);
             }
         }
-    } while(menuIndex >= 0);
+    }
 }
+
+

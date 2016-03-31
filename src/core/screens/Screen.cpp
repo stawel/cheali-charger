@@ -39,11 +39,11 @@ namespace Screen {
 
     //see PAGE_PROGRAM
     //see PAGE_BATTERY
-    STATIC_ASSERT_MSG(ProgramData::LAST_BATTERY_CLASS == 6 && Program::LAST_PROGRAM_TYPE == 9 + 2, "see ScreenPages.h");
 
     uint32_t getConditions() {
         uint32_t c = 0;
-        if(Program::programState == Program::Info)
+        STATIC_ASSERT_MSG(ProgramData::LAST_BATTERY_CLASS == 6 && Program::LAST_PROGRAM_TYPE == 9 + 2, "see ScreenPages.h");
+        if(Program::programState == Program::ProgramInfo)
             c += PAGE_START_INFO;
         if(Monitor::isBalancePortConnected)
             c += PAGE_BALANCE_PORT;
@@ -54,7 +54,7 @@ namespace Screen {
 
     VoidMethod getPage(uint8_t page) {
         uint8_t i = 0;
-        Pages::PageInfo info;
+        struct Pages::PageInfo info;
         uint32_t condition = getConditions();
         bool ok;
         page++;
@@ -121,14 +121,14 @@ void Screen::initialize() {
 #endif
 }
 
-void Screen::displayStrings(const char *s)
+void Screen::displayStrings(const_char_ptr s)
 {
     lcdClear();
     lcdSetCursor0_0();
     lcdPrint_P(s);
 }
 
-void Screen::displayStrings(const char *s1, const char *s2)
+void Screen::displayStrings(const_char_ptr s1, const_char_ptr  s2)
 {
     displayStrings(s1);
     lcdSetCursor0_1();
@@ -137,7 +137,7 @@ void Screen::displayStrings(const char *s1, const char *s2)
 
 
 namespace Screen {
-    void screenEnd(const char * firstLine) {
+    void screenEnd(const_char_ptr firstLine) {
         lcdSetCursor0_0();
         lcdPrint_P(firstLine);
         lcdPrintTime(Monitor::getTimeSec());
@@ -177,7 +177,8 @@ void Screen::displayScreenReversedPolarity()
 
 void Screen::displayAnimation()
 {
-    for (uint8_t i=0; i<16; i++) {
+    uint8_t i;
+    for (i=0; i<16; i++) {
         lcdSetCursor(15-i,1);
         lcdPrintChar(255);
         lcdSetCursor(i,0);
@@ -225,7 +226,7 @@ void Screen::runResetEepromDone(uint8_t before, uint8_t after) {
     }
 }
 
-void Screen::runCalibrationError(const char *s, uint8_t error) {
+void Screen::runCalibrationError(const_char_ptr s, uint8_t error) {
     displayStrings(PSTR("calib. error"), s);
     lcdPrintUnsigned(error, 3);
     waitButtonPressed();

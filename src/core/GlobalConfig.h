@@ -18,22 +18,22 @@
 #ifndef GLOBAL_CONFIG_H_
 #define GLOBAL_CONFIG_H_
 
-#include <AnalogInputsTypes.h>
+#include "AnalogInputsTypes.h"
 
 #define LCD_LINES               2
 #define LCD_COLUMNS             16
 
-#define ENABLE_SERIAL_LOG
-#define ENABLE_TIME_LIMIT
-#define ENABLE_LCD_RAM_CG
-#define ENABLE_SCREEN_ANIMATION
+//#define ENABLE_SERIAL_LOG
+//#define ENABLE_TIME_LIMIT
+//#define ENABLE_LCD_RAM_CG
+//#define ENABLE_SCREEN_ANIMATION
 //#define ENABLE_SCREEN_KNIGHTRIDEREFFECT
 
-#define ENABLE_EEPROM_CRC
-#define ENABLE_EEPROM_RESTORE_DEFAULT
-#define ENABLE_SETTINGS_MENU_RESET
+//#define ENABLE_EEPROM_CRC
+//#define ENABLE_EEPROM_RESTORE_DEFAULT
+//#define ENABLE_SETTINGS_MENU_RESET
 
-//menus_c
+//TODO: menus_c: sdcc
 //#define ENABLE_CALIBRATION
 //#define ENABLE_CALIBRATION_CHECK
 
@@ -44,7 +44,7 @@
  */
 //#define ENABLE_DYNAMIC_MAX_POWER
 
-#define STRINGS_HEADER "strings/standard.h"
+#define STRINGS_HEADER "strings_standard.h"
 
 #define CHEALI_CHARGER_ARCHITECTURE                     (CHEALI_CHARGER_ARCHITECTURE_CPU + CHEALI_CHARGER_ARCHITECTURE_GENERIC)
 #define CHEALI_CHARGER_ARCHITECTURE_INFO                (MAX_BANANCE_CELLS)

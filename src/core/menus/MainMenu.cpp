@@ -16,48 +16,44 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "ProgramMenus.h"
-#include "Options.h"
-#include "StaticMenu.h"
-#include "ProgramData.h"
-#include "memory.h"
+#include "OptionsMenu.h"
 #include "MainMenu.h"
+#include "Menu.h"
+#include "ProgramData.h"
+#include "LcdPrint.h"
+#include "memory.h"
 
 namespace MainMenu {
 
-    class MainMenu : public StaticMenu {
-    public:
-        MainMenu(const char * const staticMenu[],uint8_t staticMenuItems):
-                StaticMenu(staticMenu){size_ += MAX_PROGRAMS;}
+    const PROGMEM char string_options[] = "options";
 
-        virtual void printItem(uint8_t i) {
-            uint8_t staticMenuSize = size_ - MAX_PROGRAMS;
-            if(i < staticMenuSize) {
-                StaticMenu::printItem(i);
-            } else {
-                ProgramData::printProgramData(i - staticMenuSize);
-            }
+
+    void printItem(uint8_t i) {
+        if(i < 1) {
+            lcdPrint_P(string_options);
+        } else {
+            ProgramData::printProgramData(i - 1);
         }
-    };
+    }
 
-
-    const char string_options[] PROGMEM = "options";
-    const char * const progmemMainMenu[] PROGMEM =
-    {string_options, NULL };
-
-    MainMenu mainMenu(progmemMainMenu, 1);
 
     void run()
     {
+        int8_t index = 0;
         while(true) {
-            int8_t index = mainMenu.runSimple();
+            Menu::initialize(MAX_PROGRAMS + 1);
+            Menu::printMethod_ = printItem;
+            Menu::setIndex(index);
+            index = Menu::run();
+
             if(index >= 0)  {
-                switch(index) {
-                case 0:
-                    Options::run();
-                    break;
-                default:
+                if(index == 0) {
+                    OptionsMenu::run();
+                } else {
                     ProgramMenus::selectProgram(index - 1);
                 }
+            } else {
+                index = 0;
             }
         }
     }

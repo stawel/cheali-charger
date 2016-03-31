@@ -34,18 +34,20 @@
 
 #include "Monitor.h"
 
+#ifndef SDCC_COMPILER
 void LogDebug_run() __attribute__((weak));
+#endif
 void LogDebug_run()
 {}
 
 namespace SerialLog {
-    enum State { On, Off, Starting };
+    enum State { SerialOn, SerialOff, SerialStarting };
     uint32_t startTime;
     uint32_t currentTime;
 
-    State state = Off;
+    enum State state = SerialOff;
     uint8_t CRC;
-    const AnalogInputs::Name channel1[] PROGMEM = {
+    const PROGMEM enum AnalogInputs::Name channel1[] = {
             AnalogInputs::VoutBalancer,
             AnalogInputs::Iout,
             AnalogInputs::Cout,
@@ -87,7 +89,7 @@ void printChar(char c)
 
 void powerOn()
 {
-    if(state != Off)
+    if(state != SerialOff)
         return;
     if(settings.UART == Settings::Disabled)
         return;
@@ -103,28 +105,28 @@ void powerOn()
 
     serialBegin();
 
-    state = Starting;
+    state = SerialStarting;
 }
 
 void powerOff()
 {
-    if(state == Off)
+    if(state == SerialOff)
         return;
 
     serialEnd();
-    state = Off;
+    state = SerialOff;
 }
 
 void send()
 {
-    if(state == Off)
+    if(state == SerialOff)
         return;
 
     currentTime = Time::getMiliseconds();
 
-    if(state == Starting) {
+    if(state == SerialStarting) {
         startTime = currentTime;
-        state = On;
+        state = SerialOn;
     }
 
     currentTime -= startTime;
@@ -133,7 +135,7 @@ void send()
 
 void flush()
 {
-    if(state == Off)
+    if(state == SerialOff)
         return;
     Serial::flush();
 }
@@ -184,7 +186,7 @@ void printString(const char *s)
     }
 }
 
-void printString_P(const char *s)
+void printString_P(const_char_ptr s)
 {
     char c;
     while(1) {
@@ -239,10 +241,11 @@ void sendEnd()
 
 void sendChannel1()
 {
+    uint8_t i;
     sendHeader(1);
     //analog inputs
-    for(uint8_t i=0;i < sizeOfArray(channel1);i++) {
-        AnalogInputs::Name name;
+    for(i = 0;i < sizeOfArray(channel1); i++) {
+        enum AnalogInputs::Name name;
         uint16_t v;
         pgm_read(name, &channel1[i]);
         v = AnalogInputs::getRealValue(name);
@@ -250,7 +253,7 @@ void sendChannel1()
         printD();
     }
 
-    for(uint8_t i=0;i<MAX_BANANCE_CELLS;i++) {
+    for(i = 0;i < MAX_BANANCE_CELLS; i++) {
         printUInt(TheveninMethod::getReadableRthCell(i));
         printD();
     }
@@ -271,18 +274,22 @@ void sendChannel1()
 
 void sendChannel2(bool adc)
 {
+    uint16_t pidV;
     sendHeader(2);
-    ANALOG_INPUTS_FOR_ALL(it) {
-        uint16_t v;
-        if(adc) v = AnalogInputs::getAvrADCValue(it);
-        else    v = AnalogInputs::getRealValue(it);
-        printUInt(v);
-        printD();
+    //TODO: sdcc
+    {
+        ANALOG_INPUTS_FOR_ALL(it) {
+            uint16_t v;
+            if(adc) v = AnalogInputs::getAvrADCValue(it);
+            else    v = AnalogInputs::getRealValue(it);
+            printUInt(v);
+            printD();
+        }
     }
     printUInt(Balancer::balance);
     printD();
 
-    uint16_t pidV=0;
+    pidV = 0;
 #ifdef ENABLE_GET_PID_VALUE
     pidV = hardware::getPIDValue();
 #endif

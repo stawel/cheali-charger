@@ -31,9 +31,9 @@
 #define SETTINGS_ADC_NOISE_DEFAULT 0
 #endif
 
-Settings::Settings settings;
+struct Settings::Settings settings;
 
-const Settings::Settings defaultSettings PROGMEM = {
+const PROGMEM struct Settings::Settings defaultSettings = {
         70,                 //backlight
         Settings::FanTemperature, //fanOn
         ANALOG_CELCIUS(50), //fanTempOn
@@ -54,7 +54,7 @@ const Settings::Settings defaultSettings PROGMEM = {
 };
 
 
-const uint32_t Settings::UARTSpeedValue[SETTINGS_UART_SPEEDS] PROGMEM = {
+const PROGMEM uint32_t Settings::UARTSpeedValue[SETTINGS_UART_SPEEDS] = {
     9600,
     19200,
     38400,
@@ -64,9 +64,9 @@ const uint32_t Settings::UARTSpeedValue[SETTINGS_UART_SPEEDS] PROGMEM = {
 
 
 uint32_t Settings::getUARTspeed() {
-    uint32_t v;
-    pgm_read(v, &UARTSpeedValue[settings.UARTspeed]);
-    return v;
+    uint32_t x;
+    pgm_read(x, &UARTSpeedValue[settings.UARTspeed]);
+    return x;
 }
 
 void Settings::load() {

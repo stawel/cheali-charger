@@ -27,7 +27,7 @@
 namespace StartInfoStrategy {
     uint8_t ok_;
 
-    const Strategy::VTable vtable PROGMEM = {
+    const PROGMEM struct Strategy::VTable vtable = {
         powerOn,
         powerOff,
         doStrategy
@@ -49,7 +49,7 @@ void StartInfoStrategy::powerOff()
     Buzzer::soundOff();
 }
 
-Strategy::statusType StartInfoStrategy::doStrategy()
+enum Strategy::statusType StartInfoStrategy::doStrategy()
 {
     bool cell_nr, v_balance, v_out, balance;
     uint8_t is_cells, should_be_cells;

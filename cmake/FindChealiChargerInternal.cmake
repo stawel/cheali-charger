@@ -55,6 +55,54 @@ MACRO(CHEALI_GENERIC_CHARGER CHARGER)
 ENDMACRO(CHEALI_GENERIC_CHARGER)
 
 
+MACRO(CHEALI_GENERATE_MCS51_EXEC)
+
+    set(I_DIRS "")
+    get_property(inc_dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
+    set_property(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} PROPERTY INCLUDE_DIRECTORIES)
+
+    foreach (DIR ${inc_dirs})
+        list (APPEND I_DIRS "-I")
+        list (APPEND I_DIRS ${DIR})
+    endforeach()
+
+    file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/out/")
+
+    set(C_FILES "")
+    foreach (SOURCE ${ALL_SOURCE_FILES})
+#        message("checking: ${SOURCE}")
+        get_filename_component(EXTEN ${SOURCE} EXT)
+        get_filename_component(FNAME ${SOURCE} NAME_WE)
+#        message("checking: ${EXTEN}")
+        if("${EXTEN}" STREQUAL ".cpp")
+#                string(LENGTH ${SOURCE} LEN)
+#                MATH(EXPR LEN2 "${LEN} - 2")
+#                string(SUBSTRING ${SOURCE} 0 ${LEN2} C_SOURCE)
+                SET(C_SOURCE "${CMAKE_CURRENT_BINARY_DIR}/out/${FNAME}.c")
+        endif()
+        if("${EXTEN}" STREQUAL ".h")
+                SET(C_SOURCE "${CMAKE_CURRENT_BINARY_DIR}/out/${FNAME}.h")
+        endif()
+
+        message("c file: ${C_SOURCE}")
+        list (APPEND C_FILES ${C_SOURCE})
+        add_custom_command(OUTPUT ${C_SOURCE}
+#                        COMMAND clang-3.7 -fsyntax-only -x c++ ${SOURCE} ${I_DIRS}
+                        COMMAND ${CMAKE_SOURCE_DIR}/utils/cxx_to_c/cxx_to_c.py ${SOURCE} ${C_SOURCE} ${I_DIRS}
+                        DEPENDS ${SOURCE})
+
+#        SET_SOURCE_FILES_PROPERTIES(${SOURCE}  PROPERTIES LANGUAGE C)
+#        list (APPEND ${DEST} ${THIS_FILE})
+    endforeach()
+
+    add_library(${execName}_lib ${C_FILES})
+    add_executable(${execName} main.c)
+    target_link_libraries(${execName} ${execName}_lib)
+
+#    set_property(DIRECTORY ${execName} PROPERTY INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}/out/)
+ENDMACRO(CHEALI_GENERATE_MCS51_EXEC)
+
+
 
 MACRO(CHEALI_GENERATE_ARM_EXEC)
     add_executable(${execName} ${ALL_SOURCE_FILES})

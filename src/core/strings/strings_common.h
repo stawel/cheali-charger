@@ -18,14 +18,16 @@
 #ifndef STRINGS_COMMON_H_
 #define STRINGS_COMMON_H_
 
-#define STRING_CPP(name, value) extern const char string_ ## name[] PROGMEM = value
+#include "memory.h"
+
+#define STRING_CPP(name, value) extern const PROGMEM char string_ ## name[] = value
 
 #ifdef STRINGS_CPP_
 #define STRING(name, value) STRING_CPP(name, value)
 #define STRING_SIZE(name, value) STRING_CPP(name, value)
 #else
-#define STRING(name, value) extern const char string_ ## name[]
-#define STRING_SIZE(name, value) STRING(name, value); static const unsigned int string_size_ ## name = sizeof(value);
+#define STRING(name, value) extern PROGMEM const char string_ ## name[]
+#define STRING_SIZE(name, value) STRING(name, value); static const unsigned int string_size_ ## name = sizeof(value)
 #endif
 
 

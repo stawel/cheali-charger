@@ -19,16 +19,17 @@
 #define ANALOGINPUTSPRIVATE_H_
 
 #include "AnalogInputs.h"
+#include "memory.h"
 
 
 namespace AnalogInputs {
 
-    extern const DefaultValues inputsP_[];//AnalogInputs::PHYSICAL_INPUTS];
-    extern ValueType real_[ALL_INPUTS];
-    extern ValueType avrAdc_[PHYSICAL_INPUTS];
-    extern volatile ValueType i_adc_[PHYSICAL_INPUTS];
+    extern const struct DefaultValues inputsP_[];//AnalogInputs::PHYSICAL_INPUTS];
+    extern ValueType real_[ANALOG_INPUTS_ALL_INPUTS];
+    extern ValueType avrAdc_[ANALOG_INPUTS_PHYSICAL_INPUTS];
+    extern volatile ValueType i_adc_[ANALOG_INPUTS_PHYSICAL_INPUTS];
     extern volatile uint16_t  i_avrCount_;
-    extern volatile uint32_t  i_avrSum_[PHYSICAL_INPUTS];
+    extern volatile uint32_t  i_avrSum_[ANALOG_INPUTS_PHYSICAL_INPUTS];
 
     extern volatile bool on_;
     extern volatile bool onTintern_;
@@ -40,11 +41,11 @@ namespace AnalogInputs {
     void doSlowInterrupt();
 
     //calibration
-    void getCalibrationPoint(CalibrationPoint &p, Name name, uint8_t i);
-    void setCalibrationPoint(Name name, uint8_t i, const CalibrationPoint &p);
+    void getCalibrationPoint(struct CalibrationPoint *p, enum Name name, uint8_t i);
+    void setCalibrationPoint(enum Name name, uint8_t i, const struct CalibrationPoint *p);
 
 
-};
+}
 
 
 #endif /* ANALOGINPUTSPRIVATE_H_ */

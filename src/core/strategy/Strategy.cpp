@@ -28,7 +28,7 @@
 
 namespace Strategy {
 
-    const VTable * strategy;
+    const PROGMEM_PTR struct VTable * strategy;
     bool exitImmediately;
 
     AnalogInputs::ValueType endVperCell;
@@ -37,7 +37,7 @@ namespace Strategy {
     AnalogInputs::ValueType minI;
     bool doBalance;
 
-    void setVI(ProgramData::VoltageType vt, bool charge) {
+    void setVI(enum ProgramData::VoltageType vt, bool charge) {
         endV = ProgramData::getVoltage(vt);
         endVperCell = ProgramData::getVoltagePerCell(vt);
 
@@ -94,14 +94,14 @@ namespace Strategy {
         waitButtonOrDisableOutput();
     }
 
-    Strategy::statusType strategyDoStrategy() {
-        Strategy::statusType (*doStrategy)();
+    enum Strategy::statusType strategyDoStrategy() {
+        enum Strategy::statusType (*doStrategy)();
         pgm_read(doStrategy, &strategy->doStrategy);
         return doStrategy();
     }
 
 
-    bool analizeStrategyStatus(Strategy::statusType status) {
+    bool analizeStrategyStatus(enum Strategy::statusType status) {
         if(status == Strategy::ERROR) {
             chargingMonitorError();
             return false;
@@ -115,12 +115,12 @@ namespace Strategy {
         return true;
     }
 
-    Strategy::statusType doStrategy()
+    enum Strategy::statusType doStrategy()
     {
-        Screen::keyboardButton = BUTTON_NONE;
         bool run = true;
         uint16_t newMesurmentData = 0;
-        Strategy::statusType status = Strategy::RUNNING;
+        enum Strategy::statusType status = Strategy::RUNNING;
+        Screen::keyboardButton = BUTTON_NONE;
         strategyPowerOn();
         do {
             Screen::keyboardButton =  Keyboard::getPressedWithDelay();

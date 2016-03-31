@@ -18,6 +18,8 @@
 #ifndef BLINK_H
 #define BLINK_H
 
+#include <stdint.h>
+#include "cpu_config.h"
 
 #define BLINK_SPEED_TIME 2
 

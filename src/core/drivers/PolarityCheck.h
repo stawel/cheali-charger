@@ -19,6 +19,7 @@
 #define POLARITYCHECK_H_
 
 #include <stdint.h>
+#include "cpu_config.h"
 
 #define POLARITY_CHECK_REVERSED_POLARITY    127
 

@@ -18,9 +18,11 @@
 #ifndef PROGRAM_MENUS_H_
 #define PROGRAM_MENUS_H_
 
+#include <stdint.h>
+
 namespace ProgramMenus {
-    void selectProgram(int index);
-};
+    void selectProgram(uint8_t index);
+}
 
 
 #endif /* PROGRAM_MENUS_H_ */

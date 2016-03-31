@@ -17,8 +17,8 @@
 */
 #include "LiquidCrystal.h"
 
-#include <stdio.h>
-#include <string.h>
+//#include <stdio.h>
+//#include <string.h>
 #include <stdint.h>
 #include "IO.h"
 #include "Utils.h"
@@ -250,9 +250,10 @@ void LiquidCrystal::noAutoscroll(void) {
 // Allows us to fill the first 8 CGRAM locations
 // with custom characters
 void LiquidCrystal::createChar(uint8_t location, uint8_t charmap[]) {
+  uint8_t i;
   location &= 0x7; // we only have 8 locations 0-7
   command(LCD_SETCGRAMADDR | (location << 3));
-  for (int i=0; i<8; i++) {
+  for (i=0; i<8; i++) {
     write(charmap[i]);
   }
 }

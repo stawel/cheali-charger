@@ -25,9 +25,9 @@
 
 namespace SimpleChargeStrategy {
 
-    Strategy::statusType doStrategy();
+    enum Strategy::statusType doStrategy();
 
-    const Strategy::VTable vtable PROGMEM = {
+    const PROGMEM struct Strategy::VTable vtable = {
         powerOn,
         powerOff,
         doStrategy
@@ -47,13 +47,14 @@ void SimpleChargeStrategy::powerOff()
     SMPS::powerOff();
 }
 
-Strategy::statusType SimpleChargeStrategy::doStrategy()
+enum Strategy::statusType SimpleChargeStrategy::doStrategy()
 {
+    AnalogInputs::ValueType Vout;
     SimpleChargeStrategy::calculateThevenin();
-    AnalogInputs::ValueType Vout = AnalogInputs::getVbattery();
+    Vout = AnalogInputs::getVbattery();
 
     if(Vout > Strategy::endV) {
-        Program::stopReason = DeltaChargeStrategy::string_batteryVoltageReachedUpperLimit;
+        Program::stopReason = string_batteryVoltageReachedUpperLimit;
         return Strategy::ERROR;
     }
     SMPS::trySetIout(Strategy::maxI);

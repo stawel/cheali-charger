@@ -22,7 +22,7 @@
 #include "AnalogInputs.h"
 #include "Hardware.h"
 #include "Settings.h"
-
+#include "memory.h"
 
 #define MAX_PROGRAMS 20
 
@@ -73,14 +73,14 @@ namespace ProgramData {
 
     } CHEALI_EEPROM_PACKED;
 
-    extern Battery battery;
-    extern const char * const batteryString[];
-    extern const BatteryClass batteryClassMap[];
+    extern struct Battery battery;
+    extern const PROGMEM char * const batteryString[];
+    extern const PROGMEM enum BatteryClass batteryClassMap[];
 
-    uint16_t getDefaultVoltagePerCell(VoltageType type = VNominal);
-    uint16_t getDefaultVoltage(VoltageType type = VNominal);
-    uint16_t getVoltagePerCell(VoltageType type = VNominal);
-    uint16_t getVoltage(VoltageType type = VNominal);
+    uint16_t getDefaultVoltagePerCell(enum VoltageType type = VNominal);
+    uint16_t getDefaultVoltage(enum VoltageType type = VNominal);
+    uint16_t getVoltagePerCell(enum VoltageType type = VNominal);
+    uint16_t getVoltage(enum VoltageType type = VNominal);
     uint16_t getCapacityLimit();
     inline uint16_t getTimeLimit() {return battery.time; }
 
@@ -98,12 +98,12 @@ namespace ProgramData {
     void changedIc();
     void changedId();
 
-    BatteryClass getBatteryClass();
+    enum BatteryClass getBatteryClass();
 
-    inline bool isPowerSupply() { return getBatteryClass() == ClassLED; };
-    inline bool isLiXX() { return getBatteryClass() == ClassLiXX; };
-    inline bool isNiXX() { return getBatteryClass() == ClassNiXX; };
-    inline bool isPb() { return getBatteryClass() == ClassPb; };
+    inline bool isPowerSupply() { return getBatteryClass() == ClassLED; }
+    inline bool isLiXX() { return getBatteryClass() == ClassLiXX; }
+    inline bool isNiXX() { return getBatteryClass() == ClassNiXX; }
+    inline bool isPb() { return getBatteryClass() == ClassPb; }
 
     void loadProgramData(uint8_t index);
     void saveProgramData(uint8_t index);
@@ -112,6 +112,6 @@ namespace ProgramData {
     void printProgramData(uint8_t index);
 
     void restoreDefault();
-};
+}
 
 #endif /* PROGRAMDATA_H_ */

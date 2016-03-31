@@ -25,16 +25,16 @@
 namespace StorageStrategy {
 
     enum State  {Charge, Discharge, Balance};
-    State state;
+    enum State state;
 
-    const Strategy::VTable vtable PROGMEM = {
+    const PROGMEM struct Strategy::VTable vtable = {
         powerOn,
         powerOff,
         doStrategy
     };
 
 
-}// namespace StorageStrategy
+} // namespace StorageStrategy
 
 void StorageStrategy::powerOff()
 {
@@ -45,10 +45,12 @@ void StorageStrategy::powerOff()
 
 void StorageStrategy::powerOn()
 {
+    AnalogInputs::ValueType V;
+    bool charge;
+
     Balancer::powerOn();
     Strategy::setVI(ProgramData::VStorage, true);
-    AnalogInputs::ValueType V = Strategy::endV;
-    bool charge;
+    V = Strategy::endV;
     if(Balancer::getConnectedCellsCount() == 0) {
         charge = AnalogInputs::getVbattery() <= V;
     } else {
@@ -66,9 +68,9 @@ void StorageStrategy::powerOn()
 }
 
 
-Strategy::statusType StorageStrategy::doStrategy()
+enum Strategy::statusType StorageStrategy::doStrategy()
 {
-    Strategy::statusType status;
+    enum Strategy::statusType status;
     switch(state) {
         case Charge:
             status = TheveninChargeStrategy::doStrategy();

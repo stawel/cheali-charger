@@ -22,6 +22,6 @@
 
 namespace SettingsMenu {
     void run();
-};
+}
 
 #endif /* SETTINGSMENU_H_ */

@@ -29,9 +29,9 @@
 
 
 namespace Keyboard {
-    static const uint8_t stateDelay[]   PROGMEM = {   25,    12,     3,     1,     1,     1};
-    static const uint8_t stayInState[]  PROGMEM = {    1,     3,    24,    71,   142,     1};
-    static const uint8_t speedFactor[]  PROGMEM = {    1,     1,     1,     2,    10,    30};
+    static const PROGMEM uint8_t stateDelay[]   = {   25,    12,     3,     1,     1,     1};
+    static const PROGMEM uint8_t stayInState[]  = {    1,     3,    24,    71,   142,     1};
+    static const PROGMEM uint8_t speedFactor[]  = {    1,     1,     1,     2,    10,    30};
            //timing (assuming screen is not redrawn)
            //change per:                           175ms,  84ms,  21ms,   7ms,   7ms,   7ms
            //inState:                              175ms, 252ms, 504ms, 497ms, 994ms, for ever

@@ -20,11 +20,11 @@
 
 
 #include "SimpleChargeStrategy.h"
+#include "memory.h"
 
-namespace DeltaChargeStrategy
-{
-    extern const Strategy::VTable vtable;
-};
+namespace DeltaChargeStrategy {
+    extern const PROGMEM struct Strategy::VTable vtable;
+}
 
 
 #endif /* DELTACHARGESTRATEGY_H_ */

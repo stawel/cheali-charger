@@ -22,7 +22,7 @@
 //file provided by: Jozsef N.
 //TODO: calibrate Vb6_pin, Textern
 
-const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_INPUTS] PROGMEM = {
+const AnalogInputs::DefaultValues AnalogInputs::inputsP_[ANALOG_INPUTS_PHYSICAL_INPUTS] PROGMEM = {
     {{0, 0},                        {42312, 19468}},    //Vout
     {{0, 0},                        {27516, 12552}},    //VreversePolarity
     {{133, 50},                        {2429, 1000}},    //Ismps

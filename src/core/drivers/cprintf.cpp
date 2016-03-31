@@ -25,21 +25,21 @@
 namespace cprintf {
 
 
-void cprintf(const PrintData * printDataPtr, uint8_t dig)
+void cprintf(const PROGMEM_PTR struct PrintData * printDataPtr, uint8_t dig)
 {
-    PrintData p;
+    struct PrintData p;
     pgm_read(p, printDataPtr);
     if(p.type == CP_TYPE_METHOD) {
         //Info: this must be before: uvalue = *p.data.uint16Ptr
         return p.data.methodPtr(dig);
     }
     if(p.type & CP_TYPE_ANALOG_FLAG) {
-        lcdPrintAnalog(*p.data.uint16Ptr, dig, AnalogInputs::Type(p.type & CP_TYPE_ANALOG_MASK));
+        lcdPrintAnalog(*p.data.uint16Ptr, dig, (enum AnalogInputs::Type)(p.type & CP_TYPE_ANALOG_MASK));
     } else {
         uint32_t v;
         uint8_t i;
-        ArrayData array;
-        const char * strPtr;
+        struct ArrayData array;
+        const_char_ptr strPtr;
         switch(p.type) {
             case CP_TYPE_UINT32_ARRAY:
                 pgm_read(array, p.data.arrayPtr);

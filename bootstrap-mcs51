@@ -1,0 +1,4 @@
+#!/bin/bash
+
+
+cmake  -DCMAKE_TOOLCHAIN_FILE=mcs51-toolchain.cmake -DMCS51=1 -G "Eclipse CDT4 - Unix Makefiles" $*

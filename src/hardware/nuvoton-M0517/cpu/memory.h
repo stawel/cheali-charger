@@ -23,33 +23,45 @@
 
 #define PSTR(x) x
 #define PROGMEM
+#define PROGMEM_PTR
+#define EEMEM_PTR
 #define EEMEM __attribute__((section(".data_flash")))
 
-    inline char *pgm_strncpy(char * buf, const char *str, size_t s) {
-        return std::strncpy(buf, str, s);
-    }
-
-    inline size_t pgm_strlen(const char *s) {
-        return std::strlen(s);
-    }
-
-    template<class Type>
-    static void pgm_read(Type &t, const Type * addressP) {
-        std::memcpy(&t, addressP, sizeof(Type));
-    }
+// *_ptr - needed for mcs51 compatibility
+typedef const char *        const_char_ptr;
+typedef const void *        const_void_ptr;
+typedef const uint16_t *    const_uint16_ptr;
+typedef const uint32_t *    const_uint32_ptr;
+typedef uint16_t * uint16_ptr;
+typedef int16_t  * int16_ptr;
+typedef uint32_t * uint32_ptr;
 
 
+inline char *pgm_strncpy(char * buf, const char *str, size_t s) {
+    return std::strncpy(buf, str, s);
+}
 
-    void eeprom_write_impl(uint8_t * addressE, const uint8_t * data, int size);
+inline size_t pgm_strlen(const char *s) {
+    return std::strlen(s);
+}
 
-    template<class Type>
-    inline void eeprom_read(Type &t, const Type * addressE) {
-        t = *addressE;
-    }
+template<class Type>
+static void pgm_read(Type &t, const Type * addressP) {
+    std::memcpy(&t, addressP, sizeof(Type));
+}
 
-    template<class Type>
-    inline void eeprom_write(Type * addressE, const Type &t) {
-        eeprom_write_impl((uint8_t*)addressE, (uint8_t*) &t, sizeof(Type));
-    }
+
+
+void eeprom_write_impl(uint8_t * addressE, const uint8_t * data, int size);
+
+template<class Type>
+inline void eeprom_read(Type &t, const Type * addressE) {
+    t = *addressE;
+}
+
+template<class Type>
+inline void eeprom_write(Type * addressE, const Type &t) {
+    eeprom_write_impl((uint8_t*)addressE, (uint8_t*) &t, sizeof(Type));
+}
 
 #endif /* MEMORY_H_ */

@@ -20,16 +20,16 @@
 
 #include "Strategy.h"
 
-namespace TheveninDischargeStrategy
-{
-    extern const Strategy::VTable vtable;
+namespace TheveninDischargeStrategy {
+
+    extern const PROGMEM struct Strategy::VTable vtable;
     extern bool endOnTheveninMethodComplete_;
 
     void powerOn();
-    Strategy::statusType doStrategy();
+    enum Strategy::statusType doStrategy();
     void powerOff();
 
-};
+}
 
 
 #endif /* THEVENINDISCHARGESTRATEGY_H_ */

@@ -25,8 +25,8 @@ namespace ProgramDCcycle {
 
     extern uint8_t currentCycle;
 
-    Strategy::statusType runDCcycle(uint8_t firstCycle,uint8_t lastCycle);
-};
+    enum Strategy::statusType runDCcycle(uint8_t firstCycle,uint8_t lastCycle);
+}
 
 
 #endif /* PROGRAM_D_C_CYCLE_H_ */
