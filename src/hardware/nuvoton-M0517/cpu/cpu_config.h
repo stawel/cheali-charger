@@ -24,4 +24,5 @@
 //#define CHEALI_EEPROM_PACKED
 #define CHEALI_EEPROM_PACKED __attribute__((packed))
 
+#define REDUNDANT_CHECK(x) x
 #endif /* CPU_CONFIG_H_ */

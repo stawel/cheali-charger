@@ -44,15 +44,23 @@ namespace Program {
 
     bool startInfo();
 
-    void setupStorage();
     void setupTheveninCharge();
     void setupDischarge();
-    void setupBalance();
     void setupDeltaCharge();
     void setupPowerSupplyCharge();
     void setupProgramType(enum ProgramType prog);
 
     void dischargeOutputCapacitor();
+
+    inline void setupBalance()
+    {
+        Strategy::strategy = &Balancer::vtable;
+    }
+    inline void setupStorage()
+    {
+        Strategy::strategy = &StorageStrategy::vtable;
+    }
+
 
 } //namespace Program
 
@@ -69,10 +77,6 @@ bool Program::startInfo()
     return Strategy::doStrategy() == Strategy::COMPLETE;
 }
 
-void Program::setupStorage()
-{
-    Strategy::strategy = &StorageStrategy::vtable;
-}
 void Program::setupTheveninCharge()
 {
     Strategy::setVI(ProgramData::VCharged, true);
@@ -95,12 +99,6 @@ void Program::setupPowerSupplyCharge()
 {
     Strategy::setVI(ProgramData::VCharged, true);
     Strategy::strategy = &SimpleChargeStrategy::vtable;
-}
-
-
-void Program::setupBalance()
-{
-    Strategy::strategy = &Balancer::vtable;
 }
 
 void Program::setupProgramType(enum ProgramType prog) {
@@ -132,11 +130,9 @@ void Program::setupProgramType(enum ProgramType prog) {
         setupTheveninCharge();
         Strategy::minI = ProgramData::battery.Ic / 5;
         break;
-    case Program::Storage:
-        setupStorage();
-        break;
     case Program::StorageBalance:
         Strategy::doBalance = true;
+    case Program::Storage:
         setupStorage();
         break;
     default:

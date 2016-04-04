@@ -84,6 +84,7 @@ namespace EditMenu {
         return valuePtr;
     }
 
+#ifdef ENABLE_CALIBRATION
     uint16_t getEnableCondition(uint8_t item)
     {
         uint8_t index = getSelectedIndexOrSize(item);
@@ -91,7 +92,7 @@ namespace EditMenu {
         pgm_read(enableCond, &staticEditData_[index].enableCondition);
         return enableCond;
     }
-
+#endif
 
     void editItem(uint8_t item, uint8_t key)
     {

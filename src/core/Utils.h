@@ -61,8 +61,6 @@ uint8_t countBits(uint16_t v);
 void change0ToInfSmart(uint16_ptr v, int dir);
 void changeMinToMaxSmart(uint16_ptr v, int dir, uint16_t min, uint16_t max);
 void changeMinToMaxStep(uint16_ptr v, int dir, uint16_t min, uint16_t max, uint16_t step);
-void change0ToMax(uint16_ptr v, int dir, uint8_t max);
-void change1ToMax(uint16_ptr v, int dir, uint8_t max);
 
 uint8_t waitButtonPressed();
 

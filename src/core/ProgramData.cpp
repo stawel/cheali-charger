@@ -248,6 +248,7 @@ void ProgramData::saveProgramData(uint8_t index)
     eeprom::restoreProgramDataCRC();
 }
 
+#ifdef ENABLE_EEPROM_RESTORE_DEFAULT
 void ProgramData::restoreDefault()
 {
     uint8_t i;
@@ -260,6 +261,7 @@ void ProgramData::restoreDefault()
     }
     eeprom::restoreProgramDataCRC();
 }
+#endif
 
 void ProgramData::changedType()
 {

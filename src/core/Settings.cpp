@@ -33,6 +33,7 @@
 
 struct Settings::Settings settings;
 
+#if defined(ENABLE_EEPROM_RESTORE_DEFAULT) || defined(ENABLE_SETTINGS_MENU_RESET)
 const PROGMEM struct Settings::Settings defaultSettings = {
         70,                 //backlight
         Settings::FanTemperature, //fanOn
@@ -52,6 +53,13 @@ const PROGMEM struct Settings::Settings defaultSettings = {
         Settings::Software, //UARToutput
         Settings::MenuSimple, //menuType
 };
+
+void Settings::restoreDefault() {
+    pgm_read(settings, &defaultSettings);
+    save();
+}
+
+#endif
 
 
 const PROGMEM uint32_t Settings::UARTSpeedValue[SETTINGS_UART_SPEEDS] = {
@@ -79,15 +87,6 @@ void Settings::save() {
     eeprom::restoreSettingsCRC();
 
     apply();
-}
-
-void Settings::setDefault()
-{
-    pgm_read(settings, &defaultSettings);
-}
-void Settings::restoreDefault() {
-    setDefault();
-    save();
 }
 
 void Settings::check() {

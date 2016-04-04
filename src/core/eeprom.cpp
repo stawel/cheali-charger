@@ -32,6 +32,8 @@
 namespace eeprom {
     EEMEM struct Data data;
 
+#ifdef ENABLE_EEPROM_RESTORE_DEFAULT
+
     bool testOrRestore(EEMEM_PTR uint16_t * adr, uint16_t version, bool restore) {
         uint8_t trials = EEPROM_READ_TRIALS;
         if(restore) {
@@ -83,7 +85,6 @@ namespace eeprom {
         Screen::runResetEepromDone(what, after);
     }
 
-#ifdef ENABLE_EEPROM_RESTORE_DEFAULT
     bool check() {
         uint8_t c = testOrRestore(0);
         if(c == 0) return true;

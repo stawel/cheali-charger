@@ -78,15 +78,6 @@ uint8_t digits(int32_t x)
     return retu;
 }
 
-void change0ToMax(uint16_ptr v, int dir, uint8_t max)
-{
-    changeMinToMaxStep(v, dir, 0, max, 1);
-}
-
-void change1ToMax(uint16_ptr v, int dir, uint8_t max)
-{
-    changeMinToMaxStep(v, dir, 1, max, 1);
-}
 
 void change0ToInfSmart(uint16_ptr v, int dir)
 {

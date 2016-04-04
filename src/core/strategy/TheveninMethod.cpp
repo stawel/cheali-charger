@@ -52,13 +52,6 @@ namespace TheveninMethod {
             return 0;
         else return Strategy::minI;
     }
-
-    bool isBelowMin(AnalogInputs::ValueType I)
-    {
-        if(state_ != ConstantVoltageBalancing)
-            return false;
-        return I < Strategy::minI;
-    }
 }
 
 AnalogInputs::ValueType TheveninMethod::getReadableWiresRth()

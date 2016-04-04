@@ -22,6 +22,8 @@
 #include "memory.h"
 
 namespace SerialLog {
+
+#ifdef ENABLE_SERIAL_LOG
     void powerOn();
     void doIdle();
     void powerOff();
@@ -32,9 +34,23 @@ namespace SerialLog {
     void printLong(int32_t x);
     void printNL();
     void printChar(char c);
+#else
+    inline void powerOn() {}
+    inline void doIdle() {}
+    inline void powerOff() {}
+    inline void flush() {}
+
+    inline void printString(const char *s) {}
+    inline void printString_P(const_char_ptr s) {}
+    inline void printLong(int32_t x) {}
+    inline void printNL() {}
+    inline void printChar(char c) {}
+#endif
+
 
     inline void printInt(int16_t x)     { return printLong(x);  }
     inline void printUInt(uint16_t x)   { return printLong(x);  }
+
 
 } //namespace SerialLog
 

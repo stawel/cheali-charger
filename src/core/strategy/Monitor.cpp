@@ -54,9 +54,11 @@ namespace Monitor {
     uint16_t Vout_plus_adcMaxLimit_;
 
     void calculateDeltaProcentTimeSec();
+    inline uint16_t getTotalChargeDischargeTimeMin();
 
 } // namespace Monitor
 
+#ifdef ENABLE_SERIAL_LOG
 void Monitor::calculateDeltaProcentTimeSec()
 {
     uint16_t etaSec;
@@ -84,6 +86,7 @@ uint16_t Monitor::getETATime()
     //if (getChargeProcent()==99) {return (0);} //no avail more calc (or call secondary calculator)
     return (etaDeltaSec*(kx-procent_));
 }
+#endif // ENABLE_SERIAL_LOG
 
 uint16_t Monitor::getTimeSec()
 {
@@ -100,7 +103,7 @@ uint16_t Monitor::getTotalChargeDischargeTimeSec() {
     return totalChargDischargeTime_/1000;
 }
 
-uint16_t Monitor::getTotalChargeDischargeTimeMin() {
+inline uint16_t Monitor::getTotalChargeDischargeTimeMin() {
     return totalChargDischargeTime_/1000/60;
 }
 

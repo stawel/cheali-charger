@@ -24,6 +24,7 @@
 #include "eeprom.h"
 #include "atomic.h"
 #include "Balancer.h"
+#include "cpu_config.h"
 
 #define ANALOG_INPUTS_E_OUT_dt_FACTOR   50
 #define ANALOG_INPUTS_E_OUT_DIVIDER     100
@@ -86,8 +87,10 @@ namespace AnalogInputs {
     void resetDelta();
     void resetStable();
 
-
+#if defined(ENABLE_CALIBRATION) || defined(ENABLE_SERIAL_LOG)
     ValueType getAvrADCValue(enum Name name)     { return avrAdc_[name];   }
+#endif
+
     ValueType getRealValue(enum Name name)       { return real_[name]; }
     ValueType getADCValue(enum Name name)        { RETURN_ATOMIC(i_adc_[name]) }
     bool isPowerOn() { return on_; }
@@ -118,7 +121,7 @@ void AnalogInputs::doFullMeasurement()
         Time::delayDoIdle(10);
 }
 
-
+#ifdef ENABLE_EEPROM_RESTORE_DEFAULT
 void AnalogInputs::restoreDefault()
 {
     struct CalibrationPoint p;
@@ -130,19 +133,28 @@ void AnalogInputs::restoreDefault()
     }
     eeprom::restoreCalibrationCRC();
 }
+#endif
+
+#ifdef ENABLE_CALIBRATION
+void AnalogInputs::setCalibrationPoint(enum Name name, uint8_t i, const struct CalibrationPoint *x)
+{
+    REDUNDANT_CHECK(
+            if(name >= ANALOG_INPUTS_PHYSICAL_INPUTS || i >= ANALOG_INPUTS_MAX_CALIBRATION_POINTS) return;
+    )
+    eeprom_write(&eeprom::data.calibration[name].p[i], *x);
+}
+#endif
+
 
 void AnalogInputs::getCalibrationPoint(struct CalibrationPoint *x, enum Name name, uint8_t i)
 {
-    if(name >= ANALOG_INPUTS_PHYSICAL_INPUTS || i >= ANALOG_INPUTS_MAX_CALIBRATION_POINTS) {
-        x->x = x->y = 1;
-        return;
-    }
+    REDUNDANT_CHECK(
+        if(name >= ANALOG_INPUTS_PHYSICAL_INPUTS || i >= ANALOG_INPUTS_MAX_CALIBRATION_POINTS) {
+            x->x = x->y = 1;
+            return;
+        }
+    )
     eeprom_read(*x,&eeprom::data.calibration[name].p[i]);
-}
-void AnalogInputs::setCalibrationPoint(enum Name name, uint8_t i, const struct CalibrationPoint *x)
-{
-    if(name >= ANALOG_INPUTS_PHYSICAL_INPUTS || i >= ANALOG_INPUTS_MAX_CALIBRATION_POINTS) return;
-    eeprom_write(&eeprom::data.calibration[name].p[i], *x);
 }
 
 uint16_t AnalogInputs::getConnectedBalancePorts()

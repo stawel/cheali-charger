@@ -30,8 +30,6 @@
 
 #ifdef ENABLE_SERIAL_LOG
 #include "Serial.h"
-#endif //ENABLE_SERIAL_LOG
-
 #include "Monitor.h"
 
 #ifndef SDCC_COMPILER
@@ -69,7 +67,6 @@ namespace SerialLog {
 
 void sendTime();
 
-#ifdef ENABLE_SERIAL_LOG
 
 void serialBegin()
 {
@@ -156,21 +153,6 @@ void doIdle()
     //TODO: remove
     LogDebug_run();
 }
-
-#else //ENABLE_SERIAL_LOG
-
-void serialBegin(){}
-void serialEnd(){}
-
-void printChar(char c){}
-void powerOn(){}
-void powerOff(){}
-void send(){}
-void doIdle(){}
-void flush(){}
-
-
-#endif
 
 
 void printD()
@@ -331,3 +313,6 @@ void sendTime()
 }
 
 } //namespace SerialLog
+
+#endif //ENABLE_SERIAL_LOG
+

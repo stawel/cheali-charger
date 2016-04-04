@@ -26,6 +26,7 @@
 #define CHEALI_EEPROM_PACKED
 //#endif
 
+#define REDUNDANT_CHECK(x)
 //#include <stdbool.h>
 
 #ifdef SDCC_COMPILER

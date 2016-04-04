@@ -7,4 +7,4 @@ SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   ${CFLAGS}   -ffunction-sections -fdata-s
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXXFLAGS} -ffunction-sections -fdata-sections")
 
 #TODO: remove CoIDE dependency
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections -Wl,-T${CMAKE_SOURCE_DIR}/CoIDE/arm-gcc-link.ld")
+set(CMAKE_EXE_LINKER_FLAGS " -Wl,--print-gc-sections -Wl,--gc-sections -Wl,-T${CMAKE_SOURCE_DIR}/CoIDE/arm-gcc-link.ld")

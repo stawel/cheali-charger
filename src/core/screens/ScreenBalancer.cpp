@@ -146,9 +146,6 @@ void Screen::Balancer::displayVoltage1_3() {
 void Screen::Balancer::displayVoltage4_6() {
     displayBalanceInfo(3, AnalogInputs::Voltage);
 }
-void Screen::Balancer::displayVoltage7_9() {
-    displayBalanceInfo(6, AnalogInputs::Voltage);
-}
 
 void Screen::Balancer::displayResistance1_3() {
     displayBalanceInfo(0, AnalogInputs::ResistanceUnit);
@@ -156,7 +153,13 @@ void Screen::Balancer::displayResistance1_3() {
 void Screen::Balancer::displayResistance4_6() {
     displayBalanceInfo(3, AnalogInputs::ResistanceUnit);
 }
+
+#if MAX_BANANCE_CELLS > 6
+void Screen::Balancer::displayVoltage7_9() {
+    displayBalanceInfo(6, AnalogInputs::Voltage);
+}
+
 void Screen::Balancer::displayResistance7_9() {
     displayBalanceInfo(6, AnalogInputs::ResistanceUnit);
 }
-
+#endif

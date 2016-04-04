@@ -38,9 +38,6 @@ namespace Balancer {
     uint16_t startBalanceTimeSecondsU16_;
     uint16_t balancingEnded;
 
-    uint32_t IVtime_;
-    AnalogInputs::ValueType V_[MAX_BANANCE_CELLS];
-
     bool isWorking()  {
         uint16_t isOff;
         if(balance != 0)

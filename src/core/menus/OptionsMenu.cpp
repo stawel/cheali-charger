@@ -34,10 +34,12 @@ const PROGMEM struct Menu::StaticMenu optionsStaticMenu[] = {
         {NULL, NULL}
 };
 
+#ifdef ENABLE_EEPROM_RESTORE_DEFAULT
 void OptionsMenu::resetDefault()
 {
     eeprom::restoreDefault();
 }
+#endif
 
 void OptionsMenu::run()
 {

@@ -32,7 +32,6 @@ namespace Monitor {
     uint16_t getTimeSec();
     uint16_t getTotalBalanceTimeSec();
     uint16_t getTotalChargeDischargeTimeSec();
-    uint16_t getTotalChargeDischargeTimeMin();
     uint16_t getETATime();
 
     uint8_t getChargeProcent();
