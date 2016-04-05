@@ -32,6 +32,7 @@
 #define PROGMEM
 #define EEMEM
 #define DATAMEM
+#define __reentrant
 #else
 #define PSTR(x) x
 #define PROGMEM     __code

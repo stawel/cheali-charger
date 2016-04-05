@@ -27,8 +27,8 @@
 namespace Menu {
 
     typedef void (*CallMethod)();
-    typedef void (*PrintMethod)(uint8_t item);
-    typedef void (*EditMethod)(uint8_t item, uint8_t key);
+    typedef void (*PrintMethod)(uint8_t item) __reentrant;
+    typedef void (*EditMethod)(uint8_t item, uint8_t key) __reentrant;
 
     extern PrintMethod printMethod_;
     extern EditMethod editMethod_;

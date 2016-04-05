@@ -54,7 +54,7 @@ namespace hardware {
     void soundInterrupt();
     uint16_t getPIDValue();
 
-    inline void setExternalTemperatueOutput(bool enable) {}
+//    inline void setExternalTemperatueOutput(bool enable) {}
 }
 
 
