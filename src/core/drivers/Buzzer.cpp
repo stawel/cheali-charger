@@ -30,7 +30,6 @@ namespace Buzzer {
     uint8_t getInfo(uint16_t time);
     uint8_t getSave(uint16_t time);
     uint8_t getSelect(uint16_t time);
-    uint8_t getStartProgram(uint16_t time);
     uint8_t getProgramComplete(uint16_t time);
     uint8_t getReversedPolarity(uint16_t time);
     uint8_t getError(uint16_t time);
@@ -88,9 +87,9 @@ uint8_t Buzzer::getSound(uint16_t time)
     case Keyboard:             return getKeyboard(time);
     case Info:                 return getInfo(time);
     case Save:                 return getSave(time);
+    case StartProgram:
     case Select:               return getSelect(time);
     case ProgramComplete:      return getProgramComplete(time);
-    case StartProgram:         return getStartProgram(time);
     case ReversedPolarity:     return getReversedPolarity(time);
     case Error:                return getError(time);
     case Off:
@@ -156,11 +155,6 @@ uint8_t Buzzer::getSave(uint16_t time)
         return setOff();
 
     return wave(v, 20);
-}
-
-uint8_t Buzzer::getStartProgram(uint16_t time)
-{
-    return getSelect(time);
 }
 
 

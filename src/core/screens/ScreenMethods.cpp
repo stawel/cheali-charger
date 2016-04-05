@@ -152,18 +152,6 @@ void Screen::Methods::displayVinput()
     lcdPrintSpaces();
 }
 
-void Screen::Methods::displayVout()
-{
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("Vout ="));
-    AnalogInputs::printRealValue(AnalogInputs::Vout, 7);
-    lcdPrintSpaces();
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("Vbal.="));
-    AnalogInputs::printRealValue(AnalogInputs::Vbalancer, 7);
-    lcdPrintSpaces();
-}
-
 void Screen::Methods::displayTemperature()
 {
     lcdSetCursor0_0();

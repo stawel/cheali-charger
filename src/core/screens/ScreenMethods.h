@@ -26,7 +26,6 @@ namespace Screen { namespace Methods {
     void displayTime();
     void displayTemperature();
     void displayR();
-    void displayVout();
     void displayVinput();
     void displayDeltaVout();
     void displayDeltaTextern();

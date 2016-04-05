@@ -89,10 +89,6 @@ uint16_t Time::getSecondsU16() {
     return getMiliseconds()/1000;
 }
 
-uint16_t Time::getMinutesU16() {
-    return getMiliseconds()/60000;
-}
-
 void Time::delay(uint16_t ms)
 {
     uint16_t start = getMilisecondsU16();

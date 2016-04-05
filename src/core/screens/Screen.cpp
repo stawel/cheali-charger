@@ -157,24 +157,12 @@ void Screen::displayMonitorError()
     screenEnd(PSTR("error:    "));
 }
 
-
-void Screen::displayNotImplemented()
-{
-    displayStrings(PSTR("N/A"));
-}
-
-
-void Screen::runNotImplemented()
-{
-    displayNotImplemented();
-    waitButtonPressed();
-}
-
 void Screen::displayScreenReversedPolarity()
 {
     displayStrings(PSTR("REVERSE POLARITY"));
 }
 
+#ifdef ENABLE_SCREEN_ANIMATION
 void Screen::displayAnimation()
 {
     uint8_t i;
@@ -186,16 +174,9 @@ void Screen::displayAnimation()
         Time::delayDoIdle(10);
     }
 }
+#endif
 
-void Screen::displayCalibrationErrorScreen(uint8_t errNo)
-{
-    lcdClear();
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("Cal.err.  F:"));
-    lcdPrintUnsigned(errNo, 2);
-    Time::delay(8000);
-}
-
+#ifdef ENABLE_EEPROM_RESTORE_DEFAULT
 void Screen::runAskResetEeprom(uint8_t what)
 {
     lcdClear();
@@ -225,12 +206,15 @@ void Screen::runResetEepromDone(uint8_t before, uint8_t after) {
         waitButtonPressed();
     }
 }
+#endif
 
+#ifdef ENABLE_CALIBRATION_CHECK
 void Screen::runCalibrationError(const_char_ptr s, uint8_t error) {
     displayStrings(PSTR("calib. error"), s);
     lcdPrintUnsigned(error, 3);
     waitButtonPressed();
 }
+#endif
 
 
 void Screen::runWelcomeScreen() {
@@ -239,8 +223,3 @@ void Screen::runWelcomeScreen() {
     Time::delay(1000);
 }
 
-void Screen::runNeedForceBalance() {
-    Screen::displayStrings(PSTR("NEED force bal.\n"
-                                "set. --> YES"));
-    Time::delay(2000);
-}

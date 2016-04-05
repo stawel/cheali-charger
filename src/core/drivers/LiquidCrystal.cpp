@@ -36,8 +36,6 @@ namespace LiquidCrystal {
     uint8_t _displaycontrol;
     uint8_t _displaymode;
 
-    uint8_t _initialized;
-
     uint8_t _numlines, _currline;
 }
 
@@ -169,12 +167,6 @@ void LiquidCrystal::clear()
   Utils::delayMicroseconds(2000);  // this command takes a long time!
 }
 
-void LiquidCrystal::home()
-{
-  command(LCD_RETURNHOME);  // set cursor position to zero
-  Utils::delayMicroseconds(2000);  // this command takes a long time!
-}
-
 void LiquidCrystal::setCursor(uint8_t col, uint8_t row)
 {
   int row_offsets[] = { 0x00, 0x40, 0x14, 0x54 };
@@ -186,12 +178,22 @@ void LiquidCrystal::setCursor(uint8_t col, uint8_t row)
 }
 
 // Turn the display on/off (quickly)
-void LiquidCrystal::noDisplay() {
-  _displaycontrol &= ~LCD_DISPLAYON;
-  command(LCD_DISPLAYCONTROL | _displaycontrol);
-}
 void LiquidCrystal::display() {
   _displaycontrol |= LCD_DISPLAYON;
+  command(LCD_DISPLAYCONTROL | _displaycontrol);
+}
+
+
+#ifdef ENABLE_LIQUID_CRISTAL_EXTRAS
+void LiquidCrystal::home()
+{
+  command(LCD_RETURNHOME);  // set cursor position to zero
+  Utils::delayMicroseconds(2000);  // this command takes a long time!
+}
+
+// Turn the display on/off (quickly)
+void LiquidCrystal::noDisplay() {
+  _displaycontrol &= ~LCD_DISPLAYON;
   command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
 
@@ -246,9 +248,11 @@ void LiquidCrystal::noAutoscroll(void) {
   _displaymode &= ~LCD_ENTRYSHIFTINCREMENT;
   command(LCD_ENTRYMODESET | _displaymode);
 }
+#endif
 
 // Allows us to fill the first 8 CGRAM locations
 // with custom characters
+#ifdef ENABLE_LCD_RAM_CG
 void LiquidCrystal::createChar(uint8_t location, uint8_t charmap[]) {
   uint8_t i;
   location &= 0x7; // we only have 8 locations 0-7
@@ -258,6 +262,21 @@ void LiquidCrystal::createChar(uint8_t location, uint8_t charmap[]) {
   }
 }
 
+uint8_t LiquidCrystal::print(const char str[])
+{
+  return write(str);
+}
+
+uint8_t LiquidCrystal::write(const uint8_t *buffer, uint8_t size)
+{
+  uint8_t n = 0;
+  while (size--) {
+    n += write(*buffer++);
+  }
+  return n;
+}
+
+#endif
 /*********** mid level commands, for sending data/cmds */
 
 inline void LiquidCrystal::command(uint8_t value) {
@@ -305,8 +324,8 @@ void LiquidCrystal::write4bits(uint8_t value) {
   pulseEnable();
 }
 
-void LiquidCrystal::write8bits(uint8_t value) {
 #ifdef LCD_ENABLE_8BITMODE
+void LiquidCrystal::write8bits(uint8_t value) {
   IO::pinMode(LCD_D0_PIN, OUTPUT);
   IO::pinMode(LCD_D1_PIN, OUTPUT);
   IO::pinMode(LCD_D2_PIN, OUTPUT);
@@ -324,26 +343,13 @@ void LiquidCrystal::write8bits(uint8_t value) {
   IO::digitalWrite(LCD_D2_PIN, value & 64);
   IO::digitalWrite(LCD_D3_PIN, value & 128);
   pulseEnable();
+}
 #endif //LCD_ENABLE_8BITMODE
-}
-
-uint8_t LiquidCrystal::print(const char str[])
-{
-  return write(str);
-}
 
 uint8_t LiquidCrystal::print(char c)
 {
   return write((uint8_t) c);
 }
 
-uint8_t LiquidCrystal::write(const uint8_t *buffer, uint8_t size)
-{
-  uint8_t n = 0;
-  while (size--) {
-    n += write(*buffer++);
-  }
-  return n;
-}
 
 #endif

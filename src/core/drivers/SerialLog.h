@@ -48,8 +48,8 @@ namespace SerialLog {
 #endif
 
 
-    inline void printInt(int16_t x)     { return printLong(x);  }
-    inline void printUInt(uint16_t x)   { return printLong(x);  }
+    inline void printInt(int16_t x)     { printLong(x);  }
+    inline void printUInt(uint16_t x)   { printLong(x);  }
 
 
 } //namespace SerialLog

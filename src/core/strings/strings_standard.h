@@ -160,6 +160,7 @@
 
 
 // Calibrate
+#ifdef ENABLE_CALIBRATION
     STRING(connect,     "connect");
     STRING(disconnect,  "disconnect");
     STRING(battery,     "battery!");
@@ -212,6 +213,6 @@
     STRING(ev_menu_cell2pin,        "Vb2pin:");
     STRING(ev_menu_plusVoltagePin,  "Vplus:");
     STRING(ev_menu_minusVoltagePin, "Vminus:");
-
+#endif //ENABLE_CALIBRATION
 
 #endif /* STRINGS_H_ */

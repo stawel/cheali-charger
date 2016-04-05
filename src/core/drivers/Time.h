@@ -31,7 +31,6 @@ namespace Time {
     uint16_t getInterruptsU16();
     uint16_t getMilisecondsU16();
     uint16_t getSecondsU16();
-    uint16_t getMinutesU16();
     void delay(uint16_t ms);
 
     //warning: this method runs stuff in background,

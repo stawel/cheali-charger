@@ -45,25 +45,19 @@ namespace Screen {
 
     extern uint8_t keyboardButton;
 
-    void displayCalibrationErrorScreen(uint8_t errNo);
-
     void displayScreenProgramCompleted();
     void displayMonitorError();
     void displayStrings(const_char_ptr s);
     void displayStrings(const_char_ptr s1, const_char_ptr s2);
 
 
-    void displayNotImplemented();
     void displayScreenReversedPolarity();
 
     void displayResettingEeprom();
     void runAskResetEeprom(uint8_t what);
     void runResetEepromDone(uint8_t before, uint8_t after);
-    void runNotImplemented();
     void runWelcomeScreen();
     void runCalibrationError(const_char_ptr s, uint8_t error);
-
-    void runNeedForceBalance();
 
     void initialize();
     void doStrategy();
