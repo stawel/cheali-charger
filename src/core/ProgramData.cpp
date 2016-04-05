@@ -23,7 +23,7 @@
 #include "Settings.h"
 #include "eeprom.h"
 
-struct ProgramData::Battery ProgramData::battery;
+DATAMEM struct ProgramData::Battery ProgramData::battery;
 
 //battery voltage limits, see also: ProgramData::getVoltagePerCell, ProgramData::getVoltage
 const PROGMEM AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE]  =

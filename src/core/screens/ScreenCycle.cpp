@@ -35,8 +35,8 @@
 namespace Screen { namespace Cycle {
 
     //TODO_NJ for cyclehistory
-    uint16_t cyclesHistoryCapacity[10];
-    uint16_t cyclesHistoryTime[10];
+    DATAMEM uint16_t cyclesHistoryCapacity[10];
+    DATAMEM uint16_t cyclesHistoryTime[10];
 
 } // namespace Screen
 } // namespace Cycle

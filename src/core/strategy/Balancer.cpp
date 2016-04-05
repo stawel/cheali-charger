@@ -29,14 +29,15 @@
 #include "debug.h"
 
 namespace Balancer {
-    uint16_t connectedCells;
-    int8_t minCell;
-    uint16_t balance;
+    DATAMEM uint16_t connectedCells;
+    DATAMEM int8_t minCell;
+    DATAMEM uint16_t balance;
+    DATAMEM AnalogInputs::ValueType Von_[MAX_BANANCE_CELLS], Voff_[MAX_BANANCE_CELLS];
+    DATAMEM uint16_t startBalanceTimeSecondsU16_;
+    DATAMEM uint16_t balancingEnded;
+
     bool done;
-    AnalogInputs::ValueType Von_[MAX_BANANCE_CELLS], Voff_[MAX_BANANCE_CELLS];
     bool savedVon;
-    uint16_t startBalanceTimeSecondsU16_;
-    uint16_t balancingEnded;
 
     bool isWorking()  {
         uint16_t isOff;

@@ -39,7 +39,8 @@ typedef bool bool2;
 #ifdef SDCC_COMPILER
 #include <stdint.h>
 
-#define bool uint8_t
+#define bool __bit
+#define bool2 uint8_t
 #define true 1
 #define false 0
 

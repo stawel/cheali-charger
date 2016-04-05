@@ -23,6 +23,7 @@
 
 #define PSTR(x) x
 #define PROGMEM
+#define DATAMEM
 #define PROGMEM_PTR
 #define EEMEM_PTR
 #define EEMEM __attribute__((section(".data_flash")))

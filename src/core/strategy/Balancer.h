@@ -38,12 +38,13 @@ namespace Balancer {
 
     extern const struct Strategy::VTable vtable;
 
-    extern uint16_t balance;
+    extern DATAMEM uint16_t balance;
+    extern DATAMEM int8_t minCell;
+    extern DATAMEM uint16_t balancingEnded;
+    extern DATAMEM uint16_t connectedCells;
+
     extern bool savedVon;
-    extern int8_t minCell;
     extern bool done;
-    extern uint16_t balancingEnded;
-    extern uint16_t connectedCells;
 
     void powerOn();
     void powerOff();

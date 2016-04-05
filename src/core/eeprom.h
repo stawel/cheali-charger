@@ -57,9 +57,9 @@ namespace eeprom {
     bool restoreProgramDataCRC(bool restore = true);
     bool restoreSettingsCRC(bool restore = true);
 #else
-    inline bool restoreCalibrationCRC(bool restore = true)  { return false; }
-    inline bool restoreProgramDataCRC(bool restore = true)  { return false; }
-    inline bool restoreSettingsCRC(bool restore = true)     { return false; }
+    inline bool restoreCalibrationCRC(bool2 restore = true)  { return false; }
+    inline bool restoreProgramDataCRC(bool2 restore = true)  { return false; }
+    inline bool restoreSettingsCRC(bool2 restore = true)     { return false; }
 #endif
 
 #ifdef ENABLE_EEPROM_RESTORE_DEFAULT

@@ -2,7 +2,8 @@
 
 #SET(COPT "--std-sdcc11 --opt-code-size --stack-auto --model-large --parms-in-bank1")
 #SET(COPT "--std-sdcc11 --opt-code-size --model-small --stack-auto")
-SET(COPT "--std-sdcc11 --opt-code-size --stack-auto --model-large ")
+SET(COPT "--std-sdcc11 --opt-code-size --stack-auto --model-small --parms-in-bank1")
+SET(COPT "--std-sdcc11 --opt-code-size --stack-auto --model-small")
 SET(CMAKE_C_FLAGS "${COPT} -DSDCC_COMPILER --verbose -V")
 
 #SET(LFLAGS  "--std-sdcc11 --opt-code-size --stack-auto  --use-stdout --model-large --xram-loc 0x1B --xram-size 768 --code-size 32768 -V")

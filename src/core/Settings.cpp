@@ -31,7 +31,7 @@
 #define SETTINGS_ADC_NOISE_DEFAULT 0
 #endif
 
-struct Settings::Settings settings;
+DATAMEM struct Settings::Settings settings;
 
 #if defined(ENABLE_EEPROM_RESTORE_DEFAULT) || defined(ENABLE_SETTINGS_MENU_RESET)
 const PROGMEM struct Settings::Settings defaultSettings = {

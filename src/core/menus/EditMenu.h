@@ -66,7 +66,7 @@ namespace EditMenu {
     void setSelector(uint16_t selector);
 
 
-    inline int8_t run(bool alwaysRefresh = false)   { return Menu::run(alwaysRefresh); }
+    inline int8_t run(bool2 alwaysRefresh = false)   { return Menu::run(alwaysRefresh); }
     inline bool runEdit()                           { return Menu::runEdit(); }
 
 }

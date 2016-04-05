@@ -31,10 +31,10 @@ namespace Strategy {
     const PROGMEM_PTR struct VTable * strategy;
     bool exitImmediately;
 
-    AnalogInputs::ValueType endVperCell;
-    AnalogInputs::ValueType endV;
-    AnalogInputs::ValueType maxI;
-    AnalogInputs::ValueType minI;
+    DATAMEM AnalogInputs::ValueType endVperCell;
+    DATAMEM AnalogInputs::ValueType endV;
+    DATAMEM AnalogInputs::ValueType maxI;
+    DATAMEM AnalogInputs::ValueType minI;
     bool doBalance;
 
     void setVI(enum ProgramData::VoltageType vt, bool charge) {

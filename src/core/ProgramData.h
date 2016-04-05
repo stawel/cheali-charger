@@ -73,7 +73,7 @@ namespace ProgramData {
 
     } CHEALI_EEPROM_PACKED;
 
-    extern struct Battery battery;
+    extern DATAMEM struct Battery battery;
     extern const PROGMEM char * const batteryString[];
     extern const PROGMEM enum BatteryClass batteryClassMap[];
 

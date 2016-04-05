@@ -30,7 +30,7 @@ namespace Thevenin {
     //Thevenin data is stored in T
     //T[0 .. MAX_BANANCE_CELLS-1]   - Thevenin data per cell
     //T[MAX_BANANCE_CELLS]          - Thevenin data for Vout
-    struct Thevenin T[MAX_BANANCE_CELLS + 1];
+    DATAMEM struct Thevenin T[MAX_BANANCE_CELLS + 1];
 
     static AnalogInputs::ValueType calculateI_(uint8_t idx, AnalogInputs::ValueType Vc);
     static void init(uint8_t idx, AnalogInputs::ValueType Vth,AnalogInputs::ValueType Vmax, AnalogInputs::ValueType i, bool charge);

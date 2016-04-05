@@ -24,12 +24,12 @@
 
 namespace AnalogInputs {
 
-    extern const struct DefaultValues inputsP_[];//AnalogInputs::PHYSICAL_INPUTS];
-    extern ValueType real_[ANALOG_INPUTS_ALL_INPUTS];
-    extern ValueType avrAdc_[ANALOG_INPUTS_PHYSICAL_INPUTS];
-    extern volatile ValueType i_adc_[ANALOG_INPUTS_PHYSICAL_INPUTS];
-    extern volatile uint16_t  i_avrCount_;
-    extern volatile uint32_t  i_avrSum_[ANALOG_INPUTS_PHYSICAL_INPUTS];
+    extern PROGMEM const struct DefaultValues inputsP_[];//AnalogInputs::PHYSICAL_INPUTS];
+    extern DATAMEM ValueType real_[ANALOG_INPUTS_ALL_INPUTS];
+    extern DATAMEM ValueType avrAdc_[ANALOG_INPUTS_PHYSICAL_INPUTS];
+    extern volatile DATAMEM ValueType i_adc_[ANALOG_INPUTS_PHYSICAL_INPUTS];
+    extern volatile DATAMEM uint16_t  i_avrCount_;
+    extern volatile DATAMEM uint32_t  i_avrSum_[ANALOG_INPUTS_PHYSICAL_INPUTS];
 
     extern volatile bool on_;
     extern volatile bool onTintern_;

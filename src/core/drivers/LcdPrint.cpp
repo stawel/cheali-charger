@@ -262,7 +262,7 @@ void lcdPrint_mV(int16_t p, int8_t dig)
 
 struct UnitsInfo {
     uint16_t div;
-    bool mili;
+    bool2 mili;
     const_char_ptr symbol;
 };
 static const PROGMEM struct UnitsInfo unitsInfo[] = {

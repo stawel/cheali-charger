@@ -66,6 +66,6 @@ namespace Settings {
     void restoreDefault();
 }
 
-extern struct Settings::Settings settings;
+extern DATAMEM struct Settings::Settings settings;
 
 #endif /* SETTINGS_H_ */

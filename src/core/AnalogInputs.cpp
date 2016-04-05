@@ -52,33 +52,33 @@
 
 namespace AnalogInputs {
 
-    volatile bool on_;
+    volatile __bit on_;
     volatile bool onTintern_ = true;
 
     volatile bool ignoreLastResult_;
-    volatile uint16_t  i_avrCount_;
-    volatile uint32_t  i_avrSum_[ANALOG_INPUTS_PHYSICAL_INPUTS];
-    volatile ValueType i_adc_[ANALOG_INPUTS_PHYSICAL_INPUTS];
+    volatile DATAMEM uint16_t  i_avrCount_;
+    volatile DATAMEM uint32_t  i_avrSum_[ANALOG_INPUTS_PHYSICAL_INPUTS];
+    volatile DATAMEM ValueType i_adc_[ANALOG_INPUTS_PHYSICAL_INPUTS];
 
-    ValueType avrAdc_[ANALOG_INPUTS_PHYSICAL_INPUTS];
-    ValueType real_[ANALOG_INPUTS_ALL_INPUTS];
-    uint16_t stableCount_[ANALOG_INPUTS_ALL_INPUTS];
+    ValueType DATAMEM avrAdc_[ANALOG_INPUTS_PHYSICAL_INPUTS];
+    ValueType DATAMEM real_[ANALOG_INPUTS_ALL_INPUTS];
+    uint16_t  DATAMEM stableCount_[ANALOG_INPUTS_ALL_INPUTS];
 
-    uint16_t calculationCount_;
+    uint16_t  DATAMEM calculationCount_;
 
-    uint16_t    i_deltaAvrCount_;
-    uint32_t    i_deltaAvrSumVoutPlus_;
-    uint32_t    i_deltaAvrSumVoutMinus_;
-    uint32_t    i_deltaAvrSumTextern_;
+    uint16_t    DATAMEM i_deltaAvrCount_;
+    uint32_t    DATAMEM i_deltaAvrSumVoutPlus_;
+    uint32_t    DATAMEM i_deltaAvrSumVoutMinus_;
+    uint32_t    DATAMEM i_deltaAvrSumTextern_;
 
-    uint16_t    deltaCount_;
-    ValueType   deltaLastT_;
-    uint16_t    deltaStartTimeU16_;
+    uint16_t    DATAMEM deltaCount_;
+    ValueType   DATAMEM deltaLastT_;
+    uint16_t    DATAMEM deltaStartTimeU16_;
     bool        enable_deltaVoutMax_;
 
-    uint32_t    i_charge_;
-    uint32_t    i_Eout_;
-    uint8_t     i_Eout_dt_;
+    uint32_t    DATAMEM i_charge_;
+    uint32_t    DATAMEM i_Eout_;
+    uint8_t     DATAMEM i_Eout_dt_;
 
     void _resetAvr();
     void _resetDeltaAvr();

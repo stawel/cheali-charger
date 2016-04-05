@@ -31,10 +31,10 @@ namespace Strategy {
     };
 
     //variables common to all Strategies
-    extern AnalogInputs::ValueType endVperCell;
-    extern AnalogInputs::ValueType endV;
-    extern AnalogInputs::ValueType maxI;
-    extern AnalogInputs::ValueType minI;
+    extern DATAMEM AnalogInputs::ValueType endVperCell;
+    extern DATAMEM AnalogInputs::ValueType endV;
+    extern DATAMEM AnalogInputs::ValueType maxI;
+    extern DATAMEM AnalogInputs::ValueType minI;
     extern bool doBalance;
 
     void setVI(enum ProgramData::VoltageType vt, bool charge);
