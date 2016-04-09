@@ -24,6 +24,11 @@
 
 #define PROGMEM_PTR
 #define EEMEM_PTR
+#define DATAMEM
+#define __bit bool
+#define bool2 bool
+#define REDUNDANT_CHECK(x)
+#define __reentrant
 
 // *_ptr - needed for mcs51 compatibility
 typedef const  char *        const_char_ptr;
