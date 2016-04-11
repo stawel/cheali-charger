@@ -175,6 +175,7 @@ void Monitor::powerOn()
     resetAccumulatedMeasurements();
     i_externalError = MONITOR_EXTERNAL_ERROR_NONE;
     on_ = true;
+    AnalogInputs::saveBalancePortState();
 }
 
 void Monitor::resetAccumulatedMeasurements()

@@ -92,7 +92,7 @@ namespace Screen { namespace Balancer {
         } else {
             uint16_t cell = 1;
             for(uint8_t i = 0; i < MAX_BANANCE_CELLS; i++) {
-                if(::Balancer::connectedCells & cell) {
+                if(AnalogInputs::connectedBalancePortCells & cell) {
                     if(i == ::Balancer::minCell) {
                         c = SCREEN_EMPTY_CELL_CHAR; //lowest cell
                     } else {

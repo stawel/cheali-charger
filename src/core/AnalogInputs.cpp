@@ -55,6 +55,10 @@ namespace AnalogInputs {
     volatile bool onTintern_ = true;
 
     volatile bool ignoreLastResult_;
+
+    bool balancePortStateSaved_;
+    uint16_t connectedBalancePortCells;
+
     volatile uint16_t  i_avrCount_;
     volatile uint32_t  i_avrSum_[PHYSICAL_INPUTS];
     volatile ValueType i_adc_[PHYSICAL_INPUTS];
@@ -105,6 +109,9 @@ namespace AnalogInputs {
     void finalizeFullMeasurement();
     void finalizeFullVirtualMeasurement();
 
+    uint16_t getConnectedBalancePortCells();
+    void saveBalancePortState()             { balancePortStateSaved_ = true; }
+
 
 } // namespace AnalogInputs
 
@@ -144,7 +151,7 @@ void AnalogInputs::setCalibrationPoint(Name name, uint8_t i, const CalibrationPo
     eeprom::write<CalibrationPoint>(&eeprom::data.calibration[name].p[i], x);
 }
 
-uint16_t AnalogInputs::getConnectedBalancePorts()
+uint16_t AnalogInputs::getConnectedBalancePortCells()
 {
     uint16_t ports = 0, port = 1;
     for(uint8_t i=0; i < MAX_BANANCE_CELLS; i++){
@@ -156,9 +163,9 @@ uint16_t AnalogInputs::getConnectedBalancePorts()
     return ports;
 }
 
-uint8_t AnalogInputs::getConnectedBalancePortsCount()
+uint8_t AnalogInputs::getConnectedBalancePortCellsCount()
 {
-     return countBits(getConnectedBalancePorts());
+     return countBits(connectedBalancePortCells);
 }
 
 
@@ -274,6 +281,7 @@ void AnalogInputs::powerOn(bool enableBatteryOutput)
         on_ = true;
         onTintern_ = true;
         doFullMeasurement();
+        balancePortStateSaved_ = false;
     }
 }
 
@@ -557,7 +565,11 @@ void AnalogInputs::finalizeFullVirtualMeasurement()
     }
 #endif
 
-    uint16_t connectedCells = getConnectedBalancePorts();
+    if(!balancePortStateSaved_) {
+        connectedBalancePortCells = getConnectedBalancePortCells();
+    }
+
+    uint16_t connectedCells = connectedBalancePortCells;
 
     for(uint8_t i = 0; i < MAX_BANANCE_CELLS; i++) {
         if(connectedCells & (1<<i))

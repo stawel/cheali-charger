@@ -43,7 +43,6 @@ namespace Balancer {
     extern int8_t minCell;
     extern bool done;
     extern uint16_t balancingEnded;
-    extern uint16_t connectedCells;
 
     void powerOn();
     void powerOff();
@@ -55,8 +54,6 @@ namespace Balancer {
     uint16_t calculateBalance();
     void setBalance(uint16_t v);
     uint8_t getCellMinV();
-    inline uint16_t getConnectedCells() { return connectedCells; }
-    uint8_t getConnectedCellsCount();
 
     AnalogInputs::ValueType getV(uint8_t cell);
     AnalogInputs::ValueType getPresumedV(uint8_t cell);

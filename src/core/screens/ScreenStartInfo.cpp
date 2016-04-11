@@ -94,7 +94,7 @@ void Screen::StartInfo::displayStartInfo()
         if(bindex & 2) AnalogInputs::printRealValue(AnalogInputs::Vbalancer, 5);
         else lcdPrintSpaces(5);
 
-        if(bindex & 4) lcdPrintDigit(AnalogInputs::getConnectedBalancePortsCount());
+        if(bindex & 4) lcdPrintDigit(AnalogInputs::getConnectedBalancePortCellsCount());
         else lcdPrintSpace1();
     } else {
 
