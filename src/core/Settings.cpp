@@ -28,8 +28,17 @@
 #endif
 
 #ifndef SETTINGS_ADC_NOISE_DEFAULT
-#define SETTINGS_ADC_NOISE_DEFAULT 0
+#define SETTINGS_ADC_NOISE_DEFAULT  0
 #endif
+
+#ifndef SETTINGS_MAX_CHARGE_I
+#define SETTINGS_MAX_CHARGE_I       MAX_CHARGE_I
+#endif
+
+#ifndef SETTINGS_MAX_DISCHARGE_I
+#define SETTINGS_MAX_DISCHARGE_I    MAX_DISCHARGE_I
+#endif
+
 
 Settings settings;
 
@@ -41,9 +50,9 @@ const Settings defaultSettings PROGMEM = {
 
         1,                  //AudioBeep: yes/no
         ANALOG_AMP(0.050),  //minIc
-        MAX_CHARGE_I,       //maxIc
+        SETTINGS_MAX_CHARGE_I,       //maxIc
         ANALOG_AMP(0.050),  //minId
-        MAX_DISCHARGE_I,    //maxId
+        SETTINGS_MAX_DISCHARGE_I,    //maxId
         ANALOG_VOLT(10.000),//inputVoltageLow
 
         SETTINGS_ADC_NOISE_DEFAULT, //adcNoise

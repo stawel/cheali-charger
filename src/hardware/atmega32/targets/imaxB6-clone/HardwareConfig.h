@@ -28,6 +28,8 @@
 #define MAX_DISCHARGE_P         ANALOG_WATT(5.000)
 #define MAX_DISCHARGE_I         ANALOG_AMP(1.000)
 
+#define SETTINGS_MAX_DISCHARGE_I        ANALOG_AMP(0.300)
+
 
 //1-13? correlation
 #define SMPS_UPPERBOUND_VALUE               (MAX_CHARGE_I*13)
