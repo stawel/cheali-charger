@@ -5,6 +5,7 @@
 #include "AnalogInputs.h"
 #include "outputPWM.h"
 #include "atomic.h"
+#include "Monitor.h"
 
 namespace {
     volatile uint16_t i_PID_setpoint;
@@ -33,6 +34,7 @@ void SMPS_PID::update()
     if(AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin) >= i_PID_CutOffVoltage) {
         hardware::setChargerOutput(false);
         i_PID_enable = false;
+        Monitor::i_externalError = MONITOR_EXTERNAL_ERROR_BATTERY_DISCONNECTED;
         return;
     }
 
