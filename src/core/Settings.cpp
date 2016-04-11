@@ -51,6 +51,7 @@ const Settings defaultSettings PROGMEM = {
         3,                   //57600
         Settings::Software, //UARToutput
         Settings::MenuSimple, //menuType
+        Settings::MenuButtonsReversed, //menuButtons
 };
 
 

@@ -57,6 +57,10 @@ const cprintf::ArrayData UARToutputData  PROGMEM = {SettingsUARToutput, &setting
 const char * const SettingsMenuType[] PROGMEM = {string_simple, string_advanced};
 const cprintf::ArrayData menuTypeData  PROGMEM = {SettingsMenuType, &settings.menuType};
 
+const char * const SettingsMenuButtons[] PROGMEM = {string_normal, string_reversed};
+const cprintf::ArrayData menuButtonsData  PROGMEM = {SettingsMenuButtons, &settings.menuButtons};
+
+
 const AnalogInputs::ValueType Tmin = (Settings::TempDifference/ANALOG_CELCIUS(1) + 1)*ANALOG_CELCIUS(1);
 const AnalogInputs::ValueType Tmax = ANALOG_CELCIUS(99);
 const AnalogInputs::ValueType Tstep =  ANALOG_CELCIUS(1);
@@ -108,6 +112,7 @@ const StaticEditMenu::StaticEditData editData[] PROGMEM = {
 {string_UARToutput,     COND_UART_ON,   {CP_TYPE_STRING_ARRAY,0,&UARToutputData},        {1, 0, 2}},
 #endif
 {string_MenuType,       COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&menuTypeData},         {1, 0, 1}},
+{string_MenuButtons,    COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&menuButtonsData},      {1, 0, 1}},
 
 #ifdef ENABLE_SETTINGS_MENU_RESET
 {string_reset,          StaticEditMenu::Always, {0,0,NULL}},

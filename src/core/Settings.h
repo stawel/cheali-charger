@@ -29,6 +29,8 @@ struct Settings {
 
     enum UARTOutput {Software, HardwarePin7, HardwarePin38};
     enum MenuType  {MenuSimple, MenuAdvanced};
+    enum MenuButtonsType  {MenuButtonsNormal, MenuButtonsReversed};
+
     static const uint16_t UARTSpeeds = 5;
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5.12);
     uint16_t backlight;
@@ -49,6 +51,7 @@ struct Settings {
     uint16_t UARTspeed;
     uint16_t UARToutput;
     uint16_t menuType;
+    uint16_t menuButtons;
 
     void apply();
     void setDefault();

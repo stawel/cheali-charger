@@ -19,6 +19,7 @@
 #include "Hardware.h"
 #include "LcdPrint.h"
 #include "Menu.h"
+#include "Settings.h"
 
 
 Menu::Menu(uint8_t size):
@@ -34,14 +35,22 @@ uint8_t Menu::run() {
     }
 
     uint8_t index = getIndex();
-    switch (button) {
-    case BUTTON_INC:
-        incIndex();
-        break;
-    case BUTTON_DEC:
-        decIndex();
-        break;
+
+    int8_t changeIndex = 0;
+    if(button == BUTTON_INC) {
+        changeIndex--;
+    } else if (button == BUTTON_DEC) {
+        changeIndex++;
     }
+    if(settings.menuButtons == Settings::MenuButtonsReversed) {
+        changeIndex = -changeIndex;
+    }
+    if(changeIndex > 0) {
+        incIndex();
+    } else if (changeIndex < 0) {
+        decIndex();
+    }
+
     if(index != getIndex())
         render_ = true;
 

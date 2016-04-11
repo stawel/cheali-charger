@@ -106,6 +106,7 @@ namespace SettingsMenu {
     STRING(UARTspeed,   "|speed:");
     STRING(UARToutput,  "|output:");
     STRING(MenuType,    "menus:");
+    STRING(MenuButtons, "buttons:");
     STRING(reset,       "reset");
 
     //UARToutput menu
@@ -130,6 +131,10 @@ namespace SettingsMenu {
     //MenuType
     STRING(simple,      "simple");
     STRING(advanced,    "advanced");
+
+    //MenuButtons
+    //STRING(normal,      "normal"); - defined in UART view
+    STRING(reversed,      "rev");
 
 }
 
