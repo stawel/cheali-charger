@@ -151,7 +151,6 @@ void doIdle()
             send();
         }
     }
-    //TODO: remove
     LogDebug_run();
 }
 
