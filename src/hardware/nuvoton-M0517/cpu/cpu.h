@@ -18,9 +18,6 @@
 #ifndef CPU_H_
 #define CPU_H_
 
-#define CHEALI_CHARGER_ARCHITECTURE_CPU         0x4000
-#define CHEALI_CHARGER_ARCHITECTURE_CPU_STRING  "nuvoton-M0517"
-
 namespace cpu {
     void init();
 }

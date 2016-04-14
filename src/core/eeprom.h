@@ -35,6 +35,7 @@ namespace eeprom {
     struct Data {
         uint8_t magicString[EEPROM_MAGIC_STRING_LEN];
         uint16_t architecture;
+        uint16_t architectureInfo;
         uint16_t calibrationVersion;
         uint16_t programDataVersion;
         uint16_t settingVersion;

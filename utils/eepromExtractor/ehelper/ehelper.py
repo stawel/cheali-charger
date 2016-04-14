@@ -49,7 +49,15 @@ def getVersion(filename):
         d = v_a0x4001_9_3_10.Data()
         f = open(filename, 'r')
         f.readinto(d)
-        return 'v_a' + hex(d.architecture) + '_' + str(d.calibrationVersion) + '_' + str(d.programDataVersion) + '_' + str(d. settingVersion)
+        if d.calibrationVersion == 9:
+            return 'v_a' + hex(d.architecture) + '_' + str(d.calibrationVersion) + '_' + str(d.programDataVersion) + '_' + str(d. settingVersion)
+        else:
+            import v_a0x1002_i0x6_10_3_11
+            d = v_a0x1002_i0x6_10_3_11.Data()
+            f = open(filename, 'r')
+            f.readinto(d)
+            return 'v_a' + hex(d.architecture) + '_i'+ hex(d.architectureInfo) + '_' + str(d.calibrationVersion) + '_' + str(d.programDataVersion) + '_' + str(d. settingVersion)
+
 
 def printModuleInfo(module):
     if hasattr(module, 'CHEALI_CHARGER_ARCHITECTURE'):
@@ -58,6 +66,12 @@ def printModuleInfo(module):
         print 'generic: ', module.CHEALI_CHARGER_ARCHITECTURE_GENERIC_STRING
     else:
         print 'no module info'
+
+def getCellNumber(module):
+    if hasattr(module, 'CHEALI_CHARGER_ARCHITECTURE_INFO'):
+        return module.CHEALI_CHARGER_ARCHITECTURE_INFO;
+    else:
+        return 6
 
 
 def dumpRaw(d):

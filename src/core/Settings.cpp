@@ -28,8 +28,17 @@
 #endif
 
 #ifndef SETTINGS_ADC_NOISE_DEFAULT
-#define SETTINGS_ADC_NOISE_DEFAULT 0
+#define SETTINGS_ADC_NOISE_DEFAULT  0
 #endif
+
+#ifndef SETTINGS_MAX_CHARGE_I
+#define SETTINGS_MAX_CHARGE_I       MAX_CHARGE_I
+#endif
+
+#ifndef SETTINGS_MAX_DISCHARGE_I
+#define SETTINGS_MAX_DISCHARGE_I    MAX_DISCHARGE_I
+#endif
+
 
 Settings settings;
 
@@ -40,8 +49,10 @@ const Settings defaultSettings PROGMEM = {
         ANALOG_CELCIUS(60), //dischargeTempOff
 
         1,                  //AudioBeep: yes/no
-        50,                 //minIc
-        50,                 //minId
+        ANALOG_AMP(0.050),  //minIc
+        SETTINGS_MAX_CHARGE_I,       //maxIc
+        ANALOG_AMP(0.050),  //minId
+        SETTINGS_MAX_DISCHARGE_I,    //maxId
         ANALOG_VOLT(10.000),//inputVoltageLow
 
         SETTINGS_ADC_NOISE_DEFAULT, //adcNoise
@@ -49,6 +60,7 @@ const Settings defaultSettings PROGMEM = {
         3,                   //57600
         Settings::Software, //UARToutput
         Settings::MenuSimple, //menuType
+        Settings::MenuButtonsReversed, //menuButtons
 };
 
 
@@ -85,6 +97,23 @@ void Settings::restoreDefault() {
     settings.setDefault();
     Settings::save();
 }
+
+void Settings::check() {
+    if(settings.maxIc < settings.minIc) {
+        settings.maxIc = settings.minIc;
+    }
+    if(settings.maxIc > MAX_CHARGE_I) {
+        settings.maxIc = MAX_CHARGE_I;
+    }
+
+    if(settings.maxId < settings.minId) {
+        settings.maxId = settings.minId;
+    }
+    if(settings.maxId > MAX_DISCHARGE_I) {
+        settings.maxId = MAX_DISCHARGE_I;
+    }
+}
+
 
 void Settings::apply() {
 #ifdef ENABLE_LCD_BACKLIGHT

@@ -38,6 +38,28 @@
 //#define ENABLE_DEBUG
 #include "debug.h"
 
+
+#ifdef ENABLE_DEBUG
+#define MAX_DEBUG_DATA 160
+uint16_t adcDebugData[MAX_DEBUG_DATA];
+uint8_t adcDebugCount = 0;
+bool adcDebugStop = false;
+#endif
+
+#ifdef ENABLE_DEBUG
+void LogDebug_run() {
+    if(adcDebugStop){
+        for (int i=0;i<MAX_DEBUG_DATA;i++) {
+            LogDebug(i, ':', adcDebugData[i]);
+        }
+        LogDebug('-', adcDebugCount);
+        adcDebugStop = false;
+        adcDebugCount = 0;
+    }
+}
+#endif
+
+
 /* ADC - measurement:
  * program flow: see conversionDone()
  */
@@ -132,7 +154,7 @@ inline uint8_t getPortBAddress(int8_t address)
     return (PORTB & 0x1f) | (address & 7) << 5;
 }
 
-uint16_t processConversion()
+inline uint16_t processConversion()
 {
     uint8_t low, high;
     uint16_t v;
@@ -149,7 +171,7 @@ uint16_t processConversion()
     return v;
 }
 
-void finalizeMeasurement()
+inline void finalizeMeasurement()
 {
     AnalogInputs::i_adc_[AnalogInputs::IsmpsSet]        = SMPS::getValue();
     AnalogInputs::i_adc_[AnalogInputs::IdischargeSet]   = Discharger::getValue();
@@ -163,27 +185,6 @@ void finalizeMeasurement()
         AnalogInputs::intterruptFinalizeMeasurement();
     }
 }
-
-#ifdef ENABLE_DEBUG
-#define MAX_DEBUG_DATA 160
-uint16_t adcDebugData[MAX_DEBUG_DATA];
-uint8_t adcDebugCount = 0;
-bool adcDebugStart = false;
-#endif
-
-void debug() {
-#ifdef ENABLE_DEBUG
-    if(adcDebugCount == MAX_DEBUG_DATA){
-        for (int i=0;i<MAX_DEBUG_DATA;i++) {
-            LogDebug(i, ':', adcDebugData[i]);
-        }
-        LogDebug('-');
-        adcDebugStart = false;
-        adcDebugCount = 0;
-    }
-#endif
-}
-
 
 void addAdcNoise()
 {
@@ -214,18 +215,19 @@ void addAdcNoise()
 
 void conversionDone()
 {
-    uint16_t v = processConversion();
+    uint16_t v;
+
+    //ignore measurement nr 0, ADC channel may not be set yet
+    if(g_adcBurstCount_) {
+        v = processConversion();
+    }
 
 #ifdef ENABLE_DEBUG
-    if(g_adcBurstCount_ == 0 && adc_input.ai_name == AnalogInputs::Vb0_pin) {
-        if(adcDebugCount < MAX_DEBUG_DATA) {
-            adcDebugStart = true;
-        }
-    }
-    if(adcDebugStart && /*adc_input.ai_name == AnalogInputs::Vout_minus_pin  &&*/ adcDebugCount < MAX_DEBUG_DATA) {
-        if(g_adcBurstCount_ == 0)
-            adcDebugData[adcDebugCount++] = adc_input.ai_name; //AnalogInputs::i_avrCount_;
+    if(!adcDebugStop) {
         adcDebugData[adcDebugCount++] = v;
+        if(adcDebugCount >= MAX_DEBUG_DATA) {
+            adcDebugCount = 0;
+        }
     }
 #endif
 
@@ -259,12 +261,9 @@ void conversionDone()
         break;
 #endif
 
-    case ANALOG_INPUTS_ADC_BURST_COUNT-2:
+    case ANALOG_INPUTS_ADC_BURST_COUNT:
         /* set next adc input */
         setADC(adc_input_next.adc);
-        break;
-
-    case ANALOG_INPUTS_ADC_BURST_COUNT-1:
         /* switch to new input */
         g_adcBurstCount_ = 0;
         setupNextInput();

@@ -61,7 +61,7 @@ namespace Screen {
     void runResetEepromDone(uint8_t before, uint8_t after);
     void runNotImplemented();
     void runWelcomeScreen();
-    void runCalibrationError(const char *s);
+    void runCalibrationError(const char *s, uint8_t error);
 
     void runNeedForceBalance();
 

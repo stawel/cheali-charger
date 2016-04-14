@@ -1,7 +1,4 @@
 
-SET(CMAKE_C_COMPILER avr-gcc)
-SET(CMAKE_CXX_COMPILER avr-g++)
-
 SET(LTO "")
 #enable Link Time Optimization
 #SET(LTO "-flto")
@@ -16,8 +13,6 @@ SET(CMCU "-mmcu=atmega32")
 SET(CDEFS "-DF_CPU=16000000")
 
 SET(CXXEXTRA "-ffunction-sections -fdata-sections -fno-exceptions")
-#-D__IN_ECLIPSE__=1 -Wall -Os -ffunction-sections -fdata-sections -fno-exceptions -g -mmcu=atmega32 -DF_CPU=16000000UL -MMD -MP -MF"AnalogInputs.d" -MT"AnalogInputs.d" -c -o "AnalogInputs.o" -x c++ "../AnalogInputs.cpp"
-
 
 
 SET(CFLAGS "${CMCU} ${CDEBUG} ${CDEFS} ${CINCS} ${COPT} ${CWARN} ${CSTANDARD} ${CTUNING} ${CEXTRA} ${CXXEXTRA} ${LTO}")

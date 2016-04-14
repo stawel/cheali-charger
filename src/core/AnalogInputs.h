@@ -20,7 +20,7 @@
 
 #include "AnalogInputsTypes.h"
 #include "HardwareConfig.h"
-#include "memory.h"
+#include "cpu/config.h"
 
 #define ANALOG_INPUTS_MAX_CALIBRATION_POINTS    2
 #define ANALOG_INPUTS_DELTA_TIME_MILISECONDS    30000
@@ -32,9 +32,6 @@
 #define ANALOG_INPUTS_FOR_ALL(iterator)     for(AnalogInputs::Name iterator = AnalogInputs::Name(0); iterator < AnalogInputs::ALL_INPUTS;      iterator = AnalogInputs::Name(iterator + 1) )
 
 namespace AnalogInputs {
-
-    extern uint32_t tmp_time_;
-    extern uint32_t tmp_time_last_;
 
     struct CalibrationPoint {
         ValueType x;
@@ -111,8 +108,7 @@ namespace AnalogInputs {
     static const uint8_t    PHYSICAL_INPUTS     = VirtualInputs - Vout_plus_pin;
     static const uint8_t    ALL_INPUTS          = LastInput - Vout_plus_pin;
     static const ValueType  REVERSE_POLARITY_MIN_VOLTAGE = ANALOG_VOLT(1.000);
-    static const ValueType  CONNECTED_MIN_VOLTAGE = ANALOG_VOLT(0.600);
-    static const ValueType  CONNECTED_MIN_CURRENT = ANALOG_AMP(0.050);
+    static const ValueType  CONNECTED_MIN_VOLTAGE = ANALOG_VOLT(0.400);
 
     //get the average ADC value
     ValueType getAvrADCValue(Name name);
@@ -128,11 +124,13 @@ namespace AnalogInputs {
     ValueType getIout();
     ValueType getDeltaLastT();
     ValueType getDeltaCount();
-    uint16_t getCharge();
+    ValueType getCharge();
+    ValueType getEout();
     void enableDeltaVoutMax(bool enable);
 
-    uint16_t getConnectedBalancePorts();
-    uint8_t getConnectedBalancePortsCount();
+    extern uint16_t connectedBalancePortCells;
+    uint8_t getConnectedBalancePortCellsCount();
+    void saveBalancePortState();
 
     uint16_t getFullMeasurementCount();
     uint16_t getStableCount(Name name);

@@ -3,12 +3,13 @@
 #include "Timer1.h"
 #include "Hardware.h"
 #include "atomic.h"
+#include "IO.h"
 
 namespace {
     volatile uint16_t Timer1_valueA=0;
     volatile uint16_t Timer1_valueB=0;
-    volatile uint16_t Timer1_sumA=0;
-    volatile uint16_t Timer1_sumB=0;
+    uint16_t Timer1_sumA=0;
+    uint16_t Timer1_sumB=0;
 
     void setOCR() {
         //modulate the PWM - we modulate the PWM signal to get more precision.
@@ -22,12 +23,12 @@ namespace {
         Timer1_sumA&=(1<<TIMER1_PRECISION) - 1;
         Timer1_sumB&=(1<<TIMER1_PRECISION) - 1;
     }
+
 }
 
 ISR(TIMER1_OVF_vect)
 {
     setOCR(); //modulate the PWM
-    hardware::soundInterrupt();
 }
 
 void Timer1::setPWM(char pin, uint16_t val)  // expects duty cycle to be 10 bit (1024)

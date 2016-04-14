@@ -28,7 +28,7 @@ ProgramData::Battery ProgramData::battery;
 //battery voltage limits, see also: ProgramData::getVoltagePerCell, ProgramData::getVoltage
 const AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE] PROGMEM  =
 {
-//          { VIdle,              VCharge,            VDischarge,         VStorage,           ValidEmpty};
+//          { VNominal,           VCharged,           VDischarged,        VStorage,           VvalidEmpty};
 /*None*/    { 1,                  1,                  1,                  1,                  1},
 /*NiCd*/    { ANALOG_VOLT(1.200), ANALOG_VOLT(1.800), ANALOG_VOLT(0.850), 0,                  ANALOG_VOLT(0.850)},
 //http://en.wikipedia.org/wiki/Nickel%E2%80%93metal_hydride_battery
@@ -74,7 +74,7 @@ uint16_t ProgramData::getDefaultVoltage(VoltageType type)
     uint16_t cells = battery.cells;
     uint16_t voltage = getDefaultVoltagePerCell(type);
 
-    if(type == VDischarge && battery.type == NiMH && cells > 6) {
+    if(type == VDischarged && battery.type == NiMH && cells > 6) {
         //based on http://eu.industrial.panasonic.com/sites/default/pidseu/files/downloads/files/ni-mh-handbook-2014_interactive.pdf
         //page 11: "Discharge end voltage"
         cells--;
@@ -86,9 +86,9 @@ uint16_t ProgramData::getDefaultVoltage(VoltageType type)
 uint16_t ProgramData::getVoltage(VoltageType type) {
     uint16_t cells = battery.cells;
     uint16_t voltage = getDefaultVoltagePerCell(type);
-    if (type == VCharge) {
+    if (type == VCharged) {
         voltage = battery.Vc_per_cell;
-    } else if (type == VDischarge) {
+    } else if (type == VDischarged) {
         voltage = battery.Vd_per_cell;
     } else if (type == VStorage) {
         voltage = battery.Vs_per_cell;
@@ -161,7 +161,7 @@ int16_t ProgramData::getDeltaVLimit()
 
 uint16_t ProgramData::getMaxIc()
 {
-    AnalogInputs::ValueType v = getDefaultVoltage(VDischarge);
+    AnalogInputs::ValueType v = getDefaultVoltage(VDischarged);
 #ifdef ENABLE_DYNAMIC_MAX_POWER
     if(v > ANALOG_VOLT(8)) {
         v -= ANALOG_VOLT(8);
@@ -172,18 +172,18 @@ uint16_t ProgramData::getMaxIc()
 
     AnalogInputs::ValueType i = AnalogInputs::evalI(MAX_CHARGE_P, v);
 
-    if(i > MAX_CHARGE_I)
-        i = MAX_CHARGE_I;
+    if(i > settings.maxIc)
+        i = settings.maxIc;
     return i;
 }
 
 uint16_t ProgramData::getMaxId()
 {
-    AnalogInputs::ValueType v = getDefaultVoltage(VDischarge);
+    AnalogInputs::ValueType v = getDefaultVoltage(VDischarged);
     AnalogInputs::ValueType i = AnalogInputs::evalI(MAX_DISCHARGE_P, v);
 
-    if(i > MAX_DISCHARGE_I)
-        i = MAX_DISCHARGE_I;
+    if(i > settings.maxId)
+        i = settings.maxId;
     return i;
 }
 
@@ -191,7 +191,7 @@ uint16_t ProgramData::getMaxCells()
 {
     if(battery.type == Unknown || battery.type == LED)
         return 1;
-    uint16_t v = getDefaultVoltagePerCell(VCharge);
+    uint16_t v = getDefaultVoltagePerCell(VCharged);
     return MAX_CHARGE_V / v;
 }
 
@@ -259,8 +259,8 @@ void ProgramData::restoreDefault()
 
 void ProgramData::changedType()
 {
-    battery.Vc_per_cell = getDefaultVoltagePerCell(VCharge);
-    battery.Vd_per_cell = getDefaultVoltagePerCell(VDischarge);
+    battery.Vc_per_cell = getDefaultVoltagePerCell(VCharged);
+    battery.Vd_per_cell = getDefaultVoltagePerCell(VDischarged);
 
     if(battery.type == None) {
         battery.type = None;

@@ -19,7 +19,6 @@
 #define STATICMENU_H_
 
 #include "LcdPrint.h"
-#include "memory.h"
 #include "Menu.h"
 #include "Utils.h"
 

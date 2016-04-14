@@ -61,7 +61,7 @@ Strategy::statusType StartInfoStrategy::doStrategy()
         v_out = false;
     }
 
-    is_cells = AnalogInputs::getConnectedBalancePortsCount();
+    is_cells = AnalogInputs::getConnectedBalancePortCellsCount();
 
     if(Strategy::doBalance) {
         should_be_cells = ProgramData::battery.cells;

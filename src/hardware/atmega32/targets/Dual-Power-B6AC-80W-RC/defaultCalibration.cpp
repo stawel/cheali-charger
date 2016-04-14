@@ -31,7 +31,7 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
   {{0, ANALOG_VOLT (0.000)}, {0, ANALOG_VOLT (0.000)}}, //VoutMux
   {{0, ANALOG_CELCIUS (0.000)}, {0, ANALOG_CELCIUS (0.000)}},   //Tintern
   {{0, ANALOG_VOLT (0.000)}, {42624, ANALOG_VOLT (12.490)}},    //Vin
-  {{19650, ANALOG_CELCIUS (2.980)}, {18700, ANALOG_CELCIUS (6.000)}},   //Textern
+  {{5884,  2280},         {0,  0}},   //Textern
 
   {{0, ANALOG_VOLT (0.000)}, {48963, ANALOG_VOLT (3.752)}},     //Vb0_pin
   {{0, ANALOG_VOLT (0.000)}, {55409, ANALOG_VOLT (4.200)}},     //Vb1_pin

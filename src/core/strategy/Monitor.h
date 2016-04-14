@@ -20,9 +20,13 @@
 
 #include "Strategy.h"
 
+#define MONITOR_EXTERNAL_ERROR_NONE                         0
+#define MONITOR_EXTERNAL_ERROR_BATTERY_DISCONNECTED         1
+
 namespace Monitor {
     extern uint16_t etaDeltaSec;
     extern bool isBalancePortConnected;
+    extern volatile uint8_t i_externalError;
 
     Strategy::statusType run();
     void doIdle();

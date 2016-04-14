@@ -23,8 +23,9 @@
 #include "cprintf.h"
 
 
-#define CE_STEP_TYPE_SMART  0x7fff
-#define CE_STEP_TYPE_METHOD 0x7ffe
+#define CE_STEP_TYPE_SMART      0x7fff
+#define CE_STEP_TYPE_KEY_SPEED  0x7ffd
+#define CE_STEP_TYPE_METHOD     0x7ffe
 
 #define STATIC_EDIT_METHOD(method) {CE_STEP_TYPE_METHOD,  {.editMethod=method}}
 

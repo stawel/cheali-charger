@@ -18,6 +18,8 @@
 #ifndef GLOBAL_CONFIG_H_
 #define GLOBAL_CONFIG_H_
 
+#include <AnalogInputsTypes.h>
+
 #define LCD_LINES               2
 #define LCD_COLUMNS             16
 
@@ -45,5 +47,10 @@
 #define ENABLE_IRON_HAKKO907
 
 #define STRINGS_HEADER "strings/standard.h"
+
+#define CHEALI_CHARGER_ARCHITECTURE                     (CHEALI_CHARGER_ARCHITECTURE_CPU + CHEALI_CHARGER_ARCHITECTURE_GENERIC)
+#define CHEALI_CHARGER_ARCHITECTURE_INFO                (MAX_BANANCE_CELLS)
+
+#define DISCHARGE_OUTPUT_CAPACITOR_CURRENT				ANALOG_AMP(1.0)
 
 #endif /* GLOBAL_CONFIG_H_ */

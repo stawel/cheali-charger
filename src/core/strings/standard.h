@@ -98,13 +98,16 @@ namespace SettingsMenu {
     STRING(dischOff,    "disch off:");
     STRING(AudioBeep,   "beep:");
     STRING(minIc,       "min Ic:");
+    STRING(maxIc,       "max Ic:");
     STRING(minId,       "min Id:");
+    STRING(maxId,       "max Id:");
     STRING(inputLow,    "input low: ");
     STRING(adcNoise,    "adc noise:");
     STRING(UARTview,    "UART:");
     STRING(UARTspeed,   "|speed:");
     STRING(UARToutput,  "|output:");
     STRING(MenuType,    "menus:");
+    STRING(MenuButtons, "buttons:");
     STRING(reset,       "reset");
 
     //UARToutput menu
@@ -129,6 +132,10 @@ namespace SettingsMenu {
     //MenuType
     STRING(simple,      "simple");
     STRING(advanced,    "advanced");
+
+    //MenuButtons
+    //STRING(normal,      "normal"); - defined in UART view
+    STRING(reversed,      "rev");
 
 }
 
@@ -204,17 +211,10 @@ namespace Calibrate {
     STRING(v_menu_output,   "Vout:");
     STRING(menu_point,      "calib. p.:");
 
-    //calibration charge current menu
-    STRING(ic_menu_current0,    CHEALI_CHARGER_STRING(CALIBRATION_CHARGE_POINT0_mA) "mA");
-    STRING(ic_menu_current1,    CHEALI_CHARGER_STRING(CALIBRATION_CHARGE_POINT1_mA) "mA");
-
-    //calibration discharge current menu
-    STRING(id_menu_current0,    CHEALI_CHARGER_STRING(CALIBRATION_DISCHARGE_POINT0_mA) "mA");
-    STRING(id_menu_current1,    CHEALI_CHARGER_STRING(CALIBRATION_DISCHARGE_POINT1_mA) "mA");
-
     //calibration common current menu
-    STRING(i_menu_value,    "value: ");
-    STRING(i_menu_output,   "Iout:  ");
+    STRING(i_menu_value,    "value:");
+    STRING(i_menu_output,   "I:");
+    STRING(i_menu_expected, "Iexpec:");
 
 
     //calibration temperature select point menu

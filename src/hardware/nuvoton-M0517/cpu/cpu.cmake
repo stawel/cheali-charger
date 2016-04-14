@@ -11,6 +11,7 @@ set(CPU_SOURCE
 
 CHEALI_ADD(CPU_SOURCE_FILES "${CPU_SOURCE}")
 
+include_directories(${CMAKE_CURRENT_LIST_DIR}/..)
 include(${CURRENT_PATH}/CMSIS/cmsis.cmake)
 
 link_libraries(m)

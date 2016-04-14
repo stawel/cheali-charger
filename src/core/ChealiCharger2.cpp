@@ -33,6 +33,7 @@
 #include "Serial.h"
 #include "Screen.h"
 #include "helper.h"
+#include "memory.h"
 
 const char string_options[] PROGMEM = "options";
 const char * const progmemMainMenu[] PROGMEM =

@@ -46,8 +46,8 @@ namespace Discharger {
         }
         AnalogInputs::ValueType i = AnalogInputs::evalI(MAX_DISCHARGE_P, v);
 
-        if(i > MAX_DISCHARGE_I)
-            i = MAX_DISCHARGE_I;
+        if(i > settings.maxId)
+            i = settings.maxId;
         return i;
     }
 }

@@ -31,7 +31,7 @@ checkAllCRC(x);
 defaultCalibrationFile = 'defaultCalibration.cpp'
 
 fmt = DFormatter()
-f = open(defaultCalibrationFile + '.template', 'r')
+f = open(defaultCalibrationFile + '.template' + str(getCellNumber(module)), 'r')
 template = f.read()
 out = fmt.vformat(template, [],x)
 f = open(defaultCalibrationFile, 'w')

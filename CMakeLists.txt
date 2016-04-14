@@ -1,15 +1,5 @@
 cmake_minimum_required(VERSION 2.8.11)
 
-SET(CMAKE_SYSTEM_NAME Generic)
-
-if(ARM-Cortex-M0)
-    message(STATUS "target architecture: ARM-Cortex-M0")
-    include(arm-compiler.cmake)
-else(ARM-Cortex-M0)
-    message(STATUS "target architecture: avr")
-    include(avr-compiler.cmake)
-endif(ARM-Cortex-M0)
-
 Project(cheali-charger)
 
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -20,9 +10,9 @@ find_package(ChealiChargerInternal REQUIRED)
 string(TIMESTAMP timestamp "%Y%m%d")
 
 set(cheali-charger-version 1.99)
-set(cheali-charger-eeprom-calibration-version 9)
+set(cheali-charger-eeprom-calibration-version 10)
 set(cheali-charger-eeprom-programdata-version 3)
-set(cheali-charger-eeprom-settings-version 10)
+set(cheali-charger-eeprom-settings-version 12)
 set(cheali-charger-buildnumber ${timestamp})
 
 message(STATUS "cheali-charger-version: ${cheali-charger-version}")

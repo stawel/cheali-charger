@@ -11,7 +11,7 @@ user@~$ git clone https://github.com/stawel/cheali-charger.git
 user@~$ cd cheali-charger
 user@~$ git submodule init
 user@~$ git submodule update
-user@~/cheali-charger$ ./bootstrap
+user@~/cheali-charger$ ./bootstrap-avr
 user@~/cheali-charger$ make
       
 flashing [your charger] with USBasp:
@@ -25,14 +25,12 @@ Now You should see a "cheali-charger welcome" screen.
 
 nuvoton M0517 - linux
 ---------------------
-dependencies: git, cmake, gcc-arm-none-eabi, openocd (patched)  
+dependencies: git, cmake, gcc-arm-none-eabi, openocd (at least version 0.9)  
 
 install [gcc-arm-none-eabi](https://launchpad.net/~terry.guo/+archive/ubuntu/gcc-arm-embedded)  
-compile and install [openocd (patched)](https://github.com/stawel/openocd)  
-copy [openocd/contrib/99-openocd.rules](https://github.com/stawel/openocd/blob/master/contrib/99-openocd.rules) to /etc/udev/rules.d
 
 <pre>
-user@~$ sudo apt-get install git cmake
+user@~$ sudo apt-get install git cmake openocd
 user@~$ git clone https://github.com/stawel/cheali-charger.git
 user@~$ cd cheali-charger
 user@~$ git submodule init
@@ -41,10 +39,12 @@ user@~/cheali-charger$ ./bootstrap-arm
 user@~/cheali-charger$ make
 
 flashing [your charger] with st-link-V2 or stm32f4discovery:
-(patched openocd needed)
+(openocd at least version 0.9 needed)
   
 user@~/cheali-charger$ cd src/hardware/nuvoton-M0517/targets/[your charger]
 user@~/cheali-charger/src/hardware/nuvoton-M0517/targets/[your charger]$ ./progStLink.sh
+or
+user@~/cheali-charger/src/hardware/nuvoton-M0517/targets/[your charger]$ ./progStLink2.sh
 </pre>
       
 Now You should see a "cheali-charger welcome" screen.
@@ -57,7 +57,7 @@ atmega32 - windows
 - start a "Atmel Studio Command Prompt" and go to your cheali-charger directory.
 - run:
 <pre>
-  s:\cheali-charger> cmake . -G "Unix Makefiles"
+  s:\cheali-charger> cmake . -DCMAKE_TOOLCHAIN_FILE=avr-toolchain.cmake -G "Unix Makefiles"
   s:\cheali-charger> make
 </pre>
 - hex file should be in s:\cheali-charger\src\atmega32\targets\\[your charger]\cheali-charger*.hex
@@ -68,7 +68,7 @@ atmega32 - windows
 - in cygwin install: cmake avrdude avr-libc gcc-avr git make
 - in cygwin run:
 <pre>
-  ~/cheali-charger$ ./bootstrap
+  ~/cheali-charger$ ./bootstrap-avr
   ~/cheali-charger$ make
 </pre>
 - hex file should be in ~/cheali-charger/src/atmega32/targets/[your charger]/cheali-charger*.hex
@@ -96,7 +96,7 @@ user@~$ git clone https://github.com/stawel/cheali-charger.git
 user@~$ cd cheali-charger
 user@~$ git submodule init
 user@~$ git submodule update
-user@~/cheali-charger$ ./bootstrap
+user@~/cheali-charger$ ./bootstrap-avr
 user@~/cheali-charger$ make
       
 flashing [your charger] with USBasp:

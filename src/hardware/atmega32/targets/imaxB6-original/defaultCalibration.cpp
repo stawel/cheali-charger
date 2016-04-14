@@ -28,7 +28,7 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                        {0, 0}},    //VoutMux
     {{0, 0},                        {0, 0}},    //Tintern
     {{0, 0},                        {48061, 14047}},    //Vin
-    {{19650, 2980},                        {18700, 6000}},    //Textern
+    {{5884,  2280},         {0,  0}},   //Textern
 
     {{0, 0},                        {48963, 3752}},    //Vb0_pin
     {{0, 0},                        {55048, 4187}},    //Vb1_pin

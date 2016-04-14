@@ -45,11 +45,12 @@ namespace Screen { namespace Pages {
             {Screen::StartInfo::displayStartInfo,   PAGE_START_INFO,                      PAGE_NONE},
             {Screen::Editable::displayCustomDeviceScreen, PAGE_BATTERY(ProgramData::ClassCustomDevice), PAGE_START_INFO},
             {Screen::Methods::displayFirstScreen,   PAGE_ALWAYS, PAGE_START_INFO + PAGE_PROGRAM(Program::Balance)},
-            {Screen::Methods::displayEnergy,        PAGE_ALWAYS, PAGE_START_INFO + PAGE_PROGRAM(Program::Balance)},
+            {Screen::Cycle::displayCycles,          PAGE_PROGRAM(Program::CapacityCheck)+PAGE_PROGRAM(Program::DischargeChargeCycle), PAGE_START_INFO},
 
             {Screen::Methods::displayDeltaFirst,    PAGE_BATTERY(ProgramData::ClassNiXX), PAGE_START_INFO + PAGE_PROGRAM(Program::Discharge)},
             {Screen::Methods::displayDeltaVout,     PAGE_BATTERY(ProgramData::ClassNiXX), PAGE_START_INFO + PAGE_PROGRAM(Program::Discharge)},
             {Screen::Methods::displayDeltaTextern,  PAGE_BATTERY(ProgramData::ClassNiXX), PAGE_START_INFO},
+            {Screen::Methods::displayEnergy,        PAGE_ALWAYS, PAGE_START_INFO + PAGE_PROGRAM(Program::Balance)},
 
             {Screen::Balancer::displayVoltage1_3,   PAGE_START_INFO + PAGE_BALANCE_PORT , PAGE_NONE},
             {Screen::Balancer::displayVoltage4_6,   PAGE_START_INFO + PAGE_BALANCE_PORT , PAGE_NONE},
@@ -65,7 +66,6 @@ BALANCER_PORTS_GT_6(
 
             {Screen::Methods::displayTime,          PAGE_ALWAYS, PAGE_START_INFO},
             {Screen::Methods::displayTemperature,   PAGE_ALWAYS, PAGE_NONE},
-            {Screen::Cycle::displayCycles,          PAGE_PROGRAM(Program::CapacityCheck)+PAGE_PROGRAM(Program::DischargeChargeCycle), PAGE_START_INFO},
             {Screen::Methods::displayCIVlimits,     PAGE_ALWAYS, PAGE_PROGRAM(Program::Balance)},
             {Screen::Methods::displayVinput,        PAGE_ALWAYS, PAGE_NONE},
 

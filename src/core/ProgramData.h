@@ -34,7 +34,7 @@ namespace ProgramData {
         IronHakko907,
 #endif
         LAST_BATTERY_TYPE};
-    enum VoltageType {VIdle, VCharge, VDischarge, VStorage, ValidEmpty, LAST_VOLTAGE_TYPE};
+    enum VoltageType {VNominal, VCharged, VDischarged, VStorage, VvalidEmpty, LAST_VOLTAGE_TYPE};
 
 
     struct Battery {
@@ -86,9 +86,9 @@ namespace ProgramData {
     extern const char * const batteryString[];
     extern const BatteryClass batteryClassMap[];
 
-    uint16_t getDefaultVoltagePerCell(VoltageType type = VIdle);
-    uint16_t getDefaultVoltage(VoltageType type = VIdle);
-    uint16_t getVoltage(VoltageType type = VIdle);
+    uint16_t getDefaultVoltagePerCell(VoltageType type = VNominal);
+    uint16_t getDefaultVoltage(VoltageType type = VNominal);
+    uint16_t getVoltage(VoltageType type = VNominal);
     uint16_t getCapacityLimit();
     inline uint16_t getTimeLimit() {return battery.time; }
 

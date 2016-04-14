@@ -240,7 +240,12 @@ void addAdcNoise()
 
 void conversionDone()
 {
-    uint16_t v = processConversion();
+    uint16_t v;
+
+    //ignore measurement nr 0, ADC channel may not be set yet
+    if(g_adcBurstCount_) {
+        v = processConversion();
+    }
 
 #ifdef ENABLE_DEBUG
     if(g_adcBurstCount_ == 0 && adc_input.ai_name == AnalogInputs::Vout_plus_pin) {
@@ -274,12 +279,9 @@ void conversionDone()
         break;
 #endif
 
-    case ANALOG_INPUTS_ADC_BURST_COUNT-2:
+    case ANALOG_INPUTS_ADC_BURST_COUNT:
         /* set next adc input */
         setADC(adc_input_next.adc);
-        break;
-
-    case ANALOG_INPUTS_ADC_BURST_COUNT-1:
         /* switch to new input */
         g_adcBurstCount_ = 0;
         setupNextInput();

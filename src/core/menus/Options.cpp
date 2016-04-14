@@ -27,6 +27,7 @@
 #include "ProgramData.h"
 #include "eeprom.h"
 #include "SettingsMenu.h"
+#include "memory.h"
 
 using namespace options;
 

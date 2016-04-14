@@ -38,7 +38,7 @@
 
 
 namespace Monitor {
-
+    volatile uint8_t i_externalError;
     uint16_t etaDeltaSec;
     uint16_t etaStartTimeCalc;
 
@@ -107,8 +107,8 @@ uint16_t Monitor::getTotalChargeDischargeTimeMin() {
 
 uint8_t Monitor::getChargeProcent() {
     uint16_t v1,v2, v;
-    v2 = ProgramData::getVoltage(ProgramData::VCharge);
-    v1 = ProgramData::getVoltage(ProgramData::ValidEmpty);
+    v2 = ProgramData::getVoltage(ProgramData::VCharged);
+    v1 = ProgramData::getVoltage(ProgramData::VvalidEmpty);
     v =  AnalogInputs::getRealValue(AnalogInputs::VoutBalancer);
 
     if(v >= v2) return 99;
@@ -156,7 +156,7 @@ void Monitor::powerOn()
 
     {
         //Make sure Vout_plus gets not higher VCharge + 3V (additional safety limit for protection ICs)
-        AnalogInputs::ValueType Vmax = ProgramData::getVoltage(ProgramData::VCharge);
+        AnalogInputs::ValueType Vmax = ProgramData::getVoltage(ProgramData::VCharged);
         Vmax += ANALOG_VOLT(3.000);
         if(Vmax > MAX_CHARGE_V) {
             Vmax = MAX_CHARGE_V;
@@ -173,7 +173,9 @@ void Monitor::powerOn()
 
     startTime_totalTime_U16_ = Time::getSecondsU16();
     resetAccumulatedMeasurements();
+    i_externalError = MONITOR_EXTERNAL_ERROR_NONE;
     on_ = true;
+    AnalogInputs::saveBalancePortState();
 }
 
 void Monitor::resetAccumulatedMeasurements()
@@ -219,6 +221,12 @@ Strategy::statusType Monitor::run()
 
     AnalogInputs::ValueType VMout = AnalogInputs::getADCValue(AnalogInputs::Vout_plus_pin);
     if(Vout_plus_adcMaxLimit_ <= VMout || (VMout < Vout_plus_adcMinLimit_ && Discharger::isPowerOn())) {
+        Program::stopReason = string_batteryDisconnected;
+        return Strategy::ERROR;
+    }
+
+    uint8_t externalError = i_externalError;
+    if(externalError == MONITOR_EXTERNAL_ERROR_BATTERY_DISCONNECTED) {
         Program::stopReason = string_batteryDisconnected;
         return Strategy::ERROR;
     }

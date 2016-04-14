@@ -15,6 +15,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#define __STDC_LIMIT_MACROS
+#include <stdint.h>
+
 #include "Options.h"
 #include "LcdPrint.h"
 #include "StaticMenu.h"
@@ -32,6 +35,7 @@
 #include "eeprom.h"
 #include "Balancer.h"
 #include "StaticEditMenu.h"
+#include "memory.h"
 
 namespace Calibrate {
 
@@ -51,12 +55,7 @@ const char * const calibrateMenu[] PROGMEM = {
 
 uint16_t calibrationPoint;
 
-const char * const chargeIMenu[]    PROGMEM = { string_ic_menu_current0, string_ic_menu_current1, NULL};
-const char * const dischargeIMenu[] PROGMEM = { string_id_menu_current0, string_id_menu_current1, NULL};
-const AnalogInputs::ValueType chargeIValues[]     PROGMEM = {CALIBRATION_CHARGE_POINT0_mA,    CALIBRATION_CHARGE_POINT1_mA};
-const AnalogInputs::ValueType dischargeIValues[]  PROGMEM = {CALIBRATION_DISCHARGE_POINT0_mA, CALIBRATION_DISCHARGE_POINT1_mA};
-
-const char * const currentMenu[] PROGMEM = {string_i_menu_value,        string_i_menu_output,   NULL};
+const char * const currentMenu[] PROGMEM = {string_i_menu_value, string_i_menu_output, string_i_menu_expected, NULL};
 
 /* voltage calibration */
 
@@ -107,7 +106,7 @@ bool testVout(bool balancePort)
     bool displayed = false;
     do {
         if(AnalogInputs::isConnected(AnalogInputs::Vout)) {
-            if(balancePort == (AnalogInputs::getConnectedBalancePortsCount() > 0) )
+            if(balancePort == (AnalogInputs::getConnectedBalancePortCellsCount() > 0) )
                 return true;
             if(!displayed) {
                 if(balancePort) {
@@ -185,11 +184,13 @@ void runCalibrationMenu(const StaticEditMenu::StaticEditData * menuData,
                 if(AnalogInputs::isConnected(Vinput)) {
                     AnalogInputs::doFullMeasurement();
                     AnalogInputs::on_ = false;
+                    AnalogInputs::onTintern_ = false;
                     if(menu.runEdit()) {
                         bool doCopyVout = c & COND_COPY_VOUT;
                         saveCalibration(doCopyVout, Vinput, pgm::read(&name2[item]));
                     }
                     AnalogInputs::on_ = true;
+                    AnalogInputs::onTintern_ = true;
                 }
             } else {
                 menu.runEdit();
@@ -221,16 +222,16 @@ const AnalogInputs::Name voltageName2[] PROGMEM = {
 };
 
 const StaticEditMenu::StaticEditData editVoltageData[] PROGMEM = {
-{string_v_menu_input,       COND_E_C_ANALOG,    EANALOG_V(Vin),         {1, 0, ANALOG_VOLT(30)}},
-{string_v_menu_cell1,       COND_E_C_ANALOG,    EANALOG_V(Vb1),         {1, 0, ANALOG_VOLT(5)}},
-{string_v_menu_cell2,       COND_E_C_ANALOG,    EANALOG_V(Vb2),         {1, 0, ANALOG_VOLT(5)}},
-{string_v_menu_cell3,       COND_E_C_ANALOG,    EANALOG_V(Vb3),         {1, 0, ANALOG_VOLT(5)}},
-{string_v_menu_cell4,       COND_E_C_ANALOG,    EANALOG_V(Vb4),         {1, 0, ANALOG_VOLT(5)}},
-{string_v_menu_cell5,       COND_E_C_ANALOG,    EANALOG_V(Vb5),         {1, 0, ANALOG_VOLT(5)}},
-{string_v_menu_cell6,       COND_E_C_ANALOG,    EANALOG_V(Vb6),         {1, 0, ANALOG_VOLT(5)}},
+{string_v_menu_input,       COND_E_C_ANALOG,    EANALOG_V(Vin),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(30)}},
+{string_v_menu_cell1,       COND_E_C_ANALOG,    EANALOG_V(Vb1),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell2,       COND_E_C_ANALOG,    EANALOG_V(Vb2),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell3,       COND_E_C_ANALOG,    EANALOG_V(Vb3),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell4,       COND_E_C_ANALOG,    EANALOG_V(Vb4),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell5,       COND_E_C_ANALOG,    EANALOG_V(Vb5),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell6,       COND_E_C_ANALOG,    EANALOG_V(Vb6),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
 BALANCER_PORTS_GT_6(
-{string_v_menu_cell7,       COND_E_C_ANALOG,    EANALOG_V(Vb7),         {1, 0, ANALOG_VOLT(5)}},
-{string_v_menu_cell8,       COND_E_C_ANALOG,    EANALOG_V(Vb8),         {1, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell7,       COND_E_C_ANALOG,    EANALOG_V(Vb7),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell8,       COND_E_C_ANALOG,    EANALOG_V(Vb8),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
 )
 {string_v_menu_cellSum,     COND_ALWAYS,        EANALOG_V(Vbalancer),   {0, 0, 0}},
 {string_v_menu_output,      COND_ALWAYS,        EANALOG_V(Vout),        {0, 0, 0}},
@@ -257,12 +258,12 @@ void calibrateVoltage()
 
 const StaticEditMenu::StaticEditData editExpertVoltageData[] PROGMEM = {
 #ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-{string_ev_menu_cell0pin,           COND_E_ANALOG,   EANALOG_V(Vb0_pin),         {1, 0, ANALOG_VOLT(10)}},
-{string_ev_menu_cell1pin,           COND_E_ANALOG,   EANALOG_V(Vb1_pin),         {1, 0, ANALOG_VOLT(10)}},
-{string_ev_menu_cell2pin,           COND_E_ANALOG,   EANALOG_V(Vb2_pin),         {1, 0, ANALOG_VOLT(10)}},
+{string_ev_menu_cell0pin,           COND_E_ANALOG,   EANALOG_V(Vb0_pin),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(10)}},
+{string_ev_menu_cell1pin,           COND_E_ANALOG,   EANALOG_V(Vb1_pin),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(10)}},
+{string_ev_menu_cell2pin,           COND_E_ANALOG,   EANALOG_V(Vb2_pin),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(10)}},
 #endif //ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
-{string_ev_menu_plusVoltagePin,     COND_E_ANALOG,   EANALOG_V(Vout_plus_pin),   {1, 0, MAX_CHARGE_V}},
-{string_ev_menu_minusVoltagePin,    COND_E_ANALOG,   EANALOG_V(Vout_minus_pin),  {1, 0, MAX_CHARGE_V}},
+{string_ev_menu_plusVoltagePin,     COND_E_ANALOG,   EANALOG_V(Vout_plus_pin),   {CE_STEP_TYPE_KEY_SPEED, 0, MAX_CHARGE_V}},
+{string_ev_menu_minusVoltagePin,    COND_E_ANALOG,   EANALOG_V(Vout_minus_pin),  {CE_STEP_TYPE_KEY_SPEED, 0, MAX_CHARGE_V}},
 {string_menu_point,                 COND_POINT,     {CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
 {NULL,                      StaticEditMenu::Last}
 };
@@ -305,49 +306,72 @@ void setCurrentValue(AnalogInputs::Name name, AnalogInputs::ValueType value)
 
 class CurrentMenu: public EditMenu {
 public:
+    AnalogInputs::Name cNameSet_;
     AnalogInputs::Name cName_;
     uint8_t point_;
     AnalogInputs::ValueType value_;
     AnalogInputs::ValueType maxValue_;
+    AnalogInputs::ValueType Iexpected_;
+    AnalogInputs::ValueType maxIexpected_;
 
-    CurrentMenu(AnalogInputs::Name name, uint8_t point, AnalogInputs::ValueType maxValue)
-            : EditMenu(currentMenu), cName_(name), point_(point), maxValue_(maxValue) {}
-    void refreshValue(AnalogInputs::CalibrationPoint &p) {
+
+    CurrentMenu(AnalogInputs::Name nameSet, AnalogInputs::Name name, uint8_t point, AnalogInputs::ValueType maxValue, AnalogInputs::ValueType maxI)
+            : EditMenu(currentMenu), cNameSet_(nameSet), cName_(name), point_(point), maxValue_(maxValue), maxIexpected_(maxI) {}
+
+    void resetValue(AnalogInputs::CalibrationPoint &p) {
         value_ = p.x;
     };
+    void resetIexpected(AnalogInputs::CalibrationPoint &p) {
+        Iexpected_ = p.y;
+    };
+
     virtual void printItem(uint8_t index) {
         //TODO: hack, should be improved ... Gyuri: R138 burned.
         if(!AnalogInputs::isConnected(AnalogInputs::Vout)) {
             Screen::displayStrings(string_connect, string_battery);
-            if(cName_ == AnalogInputs::IdischargeSet) {
+            if(cNameSet_ == AnalogInputs::IdischargeSet) {
                 Discharger::powerOff();
             }
         } else {
             StaticMenu::printItem(index);
             if(getBlinkIndex() != index) {
-                if(index == 0) {
-                    lcdPrintUnsigned(value_, 5);
-                } else {
-                    lcdPrintCurrent(AnalogInputs::getIout(), 7);
+                switch (index) {
+                    case 0:
+                        lcdPrintUnsigned(value_, 9);
+                        break;
+                    case 1:
+                        lcdPrintCurrent(AnalogInputs::getIout(), 7);
+                        lcdPrintUnsigned(AnalogInputs::getAvrADCValue(cName_), 6);
+                        break;
+                    default:
+                        lcdPrintCurrent(Iexpected_, 8);
+                        break;
                 }
             }
         }
     }
     virtual void editItem(uint8_t index, uint8_t key) {
         int dir = -1;
+        uint8_t steps = Keyboard::getSpeedFactor();
         if(key == BUTTON_INC) dir = 1;
-        changeMinToMaxStep(&value_, dir, 1, maxValue_, 1);
-        setCurrentValue(cName_, value_);
+        if(index == 0) {
+            changeMinToMaxStep(&value_, dir, 1, maxValue_, steps);
+            setCurrentValue(cNameSet_, value_);
+        } else {
+            changeMinToMaxStep(&Iexpected_, dir, 1, maxIexpected_, steps);
+        }
     }
 };
 
-void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
+void calibrateI(bool charging, uint8_t point)
 {
     AnalogInputs::ValueType maxValue;
-    AnalogInputs::Name name1;
-    AnalogInputs::Name name2;
-    AnalogInputs::CalibrationPoint pName1;
-    AnalogInputs::CalibrationPoint pName2;
+    AnalogInputs::ValueType maxIexpected;
+    AnalogInputs::Name nameSet;
+    AnalogInputs::Name name;
+    AnalogInputs::CalibrationPoint pSet;
+    AnalogInputs::CalibrationPoint p;
+    bool save = false;
 
     Program::dischargeOutputCapacitor();
     AnalogInputs::powerOn();
@@ -355,37 +379,44 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
 
         if(charging) {
             maxValue = SMPS_UPPERBOUND_VALUE;
-            name1 = AnalogInputs::IsmpsSet;
-            name2 = AnalogInputs::Ismps;
+            maxIexpected = MAX_CHARGE_I;
+            nameSet = AnalogInputs::IsmpsSet;
+            name = AnalogInputs::Ismps;
             SMPS::powerOn();
             hardware::setVoutCutoff(MAX_CHARGE_V);
 
         } else {
-            name1 = AnalogInputs::IdischargeSet;
-            name2 = AnalogInputs::Idischarge;
+            nameSet = AnalogInputs::IdischargeSet;
+            name = AnalogInputs::Idischarge;
             maxValue = DISCHARGER_UPPERBOUND_VALUE;
+            maxIexpected = MAX_DISCHARGE_I;
             Discharger::powerOn();
         }
 
-        getCalibrationPoint(pName1, name1, point);
-        getCalibrationPoint(pName2, name2, point);
+        getCalibrationPoint(pSet, nameSet, point);
+        getCalibrationPoint(p, name, point);
 
-        CurrentMenu menu(name1, point, maxValue);
+        CurrentMenu menu(nameSet, name, point, maxValue, maxIexpected);
+        menu.resetIexpected(pSet);
         int8_t index;
         do {
-            menu.refreshValue(pName1);
+            menu.resetValue(pSet);
             index = menu.runSimple(true);
             if(index < 0) break;
             if(index == 0) {
-                setCurrentValue(name1, menu.value_);
+                setCurrentValue(nameSet, menu.value_);
                 if(menu.runEdit()) {
                     AnalogInputs::doFullMeasurement();
-                    pName1.y = current;
-                    pName1.x = menu.value_;
-                    pName2.y = current;
-                    pName2.x = AnalogInputs::getAvrADCValue(name2);
+                    pSet.y = menu.Iexpected_;
+                    pSet.x = menu.value_;
+                    p.y = menu.Iexpected_;
+                    p.x = AnalogInputs::getAvrADCValue(name);
+                    save = true;
                 }
-                setCurrentValue(name1, 0);
+                setCurrentValue(nameSet, 0);
+            }
+            if(index == 2 && !menu.runEdit()) {
+                menu.resetIexpected(pSet);
             }
         } while(true);
 
@@ -393,23 +424,34 @@ void calibrateI(bool charging, uint8_t point, AnalogInputs::ValueType current)
         else           Discharger::powerOff();
 
         //Info: we save eeprom data only when no current is flowing
-        AnalogInputs::setCalibrationPoint(name1, point, pName1);
-        AnalogInputs::setCalibrationPoint(name2, point, pName2);
-        eeprom::restoreCalibrationCRC();
+        if(save) {
+            AnalogInputs::setCalibrationPoint(nameSet, point, pSet);
+            AnalogInputs::setCalibrationPoint(name, point, p);
+            eeprom::restoreCalibrationCRC();
+        }
     }
     AnalogInputs::powerOff();
 }
 
-void calibrateI(const char * const textMenu[], const AnalogInputs::ValueType  values[])
+class CurrentPointMenu : public Menu {
+public:
+    AnalogInputs::Name nameSet_;
+    CurrentPointMenu(AnalogInputs::Name name): Menu(2), nameSet_(name) {}
+    virtual void printItem(uint8_t index) {
+        AnalogInputs::CalibrationPoint pSet;
+        getCalibrationPoint(pSet, nameSet_, index);
+        lcdPrintCurrent(pSet.y, 7);
+    }
+};
+
+void calibrateI(bool charging)
 {
-    StaticMenu menu(textMenu);
+    CurrentPointMenu menu(charging ? AnalogInputs::IsmpsSet : AnalogInputs::IdischargeSet);
     int8_t i;
-    AnalogInputs::ValueType current;
     do {
         i = menu.runSimple();
         if(i<0) break;
-        current = pgm::read(&values[i]);
-        calibrateI(textMenu == chargeIMenu, i, current);
+        calibrateI(charging, i);
     } while(true);
 }
 
@@ -420,14 +462,14 @@ void calibrateI(const char * const textMenu[], const AnalogInputs::ValueType  va
 #define EANALOG_ADC(name) {CP_TYPE_UNSIGNED, 0, &AnalogInputs::avrAdc_[AnalogInputs::name]}
 
 const StaticEditMenu::StaticEditData editExternTData[] PROGMEM = {
-{string_t_menu_temperature,     COND_E_ANALOG,  EANALOG_T(Textern),             {1, 0, ANALOG_CELCIUS(100)}},
+{string_t_menu_temperature,     COND_E_ANALOG,  EANALOG_T(Textern),             {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_CELCIUS(100)}},
 {string_t_menu_adc,             COND_ALWAYS,    EANALOG_ADC(Textern),           {0,0,0}},
 {string_menu_point,             COND_POINT,     {CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
 {NULL,                      StaticEditMenu::Last}
 };
 
 const StaticEditMenu::StaticEditData editInternTData[] PROGMEM = {
-{string_t_menu_temperature,     COND_E_ANALOG,  EANALOG_T(Tintern),             {1, 0, ANALOG_CELCIUS(100)}},
+{string_t_menu_temperature,     COND_E_ANALOG,  EANALOG_T(Tintern),             {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_CELCIUS(100)}},
 {string_t_menu_adc,             COND_ALWAYS,    EANALOG_ADC(Tintern),           {0,0,0}},
 {string_menu_point,             COND_POINT,     {CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
 {NULL,                      StaticEditMenu::Last}
@@ -478,8 +520,8 @@ void run()
         START_CASE_COUNTER;
         switch(i) {
         case NEXT_CASE: calibrateVoltage(); break;
-        case NEXT_CASE: calibrateI(chargeIMenu, chargeIValues); break;
-        case NEXT_CASE: calibrateI(dischargeIMenu, dischargeIValues); break;
+        case NEXT_CASE: calibrateI(true); break;
+        case NEXT_CASE: calibrateI(false); break;
         case NEXT_CASE: calibrateExternT(); break;
 #ifdef ENABLE_T_INTERNAL
         case NEXT_CASE: calibrateInternT(); break;
@@ -496,58 +538,61 @@ void run()
 
 /* calibration check */
 
-bool checkMax(AnalogInputs::ValueType maxVal, uint16_t maxAdc, AnalogInputs::Name name)
+#define CHECK_MAGIC_CONST 10
+
+uint8_t check(AnalogInputs::Name name, AnalogInputs::ValueType min, AnalogInputs::ValueType max)
 {
-    AnalogInputs::ValueType t = AnalogInputs::calibrateValue(name, maxAdc);
-    if(t < maxVal+maxVal/2
-        && maxVal-maxVal/2 < t)
-        return true;
-    return false;
+    AnalogInputs::ValueType adcMin, adcMax, adcAvr;
+    adcMax = AnalogInputs::reverseCalibrateValue(name, max);
+    adcMin = AnalogInputs::reverseCalibrateValue(name, min);
+    adcAvr = AnalogInputs::reverseCalibrateValue(name, (min+max)/2);
+    if(adcMin == 0)             return 1;
+    if(adcMin == UINT16_MAX)    return 2;
+    if(adcMax == 0)             return 3;
+    if(adcMax == UINT16_MAX)    return 4;
+    if(adcMax <= adcMin)        return 5;
+    if(adcAvr-CHECK_MAGIC_CONST <= adcMin)  return 6;
+    if(adcMax <= adcAvr+CHECK_MAGIC_CONST)  return 7;
+    return 0;
 }
 
-bool checkVout()
-{
-    // rev point: MAX_CHARGE_V
-    AnalogInputs::ValueType adcMax;
-    adcMax = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, ANALOG_VOLT(1.000));
-    adcMax *= MAX_CHARGE_V/ANALOG_VOLT(1.000);
-    return checkMax(MAX_CHARGE_V, adcMax, AnalogInputs::Vout_plus_pin);
+uint8_t checkIcharge() {
+    uint8_t error;
+    error = check(AnalogInputs::IsmpsSet, settings.minIc, settings.maxIc);
+    if(error) return error+10;
+    error = check(AnalogInputs::Ismps, settings.minIc, settings.maxIc);
+    return error;
 }
 
-bool checkIcharge(AnalogInputs::Name name)
-{
-    // rev point: MAX_CHARGE_I
-    AnalogInputs::ValueType adcMax;
-    adcMax = AnalogInputs::reverseCalibrateValue(name, CALIBRATION_CHARGE_POINT1_mA);
-    adcMax *= MAX_CHARGE_I/CALIBRATION_CHARGE_POINT1_mA;
-    return checkMax(MAX_CHARGE_I, adcMax, name);
-}
-
-bool checkIdischarge(AnalogInputs::Name name)
-{
-    // rev point: CALIBRATION_DISCHARGE_POINT1_mA
-    // we don't use MAX_DISCHARGE_I because on some chargers (imaxB6-clone) it's very off.
-    AnalogInputs::ValueType adcMax;
-    adcMax = AnalogInputs::reverseCalibrateValue(name, CALIBRATION_DISCHARGE_POINT0_mA);
-    adcMax *= CALIBRATION_DISCHARGE_POINT1_mA/CALIBRATION_DISCHARGE_POINT0_mA;
-    return checkMax(CALIBRATION_DISCHARGE_POINT1_mA, adcMax, name);
+uint8_t checkIdischarge() {
+    uint8_t error;
+    error = check(AnalogInputs::IdischargeSet, settings.minId, settings.maxId);
+    if(error) return error+10;
+    error = check(AnalogInputs::Idischarge, settings.minId, settings.maxId);
+    return error;
 }
 
 bool checkAll() {
+    uint8_t error;
     if(!eeprom::check())
         return false;
-    if(!checkVout()) {
-        Screen::runCalibrationError(string_voltage);
+    error = check(AnalogInputs::Vout_plus_pin, ANALOG_VOLT(1.000), MAX_CHARGE_V);
+    if(error) {
+        Screen::runCalibrationError(string_voltage, error);
         return false;
     }
-    if(!checkIcharge(AnalogInputs::IsmpsSet) || !checkIcharge(AnalogInputs::Ismps)) {
-        Screen::runCalibrationError(string_chargeCurrent);
+    error = checkIcharge();
+    if(error) {
+        Screen::runCalibrationError(string_chargeCurrent, error);
         return false;
     }
-    if(!checkIdischarge(AnalogInputs::IdischargeSet) || !checkIdischarge(AnalogInputs::Idischarge)) {
-        Screen::runCalibrationError(string_dischargeCurrent);
+
+    error = checkIdischarge();
+    if(error) {
+        Screen::runCalibrationError(string_dischargeCurrent, error);
         return false;
     }
+
     return true;
 }
 

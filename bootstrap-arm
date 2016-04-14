@@ -1,3 +1,4 @@
 #!/bin/bash
 
-cmake  -G "Eclipse CDT4 - Unix Makefiles"  -DARM-Cortex-M0=1 $*
+
+cmake  -DCMAKE_TOOLCHAIN_FILE=arm-toolchain.cmake -DARM-Cortex-M0=1 -G "Eclipse CDT4 - Unix Makefiles"   $*

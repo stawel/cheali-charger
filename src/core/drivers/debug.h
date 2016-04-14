@@ -22,7 +22,6 @@
 
 #include "SerialLog.h"
 #include "Time.h"
-#include "memory.h"
 
 namespace debug {
     inline void print(char x) { SerialLog::printChar(x); }
@@ -57,9 +56,13 @@ namespace debug {
 #define LogDebug_N2(N, args...) LogDebug_ ## N(args)
 #define LogDebug_N(N, args...) LogDebug_N2(N, args)
 #define LogDebug(args...) do { debug::begin(); LogDebug_N(NUM_ARGS(args), args); debug::end(); } while(0)
+
+#define runDebug(x) x
+
 #else
 
 #define LogDebug(...)
+#define runDebug(x)
 
 #endif
 
