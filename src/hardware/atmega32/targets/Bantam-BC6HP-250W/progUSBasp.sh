@@ -10,7 +10,7 @@ PROGRAMMER=usbasp
 
 PARTNO=atmega32
 
-HEX=`ls cheali-charger*.hex`
+HEX=`ls *.hex | head -1`
 echo "HEX=$HEX"
 echo "TTY=$TTY"
 
@@ -20,9 +20,10 @@ if [ "$1" != "--no-backup" ]; then
     echo "creating buckup: $DIR"
     mkdir -p $DIR
     cd $DIR
-    avrdude -p$PARTNO -c$PROGRAMMER $TTY -Uflash:r:flash.hex:r -Ulfuse:r:lfuse.hex:r -Uhfuse:r:hfuse.hex:r -Ueeprom:r:eeprom.hex:r
+    avrdude -p$PARTNO -c$PROGRAMMER $TTY -Uflash:r:flash.bin:r -Ulfuse:r:lfuse.bin:r -Uhfuse:r:hfuse.bin:r -Ueeprom:r:eeprom.bin:r
     cd -
 fi
 
-
-avrdude -p$PARTNO -c$PROGRAMMER $TTY -Uflash:w:$HEX:a
+if [ -f "$HEX" ]; then
+    avrdude -p$PARTNO -c$PROGRAMMER $TTY -Uflash:w:$HEX:a
+fi
