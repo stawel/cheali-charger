@@ -54,7 +54,7 @@ namespace ProgramDataMenu {
 uint16_t getSelector() {
     STATIC_ASSERT(LAST_BATTERY_CLASS == 6);
     uint16_t result = 1<<14;
-    if(battery.type != None) {
+    if(battery.type != NoneBatteryType) {
         result += 1 << getBatteryClass();
 
         if(battery.enable_externT) {

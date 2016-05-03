@@ -180,7 +180,7 @@ uint16_t ProgramData::getMaxId()
 
 uint16_t ProgramData::getMaxCells()
 {
-    if(battery.type == Unknown || battery.type == LED)
+    if(battery.type == UnknownBatteryType || battery.type == LED)
         return 1;
     uint16_t v = getDefaultVoltagePerCell(VCharged);
     return MAX_CHARGE_V / v;
@@ -239,7 +239,7 @@ void ProgramData::saveProgramData(uint8_t index)
 
 void ProgramData::restoreDefault()
 {
-    battery.type = None;
+    battery.type = NoneBatteryType;
     changedType();
 
     for(int i=0;i< MAX_PROGRAMS;i++) {
@@ -253,8 +253,7 @@ void ProgramData::changedType()
     battery.Vc_per_cell = getDefaultVoltagePerCell(VCharged);
     battery.Vd_per_cell = getDefaultVoltagePerCell(VDischarged);
 
-    if(battery.type == None) {
-        battery.type = None;
+    if(battery.type == NoneBatteryType) {
         battery.capacity = ANALOG_CHARGE(2.000);
         battery.cells = 3;
 
@@ -315,17 +314,17 @@ void ProgramData::changedCapacity()
 void ProgramData::printProgramData(uint8_t index)
 {
     loadProgramData(index);
-    if(battery.type != None) {
+    if(battery.type != NoneBatteryType) {
         Screen::StartInfo::printBatteryString();
         lcdPrintSpace1();
     }
 
     switch(battery.type) {
-    case None:
+    case NoneBatteryType:
         lcdPrintUInt(index+1);
         lcdPrintChar(':');
         break;
-    case Unknown:
+    case UnknownBatteryType:
         Screen::StartInfo::printVoltageString(9);
         break;
     case LED:

@@ -29,7 +29,7 @@
 namespace ProgramData {
 
     enum BatteryClass {ClassNiXX, ClassPb, ClassLiXX, ClassNiZn, ClassUnknown, ClassLED, LAST_BATTERY_CLASS};
-    enum BatteryType {None, NiCd, NiMH, Pb, Life, Lilo, Lipo, Li430, Li435, NiZn, Unknown, LED, LAST_BATTERY_TYPE};
+    enum BatteryType {NoneBatteryType, NiCd, NiMH, Pb, Life, Lilo, Lipo, Li430, Li435, NiZn, UnknownBatteryType, LED, LAST_BATTERY_TYPE};
     enum VoltageType {VNominal, VCharged, VDischarged, VStorage, VvalidEmpty, LAST_VOLTAGE_TYPE};
 
 
