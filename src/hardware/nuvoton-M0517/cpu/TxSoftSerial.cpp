@@ -26,7 +26,11 @@
 
 #include "IO.h"
 
+
 namespace TxSoftSerial {
+
+#ifdef ENABLE_TX_SOFT_SERIAL
+
 
 #define Tx_BUFFER_SIZE  256
 
@@ -124,6 +128,16 @@ void TMR2_IRQHandler(void) {
     TIMER_ClearIntFlag(TIMER2);
 }
 }
+
+#else //ENABLE_TX_HW_SERIAL
+
+void  begin(unsigned long baud) {}
+void  write(uint8_t c){}
+void  flush(){}
+void  end(){}
+void  initialize(){}
+
+#endif //ENABLE_TX_SOFT_SERIAL
 
 
 } // namespace TxSoftSerial
