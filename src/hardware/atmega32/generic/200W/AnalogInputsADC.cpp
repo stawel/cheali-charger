@@ -31,6 +31,28 @@
 //#define ENABLE_DEBUG
 #include "debug.h"
 
+
+#ifdef ENABLE_DEBUG
+#define MAX_DEBUG_DATA 160
+uint16_t adcDebugData[MAX_DEBUG_DATA];
+uint8_t adcDebugCount = 0;
+uint16_t adcDebugTime = 0;
+bool adcDebugStart = false;
+
+void LogDebug_run() {
+    if(adcDebugCount >= MAX_DEBUG_DATA && Time::diffU16(adcDebugTime, Time::getMilisecondsU16()) > 1000) {
+        for (int i=0;i<MAX_DEBUG_DATA;i++) {
+            LogDebug(i, ':', adcDebugData[i]);
+        }
+        LogDebug('-');
+        adcDebugStart = false;
+        adcDebugCount = 0;
+        adcDebugTime = Time::getMilisecondsU16();
+    }
+}
+#endif
+
+
 /* ADC - measurement:
  * program flow: see conversionDone()
  */
@@ -77,12 +99,6 @@ struct adc_correlation {
 };
 
 #define ADC_STANDARD_PER_ROUND 2
-#if MAX_BANANCE_CELLS > 6
-#define ADC_I_DISCHARGE_PER_ROUND 2
-#else
-#define ADC_I_DISCHARGE_PER_ROUND 1
-#endif
-
 #define NO_NOISE 0
 
 //reorder multiplexer addresses based on MUX_ADR?_PIN to simplify getPortBAddress()
@@ -116,8 +132,9 @@ const adc_correlation order_analogInputs_on[] PROGMEM = {
     {MADDR_REORDER(MADDR_BUTTON_START),     MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_START,   NO_NOISE},
     {MADDR_REORDER(MADDR_V_BALANSER8),      MUX1_Z_A_PIN,           AnalogInputs::Vb8_pin,          0,              NO_NOISE},
 #else
-    {MADDR_REORDER(MADDR_BUTTON_STOP),      MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_STOP,    NO_NOISE},
     {-1,                                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0,              NO_NOISE},
+    {MADDR_REORDER(MADDR_BUTTON_STOP),      MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_STOP,    NO_NOISE},
+    {-1,                                    DISCHARGE_CURRENT_PIN,  AnalogInputs::Idischarge,       0,              NO_NOISE},
     {MADDR_REORDER(MADDR_BUTTON_START),     MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_START,   NO_NOISE},
 #endif
 };
@@ -147,30 +164,25 @@ inline uint8_t getPortBAddress(uint8_t address)
     return (PORTB & 0x1f) | (address & 7) << 5;
 }
 
-uint16_t processConversion()
+void processConversion(uint16_t v)
 {
-    uint8_t low, high, key;
-    uint16_t v;
-    low  = ADCL;
-    high = ADCH;
-
     AnalogInputs::Name name = adc_input.ai_name;
     if(name != AnalogInputs::VirtualInputs) {
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-            v = (high << 8) | low;
             AnalogInputs::i_adc_[name] = v;
-            if(g_addSumToInput)
-                AnalogInputs::i_avrSum_[name] += v;
         }
+        if(g_addSumToInput)
+            AnalogInputs::i_avrSum_[name] += v;
     } else {
-        key = adc_input.key;
+        uint8_t key = adc_input.key;
+        uint8_t high = v >> 8;
+
         if(high < ADC_KEY_BORDER) {
             adc_keyboard_ |= key;
         } else {
             adc_keyboard_ &= ~key;
         }
     }
-    return v;
 }
 
 void finalizeMeasurement()
@@ -184,32 +196,12 @@ void finalizeMeasurement()
             AnalogInputs::i_avrSum_[AnalogInputs::Ismps]            /= ADC_STANDARD_PER_ROUND;
             AnalogInputs::i_avrSum_[AnalogInputs::Vout_plus_pin]    /= ADC_STANDARD_PER_ROUND;
             AnalogInputs::i_avrSum_[AnalogInputs::Vout_minus_pin]   /= ADC_STANDARD_PER_ROUND;
-            AnalogInputs::i_avrSum_[AnalogInputs::Idischarge]       /= ADC_I_DISCHARGE_PER_ROUND;
+            AnalogInputs::i_avrSum_[AnalogInputs::Idischarge]       /= ADC_STANDARD_PER_ROUND;
         }
         //TODO: maybe intterruptFinalizeMeasurement should be removed
         AnalogInputs::intterruptFinalizeMeasurement();
     }
 
-}
-
-#ifdef ENABLE_DEBUG
-#define MAX_DEBUG_DATA 160
-uint16_t adcDebugData[MAX_DEBUG_DATA];
-uint8_t adcDebugCount = 0;
-bool adcDebugStart = false;
-#endif
-
-void debug() {
-#ifdef ENABLE_DEBUG
-    if(adcDebugCount == MAX_DEBUG_DATA){
-        for (int i=0;i<MAX_DEBUG_DATA;i++) {
-            LogDebug(i, ':', adcDebugData[i]);
-        }
-        LogDebug('-');
-        adcDebugStart = false;
-        adcDebugCount = 0;
-    }
-#endif
 }
 
 void addAdcNoise()
@@ -234,31 +226,36 @@ void addAdcNoise()
     }
 }
 
-#if ANALOG_INPUTS_ADC_BURST_COUNT < 4
-#error "ANALOG_INPUTS_ADC_BURST_COUNT < 4"
+#if ANALOG_INPUTS_ADC_BURST_COUNT < 2
+#error "ANALOG_INPUTS_ADC_BURST_COUNT < 2"
 #endif
 
 void conversionDone()
 {
     uint16_t v;
+    uint8_t low, high;
+    low  = ADCL;
+    high = ADCH;
+    v = (high << 8) | low;
 
-    //ignore measurement nr 0, ADC channel may not be set yet
-    if(g_adcBurstCount_) {
-        v = processConversion();
+    //ignore first 3 measurements, ADC channel needs to stabilize
+    if(g_adcBurstCount_ > 2) {
+        processConversion(v);
     }
 
 #ifdef ENABLE_DEBUG
-    if(g_adcBurstCount_ == 0 && adc_input.ai_name == AnalogInputs::Vout_plus_pin) {
-        if(adcDebugCount < MAX_DEBUG_DATA) {
+    if(adcDebugCount < MAX_DEBUG_DATA) {
+        if(g_adcBurstCount_ == 0 && adc_input.ai_name == AnalogInputs::Vb4_pin) {
             adcDebugStart = true;
         }
-    }
-    if(adcDebugStart && adcDebugCount < MAX_DEBUG_DATA
-            && adc_input.ai_name == AnalogInputs::VirtualInputs
-           ) {
-        if(g_adcBurstCount_ == 0)
-            adcDebugData[adcDebugCount++] = adc_input.ai_name; //AnalogInputs::i_avrCount_;
-        adcDebugData[adcDebugCount++] = v;
+        if(adcDebugStart) {
+            if(g_adcBurstCount_ == 0) {
+                adcDebugData[adcDebugCount++] = 7777;
+                adcDebugData[adcDebugCount++] = adc_input.ai_name;
+            }
+            adcDebugData[adcDebugCount++] = g_adcBurstCount_;
+            adcDebugData[adcDebugCount++] = v;
+        }
     }
 #endif
 
@@ -274,12 +271,12 @@ void conversionDone()
         break;
 
 #ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
-    case ANALOG_INPUTS_ADC_BURST_COUNT-3:
+    case ANALOG_INPUTS_ADC_BURST_COUNT-1:
         addAdcNoise();
         break;
 #endif
 
-    case ANALOG_INPUTS_ADC_BURST_COUNT:
+    case ANALOG_INPUTS_ADC_BURST_COUNT+2:
         /* set next adc input */
         setADC(adc_input_next.adc);
         /* switch to new input */
