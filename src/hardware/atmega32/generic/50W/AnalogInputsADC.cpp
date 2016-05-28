@@ -65,8 +65,12 @@ void LogDebug_run() {
  */
 
 #define ADC_I_SMPS_PER_ROUND 4
-//discharge ADC capacitor on Vb6 - there is an operational amplifier
+
+#ifdef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
+#define ENABLE_ADC_MUX_CAPACITOR_DISCHARGE
+//discharge mux ADC capacitor on Vb6
 #define ADC_CAPACITOR_DISCHARGE_ADDRESS MADDR_V_BALANSER6
+#endif
 
 namespace AnalogInputsADC {
 
@@ -137,9 +141,8 @@ inline uint8_t nextInput(uint8_t i) {
 
 adc_correlation adc_input;
 adc_correlation adc_input_next;
-static volatile uint8_t g_addSumToInput = 0;
-static volatile uint8_t g_input_ = 0;
-static volatile uint8_t g_adcBurstCount_ = 0;
+static uint8_t g_addSumToInput = 0;
+static uint8_t g_adcBurstCount_ = 0;
 
 
 inline void setADC(uint8_t pin) {
@@ -154,21 +157,14 @@ inline uint8_t getPortBAddress(int8_t address)
     return (PORTB & 0x1f) | (address & 7) << 5;
 }
 
-inline uint16_t processConversion()
+inline void processConversion(uint16_t v)
 {
-    uint8_t low, high;
-    uint16_t v;
-    low  = ADCL;
-    high = ADCH;
-
     AnalogInputs::Name name = adc_input.ai_name;
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        v = (high << 8) | low;
         AnalogInputs::i_adc_[name] = v;
         if(g_addSumToInput)
             AnalogInputs::i_avrSum_[name] += v;
     }
-    return v;
 }
 
 inline void finalizeMeasurement()
@@ -202,7 +198,7 @@ void addAdcNoise()
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         // PORTA up (charge, pin: Pull-up resistor)
         uint8_t old_porta = PORTA;
-        PORTA |= adcbit;
+        PORTA = old_porta | adcbit;
         _delay_loop_1(time);
         PORTA = old_porta;
     }
@@ -215,11 +211,15 @@ void addAdcNoise()
 
 void conversionDone()
 {
+    uint8_t low, high;
     uint16_t v;
+    low  = ADCL;
+    high = ADCH;
+    v = (high << 8) | low;
 
-    //ignore measurement nr 0, ADC channel may not be set yet
-    if(g_adcBurstCount_) {
-        v = processConversion();
+    //ignore first 2 measurements, ADC channel needs to stabilize
+    if(g_adcBurstCount_ > 1) {
+        processConversion(v);
     }
 
 #ifdef ENABLE_DEBUG
@@ -232,6 +232,7 @@ void conversionDone()
 #endif
 
     switch(g_adcBurstCount_++) {
+#ifdef ENABLE_ADC_MUX_CAPACITOR_DISCHARGE
     case 0:
         /* start adc capacitor discharge */
         if(adc_input_next.mux >= 0) {
@@ -239,9 +240,6 @@ void conversionDone()
             DDRA |= IO::pinBitmask(MUX0_Z_D_PIN);
         }
 
-        /* update PID if necessary */
-        if(adc_input.ai_name == AnalogInputs::Ismps)
-            SMPS_PID::update();
         break;
 
     case 1:
@@ -254,14 +252,30 @@ void conversionDone()
             }
         }
         break;
+#else
+    case 1:
+        /* set mux address */
+        if(adc_input_next.mux >= 0) {
+            ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+                PORTB = getPortBAddress(adc_input_next.mux);
+            }
+        }
+        break;
+
+#endif
+    case ANALOG_INPUTS_ADC_BURST_COUNT-3:
+        /* update PID if necessary */
+        if(adc_input.ai_name == AnalogInputs::Ismps)
+            SMPS_PID::update();
+        break;
 
 #ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
-    case ANALOG_INPUTS_ADC_BURST_COUNT-3:
+    case ANALOG_INPUTS_ADC_BURST_COUNT-2:
         addAdcNoise();
         break;
 #endif
 
-    case ANALOG_INPUTS_ADC_BURST_COUNT:
+    case ANALOG_INPUTS_ADC_BURST_COUNT+1:
         /* set next adc input */
         setADC(adc_input_next.adc);
         /* switch to new input */
@@ -271,6 +285,7 @@ void conversionDone()
 }
 
 void setupNextInput() {
+    static uint8_t g_input_ = 0;
     g_input_ = nextInput(g_input_);
     adc_input = adc_input_next;
     pgm::read(adc_input_next, &order_analogInputs_on[nextInput(g_input_)]);
