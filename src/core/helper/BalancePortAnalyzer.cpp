@@ -63,8 +63,9 @@ public:
         StaticMenu(vMenu),
         vNames_(vNames),
         dig_(dig){};
-    virtual void printItem(uint16_t index) {
+    virtual void printItem(uint8_t index) {
         StaticMenu::printItem(index);
+
         AnalogInputs::Name name = pgm::read(&vNames_[index]);
         if(index < MAX_BANANCE_CELLS +3) {
 //            ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
