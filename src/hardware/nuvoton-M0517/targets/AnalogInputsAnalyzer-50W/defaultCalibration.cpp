@@ -50,10 +50,4 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
   {{42*68, ANALOG_AMP (0.100)}, {21*431, ANALOG_AMP (0.300)}},        //IdischargeSet
 };
 
-namespace
-{
-  void assert ()
-  {
-    STATIC_ASSERT (sizeOfArray (AnalogInputs::inputsP_) == AnalogInputs::PHYSICAL_INPUTS);
-  }
-}
+STATIC_ASSERT (sizeOfArray (AnalogInputs::inputsP_) == AnalogInputs::PHYSICAL_INPUTS);
