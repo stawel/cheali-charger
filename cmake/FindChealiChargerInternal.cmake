@@ -40,7 +40,7 @@ MACRO(CHEALI_GENERIC_CHARGER CHARGER)
     set(name "${CMAKE_PROJECT_NAME}-${hardware}")
 #    hexfile short name
 #    set(name "${hardware}")
-    set(execName "${name}_${cheali-charger-version}-${cheali-charger-buildnumber}_${TARGET_CPU}")
+    set(execName "${name}_${cheali-charger-version}-${cheali-charger-eeprom-version-string}-${cheali-charger-buildnumber}_${TARGET_CPU}")
     set(sizeName "${name}")
 
     include(${CMAKE_SOURCE_DIR}/src/core/core.cmake)
