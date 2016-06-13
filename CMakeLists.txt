@@ -9,7 +9,7 @@ find_package(ChealiChargerInternal REQUIRED)
 
 string(TIMESTAMP timestamp "%Y%m%d")
 
-set(cheali-charger-version 1.99)
+set(cheali-charger-version 2.00)
 set(cheali-charger-eeprom-calibration-version 10)
 set(cheali-charger-eeprom-programdata-version 3)
 set(cheali-charger-eeprom-settings-version 12)
