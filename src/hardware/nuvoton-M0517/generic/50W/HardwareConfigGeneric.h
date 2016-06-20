@@ -39,7 +39,7 @@
 
 #define ENABLE_EXT_TEMP_AND_UART_COMMON_OUTPUT
 
-#define ENABLE_TX_HW_SERIAL   // if set, need to adjust TX_HW_SERIAL_PIN in imaxB6-pins.h
+#define ENABLE_TX_HW_SERIAL_PIN7_PIN38   // if set, need to adjust TX_HW_SERIAL_PIN in imaxB6-pins.h
 
 #define ENABLE_GET_PID_VALUE
 #define ENABLE_EXPERT_VOLTAGE_CALIBRATION

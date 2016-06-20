@@ -27,7 +27,11 @@ struct Settings {
     enum UARTType {Disabled, Normal,  Debug,  ExtDebug, ExtDebugAdc};
     enum FanOnType {FanDisabled, FanAlways, FanProgram, FanTemperature, FanProgramTemperature};
 
-    enum UARTOutput {Software, HardwarePin7, HardwarePin38};
+    enum UARTOutput {TempOutput, Separeted
+#ifdef ENABLE_TX_HW_SERIAL_PIN7_PIN38
+        , HardwarePin7, HardwarePin38
+#endif
+    };
     enum MenuType  {MenuSimple, MenuAdvanced};
     enum MenuButtonsType  {MenuButtonsNormal, MenuButtonsReversed};
 

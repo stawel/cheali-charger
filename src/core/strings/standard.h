@@ -110,9 +110,10 @@ namespace SettingsMenu {
     STRING(reset,       "reset");
 
     //UARToutput menu
-    STRING(temp,    "temp");
-    STRING(pin7,    "pin7");
-    STRING(pin38,   "pin38");
+    STRING(temp,        "temp");
+    STRING(separated,   "separ");
+    STRING(pin7,        "pin7");
+    STRING(pin38,       "pin38");
 
     //UART view menu
     STRING(disable,     "disabled");
