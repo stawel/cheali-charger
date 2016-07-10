@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <inttypes.h>
+#include <stdint.h>
 #include "Hardware.h"
 #include "LcdPrint.h"
 #include "Menu.h"
@@ -29,9 +29,9 @@ Menu::Menu(uint8_t size):
 uint8_t Menu::run() {
     uint8_t button = Keyboard::getPressedWithDelay();
 
-    if(runReversedPolarityInfo()) {
+    if(PolarityCheck::runReversedPolarityInfo()) {
         render_ = true;
-        return REVERSED_POLARITY;
+        return POLARITY_CHECK_REVERSED_POLARITY;
     }
 
     uint8_t index = getIndex();

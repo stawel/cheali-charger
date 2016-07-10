@@ -15,32 +15,13 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-//Switched-mode power supply
+#ifndef SETTINGSMENU_H_
+#define SETTINGSMENU_H_
 
-#ifndef SMPS_H_
-#define SMPS_H_
+#include "Settings.h"
 
-#include <stdint.h>
-#include "AnalogInputsTypes.h"
-
-namespace SMPS {
-    void initialize();
-
-    bool isPowerOn();
-    bool isWorking();
-
-    //returns the truly set Iout
-    AnalogInputs::ValueType getIout();
-    void trySetIout(AnalogInputs::ValueType I);
-
-    uint16_t getValue();
-    void setValue(uint16_t value);
-
-    void powerOn();
-    void powerOff();
-
+namespace SettingsMenu {
+    void run();
 };
 
-
-
-#endif /* SMPS_H_ */
+#endif /* SETTINGSMENU_H_ */

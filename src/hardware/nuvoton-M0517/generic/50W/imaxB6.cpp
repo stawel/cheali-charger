@@ -23,6 +23,7 @@
 #include "IO.h"
 #include "Keyboard.h"
 #include "outputPWM.h"
+#include "LiquidCrystal.h"
 
 
 uint8_t hardware::getKeyPressed()
@@ -71,7 +72,8 @@ void hardware::initializePins()
 
 void hardware::initialize()
 {
-    lcd.begin(LCD_COLUMNS, LCD_LINES);
+    LiquidCrystal::init();
+    LiquidCrystal::begin(LCD_COLUMNS, LCD_LINES);
     AnalogInputsADC::initialize();
     outputPWM::initialize();
     setVoutCutoff(MAX_CHARGE_V);
@@ -104,8 +106,6 @@ void hardware::setBalancer(uint8_t v)
     IO::digitalWrite(BALANCER5_LOAD_PIN, v&16);
     IO::digitalWrite(BALANCER6_LOAD_PIN, v&32);
 }
-
-LiquidCrystal lcd;
 
 void hardware::setExternalTemperatueOutput(bool enable)
 {

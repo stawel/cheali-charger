@@ -38,14 +38,14 @@ namespace StartInfoStrategy {
 
 void StartInfoStrategy::powerOn()
 {
-    Screen::blink.startBlinkOn(7);
+    Blink::startBlinkOn(7);
     Buzzer::begin();
     ok_ = 3;
 }
 
 void StartInfoStrategy::powerOff()
 {
-    Screen::blink.stopBlink();
+    Blink::stopBlink();
     Buzzer::soundOff();
 }
 
@@ -78,10 +78,10 @@ Strategy::statusType StartInfoStrategy::doStrategy()
             absDiff(AnalogInputs::getRealValue(AnalogInputs::Vout),
                AnalogInputs::getRealValue(AnalogInputs::Vbalancer)) > ANALOG_VOLT(0.5)) v_out = true;
 
-    Screen::blink.blinkIndex_ = 7;
-    if(cell_nr)     Screen::blink.blinkIndex_ -= 4;
-    if(v_balance)   Screen::blink.blinkIndex_ -= 2;
-    if(v_out)       Screen::blink.blinkIndex_ -= 1;
+    Blink::blinkIndex_ = 7;
+    if(cell_nr)     Blink::blinkIndex_ -= 4;
+    if(v_balance)   Blink::blinkIndex_ -= 2;
+    if(v_out)       Blink::blinkIndex_ -= 1;
 
     if(cell_nr || v_balance || v_out) {
         Buzzer::soundInfo();

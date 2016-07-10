@@ -18,7 +18,7 @@
 #ifndef SETTINGS_H_
 #define SETTINGS_H_
 
-#include <inttypes.h>
+#include <stdint.h>
 #include "AnalogInputs.h"
 
 

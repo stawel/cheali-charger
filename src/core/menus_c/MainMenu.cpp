@@ -15,55 +15,50 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "ChealiCharger2.h"
+#include "ProgramMenus.h"
+#include "OptionsMenu.h"
 #include "MainMenu.h"
+#include "Menu.h"
 #include "ProgramData.h"
-#include "AnalogInputs.h"
-#include "Utils.h"
-#include "Buzzer.h"
-#include "Version.h"
-#include "Settings.h"
-#include "StackInfo.h"
-#include "Hardware.h"
-#include "SerialLog.h"
-#include "eeprom.h"
-#include "cpu.h"
-#include "Serial.h"
-#include "Screen.h"
-#include "helper.h"
+#include "LcdPrint.h"
 #include "memory.h"
 
+namespace MainMenu {
 
-void setup()
-{
-    hardware::initializePins();
-    cpu::init();
+    const char string_options[] PROGMEM = "options";
 
-    hardware::initialize();
-    Time::initialize();
-    SMPS::initialize();
-    Discharger::initialize();
-    AnalogInputs::initialize();
-    Serial::initialize();
 
-#ifdef ENABLE_STACK_INFO
-    StackInfo::initialize();
-#endif
+    void printItem(uint8_t i) {
+        if(i < 1) {
+            lcdPrint_P(string_options);
+        } else {
+            ProgramData::printProgramData(i - 1);
+        }
+    }
 
-    Settings::load();
-    Screen::initialize();
 
-    Screen::runWelcomeScreen();
+    void run()
+    {
+        int8_t index = 0;
+        while(true) {
+            Menu::initialize(MAX_PROGRAMS + 1);
+            Menu::printMethod_ = printItem;
+            Menu::setIndex(index);
+            index = Menu::run();
+
+            if(index >= 0)  {
+                if(index == 0) {
+                    OptionsMenu::run();
+                } else {
+                    ProgramMenus::selectProgram(index - 1);
+                }
+            } else {
+                index = 0;
+            }
+        }
+    }
+
 }
 
 
-int main()
-{
-    setup();
-#ifdef ENABLE_HELPER
-    helperMain();
-#else
-    eeprom::check();
-    MainMenu::run();
-#endif
-}
+

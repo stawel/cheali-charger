@@ -18,7 +18,14 @@
 #include "Time.h"
 #include "Blink.h"
 
-bool Blink::getBlinkOff() const
+namespace Blink {
+
+    int8_t blinkIndex_;
+    uint8_t blinkTime_;
+
+}
+
+bool Blink::getBlinkOff()
 {
     if(blinkIndex_ >= 0) {
         uint8_t mili = blinkTime_;
@@ -28,7 +35,7 @@ bool Blink::getBlinkOff() const
     return false;
 }
 
-bool Blink::getBlinkChanged() const
+bool Blink::getBlinkChanged()
 {
     if(blinkIndex_ >= 0) {
         uint8_t mili1 = blinkTime_-1;
@@ -39,5 +46,4 @@ bool Blink::getBlinkChanged() const
     }
     return false;
 }
-
 

@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2014  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,32 +15,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-//Switched-mode power supply
-
-#ifndef SMPS_H_
-#define SMPS_H_
+#ifndef PROGRAM_MENUS_H_
+#define PROGRAM_MENUS_H_
 
 #include <stdint.h>
-#include "AnalogInputsTypes.h"
 
-namespace SMPS {
-    void initialize();
-
-    bool isPowerOn();
-    bool isWorking();
-
-    //returns the truly set Iout
-    AnalogInputs::ValueType getIout();
-    void trySetIout(AnalogInputs::ValueType I);
-
-    uint16_t getValue();
-    void setValue(uint16_t value);
-
-    void powerOn();
-    void powerOff();
-
+namespace ProgramMenus {
+    void selectProgram(uint8_t index);
 };
 
 
-
-#endif /* SMPS_H_ */
+#endif /* PROGRAM_MENUS_H_ */

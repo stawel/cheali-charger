@@ -31,7 +31,6 @@
 #include "memory.h"
 #include "StartInfoStrategy.h"
 #include "Buzzer.h"
-#include "StaticMenu.h"
 #include "Settings.h"
 #include "SerialLog.h"
 #include "DelayStrategy.h"
@@ -178,8 +177,10 @@ void Program::dischargeOutputCapacitor()
 
 void Program::run(ProgramType prog)
 {
+#ifdef ENABLE_CALIBRATION_CHECK
     if(!Calibrate::check())
         return;
+#endif
 
     dischargeOutputCapacitor();
 

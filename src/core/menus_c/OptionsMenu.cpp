@@ -15,32 +15,37 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-//Switched-mode power supply
+#include "OptionsMenu.h"
+#include "Menu.h"
+#include "Calibrate.h"
+#include "SettingsMenu.h"
+#include "Hardware.h"
+#include "eeprom.h"
+#include "memory.h"
 
-#ifndef SMPS_H_
-#define SMPS_H_
+using namespace options;
 
-#include <stdint.h>
-#include "AnalogInputsTypes.h"
-
-namespace SMPS {
-    void initialize();
-
-    bool isPowerOn();
-    bool isWorking();
-
-    //returns the truly set Iout
-    AnalogInputs::ValueType getIout();
-    void trySetIout(AnalogInputs::ValueType I);
-
-    uint16_t getValue();
-    void setValue(uint16_t value);
-
-    void powerOn();
-    void powerOff();
-
+const Menu::StaticMenu optionsStaticMenu[] PROGMEM = {
+        {string_settings,       SettingsMenu::run },
+#ifdef ENABLE_CALIBRATION
+        {string_calibrate,      Calibrate::run  },
+#endif
+#ifdef ENABLE_EEPROM_RESTORE_DEFAULT
+        {string_resetDefault,   OptionsMenu::resetDefault },
+#endif
+        {NULL, NULL}
 };
 
+void OptionsMenu::resetDefault()
+{
+    eeprom::restoreDefault();
+}
 
-
-#endif /* SMPS_H_ */
+void OptionsMenu::run()
+{
+    int8_t i;
+    do {
+        Menu::initializeStatic(optionsStaticMenu);
+        i = Menu::runStatic();
+    } while(i >= 0);
+}

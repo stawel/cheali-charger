@@ -18,16 +18,16 @@
 #ifndef POLARITYCHECK_H_
 #define POLARITYCHECK_H_
 
-#include <inttypes.h>
+#include <stdint.h>
 
-class PolarityCheck {
-public:
-    static const uint8_t REVERSED_POLARITY = 127;
+#define POLARITY_CHECK_REVERSED_POLARITY    127
 
-    static bool isReversedPolarity_;
-    static bool checkReversedPolarity_;
+namespace PolarityCheck {
 
-    static bool runReversedPolarityInfo();
-};
+    extern bool isReversedPolarity_;
+    extern bool checkReversedPolarity_;
+
+    bool runReversedPolarityInfo();
+}
 
 #endif /* POLARITYCHECK_H_ */

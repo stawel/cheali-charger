@@ -18,7 +18,7 @@
 #ifndef SCREEN_H_
 #define SCREEN_H_
 
-#include <inttypes.h>
+#include <stdint.h>
 #include "Blink.h"
 #include "Hardware.h"
 
@@ -42,7 +42,6 @@
 
 namespace Screen {
 
-    extern Blink blink;
     extern uint8_t keyboardButton;
 
     void displayCalibrationErrorScreen(uint8_t errNo);

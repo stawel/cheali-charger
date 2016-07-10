@@ -334,7 +334,7 @@ public:
             }
         } else {
             StaticMenu::printItem(index);
-            if(getBlinkIndex() != index) {
+            if(Blink::getBlinkIndex() != index) {
                 switch (index) {
                     case 0:
                         lcdPrintUnsigned(value_, 9);

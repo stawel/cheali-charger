@@ -20,26 +20,26 @@
 
 bool EditMenu::runEdit()
 {
-    startBlinkOff(getIndex());
+    Blink::startBlinkOff(getIndex());
     uint8_t key;
     render_ = true;
     do {
         key =  Keyboard::getPressedWithDelay();
         if(key == BUTTON_DEC || key == BUTTON_INC) {
             editItem(getIndex(), key);
-            startBlinkOn(getIndex());
+            Blink::startBlinkOn(getIndex());
             render_ = true;
         } else if(key == BUTTON_STOP || key == BUTTON_START) {
             break;
         }
-        if(getBlinkChanged())
+        if(Blink::getBlinkChanged())
             render_ = true;
         if(render_)
             display();
-        incBlinkTime();
+        Blink::incBlinkTime();
     } while(true);
 
-    stopBlink();
+    Blink::stopBlink();
     waitRelease_ = true;
     render_ = true;
     return key == BUTTON_START;

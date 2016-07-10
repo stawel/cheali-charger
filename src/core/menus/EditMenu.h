@@ -22,7 +22,7 @@
 #include "Blink.h"
 
 
-class EditMenu : public StaticMenu, public Blink {
+class EditMenu : public StaticMenu {
 public:
     EditMenu(const char * const* staticMenu): StaticMenu(staticMenu){}
     virtual void printItem(uint8_t item) {}
