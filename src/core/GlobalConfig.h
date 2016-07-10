@@ -33,9 +33,8 @@
 #define ENABLE_EEPROM_RESTORE_DEFAULT
 #define ENABLE_SETTINGS_MENU_RESET
 
-//menus_c
-//#define ENABLE_CALIBRATION
-//#define ENABLE_CALIBRATION_CHECK
+#define ENABLE_CALIBRATION
+#define ENABLE_CALIBRATION_CHECK
 
 /*
  * (experimental and dangerous)

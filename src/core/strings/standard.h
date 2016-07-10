@@ -175,7 +175,7 @@ namespace DeltaChargeStrategy {
     STRING(externalTemperatureReachedDeltaTLimit,   "dT/dt");
 }
 
-namespace Calibrate {
+namespace Calibration {
     STRING(connect,     "connect");
     STRING(disconnect,  "disconnect");
     STRING(battery,     "battery!");
@@ -187,7 +187,7 @@ namespace Calibrate {
     STRING(dischargeCurrent,    "I discharge");
     STRING(externalTemperature, "temp extern");
     STRING(internalTemperature, "temp intern");
-    STRING(extertsVoltage,      "expert DANGER!");
+    STRING(expertVoltage,       "expert DANGER!");
 
 
     //calibration voltage menu

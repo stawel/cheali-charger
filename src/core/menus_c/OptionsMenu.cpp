@@ -17,7 +17,7 @@
 */
 #include "OptionsMenu.h"
 #include "Menu.h"
-#include "Calibrate.h"
+#include "Calibration.h"
 #include "SettingsMenu.h"
 #include "Hardware.h"
 #include "eeprom.h"
@@ -28,7 +28,7 @@ using namespace options;
 const Menu::StaticMenu optionsStaticMenu[] PROGMEM = {
         {string_settings,       SettingsMenu::run },
 #ifdef ENABLE_CALIBRATION
-        {string_calibrate,      Calibrate::run  },
+        {string_calibrate,      Calibration::run  },
 #endif
 #ifdef ENABLE_EEPROM_RESTORE_DEFAULT
         {string_resetDefault,   OptionsMenu::resetDefault },

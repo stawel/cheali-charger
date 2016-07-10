@@ -35,7 +35,7 @@
 #include "SerialLog.h"
 #include "DelayStrategy.h"
 #include "ProgramDCcycle.h"
-#include "Calibrate.h"
+#include "Calibration.h"
 
 namespace Program {
     ProgramType programType;
@@ -178,7 +178,7 @@ void Program::dischargeOutputCapacitor()
 void Program::run(ProgramType prog)
 {
 #ifdef ENABLE_CALIBRATION_CHECK
-    if(!Calibrate::check())
+    if(!Calibration::check())
         return;
 #endif
 
