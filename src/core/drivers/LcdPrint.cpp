@@ -314,7 +314,7 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
             return;
 
         bool sign = false;
-        if(type == AnalogInputs::SignedVoltage) {
+        if(type == AnalogInputs::SignedVoltage || type == AnalogInputs::TemperatureMinutes) {
             int16_t y = x;
             if(y < 0) {
                 sign = true;
@@ -339,7 +339,7 @@ void lcdCreateCGRam()
    CGRAM[5] = 0b10001;
    CGRAM[6] = 0b10001;
    CGRAM[7] = 0b11111;
-   LiquidCrystal::createChar(0, CGRAM); //empty
+   LiquidCrystal::createChar(0, CGRAM); //battery empty
 
    CGRAM[0] = 0b01110;
    CGRAM[1] = 0b11111;
@@ -349,7 +349,7 @@ void lcdCreateCGRam()
    CGRAM[5] = 0b11111;
    CGRAM[6] = 0b11111;
    CGRAM[7] = 0b11111;
-   LiquidCrystal::createChar(1, CGRAM); //half
+   LiquidCrystal::createChar(1, CGRAM); //battery half full
 
    CGRAM[0] = 0b01110;
    CGRAM[1] = 0b11111;
@@ -359,7 +359,7 @@ void lcdCreateCGRam()
    CGRAM[5] = 0b11111;
    CGRAM[6] = 0b11111;
    CGRAM[7] = 0b11111;
-   LiquidCrystal::createChar(2, CGRAM); //full
+   LiquidCrystal::createChar(2, CGRAM); //battery full
 }
 #endif
 

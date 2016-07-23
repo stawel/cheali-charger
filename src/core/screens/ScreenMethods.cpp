@@ -59,21 +59,15 @@ namespace Screen { namespace Methods {
     }
 
     void printDeltaV() {
-        int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
-        lcdPrintSigned(x, 5);
-        lcdPrintChar('m');
-        lcdPrintChar('V');
+        AnalogInputs::printRealValue(AnalogInputs::deltaVout, 7);
         lcdPrintSpaces();
 
     }
     void printDeltaT() {
         if(ProgramData::battery.enable_externT) {
-            int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
-            lcdPrintSigned(x*10, 5);
-            lcdPrintChar('m');
-            lcdPrintChar('C');
+            AnalogInputs::printRealValue(AnalogInputs::deltaTextern, 7);
         } else {
-            lcdPrint_P(PSTR("no dT/t"));
+            lcdPrint_P(PSTR("N/A"));
         }
         lcdPrintSpaces();
     }
@@ -202,7 +196,7 @@ void Screen::Methods::displayDeltaVout()
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR("delta V= "));
+    lcdPrint_P(PSTR("dV= "));
     printDeltaV();
 }
 
@@ -218,7 +212,7 @@ void Screen::Methods::displayDeltaTextern()
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR("delta T= "));
+    lcdPrint_P(PSTR("dT/dt= "));
     printDeltaT();
 }
 
