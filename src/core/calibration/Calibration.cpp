@@ -40,15 +40,15 @@ namespace Calibration {
 
 //calibration main menu
 const Menu::StaticMenu optionsStaticMenu[] PROGMEM = {
-        {string_voltage,       			voltageCalibration},
-        {string_chargeCurrent,		    chargeCurrentCalibration},
-        {string_dischargeCurrent,	    dischargeCurrentCalibration},
-        {string_externalTemperature,	externalTemperatureCalibration},
+        {string_voltage,                voltageCalibration},
+        {string_chargeCurrent,          chargeCurrentCalibration},
+        {string_dischargeCurrent,       dischargeCurrentCalibration},
+        {string_externalTemperature,    externalTemperatureCalibration},
 #ifdef ENABLE_T_INTERNAL
-        {string_internalTemperature,	internalTemperatureCalibration},
+        {string_internalTemperature,    internalTemperatureCalibration},
 #endif
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
-        {string_expertVoltage,			expertVoltageCalibration},
+        {string_expertVoltage,          expertVoltageCalibration},
 #endif
         {NULL, NULL}
 };
@@ -56,13 +56,11 @@ const Menu::StaticMenu optionsStaticMenu[] PROGMEM = {
 
 void run()
 {
-    int8_t i;
-
     //TODO: rewrite
     ProgramData::battery.enable_externT = 0;
     SerialLog::powerOn();
 
-	Menu::runStatic(optionsStaticMenu);
+    Menu::runStatic(optionsStaticMenu);
 
     SerialLog::powerOff();
     Program::programState = Program::Done;

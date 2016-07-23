@@ -21,7 +21,6 @@
 #include "ProgramData.h"
 #include "AnalogInputs.h"
 #include "ProgramMenus.h"
-#include "Options.h"
 #include "Utils.h"
 #include "Buzzer.h"
 #include "Version.h"

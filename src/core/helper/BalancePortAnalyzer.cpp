@@ -17,11 +17,9 @@
 */
 #include "ChealiCharger2.h"
 #include "MainMenu.h"
-#include "StaticMenu.h"
 #include "ProgramData.h"
 #include "AnalogInputs.h"
 #include "ProgramMenus.h"
-#include "Options.h"
 #include "Utils.h"
 #include "Buzzer.h"
 #include "Version.h"
@@ -38,6 +36,8 @@
 #include STRINGS_HEADER
 #include "atomic.h"
 #include "memory.h"
+#include "LcdPrint.h"
+#include "Menu.h"
 
 namespace BalancePortAnalyzer {
 
@@ -55,33 +55,6 @@ STRING_CPP(v_menu_cell8,    "Vb8_pin: ");
 STRING_CPP(v_menu_output_plus, "V+_pin:  ");
 STRING_CPP(v_menu_output_minus,"V-_pin:  ");
 STRING_CPP(v_menu_settings, "settings");
-
-
-class VoltageMenu: public StaticMenu {
-public:
-    VoltageMenu(const char * const* vMenu,
-            const AnalogInputs::Name * vNames, uint8_t dig) :
-        StaticMenu(vMenu),
-        vNames_(vNames),
-        dig_(dig){};
-    virtual void printItem(uint8_t index) {
-        StaticMenu::printItem(index);
-
-        AnalogInputs::Name name = pgm::read(&vNames_[index]);
-        if(index < MAX_BANANCE_CELLS +3) {
-//            ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-                lcdPrintUnsigned(AnalogInputs::getADCValue(name), dig_);
-//            }
-
-            if(index > 0) {
-                if((Balancer::balance >> (index-1)) & 1)
-                    lcdPrintChar('*');
-            }
-        }
-    }
-    const AnalogInputs::Name * vNames_;
-    const uint8_t dig_;
-};
 
 const char * const voltageMenu[] PROGMEM = {string_v_menu_cell0, string_v_menu_cell1, string_v_menu_cell2,
         string_v_menu_cell3, string_v_menu_cell4, string_v_menu_cell5, string_v_menu_cell6,
@@ -101,16 +74,34 @@ const AnalogInputs::Name voltageName[] PROGMEM = {
        AnalogInputs::Vout_minus_pin,
 };
 
+static const uint8_t dig_ = 5;
+
+static void printItem(uint8_t index) {
+    lcdPrint_P(voltageMenu, index);
+
+    AnalogInputs::Name name = pgm::read(&voltageName[index]);
+    if(index < MAX_BANANCE_CELLS +3) {
+            lcdPrintUnsigned(AnalogInputs::getADCValue(name), dig_);
+
+        if(index > 0) {
+            if((Balancer::balance >> (index-1)) & 1)
+                lcdPrintChar('*');
+        }
+    }
+}
+
 
 void run() {
     SerialLog::powerOn();
     AnalogInputs::powerOn();
     Balancer::powerOn();
 
-    VoltageMenu v(voltageMenu, voltageName, 5);
-    int16_t index;
+    Menu::initialize(sizeOfArray(voltageMenu));
+    Menu::printMethod_ = printItem;
+    uint8_t index = 0;
     do {
-        index = v.runSimple(true);
+        Menu::setIndex(index);
+        index = Menu::run(true);
         if(index < 1) continue;
         if(index < MAX_BANANCE_CELLS+1) {
             Balancer::setBalance(Balancer::balance ^ (1<<(index-1)));

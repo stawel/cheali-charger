@@ -107,7 +107,7 @@ const EditMenu::StaticEditData editData[] PROGMEM = {
 {string_balancErr,      ADV(LiXX_NiZn),     BATTERY(SIGNED_mV, balancerError),      {ANALOG_VOLT(0.001), ANALOG_VOLT(0.003), ANALOG_VOLT(0.200)}},
 
 {string_enabledV,       COND_NiXX,          BATTERY(ON_OFF, enable_deltaV),         {1, 0, 1}},
-{string_deltaV,         COND_enable_dV,     BATTERY(SIGNED_mV, deltaV),             {CE_STEP_TYPE_SIGNED, -ANALOG_VOLT(0.020), ANALOG_VOLT(0.000)}},
+{string_deltaV,         COND_enable_dV,     BATTERY(SIGNED_mV, deltaV),             {CE_STEP_TYPE_SIGNED, (uint16_t)-ANALOG_VOLT(0.020), ANALOG_VOLT(0.000)}},
 {string_ignoreFirst,    COND_enable_dV,     BATTERY(MINUTES, deltaVIgnoreTime),     {1, 1, 30}},
 
 {string_externT,        COND_BATTERY,       BATTERY(ON_OFF, enable_externT),        {1, 0, 1}},
