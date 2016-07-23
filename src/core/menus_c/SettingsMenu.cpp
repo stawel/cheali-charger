@@ -49,12 +49,21 @@ const cprintf::ArrayData UARTData  PROGMEM = {SettingsUART, &settings.UART};
 const cprintf::ArrayData UARTSpeedsData PROGMEM = {Settings::UARTSpeedValue, &settings.UARTspeed};
 
 
-const char * const SettingsUARToutput[] PROGMEM = {string_temp, string_pin7, string_pin38};
+#ifdef ENABLE_TX_HW_SERIAL_PIN7_PIN38
+const char * const SettingsUARToutput[] PROGMEM = {string_temp, string_separated, string_pin7, string_pin38};
+#else
+const char * const SettingsUARToutput[] PROGMEM = {string_temp, string_separated};
+#endif
+const uint16_t UARToutputDataSize = sizeOfArray(SettingsUARToutput) - 1;
 const cprintf::ArrayData UARToutputData  PROGMEM = {SettingsUARToutput, &settings.UARToutput};
 
 
 const char * const SettingsMenuType[] PROGMEM = {string_simple, string_advanced};
 const cprintf::ArrayData menuTypeData  PROGMEM = {SettingsMenuType, &settings.menuType};
+
+const char * const SettingsMenuButtons[] PROGMEM = {string_normal, string_reversed};
+const cprintf::ArrayData menuButtonsData  PROGMEM = {SettingsMenuButtons, &settings.menuButtons};
+
 
 const AnalogInputs::ValueType Tmin = (Settings::TempDifference/ANALOG_CELCIUS(1) + 1)*ANALOG_CELCIUS(1);
 const AnalogInputs::ValueType Tmax = ANALOG_CELCIUS(99);
@@ -106,11 +115,9 @@ const EditMenu::StaticEditData editData[] PROGMEM = {
 #endif
 {string_UARTview,       COND_ALWAYS,    EDIT_STRING_ARRAY(UARTData),        {1, 0, Settings::ExtDebugAdc}},
 {string_UARTspeed,      COND_UART_ON,   EDIT_UINT32_ARRAY(UARTSpeedsData),  {1, 0, Settings::UARTSpeeds-1}},
-#ifdef ENABLE_TX_HW_SERIAL
-{string_UARToutput,     COND_UART_ON,   EDIT_STRING_ARRAY(UARToutputData),  {1, 0, 2}},
-#endif
+{string_UARToutput,     COND_UART_ON,   EDIT_STRING_ARRAY(UARToutputData),  {1, 0, UARToutputDataSize}},
 {string_MenuType,       COND_ALWAYS,    EDIT_STRING_ARRAY(menuTypeData),    {1, 0, 1}},
-
+{string_MenuButtons,    COND_ALWAYS,    EDIT_STRING_ARRAY(menuButtonsData), {1, 0, 1}},
 #ifdef ENABLE_SETTINGS_MENU_RESET
 {string_reset,          EDIT_MENU_ALWAYS, {0,0,NULL}},
 #endif
