@@ -56,18 +56,22 @@ namespace Menu {
         return retu;
     }
 
-    void initializeStatic(const struct StaticMenu * staticMenu) {
+    static void initializeStatic(const struct StaticMenu * staticMenu) {
         staticMenu_ = staticMenu;
         initialize(countStaticElements());
         printMethod_ = printStatic;
     }
 
-    int8_t runStatic() {
-        int8_t i = run();
-        if(i >= 0) {
-            callVoidMethod_P(&staticMenu_[i].call);
+    int8_t runStatic(const struct StaticMenu * staticMenu) {
+        int8_t i = 0;
+        do {
+            initializeStatic(staticMenu);
             setIndex(i);
-        }
+            i = run();
+            if(i >= 0) {
+                callVoidMethod_P(&staticMenu_[i].call);
+            }
+        } while(i >= 0);
         return i;
     }
 

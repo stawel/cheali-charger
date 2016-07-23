@@ -28,6 +28,8 @@ namespace Calibration {
 	void internalTemperatureCalibration();
 	void expertVoltageCalibration();
 
+	bool testVout(bool balancePort);
+
     void run();
     bool check();
 };

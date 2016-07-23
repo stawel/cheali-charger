@@ -25,6 +25,7 @@
 
 #define CE_STEP_TYPE_SMART      0x7fff
 #define CE_STEP_TYPE_KEY_SPEED  0x7ffd
+#define CE_STEP_TYPE_SIGNED     0x7ffc
 #define CE_STEP_TYPE_METHOD     0x7ffe
 
 
@@ -48,8 +49,8 @@ namespace EditMenu {
         int16_t step;
         union {
             struct {
-                int16_t minValue;
-                int16_t maxValue;
+                uint16_t minValue;
+                uint16_t maxValue;
             };
             EditMethod editMethod;
         };
@@ -62,7 +63,7 @@ namespace EditMenu {
     };
 
     void initialize(const struct StaticEditData * staticEditData, const EditCallBack callback = NULL);
-    int16_t * getEditAddress(uint8_t item);
+    uint16_t * getEditAddress(uint8_t item);
     uint16_t getEnableCondition(uint8_t item);
     void setSelector(uint16_t selector);
 

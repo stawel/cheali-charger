@@ -40,16 +40,15 @@ namespace Calibration {
 
 //calibration main menu
 const Menu::StaticMenu optionsStaticMenu[] PROGMEM = {
-        {string_voltage,       		voltageCalibration},
-/*        {string_chargeCurrent,		chargeCurrentCalibration},
-        {string_dischargeCurrent,	dischargeCurrentCalibration},
-   */     {string_externalTemperature,externalTemperatureCalibration},
+        {string_voltage,       			voltageCalibration},
+        {string_chargeCurrent,		    chargeCurrentCalibration},
+        {string_dischargeCurrent,	    dischargeCurrentCalibration},
+        {string_externalTemperature,	externalTemperatureCalibration},
 #ifdef ENABLE_T_INTERNAL
         {string_internalTemperature,	internalTemperatureCalibration},
 #endif
-
 #ifdef ENABLE_EXPERT_VOLTAGE_CALIBRATION
-        {string_expertVoltage,		expertVoltageCalibration},
+        {string_expertVoltage,			expertVoltageCalibration},
 #endif
         {NULL, NULL}
 };
@@ -63,15 +62,34 @@ void run()
     ProgramData::battery.enable_externT = 0;
     SerialLog::powerOn();
 
-    do {
-        Menu::initializeStatic(optionsStaticMenu);
-        i = Menu::runStatic();
-    } while(i >= 0);
+	Menu::runStatic(optionsStaticMenu);
 
     SerialLog::powerOff();
     Program::programState = Program::Done;
 }
 
+
+bool testVout(bool balancePort)
+{
+    Screen::displayStrings(string_connect, string_battery);
+    bool displayed = false;
+    do {
+        if(AnalogInputs::isConnected(AnalogInputs::Vout)) {
+            if(balancePort == (AnalogInputs::getConnectedBalancePortCellsCount() > 0) )
+                return true;
+            if(!displayed) {
+                if(balancePort) {
+                    Screen::displayStrings(string_connect, string_balancePort);
+                } else {
+                    Screen::displayStrings(string_disconnect, string_balancePort);
+                }
+            }
+            displayed = true;
+        }
+        if(Keyboard::getPressedWithDelay() == BUTTON_STOP)
+            return false;
+    } while(true);
+}
 
 
 /* calibration check */

@@ -40,8 +40,7 @@ namespace Menu {
         const CallMethod call;
     };
 
-    void initializeStatic(const struct StaticMenu * menu);
-    int8_t runStatic();
+    int8_t runStatic(const struct StaticMenu * menu);
 
     void initialize(uint8_t size);
     int8_t run(bool alwaysRefresh = false);

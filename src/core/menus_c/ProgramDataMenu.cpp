@@ -27,7 +27,6 @@ using namespace ProgramData;
 namespace ProgramDataMenu {
 
 /*condition bits:*/
-#define COND_ALWAYS         EDIT_MENU_ALWAYS
 #define COND_NiXX           1
 #define COND_Pb             2
 #define COND_LiXX           4
@@ -91,7 +90,7 @@ const AnalogInputs::ValueType Tstep =  ANALOG_CELCIUS(1);
 |static string          |when to display    | how to display, see cprintf                   | how to edit |
  */
 const EditMenu::StaticEditData editData[] PROGMEM = {
-{string_batteryType,    COND_ALWAYS,        EDIT_STRING_ARRAY(batteryTypeData),     {1, 0,LAST_BATTERY_TYPE-1}},
+{string_batteryType,    EDIT_MENU_ALWAYS,   EDIT_STRING_ARRAY(batteryTypeData),     {1, 0,LAST_BATTERY_TYPE-1}},
 {string_voltage,        COND_BATT_UNKN,     CPRINTF_METHOD(Screen::StartInfo::printVoltageString), STATIC_EDIT_METHOD(changeVoltage)},
 {string_Vc_per_cell,    ADV(LiXX_NiZn_Pb),  BATTERY(V, Vc_per_cell),                {CE_STEP_TYPE_KEY_SPEED,ANALOG_VOLT(0.0),ANALOG_VOLT(5.0)}},
 {string_Vc_per_cell,    COND_Unknown,       BATTERY(V, Vc_per_cell),                {50,ANALOG_VOLT(0.0),MAX_CHARGE_V}},
@@ -100,16 +99,16 @@ const EditMenu::StaticEditData editData[] PROGMEM = {
 {string_Vs_per_cell,    ADV(LiXX),          BATTERY(V, Vs_per_cell),                {CE_STEP_TYPE_KEY_SPEED,ANALOG_VOLT(0.0),ANALOG_VOLT(5.0)}},
 {string_Vd_per_cell,    COND_BATT_UNKN+COND_advanced, BATTERY(V, Vd_per_cell),      {CE_STEP_TYPE_KEY_SPEED,ANALOG_VOLT(0.0),ANALOG_VOLT(5.0)}},
 {string_Vd_per_cell,    COND_Unknown,       BATTERY(V, Vd_per_cell),                {50,ANALOG_VOLT(0.0),MAX_CHARGE_V}},
-{string_capacity,       COND_BATTERY,       BATTERY(CHARGE, capacity),              {CE_STEP_TYPE_SMART, ANALOG_MIN_CHARGE, (int16_t)ANALOG_MAX_CHARGE}},
+{string_capacity,       COND_BATTERY,       BATTERY(CHARGE, capacity),              {CE_STEP_TYPE_SMART, ANALOG_MIN_CHARGE, ANALOG_MAX_CHARGE}},
 {string_Ic,             COND_BATTERY+COND_LED, BATTERY(A, Ic),                      {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
 {string_minIc,          ADV(LiXX_NiZn_Pb_Unkn), BATTERY(A, minIc),                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
-{string_Id,             COND_BATTERY,       BATTERY(A, Id),                         {CE_STEP_TYPE_SMART, ANALOG_VOLT(0.001), MAX_DISCHARGE_I}},
-{string_minId,          ADV(BATTERY),       BATTERY(A, minId),                      {CE_STEP_TYPE_SMART, ANALOG_VOLT(0.001), MAX_DISCHARGE_I}},
+{string_Id,             COND_BATTERY,       BATTERY(A, Id),                         {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_DISCHARGE_I}},
+{string_minId,          ADV(BATTERY),       BATTERY(A, minId),                      {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_DISCHARGE_I}},
 {string_balancErr,      ADV(LiXX_NiZn),     BATTERY(SIGNED_mV, balancerError),      {ANALOG_VOLT(0.001), ANALOG_VOLT(0.003), ANALOG_VOLT(0.200)}},
 
 {string_enabledV,       COND_NiXX,          BATTERY(ON_OFF, enable_deltaV),         {1, 0, 1}},
-{string_deltaV,         COND_enable_dV,     BATTERY(SIGNED_mV, deltaV),             {ANALOG_VOLT(0.001), -ANALOG_VOLT(0.020), ANALOG_VOLT(0.000)}},
-{string_ignoreFirst,    COND_enable_dV,     BATTERY(MINUTES, deltaVIgnoreTime),     {1, 1, 10}},
+{string_deltaV,         COND_enable_dV,     BATTERY(SIGNED_mV, deltaV),             {CE_STEP_TYPE_SIGNED, -ANALOG_VOLT(0.020), ANALOG_VOLT(0.000)}},
+{string_ignoreFirst,    COND_enable_dV,     BATTERY(MINUTES, deltaVIgnoreTime),     {1, 1, 30}},
 
 {string_externT,        COND_BATTERY,       BATTERY(ON_OFF, enable_externT),        {1, 0, 1}},
 {string_dTdt,           COND_enable_dT,     BATTERY_N(TEMP_MINUT, 6, deltaT),       {ANALOG_CELCIUS(0.1), ANALOG_CELCIUS(0.1), ANALOG_CELCIUS(9)}},

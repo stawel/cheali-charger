@@ -37,12 +37,12 @@ namespace EditMenu {
 
     void initialize(const struct StaticEditData * staticEditData, const EditCallBack callback) {
         staticEditData_ = staticEditData;
-        selector = EDIT_MENU_ALWAYS;
         editCallback = callback;
         Menu::initialize(0);
         Menu::printMethod_ = printItem;
         Menu::editMethod_ = editItem;
         Blink::initialize();
+        setSelector(EDIT_MENU_ALWAYS);
     }
 
 
@@ -63,16 +63,16 @@ namespace EditMenu {
         }
     }
 
-    int16_t * getEditAddress(uint8_t item)
+    uint16_t * getEditAddress(uint8_t item)
     {
         uint8_t index = getSelectedIndexOrSize(item);
         cprintf::Data data = pgm::read(&staticEditData_[index].print.data);
-        int16_t * valuePtr = data.int16Ptr;
+        uint16_t * valuePtr = data.uint16Ptr;
         uint8_t type = pgm::read(&staticEditData_[index].print.type);
         if(type == CP_TYPE_STRING_ARRAY || type == CP_TYPE_UINT32_ARRAY) {
             cprintf::ArrayData array;
             pgm::read(array, data.arrayPtr);
-            valuePtr = (int16_t*)array.indexPtr;
+            valuePtr = (uint16_t*)array.indexPtr;
         }
         return valuePtr;
     }
@@ -86,7 +86,7 @@ namespace EditMenu {
 
     void editItem(uint8_t item, uint8_t key)
     {
-        int16_t * valuePtr = getEditAddress(item);
+        uint16_t * valuePtr = getEditAddress(item);
         uint8_t index = getSelectedIndexOrSize(item);
         EditData d = pgm::read(&staticEditData_[index].edit);
         int dir = 1;
@@ -96,13 +96,16 @@ namespace EditMenu {
             changeMinToMaxSmart((uint16_t*)valuePtr, dir, d.minValue, d.maxValue);
         } else if(d.step == CE_STEP_TYPE_METHOD) {
             d.editMethod(dir);
+        } else if(d.step == CE_STEP_TYPE_SIGNED) {
+            int16_t *signedValuePtr = (int16_t*)valuePtr;
+            *signedValuePtr += dir;
+            if(*signedValuePtr > (int16_t)d.maxValue) *signedValuePtr = (int16_t)d.maxValue;
+            if(*signedValuePtr < (int16_t)d.minValue) *signedValuePtr = (int16_t)d.minValue;
         } else {
             if(d.step == CE_STEP_TYPE_KEY_SPEED) {
                 d.step = Keyboard::getSpeedFactor();
             }
-            *valuePtr += dir*d.step;
-            if(*valuePtr < d.minValue) *valuePtr = d.minValue;
-            if(*valuePtr > d.maxValue) *valuePtr = d.maxValue;
+            changeMinToMaxStep(valuePtr, dir, d.minValue, d.maxValue, d.step);
         }
 
         if(editCallback) {
@@ -111,15 +114,8 @@ namespace EditMenu {
     }
 
     void setSelector(uint16_t s) {
-//        uint8_t currentIndex = getSelectedIndexOrSize(Menu::getIndex());
         selector = s;
         Menu::size_ = getSelectedIndexOrSize(0xff);
-/*        for(uint8_t item = 0; item < Menu::size_ ; item++) {
-            if(getSelectedIndexOrSize(item) == currentIndex) {
-                Menu::setIndex(item);
-                break;
-            }
-        }*/
         LogDebug(Menu::size_);
     }
 

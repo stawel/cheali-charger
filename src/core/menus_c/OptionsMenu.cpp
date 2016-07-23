@@ -43,9 +43,5 @@ void OptionsMenu::resetDefault()
 
 void OptionsMenu::run()
 {
-    int8_t i;
-    do {
-        Menu::initializeStatic(optionsStaticMenu);
-        i = Menu::runStatic();
-    } while(i >= 0);
+	Menu::runStatic(optionsStaticMenu);
 }
