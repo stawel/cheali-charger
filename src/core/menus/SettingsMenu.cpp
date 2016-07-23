@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2016  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,10 +18,9 @@
 #include "Hardware.h"
 #include "SettingsMenu.h"
 #include "Utils.h"
-#include "LcdPrint.h"
 #include "Buzzer.h"
 #include "SerialLog.h"
-#include "StaticEditMenu.h"
+#include "EditMenu.h"
 #include "memory.h"
 
 //#define ENABLE_DEBUG
@@ -37,7 +36,7 @@ const char * const SettingsFanOn[] PROGMEM = {
         string_temperature,
         string_tempProgram
 };
-const cprintf::ArrayData FanOnData  PROGMEM = {SettingsFanOn, &settings.fanOn};
+const cprintf::ArrayData FanOnData  PROGMEM     = {SettingsFanOn, &settings.fanOn};
 
 const char * const SettingsUART[] PROGMEM = {
         string_disable,
@@ -46,7 +45,7 @@ const char * const SettingsUART[] PROGMEM = {
         string_extDebug,
         string_extDebugAdc
 };
-const cprintf::ArrayData UARTData  PROGMEM = {SettingsUART, &settings.UART};
+const cprintf::ArrayData UARTData PROGMEM       = {SettingsUART, &settings.UART};
 const cprintf::ArrayData UARTSpeedsData PROGMEM = {Settings::UARTSpeedValue, &settings.UARTspeed};
 
 
@@ -56,14 +55,14 @@ const char * const SettingsUARToutput[] PROGMEM = {string_temp, string_separated
 const char * const SettingsUARToutput[] PROGMEM = {string_temp, string_separated};
 #endif
 const uint16_t UARToutputDataSize = sizeOfArray(SettingsUARToutput) - 1;
-const cprintf::ArrayData UARToutputData  PROGMEM = {SettingsUARToutput, &settings.UARToutput};
+const cprintf::ArrayData UARToutputData PROGMEM = {SettingsUARToutput, &settings.UARToutput};
 
 
-const char * const SettingsMenuType[] PROGMEM = {string_simple, string_advanced};
-const cprintf::ArrayData menuTypeData  PROGMEM = {SettingsMenuType, &settings.menuType};
+const char * const SettingsMenuType[] PROGMEM   = {string_simple, string_advanced};
+const cprintf::ArrayData menuTypeData PROGMEM   = {SettingsMenuType, &settings.menuType};
 
 const char * const SettingsMenuButtons[] PROGMEM = {string_normal, string_reversed};
-const cprintf::ArrayData menuButtonsData  PROGMEM = {SettingsMenuButtons, &settings.menuButtons};
+const cprintf::ArrayData menuButtonsData PROGMEM = {SettingsMenuButtons, &settings.menuButtons};
 
 
 const AnalogInputs::ValueType Tmin = (Settings::TempDifference/ANALOG_CELCIUS(1) + 1)*ANALOG_CELCIUS(1);
@@ -74,10 +73,10 @@ const AnalogInputs::ValueType Tstep =  ANALOG_CELCIUS(1);
 /*condition bits:*/
 #define COND_FAN_ON_T       1
 #define COND_UART_ON        2
-#define COND_ALWAYS         StaticEditMenu::Always
+#define COND_ALWAYS         EDIT_MENU_ALWAYS
 
 uint16_t getSelector() {
-    uint16_t result = StaticEditMenu::Always;
+    uint16_t result = EDIT_MENU_ALWAYS;
 #ifdef ENABLE_FAN
     if(settings.fanOn != Settings::FanProgramTemperature && settings.fanOn != Settings::FanTemperature)
         result -= COND_FAN_ON_T;
@@ -88,43 +87,45 @@ uint16_t getSelector() {
     return result;
 }
 
+#define SETTING_N(type, n, x)   {CP_TYPE_ ## type, n, {&settings.x}}
+#define SETTING(type, x)        SETTING_N(type, 0, x)
+
 /*
-|static string          |when to display| how to display, see cprintf                   | how to edit |
+|static string          |when to display| how to display, see cprintf       | how to edit |
  */
-const StaticEditMenu::StaticEditData editData[] PROGMEM = {
+const EditMenu::StaticEditData editData[] PROGMEM = {
 #ifdef ENABLE_LCD_BACKLIGHT
-{string_backlight,      COND_ALWAYS,    {CP_TYPE_UNSIGNED,0,&settings.backlight},       {1, 0, 100}},
+{string_backlight,      COND_ALWAYS,    SETTING(UNSIGNED, backlight),       {1, 0, 100}},
 #endif
 #ifdef ENABLE_FAN
-{string_fanOn,          COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&FanOnData},            {1, 0, Settings::FanProgramTemperature}},
-{string_fanTempOn,      COND_FAN_ON_T,  {CP_TYPE_TEMPERATURE,0,&settings.fanTempOn},    {Tstep, Tmin, Tmax}},
+{string_fanOn,          COND_ALWAYS,    EDIT_STRING_ARRAY(FanOnData),       {1, 0, Settings::FanProgramTemperature}},
+{string_fanTempOn,      COND_FAN_ON_T,  SETTING(TEMPERATURE, fanTempOn),    {Tstep, Tmin, Tmax}},
 #endif
 #ifdef ENABLE_T_INTERNAL
-{string_dischOff,       COND_ALWAYS,    {CP_TYPE_TEMPERATURE,3,&settings.dischargeTempOff}, {Tstep, Tmin, Tmax}},
+{string_dischOff,       COND_ALWAYS,    SETTING_N(TEMPERATURE, 3, dischargeTempOff), {Tstep, Tmin, Tmax}},
 #endif
-{string_AudioBeep,      COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.audioBeep},         {1, 0, 1}},
-{string_minIc,          COND_ALWAYS,    {CP_TYPE_A,0,&settings.minIc},                  {CE_STEP_TYPE_KEY_SPEED, ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
-{string_maxIc,          COND_ALWAYS,    {CP_TYPE_A,0,&settings.maxIc},                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
-{string_minId,          COND_ALWAYS,    {CP_TYPE_A,0,&settings.minId},                  {CE_STEP_TYPE_KEY_SPEED, ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
-{string_maxId,          COND_ALWAYS,    {CP_TYPE_A,0,&settings.maxId},                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_DISCHARGE_I}},
-{string_inputLow,       COND_ALWAYS,    {CP_TYPE_V,3,&settings.inputVoltageLow},        {ANALOG_VOLT(1), ANALOG_VOLT(7), ANALOG_VOLT(30)}},
+{string_AudioBeep,      COND_ALWAYS,    SETTING(ON_OFF, audioBeep),         {1, 0, 1}},
+{string_minIc,          COND_ALWAYS,    SETTING(A, minIc),                  {CE_STEP_TYPE_KEY_SPEED, ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
+{string_maxIc,          COND_ALWAYS,    SETTING(A, maxIc),                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
+{string_minId,          COND_ALWAYS,    SETTING(A, minId),                  {CE_STEP_TYPE_KEY_SPEED, ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
+{string_maxId,          COND_ALWAYS,    SETTING(A, maxId),                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_DISCHARGE_I}},
+{string_inputLow,       COND_ALWAYS,    SETTING_N(V, 3, inputVoltageLow),   {ANALOG_VOLT(1), ANALOG_VOLT(7), ANALOG_VOLT(30)}},
 #ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
-{string_adcNoise,       COND_ALWAYS,    {CP_TYPE_ON_OFF,0,&settings.adcNoise},          {1, 0, 1}},
+{string_adcNoise,       COND_ALWAYS,    SETTING(ON_OFF, adcNoise),          {1, 0, 1}},
 #endif
-{string_UARTview,       COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&UARTData},             {1, 0, Settings::ExtDebugAdc}},
-{string_UARTspeed,      COND_UART_ON,   {CP_TYPE_UINT32_ARRAY,0,&UARTSpeedsData},       {1, 0, Settings::UARTSpeeds-1}},
-{string_UARToutput,     COND_UART_ON,   {CP_TYPE_STRING_ARRAY,0,&UARToutputData},       {1, 0, UARToutputDataSize}},
-{string_MenuType,       COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&menuTypeData},         {1, 0, 1}},
-{string_MenuButtons,    COND_ALWAYS,    {CP_TYPE_STRING_ARRAY,0,&menuButtonsData},      {1, 0, 1}},
-
+{string_UARTview,       COND_ALWAYS,    EDIT_STRING_ARRAY(UARTData),        {1, 0, Settings::ExtDebugAdc}},
+{string_UARTspeed,      COND_UART_ON,   EDIT_UINT32_ARRAY(UARTSpeedsData),  {1, 0, Settings::UARTSpeeds-1}},
+{string_UARToutput,     COND_UART_ON,   EDIT_STRING_ARRAY(UARToutputData),  {1, 0, UARToutputDataSize}},
+{string_MenuType,       COND_ALWAYS,    EDIT_STRING_ARRAY(menuTypeData),    {1, 0, 1}},
+{string_MenuButtons,    COND_ALWAYS,    EDIT_STRING_ARRAY(menuButtonsData), {1, 0, 1}},
 #ifdef ENABLE_SETTINGS_MENU_RESET
-{string_reset,          StaticEditMenu::Always, {0,0,NULL}},
+{string_reset,          EDIT_MENU_ALWAYS, {0,0,NULL}},
 #endif
-{NULL,                  StaticEditMenu::Last}
+{NULL,                  EDIT_MENU_LAST}
 };
 
-void editCallback(StaticEditMenu * menu, uint16_t * adr) {
-    menu->setSelector(getSelector());
+void editCallback(uint16_t * adr) {
+    EditMenu::setSelector(getSelector());
     Settings::check();
 }
 
@@ -134,17 +135,17 @@ void run() {
     SerialLog::powerOn();
 #endif
 
-    StaticEditMenu menu(editData, editCallback);
+    EditMenu::initialize(editData, editCallback);
     int8_t item;
 
     do {
-        menu.setSelector(getSelector());
-        item = menu.runSimple();
+        EditMenu::setSelector(getSelector());
+        item = EditMenu::run();
 
         if(item < 0) break;
 
 #ifdef ENABLE_SETTINGS_MENU_RESET
-        if(menu.getEditAddress(item) == NULL)  //reset
+        if(EditMenu::getEditAddress(item) == NULL)  //reset
         {
             settings.setDefault();
 #ifdef ENABLE_DEBUG
@@ -156,7 +157,7 @@ void run() {
 #endif
         {
             Settings undo(settings);
-            if(!menu.runEdit()) {
+            if(!EditMenu::runEdit()) {
                 settings = undo;
             } else {
                 Buzzer::soundSelect();
@@ -167,5 +168,7 @@ void run() {
     settings.save();
 }
 
-#undef COND_ALWAYS
 } //namespace SettingsMenu
+
+
+#undef COND_ALWAYS   //needed when all files are packed into one cpp source

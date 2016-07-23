@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2016  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,13 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef SETTINGSMENU_H_
-#define SETTINGSMENU_H_
+#ifndef OPTIONSMENU_H_
+#define OPTIONSMENU_H_
 
-#include "Settings.h"
-
-namespace SettingsMenu {
+namespace OptionsMenu {
     void run();
+    void resetDefault();
 };
 
-#endif /* SETTINGSMENU_H_ */
+#endif /* OPTIONSMENU_H_ */
