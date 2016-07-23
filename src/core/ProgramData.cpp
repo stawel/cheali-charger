@@ -44,8 +44,11 @@ const AnalogInputs::ValueType voltsPerCell[][ProgramData::LAST_VOLTAGE_TYPE] PRO
 //http://batteryuniversity.com/learn/article/charging_the_lead_acid_battery
 /*Pb*/      { ANALOG_VOLT(2.000), ANALOG_VOLT(2.450), ANALOG_VOLT(1.750), ANALOG_VOLT(0.000), ANALOG_VOLT(1.900)},
 
-//LiXX - see also settings: overCharge_LiXX, overDischarge_LiXX
-/*Life*/    { ANALOG_VOLT(3.300), ANALOG_VOLT(3.600), ANALOG_VOLT(2.000), ANALOG_VOLT(3.300), ANALOG_VOLT(3.000)},
+//LiXX
+//based on imaxB6 manual
+//https://github.com/stawel/cheali-charger/issues/184
+/*Life*/    { ANALOG_VOLT(3.300), ANALOG_VOLT(3.600), ANALOG_VOLT(2.500), ANALOG_VOLT(3.300), ANALOG_VOLT(3.000)},
+//based on imaxB6 manual
 /*Lilo*/    { ANALOG_VOLT(3.600), ANALOG_VOLT(4.100), ANALOG_VOLT(2.500), ANALOG_VOLT(3.750), ANALOG_VOLT(3.500)},
 /*LiPo*/    { ANALOG_VOLT(3.700), ANALOG_VOLT(4.200), ANALOG_VOLT(3.000), ANALOG_VOLT(3.850), ANALOG_VOLT(3.209)},
 /*Li430*/   { ANALOG_VOLT(3.700), ANALOG_VOLT(4.300), ANALOG_VOLT(3.000), ANALOG_VOLT(3.850), ANALOG_VOLT(3.209)},
