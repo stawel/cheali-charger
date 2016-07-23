@@ -22,6 +22,9 @@ message(STATUS "cheali-charger-eeprom-programdata-version: ${cheali-charger-eepr
 message(STATUS "cheali-charger-eeprom-settings-version: ${cheali-charger-eeprom-settings-version}")
 message(STATUS "cheali-charger-eeprom-version-string: ${cheali-charger-eeprom-version-string}")
 message(STATUS "cheali-charger-buildnumber: ${cheali-charger-buildnumber}")
+if(enable-short-names)
+    message(WARNING "short names enabled!")
+endif(enable-short-names)
 
 configure_file(src/core/Version.h.in src/core/Version.h)
 
