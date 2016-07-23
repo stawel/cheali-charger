@@ -23,10 +23,9 @@
 #include "LcdPrint.h"
 #include "memory.h"
 
+using namespace options;
+
 namespace MainMenu {
-
-    const char string_options[] PROGMEM = "options";
-
 
     void printItem(uint8_t i) {
         if(i < 1) {

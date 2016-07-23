@@ -66,9 +66,10 @@ namespace ProgramMenus {
 }
 
 namespace options {
-    STRING(settings, "settings");
-    STRING(calibrate, "calibrate");
-    STRING(resetDefault, "reset default");
+    STRING(options,         "options");
+    STRING(settings,        "settings");
+    STRING(calibrate,       "calibrate");
+    STRING(resetDefault,    "reset default");
 }
 
 namespace ProgramData {
