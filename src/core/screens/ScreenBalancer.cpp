@@ -46,10 +46,15 @@ namespace Screen { namespace Balancer {
     }
 
     void printBalancer(uint8_t cell, AnalogInputs::Type type) {
-        if(AnalogInputs::isConnected(AnalogInputs::Name(AnalogInputs::Vb1+cell))) {
-            lcdPrintAnalog(getBalanceValue(cell, type), 6, type);
-        } else {
-            lcdPrint_P(PSTR("  --  "));
+        if(cell < MAX_BANANCE_CELLS) {
+            lcdPrintDigit(cell+1);
+            lcdPrintChar(':');
+
+            if(AnalogInputs::isConnected(AnalogInputs::Name(AnalogInputs::Vb1+cell))) {
+                lcdPrintAnalog(getBalanceValue(cell, type), 6, type);
+            } else {
+                lcdPrint_P(PSTR("  --  "));
+            }
         }
     }
 
@@ -114,23 +119,12 @@ namespace Screen { namespace Balancer {
             }
             lcdPrintSpaces(8 - MAX_BANANCE_CELLS);
         }
-        lcdPrintDigit(from+1);
-        lcdPrintChar(':');
-
         printBalancer(from++, type);
         lcdPrintSpaces();
 
         lcdSetCursor0_1();
-        if(from < MAX_BANANCE_CELLS) {
-            lcdPrintDigit(from+1);
-            lcdPrintChar(':');
-            printBalancer(from++, type);
-        }
-        if(from < MAX_BANANCE_CELLS) {
-            lcdPrintDigit(from+1);
-            lcdPrintChar(':');
-            printBalancer(from, type);
-        }
+        printBalancer(from++, type);
+        printBalancer(from++, type);
         lcdPrintSpaces();
     }
 
