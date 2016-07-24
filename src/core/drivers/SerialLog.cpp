@@ -213,7 +213,7 @@ void sendHeader(uint16_t channel)
     printUInt(Program::programType+1);
     printD();
 
-    printUInt(currentTime/1000);   //timestamp
+    printLong(currentTime/1000);   //timestamp
     printChar('.');
     printUInt((currentTime/100)%10);   //timestamp
     printD();

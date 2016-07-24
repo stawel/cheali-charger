@@ -110,6 +110,14 @@ int8_t lcdPrint_P(const char *str)
     return n;
 }
 
+void lcdPrintR_P(const char *str, int8_t size)
+{
+    uint8_t str_size = pgm::strlen(str);
+    lcdPrintSpaces(size - str_size);
+    lcdPrint_P(str);
+}
+
+
 static uint16_t div10(uint16_t div) {
     if(div <= 100)
         return 100;
@@ -161,13 +169,12 @@ void lcdPrintValue_(uint16_t x, int8_t dig, uint16_t div, bool mili, bool minus)
 
 }
 
-void lcdPrintTime(uint16_t timeSec)
+void lcdPrintTime(uint32_t timeSec, int8_t dig)
 {
-    lcdPrintUnsigned(timeSec/60, 3, '0');
+    lcdPrintUnsigned(timeSec/60, dig-3, ' ');
     lcdPrintChar(':');
     lcdPrintUnsigned(timeSec%60, 2, '0');
 }
-
 
 void lcdPrintYesNo(uint8_t yes, int8_t dig)
 {
@@ -218,7 +225,7 @@ void lcdPrintUnsigned(uint16_t x, int8_t dig)
 
 void lcdPrintSigned(int16_t x, int8_t dig)
 {
-    lcdPrintLong(x,dig);
+    lcdPrintLong(x, dig);
 }
 
 void lcdPrintTemperature(AnalogInputs::ValueType t, int8_t dig)

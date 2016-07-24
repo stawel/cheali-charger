@@ -49,10 +49,10 @@ void Screen::Cycle::displayCycles()
     lcdSetCursor0_0();
     lcdPrintUnsigned(c+1, 1);
     lcdPrintChar(SCREEN_EMPTY_CELL_CHAR);
-    lcdPrintTime(cyclesHistoryTime[c*2]);
+    lcdPrintTime(cyclesHistoryTime[c*2], 6);
     lcdPrintSpace1();
     lcdPrintChar(SCREEN_FULL_CELL_CHAR);
-    lcdPrintTime(cyclesHistoryTime[c*2+1]);
+    lcdPrintTime(cyclesHistoryTime[c*2+1], 6);
     lcdPrintSpaces();
 
     lcdSetCursor0_1();

@@ -140,7 +140,7 @@ namespace Screen {
     void screenEnd(const char * firstLine) {
         lcdSetCursor0_0();
         lcdPrint_P(firstLine);
-        lcdPrintTime(Monitor::getTimeSec());
+        lcdPrintTime(Monitor::getTimeSec(), 7);
         lcdSetCursor0_1();
         lcdPrint_P(Program::stopReason);
         lcdPrintSpaces();
@@ -149,12 +149,12 @@ namespace Screen {
 
 void Screen::displayScreenProgramCompleted()
 {
-    screenEnd(PSTR("complete: "));
+    screenEnd(PSTR("complete:"));
 }
 
 void Screen::displayMonitorError()
 {
-    screenEnd(PSTR("error:    "));
+    screenEnd(PSTR("error:"));
 }
 
 

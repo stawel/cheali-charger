@@ -46,7 +46,7 @@ namespace Monitor {
 
     bool on_;
     uint8_t procent_;
-    uint16_t startTime_totalTime_U16_;
+    uint32_t startTime_totalTime_;
     uint32_t totalBalanceTime_;
     uint32_t totalChargDischargeTime_;
 
@@ -84,10 +84,10 @@ uint16_t Monitor::getETATime()
     return (etaDeltaSec*(kx-procent_));
 }
 
-uint16_t Monitor::getTimeSec()
+uint32_t Monitor::getTimeSec()
 {
-    uint16_t t = startTime_totalTime_U16_;
-    if(on_) t = Time::diffU16(startTime_totalTime_U16_, Time::getSecondsU16());
+    uint32_t t = startTime_totalTime_;
+    if(on_) t = Time::getSeconds() - startTime_totalTime_;
     return t;
 }
 
@@ -171,7 +171,7 @@ void Monitor::powerOn()
 
     isBalancePortConnected = AnalogInputs::isBalancePortConnected();
 
-    startTime_totalTime_U16_ = Time::getSecondsU16();
+    startTime_totalTime_ = Time::getSeconds();
     resetAccumulatedMeasurements();
     i_externalError = MONITOR_EXTERNAL_ERROR_NONE;
     on_ = true;
@@ -191,7 +191,7 @@ void Monitor::resetAccumulatedMeasurements()
 
 void Monitor::powerOff()
 {
-    startTime_totalTime_U16_ = getTimeSec();
+    startTime_totalTime_ = getTimeSec();
     on_ = false;
 }
 
