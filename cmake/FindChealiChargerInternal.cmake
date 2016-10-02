@@ -37,10 +37,14 @@ MACRO(CHEALI_GENERIC_CHARGER CHARGER)
     message(STATUS "generic charger: ${TARGET_GENERIC_CHARGER}" )
     include(${CMAKE_SOURCE_DIR}/src/hardware/${TARGET_CPU}/generic/${TARGET_GENERIC_CHARGER}/generic.cmake)
 
-    set(name "${CMAKE_PROJECT_NAME}-${hardware}")
-#    hexfile short name
-#    set(name "${hardware}")
-    set(execName "${name}_${cheali-charger-version}-${cheali-charger-eeprom-version-string}-${cheali-charger-buildnumber}_${TARGET_CPU}")
+	if(enable-short-names)
+		#    hexfile short names for windows
+		set(name "${hardware}")
+		set(execName "${name}_${TARGET_CPU}")
+	else(enable-short-names)
+		set(name "${CMAKE_PROJECT_NAME}-${hardware}")
+		set(execName "${name}_${cheali-charger-version}-${cheali-charger-eeprom-version-string}-${cheali-charger-buildnumber}_${TARGET_CPU}")
+	endif(enable-short-names)
     set(sizeName "${name}")
 
     include(${CMAKE_SOURCE_DIR}/src/core/core.cmake)

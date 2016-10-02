@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 2.8.11)
 
 Project(cheali-charger)
 
+if("${CMAKE_HOST_SYSTEM_NAME}" MATCHES "[Ww]in")
+	message(STATUS "windows detected: setting enable-short-names to true")
+	set(enable-short-names true)
+endif()
+
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 find_package(UnixCommands)
