@@ -10,10 +10,10 @@ ENDMACRO(CHEALI_ADD)
 
 MACRO(CHEALI_FIND DEST FILES PATHS)
     foreach (SOURCE ${FILES})
-        set(THIS_FILE THIS_FILE-NOTFOUND)
         find_file(THIS_FILE ${SOURCE} PATHS ${PATHS} NO_DEFAULT_PATH)
 #        message("append ${THIS_FILE}, ${SOURCE}")
         list (APPEND ${DEST} ${THIS_FILE})
+        unset(THIS_FILE CACHE)
     endforeach()
 ENDMACRO(CHEALI_FIND)
 

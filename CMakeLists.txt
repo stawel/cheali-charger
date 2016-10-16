@@ -3,9 +3,14 @@ cmake_minimum_required(VERSION 2.8.11)
 Project(cheali-charger)
 
 if("${CMAKE_HOST_SYSTEM_NAME}" MATCHES "[Ww]in")
-	message(STATUS "windows detected: setting enable-short-names to true")
-	set(enable-short-names true)
+        message(STATUS "windows detected: setting enable-short-names-default to ON")
+        set(enable-short-names-default ON)
+else()
+        set(enable-short-names-default OFF)
 endif()
+
+option(enable-short-names "use short names for firmware file" ${enable-short-names-default})
+message(STATUS "firmware file short names: ${enable-short-names}")
 
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
