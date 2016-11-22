@@ -31,8 +31,7 @@
 #define SETTINGS_MAX_DISCHARGE_I        ANALOG_AMP(0.300)
 
 
-//1-13? correlation
-#define SMPS_UPPERBOUND_VALUE               (MAX_CHARGE_I*13)
+#define SMPS_UPPERBOUND_VALUE               65000
 #define DISCHARGER_UPPERBOUND_VALUE         TIMER1_PRECISION_PERIOD
 
 #endif /* HARDWARE_CONFIG_H_ */
