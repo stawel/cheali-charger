@@ -39,5 +39,9 @@
 #define SMPS_UPPERBOUND_VALUE               65000
 #define DISCHARGER_UPPERBOUND_VALUE         TIMER1_PRECISION_PERIOD
 
+//see: https://en.wikipedia.org/wiki/Boost_converter#Continuous_mode
+//D = MAX_PID_MV_FACTOR -1
+//Vout <= Vin/(1-D) = Vin/(2-MAX_PID_MV_FACTOR)
+#define MAX_PID_MV_FACTOR 1.56
 
 #endif /* HARDWARE_CONFIG_H_ */

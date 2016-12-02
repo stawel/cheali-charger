@@ -4,9 +4,13 @@
 #include "AnalogInputs.h"
 #include "atomic.h"
 #include "Monitor.h"
+#include "Utils.h"
 
 //#define ENABLE_DEBUG
 #include "debug.h"
+
+
+STATIC_ASSERT(MAX_PID_MV_FACTOR < 1.61);
 
 namespace {
     volatile uint16_t i_PID_setpoint;
