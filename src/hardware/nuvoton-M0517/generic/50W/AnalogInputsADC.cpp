@@ -18,7 +18,6 @@
 
 #include "atomic.h"
 #include "Hardware.h"
-#include "imaxB6-pins.h"
 #include "SMPS_PID.h"
 #include "adc.h"
 #include "Utils.h"

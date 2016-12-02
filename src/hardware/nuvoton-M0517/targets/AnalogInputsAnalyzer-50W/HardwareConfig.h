@@ -20,6 +20,7 @@
 
 #include "GlobalConfig.h"
 #include "HardwareConfigGeneric.h"
+#include "imaxB6-pins.h"
 
 #define ENABLE_HELPER
 #define ENABLE_HELPER_ANALOG_INPUTS_ANALYZER

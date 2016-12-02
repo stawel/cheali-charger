@@ -18,13 +18,15 @@
 #include "Hardware.h"
 #include "Timer1.h"
 #include "Timer0.h"
-#include "imaxB6-pins.h"
 #include "SMPS_PID.h"
 #include "AnalogInputsADC.h"
 #include "SerialLog.h"
 #include "IO.h"
 #include "Keyboard.h"
 
+#ifndef PINS_H_
+#error pins not defined (include *pins.h header in your HardwareConfig.h)
+#endif
 
 uint8_t hardware::getKeyPressed()
 {

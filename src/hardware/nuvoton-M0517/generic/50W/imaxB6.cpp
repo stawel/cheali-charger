@@ -16,7 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "imaxB6.h"
-#include "imaxB6-pins.h"
 #include "SMPS_PID.h"
 #include "AnalogInputsADC.h"
 #include "SerialLog.h"
@@ -24,6 +23,9 @@
 #include "Keyboard.h"
 #include "outputPWM.h"
 
+#ifndef PINS_H_
+#error pins not defined (include *pins.h header in your HardwareConfig.h)
+#endif
 
 uint8_t hardware::getKeyPressed()
 {

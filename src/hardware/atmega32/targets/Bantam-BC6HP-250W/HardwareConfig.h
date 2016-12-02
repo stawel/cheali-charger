@@ -26,6 +26,7 @@
 #define MADDR_BUTTON_STOP       (7 + MUXINPUT0)
 #define MADDR_BUTTON_START      (6 + MUXINPUT0)
 
+#include "GTPowerA6-10-pins.h"
 
 #define MAX_CHARGE_V            ANALOG_VOLT(27.000)
 #define MAX_CHARGE_I            ANALOG_AMP(10.000)

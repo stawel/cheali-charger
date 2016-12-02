@@ -20,6 +20,7 @@
 
 #include "GlobalConfig.h"
 #include "HardwareConfigGeneric.h"
+#include "imaxB6-pins.h"
 
 #define MAX_CHARGE_V            ANALOG_VOLT(27.000)
 #define MAX_CHARGE_I            ANALOG_AMP(5.000)

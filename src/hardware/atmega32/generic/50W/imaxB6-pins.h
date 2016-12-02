@@ -15,8 +15,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef IMAXB6_PINS_H_
-#define IMAXB6_PINS_H_
+#ifndef PINS_H_
+#define PINS_H_
 
 // pin configuration
 #define MUX_ADR0_PIN            1
@@ -95,4 +95,4 @@
 #define MADDR_V_BALANSER6               6
 #define MADDR_T_EXTERN                  7
 
-#endif /* IMAXB6_PINS_H_ */
+#endif /* PINS_H_ */

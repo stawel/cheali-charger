@@ -29,8 +29,6 @@
 #include "Buzzer.h"
 #include "adc.h"
 
-#include "GTPowerA6-10-pins.h"
-
 #include STRINGS_HEADER
 
 extern LiquidCrystal lcd;

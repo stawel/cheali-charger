@@ -21,6 +21,10 @@
 #include "IO.h"
 #include "Timer0.h"
 
+#ifndef PINS_H_
+#error pins not defined (include *pins.h header in your HardwareConfig.h)
+#endif
+
 void hardware::initializePins()
 {
     setBatteryOutput(false);

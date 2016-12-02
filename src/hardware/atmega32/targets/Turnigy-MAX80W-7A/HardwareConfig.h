@@ -26,6 +26,8 @@
 #define BUTTON_INC_PIN          41
 #define BUTTON_START_PIN        40
 
+#include "imaxB6-pins.h"
+
 #define MAX_CHARGE_V            ANALOG_VOLT(27.000)
 #define MAX_CHARGE_I            ANALOG_AMP(7.000)
 #define MAX_CHARGE_P            ANALOG_WATT(80.000)

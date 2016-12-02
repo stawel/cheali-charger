@@ -21,7 +21,6 @@
 #include <avr/io.h>
 #include "atomic.h"
 #include "Hardware.h"
-#include "imaxB6-pins.h"
 #include "SMPS_PID.h"
 #include "Utils.h"
 #include "memory.h"

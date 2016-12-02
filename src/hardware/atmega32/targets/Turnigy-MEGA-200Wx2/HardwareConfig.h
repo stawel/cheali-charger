@@ -20,6 +20,7 @@
 
 #include "GlobalConfig.h"
 #include "HardwareConfigGeneric.h"
+#include "GTPowerA6-10-pins.h"
 
 //Turnigy Mega 200w X2 has a common display, so we disable custom characters
 #undef ENABLE_LCD_RAM_CG

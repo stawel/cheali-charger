@@ -28,7 +28,6 @@
 #include "Buzzer.h"
 
 #include "Timer1.h"
-#include "imaxB6-pins.h"
 
 #include STRINGS_HEADER
 

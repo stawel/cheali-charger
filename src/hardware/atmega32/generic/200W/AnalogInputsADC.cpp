@@ -21,7 +21,6 @@
 #include <avr/io.h>
 #include "atomic.h"
 #include "Hardware.h"
-#include "GTPowerA6-10-pins.h"
 #include "Utils.h"
 #include "memory.h"
 #include "IO.h"

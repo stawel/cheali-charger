@@ -20,6 +20,7 @@
 
 #include "GlobalConfig.h"
 #include "HardwareConfigGeneric.h"
+#include "GTPowerA6-10-pins.h"
 
 #define ENABLE_HELPER
 #define ENABLE_HELPER_BALANCE_PORT_ANALYZER

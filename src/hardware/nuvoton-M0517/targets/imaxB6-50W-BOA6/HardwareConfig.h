@@ -20,6 +20,7 @@
 
 #include "GlobalConfig.h"
 #include "HardwareConfigGeneric.h"
+#include "imaxB6-pins.h"
 
 #undef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
 

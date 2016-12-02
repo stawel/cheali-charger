@@ -31,6 +31,8 @@
 #define LCD_ENABLE_PIN          23
 #define LCD_RS_PIN              24
 
+#include "GTPowerA6-10-pins.h"
+
 #define MAX_CHARGE_V            ANALOG_VOLT(27.000)
 #define MAX_CHARGE_I            ANALOG_AMP(10.000)
 #define MAX_CHARGE_P            ANALOG_WATT(200.000)

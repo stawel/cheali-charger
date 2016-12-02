@@ -1,5 +1,4 @@
 #include "Hardware.h"
-#include "imaxB6-pins.h"
 #include "SMPS_PID.h"
 #include "IO.h"
 #include "AnalogInputs.h"

@@ -20,6 +20,7 @@
 
 #include "GlobalConfig.h"
 #include "HardwareConfigGeneric.h"
+#include "imaxB6-pins.h"
 
 //based on: http://www.dx.com/p/2-5-lcd-ac-dc-dual-power-b6ac-80w-rc-balance-charger-discharger-123252
 #undef ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
