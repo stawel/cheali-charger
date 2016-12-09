@@ -63,17 +63,6 @@ atmega32 - windows
 - hex file should be in s:\cheali-charger\src\atmega32\targets\\[your charger]\cheali-charger*.hex
 
 
-**cygwin**
-- install [cygwin](https://www.cygwin.com/)
-- in cygwin install: cmake avrdude avr-libc gcc-avr git make
-- in cygwin run:
-<pre>
-  ~/cheali-charger$ ./bootstrap-avr
-  ~/cheali-charger$ make
-</pre>
-- hex file should be in ~/cheali-charger/src/atmega32/targets/[your charger]/cheali-charger*.hex
-
-
 nuvoton M0517 - windows
 -----------------------
 - install [CooCox CoIDE](http://www.coocox.org/)
