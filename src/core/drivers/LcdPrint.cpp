@@ -171,9 +171,15 @@ void lcdPrintValue_(uint16_t x, int8_t dig, uint16_t div, bool mili, bool minus)
 
 void lcdPrintTime(uint32_t timeSec, int8_t dig)
 {
-    lcdPrintUnsigned(timeSec/60, dig-3, ' ');
-    lcdPrintChar(':');
-    lcdPrintUnsigned(timeSec%60, 2, '0');
+    int32_t minutes=timeSec/60;
+    if (minutes > 999) {
+        lcdPrintUnsigned(minutes, dig-1, ' ');
+        lcdPrintChar('m');
+    } else {
+        lcdPrintUnsigned(minutes, dig-3, ' ');
+        lcdPrintChar(':');
+        lcdPrintUnsigned(timeSec%60, 2, '0');
+    }
 }
 
 void lcdPrintYesNo(uint8_t yes, int8_t dig)
