@@ -39,8 +39,8 @@
 
 namespace Monitor {
     volatile uint8_t i_externalError;
-    uint16_t etaDeltaSec;
-    uint16_t etaStartTimeCalc;
+    uint32_t etaDeltaSec;
+    uint32_t etaStartTimeCalc;
 
     bool isBalancePortConnected;
 
@@ -59,11 +59,11 @@ namespace Monitor {
 
 void Monitor::calculateDeltaProcentTimeSec()
 {
-    uint16_t etaSec;
+    uint32_t etaSec;
     uint8_t procent = Monitor::getChargeProcent();
     if(procent_ < procent) {
         procent_ = procent;
-        etaSec = Time::diffU16(Monitor::etaStartTimeCalc, Monitor::getTimeSec());
+        etaSec = Monitor::etaStartTimeCalc-Monitor::getTimeSec();
         etaStartTimeCalc = Monitor::getTimeSec();
         if (etaSec > etaDeltaSec)  {
             etaDeltaSec=etaSec; // find longer time for deltaprocent
@@ -71,7 +71,7 @@ void Monitor::calculateDeltaProcentTimeSec()
     }
 }
 
-uint16_t Monitor::getETATime()
+uint32_t Monitor::getETATime()
 {
     calculateDeltaProcentTimeSec();
     uint8_t kx = 105;
@@ -91,11 +91,11 @@ uint32_t Monitor::getTimeSec()
     return t;
 }
 
-uint16_t Monitor::getTotalBalanceTimeSec() {
+uint32_t Monitor::getTotalBalanceTimeSec() {
     return totalBalanceTime_/1000;
 }
 
-uint16_t Monitor::getTotalChargeDischargeTimeSec() {
+uint32_t Monitor::getTotalChargeDischargeTimeSec() {
     return totalChargDischargeTime_/1000;
 }
 

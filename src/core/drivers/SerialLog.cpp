@@ -257,7 +257,7 @@ void sendChannel1()
 
     printUInt(Monitor::getChargeProcent());
     printD();
-    printUInt(Monitor::getETATime());
+    printLong(Monitor::getETATime());
     printD();
 
     sendEnd();
