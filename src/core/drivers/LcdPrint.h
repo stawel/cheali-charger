@@ -41,6 +41,7 @@ void lcdPrintLong(int32_t t, uint8_t dig);
 
 int8_t lcdPrint_P(const char * const str[], uint8_t index);
 int8_t lcdPrint_P(const char *str);
+void lcdPrintR_P(const char *str, int8_t n);
 int8_t lcdPrint  (const char *str, int8_t n);
 void lcdPrintR(const char *str, int8_t n);
 int8_t lcdPrintSpace1();
@@ -64,6 +65,6 @@ void lcdPrintPercentage(AnalogInputs::ValueType p, int8_t dig);
 void lcdPrint_mV(int16_t p, int8_t dig);
 void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type type);
 
-void lcdPrintTime(uint16_t timeSec);
+void lcdPrintTime(uint32_t timeSec, int8_t dig);
 
 #endif /* LCDPRINT_H_ */

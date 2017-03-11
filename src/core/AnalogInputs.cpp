@@ -228,13 +228,6 @@ void AnalogInputs::_resetDeltaAvr()
     }
 }
 
-void AnalogInputs::resetDelta()
-{
-    _resetDeltaAvr();
-    deltaCount_ = 0;
-    deltaLastT_ = 0;
-}
-
 void AnalogInputs::resetStable()
 {
     ANALOG_INPUTS_FOR_ALL(name) {
@@ -259,11 +252,14 @@ void AnalogInputs::resetAccumulatedMeasurements()
         i_Eout_ = 0;
         i_Eout_dt_ = ANALOG_INPUTS_E_OUT_dt_FACTOR;
     }
+    setReal(deltaVoutMax, getVout());
+    deltaLastT_ = getRealValue(Textern);
+
     resetMeasurement();
-    resetDelta();
+    _resetDeltaAvr();
+    deltaCount_ = 0;
     setReal(Cout, 0);
     setReal(deltaVout, 0);
-    setReal(deltaVoutMax, 0);
     setReal(deltaTextern, 0);
 }
 
@@ -281,6 +277,7 @@ void AnalogInputs::powerOn(bool enableBatteryOutput)
         on_ = true;
         onTintern_ = true;
         doFullMeasurement();
+        resetAccumulatedMeasurements();
         balancePortStateSaved_ = false;
     }
 }
@@ -342,8 +339,6 @@ AnalogInputs::ValueType AnalogInputs::reverseCalibrateValue(Name name, ValueType
 }
 
 
-
-
 void AnalogInputs::initialize()
 {
     reset();
@@ -365,6 +360,10 @@ AnalogInputs::Type AnalogInputs::getType(Name name)
         return Power;
     case Eout:
         return Work;
+    case deltaTextern:
+        return TemperatureMinutes;
+    case deltaVout:
+        return SignedVoltage;
     default:
         return Voltage;
     }

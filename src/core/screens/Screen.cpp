@@ -34,8 +34,6 @@
 
 namespace Screen {
 
-    Blink blink;
-
     uint8_t pageNr_;
     uint8_t keyboardButton;
 
@@ -73,7 +71,7 @@ namespace Screen {
 
     void displayPage() {
         Screen::Cycle::storeCycleHistoryInfo();
-        blink.incBlinkTime();
+        Blink::incBlinkTime();
 
         getPage(pageNr_)();
     }
@@ -106,7 +104,7 @@ void Screen::doStrategy()
 
 void Screen::powerOn()
 {
-    Screen::blink.startBlinkOn(0);
+    Blink::startBlinkOn(0);
     pageNr_ = 0;
     Screen::Cycle::resetCycleHistory();
 }
@@ -142,7 +140,7 @@ namespace Screen {
     void screenEnd(const char * firstLine) {
         lcdSetCursor0_0();
         lcdPrint_P(firstLine);
-        lcdPrintTime(Monitor::getTimeSec());
+        lcdPrintTime(Monitor::getTimeSec(), 7);
         lcdSetCursor0_1();
         lcdPrint_P(Program::stopReason);
         lcdPrintSpaces();
@@ -151,12 +149,12 @@ namespace Screen {
 
 void Screen::displayScreenProgramCompleted()
 {
-    screenEnd(PSTR("complete: "));
+    screenEnd(PSTR("complete:"));
 }
 
 void Screen::displayMonitorError()
 {
-    screenEnd(PSTR("error:    "));
+    screenEnd(PSTR("error:"));
 }
 
 
@@ -237,7 +235,7 @@ void Screen::runCalibrationError(const char *s, uint8_t error) {
 void Screen::runWelcomeScreen() {
     Screen::displayStrings(PSTR( CHEALI_CHARGER_PROJECT_NAME_STRING "\n"
                                 "v" CHEALI_CHARGER_VERSION_STRING));
-    Time::delay(1000);
+    Time::delay(3000);
 }
 
 void Screen::runNeedForceBalance() {

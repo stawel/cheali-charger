@@ -22,7 +22,7 @@
 #include "Hardware.h"
 #include "Settings.h"
 
-#ifdef ENABLE_TX_HW_SERIAL
+#ifdef ENABLE_TX_HW_SERIAL_PIN7_PIN38
 #include "TxHardSerial.h"
 #endif
 
@@ -41,8 +41,8 @@ uint8_t  txBuffer[Tx_BUFFER_SIZE];
 
 void  begin(unsigned long baud)
 {
-#ifdef ENABLE_TX_HW_SERIAL
-    if(settings.UARToutput != Settings::Software) {
+#ifdef ENABLE_TX_HW_SERIAL_PIN7_PIN38
+    if(settings.UARToutput == Settings::HardwarePin7 || settings.UARToutput == Settings::HardwarePin38) {
         write = &(TxHardSerial::write);
         flush = &(TxHardSerial::flush);
         end = &(TxHardSerial::end);
@@ -63,7 +63,7 @@ void  begin(unsigned long baud)
 
 
 void  initialize() {
-#ifdef ENABLE_TX_HW_SERIAL
+#ifdef ENABLE_TX_HW_SERIAL_PIN7_PIN38
     TxHardSerial::initialize();
 #endif
     TxSoftSerial::initialize();

@@ -17,10 +17,10 @@
 */
 #include "ChealiCharger2.h"
 #include "MainMenu.h"
+#include "LcdPrint.h"
 #include "ProgramData.h"
 #include "AnalogInputs.h"
 #include "ProgramMenus.h"
-#include "Options.h"
 #include "Utils.h"
 #include "Buzzer.h"
 #include "Version.h"

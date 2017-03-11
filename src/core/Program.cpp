@@ -31,12 +31,11 @@
 #include "memory.h"
 #include "StartInfoStrategy.h"
 #include "Buzzer.h"
-#include "StaticMenu.h"
 #include "Settings.h"
 #include "SerialLog.h"
 #include "DelayStrategy.h"
 #include "ProgramDCcycle.h"
-#include "Calibrate.h"
+#include "Calibration.h"
 
 namespace Program {
     ProgramType programType;
@@ -178,8 +177,10 @@ void Program::dischargeOutputCapacitor()
 
 void Program::run(ProgramType prog)
 {
-    if(!Calibrate::check())
+#ifdef ENABLE_CALIBRATION_CHECK
+    if(!Calibration::check())
         return;
+#endif
 
     dischargeOutputCapacitor();
 

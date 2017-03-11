@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2016  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,19 +15,61 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef EDITMENU_H_
-#define EDITMENU_H_
+#ifndef EDIT_MENU_H_
+#define EDIT_MENU_H_
 
-#include "StaticMenu.h"
-#include "Blink.h"
+#include <stdint.h>
+#include "Menu.h"
+#include "cprintf.h"
 
 
-class EditMenu : public StaticMenu, public Blink {
-public:
-    EditMenu(const char * const* staticMenu): StaticMenu(staticMenu){}
-    virtual void printItem(uint8_t item) {}
-    virtual void editItem(uint8_t item, uint8_t key) {}
-    bool runEdit();
-};
+#define CE_STEP_TYPE_SMART      0x7fff
+#define CE_STEP_TYPE_KEY_SPEED  0x7ffd
+#define CE_STEP_TYPE_SIGNED     0x7ffc
+#define CE_STEP_TYPE_METHOD     0x7ffe
 
-#endif /* EDITMENU_H_ */
+
+#define EDIT_MENU_ALWAYS        0x7fff
+#define EDIT_MENU_MANDATORY     0x8000
+#define EDIT_MENU_LAST          0x0000
+
+//TODO: rename
+#define STATIC_EDIT_METHOD(method)  {CE_STEP_TYPE_METHOD,  {.editMethod=method}}
+#define EDIT_STRING_ARRAY(x)        {CP_TYPE_STRING_ARRAY,0, {&x}}
+#define EDIT_UINT32_ARRAY(x)        {CP_TYPE_UINT32_ARRAY,0, {&x}}
+
+
+namespace EditMenu {
+
+    typedef void(*EditCallBack)(uint16_t * value);
+    typedef void(*EditMethod)(int dir);
+
+    //TODO: rename EditData
+    struct EditData {
+        int16_t step;
+        union {
+            struct {
+                uint16_t minValue;
+                uint16_t maxValue;
+            };
+            EditMethod editMethod;
+        };
+    };
+    struct StaticEditData {
+        const char * staticString;
+        uint16_t enableCondition;
+        cprintf::PrintData print;
+        EditData edit;
+    };
+
+    void initialize(const struct StaticEditData * staticEditData, const EditCallBack callback = NULL);
+    uint16_t * getEditAddress(uint8_t item);
+    uint16_t getEnableCondition(uint8_t item);
+    void setSelector(uint16_t selector);
+
+
+    inline int8_t run(bool alwaysRefresh = false)   { return Menu::run(alwaysRefresh); }
+    inline bool runEdit()                           { return Menu::runEdit(); }
+
+}
+#endif /* EDIT_MENU_H_ */

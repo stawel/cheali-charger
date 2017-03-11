@@ -19,7 +19,7 @@
 #define CPRINTF_H_
 
 #include <stddef.h>
-#include <inttypes.h>
+#include <stdint.h>
 #include <Utils.h>
 #include "AnalogInputsTypes.h"
 
@@ -43,7 +43,6 @@
 #define CP_TYPE_STRING_ARRAY    2
 //TODO:??
 #define CP_TYPE_METHOD          3
-
 
 #define CPRINTF_METHOD(method) {CP_TYPE_METHOD, 0, {.methodPtr = method}}
 namespace cprintf {

@@ -66,9 +66,10 @@ namespace ProgramMenus {
 }
 
 namespace options {
-    STRING(settings, "settings");
-    STRING(calibrate, "calibrate");
-    STRING(resetDefault, "reset default");
+    STRING(options,         "options");
+    STRING(settings,        "settings");
+    STRING(calibrate,       "calibrate");
+    STRING(resetDefault,    "reset default");
 }
 
 namespace ProgramData {
@@ -110,9 +111,10 @@ namespace SettingsMenu {
     STRING(reset,       "reset");
 
     //UARToutput menu
-    STRING(temp,    "temp");
-    STRING(pin7,    "pin7");
-    STRING(pin38,   "pin38");
+    STRING(temp,        "temp");
+    STRING(separated,   "separ");
+    STRING(pin7,        "pin7");
+    STRING(pin38,       "pin38");
 
     //UART view menu
     STRING(disable,     "disabled");
@@ -174,7 +176,7 @@ namespace DeltaChargeStrategy {
     STRING(externalTemperatureReachedDeltaTLimit,   "dT/dt");
 }
 
-namespace Calibrate {
+namespace Calibration {
     STRING(connect,     "connect");
     STRING(disconnect,  "disconnect");
     STRING(battery,     "battery!");
@@ -186,7 +188,7 @@ namespace Calibrate {
     STRING(dischargeCurrent,    "I discharge");
     STRING(externalTemperature, "temp extern");
     STRING(internalTemperature, "temp intern");
-    STRING(extertsVoltage,      "expert DANGER!");
+    STRING(expertVoltage,       "expert DANGER!");
 
 
     //calibration voltage menu

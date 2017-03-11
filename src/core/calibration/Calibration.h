@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2016  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,15 +15,23 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef CALIBRATE_H_
-#define CALIBRATE_H_
+#ifndef CALIBRATION_H_
+#define CALIBRATION_H_
 
 #include "AnalogInputs.h"
 
-namespace Calibrate {
-    void run();
+namespace Calibration {
+	void voltageCalibration();
+	void chargeCurrentCalibration();
+	void dischargeCurrentCalibration();
+	void externalTemperatureCalibration();
+	void internalTemperatureCalibration();
+	void expertVoltageCalibration();
 
+	bool testVout(bool balancePort);
+
+    void run();
     bool check();
 };
 
-#endif /* CALIBRATE_H_ */
+#endif /* CALIBRATION_H_ */

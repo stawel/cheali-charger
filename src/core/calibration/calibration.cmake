@@ -1,7 +1,9 @@
 
 set(CORE_SOURCE
-    Calibrate.cpp
-    Calibrate.h
+    Calibration.cpp
+    Calibration.h
+    CalibrationMenus.cpp
+    CurrentCalibrationMenus.cpp
 )
 
 CHEALI_ADD("CORE_SOURCE_FILES" "${CORE_SOURCE}")

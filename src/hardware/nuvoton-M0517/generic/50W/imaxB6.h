@@ -20,7 +20,6 @@
 
 #include "HardwareConfig.h"
 
-#include "LiquidCrystal.h"
 #include "Keyboard.h"
 #include "Time.h"
 #include "SMPS.h"
@@ -30,7 +29,6 @@
 
 #include STRINGS_HEADER
 
-extern LiquidCrystal lcd;
 
 namespace hardware {
     void initializePins();

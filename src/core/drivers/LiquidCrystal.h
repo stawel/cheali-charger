@@ -19,7 +19,7 @@
 #ifndef LiquidCrystal_h
 #define LiquidCrystal_h
 
-#include <inttypes.h>
+#include <stdint.h>
 #include <string.h>
 
 // commands
@@ -60,9 +60,7 @@
 #define LCD_5x10DOTS 0x04
 #define LCD_5x8DOTS 0x00
 
-class LiquidCrystal {
-public:
-  LiquidCrystal();
+namespace LiquidCrystal {
 
   void init();
 
@@ -89,29 +87,16 @@ public:
   uint8_t write(uint8_t);
   void command(uint8_t);
 
-  uint8_t write(const char *str) {
+  uint8_t write(const uint8_t *buffer, uint8_t size);
+
+  inline uint8_t write(const char *str) {
       if (str == 0) return 0;
       return write((const uint8_t *)str, strlen(str));
     }
-  uint8_t write(const uint8_t *buffer, uint8_t size);
 
   uint8_t print(char c);
   uint8_t print(const char buffer[]);
 
-private:
-  void send(uint8_t, uint8_t);
-  void write4bits(uint8_t);
-  void write8bits(uint8_t);
-  void pulseEnable();
-
-  uint8_t _displayfunction;
-  uint8_t _displaycontrol;
-  uint8_t _displaymode;
-
-  uint8_t _initialized;
-
-  uint8_t _numlines, _currline;
-
-};
+} //namespace LiquidCrystal
 
 #endif

@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2016  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,89 +19,164 @@
 #include "Hardware.h"
 #include "LcdPrint.h"
 #include "Menu.h"
-#include "Settings.h"
+#include "Blink.h"
+#include "Utils.h"
+#include "memory.h"
+
+namespace Menu {
+
+    uint8_t index_;
+    uint8_t begin_;
+    uint8_t size_;
+    bool render_;
+    bool waitRelease_;
+    PrintMethod printMethod_;
+    EditMethod editMethod_;
+    const struct StaticMenu * staticMenu_;
 
 
-Menu::Menu(uint8_t size):
-        pos_(0), begin_(0), size_(size), render_(true), waitRelease_(true)
-{}
+    void printStatic(uint8_t i) {
+            const char * string;
+            pgm::read(string, &staticMenu_[i].string);
+            lcdPrint_P(string);
+    }
 
-uint8_t Menu::run() {
-    uint8_t button = Keyboard::getPressedWithDelay();
-
-    if(runReversedPolarityInfo()) {
+    void initialize(uint8_t size) {
+        index_ = 0;
+        begin_ = 0;
+        size_ = size;
         render_ = true;
-        return REVERSED_POLARITY;
+        waitRelease_ = true;
     }
 
-    uint8_t index = getIndex();
 
-    int8_t changeIndex = 0;
-    if(button == BUTTON_INC) {
-        changeIndex--;
-    } else if (button == BUTTON_DEC) {
-        changeIndex++;
-    }
-    if(settings.menuButtons == Settings::MenuButtonsReversed) {
-        changeIndex = -changeIndex;
-    }
-    if(changeIndex > 0) {
-        incIndex();
-    } else if (changeIndex < 0) {
-        decIndex();
+    uint8_t countStaticElements() {
+        uint8_t retu = 0;
+        while(pgm::read(&staticMenu_[retu].string)) retu++;
+        return retu;
     }
 
-    if(index != getIndex())
+    static void initializeStatic(const struct StaticMenu * staticMenu) {
+        staticMenu_ = staticMenu;
+        initialize(countStaticElements());
+        printMethod_ = printStatic;
+    }
+
+    int8_t runStatic(const struct StaticMenu * staticMenu) {
+        int8_t i = 0;
+        do {
+            initializeStatic(staticMenu);
+            setIndex(i);
+            i = run();
+            if(i >= 0) {
+                callVoidMethod_P(&staticMenu_[i].call);
+            }
+        } while(i >= 0);
+        return i;
+    }
+
+    void incIndex() {
+        index_++;
+    }
+
+    void decIndex() {
+        if(index_ > 0) {
+            index_ --;
+        }
+    }
+
+    void checkBegin(){
+        const uint8_t lines = LCD_LINES;
+        if(index_ >= size_) {
+            index_ = size_ -1;
+        }
+
+        if(begin_ > index_){
+            begin_ = index_;
+        }
+        if(begin_ + lines <= index_) {
+            begin_ = index_ - lines + 1;
+        }
+    }
+
+    void display() {
+        checkBegin();
+        for(uint8_t i = begin_; i < begin_ + LCD_LINES; i++) {
+            lcdSetCursor(0, i - begin_);
+            lcdPrintChar(i == index_ ? '>' : ' ');
+            if(i < size_) printMethod_(i);
+            lcdPrintSpaces();
+        }
+        render_ = false;
+    }
+
+    uint8_t run_() {
+        uint8_t button = Keyboard::getPressedWithDelay();
+
+        if(PolarityCheck::runReversedPolarityInfo()) {
+            render_ = true;
+            return POLARITY_CHECK_REVERSED_POLARITY;
+        }
+
+        switch (button) {
+        case BUTTON_INC:
+            incIndex();
+            render_ = true;
+            break;
+        case BUTTON_DEC:
+            decIndex();
+            render_ = true;
+            break;
+        }
+
+        if(render_)
+            display();
+
+        return button;
+    }
+
+    int8_t run(bool alwaysRefresh) {
+        uint8_t key;
         render_ = true;
+        do {
+            key = run_();
+            if(key == BUTTON_NONE) waitRelease_ = false;
 
-    if(render_)
-        display();
-
-    return button;
-}
-int8_t Menu::runSimple(bool animate) {
-    uint8_t key;
-    render();
-    do {
-        key = run();
-        if(key == BUTTON_NONE) waitRelease_ = false;
-
-        if(!waitRelease_ && key == BUTTON_START)  {
-            waitRelease_ = true;
-            return getIndex();
-        }
-        if(animate) render();
-    } while(key != BUTTON_STOP || waitRelease_);
-    return MENU_EXIT;
-}
-
-
-void Menu::incIndex() {
-    uint8_t lines = LCD_LINES;
-    if(size_ < lines) lines = size_;
-    if(pos_ < lines - 1) pos_++;
-    else if( begin_ + pos_ < getMenuSize() - 1) begin_++;
-}
-void Menu::decIndex() {
-    if(pos_ > 0) pos_--;
-    else if(begin_ > 0) begin_--;
-}
-
-void Menu::display() {
-    uint8_t lines = LCD_LINES;
-    for(uint8_t i = 0; i < lines; i++) {
-        lcdSetCursor(0, i);
-        lcdPrintChar(i == pos_ ? '>' : ' ');
-        if(i + begin_ < size_) {
-            printItem(i + begin_);
-        }
-        lcdPrintSpaces();
+            if(!waitRelease_ && key == BUTTON_START)  {
+                waitRelease_ = true;
+                return getIndex();
+            }
+            if(alwaysRefresh) render_ = true;
+        } while(key != BUTTON_STOP || waitRelease_);
+        return MENU_EXIT;
     }
-    debug();
-    render_ = false;
-}
+
+    bool runEdit()
+    {
+        Blink::startBlinkOff(getIndex());
+        uint8_t key;
+        render_ = true;
+        do {
+            key =  Keyboard::getPressedWithDelay();
+            if(key == BUTTON_DEC || key == BUTTON_INC) {
+                editMethod_(getIndex(), key);
+                Blink::startBlinkOn(getIndex());
+                render_ = true;
+            } else if(key == BUTTON_STOP || key == BUTTON_START) {
+                break;
+            }
+            if(Blink::getBlinkChanged())
+                render_ = true;
+            if(render_)
+                display();
+            Blink::incBlinkTime();
+        } while(true);
+
+        Blink::stopBlink();
+        waitRelease_ = true;
+        render_ = true;
+        return key == BUTTON_START;
+    }
 
 
-void Menu::debug()
-{
 }

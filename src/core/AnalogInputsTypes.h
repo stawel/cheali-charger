@@ -18,7 +18,7 @@
 #ifndef ANALOGINPUTSTYPES_H_
 #define ANALOGINPUTSTYPES_H_
 
-#include <inttypes.h>
+#include <stdint.h>
 
 #define ANALOG_CELCIUS(x) ((AnalogInputs::ValueType)((x)*100))
 #define ANALOG_CHARGE(x) ((AnalogInputs::ValueType)((x)*1000))

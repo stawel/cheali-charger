@@ -19,7 +19,7 @@ find_package(ChealiChargerInternal REQUIRED)
 
 string(TIMESTAMP timestamp "%Y%m%d")
 
-set(cheali-charger-version 2.00)
+set(cheali-charger-version 2.01)
 set(cheali-charger-eeprom-calibration-version 10)
 set(cheali-charger-eeprom-programdata-version 3)
 set(cheali-charger-eeprom-settings-version 12)
@@ -32,6 +32,9 @@ message(STATUS "cheali-charger-eeprom-programdata-version: ${cheali-charger-eepr
 message(STATUS "cheali-charger-eeprom-settings-version: ${cheali-charger-eeprom-settings-version}")
 message(STATUS "cheali-charger-eeprom-version-string: ${cheali-charger-eeprom-version-string}")
 message(STATUS "cheali-charger-buildnumber: ${cheali-charger-buildnumber}")
+if(enable-short-names)
+    message(WARNING "short names enabled!")
+endif(enable-short-names)
 
 configure_file(src/core/Version.h.in src/core/Version.h)
 

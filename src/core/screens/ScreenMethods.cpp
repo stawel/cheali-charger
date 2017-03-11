@@ -35,7 +35,6 @@ namespace Screen { namespace Methods {
 
     void printCharge() {
         lcdPrintCharge(AnalogInputs::getRealValue(AnalogInputs::Cout), 8);
-        lcdPrintSpace1();
     }
 
     void printCharAndTime() {
@@ -53,31 +52,35 @@ namespace Screen { namespace Methods {
             c = 'W';
         }
         lcdPrintChar(c);
-        lcdPrintSpace1();
-        lcdPrintTime(Monitor::getTimeSec());
+        lcdPrintTime(Monitor::getTimeSec(), 7);
         lcdPrintSpace1();
     }
 
     void printDeltaV() {
-        int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaVout);
-        lcdPrintSigned(x, 5);
-        lcdPrintChar('m');
-        lcdPrintChar('V');
+        AnalogInputs::printRealValue(AnalogInputs::deltaVout, 7);
         lcdPrintSpaces();
 
     }
     void printDeltaT() {
         if(ProgramData::battery.enable_externT) {
-            int16_t x = AnalogInputs::getRealValue(AnalogInputs::deltaTextern);
-            lcdPrintSigned(x*10, 5);
-            lcdPrintChar('m');
-            lcdPrintChar('C');
+            AnalogInputs::printRealValue(AnalogInputs::deltaTextern, 8);
         } else {
-            lcdPrint_P(PSTR("no dT/t"));
+            lcdPrintR_P(PSTR("N/A"), 6);
         }
         lcdPrintSpaces();
     }
 
+    void printText() {
+        lcdSetCursor0_0();
+        lcdPrint_P(PSTR("Text="));
+        if(ProgramData::battery.enable_externT) {
+            lcdPrintTemperature(AnalogInputs::getDeltaLastT(), 8);
+        } else {
+            lcdPrintR_P(PSTR("N/A"), 8);
+        }
+        lcdPrintSpaces();
+        lcdSetCursor0_1();
+    }
 
 } }// namespace Screen::Methods
 
@@ -85,7 +88,7 @@ void Screen::Methods::displayFirstScreen()
 {
     lcdSetCursor0_0();
     printCharge();
-    AnalogInputs::printRealValue(AnalogInputs::Iout,     7);
+    AnalogInputs::printRealValue(AnalogInputs::Iout,     8);
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
@@ -98,8 +101,7 @@ void Screen::Methods::displayCIVlimits()
 {
     lcdSetCursor0_0();
     lcdPrintCharge(ProgramData::getCapacityLimit(), 8);
-    lcdPrintSpace1();
-    lcdPrintCurrent(Strategy::maxI, 7);
+    lcdPrintCurrent(Strategy::maxI, 8);
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
@@ -111,18 +113,18 @@ void Screen::Methods::displayCIVlimits()
 void Screen::Methods::displayTime()
 {
     lcdSetCursor0_0();
+    int8_t dig = 8;
 #ifdef ENABLE_TIME_LIMIT
     lcdPrintAnalog(ProgramData::battery.time, 8, AnalogInputs::TimeLimitMinutes);
-    lcdPrintSpaces(2);
 #else
-    lcdPrint_P(PSTR("time:     "));
+    lcdPrint_P(PSTR("time:"));
+    dig += 3;
 #endif
-    lcdPrintTime(Monitor::getTimeSec());
+    lcdPrintTime(Monitor::getTimeSec(), dig);
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR("b "));
-    lcdPrintTime(Monitor::getTotalBalanceTimeSec());
-    lcdPrintSpaces(2);
-    lcdPrintTime(Monitor::getTotalChargeDischargeTimeSec());
+    lcdPrintChar('b');
+    lcdPrintTime(Monitor::getTotalBalanceTimeSec(), 7);
+    lcdPrintTime(Monitor::getTotalChargeDischargeTimeSec(), 8);
 }
 
 
@@ -166,18 +168,10 @@ void Screen::Methods::displayVout()
 
 void Screen::Methods::displayTemperature()
 {
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("Text="));
-    if(ProgramData::battery.enable_externT)
-        AnalogInputs::printRealValue(AnalogInputs::Textern,    5);
-    else
-        lcdPrint_P(PSTR("-"));
-    lcdPrintSpaces();
-
-    lcdSetCursor0_1();
+    printText();
 #ifdef ENABLE_T_INTERNAL
     lcdPrint_P(PSTR("Tint="));
-    AnalogInputs::printRealValue(AnalogInputs::Tintern,    5);
+    AnalogInputs::printRealValue(AnalogInputs::Tintern,    8);
 #endif
     lcdPrintSpaces();
 }
@@ -197,28 +191,19 @@ void Screen::Methods::displayDeltaFirst()
 void Screen::Methods::displayDeltaVout()
 {
     lcdSetCursor0_0();
-    lcdPrint_P(PSTR("maxVout="));
+    lcdPrint_P(PSTR("maxV="));
     AnalogInputs::printRealValue(AnalogInputs::deltaVoutMax, 7);
     lcdPrintSpaces();
 
     lcdSetCursor0_1();
-    lcdPrint_P(PSTR("delta V= "));
+    lcdPrint_P(PSTR("dV=   "));
     printDeltaV();
 }
 
 void Screen::Methods::displayDeltaTextern()
 {
-    lcdSetCursor0_0();
-    lcdPrint_P(PSTR("Text="));
-    if(ProgramData::battery.enable_externT) {
-        lcdPrintTemperature(AnalogInputs::getDeltaLastT(), 9);
-    } else {
-        lcdPrint_P(PSTR("N/A"));
-    }
-    lcdPrintSpaces();
-
-    lcdSetCursor0_1();
-    lcdPrint_P(PSTR("delta T= "));
+    printText();
+    lcdPrint_P(PSTR("dT/dt= "));
     printDeltaT();
 }
 

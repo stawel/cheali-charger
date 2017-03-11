@@ -20,7 +20,6 @@
 #include "ProgramData.h"
 #include "AnalogInputs.h"
 #include "ProgramMenus.h"
-#include "Options.h"
 #include "Utils.h"
 #include "Buzzer.h"
 #include "Version.h"
@@ -35,6 +34,7 @@
 #include "Balancer.h"
 #include STRINGS_HEADER
 #include "atomic.h"
+#include "LcdPrint.h"
 
 namespace ADCKeyboardAnalyzer {
 

@@ -20,6 +20,7 @@
 #include "adc.h"
 #include "IO.h"
 #include "Timer0.h"
+#include "LiquidCrystal.h"
 
 #ifndef PINS_H_
 #error pins not defined (include *pins.h header in your HardwareConfig.h)
@@ -60,7 +61,8 @@ void hardware::initializePins()
 
 void hardware::initialize()
 {
-    lcd.begin(LCD_COLUMNS, LCD_LINES);
+    LiquidCrystal::init();
+    LiquidCrystal::begin(LCD_COLUMNS, LCD_LINES);
     Timer0::initialize();
     Timer1::initialize();
     adc::initialize();
@@ -131,7 +133,4 @@ void hardware::setBalancer(uint8_t v)
 void hardware::setBalancerOutput(bool enable)
 {
 }
-
-
-LiquidCrystal lcd;
 

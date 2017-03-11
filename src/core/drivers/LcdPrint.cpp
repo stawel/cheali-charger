@@ -18,6 +18,7 @@
 #include "LcdPrint.h"
 #include "Hardware.h"
 #include "memory.h"
+#include "LiquidCrystal.h"
 
 using namespace AnalogInputs;
 
@@ -39,10 +40,10 @@ char* printLong(int32_t value, char * buf) {
     return end;
 }
 
-void lcdSetCursor(uint8_t x, uint8_t y) { lcd.setCursor(x, y); }
+void lcdSetCursor(uint8_t x, uint8_t y) { LiquidCrystal::setCursor(x, y); }
 void lcdSetCursor0_0() { lcdSetCursor(0,0); }
 void lcdSetCursor0_1() { lcdSetCursor(0,1); }
-void lcdClear() { lcd.clear(); }
+void lcdClear() { LiquidCrystal::clear(); }
 
 int8_t lcdPrintSpace1() {   return lcdPrintSpaces(1); }
 int8_t lcdPrintSpaces() {   return lcdPrintSpaces(16);}
@@ -109,6 +110,14 @@ int8_t lcdPrint_P(const char *str)
     return n;
 }
 
+void lcdPrintR_P(const char *str, int8_t size)
+{
+    uint8_t str_size = pgm::strlen(str);
+    lcdPrintSpaces(size - str_size);
+    lcdPrint_P(str);
+}
+
+
 static uint16_t div10(uint16_t div) {
     if(div <= 100)
         return 100;
@@ -160,13 +169,12 @@ void lcdPrintValue_(uint16_t x, int8_t dig, uint16_t div, bool mili, bool minus)
 
 }
 
-void lcdPrintTime(uint16_t timeSec)
+void lcdPrintTime(uint32_t timeSec, int8_t dig)
 {
-    lcdPrintUnsigned(timeSec/60, 3, '0');
+    lcdPrintUnsigned(timeSec/60, dig-3, ' ');
     lcdPrintChar(':');
     lcdPrintUnsigned(timeSec%60, 2, '0');
 }
-
 
 void lcdPrintYesNo(uint8_t yes, int8_t dig)
 {
@@ -183,7 +191,7 @@ void lcdPrintChar(char c)
     if(c == '\n') {
         lcdSetCursor0_1();
     } else {
-        lcd.print(c);
+    	LiquidCrystal::print(c);
     }
 }
 
@@ -217,7 +225,7 @@ void lcdPrintUnsigned(uint16_t x, int8_t dig)
 
 void lcdPrintSigned(int16_t x, int8_t dig)
 {
-    lcdPrintLong(x,dig);
+    lcdPrintLong(x, dig);
 }
 
 void lcdPrintTemperature(AnalogInputs::ValueType t, int8_t dig)
@@ -313,7 +321,7 @@ void lcdPrintAnalog(AnalogInputs::ValueType x, int8_t dig, AnalogInputs::Type ty
             return;
 
         bool sign = false;
-        if(type == AnalogInputs::SignedVoltage) {
+        if(type == AnalogInputs::SignedVoltage || type == AnalogInputs::TemperatureMinutes) {
             int16_t y = x;
             if(y < 0) {
                 sign = true;
@@ -338,7 +346,7 @@ void lcdCreateCGRam()
    CGRAM[5] = 0b10001;
    CGRAM[6] = 0b10001;
    CGRAM[7] = 0b11111;
-   lcd.createChar(0, CGRAM); //empty
+   LiquidCrystal::createChar(0, CGRAM); //battery empty
 
    CGRAM[0] = 0b01110;
    CGRAM[1] = 0b11111;
@@ -348,7 +356,7 @@ void lcdCreateCGRam()
    CGRAM[5] = 0b11111;
    CGRAM[6] = 0b11111;
    CGRAM[7] = 0b11111;
-   lcd.createChar(1, CGRAM); //half
+   LiquidCrystal::createChar(1, CGRAM); //battery half full
 
    CGRAM[0] = 0b01110;
    CGRAM[1] = 0b11111;
@@ -358,7 +366,7 @@ void lcdCreateCGRam()
    CGRAM[5] = 0b11111;
    CGRAM[6] = 0b11111;
    CGRAM[7] = 0b11111;
-   lcd.createChar(2, CGRAM); //full
+   LiquidCrystal::createChar(2, CGRAM); //battery full
 }
 #endif
 

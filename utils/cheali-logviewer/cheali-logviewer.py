@@ -5,10 +5,10 @@ import chealiparser
 import sys
 
 display = set([
-        'P1',
-#        'Vin',
+#        'P1',
+        'Vin',
         'Vout',
-#        'Iout',
+        'Iout',
 #        'Charge','Energy','Power',
 #        'Vb1','Vb2','Vb3','Vb4','Vb5','Vb6',
 #        'R1','R2','R3','R4','R5','R6','Rbat','Rwire',
@@ -33,8 +33,9 @@ for name, (x,y) in data.iteritems():
     if name in display:
         color = chealiparser.get_color(name)
         if len(color) > 0:
-            plt.plot(x, y, color)
+            plt.plot(x, y, color, label = name)
 
+plt.legend()
 
 def update(num):
     #TODO

@@ -85,8 +85,12 @@ uint16_t Time::getInterruptsU16() {
 }
 
 
-uint16_t Time::getSecondsU16() {
+uint32_t Time::getSeconds() {
     return getMiliseconds()/1000;
+}
+
+uint16_t Time::getSecondsU16() {
+    return getSeconds();
 }
 
 uint16_t Time::getMinutesU16() {

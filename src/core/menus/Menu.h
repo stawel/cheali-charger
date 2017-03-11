@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2016  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,32 +21,35 @@
 #include <inttypes.h>
 #include "PolarityCheck.h"
 
-class Menu : public PolarityCheck {
-public:
-    static const int8_t MENU_EXIT = -1;
+#define MENU_EXIT   -1
 
-    uint8_t pos_;
-    uint8_t begin_;
-    uint8_t size_;
-    bool render_;
-    bool waitRelease_;
-public:
-    Menu(uint8_t size);
-    void render() { render_ = true; }
+namespace Menu {
 
-    uint8_t run();
-    int8_t runSimple(bool animate = false);
+    typedef void (*CallMethod)();
+    typedef void (*PrintMethod)(uint8_t item);
+    typedef void (*EditMethod)(uint8_t item, uint8_t key);
 
-    void incIndex();
-    void decIndex();
+    extern PrintMethod printMethod_;
+    extern EditMethod editMethod_;
+    extern uint8_t index_;
+    extern uint8_t begin_;
+    extern uint8_t size_;
 
-    uint8_t getIndex() { return begin_ + pos_; }
-    virtual void printItem(uint8_t i) {}
-    uint8_t getMenuSize() const { return size_; }
+    struct StaticMenu {
+        const char * string;
+        const CallMethod call;
+    };
 
-    void display();
-    void debug();
-};
+    int8_t runStatic(const struct StaticMenu * menu);
+
+    void initialize(uint8_t size);
+    int8_t run(bool alwaysRefresh = false);
+    bool runEdit();
+
+    inline uint8_t getIndex()             { return index_; }
+    inline void setIndex(uint8_t index)   {  index_ = index; }
+
+}
 
 #endif /* MENU_H_ */
 

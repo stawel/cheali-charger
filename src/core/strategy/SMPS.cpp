@@ -18,9 +18,6 @@
 #include "Hardware.h"
 #include "SMPS.h"
 #include "Program.h"
-#include "EditMenu.h"
-#include "LcdPrint.h"
-#include "Screen.h"
 #include "Settings.h"
 
 #ifndef SMPS_MAX_CURRENT_CHANGE

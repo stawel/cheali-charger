@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2016  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,21 +15,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef STATICMENU_H_
-#define STATICMENU_H_
+#ifndef OPTIONSMENU_H_
+#define OPTIONSMENU_H_
 
-#include "LcdPrint.h"
-#include "Menu.h"
-#include "Utils.h"
-
-class StaticMenu : public Menu {
-public:
-    const char * const* staticMenu_;
-
-public:
-    StaticMenu(const char * const staticMenu[]);
-    virtual void printItem(uint8_t i);
+namespace OptionsMenu {
+    void run();
+    void resetDefault();
 };
 
-#endif /* STATICMENU_H_ */
-
+#endif /* OPTIONSMENU_H_ */

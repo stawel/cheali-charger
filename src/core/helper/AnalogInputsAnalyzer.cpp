@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2016  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 #include "ProgramData.h"
 #include "AnalogInputs.h"
 #include "ProgramMenus.h"
-#include "Options.h"
 #include "Utils.h"
 #include "Buzzer.h"
 #include "Version.h"
@@ -37,6 +36,9 @@
 #include "atomic.h"
 #include "SettingsMenu.h"
 #include "memory.h"
+#include "LcdPrint.h"
+#include "PolarityCheck.h"
+#include "Menu.h"
 
 namespace AnalogInputsAnalyzer {
 
@@ -82,7 +84,7 @@ const char * const voltageMenu[] PROGMEM = {
         string_v_menu_cell3, string_v_menu_cell4, string_v_menu_cell5, string_v_menu_cell6,
         BALANCER_PORTS_GT_6( string_v_menu_cell7, string_v_menu_cell8,)
         string_v_menu_type,
-        string_v_menu_settings, NULL};
+        string_v_menu_settings};
 
 const AnalogInputs::Name voltageName[] PROGMEM = {
         AnalogInputs::Vout_plus_pin,
@@ -109,35 +111,30 @@ const AnalogInputs::Name voltageName[] PROGMEM = {
 uint8_t type = 0;
 #define MAX_TYPE 3
 
-class VoltageMenu: public StaticMenu {
-public:
-    VoltageMenu(const char * const* vMenu,  uint8_t dig) :
-        StaticMenu(vMenu),
-        dig_(dig){};
-    virtual void printItem(uint8_t index) {
-        StaticMenu::printItem(index);
-        if(index < sizeOfArray(voltageName)) {
-            AnalogInputs::Name name = pgm::read(&voltageName[index]);
-            uint16_t value;
-            if(type == 0) {
-                value = AnalogInputs::getAvrADCValue(name);
-            } else if (type == 1) {
-                value = AnalogInputs::getRealValue(name);
-            } else {
-                ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-                    value = AnalogInputs::getADCValue(name);
-                }
+static uint8_t dig_ = 5;
 
+static void printItem(uint8_t index) {
+    lcdPrint_P(voltageMenu, index);
+    if(index < sizeOfArray(voltageName)) {
+        AnalogInputs::Name name = pgm::read(&voltageName[index]);
+        uint16_t value;
+        if(type == 0) {
+            value = AnalogInputs::getAvrADCValue(name);
+        } else if (type == 1) {
+            value = AnalogInputs::getRealValue(name);
+        } else {
+            ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+                value = AnalogInputs::getADCValue(name);
             }
 
-            lcdPrintUnsigned(value, dig_);
         }
-        if(index == sizeOfArray(voltageName)) {
-            lcdPrintUnsigned(type, dig_);
-        }
+
+        lcdPrintUnsigned(value, dig_);
     }
-    const uint8_t dig_;
-};
+    if(index == sizeOfArray(voltageName)) {
+        lcdPrintUnsigned(type, dig_);
+    }
+}
 
 void run() {
     SerialLog::powerOn();
@@ -145,10 +142,12 @@ void run() {
     Balancer::powerOn();
     PolarityCheck::checkReversedPolarity_ = false;
 
-    VoltageMenu v(voltageMenu, 5);
-    int8_t index;
+    Menu::initialize(sizeOfArray(voltageMenu));
+    Menu::printMethod_ = printItem;
+    int8_t index = 0;
     do {
-        index = v.runSimple(true);
+        Menu::setIndex(index);
+        index = Menu::run(true);
         if((uint8_t)index < sizeOfArray(voltageMenu)-2) {
             type ++;
             if(type >= MAX_TYPE) {
