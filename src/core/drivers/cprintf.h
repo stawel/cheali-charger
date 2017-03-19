@@ -36,7 +36,7 @@
 #define CP_TYPE_PROCENTAGE      CP_TYPE_ANALOG(AnalogInputs::Procent)
 #define CP_TYPE_A               CP_TYPE_ANALOG(AnalogInputs::Current)
 #define CP_TYPE_TEMP_MINUT      CP_TYPE_ANALOG(AnalogInputs::TemperatureMinutes)
-#define CP_TYPE_CHARGE		    CP_TYPE_ANALOG(AnalogInputs::Charge)
+#define CP_TYPE_CHARGE          CP_TYPE_ANALOG(AnalogInputs::Charge)
 #define CP_TYPE_CHARGE_TIME     CP_TYPE_ANALOG(AnalogInputs::TimeLimitMinutes)
 #define CP_TYPE_ON_OFF          CP_TYPE_ANALOG(AnalogInputs::YesNo)
 #define CP_TYPE_UINT32_ARRAY    1

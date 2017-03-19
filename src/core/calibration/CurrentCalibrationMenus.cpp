@@ -37,13 +37,13 @@
 
 namespace Calibration {
 
-static AnalogInputs::Name 		gNameSet_;
-static AnalogInputs::Name 		gName_;
-AnalogInputs::ValueType 	gIexpected_;
-AnalogInputs::ValueType 	gValue_;
+static AnalogInputs::Name       gNameSet_;
+static AnalogInputs::Name       gName_;
+static AnalogInputs::ValueType  gIexpected_;
+static AnalogInputs::ValueType  gValue_;
 
 
-#define EGLOBAL_U(name) 	{CP_TYPE_UNSIGNED, 		0, &name}
+#define EGLOBAL_U(name)     {CP_TYPE_UNSIGNED,      0, &name}
 #define EGLOBAL_A(name)     {CP_TYPE_A,             0, &name}
 
 static void printCurrent(int8_t) {
@@ -52,7 +52,7 @@ static void printCurrent(int8_t) {
 }
 
 const EditMenu::StaticEditData currentData[] PROGMEM = {
-{string_i_menu_value,       EDIT_MENU_ALWAYS, 	EGLOBAL_U(gValue_),             {CE_STEP_TYPE_KEY_SPEED, 0, 65535}},
+{string_i_menu_value,       EDIT_MENU_ALWAYS,   EGLOBAL_U(gValue_),             {CE_STEP_TYPE_KEY_SPEED, 0, 65535}},
 {string_i_menu_output,      EDIT_MENU_ALWAYS,   CPRINTF_METHOD(printCurrent),   {0, 0, 0}},
 {string_i_menu_expected,    EDIT_MENU_ALWAYS,   EGLOBAL_A(gIexpected_),         {CE_STEP_TYPE_KEY_SPEED, 0, 65535}},
 {NULL,                      EDIT_MENU_LAST}
@@ -162,30 +162,30 @@ static void printCurrentPointItem(uint8_t index) {
 
 static void currentCalibrationPointMenu()
 {
-	int8_t index = 0;
-	do {
-		Menu::initialize(2);
-		Menu::printMethod_ = printCurrentPointItem;
-		Menu::setIndex(index);
-		index = Menu::run();
-		if(index >= 0) {
-			currentCalibration(index);
-		}
-	} while (index >= 0);
+    int8_t index = 0;
+    do {
+        Menu::initialize(2);
+        Menu::printMethod_ = printCurrentPointItem;
+        Menu::setIndex(index);
+        index = Menu::run();
+        if(index >= 0) {
+            currentCalibration(index);
+        }
+    } while (index >= 0);
 }
 
 void chargeCurrentCalibration()
 {
-	gNameSet_ = AnalogInputs::IsmpsSet;
+    gNameSet_ = AnalogInputs::IsmpsSet;
     gName_ = AnalogInputs::Ismps;
-	currentCalibrationPointMenu();
+    currentCalibrationPointMenu();
 }
 
 void dischargeCurrentCalibration()
 {
-	gNameSet_ = AnalogInputs::IdischargeSet;
+    gNameSet_ = AnalogInputs::IdischargeSet;
     gName_ = AnalogInputs::Idischarge;
-	currentCalibrationPointMenu();
+    currentCalibrationPointMenu();
 }
 
 

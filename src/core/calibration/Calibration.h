@@ -21,14 +21,14 @@
 #include "AnalogInputs.h"
 
 namespace Calibration {
-	void voltageCalibration();
-	void chargeCurrentCalibration();
-	void dischargeCurrentCalibration();
-	void externalTemperatureCalibration();
-	void internalTemperatureCalibration();
-	void expertVoltageCalibration();
+    void voltageCalibration();
+    void chargeCurrentCalibration();
+    void dischargeCurrentCalibration();
+    void externalTemperatureCalibration();
+    void internalTemperatureCalibration();
+    void expertVoltageCalibration();
 
-	bool testVout(bool balancePort);
+    bool testVout(bool balancePort);
 
     void run();
     bool check();

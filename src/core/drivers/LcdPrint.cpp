@@ -197,7 +197,7 @@ void lcdPrintChar(char c)
     if(c == '\n') {
         lcdSetCursor0_1();
     } else {
-    	LiquidCrystal::print(c);
+        LiquidCrystal::print(c);
     }
 }
 

@@ -103,8 +103,8 @@ static void saveCalibration(bool doCopyVbalVout, AnalogInputs::Name nameEdited, 
     SerialLog::flush();
     saveCalibration(nameEdited, nameSaveTo, AnalogInputs::getAvrADCValue(nameSaveTo), newValue);
     if(doCopyVbalVout) {
-	    AnalogInputs::on_ = true;
-	    AnalogInputs::doFullMeasurement();
+        AnalogInputs::on_ = true;
+        AnalogInputs::doFullMeasurement();
         SerialLog::flush();
         copyVbalVout();
     }
@@ -119,16 +119,16 @@ static void saveCalibration(bool doCopyVbalVout, AnalogInputs::Name nameEdited, 
 #define COND_NOT_EDITABLE   1
 #define COND_EDITABLE_COPY  COND_EDITABLE + COND_COPY_VOUT
 
-#define EANALOG_V(name) 	{CP_TYPE_V, 			0, &AnalogInputs::real_[AnalogInputs::name]}
-#define EANALOG_T(name) 	{CP_TYPE_TEMPERATURE, 	0, &AnalogInputs::real_[AnalogInputs::name]}
-#define EANALOG_ADC(name) 	{CP_TYPE_UNSIGNED, 		0, &AnalogInputs::avrAdc_[AnalogInputs::name]}
+#define EANALOG_V(name)     {CP_TYPE_V,             0, &AnalogInputs::real_[AnalogInputs::name]}
+#define EANALOG_T(name)     {CP_TYPE_TEMPERATURE,   0, &AnalogInputs::real_[AnalogInputs::name]}
+#define EANALOG_ADC(name)   {CP_TYPE_UNSIGNED,      0, &AnalogInputs::avrAdc_[AnalogInputs::name]}
 
 void runCalibrationMenu(const EditMenu::StaticEditData * menu,
         const AnalogInputs::Name * nameEdited,
         const AnalogInputs::Name * nameSaveTo,
         uint8_t calibrationPoint = false) {
 
-	EditMenu::initialize(menu);
+    EditMenu::initialize(menu);
 
     uint16_t selector = EDIT_MENU_ALWAYS;
     if(!calibrationPoint && settings.menuType == Settings::MenuSimple) {
@@ -141,20 +141,20 @@ void runCalibrationMenu(const EditMenu::StaticEditData * menu,
         item = EditMenu::run(true);
         if(item < 0) break;
         uint8_t itemCondition = EditMenu::getEnableCondition(item);
-		if(itemCondition & COND_EDITABLE) {
-			// voltage or temperature calibration
-			AnalogInputs::Name editedName = pgm::read(&nameEdited[item]);
-			if(AnalogInputs::isConnected(editedName)) {
-				AnalogInputs::doFullMeasurement();
-				AnalogInputs::on_ = false;
-				AnalogInputs::onTintern_ = false;
-				if(EditMenu::runEdit()) {
-					bool doCopyVout = itemCondition & COND_COPY_VOUT;
-					saveCalibration(doCopyVout, editedName, pgm::read(&nameSaveTo[item]));
-				}
-				AnalogInputs::on_ = true;
-				AnalogInputs::onTintern_ = true;
-			}
+        if(itemCondition & COND_EDITABLE) {
+            // voltage or temperature calibration
+            AnalogInputs::Name editedName = pgm::read(&nameEdited[item]);
+            if(AnalogInputs::isConnected(editedName)) {
+                AnalogInputs::doFullMeasurement();
+                AnalogInputs::on_ = false;
+                AnalogInputs::onTintern_ = false;
+                if(EditMenu::runEdit()) {
+                    bool doCopyVout = itemCondition & COND_COPY_VOUT;
+                    saveCalibration(doCopyVout, editedName, pgm::read(&nameSaveTo[item]));
+                }
+                AnalogInputs::on_ = true;
+                AnalogInputs::onTintern_ = true;
+            }
         } else if (itemCondition & COND_POINT) {
             // calibration point edited
             EditMenu::runEdit();
@@ -190,7 +190,7 @@ const AnalogInputs::Name voltageNameSaveTo[] PROGMEM = {
 };
 
 const EditMenu::StaticEditData editVoltageData[] PROGMEM = {
-{string_v_menu_input,       COND_EDITABLE, 		EANALOG_V(Vin),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(30)}},
+{string_v_menu_input,       COND_EDITABLE,      EANALOG_V(Vin),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(30)}},
 {string_v_menu_cell1,       COND_EDITABLE_COPY, EANALOG_V(Vb1),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
 {string_v_menu_cell2,       COND_EDITABLE_COPY, EANALOG_V(Vb2),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
 {string_v_menu_cell3,       COND_EDITABLE_COPY, EANALOG_V(Vb3),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
@@ -199,7 +199,7 @@ const EditMenu::StaticEditData editVoltageData[] PROGMEM = {
 {string_v_menu_cell6,       COND_EDITABLE_COPY, EANALOG_V(Vb6),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
 BALANCER_PORTS_GT_6(
 {string_v_menu_cell7,       COND_EDITABLE_COPY, EANALOG_V(Vb7),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
-{string_v_menu_cell8,       COND_EDITABLE_COPY,	EANALOG_V(Vb8),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
+{string_v_menu_cell8,       COND_EDITABLE_COPY, EANALOG_V(Vb8),         {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_VOLT(5)}},
 )
 {string_v_menu_cellSum,     COND_NOT_EDITABLE,  EANALOG_V(Vbalancer),   {0, 0, 0}},
 {string_v_menu_output,      COND_NOT_EDITABLE,  EANALOG_V(Vout),        {0, 0, 0}},
@@ -233,7 +233,7 @@ const EditMenu::StaticEditData editExpertVoltageData[] PROGMEM = {
 {string_ev_menu_plusVoltagePin,     COND_EDITABLE,   EANALOG_V(Vout_plus_pin),   {CE_STEP_TYPE_KEY_SPEED, 0, MAX_CHARGE_V}},
 {string_ev_menu_minusVoltagePin,    COND_EDITABLE,   EANALOG_V(Vout_minus_pin),  {CE_STEP_TYPE_KEY_SPEED, 0, MAX_CHARGE_V}},
 {string_menu_point,                 COND_POINT,     {CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
-{NULL,                      		EDIT_MENU_LAST}
+{NULL,                              EDIT_MENU_LAST}
 };
 
 const AnalogInputs::Name expertVoltageName[] PROGMEM = {
@@ -265,10 +265,10 @@ void expertVoltageCalibration()
 /* external temperature calibration menu */
 
 const EditMenu::StaticEditData editExternTData[] PROGMEM = {
-{string_t_menu_temperature,     COND_EDITABLE,  	EANALOG_T(Textern),             {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_CELCIUS(100)}},
-{string_t_menu_adc,             COND_NOT_EDITABLE,	EANALOG_ADC(Textern),           {0,0,0}},
-{string_menu_point,             COND_POINT,     	{CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
-{NULL,                      	EDIT_MENU_LAST}
+{string_t_menu_temperature,     COND_EDITABLE,      EANALOG_T(Textern),             {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_CELCIUS(100)}},
+{string_t_menu_adc,             COND_NOT_EDITABLE,  EANALOG_ADC(Textern),           {0,0,0}},
+{string_menu_point,             COND_POINT,         {CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
+{NULL,                          EDIT_MENU_LAST}
 };
 
 const AnalogInputs::Name externTName[] PROGMEM = { AnalogInputs::Textern };
@@ -292,10 +292,10 @@ void externalTemperatureCalibration()
 /* internal temperature calibration menu*/
 
 const EditMenu::StaticEditData editInternTData[] PROGMEM = {
-{string_t_menu_temperature,     COND_EDITABLE,  	EANALOG_T(Tintern),             {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_CELCIUS(100)}},
+{string_t_menu_temperature,     COND_EDITABLE,      EANALOG_T(Tintern),             {CE_STEP_TYPE_KEY_SPEED, 0, ANALOG_CELCIUS(100)}},
 {string_t_menu_adc,             COND_NOT_EDITABLE,  EANALOG_ADC(Tintern),           {0,0,0}},
-{string_menu_point,             COND_POINT,     	{CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
-{NULL,                      	EDIT_MENU_LAST}
+{string_menu_point,             COND_POINT,         {CP_TYPE_UNSIGNED, 0, &calibrationPoint},        {1, 0, 1}},
+{NULL,                          EDIT_MENU_LAST}
 };
 
 const AnalogInputs::Name internTName[] PROGMEM = { AnalogInputs::Tintern };

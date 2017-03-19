@@ -43,5 +43,5 @@ void OptionsMenu::resetDefault()
 
 void OptionsMenu::run()
 {
-	Menu::runStatic(optionsStaticMenu);
+    Menu::runStatic(optionsStaticMenu);
 }
