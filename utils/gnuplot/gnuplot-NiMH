@@ -1,0 +1,39 @@
+#!/usr/bin/gnuplot -c
+
+
+# example gnuplot script, run:
+# > ./gnuplot-NiMH 'uart_dump_file'
+#
+# you may also want to change "yrange", "y2range", "ytics", "y2tics"
+
+
+FILENAME=ARG1
+print "filename: ", FILENAME
+
+set key left top
+
+set xlabel "Time, min";
+set xrange [0:*];
+set xtics 10;
+set mxtics 10;
+
+set ylabel "mV, mA, mAh, mWh";
+#set yrange [0:2500];
+set yrange [0:*];
+set ytics 100;
+
+set y2label "mOhm";
+#set y2range [0:25000];
+set y2range [0:*];
+set y2tics 1000;
+
+set grid xtics ytics mxtics linetype -1 dt 2, linetype 0 dt 3
+set datafile separator ";";
+plot  FILENAME using ($3-90)/60:4  with lines title "Voltage, mV", \
+      FILENAME using ($3-90)/60:5  with lines title "Current, mA", \
+      FILENAME using ($3-90)/60:6  with lines title "Capacity, mAh", \
+      FILENAME using ($3-90)/60:24  with lines title "Resistance, mOhm" axis x1y2, \
+      FILENAME using ($3-90)/60:($8*10)  with lines title "Energy, mWh",  \
+      FILENAME using ($3-90)/60:($26*10) with lines title "Percentage, %"
+
+pause -1
