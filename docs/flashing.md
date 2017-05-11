@@ -22,7 +22,8 @@ flashing using [avrdude](http://www.nongnu.org/avrdude/)
 --------------------------------------------------------
 
 The simplest way to flash a charger is to use [avrdude](http://www.nongnu.org/avrdude/) in command line:  
-(you may want to change `-cusbasp` according to your programmer)
+(you may want to change `-cusbasp` according to your programmer. If you use ArduinoISP, set `-cstk500v1 -P[COM port] -b19200`)
+
 - try to make a backup:
 <pre>
 avrdude.exe -patmega32 -cusbasp -Uflash:r:flash.hex:r -Ulfuse:r:lfuse.hex:r -Uhfuse:r:hfuse.hex:r -Ueeprom:r:eeprom.hex:r
