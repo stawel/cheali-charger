@@ -103,7 +103,7 @@ namespace SettingsMenu {
     STRING(maxId,       "max Id:");
     STRING(maxPc,       "max Pc:");
     STRING(maxPd,       "max Pd:");
-    STRING(inputLow,    "input low: ");
+    STRING(inputLow,    "input low:");
     STRING(adcNoise,    "adc noise:");
     STRING(UARTview,    "UART:");
     STRING(UARTspeed,   "|speed:");
