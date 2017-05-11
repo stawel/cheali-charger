@@ -49,6 +49,9 @@ struct Settings {
     AnalogInputs::ValueType minId;
     AnalogInputs::ValueType maxId;
 
+    AnalogInputs::ValueType maxPc;
+    AnalogInputs::ValueType maxPd;
+
     AnalogInputs::ValueType inputVoltageLow;
     uint16_t adcNoise;
     uint16_t UART;

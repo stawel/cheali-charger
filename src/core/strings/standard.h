@@ -101,6 +101,8 @@ namespace SettingsMenu {
     STRING(maxIc,       "max Ic:");
     STRING(minId,       "min Id:");
     STRING(maxId,       "max Id:");
+    STRING(maxPc,       "max Pc:");
+    STRING(maxPd,       "max Pd:");
     STRING(inputLow,    "input low: ");
     STRING(adcNoise,    "adc noise:");
     STRING(UARTview,    "UART:");

@@ -164,7 +164,7 @@ uint16_t ProgramData::getMaxIc()
     }
 #endif
 
-    AnalogInputs::ValueType i = AnalogInputs::evalI(MAX_CHARGE_P, v);
+    AnalogInputs::ValueType i = AnalogInputs::evalI(settings.maxPc, v);
 
     if(i > settings.maxIc)
         i = settings.maxIc;
@@ -174,7 +174,7 @@ uint16_t ProgramData::getMaxIc()
 uint16_t ProgramData::getMaxId()
 {
     AnalogInputs::ValueType v = getDefaultVoltage(VDischarged);
-    AnalogInputs::ValueType i = AnalogInputs::evalI(MAX_DISCHARGE_P, v);
+    AnalogInputs::ValueType i = AnalogInputs::evalI(settings.maxPd, v);
 
     if(i > settings.maxId)
         i = settings.maxId;

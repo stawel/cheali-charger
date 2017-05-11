@@ -107,8 +107,10 @@ const EditMenu::StaticEditData editData[] PROGMEM = {
 {string_AudioBeep,      COND_ALWAYS,    SETTING(ON_OFF, audioBeep),         {1, 0, 1}},
 {string_minIc,          COND_ALWAYS,    SETTING(A, minIc),                  {CE_STEP_TYPE_KEY_SPEED, ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
 {string_maxIc,          COND_ALWAYS,    SETTING(A, maxIc),                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
+{string_maxPc,          COND_ALWAYS,    SETTING(W, maxPc),                  {CE_STEP_TYPE_SMART, ANALOG_WATT(0.1), MAX_CHARGE_P}},
 {string_minId,          COND_ALWAYS,    SETTING(A, minId),                  {CE_STEP_TYPE_KEY_SPEED, ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
 {string_maxId,          COND_ALWAYS,    SETTING(A, maxId),                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_DISCHARGE_I}},
+{string_maxPd,          COND_ALWAYS,    SETTING(W, maxPd),                  {CE_STEP_TYPE_SMART, ANALOG_WATT(0.1), MAX_DISCHARGE_P}},
 {string_inputLow,       COND_ALWAYS,    SETTING_N(V, 3, inputVoltageLow),   {ANALOG_VOLT(1), ANALOG_VOLT(7), ANALOG_VOLT(30)}},
 #ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
 {string_adcNoise,       COND_ALWAYS,    SETTING(ON_OFF, adcNoise),          {1, 0, 1}},

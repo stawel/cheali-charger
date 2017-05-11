@@ -39,6 +39,15 @@
 #define SETTINGS_MAX_DISCHARGE_I    MAX_DISCHARGE_I
 #endif
 
+#ifndef SETTINGS_MAX_CHARGE_P
+#define SETTINGS_MAX_CHARGE_P    MAX_CHARGE_P
+#endif
+
+#ifndef SETTINGS_MAX_DISCHARGE_P
+#define SETTINGS_MAX_DISCHARGE_P    MAX_DISCHARGE_P
+#endif
+
+
 
 Settings settings;
 
@@ -53,6 +62,10 @@ const Settings defaultSettings PROGMEM = {
         SETTINGS_MAX_CHARGE_I,       //maxIc
         ANALOG_AMP(0.050),  //minId
         SETTINGS_MAX_DISCHARGE_I,    //maxId
+
+        SETTINGS_MAX_CHARGE_P, //maxPc
+        SETTINGS_MAX_DISCHARGE_P, //maxPd
+
         ANALOG_VOLT(10.000),//inputVoltageLow
 
         SETTINGS_ADC_NOISE_DEFAULT, //adcNoise

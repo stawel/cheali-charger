@@ -57,7 +57,7 @@ namespace SMPS {
         }
 #endif
 
-        AnalogInputs::ValueType i = AnalogInputs::evalI(MAX_CHARGE_P, v);
+        AnalogInputs::ValueType i = AnalogInputs::evalI(settings.maxPc, v);
         if(i > settings.maxIc)
             i = settings.maxIc;
         return i;
