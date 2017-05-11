@@ -1,0 +1,8 @@
+*.cmake
+*.bin
+*.hex
+*.eep
+*.size
+Makefile
+CMakeFiles
+cheali-charger-*atmega32

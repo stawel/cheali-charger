@@ -1,3 +1,11 @@
 CoIDE/cheali-charger/Debug/**
 CoIDE/cheali-charger.cogui
 CoIDE/cheali-charger.comarker
+
+.cproject
+.project
+CMakeCache.txt
+CMakeFiles/
+Makefile
+build_ubuntu.sh
+cmake_install.cmake
