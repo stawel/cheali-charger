@@ -158,8 +158,8 @@ void Monitor::powerOn()
         //Make sure Vout_plus gets not higher VCharge + 3V (additional safety limit for protection ICs)
         AnalogInputs::ValueType Vmax = ProgramData::getVoltage(ProgramData::VCharged);
         Vmax += ANALOG_VOLT(3.000);
-        if(Vmax > MAX_CHARGE_V) {
-            Vmax = MAX_CHARGE_V;
+        if(Vmax > settings.maxVc) {
+            Vmax = settings.maxVc;
         }
         hardware::setVoutCutoff(Vmax);
 

@@ -130,7 +130,7 @@ bool checkAll() {
     uint8_t error;
     if(!eeprom::check())
         return false;
-    error = check(AnalogInputs::Vout_plus_pin, ANALOG_VOLT(1.000), MAX_CHARGE_V);
+    error = check(AnalogInputs::Vout_plus_pin, ANALOG_VOLT(1.000), settings.maxVc);
     if(error) {
         Screen::runCalibrationError(string_voltage, error);
         return false;

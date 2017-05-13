@@ -44,7 +44,7 @@ namespace Discharger {
         if (v == 0) {
             v = 1;
         }
-        AnalogInputs::ValueType i = AnalogInputs::evalI(MAX_DISCHARGE_P, v);
+        AnalogInputs::ValueType i = AnalogInputs::evalI(settings.maxPd, v);
 
         if(i > settings.maxId)
             i = settings.maxId;

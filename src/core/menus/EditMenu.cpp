@@ -20,6 +20,7 @@
 #include "memory.h"
 #include "LcdPrint.h"
 #include "Blink.h"
+#include "Settings.h"
 
 //#define ENABLE_DEBUG
 #include "debug.h"
@@ -45,6 +46,11 @@ namespace EditMenu {
         setSelector(EDIT_MENU_ALWAYS);
     }
 
+    static int limitsExceeded(uint16_t value, uint8_t index) {
+        EditData d = pgm::read(&staticEditData_[index].edit);
+        return (value > d.maxValue) && (d.step & CE_HW_LIMITS);
+    }
+
     void printItem(uint8_t item)
     {
         uint8_t index = getSelectedIndexOrSize(item);
@@ -57,7 +63,10 @@ namespace EditMenu {
                 lcdPrintSpaces(dig - size);
                 dig = size;
             }
+            int limits = limitsExceeded(*getEditAddress(item), index);
+            if(limits) dig--;
             cprintf::cprintf(&staticEditData_[index].print, dig);
+            if(limits) lcdPrintChar('!');
         }
     }
 
@@ -88,7 +97,13 @@ namespace EditMenu {
         uint8_t index = getSelectedIndexOrSize(item);
         EditData d = pgm::read(&staticEditData_[index].edit);
         int dir = 1;
+        int no_limits = (d.step & CE_HW_LIMITS) && !settings.hardwareLimits;
+
+        d.step &= CE_STEP_MASK;
+
         if(key == BUTTON_DEC) dir = -1;
+
+        if(no_limits) d.maxValue = 65535;
 
         if(d.step == CE_STEP_TYPE_SMART) {
             changeMinToMaxSmart((uint16_t*)valuePtr, dir, d.minValue, d.maxValue);
@@ -97,8 +112,10 @@ namespace EditMenu {
         } else if(d.step == CE_STEP_TYPE_SIGNED) {
             int16_t *signedValuePtr = (int16_t*)valuePtr;
             *signedValuePtr += dir;
-            if(*signedValuePtr > (int16_t)d.maxValue) *signedValuePtr = (int16_t)d.maxValue;
-            if(*signedValuePtr < (int16_t)d.minValue) *signedValuePtr = (int16_t)d.minValue;
+            if(!no_limits) {
+                if(*signedValuePtr > (int16_t)d.maxValue) *signedValuePtr = (int16_t)d.maxValue;
+                if(*signedValuePtr < (int16_t)d.minValue) *signedValuePtr = (int16_t)d.minValue;
+            }
         } else {
             if(d.step == CE_STEP_TYPE_KEY_SPEED) {
                 d.step = Keyboard::getSpeedFactor();

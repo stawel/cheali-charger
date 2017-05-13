@@ -38,6 +38,9 @@ const char * const SettingsFanOn[] PROGMEM = {
 };
 const cprintf::ArrayData FanOnData  PROGMEM     = {SettingsFanOn, &settings.fanOn};
 
+const char * const SettingsHardwareLimits[] PROGMEM = {string_burn, string_yes};
+const cprintf::ArrayData HardwareLimitsData PROGMEM = {SettingsHardwareLimits, &settings.hardwareLimits};
+
 const char * const SettingsUART[] PROGMEM = {
         string_disable,
         string_normal,
@@ -74,6 +77,8 @@ const AnalogInputs::ValueType Tstep =  ANALOG_CELCIUS(1);
 #define COND_FAN_ON_T       1
 #define COND_UART_ON        2
 #define COND_ALWAYS         EDIT_MENU_ALWAYS
+#define COND_ADVANCED       32768
+#define COND_ADV            COND_ADVANCED + EDIT_MENU_ALWAYS
 
 uint16_t getSelector() {
     uint16_t result = EDIT_MENU_ALWAYS;
@@ -84,6 +89,10 @@ uint16_t getSelector() {
     if(settings.UART == Settings::Disabled)
         result -= COND_UART_ON;
 
+    if(settings.menuType) {
+        result += COND_ADVANCED;
+    }
+
     return result;
 }
 
@@ -91,35 +100,38 @@ uint16_t getSelector() {
 #define SETTING(type, x)        SETTING_N(type, 0, x)
 
 /*
-|static string          |when to display| how to display, see cprintf       | how to edit |
+|static string          |when to display| how to display, see cprintf           | how to edit |
  */
 const EditMenu::StaticEditData editData[] PROGMEM = {
 #ifdef ENABLE_LCD_BACKLIGHT
-{string_backlight,      COND_ALWAYS,    SETTING(UNSIGNED, backlight),       {1, 0, 100}},
+{string_backlight,      COND_ALWAYS,    SETTING(UNSIGNED, backlight),           {1, 0, 100}},
 #endif
 #ifdef ENABLE_FAN
-{string_fanOn,          COND_ALWAYS,    EDIT_STRING_ARRAY(FanOnData),       {1, 0, Settings::FanProgramTemperature}},
-{string_fanTempOn,      COND_FAN_ON_T,  SETTING(TEMPERATURE, fanTempOn),    {Tstep, Tmin, Tmax}},
+{string_fanOn,          COND_ALWAYS,    EDIT_STRING_ARRAY(FanOnData),           {1, 0, Settings::FanProgramTemperature}},
+{string_fanTempOn,      COND_FAN_ON_T,  SETTING(TEMPERATURE, fanTempOn),        {Tstep, Tmin, Tmax}},
 #endif
 #ifdef ENABLE_T_INTERNAL
 {string_dischOff,       COND_ALWAYS,    SETTING_N(TEMPERATURE, 3, dischargeTempOff), {Tstep, Tmin, Tmax}},
 #endif
-{string_AudioBeep,      COND_ALWAYS,    SETTING(ON_OFF, audioBeep),         {1, 0, 1}},
-{string_minIc,          COND_ALWAYS,    SETTING(A, minIc),                  {CE_STEP_TYPE_KEY_SPEED, ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
-{string_maxIc,          COND_ALWAYS,    SETTING(A, maxIc),                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_CHARGE_I}},
-{string_maxPc,          COND_ALWAYS,    SETTING(W, maxPc),                  {CE_STEP_TYPE_SMART, ANALOG_WATT(0.1), MAX_CHARGE_P}},
-{string_minId,          COND_ALWAYS,    SETTING(A, minId),                  {CE_STEP_TYPE_KEY_SPEED, ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
-{string_maxId,          COND_ALWAYS,    SETTING(A, maxId),                  {CE_STEP_TYPE_SMART, ANALOG_AMP(0.001), MAX_DISCHARGE_I}},
-{string_maxPd,          COND_ALWAYS,    SETTING(W, maxPd),                  {CE_STEP_TYPE_SMART, ANALOG_WATT(0.1), MAX_DISCHARGE_P}},
-{string_inputLow,       COND_ALWAYS,    SETTING(V, inputVoltageLow),   {ANALOG_VOLT(0.1), ANALOG_VOLT(7), ANALOG_VOLT(30)}},
+{string_AudioBeep,      COND_ALWAYS,    SETTING(ON_OFF, audioBeep),             {1, 0, 1}},
+{string_fanOn,          COND_ALWAYS,    EDIT_STRING_ARRAY(FanOnData),           {1, 0, Settings::FanProgramTemperature}},
+{string_minIc,          COND_ALWAYS,    SETTING(A, minIc),                      {CE_STEP_TYPE_KEY_SPEED, ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
+{string_maxIc,          COND_ALWAYS,    SETTING(A, maxIc),                      {CE_STEP_TYPE_SMART|CE_HW_LIMITS, ANALOG_AMP(0.001), MAX_CHARGE_I}},
+{string_maxVc,          COND_ALWAYS,    SETTING(V, maxVc),                      {CE_STEP_TYPE_SMART|CE_HW_LIMITS, ANALOG_VOLT(0.1), MAX_CHARGE_V}},
+{string_maxPc,          COND_ALWAYS,    SETTING(W, maxPc),                      {CE_STEP_TYPE_SMART|CE_HW_LIMITS, ANALOG_WATT(0.1), MAX_CHARGE_P}},
+{string_minId,          COND_ALWAYS,    SETTING(A, minId),                      {CE_STEP_TYPE_KEY_SPEED, ANALOG_AMP(0.001), ANALOG_AMP(0.500)}},
+{string_maxId,          COND_ALWAYS,    SETTING(A, maxId),                      {CE_STEP_TYPE_SMART|CE_HW_LIMITS, ANALOG_AMP(0.001), MAX_DISCHARGE_I}},
+{string_maxPd,          COND_ALWAYS,    SETTING(W, maxPd),                      {CE_STEP_TYPE_SMART|CE_HW_LIMITS, ANALOG_WATT(0.1), MAX_DISCHARGE_P}},
+{string_inputLow,       COND_ALWAYS,    SETTING(V, inputVoltageLow),            {ANALOG_VOLT(0.1), ANALOG_VOLT(7), ANALOG_VOLT(30)}},
 #ifdef ENABLE_ANALOG_INPUTS_ADC_NOISE
-{string_adcNoise,       COND_ALWAYS,    SETTING(ON_OFF, adcNoise),          {1, 0, 1}},
+{string_adcNoise,       COND_ALWAYS,    SETTING(ON_OFF, adcNoise),              {1, 0, 1}},
 #endif
-{string_UARTview,       COND_ALWAYS,    EDIT_STRING_ARRAY(UARTData),        {1, 0, Settings::ExtDebugAdc}},
-{string_UARTspeed,      COND_UART_ON,   EDIT_UINT32_ARRAY(UARTSpeedsData),  {1, 0, Settings::UARTSpeeds-1}},
-{string_UARToutput,     COND_UART_ON,   EDIT_STRING_ARRAY(UARToutputData),  {1, 0, UARToutputDataSize}},
-{string_MenuType,       COND_ALWAYS,    EDIT_STRING_ARRAY(menuTypeData),    {1, 0, 1}},
-{string_MenuButtons,    COND_ALWAYS,    EDIT_STRING_ARRAY(menuButtonsData), {1, 0, 1}},
+{string_UARTview,       COND_ALWAYS,    EDIT_STRING_ARRAY(UARTData),            {1, 0, Settings::ExtDebugAdc}},
+{string_UARTspeed,      COND_UART_ON,   EDIT_UINT32_ARRAY(UARTSpeedsData),      {1, 0, Settings::UARTSpeeds-1}},
+{string_UARToutput,     COND_UART_ON,   EDIT_STRING_ARRAY(UARToutputData),      {1, 0, UARToutputDataSize}},
+{string_MenuType,       COND_ALWAYS,    EDIT_STRING_ARRAY(menuTypeData),        {1, 0, 1}},
+{string_MenuButtons,    COND_ALWAYS,    EDIT_STRING_ARRAY(menuButtonsData),     {1, 0, 1}},
+{string_hardwareLimits, COND_ADV,       EDIT_STRING_ARRAY(HardwareLimitsData),  {1, 0, 1}},
 #ifdef ENABLE_SETTINGS_MENU_RESET
 {string_reset,          EDIT_MENU_ALWAYS, {0,0,NULL}},
 #endif

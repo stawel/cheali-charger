@@ -185,8 +185,7 @@ uint16_t ProgramData::getMaxCells()
 {
     if(battery.type == UnknownBatteryType || battery.type == LED)
         return 1;
-    uint16_t v = getDefaultVoltagePerCell(VCharged);
-    return MAX_CHARGE_V / v;
+    return settings.maxVc / battery.Vc_per_cell;
 }
 
 void ProgramData::check()

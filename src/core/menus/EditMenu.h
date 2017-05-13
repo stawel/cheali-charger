@@ -23,10 +23,12 @@
 #include "cprintf.h"
 
 
-#define CE_STEP_TYPE_SMART      0x7fff
-#define CE_STEP_TYPE_KEY_SPEED  0x7ffd
-#define CE_STEP_TYPE_SIGNED     0x7ffc
-#define CE_STEP_TYPE_METHOD     0x7ffe
+#define CE_STEP_TYPE_SMART      0x3fff
+#define CE_STEP_TYPE_KEY_SPEED  0x3ffd
+#define CE_STEP_TYPE_SIGNED     0x3ffc
+#define CE_STEP_TYPE_METHOD     0x3ffe
+#define CE_STEP_MASK            0x3fff
+#define CE_HW_LIMITS            0x4000
 
 
 #define EDIT_MENU_ALWAYS        0x7fff

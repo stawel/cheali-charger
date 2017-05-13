@@ -105,9 +105,6 @@ void SMPS_PID::setPID_MV(uint16_t value) {
 }
 
 void hardware::setVoutCutoff(AnalogInputs::ValueType v) {
-    if(v > MAX_CHARGE_V) {
-        v = MAX_CHARGE_V;
-    }
     AnalogInputs::ValueType cutOff = AnalogInputs::reverseCalibrateValue(AnalogInputs::Vout_plus_pin, v);
     if(cutOff > ANALOG_INPUTS_MAX_ADC_Vout_plus_pin) {
         //extra limit if calibration is wrong

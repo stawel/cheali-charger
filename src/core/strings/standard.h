@@ -97,10 +97,12 @@ namespace SettingsMenu {
     STRING(fanTempOn,   "|fan T on:");
     STRING(dischOff,    "disch off:");
     STRING(AudioBeep,   "beep:");
+    STRING(hardwareLimits,"HW limits:");
     STRING(minIc,       "min Ic:");
     STRING(maxIc,       "max Ic:");
     STRING(minId,       "min Id:");
     STRING(maxId,       "max Id:");
+    STRING(maxVc,       "max Vc:");
     STRING(maxPc,       "max Pc:");
     STRING(maxPd,       "max Pd:");
     STRING(inputLow,    "input low:");
@@ -111,6 +113,10 @@ namespace SettingsMenu {
     STRING(MenuType,    "menus:");
     STRING(MenuButtons, "buttons:");
     STRING(reset,       "reset");
+
+    //hardwareLimits menu
+    STRING(burn,        "BURN!");
+    STRING(yes,         "yes"); //-- defined in AnalogInputs units
 
     //UARToutput menu
     STRING(temp,        "temp");

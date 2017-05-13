@@ -39,8 +39,12 @@
 #define SETTINGS_MAX_DISCHARGE_I    MAX_DISCHARGE_I
 #endif
 
+#ifndef SETTINGS_MAX_CHARGE_V
+#define SETTINGS_MAX_CHARGE_V       MAX_CHARGE_V
+#endif
+
 #ifndef SETTINGS_MAX_CHARGE_P
-#define SETTINGS_MAX_CHARGE_P    MAX_CHARGE_P
+#define SETTINGS_MAX_CHARGE_P       MAX_CHARGE_P
 #endif
 
 #ifndef SETTINGS_MAX_DISCHARGE_P
@@ -52,28 +56,33 @@
 Settings settings;
 
 const Settings defaultSettings PROGMEM = {
-        70,                 //backlight
-        Settings::FanTemperature, //fanOn
-        ANALOG_CELCIUS(50), //fanTempOn
-        ANALOG_CELCIUS(60), //dischargeTempOff
+        70,                             //backlight
+        Settings::FanTemperature,       //fanOn
+        ANALOG_CELCIUS(50),             //fanTempOn
+        ANALOG_CELCIUS(60),             //dischargeTempOff
 
-        1,                  //AudioBeep: yes/no
-        ANALOG_AMP(0.050),  //minIc
-        SETTINGS_MAX_CHARGE_I,       //maxIc
-        ANALOG_AMP(0.050),  //minId
-        SETTINGS_MAX_DISCHARGE_I,    //maxId
+        1,                              //audioBeep: yes/no
 
-        SETTINGS_MAX_CHARGE_P, //maxPc
-        SETTINGS_MAX_DISCHARGE_P, //maxPd
+        1,                              //hardwareLimits: yes/no
 
-        ANALOG_VOLT(10.000),//inputVoltageLow
+        ANALOG_AMP(0.050),              //minIc
+        SETTINGS_MAX_CHARGE_I,          //maxIc
+        ANALOG_AMP(0.050),              //minId
+        SETTINGS_MAX_DISCHARGE_I,       //maxId
 
-        SETTINGS_ADC_NOISE_DEFAULT, //adcNoise
-        Settings::Disabled, //UART - disabled
-        3,                   //57600
-        Settings::TempOutput, //UARToutput
-        Settings::MenuSimple, //menuType
-        Settings::MenuButtonsReversed, //menuButtons
+        SETTINGS_MAX_CHARGE_P,          //maxPc
+        SETTINGS_MAX_DISCHARGE_P,       //maxPd
+
+        SETTINGS_MAX_CHARGE_V,          //maxVc
+
+        ANALOG_VOLT(10.000),            //inputVoltageLow
+
+        SETTINGS_ADC_NOISE_DEFAULT,     //adcNoise
+        Settings::Disabled,             //UART - disabled
+        3,                              //57600
+        Settings::TempOutput,           //UARToutput
+        Settings::MenuSimple,           //menuType
+        Settings::MenuButtonsReversed,  //menuButtons
 };
 
 
@@ -112,18 +121,21 @@ void Settings::restoreDefault() {
 }
 
 void Settings::check() {
-    if(settings.maxIc < settings.minIc) {
-        settings.maxIc = settings.minIc;
+    if(settings.hardwareLimits) {
+        if(settings.maxIc > MAX_CHARGE_I) {
+            settings.maxIc = MAX_CHARGE_I;
+        }
+
+        if(settings.maxId > MAX_DISCHARGE_I) {
+            settings.maxId = MAX_DISCHARGE_I;
+        }
     }
-    if(settings.maxIc > MAX_CHARGE_I) {
-        settings.maxIc = MAX_CHARGE_I;
+    if(settings.maxIc < settings.minIc) {
+        settings.minIc = settings.maxIc;
     }
 
     if(settings.maxId < settings.minId) {
-        settings.maxId = settings.minId;
-    }
-    if(settings.maxId > MAX_DISCHARGE_I) {
-        settings.maxId = MAX_DISCHARGE_I;
+        settings.minId = settings.maxId;
     }
 }
 

@@ -1,6 +1,6 @@
 /*
     cheali-charger - open source firmware for a variety of LiPo chargers
-    Copyright (C) 2013  Paweł Stawicki. All right reserved.
+    Copyright (C) 2017  Paweł Stawicki. All right reserved.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ struct Settings {
 
     static const uint16_t UARTSpeeds = 5;
     static const AnalogInputs::ValueType TempDifference = ANALOG_CELCIUS(5.12);
+
     uint16_t backlight;
 
     uint16_t fanOn;
@@ -44,6 +45,9 @@ struct Settings {
     AnalogInputs::ValueType dischargeTempOff;
 
     uint16_t audioBeep;
+
+    uint16_t hardwareLimits;
+
     AnalogInputs::ValueType minIc;
     AnalogInputs::ValueType maxIc;
     AnalogInputs::ValueType minId;
@@ -52,13 +56,19 @@ struct Settings {
     AnalogInputs::ValueType maxPc;
     AnalogInputs::ValueType maxPd;
 
+    AnalogInputs::ValueType maxVc;
+
     AnalogInputs::ValueType inputVoltageLow;
+
     uint16_t adcNoise;
+
     uint16_t UART;
     uint16_t UARTspeed;
     uint16_t UARToutput;
+
     uint16_t menuType;
     uint16_t menuButtons;
+
 
     void apply();
     void setDefault();
