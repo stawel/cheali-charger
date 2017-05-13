@@ -112,6 +112,7 @@ namespace SettingsMenu {
     STRING(UARToutput,  "|output:");
     STRING(MenuType,    "menus:");
     STRING(MenuButtons, "buttons:");
+    STRING(calibLimits, "calib. limits");
     STRING(reset,       "reset");
 
     //hardwareLimits menu

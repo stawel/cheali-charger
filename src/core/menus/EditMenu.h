@@ -65,7 +65,6 @@ namespace EditMenu {
     };
 
     void initialize(const struct StaticEditData * staticEditData, const EditCallBack callback = NULL);
-    uint16_t * getEditAddress(uint8_t item);
     uint16_t getEnableCondition(uint8_t item);
     void setSelector(uint16_t selector);
 

@@ -129,6 +129,18 @@ void Settings::check() {
         if(settings.maxId > MAX_DISCHARGE_I) {
             settings.maxId = MAX_DISCHARGE_I;
         }
+        if(settings.maxVc > MAX_CHARGE_V) {
+            settings.maxVc = MAX_CHARGE_V;
+        }
+        if(settings.maxVc > MAX_CHARGE_V) {
+            settings.maxVc = MAX_CHARGE_V;
+        }
+        if(settings.maxPc > MAX_CHARGE_P) {
+            settings.maxPc = MAX_CHARGE_P;
+        }
+        if(settings.maxPd > MAX_DISCHARGE_P) {
+            settings.maxPd = MAX_DISCHARGE_P;
+        }
     }
     if(settings.maxIc < settings.minIc) {
         settings.minIc = settings.maxIc;
@@ -138,6 +150,37 @@ void Settings::check() {
         settings.minId = settings.maxId;
     }
 }
+
+#define MAX(a,b) ((a)>(b) ? (a) : (b))
+#define MIN(a,b) ((a)<(b) ? (a) : (b))
+
+void Settings::setLimitsBasedOnCalibration() {
+    const float minPr = 0.015; //1.5% - should be optimized
+    const float maxPr = 0.90; //90% - should be optimized
+    const uint16_t minInt = 65535*minPr;
+    const uint16_t maxInt = 65535*maxPr;
+    uint16_t  m1, m2;
+
+    m1 = AnalogInputs::calibrateValue(AnalogInputs::Ismps, minInt);
+    m2 = AnalogInputs::calibrateValue(AnalogInputs::IsmpsSet, SMPS_UPPERBOUND_VALUE*minPr);
+    settings.minIc = MAX(m1, m2);
+
+    m1 = AnalogInputs::calibrateValue(AnalogInputs::Idischarge, minInt);
+    m2 = AnalogInputs::calibrateValue(AnalogInputs::IdischargeSet, DISCHARGER_UPPERBOUND_VALUE*minPr);
+    settings.minId = MAX(m1, m2);
+
+    m1 = AnalogInputs::calibrateValue(AnalogInputs::Ismps, maxInt);
+    m2 = AnalogInputs::calibrateValue(AnalogInputs::IsmpsSet, SMPS_UPPERBOUND_VALUE*maxPr);
+    settings.maxIc = MIN(m1, m2);
+
+    m1 = AnalogInputs::calibrateValue(AnalogInputs::Idischarge, maxInt);
+    m2 = AnalogInputs::calibrateValue(AnalogInputs::IdischargeSet, DISCHARGER_UPPERBOUND_VALUE*maxPr);
+    settings.maxId = MIN(m1, m2);
+
+    settings.maxVc = AnalogInputs::calibrateValue(AnalogInputs::Vout_plus_pin, maxInt);
+    check();
+}
+
 
 
 void Settings::apply() {

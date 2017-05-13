@@ -32,9 +32,28 @@ namespace EditMenu {
     EditCallBack editCallback;
     const struct StaticEditData * staticEditData_;
 
-    void printItem(uint8_t item);
-    void editItem(uint8_t item, uint8_t key);
-    uint8_t getSelectedIndexOrSize(uint8_t item);
+    static void printItem(uint8_t item);
+    static void editItem(uint8_t item, uint8_t key);
+    static uint8_t getSelectedIndexOrSize(uint8_t item);
+
+    static int limitsExceeded(uint16_t value, uint8_t index) {
+        EditData d = pgm::read(&staticEditData_[index].edit);
+        return (value > d.maxValue) && (d.step & CE_HW_LIMITS);
+    }
+
+    static uint16_t * getEditAddress(uint8_t item)
+    {
+        uint8_t index = getSelectedIndexOrSize(item);
+        cprintf::Data data = pgm::read(&staticEditData_[index].print.data);
+        uint16_t * valuePtr = data.uint16Ptr;
+        uint8_t type = pgm::read(&staticEditData_[index].print.type);
+        if(type == CP_TYPE_STRING_ARRAY || type == CP_TYPE_UINT32_ARRAY) {
+            cprintf::ArrayData array;
+            pgm::read(array, data.arrayPtr);
+            valuePtr = (uint16_t*)array.indexPtr;
+        }
+        return valuePtr;
+    }
 
     void initialize(const struct StaticEditData * staticEditData, const EditCallBack callback) {
         staticEditData_ = staticEditData;
@@ -46,12 +65,7 @@ namespace EditMenu {
         setSelector(EDIT_MENU_ALWAYS);
     }
 
-    static int limitsExceeded(uint16_t value, uint8_t index) {
-        EditData d = pgm::read(&staticEditData_[index].edit);
-        return (value > d.maxValue) && (d.step & CE_HW_LIMITS);
-    }
-
-    void printItem(uint8_t item)
+    static void printItem(uint8_t item)
     {
         uint8_t index = getSelectedIndexOrSize(item);
         const char * str = pgm::read(&staticEditData_[index].staticString);
@@ -70,19 +84,6 @@ namespace EditMenu {
         }
     }
 
-    uint16_t * getEditAddress(uint8_t item)
-    {
-        uint8_t index = getSelectedIndexOrSize(item);
-        cprintf::Data data = pgm::read(&staticEditData_[index].print.data);
-        uint16_t * valuePtr = data.uint16Ptr;
-        uint8_t type = pgm::read(&staticEditData_[index].print.type);
-        if(type == CP_TYPE_STRING_ARRAY || type == CP_TYPE_UINT32_ARRAY) {
-            cprintf::ArrayData array;
-            pgm::read(array, data.arrayPtr);
-            valuePtr = (uint16_t*)array.indexPtr;
-        }
-        return valuePtr;
-    }
 
     uint16_t getEnableCondition(uint8_t item)
     {
@@ -91,7 +92,7 @@ namespace EditMenu {
     }
 
 
-    void editItem(uint8_t item, uint8_t key)
+    static void editItem(uint8_t item, uint8_t key)
     {
         uint16_t * valuePtr = getEditAddress(item);
         uint8_t index = getSelectedIndexOrSize(item);

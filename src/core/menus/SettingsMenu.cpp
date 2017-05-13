@@ -76,6 +76,9 @@ const AnalogInputs::ValueType Tstep =  ANALOG_CELCIUS(1);
 /*condition bits:*/
 #define COND_FAN_ON_T       1
 #define COND_UART_ON        2
+#define COND_RESET          4
+#define COND_CLIMITS        8
+
 #define COND_ALWAYS         EDIT_MENU_ALWAYS
 #define COND_ADVANCED       32768
 #define COND_ADV            COND_ADVANCED + EDIT_MENU_ALWAYS
@@ -133,7 +136,8 @@ const EditMenu::StaticEditData editData[] PROGMEM = {
 {string_MenuButtons,    COND_ALWAYS,    EDIT_STRING_ARRAY(menuButtonsData),     {1, 0, 1}},
 {string_hardwareLimits, COND_ADV,       EDIT_STRING_ARRAY(HardwareLimitsData),  {1, 0, 1}},
 #ifdef ENABLE_SETTINGS_MENU_RESET
-{string_reset,          EDIT_MENU_ALWAYS, {0,0,NULL}},
+{string_calibLimits,    COND_CLIMITS,   {0,0,NULL}},
+{string_reset,          COND_RESET,     {0,0,NULL}},
 #endif
 {NULL,                  EDIT_MENU_LAST}
 };
@@ -159,8 +163,11 @@ void run() {
         if(item < 0) break;
 
 #ifdef ENABLE_SETTINGS_MENU_RESET
-        if(EditMenu::getEditAddress(item) == NULL)  //reset
-        {
+        uint16_t ec = EditMenu::getEnableCondition(item);
+        if (ec == COND_CLIMITS) { //calib limits
+            settings.setLimitsBasedOnCalibration();
+            Buzzer::soundSelect();
+        } else if(ec == COND_RESET) { //reset
             settings.setDefault();
 #ifdef ENABLE_DEBUG
             settings.UART = Settings::Normal;

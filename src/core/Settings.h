@@ -79,6 +79,7 @@ struct Settings {
     static void save();
     static void check();
     static void restoreDefault();
+    static void setLimitsBasedOnCalibration();
 
 };
 
