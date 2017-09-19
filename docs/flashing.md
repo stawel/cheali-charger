@@ -26,7 +26,8 @@ The simplest way to flash a charger is to use [avrdude](http://www.nongnu.org/av
 
 - try to make a backup:
 <pre>
-avrdude.exe -patmega32 -cusbasp -Uflash:r:flash.hex:r -Ulfuse:r:lfuse.hex:r -Uhfuse:r:hfuse.hex:r -Ueeprom:r:eeprom.hex:r
+avrdude.exe -patmega32 -cusbasp -Uflash:r:flash.bin:r -Ulfuse:r:lfuse.bin:r -Uhfuse:r:hfuse.bin:r -Ueeprom:r:eeprom.bin:r
+avrdude.exe -patmega32 -cusbasp -Uflash:r:flash.hex:i -Ulfuse:r:lfuse.hex:i -Uhfuse:r:hfuse.hex:i -Ueeprom:r:eeprom.hex:i
 </pre>
 
 - flash cheali-charger into program memory:
