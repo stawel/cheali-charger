@@ -166,7 +166,7 @@ CHEALI_CHARGER_ARCHITECTURE_CPU_STRING = 'atmega32' # Variable STRING '(const ch
 CHEALI_CHARGER_ARCHITECTURE_GENERIC_STRING = '200W' # Variable STRING '(const char*)"200W"'
 CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION = 10 # Variable c_int '10'
 CHEALI_CHARGER_ARCHITECTURE_CPU = 4096 # Variable c_int '4096'
-MAX_BANANCE_CELLS = 6 # Variable c_int '6'
+MAX_BALANCE_CELLS = 6 # Variable c_int '6'
 CHEALI_CHARGER_EEPROM_SETTINGS_VERSION = 12 # Variable c_int '12'
 CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION = 3 # Variable c_int '3'
 __all__ = ['CHEALI_CHARGER_ARCHITECTURE_INFO',
@@ -180,7 +180,7 @@ __all__ = ['CHEALI_CHARGER_ARCHITECTURE_INFO',
            'Li435', 'CHEALI_CHARGER_ARCHITECTURE_CPU', 'Pout',
            'CHEALI_CHARGER_ARCHITECTURE', 'deltaVout', 'Vb1_pin',
            'CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION', 'Idischarge',
-           'MAX_BANANCE_CELLS', 'Data', 'Vb6_pin',
+           'MAX_BALANCE_CELLS', 'Data', 'Vb6_pin',
            'CHEALI_CHARGER_EEPROM_SETTINGS_VERSION', 'NiMH',
            'N11ProgramData7Battery3DOT_03DOT_1E', 'Name', 'Settings',
            'IdischargeSet', 'Iout', 'Life', 'Vb4_pin',

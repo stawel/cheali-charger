@@ -40,7 +40,7 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {{
     {{{{{calibration[13].p[0].x},  {calibration[13].p[0].y}}},         {{{calibration[13].p[1].x},  {calibration[13].p[1].y}}}}},   //Vb5_pin
     {{{{{calibration[14].p[0].x},  {calibration[14].p[0].y}}},         {{{calibration[14].p[1].x},  {calibration[14].p[1].y}}}}},   //Vb6_pin
 
-#if MAX_BANANCE_CELLS > 6
+#if MAX_BALANCE_CELLS > 6
     {{{{{calibration[14].p[0].x},  {calibration[14].p[0].y}}},         {{{calibration[14].p[1].x},  {calibration[14].p[1].y}}}}},   //Vb7_pin
     {{{{{calibration[14].p[0].x},  {calibration[14].p[0].y}}},         {{{calibration[14].p[1].x},  {calibration[14].p[1].y}}}}},   //Vb8_pin
 #endif

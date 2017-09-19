@@ -61,7 +61,7 @@ STRING_CPP(v_menu_cell3,    "Vb3_pin: ");
 STRING_CPP(v_menu_cell4,    "Vb4_pin: ");
 STRING_CPP(v_menu_cell5,    "Vb5_pin: ");
 STRING_CPP(v_menu_cell6,    "Vb6_pin: ");
-#if MAX_BANANCE_CELLS > 6
+#if MAX_BALANCE_CELLS > 6
 STRING_CPP(v_menu_cell7,    "Vb7_pin: ");
 STRING_CPP(v_menu_cell8,    "Vb8_pin: ");
 #endif

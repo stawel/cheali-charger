@@ -41,7 +41,7 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
   {{0, ANALOG_VOLT (0.000)}, {26409, ANALOG_VOLT (4.092)}},     //Vb5_pin
   {{0, ANALOG_VOLT (0.000)}, {26614, ANALOG_VOLT (4.108)}},     //Vb6_pin
 
-#if MAX_BANANCE_CELLS > 6
+#if MAX_BALANCE_CELLS > 6
   {{,}, {,}},                   //Vb7_pin
   {{,}, {,}},                   //Vb8_pin
 #endif

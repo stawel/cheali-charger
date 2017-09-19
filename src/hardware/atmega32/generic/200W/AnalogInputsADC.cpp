@@ -123,7 +123,7 @@ const adc_correlation order_analogInputs_on[] PROGMEM = {
     {-1,                                    OUTPUT_VOLTAGE_MINUS_PIN,AnalogInputs::Vout_minus_pin,  0,              10},
     {MADDR_REORDER(MADDR_BUTTON_INC),       MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_INC,     NO_NOISE},
     {MADDR_REORDER(MADDR_V_BALANSER6),      MUX1_Z_A_PIN,           AnalogInputs::Vb6_pin,          0,              NO_NOISE},
-#if MAX_BANANCE_CELLS > 6
+#if MAX_BALANCE_CELLS > 6
     {-1,                                    SMPS_CURRENT_PIN,       AnalogInputs::Ismps,            0,              NO_NOISE},
     {MADDR_REORDER(MADDR_BUTTON_STOP),      MUX0_Z_A_PIN,           AnalogInputs::VirtualInputs,    BUTTON_STOP,    NO_NOISE},
     {MADDR_REORDER(MADDR_V_BALANSER7),      MUX1_Z_A_PIN,           AnalogInputs::Vb7_pin,          0,              NO_NOISE},

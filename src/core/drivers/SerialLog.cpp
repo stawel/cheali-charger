@@ -244,7 +244,7 @@ void sendChannel1()
         printD();
     }
 
-    for(uint8_t i=0;i<MAX_BANANCE_CELLS;i++) {
+    for(uint8_t i=0;i<MAX_BALANCE_CELLS;i++) {
         printUInt(TheveninMethod::getReadableRthCell(i));
         printD();
     }
