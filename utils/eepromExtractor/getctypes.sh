@@ -9,6 +9,7 @@ PYTHON=python
 #http://starship.python.net/crew/theller/ctypes/old/codegen.html
 #http://svn.python.org/projects/ctypes/trunk/ctypeslib/
 CTYPELIB=../../../ctypeslib/ctypeslib
+export GCCXML_COMPILER=g++-4.8
 
 if [ ! -d $CTYPELIB ]; then
     echo "ctypeslib not found in $CTYPELIB"
