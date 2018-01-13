@@ -210,7 +210,7 @@ namespace Calibration {
     STRING(v_menu_cell6,    "Vb6:");
     STRING(v_menu_cell7,    "Vb7:");
     STRING(v_menu_cell8,    "Vb8:");
-#if MAX_BANANCE_CELLS > 6
+#if MAX_BALANCE_CELLS > 6
     STRING(v_menu_cellSum,  "V1-8:");
 #else
     STRING(v_menu_cellSum,  "V1-6:");

@@ -21,8 +21,8 @@
 #include "GlobalConfig.h"
 #include "HardwareConfigGeneric.h"
 
-#undef  MAX_BANANCE_CELLS
-#define MAX_BANANCE_CELLS 8
+#undef  MAX_BALANCE_CELLS
+#define MAX_BALANCE_CELLS 8
 
 #define LCD_D3_PIN              22
 #define LCD_D2_PIN              21

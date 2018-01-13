@@ -44,7 +44,7 @@ void hardware::initializePins()
     IO::pinMode(BALANCER4_LOAD_PIN, OUTPUT);
     IO::pinMode(BALANCER5_LOAD_PIN, OUTPUT);
     IO::pinMode(BALANCER6_LOAD_PIN, OUTPUT);
-#if MAX_BANANCE_CELLS > 6
+#if MAX_BALANCE_CELLS > 6
     IO::pinMode(BALANCER7_LOAD_PIN, OUTPUT);
     IO::pinMode(BALANCER8_LOAD_PIN, OUTPUT);
 #endif
@@ -124,7 +124,7 @@ void hardware::setBalancer(uint8_t v)
     IO::digitalWrite(BALANCER4_LOAD_PIN, v&8);
     IO::digitalWrite(BALANCER5_LOAD_PIN, v&16);
     IO::digitalWrite(BALANCER6_LOAD_PIN, v&32);
-#if MAX_BANANCE_CELLS > 6
+#if MAX_BALANCE_CELLS > 6
     IO::digitalWrite(BALANCER7_LOAD_PIN, v&64);
     IO::digitalWrite(BALANCER8_LOAD_PIN, v&128);
 #endif

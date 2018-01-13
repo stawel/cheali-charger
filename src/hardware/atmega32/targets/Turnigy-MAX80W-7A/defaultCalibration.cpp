@@ -39,7 +39,7 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[AnalogInputs::PHYSICAL_
     {{0, 0},                      {55070, 4196}},  //Vb5_pin
     {{0, 0},                      {55808, 4193}},  //Vb6_pin
 
-#if MAX_BANANCE_CELLS > 6
+#if MAX_BALANCE_CELLS > 6
     {{0, 0},                        {50752, ANALOG_VOLT(3.865)}},   //Vb7_pin
     {{0, 0},                        {51008, ANALOG_VOLT(3.885)}},   //Vb8_pin
 #endif

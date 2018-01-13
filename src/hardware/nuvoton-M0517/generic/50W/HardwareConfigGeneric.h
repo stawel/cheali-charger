@@ -21,7 +21,7 @@
 
 #include "AnalogInputsTypes.h"
 
-#define MAX_BANANCE_CELLS       6
+#define MAX_BALANCE_CELLS       6
 
 #define CALIBRATION_CHARGE_POINT0_mA    100
 #define CALIBRATION_CHARGE_POINT1_mA    1000

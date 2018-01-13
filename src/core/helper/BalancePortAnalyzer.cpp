@@ -48,7 +48,7 @@ STRING_CPP(v_menu_cell3,    "Vb3_pin: ");
 STRING_CPP(v_menu_cell4,    "Vb4_pin: ");
 STRING_CPP(v_menu_cell5,    "Vb5_pin: ");
 STRING_CPP(v_menu_cell6,    "Vb6_pin: ");
-#if MAX_BANANCE_CELLS > 6
+#if MAX_BALANCE_CELLS > 6
 STRING_CPP(v_menu_cell7,    "Vb7_pin: ");
 STRING_CPP(v_menu_cell8,    "Vb8_pin: ");
 #endif
@@ -80,7 +80,7 @@ static void printItem(uint8_t index) {
     lcdPrint_P(voltageMenu, index);
 
     AnalogInputs::Name name = pgm::read(&voltageName[index]);
-    if(index < MAX_BANANCE_CELLS +3) {
+    if(index < MAX_BALANCE_CELLS +3) {
             lcdPrintUnsigned(AnalogInputs::getADCValue(name), dig_);
 
         if(index > 0) {
@@ -103,10 +103,10 @@ void run() {
         Menu::setIndex(index);
         index = Menu::run(true);
         if(index < 1) continue;
-        if(index < MAX_BANANCE_CELLS+1) {
+        if(index < MAX_BALANCE_CELLS+1) {
             Balancer::setBalance(Balancer::balance ^ (1<<(index-1)));
         }
-        if(index == MAX_BANANCE_CELLS + 3) {
+        if(index == MAX_BALANCE_CELLS + 3) {
             Balancer::powerOff();
             AnalogInputs::powerOff();
             SerialLog::powerOff();

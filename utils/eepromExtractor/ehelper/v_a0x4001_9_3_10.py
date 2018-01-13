@@ -140,7 +140,7 @@ Data._fields_ = [
 ]
 CHEALI_CHARGER_EPPROM_VERSION_STRING = '9.3.10' # Variable STRING '(const char*)"9.3.10"'
 CHEALI_CHARGER_ARCHITECTURE_CPU = 16384 # Variable c_int '16384'
-MAX_BANANCE_CELLS = 6 # Variable c_int '6'
+MAX_BALANCE_CELLS = 6 # Variable c_int '6'
 CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION = 3 # Variable c_int '3'
 CHEALI_CHARGER_ARCHITECTURE = 16385 # Variable c_int '16385'
 CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION = 9 # Variable c_int '9'
@@ -156,7 +156,7 @@ __all__ = ['N11ProgramData7Battery3DOT_13DOT_2E', 'Vout_minus_pin',
            'CHEALI_CHARGER_ARCHITECTURE_GENERIC', 'deltaVoutMax',
            'Vbalancer', 'CHEALI_CHARGER_ARCHITECTURE_CPU', 'Pout',
            'CHEALI_CHARGER_ARCHITECTURE', 'deltaVout', 'Vb1_pin',
-           'Idischarge', 'MAX_BANANCE_CELLS', 'Data', 'Vb6_pin',
+           'Idischarge', 'MAX_BALANCE_CELLS', 'Data', 'Vb6_pin',
            'N11ProgramData7Battery3DOT_1E',
            'N11ProgramData7Battery3DOT_13DOT_3E',
            'CHEALI_CHARGER_EEPROM_SETTINGS_VERSION', 'Name',

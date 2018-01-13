@@ -46,7 +46,7 @@ namespace Screen { namespace Balancer {
     }
 
     void printBalancer(uint8_t cell, AnalogInputs::Type type) {
-        if(cell < MAX_BANANCE_CELLS) {
+        if(cell < MAX_BALANCE_CELLS) {
             lcdPrintDigit(cell+1);
             lcdPrintChar(':');
 
@@ -96,7 +96,7 @@ namespace Screen { namespace Balancer {
 #endif
         } else {
             uint16_t cell = 1;
-            for(uint8_t i = 0; i < MAX_BANANCE_CELLS; i++) {
+            for(uint8_t i = 0; i < MAX_BALANCE_CELLS; i++) {
                 if(AnalogInputs::connectedBalancePortCells & cell) {
                     if(i == ::Balancer::minCell) {
                         c = SCREEN_EMPTY_CELL_CHAR; //lowest cell
@@ -117,7 +117,7 @@ namespace Screen { namespace Balancer {
                 lcdPrintChar(c);
                 cell <<= 1;
             }
-            lcdPrintSpaces(8 - MAX_BANANCE_CELLS);
+            lcdPrintSpaces(8 - MAX_BALANCE_CELLS);
         }
         printBalancer(from++, type);
         lcdPrintSpaces();
