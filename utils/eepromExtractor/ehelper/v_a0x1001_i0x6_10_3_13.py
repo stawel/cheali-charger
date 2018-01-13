@@ -170,7 +170,7 @@ CHEALI_CHARGER_ARCHITECTURE_CPU = 4096 # Variable c_int '4096'
 CHEALI_CHARGER_ARCHITECTURE_GENERIC = 1 # Variable c_int '1'
 CHEALI_CHARGER_ARCHITECTURE_GENERIC_STRING = '50W' # Variable STRING '(const char*)"50W"'
 CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION = 10 # Variable c_int '10'
-MAX_BANANCE_CELLS = 6 # Variable c_int '6'
+MAX_BALANCE_CELLS = 6 # Variable c_int '6'
 CHEALI_CHARGER_EEPROM_SETTINGS_VERSION = 13 # Variable c_int '13'
 CHEALI_CHARGER_EEPROM_PROGRAMDATA_VERSION = 3 # Variable c_int '3'
 __all__ = ['CHEALI_CHARGER_ARCHITECTURE_INFO',
@@ -184,7 +184,7 @@ __all__ = ['CHEALI_CHARGER_ARCHITECTURE_INFO',
            'Li435', 'CHEALI_CHARGER_ARCHITECTURE_CPU', 'Pout',
            'CHEALI_CHARGER_ARCHITECTURE', 'deltaVout', 'Vb1_pin',
            'CHEALI_CHARGER_EEPROM_CALIBRATION_VERSION', 'Idischarge',
-           'MAX_BANANCE_CELLS', 'Data', 'Vb6_pin',
+           'MAX_BALANCE_CELLS', 'Data', 'Vb6_pin',
            'CHEALI_CHARGER_EEPROM_SETTINGS_VERSION', 'NiMH',
            'N11ProgramData7Battery3DOT_03DOT_1E', 'Name', 'Settings',
            'IdischargeSet', 'Iout', 'Life', 'Vb4_pin',
