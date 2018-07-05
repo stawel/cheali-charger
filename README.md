@@ -76,6 +76,7 @@ Hardware
 
 **Unsupported**
 - [Turnigy Accucel-6 80W Balancer/Charger](http://www.hobbyking.com/hobbyking/store/__64345__Turnigy_Accucel_6_80W_10A_Balancer_Charger_LiHV_Capable.html) - Based on an older, uncommon CPU. See [#106](https://github.com/stawel/cheali-charger/issues/106)
+- Imax B6 Mini 1-6 60W Balancer/Charger - Same reason as above
 - **any charger listed above with an unknown CPU** (CPU not labeled)
 
 Usage:
