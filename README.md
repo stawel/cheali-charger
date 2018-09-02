@@ -66,7 +66,7 @@ Hardware
 - IMAX B6 Charger/Discharger 1-6 Cells
 - AC/DC Dual Power B6AC 80W RC Balance Charger/Discharger
 - Turnigy A-6-10 200W Balance charger & discharger
-- Turnigy Accucel-6 50W 5A Balancer/Charger w/ Accessories
+- [Turnigy Accucel-6 50W 5A Balancer/Charger w/ Accessories](http://www.hobbyking.com/hobbyking/store/__7028__turnigy_accucel_6_50w_6a_balancer_charger_w_accessories.html) (not LiHV-version. See Unsupported section)
 - Turnigy Accucel-8 150W 7A Balancer/Charger
 - Turnigy MEGA 400Wx2 Battery Charger/Discharger (800W)
 - ... many more
@@ -76,6 +76,7 @@ Hardware
 
 **Unsupported**
 - [Turnigy Accucel-6 80W Balancer/Charger](http://www.hobbyking.com/hobbyking/store/__64345__Turnigy_Accucel_6_80W_10A_Balancer_Charger_LiHV_Capable.html) - Based on an older, uncommon CPU. See [#106](https://github.com/stawel/cheali-charger/issues/106)
+- [Turnigy Accucell-6 50W Balancer/Charger](https://hobbyking.com/en_us/turnigy-accucell-6-50w-6a-balancer-charger-lihv-capable.html) [#106](https://github.com/stawel/cheali-charger/issues/106#issuecomment-168314114)
 - Imax B6 Mini 1-6 60W Balancer/Charger - Same reason as above
 - **any charger listed above with an unknown CPU** (CPU not labeled)
 
