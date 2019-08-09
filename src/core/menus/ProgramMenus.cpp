@@ -52,6 +52,18 @@ namespace ProgramMenus {
             Program::EditBattery,
     };
 
+    const Program::ProgramType programLiXX1CellMenu[] PROGMEM = {
+            Program::Charge,
+            Program::Discharge,
+            Program::FastCharge,
+            Program::Storage,
+#ifdef ENABLE_PROGRAM_MENUS_LIXX_CYCLING
+            Program::DischargeChargeCycle,
+#endif
+            Program::CapacityCheck,
+            Program::EditBattery,
+    };
+
     const Program::ProgramType programNiZnMenu[] PROGMEM = {
             Program::Charge,
             Program::ChargeBalance,
@@ -109,8 +121,11 @@ namespace ProgramMenus {
             return programNoneMenu;
         if(bc == ProgramData::ClassNiZn)
             return programNiZnMenu;
-        if(bc == ProgramData::ClassLiXX)
+        if(bc == ProgramData::ClassLiXX) {
+            if (ProgramData::battery.cells == 1)
+                return programLiXX1CellMenu;
             return programLiXXMenu;
+        }
         if(bc == ProgramData::ClassNiXX)
             return programNiXXMenu;
         if(bc == ProgramData::ClassLED)
