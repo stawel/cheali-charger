@@ -42,7 +42,7 @@ Features
 - Input voltage monitoring
 - Memory for 30 batteries
 - LogView support
-- CALIBATION!
+- CALIBRATION!
 
 
 WARNING
