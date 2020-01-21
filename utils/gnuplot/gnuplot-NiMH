@@ -20,14 +20,17 @@ set mxtics 10;
 set ylabel "mV, mA, mAh, mWh";
 #set yrange [0:2500];
 set yrange [0:*];
-set ytics 100;
+set ytics 500 nomirror;
+set mytics 5;
 
 set y2label "mOhm";
 #set y2range [0:25000];
 set y2range [0:*];
 set y2tics 1000;
 
-set grid xtics ytics mxtics linetype -1 dt 2, linetype 0 dt 3
+set style line 12 lc rgb '#808080' linetype -1 dt 1
+set style line 13 lc rgb '#C0C0C0' linetype -1 dt 1
+set grid xtics ytics mxtics mytics linestyle 12, linestyle 12, linestyle 13, linestyle 13
 set datafile separator ";";
 plot  FILENAME using ($3-90)/60:4  with lines title "Voltage, mV", \
       FILENAME using ($3-90)/60:5  with lines title "Current, mA", \
