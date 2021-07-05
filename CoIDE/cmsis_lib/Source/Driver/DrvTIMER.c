@@ -591,7 +591,7 @@ int32_t DrvTIMER_Close(E_TIMER_CHANNEL ch)
 //*****************************************************************************
 //
 //! \brief Install the interrupt callback function of the specified timer
-//!  channel. And trigger timer callback functuion when interrupt occur
+//!  channel. And trigger timer callback function when interrupt occur
 //!  specified times. 
 //!
 //! \param ch E_TIMER_CHANNEL, it could be E_TMR0/E_TMR1/E_TMR2/E_TMR3
