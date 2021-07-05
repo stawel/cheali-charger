@@ -14,7 +14,9 @@ Features
 --------
 - Li-ion, LiPo, LiPo-4.30V, LiPo-4.35V, LiFe:
   - charging
+    - terminates charging when the current lowers to 10% of Ic (by default, adjustable in battery settings)
   - fast charging
+    - terminates charging when the current lowers to 20% of Ic
   - charging + balancing
   - discharging
   - balancing
