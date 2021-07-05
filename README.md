@@ -179,7 +179,6 @@ Troubleshooting
 Useful materials
 ----------------
 - [Iggnus fork](https://github.com/Iggnus/cheali-charger-i1), branch: [v0.99](https://github.com/Iggnus/cheali-charger-i1/tree/v0.99), [v0.33+](https://github.com/Iggnus/cheali-charger-i1/tree/v0.33+)
-- [njozsef fork](https://github.com/njozsef/cheali-charger-test1)
 - [sasam M0517 flash tools](https://github.com/sasam/M0517_flash_tools)
 - [Cheali Charger v1.00 Manual / User Guide](docs/users_docs/Cheali Charger 1.00 User Manual English_draft_002.pdf) (draft 002) by PascalRZ
 - Cheali Charger V0.33m - User Guide: [English](https://docs.google.com/document/d/1Nv2vBXbWo6qE2U9rXZfzVDTfWu3j778flImbFJp74tk), [Hungarian](https://docs.google.com/file/d/0B1RXXTatsA1cWVJYbERUSWo5Q28)
