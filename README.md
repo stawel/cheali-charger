@@ -71,21 +71,23 @@ Hardware
 - Turnigy Accucel-6 50W 5A Balancer/Charger w/ Accessories
 - Turnigy Accucel-8 150W 7A Balancer/Charger
 - Turnigy MEGA 400Wx2 Battery Charger/Discharger (800W)
+- Thunder T610 Balance Charger/Discharger
 - ... many more
 
 **Nuvoton NuMicro M0517LBN CPU:**
 - IMAX B6 Charger/Discharger 1-6 Cells
 
-**Unsupported**
-- [Turnigy Accucel-6 80W Balancer/Charger](http://www.hobbyking.com/hobbyking/store/__64345__Turnigy_Accucel_6_80W_10A_Balancer_Charger_LiHV_Capable.html) - Based on an older, uncommon CPU. See [#106](https://github.com/stawel/cheali-charger/issues/106)
-- Imax B6 Mini 1-6 60W Balancer/Charger - Same reason as above
-- **any charger listed above with an unknown CPU** (CPU not labeled)
+**Unsupported due to old or uncommon CPU See [#106](https://github.com/stawel/cheali-charger/issues/106)**
+- [Turnigy Accucel-6 80W Balancer/Charger](https://hobbyking.com/en_us/turnigy-accucel-6-80w-10a-1-6s-balancer-charger-suitable-for-lihv.html)
+- IMAX B6 Mini 1-6 60W Balancer/Charger
+- IMAX B6 V2 Balancer/Charger
+- ... others, do your research or ask on the forum
 
 Usage:
 ------
 
-After [flashing](docs/flashing.md) your charger the first thing you should do is  
-reset the charger to default settings (go to: "options"->"reset default" and press the "start" button)  
+After [flashing](docs/flashing.md) your charger the first thing you should do is to 
+reset the charger to its default settings ("options"->"reset default")
 and then [calibrate](README.md#calibration) it, now your charger is ready to use.
 
 programming you charger:
