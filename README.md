@@ -72,6 +72,7 @@ Hardware
 - Turnigy Accucel-8 150W 7A Balancer/Charger
 - Turnigy MEGA 400Wx2 Battery Charger/Discharger (800W)
 - Thunder T610 Balance Charger/Discharger
+- Redox Beta 50W 5A charger (at least later model with yellow soldermask)
 - ... many more
 
 **Nuvoton NuMicro M0517LBN CPU:**
