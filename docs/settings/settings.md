@@ -71,7 +71,7 @@ UART settings:
 |---------------------------------------|-------------|------------:|
 |UART:<br>![UART:](UART.png)            | enable UART, should be "disabled" or "normal" | all|
 |speed:<br>![speed:](speed.png)         | UART speed | all |
-|UART inp:<br>![UART inp:](UART_inp.png)| UART input:<br>*temp*: temperature connector<br> *pin7*: M0517 pin 7 (charger needs modification)| M0517 |
+|output:<br>                            | UART output:<br>*temp*: temperature connector <br> *separ*: [temperature connector and UART are *separated*](../temp_sensor/atmega32_mod/mod_temp_UART_separation.md) <br> *pin7*: M0517 pin 7 (charger needs modification)| <br> all <br> all <br>M0517 |
 
 
 
