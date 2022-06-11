@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.11)
 
-Project(cheali-charger)
+Project(cheali-charger ASM C CXX)
 
 if("${CMAKE_HOST_SYSTEM_NAME}" MATCHES "[Ww]in")
         message(STATUS "windows detected: setting enable-short-names-default to ON")
@@ -42,6 +42,7 @@ if(ARM-Cortex-M0)
     message(STATUS "target architecture: ARM-Cortex-M0")
     include(arm-compiler.cmake)
     add_subdirectory(src/hardware/nuvoton-M0517)
+    add_subdirectory(src/hardware/nuvoton-NUC029)
 else(ARM-Cortex-M0)
     message(STATUS "target architecture: avr")
     include(avr-compiler.cmake)

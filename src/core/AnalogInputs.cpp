@@ -290,12 +290,16 @@ void AnalogInputs::powerOff()
 
 bool AnalogInputs::isReversePolarity()
 {
+#ifdef OUTPUT_VOLTAGE_MINUS_PIN
     AnalogInputs::ValueType vm = getADCValue(Vout_minus_pin);
     AnalogInputs::ValueType vp = getADCValue(Vout_plus_pin);
     if(vm > vp) vm -=  vp;
     else vm = 0;
 
     return vm > REVERSE_POLARITY_MIN_VOLTAGE;
+#else
+    return hardware::isReversePolarity();
+#endif
 }
 
 AnalogInputs::ValueType AnalogInputs::calibrateValue(Name name, ValueType x)
@@ -615,4 +619,3 @@ void AnalogInputs::setReal(Name name, ValueType real)
 
     real_[name] = real;
 }
-
