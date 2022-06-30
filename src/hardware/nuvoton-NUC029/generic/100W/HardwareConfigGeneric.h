@@ -31,7 +31,6 @@
 #define CALIBRATION_DISCHARGE_POINT0_mA 100
 #define CALIBRATION_DISCHARGE_POINT1_mA 300
 
-#define ENABLE_SIMPLIFIED_VB0_VB2_CIRCUIT
 //TODO: should be implemented!
 //when the imaxB6 discharges, the voltage on Vb0_pin
 //(Vb0_pin = VBATT- on the balance port)
