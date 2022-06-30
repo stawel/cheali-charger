@@ -33,9 +33,12 @@
 namespace hardware {
     void initializePins();
     void initialize();
-    uint8_t getKeyPressed();
     void delay(uint16_t t);
+
+    uint8_t getKeyPressed();
     void setBuzzer(uint8_t val);
+    void setLCDBacklight(uint8_t val);
+
     void setBatteryOutput(bool enable);
     void setChargerOutput(bool enable);
     void setDischargerOutput(bool enable);
@@ -45,8 +48,8 @@ namespace hardware {
     void setChargerValue(uint16_t value);
     void setDischargerValue(uint16_t value);
     void setVoutCutoff(AnalogInputs::ValueType v);
-
     void setBalancer(uint8_t balance);
+  
     void doInterrupt();
 
     void soundInterrupt();

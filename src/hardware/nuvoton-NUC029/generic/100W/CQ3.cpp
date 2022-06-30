@@ -59,17 +59,17 @@ void hardware::initializePins()
     IO::pinMode(BUTTON_INC_PIN, INPUT);
     IO::pinMode(BUTTON_START_PIN, INPUT);
 
-    IO::pinMode(OUTPUT_VOLTAGE_POLARITY_PIN, INPUT);
-    IO::pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
+    IO::pinMode(BACKLIGHT_PIN, OUTPUT);
     IO::pinMode(BUZZER_PIN, OUTPUT);
 
+    IO::pinMode(OUTPUT_VOLTAGE_POLARITY_PIN, INPUT);
+    IO::pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
     IO::pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
     IO::pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
     IO::pinMode(SMPS_VALUE_BUCK_PIN, OUTPUT);
     IO::pinMode(SMPS_VALUE_BOOST_PIN, OUTPUT);
     IO::pinMode(SMPS_DISABLE_PIN, OUTPUT);
-
 }
 
 
@@ -84,11 +84,23 @@ void hardware::initialize()
 
 bool hardware::isReversePolarity()
 {
-    return IO::digitalRead(OUTPUT_VOLTAGE_POLARITY_PIN) == 1;
+    return (bool) IO::digitalRead(OUTPUT_VOLTAGE_POLARITY_PIN);
 }
 
 void hardware::soundInterrupt()
 {}
+
+void hardware::setLCDBacklight(uint8_t val)
+{
+    uint32_t v1,v2;
+    v1  = LCD_BACKLIGHT_MAX;
+    v1 *= val;
+    v2  = LCD_BACKLIGHT_MIN;
+    v2 *= 100 - val;
+    v1+=v2;
+    v1/=100;
+    outputPWM::setPWM(BACKLIGHT_PIN, v1);
+}
 
 void hardware::setBuzzer(uint8_t val)
 {

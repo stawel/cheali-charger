@@ -39,7 +39,7 @@
 //pin 18 - LDO_CAP                         //LDO_CAP (internnal voltage regulator CAP)
 #define LCD_ENABLE_PIN                  19 //P2.0 - AD8, PWM0
 #define LCD_RS_PIN                      20 //P2.1 - AD9, PWM1
-#define LCD_BACKLIGHT_VALUE_PIN         21 //P2.2, AD10, PW
+#define BACKLIGHT_PIN                   21 //P2.2, AD10, PWM2
 #define SMPS_VALUE_BUCK_PIN             22 //P2.3, AD11, PWM3
 //[the same pin for charge and discharge: pin 23]
 #define DISCHARGE_VALUE_PIN             23 //P2.4, AD12, PWM4, SCL1
