@@ -57,24 +57,26 @@ void setCMR() {
 
 void initialize(void)
 {
-    CLK_EnableModuleClock(PWM01_MODULE);
-    CLK_EnableModuleClock(PWM67_MODULE);
+    CLK_EnableModuleClock(PWM23_MODULE);
+    CLK_EnableModuleClock(PWM45_MODULE);
 
     /* Select PWM module clock source */
-    CLK_SetModuleClock(PWM01_MODULE, CLK_CLKSEL1_PWM01_S_HCLK, 0);
-    CLK_SetModuleClock(PWM67_MODULE, CLK_CLKSEL2_PWM67_S_HCLK, 0);
+    CLK_SetModuleClock(PWM23_MODULE, CLK_CLKSEL1_PWM23_S_HCLK, 0);
+    CLK_SetModuleClock(PWM45_MODULE, CLK_CLKSEL2_PWM45_S_HCLK, 0);
 
-    /* Reset PWMA channel0~channel3 */
+    /* Reset PWM channel0~channel7 */
     SYS_ResetModule(PWM03_RST);
     SYS_ResetModule(PWM47_RST);
 
-    /* set PWMA channel 1 output configuration */
+    /* set PWM channels output configuration */
     // 32kHz
     PWM_ConfigOutputChannel(PWMA, PWM_CH1, 32000, 0);
+    PWM_ConfigOutputChannel(PWMA, PWM_CH2, 32000, 0);
     PWM_ConfigOutputChannel(PWMB, PWM_CH2, 32000, 0);
 
-    /* Enable PWM Output path for PWMA channel 1 */
+    /* Enable PWM Output path for PWM channels */
     PWM_EnableOutput(PWMA, 1<< PWM_CH1);
+    PWM_EnableOutput(PWMA, 1<< PWM_CH2);
     PWM_EnableOutput(PWMB, 1<< PWM_CH2);
 
     // Enable PWM channel 1 period interrupt
@@ -84,31 +86,37 @@ void initialize(void)
 
     pwm_n = PWM_GET_CNR(PWMB, PWM_CH2);
     pwm_n = PWM_GET_CNR(PWMA, PWM_CH1);
+    pwm_n = PWM_GET_CNR(PWMA, PWM_CH2);
 
     //Hm.... this is done in PWM_ConfigOutputChannel but we want to be sure
     PWM_SET_CNR(PWMA, PWM_CH1, OUTPUT_PWM_PERIOD);
     PWM_SET_CNR(PWMB, PWM_CH2, OUTPUT_PWM_PERIOD);
+    PWM_SET_CNR(PWMA, PWM_CH2, OUTPUT_PWM_PERIOD);
 
     // Start
     PWM_Start(PWMA, 1<< PWM_CH1);
     PWM_Start(PWMB, 1<< PWM_CH2);
+    PWM_Start(PWMA, 1<< PWM_CH2);
 }
 
 void setPWM(uint8_t pin, uint32_t value)
 {
     LogDebug("setPWM pin:", pin, "value:", value);
-    if(pin == 20) {
+    if (pin == 20) {
         PWM_valueA = value;
         SYS->P2_MFP |= SYS_MFP_P21_PWM1;
-    } else if(pin == 26) {
+    } else if (pin == 26) {
         PWM_valueB = value;
         SYS->P2_MFP |= SYS_MFP_P26_PWM6;
+    } else if(pin == 21) {
+        SYS->P2_MFP |= SYS_MFP_P22_PWM2;
+        PWM_SET_CMR(PWMA, PWM_CH2, value);
     }
 }
 
 void disablePWM(uint8_t pin)
 {
-    if(pin == 20) {
+    if (pin == 20) {
         SYS->P2_MFP &= ~SYS_MFP_P21_PWM1;
     } else if (pin == 26) {
         SYS->P2_MFP &= ~SYS_MFP_P26_PWM6;

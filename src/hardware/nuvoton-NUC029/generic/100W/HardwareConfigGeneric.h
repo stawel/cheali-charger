@@ -22,7 +22,7 @@
 #include "AnalogInputsTypes.h"
 
 #define LCD_BACKLIGHT_MIN       100
-#define LCD_BACKLIGHT_MAX       32000
+#define LCD_BACKLIGHT_MAX       1000
 
 #define MAX_BALANCE_CELLS       6
 
