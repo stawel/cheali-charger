@@ -23,11 +23,11 @@
 #include "CQ3-pins.h"
 
 #define MAX_CHARGE_V            ANALOG_VOLT(27.000)
-#define MAX_CHARGE_I            ANALOG_AMP(5.000)
-#define MAX_CHARGE_P            ANALOG_WATT(50.000)
+#define MAX_CHARGE_I            ANALOG_AMP(10.000)
+#define MAX_CHARGE_P            ANALOG_WATT(100.000)
 
-#define MAX_DISCHARGE_P         ANALOG_WATT(5.000)
-#define MAX_DISCHARGE_I         ANALOG_AMP(1.000)
+#define MAX_DISCHARGE_P         ANALOG_WATT(10.000)
+#define MAX_DISCHARGE_I         ANALOG_AMP(5.000)
 
 //1-13? correlation
 #define SMPS_UPPERBOUND_VALUE               (60000)
