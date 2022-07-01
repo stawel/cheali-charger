@@ -21,30 +21,27 @@
 #include "Utils.h"
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
-
-//info: for some reason the ADC has a 50mV shift, see https://groups.google.com/d/msg/cheali-charger/3q0wF0qCGio/oCG1BMjol0QJ
-    {{0,  50},         {25540,  23735}},   //Vout_plus_pin
-    {{0,  0},          {0,  0}},   //Vout_minus_pin
-
-    {{417,  100},         {5062,  1000}},   //Ismps
-    {{1983,  100},         {5839,  300}},   //Idischarge
+    {{0,  0},         {65535,  30052}}, //Vout_plus_pin
+    {{0,  0},         {0,  0}},         //Vout_minus_pin
+    {{417,  100},     {5062,  1000}},   //Ismps
+    {{1983,  100},    {5839,  300}},    //Idischarge
 
     {{0,  0},         {5062,  1000}},   //VoutMux
-    {{8000,  5940},         {8642,  3479}},   //Tintern
-    {{0,  0},         {23492,  14052}},   //Vin
-    {{4701,  3660},         {0,  0}},   //Textern
+    {{8000,  5940},   {8642,  3479}},   //Tintern
+    {{0,  0},         {65535,  35246}}, //Vin
+    {{4701,  3660},   {0,  0}},         //Textern
 
-    {{0,  0},         {25219,  3946}},   //Vb0_pin
-    {{0,  0},         {25219,  3946}},   //Vb1_pin
-    {{0,  0},         {50664,  7892}},   //Vb2_pin
-    {{0,  0},         {26372,  4082}},   //Vb3_pin
-    {{0,  0},         {25184,  3912}},   //Vb4_pin
-    {{0,  0},         {25169,  3916}},   //Vb5_pin
-    {{0,  0},         {25405,  3933}},   //Vb6_pin
+    {{0,  0},         {0,  0}},         //Vb0_pin
+    {{0,  0},         {65535,  10025}}, //Vb1_pin
+    {{0,  0},         {65535,  10025}}, //Vb2_pin
+    {{0,  0},         {65535,  10025}}, //Vb3_pin
+    {{0,  0},         {65535,  10025}}, //Vb4_pin
+    {{0,  0},         {65535,  10025}}, //Vb5_pin
+    {{0,  0},         {65535,  10025}}, //Vb6_pin
 
 
-    {{415,  100},         {5066,  1000}},   //IsmpsSet
-    {{3175,  100},         {9278,  300}},   //IdischargeSet
+    {{415,  100},     {5066,  1000}},   //IsmpsSet
+    {{3175,  100},    {9278,  300}},    //IdischargeSet
 };
 
 STATIC_ASSERT(sizeOfArray(AnalogInputs::inputsP_) == AnalogInputs::PHYSICAL_INPUTS);
