@@ -29,7 +29,7 @@
 #define CALIBRATION_CHARGE_POINT0_mA    100
 #define CALIBRATION_CHARGE_POINT1_mA    1000
 #define CALIBRATION_DISCHARGE_POINT0_mA 100
-#define CALIBRATION_DISCHARGE_POINT1_mA 300
+#define CALIBRATION_DISCHARGE_POINT1_mA 500
 
 //TODO: should be implemented!
 //when the imaxB6 discharges, the voltage on Vb0_pin

@@ -23,8 +23,8 @@
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
     {{0,  0},         {65535,  30052}}, //Vout_plus_pin
     {{0,  0},         {0,  0}},         //Vout_minus_pin
-    {{417,  100},     {5062,  1000}},   //Ismps
-    {{1983,  100},    {5839,  300}},    //Idischarge
+    {{415,  100},     {5066,  1000}},   //Ismps
+    {{462,  100},     {3171,  500}},    //Idischarge
 
     {{0,  0},         {5062,  1000}},   //VoutMux
     {{8000,  5940},   {8642,  3479}},   //Tintern
@@ -41,7 +41,7 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
 
 
     {{415,  100},     {5066,  1000}},   //IsmpsSet
-    {{3175,  100},    {9278,  300}},    //IdischargeSet
+    {{485,  100},     {3280,  500}},    //IdischargeSet
 };
 
 STATIC_ASSERT(sizeOfArray(AnalogInputs::inputsP_) == AnalogInputs::PHYSICAL_INPUTS);
