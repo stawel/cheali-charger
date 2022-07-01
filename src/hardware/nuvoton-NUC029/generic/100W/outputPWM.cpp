@@ -48,8 +48,8 @@ void setCMR() {
     PWM_sumA+=PWM_valueA;
     PWM_sumB+=PWM_valueB;
 
-    PWM_SET_CMR(PWMA, PWM_CH1, PWM_sumA/OUTPUT_PWM_PRECISION_FACTOR);
-    PWM_SET_CMR(PWMB, PWM_CH2, PWM_sumB/OUTPUT_PWM_PRECISION_FACTOR);
+    PWM_SET_CMR(PWMA, PWM_CH3, PWM_sumA/OUTPUT_PWM_PRECISION_FACTOR);
+    PWM_SET_CMR(PWMB, PWM_CH0, PWM_sumB/OUTPUT_PWM_PRECISION_FACTOR);
 
     PWM_sumA%=OUTPUT_PWM_PRECISION_FACTOR;
     PWM_sumB%=OUTPUT_PWM_PRECISION_FACTOR;
@@ -70,56 +70,58 @@ void initialize(void)
 
     /* set PWM channels output configuration */
     // 32kHz
-    PWM_ConfigOutputChannel(PWMA, PWM_CH1, 32000, 0);
-    PWM_ConfigOutputChannel(PWMA, PWM_CH2, 32000, 0);
-    PWM_ConfigOutputChannel(PWMB, PWM_CH2, 32000, 0);
+    PWM_ConfigOutputChannel(PWMA, PWM_CH2, 32000, 0);  // LCD Backlight
+    PWM_ConfigOutputChannel(PWMA, PWM_CH3, 32000, 0);  // SMPS Buck
+    PWM_ConfigOutputChannel(PWMB, PWM_CH0, 32000, 0);  // Discharge/SMPS Boost
 
     /* Enable PWM Output path for PWM channels */
-    PWM_EnableOutput(PWMA, 1<< PWM_CH1);
     PWM_EnableOutput(PWMA, 1<< PWM_CH2);
-    PWM_EnableOutput(PWMB, 1<< PWM_CH2);
+    PWM_EnableOutput(PWMA, 1<< PWM_CH3);
+    PWM_EnableOutput(PWMB, 1<< PWM_CH0);
 
-    // Enable PWM channel 1 period interrupt
-    PWMA->PIER = PWM_PIER_PWMIE1_Msk;
+    // Enable PWMA channel 3 period interrupt
+    PWMA->PIER = PWM_PIER_PWMIE3_Msk;
     NVIC_EnableIRQ(PWMA_IRQn);
     NVIC_SetPriority(PWMA_IRQn, OUTPUT_PWM_IRQ_PRIORITY);
 
-    pwm_n = PWM_GET_CNR(PWMB, PWM_CH2);
-    pwm_n = PWM_GET_CNR(PWMA, PWM_CH1);
     pwm_n = PWM_GET_CNR(PWMA, PWM_CH2);
+    pwm_n = PWM_GET_CNR(PWMA, PWM_CH3);
+    pwm_n = PWM_GET_CNR(PWMB, PWM_CH0);
 
     //Hm.... this is done in PWM_ConfigOutputChannel but we want to be sure
-    PWM_SET_CNR(PWMA, PWM_CH1, OUTPUT_PWM_PERIOD);
-    PWM_SET_CNR(PWMB, PWM_CH2, OUTPUT_PWM_PERIOD);
     PWM_SET_CNR(PWMA, PWM_CH2, OUTPUT_PWM_PERIOD);
+    PWM_SET_CNR(PWMA, PWM_CH3, OUTPUT_PWM_PERIOD);
+    PWM_SET_CNR(PWMB, PWM_CH0, OUTPUT_PWM_PERIOD);
 
     // Start
-    PWM_Start(PWMA, 1<< PWM_CH1);
-    PWM_Start(PWMB, 1<< PWM_CH2);
     PWM_Start(PWMA, 1<< PWM_CH2);
+    PWM_Start(PWMA, 1<< PWM_CH3);
+    PWM_Start(PWMB, 1<< PWM_CH0);
 }
 
 void setPWM(uint8_t pin, uint32_t value)
 {
     LogDebug("setPWM pin:", pin, "value:", value);
-    if (pin == 20) {
-        PWM_valueA = value;
-        SYS->P2_MFP |= SYS_MFP_P21_PWM1;
-    } else if (pin == 26) {
-        PWM_valueB = value;
-        SYS->P2_MFP |= SYS_MFP_P26_PWM6;
-    } else if(pin == 21) {
+    if (pin == 21) {
         SYS->P2_MFP |= SYS_MFP_P22_PWM2;
         PWM_SET_CMR(PWMA, PWM_CH2, value);
+    } else if (pin == 22) {
+        PWM_valueA = value;
+        SYS->P2_MFP |= SYS_MFP_P23_PWM3;
+    } else if (pin == 23) {
+        PWM_valueB = value;
+        SYS->P2_MFP |= SYS_MFP_P24_PWM4;
     }
 }
 
 void disablePWM(uint8_t pin)
 {
-    if (pin == 20) {
-        SYS->P2_MFP &= ~SYS_MFP_P21_PWM1;
-    } else if (pin == 26) {
-        SYS->P2_MFP &= ~SYS_MFP_P26_PWM6;
+    if (pin == 21) {
+        SYS->P2_MFP &= ~SYS_MFP_P22_PWM2;
+    } else if (pin == 22) {
+        SYS->P2_MFP &= ~SYS_MFP_P23_PWM3;
+    } else if (pin == 23) {
+        SYS->P2_MFP &= ~SYS_MFP_P24_PWM4;
     }
 }
 
@@ -129,6 +131,6 @@ extern "C" {
 void PWMA_IRQHandler(void)
 {
     outputPWM::setCMR();
-    PWM_ClearPeriodIntFlag(PWMA, PWM_CH1);
+    PWM_ClearPeriodIntFlag(PWMA, PWM_CH3);
 }
 } //extern "C"
