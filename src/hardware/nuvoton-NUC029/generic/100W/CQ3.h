@@ -37,6 +37,7 @@ namespace hardware {
 
     uint8_t getKeyPressed();
     void setBuzzer(uint8_t val);
+    void setFan(bool enable);
     void setLCDBacklight(uint8_t val);
 
     void setBatteryOutput(bool enable);
@@ -49,7 +50,7 @@ namespace hardware {
     void setDischargerValue(uint16_t value);
     void setVoutCutoff(AnalogInputs::ValueType v);
     void setBalancer(uint8_t balance);
-  
+
     void doInterrupt();
 
     void soundInterrupt();

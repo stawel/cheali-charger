@@ -61,6 +61,7 @@ void hardware::initializePins()
 
     IO::pinMode(BACKLIGHT_PIN, OUTPUT);
     IO::pinMode(BUZZER_PIN, OUTPUT);
+    IO::pinMode(FAN_ENABLE, OUTPUT);
 
     IO::pinMode(OUTPUT_VOLTAGE_POLARITY_PIN, INPUT);
     IO::pinMode(OUTPUT_DISABLE_PIN, OUTPUT);
@@ -105,6 +106,11 @@ void hardware::setLCDBacklight(uint8_t val)
 void hardware::setBuzzer(uint8_t val)
 {
     IO::digitalWrite(BUZZER_PIN, (val&1));
+}
+
+void hardware::setFan(bool enable)
+{
+    IO::digitalWrite(FAN_ENABLE, enable);
 }
 
 void hardware::setBatteryOutput(bool enable)
