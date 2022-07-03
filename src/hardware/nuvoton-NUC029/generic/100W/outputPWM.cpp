@@ -42,16 +42,19 @@ volatile uint32_t PWM_valueB = 0;
 volatile uint32_t PWM_sumA = 0;
 volatile uint32_t PWM_sumB = 0;
 
-void setCMR() {
+void setCMRA() {
     //modulate the PWM - we modulate the PWM signal to get more precision.
     //(the PWM frequency stays at about 32kHz)
     PWM_sumA+=PWM_valueA;
-    PWM_sumB+=PWM_valueB;
-
     PWM_SET_CMR(PWMA, PWM_CH3, PWM_sumA/OUTPUT_PWM_PRECISION_FACTOR);
-    PWM_SET_CMR(PWMB, PWM_CH0, PWM_sumB/OUTPUT_PWM_PRECISION_FACTOR);
-
     PWM_sumA%=OUTPUT_PWM_PRECISION_FACTOR;
+}
+
+void setCMRB() {
+    //modulate the PWM - we modulate the PWM signal to get more precision.
+    //(the PWM frequency stays at about 32kHz)
+    PWM_sumB+=PWM_valueB;
+    PWM_SET_CMR(PWMB, PWM_CH0, PWM_sumB/OUTPUT_PWM_PRECISION_FACTOR);
     PWM_sumB%=OUTPUT_PWM_PRECISION_FACTOR;
 }
 
@@ -83,6 +86,11 @@ void initialize(void)
     PWMA->PIER = PWM_PIER_PWMIE3_Msk;
     NVIC_EnableIRQ(PWMA_IRQn);
     NVIC_SetPriority(PWMA_IRQn, OUTPUT_PWM_IRQ_PRIORITY);
+
+    // Enable PWMB channel 0 period interrupt
+    PWMB->PIER = PWM_PIER_PWMIE0_Msk;
+    NVIC_EnableIRQ(PWMB_IRQn);
+    NVIC_SetPriority(PWMB_IRQn, OUTPUT_PWM_IRQ_PRIORITY);
 
     pwm_n = PWM_GET_CNR(PWMA, PWM_CH2);
     pwm_n = PWM_GET_CNR(PWMA, PWM_CH3);
@@ -130,7 +138,13 @@ void disablePWM(uint8_t pin)
 extern "C" {
 void PWMA_IRQHandler(void)
 {
-    outputPWM::setCMR();
+    outputPWM::setCMRA();
     PWM_ClearPeriodIntFlag(PWMA, PWM_CH3);
+}
+
+void PWMB_IRQHandler(void)
+{
+    outputPWM::setCMRB();
+    PWM_ClearPeriodIntFlag(PWMB, PWM_CH0);
 }
 } //extern "C"

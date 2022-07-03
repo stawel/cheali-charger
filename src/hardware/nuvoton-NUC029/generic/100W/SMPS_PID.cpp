@@ -71,12 +71,14 @@ namespace {
     void enableChargerBuck() {
         outputPWM::disablePWM(SMPS_VALUE_BUCK_PIN);
         IO::digitalWrite(SMPS_VALUE_BUCK_PIN, 1);
+        IO::digitalWrite(SMPS_BOOST_DISABLE_PIN, 0);
     }
     void disableChargerBuck() {
         outputPWM::disablePWM(SMPS_VALUE_BUCK_PIN);
         IO::digitalWrite(SMPS_VALUE_BUCK_PIN, 0);
     }
     void disableChargerBoost() {
+        IO::digitalWrite(SMPS_BOOST_DISABLE_PIN, 1);
         outputPWM::disablePWM(SMPS_VALUE_BOOST_PIN);
         IO::digitalWrite(SMPS_VALUE_BOOST_PIN, 0);
     }
@@ -147,4 +149,3 @@ void hardware::setDischargerValue(uint16_t value)
 {
     outputPWM::setPWM(DISCHARGE_VALUE_PIN, value);
 }
-

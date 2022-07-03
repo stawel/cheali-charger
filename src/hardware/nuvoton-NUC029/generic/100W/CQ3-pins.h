@@ -44,8 +44,8 @@
 //[the same pin for charge and discharge: pin 23]
 #define DISCHARGE_VALUE_PIN             23 //P2.4, AD12, PWM4, SCL1
 #define SMPS_VALUE_BOOST_PIN            23 //P2.4, AD12, PWM4, SCL1
-#define SMPS_DISABLE_PIN                24 //P4.0 - PWM0, T2EX
-#define SMPS_DISABLE2_PIN               25 //P2.5 - AD13, PWM5, SDA
+#define SMPS_BOOST_DISABLE_PIN          24 //P4.0 - PWM0, T2EX
+#define SMPS_DISABLE_PIN                25 //P2.5 - AD13, PWM5, SDA
 #define FAN_ENABLE                      26 //P2.6, AD14, PWM6, ACMP1_O
 #define MCU_BUS_PIN                     27 //P2.7, AD15, PWM7
 #define BUTTON_STOP_PIN                 28 //P4.4 - nCS, SCL1
