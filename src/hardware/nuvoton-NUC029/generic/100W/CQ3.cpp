@@ -68,7 +68,7 @@ void hardware::initializePins()
     IO::pinMode(DISCHARGE_VALUE_PIN, OUTPUT);
     IO::pinMode(DISCHARGE_DISABLE_PIN, OUTPUT);
 
-    IO::pinMode(SMPS_VALUE_BUCK_PIN, OUTPUT);
+    IO::pinMode(SMPS_VALUE_BUCK_PIN, OUTPUT_PUSH_PULL);
     IO::pinMode(SMPS_VALUE_BOOST_PIN, OUTPUT);
     IO::pinMode(SMPS_DISABLE_PIN, OUTPUT);
     IO::pinMode(SMPS_BOOST_DISABLE_PIN, OUTPUT);
