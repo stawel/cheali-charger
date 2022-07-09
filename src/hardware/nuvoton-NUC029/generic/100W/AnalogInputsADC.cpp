@@ -136,26 +136,11 @@ void setMuxAddressAndDischarge(int8_t address)
         return;
     g_muxAddress = address;
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        //start mux ADC C discharge
-        _setMuxAddress(ADC_CAPACITOR_DISCHARGE_ADDRESS);
         IO::disableFuncADC(IO::getADCChannel(MUX0_Z_D_PIN));
-    }
-    TIMER_Start(TIMER1);             /* Start counting */
-}
-extern "C" {
-void TMR1_IRQHandler(void)
-{
-    /* Clear Timer1 time-out interrupt flag */
-    TIMER_ClearIntFlag(TIMER1);
-
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
         _setMuxAddress(g_muxAddress);
-        //stop mux ADC C discharge
         IO::enableFuncADC(IO::getADCChannel(MUX0_Z_D_PIN));
     }
 }
-} //extern "C"
-
 
 void initialize()
 {
@@ -163,7 +148,7 @@ void initialize()
     IO::pinMode(MUX_ADR1_PIN, OUTPUT);
     IO::pinMode(MUX_ADR2_PIN, OUTPUT);
 
-    IO::pinMode(OUTPUT_VOLTAGE_POLARITY_PIN, OUTPUT);
+    IO::pinMode(OUTPUT_VOLTAGE_POLARITY_PIN, INPUT);
 
     IO::pinMode(SMPS_CURRENT_PIN, ANALOG_INPUT);
     IO::pinMode(DISCHARGE_CURRENT_PIN, ANALOG_INPUT);
@@ -177,20 +162,10 @@ void initialize()
     //initialize internal temperature sensor
     SYS->TEMPCR |= 1;
 
-    //initialize TIMER 1 (mux ADC capacitor discharge)
-    CLK_EnableModuleClock(TMR1_MODULE);
-    CLK_SetModuleClock(TMR1_MODULE,CLK_CLKSEL1_TMR1_S_HCLK,CLK_CLKDIV_UART(1));
-    //TODO: 50kHz ??
-    TIMER_Open(TIMER1, TIMER_ONESHOT_MODE, 1000000 / ADC_CAPACITOR_DISCHARGE_DELAY_US);
-    TIMER_EnableInt(TIMER1);
-    NVIC_EnableIRQ(TMR1_IRQn);
-    NVIC_SetPriority(TMR1_IRQn, ADC_C_DISCHARGE_IRQ_PRIORITY);
-
     //initialize ADC
     //init clock
     CLK_EnableModuleClock(ADC_MODULE);
-    CLK_SetModuleClock(ADC_MODULE, CLK_CLKSEL1_ADC_S_HCLK, CLK_CLKDIV_ADC(CLK_GetHCLKFreq()/ADC_CLOCK_FREQUENCY));
-            //__HXT/ADC_CLOCK_FREQUENCY));
+    CLK_SetModuleClock(ADC_MODULE, CLK_CLKSEL1_ADC_S_HCLK, CLK_CLKDIV_HCLK(CLK_GetHCLKFreq()/ADC_CLOCK_FREQUENCY));
 
     /* Set the ADC operation mode as burst, input mode as single-end and enable the analog input channel 2 */
     ADC_Open(ADC, ADC_ADCR_DIFFEN_SINGLE_END, ADC_ADCR_ADMD_BURST, 0x1 << 2);
@@ -288,7 +263,6 @@ void debug() {}
 }
 
 extern "C" {
-
     void ADC_IRQHandler(void)
     {
         while(ADC_IS_DATA_VALID2(ADC, 0)) /* Check the VALID bits */
