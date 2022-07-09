@@ -27,7 +27,18 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
     {{478,  100},     {6638,  1000}},   //Idischarge
 
     {{0,  0},         {5062,  1000}},   //VoutMux
-    {{8000,  5940},   {8642,  3479}},   //Tintern
+
+    /*
+    Calculated using the following from the datasheet:
+    Vtemp (mV) = Gain (mV/°C) x Temperature (°C) + Offset (mV)
+
+    Typical gain: -1.75mV/°C
+    Typical offset: 724mV
+
+    @ T=0, V=724mV, ADC=(.724/5)*1024=148, Adj ADC (<<4)=2368
+    @ T=50, V=724mV+(50*-1.75mV)=636.5mV, ADC=(.6365/5)*1024=130, Adj ADC (<<4)=2080
+    */
+    {{2080,  5000},   {2368,  0}},      //Tintern
     {{0,  0},         {65535,  35228}}, //Vin
     {{4701,  3660},   {0,  0}},         //Textern
 
