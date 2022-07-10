@@ -60,8 +60,6 @@
 
 
 #define ADC_I_SMPS_PER_ROUND 4
-#define ADC_CAPACITOR_DISCHARGE_ADDRESS MADDR_V_GND_REF
-#define ADC_CAPACITOR_DISCHARGE_DELAY_US 20
 #define ADC_CLOCK_FREQUENCY 4000000UL
 
 
@@ -123,22 +121,16 @@ void setADC(uint8_t pin) {
     ADC_SET_INPUT_CHANNEL(ADC, 1 << IO::getADCChannel(pin));
 }
 
-void _setMuxAddress(int8_t address)
-{
-    IO::digitalWrite(MUX_ADR0_PIN, address&1);
-    IO::digitalWrite(MUX_ADR1_PIN, address&2);
-    IO::digitalWrite(MUX_ADR2_PIN, address&4);
-}
-
-void setMuxAddressAndDischarge(int8_t address)
+void setMuxAddress(int8_t address)
 {
     if(address < 0)
         return;
     g_muxAddress = address;
+
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-        IO::disableFuncADC(IO::getADCChannel(MUX0_Z_D_PIN));
-        _setMuxAddress(g_muxAddress);
-        IO::enableFuncADC(IO::getADCChannel(MUX0_Z_D_PIN));
+        IO::digitalWrite(MUX_ADR0_PIN, address&1);
+        IO::digitalWrite(MUX_ADR1_PIN, address&2);
+        IO::digitalWrite(MUX_ADR2_PIN, address&4);
     }
 }
 
@@ -148,16 +140,12 @@ void initialize()
     IO::pinMode(MUX_ADR1_PIN, OUTPUT);
     IO::pinMode(MUX_ADR2_PIN, OUTPUT);
 
-    IO::pinMode(OUTPUT_VOLTAGE_POLARITY_PIN, INPUT);
-
     IO::pinMode(SMPS_CURRENT_PIN, ANALOG_INPUT);
     IO::pinMode(DISCHARGE_CURRENT_PIN, ANALOG_INPUT);
     IO::pinMode(OUTPUT_VOLTAGE_PIN, ANALOG_INPUT);
     IO::pinMode(T_EXTERNAL_PIN, ANALOG_INPUT);
     IO::pinMode(V_IN_PIN, ANALOG_INPUT);
-
-    IO::pinMode(MUX0_Z_D_PIN, ANALOG_INPUT_DISCHARGE);
-    IO::digitalWrite(MUX0_Z_D_PIN, 0);
+    IO::pinMode(MUX0_Z_D_PIN, ANALOG_INPUT);
 
     //initialize internal temperature sensor
     SYS->TEMPCR |= 1;
@@ -165,7 +153,7 @@ void initialize()
     //initialize ADC
     //init clock
     CLK_EnableModuleClock(ADC_MODULE);
-    CLK_SetModuleClock(ADC_MODULE, CLK_CLKSEL1_ADC_S_HCLK, CLK_CLKDIV_HCLK(CLK_GetHCLKFreq()/ADC_CLOCK_FREQUENCY));
+    CLK_SetModuleClock(ADC_MODULE, CLK_CLKSEL1_ADC_S_HCLK, CLK_CLKDIV_ADC(CLK_GetHCLKFreq()/ADC_CLOCK_FREQUENCY));
 
     /* Set the ADC operation mode as burst, input mode as single-end and enable the analog input channel 2 */
     ADC_Open(ADC, ADC_ADCR_DIFFEN_SINGLE_END, ADC_ADCR_ADMD_BURST, 0x1 << 2);
@@ -191,7 +179,7 @@ void setNextMuxAddress()
     uint8_t next_input = nextInput(current_input_);
     int8_t mux = order_analogInputs_on[next_input].mux_;
 
-    setMuxAddressAndDischarge(mux);
+    setMuxAddress(mux);
 }
 
 
@@ -234,8 +222,6 @@ void conversionDone()
 
     if(order_analogInputs_on[current_input_].trigger_PID_)
         SMPS_PID::update();
-
-
 }
 
 void finalizeMeasurement()
