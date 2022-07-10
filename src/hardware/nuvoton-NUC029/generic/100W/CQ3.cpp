@@ -80,7 +80,6 @@ void hardware::initialize()
     LiquidCrystal::init();
     LiquidCrystal::begin(LCD_COLUMNS, LCD_LINES);
     AnalogInputsADC::initialize();
-    //BuzzerPWM::initialize();
     outputPWM::initialize();
     setVoutCutoff(MAX_CHARGE_V);
 }

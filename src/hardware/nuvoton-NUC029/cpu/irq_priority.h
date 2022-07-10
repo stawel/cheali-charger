@@ -19,7 +19,6 @@
 #define IRQ_PRIORITY_H_
 
 
-#define SOFTWARE_SERIAL_IRQ_PRIORITY    0
 #define TIMER_IRQ_PRIORITY              2
 #define HARDWARE_SERIAL_IRQ_PRIORITY    3
 #define ADC_IRQ_PRIORITY                2
@@ -28,4 +27,3 @@
 
 
 #endif /* IRQ_PRIORITY_H_ */
-
