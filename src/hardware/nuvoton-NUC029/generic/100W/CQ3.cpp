@@ -45,7 +45,7 @@ void hardware::initializePins()
 {
     setBalancer(0);
     setBatteryOutput(false);
-    setBuzzer(0);
+    IO::digitalWrite(BUZZER_PIN, 0);
 
     IO::pinMode(BALANCER1_LOAD_PIN, OUTPUT);
     IO::pinMode(BALANCER2_LOAD_PIN, OUTPUT);
@@ -80,6 +80,7 @@ void hardware::initialize()
     LiquidCrystal::init();
     LiquidCrystal::begin(LCD_COLUMNS, LCD_LINES);
     AnalogInputsADC::initialize();
+    //BuzzerPWM::initialize();
     outputPWM::initialize();
     setVoutCutoff(MAX_CHARGE_V);
 }
@@ -106,7 +107,7 @@ void hardware::setLCDBacklight(uint8_t val)
 
 void hardware::setBuzzer(uint8_t val)
 {
-    IO::digitalWrite(BUZZER_PIN, (val&1));
+    outputPWM::setBuzzer(val);
 }
 
 void hardware::setFan(bool enable)

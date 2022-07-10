@@ -96,7 +96,6 @@ void initialize(void)
     pwm_n = PWM_GET_CNR(PWMA, PWM_CH3);
     pwm_n = PWM_GET_CNR(PWMB, PWM_CH0);
 
-    //Hm.... this is done in PWM_ConfigOutputChannel but we want to be sure
     PWM_SET_CNR(PWMA, PWM_CH2, OUTPUT_PWM_PERIOD);
     PWM_SET_CNR(PWMA, PWM_CH3, OUTPUT_PWM_PERIOD);
     PWM_SET_CNR(PWMB, PWM_CH0, OUTPUT_PWM_PERIOD);
@@ -115,6 +114,13 @@ void setPWM(uint8_t pin, uint32_t value)
         PWM_SET_CMR(PWMA, PWM_CH2, value);
     } else if (pin == 22) {
         PWM_valueA = value;
+
+        if (SYS->P4_MFP & SYS_MFP_P43_PWM3) {
+          SYS->P4_MFP &= ~SYS_MFP_P43_PWM3; // disables buzzer
+          PWMA->PIER = PWM_PIER_PWMIE3_Msk; // reenables IRQ
+          PWM_SET_CNR(PWMA, PWM_CH3, OUTPUT_PWM_PERIOD); // reset value in-case buzzer set it
+        }
+
         SYS->P2_MFP |= SYS_MFP_P23_PWM3;
     } else if (pin == 23) {
         PWM_valueB = value;
@@ -131,6 +137,31 @@ void disablePWM(uint8_t pin)
     } else if (pin == 23) {
         SYS->P2_MFP &= ~SYS_MFP_P24_PWM4;
     }
+}
+
+void setBuzzer(uint8_t value)
+{
+  /*
+  The buzzer pin and the buck pin share PWMA channel 3 so we
+  only utilize the buzzer when its disabled
+  */
+  if (SYS->P2_MFP & SYS_MFP_P23_PWM3) {
+    return;
+  }
+
+  if (value == 0) {
+    SYS->P4_MFP &= ~SYS_MFP_P43_PWM3;
+    PWMA->PIER = PWM_PIER_PWMIE3_Msk; // reenables IRQ
+    PWM_SET_CNR(PWMA, PWM_CH3, OUTPUT_PWM_PERIOD); // reset value
+  } else {
+    PWMA->PIER &= ~PWM_PIER_PWMIE3_Msk; // disable IRQ
+
+    uint16_t period = (CLK_GetHCLKFreq() / 2000000) * (384 - value);
+    PWM_SET_CNR(PWMA, PWM_CH3, period);
+    PWM_SET_CMR(PWMA, PWM_CH3, period * 9 / 10);
+
+    SYS->P4_MFP |= SYS_MFP_P43_PWM3;
+  }
 }
 
 } //namespace outputPWM
