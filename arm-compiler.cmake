@@ -6,5 +6,4 @@ SET(CXXFLAGS "-mthumb -mcpu=cortex-m0  ${CTUNING} -Os  -Wall -g -fno-rtti -fno-e
 SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   ${CFLAGS}   -ffunction-sections -fdata-sections")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXXFLAGS} -ffunction-sections -fdata-sections")
 
-#TODO: remove CoIDE dependency
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections -Wl,-T${CMAKE_SOURCE_DIR}/CoIDE/arm-gcc-link.ld")
+set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections")

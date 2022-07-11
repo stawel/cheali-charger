@@ -1,4 +1,7 @@
 *.cmake
+!cmsis.cmake
+!cpu.cmake
+!generic.cmake
 *.bin
 *.hex
 *.eep
