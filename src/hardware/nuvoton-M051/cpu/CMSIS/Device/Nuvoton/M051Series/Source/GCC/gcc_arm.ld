@@ -2,6 +2,7 @@
 MEMORY
 {
   FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 0x10000   /* 64k */
+  DATA_FLASH (rx) : ORIGIN = 0x0001F000, LENGTH = 1000 /*  4k */
   RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 0x1000    /*  4k */
 }
 
@@ -44,6 +45,11 @@ ENTRY(Reset_Handler)
 
 SECTIONS
 {
+  .data_flash (NOLOAD):
+  {
+      *(.data_flash*)
+  } > DATA_FLASH
+
 	.text :
 	{
 		KEEP(*(.vectors))

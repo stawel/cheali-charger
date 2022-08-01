@@ -19,6 +19,7 @@ set(CMSIS_SOURCE
     pwm.c
     FMC.c
     sys.c
+    _syscalls.c
     system_M051Series.c
     startup_M051Series.S
 )

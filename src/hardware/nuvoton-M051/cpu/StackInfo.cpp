@@ -20,13 +20,11 @@
 
 #ifdef ENABLE_STACK_INFO
 
-extern unsigned long pulStack[];
-
-#define HEAP_END pulStack
+extern uint32_t __StackLimit;
 
 void StackInfo::initialize()
 {
-    volatile uint8_t * v = (uint8_t *)(HEAP_END);
+    volatile uint8_t * v = (uint8_t *)(&__StackLimit);
     volatile uint8_t data;
     for( ; v <= &data; v++ ) {
         *v = STACK_INFO_MAGIC_NUMBER;
@@ -37,12 +35,12 @@ void StackInfo::initialize()
 uint16_t StackInfo::getFreeStackSize()
 {
     int v;
-    return (int) &v - ((int) HEAP_END);
+    return (int) &v - ((int) &__StackLimit);
 }
 
 uint16_t StackInfo::getNeverUsedStackSize()
 {
-    volatile uint8_t * v = (uint8_t*)(HEAP_END);
+    volatile uint8_t * v = (uint8_t*)(&__StackLimit);
     volatile uint8_t data;
     uint16_t size = 0;
     for(; v <= &data && *v == STACK_INFO_MAGIC_NUMBER; v++ ) {
