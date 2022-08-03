@@ -1,31 +1,33 @@
 /**************************************************************************//**
  * @file     pwm.c
  * @version  V3.00
- * $Revision: 14 $
- * $Date: 14/01/28 10:49a $
+ * $Revision: 19 $
+ * $Date: 15/05/20 2:07p $
  * @brief    M051 series PWM driver source file
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 #include "M051Series.h"
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_PWM_Driver PWM Driver
+/** @addtogroup PWM_Driver PWM Driver
   @{
 */
 
 
-/** @addtogroup M051_PWM_EXPORTED_FUNCTIONS PWM Exported Functions
+/** @addtogroup PWM_EXPORTED_FUNCTIONS PWM Exported Functions
   @{
 */
 
 /**
  * @brief Config PWM capture and get the nearest unit time.
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
  * @param[in] u32UnitTimeNsec The unit time of counter
  * @param[in] u32CaptureEdge The condition to latch the counter. This parameter is not used
@@ -48,9 +50,9 @@ uint32_t PWM_ConfigCaptureChannel(PWM_T *pwm,
     uint16_t u16CNR = 0xFFFF;
 
     if(pwm == PWMA)
-        u32Src = (CLK->CLKSEL1 & (CLK_CLKSEL1_PWM01_S_Msk << (u32ChannelNum >> 1))) >> (CLK_CLKSEL1_PWM01_S_Pos << (u32ChannelNum >> 1));
+        u32Src = (CLK->CLKSEL1 & (CLK_CLKSEL1_PWM01_S_Msk << (u32ChannelNum & 2))) >> (CLK_CLKSEL1_PWM01_S_Pos + (u32ChannelNum & 2));
     else /*pwm == PWMB*/
-        u32Src = (CLK->CLKSEL2 & (CLK_CLKSEL2_PWM45_S_Msk << (u32ChannelNum >> 1))) >> (CLK_CLKSEL2_PWM45_S_Pos << (u32ChannelNum >> 1));
+        u32Src = (CLK->CLKSEL2 & (CLK_CLKSEL2_PWM45_S_Msk << (u32ChannelNum & 2))) >> (CLK_CLKSEL2_PWM45_S_Pos + (u32ChannelNum & 2));
 
     if(u32Src == 2)
     {
@@ -102,7 +104,7 @@ uint32_t PWM_ConfigCaptureChannel(PWM_T *pwm,
 
 /**
  * @brief This function config PWM generator and get the nearest frequency in edge aligned auto-reload mode
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
  * @param[in] u32Frequency Target generator frequency
  * @param[in] u32DutyCycle Target generator duty cycle percentage. Valid range are between 0 ~ 100. 10 means 10%, 20 means 20%...
@@ -125,13 +127,10 @@ uint32_t PWM_ConfigOutputChannel(PWM_T *pwm,
     uint16_t u16CNR = 0xFFFF;
 
     if(pwm == PWMA)
-//cheali-charger: bug fix??
-//      u32Src = (CLK->CLKSEL1 & (CLK_CLKSEL1_PWM01_S_Msk << (u32ChannelNum >> 1))) >> (CLK_CLKSEL1_PWM01_S_Pos << (u32ChannelNum >> 1));
-        u32Src = (CLK->CLKSEL1 & (CLK_CLKSEL1_PWM01_S_Msk << (u32ChannelNum &  2))) >> (CLK_CLKSEL1_PWM01_S_Pos  + (u32ChannelNum &  2));
+        u32Src = (CLK->CLKSEL1 & (CLK_CLKSEL1_PWM01_S_Msk << (u32ChannelNum & 2))) >> (CLK_CLKSEL1_PWM01_S_Pos + (u32ChannelNum & 2));
     else /*pwm == PWMB*/
-//cheali-charger: bug fix??
-//      u32Src = (CLK->CLKSEL2 & (CLK_CLKSEL2_PWM45_S_Msk << (u32ChannelNum >> 1))) >> (CLK_CLKSEL2_PWM45_S_Pos << (u32ChannelNum >> 1));
-        u32Src = (CLK->CLKSEL2 & (CLK_CLKSEL2_PWM45_S_Msk << (u32ChannelNum &  2))) >> (CLK_CLKSEL2_PWM45_S_Pos  + (u32ChannelNum &  2));
+        u32Src = (CLK->CLKSEL2 & (CLK_CLKSEL2_PWM45_S_Msk << (u32ChannelNum & 2))) >> (CLK_CLKSEL2_PWM45_S_Pos + (u32ChannelNum & 2));
+
     if(u32Src == 2)
     {
         SystemCoreClockUpdate();
@@ -181,7 +180,11 @@ uint32_t PWM_ConfigOutputChannel(PWM_T *pwm,
     // set PWM to edge aligned type
     (pwm)->PCR &= ~(PWM_PCR_PWM01TYPE_Msk << (u32ChannelNum >> 1));
     (pwm)->PCR |= PWM_PCR_CH0MOD_Msk << (8 * u32ChannelNum);
-    *((__IO uint32_t *)((((uint32_t) & ((pwm)->CMR0)) + u32ChannelNum * 12))) = u32DutyCycle * (u16CNR + 1) / 100 - 1;
+    if (u32DutyCycle)
+        *((__IO uint32_t *)((((uint32_t) & ((pwm)->CMR0)) + u32ChannelNum * 12))) = u32DutyCycle * (u16CNR + 1) / 100 - 1;
+    else
+        *((__IO uint32_t *)((((uint32_t) & ((pwm)->CMR0)) + u32ChannelNum * 12))) = 0;
+
     *((__IO uint32_t *)((((uint32_t) & ((pwm)->CNR0)) + (u32ChannelNum) * 12))) = u16CNR;
 
     return(i);
@@ -190,7 +193,7 @@ uint32_t PWM_ConfigOutputChannel(PWM_T *pwm,
 
 /**
  * @brief Start PWM module
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelMask Combination of enabled channels. Each bit corresponds to a channel.
@@ -214,7 +217,7 @@ void PWM_Start(PWM_T *pwm, uint32_t u32ChannelMask)
 
 /**
  * @brief Stop PWM module
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelMask Combination of enabled channels. Each bit corresponds to a channel.
@@ -236,7 +239,7 @@ void PWM_Stop(PWM_T *pwm, uint32_t u32ChannelMask)
 
 /**
  * @brief Stop PWM generation immediately by clear channel enable bit
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelMask Combination of enabled channels. Each bit corresponds to a channel.
@@ -260,7 +263,7 @@ void PWM_ForceStop(PWM_T *pwm, uint32_t u32ChannelMask)
 
 /**
  * @brief Enable selected channel to trigger ADC
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
  * @param[in] u32Condition The condition to trigger ADC. Combination of following conditions:
  *                  - \ref PWM_DUTY_TRIGGER_ADC
@@ -276,7 +279,7 @@ void PWM_EnableADCTrigger(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Condit
 
 /**
  * @brief Disable selected channel to trigger ADC
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
  * @return None
  * @details This function is used to disable selected channel to trigger ADC
@@ -288,7 +291,7 @@ void PWM_DisableADCTrigger(PWM_T *pwm, uint32_t u32ChannelNum)
 
 /**
  * @brief Clear selected channel trigger ADC flag
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
  * @param[in] u32Condition This parameter is not used
  * @return None
@@ -301,7 +304,7 @@ void PWM_ClearADCTriggerFlag(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Con
 
 /**
  * @brief Get selected channel trigger ADC flag
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
  * @retval 0 The specified channel trigger ADC to start of conversion flag is not set
  * @retval 1 The specified channel trigger ADC to start of conversion flag is set
@@ -314,7 +317,7 @@ uint32_t PWM_GetADCTriggerFlag(PWM_T *pwm, uint32_t u32ChannelNum)
 
 /**
  * @brief Enable capture of selected channel(s)
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelMask Combination of enabled channels. Each bit corresponds to a channel.
@@ -344,7 +347,7 @@ void PWM_EnableCapture(PWM_T *pwm, uint32_t u32ChannelMask)
 
 /**
  * @brief Disable capture of selected channel(s)
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelMask Combination of enabled channels. Each bit corresponds to a channel.
@@ -374,7 +377,7 @@ void PWM_DisableCapture(PWM_T *pwm, uint32_t u32ChannelMask)
 
 /**
  * @brief Enables PWM output generation of selected channel(s)
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelMask Combination of enabled channels. Each bit corresponds to a channel.
@@ -389,7 +392,7 @@ void PWM_EnableOutput(PWM_T *pwm, uint32_t u32ChannelMask)
 
 /**
  * @brief Disables PWM output generation of selected channel(s)
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelMask Combination of enabled channels. Each bit corresponds to a channel
@@ -404,7 +407,7 @@ void PWM_DisableOutput(PWM_T *pwm, uint32_t u32ChannelMask)
 
 /**
  * @brief Enable Dead zone of selected channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
@@ -425,7 +428,7 @@ void PWM_EnableDeadZone(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Duration
 
 /**
  * @brief Disable Dead zone of selected channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
@@ -442,7 +445,7 @@ void PWM_DisableDeadZone(PWM_T *pwm, uint32_t u32ChannelNum)
 
 /**
  * @brief Enable capture interrupt of selected channel.
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
@@ -463,7 +466,7 @@ void PWM_EnableCaptureInt(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Edge)
 
 /**
  * @brief Disable capture interrupt of selected channel.
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
@@ -476,14 +479,14 @@ void PWM_EnableCaptureInt(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Edge)
 void PWM_DisableCaptureInt(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Edge)
 {
     if(u32ChannelNum < 2)
-        (pwm)->CCR0 &= u32Edge << ~(u32ChannelNum * 16);
+        (pwm)->CCR0 &= ~(u32Edge << (u32ChannelNum * 16));
     else
-        (pwm)->CCR2 &= u32Edge << ~((u32ChannelNum - 2) * 16);
+        (pwm)->CCR2 &= ~(u32Edge << ((u32ChannelNum - 2) * 16));
 }
 
 /**
  * @brief Clear capture interrupt of selected channel.
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
@@ -504,7 +507,7 @@ void PWM_ClearCaptureIntFlag(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Edg
 
 /**
  * @brief Get capture interrupt of selected channel.
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
@@ -528,7 +531,7 @@ uint32_t PWM_GetCaptureIntFlag(PWM_T *pwm, uint32_t u32ChannelNum)
 }
 /**
  * @brief Enable duty interrupt of selected channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
@@ -547,7 +550,7 @@ void PWM_EnableDutyInt(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32IntDutyTy
 
 /**
  * @brief Disable duty interrupt of selected channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
@@ -561,7 +564,7 @@ void PWM_DisableDutyInt(PWM_T *pwm, uint32_t u32ChannelNum)
 
 /**
  * @brief Clear duty interrupt flag of selected channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
  * @return None
  * @details This function is used to clear duty interrupt flag of selected channel
@@ -573,7 +576,7 @@ void PWM_ClearDutyIntFlag(PWM_T *pwm, uint32_t u32ChannelNum)
 
 /**
  * @brief Get duty interrupt flag of selected channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
  * @return Duty interrupt flag of specified channel
  * @retval 0 Duty interrupt did not occur
@@ -587,7 +590,7 @@ uint32_t PWM_GetDutyIntFlag(PWM_T *pwm, uint32_t u32ChannelNum)
 
 /**
  * @brief Enable period interrupt of selected channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
  * @param[in] u32IntPeriodType Period interrupt type, could be either
  *              - \ref PWM_PERIOD_INT_UNDERFLOW
@@ -604,7 +607,7 @@ void PWM_EnablePeriodInt(PWM_T *pwm, uint32_t u32ChannelNum,  uint32_t u32IntPer
 
 /**
  * @brief Disable period interrupt of selected channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
  * @return None
  * @details This function is used to disable period interrupt of selected channel.
@@ -616,7 +619,7 @@ void PWM_DisablePeriodInt(PWM_T *pwm, uint32_t u32ChannelNum)
 
 /**
  * @brief Clear period interrupt of selected channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
  * @return None
  * @details This function is used to clear period interrupt of selected channel
@@ -628,7 +631,7 @@ void PWM_ClearPeriodIntFlag(PWM_T *pwm, uint32_t u32ChannelNum)
 
 /**
  * @brief Get period interrupt of selected channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
  * @return Period interrupt flag of specified channel
  * @retval 0 Period interrupt did not occur
@@ -642,10 +645,10 @@ uint32_t PWM_GetPeriodIntFlag(PWM_T *pwm, uint32_t u32ChannelNum)
 
 
 
-/*@}*/ /* end of group M051_PWM_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group PWM_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_PWM_Driver */
+/*@}*/ /* end of group PWM_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 /*** (C) COPYRIGHT 2014 Nuvoton Technology Corp. ***/

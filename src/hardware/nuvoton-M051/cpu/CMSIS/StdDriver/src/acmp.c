@@ -1,11 +1,13 @@
 /**************************************************************************//**
  * @file     acmp.c
  * @version  V3.00
- * $Revision: 4 $
- * $Date: 14/01/28 10:49a $
+ * $Revision: 7 $
+ * $Date: 15/05/20 2:07p $
  * @brief    M051 series Analog Comparator(ACMP) driver source file
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 
@@ -16,16 +18,16 @@ extern "C"
 {
 #endif
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_ACMP_Driver ACMP Driver
+/** @addtogroup ACMP_Driver ACMP Driver
   @{
 */
 
 
-/** @addtogroup M051_ACMP_EXPORTED_FUNCTIONS ACMP Exported Functions
+/** @addtogroup ACMP_EXPORTED_FUNCTIONS ACMP Exported Functions
   @{
 */
 
@@ -33,16 +35,17 @@ extern "C"
 /**
   * @brief  Configure the specified ACMP module
   *
-  * @param[in]  Acmp The base address of ACMP module
-  * @param[in]  u32ChNum comparator number.
-  * @param[in]  u32NegSrc is comparator negative input selection.  Including:
+  * @param[in]  Acmp The pointer of the specified ACMP module
+  * @param[in]  u32ChNum Comparator number.
+  * @param[in]  u32NegSrc Comparator negative input selection.  Including:
   *                  - \ref ACMP_CR_VNEG_PIN
   *                  - \ref ACMP_CR_VNEG_BANDGAP
-  *
-  * @param[in]  u32HysteresisEn is the hysteresis function option. Including:
+  * @param[in]  u32HysteresisEn The hysteresis function option. Including:
   *                  - \ref ACMP_CR_HYSTERESIS_ENABLE
   *                  - \ref ACMP_CR_HYSTERESIS_DISABLE
   * @return None
+  *
+  * @details    Configure hysteresis function, select the source of negative input and enable analog comparator.
   */
 void ACMP_Open(ACMP_T *Acmp, uint32_t u32ChNum, uint32_t u32NegSrc, uint32_t u32HysteresisEn)
 {
@@ -50,12 +53,14 @@ void ACMP_Open(ACMP_T *Acmp, uint32_t u32ChNum, uint32_t u32NegSrc, uint32_t u32
 }
 
 /**
-  * @brief  This function close comparator
+  * @brief  Close analog comparator
   *
-  * @param[in]  Acmp The base address of ACMP module
-  * @param[in]  u32ChNum comparator number.
+  * @param[in]  Acmp The pointer of the specified ACMP module
+  * @param[in]  u32ChNum Comparator number.
   *
   * @return None
+  *
+  * @details  This function will clear ACMPEN bit of ACMP_CR register to disable analog comparator.
   */
 void ACMP_Close(ACMP_T *Acmp, uint32_t u32ChNum)
 {
@@ -64,11 +69,11 @@ void ACMP_Close(ACMP_T *Acmp, uint32_t u32ChNum)
 
 
 
-/*@}*/ /* end of group M051_ACMP_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group ACMP_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_ACMP_Driver */
+/*@}*/ /* end of group ACMP_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 #ifdef __cplusplus
 }

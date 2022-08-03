@@ -1,11 +1,13 @@
 /**************************************************************************//**
  * @file     SYS.h
- * @version  V2.1
- * $Revision: 10 $
- * $Date: 14/02/05 1:17p $
+ * @version  V3
+ * $Revision: 26 $
+ * $Date: 15/05/22 4:48p $
  * @brief    M051 Series Global Control and Clock Control Driver Header File
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2011 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
@@ -13,31 +15,26 @@
 #define __SYS_H__
 
 
-#include "M051Series.h"
-
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_SYS_Driver SYS Driver
+/** @addtogroup SYS_Driver SYS Driver
   @{
 */
 
-/** @addtogroup M051_SYS_EXPORTED_CONSTANTS SYS Exported Constants
+/** @addtogroup SYS_EXPORTED_CONSTANTS SYS Exported Constants
   @{
 */
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  Module Reset Control Resister constant definitions.                                                    */
 /*---------------------------------------------------------------------------------------------------------*/
-#define CHIP_RST    ((0x0<<24) | SYS_IPRSTC1_CPU_RST_Pos    ) /*!< CPU reset is one of the SYS_ResetModule parameter */
-#define CPU_RST     ((0x0<<24) | SYS_IPRSTC1_CHIP_RST_Pos   ) /*!< CHIP reset is one of the SYS_ResetModule parameter */
 #define EBI_RST     ((0x0<<24) | SYS_IPRSTC1_EBI_RST_Pos    ) /*!< EBI reset is one of the SYS_ResetModule parameter */
 #define HDIV_RST    ((0x0<<24) | SYS_IPRSTC1_HDIV_RST_Pos   ) /*!< HDIV reset is one of the SYS_ResetModule parameter */
 #define GPIO_RST    ((0x4<<24) | SYS_IPRSTC2_GPIO_RST_Pos   ) /*!< GPIO reset is one of the SYS_ResetModule parameter */
@@ -72,6 +69,15 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /*  Multi-Function constant definitions.                                                                   */
 /*---------------------------------------------------------------------------------------------------------*/
+
+/* How to use below #define?
+Example: If user want to set P0.2 as TXD and P0.3 as RXD in initial function,
+         user can issue following command to achieve it.
+
+         SYS->P0_MFP &= ~(SYS_MFP_P02_Msk | SYS_MFP_P03_Msk);
+         SYS->P0_MFP |= (SYS_MFP_P02_TXD | SYS_MFP_P03_RXD);
+*/
+
 #define SYS_MFP_TYPE_Msk(bit)       (1UL << ((bit) +16))
 #define SYS_MFP_ALT_Msk(bit)        (1UL << ((bit) + 8))
 #define SYS_MFP_MFP_Msk(bit)        (1UL << ((bit)    ))
@@ -94,12 +100,14 @@ extern "C"
 #define SYS_MFP_P02_AD2     0x00000004UL /*!< P0_MFP pin 2 setting for AD2  */
 #define SYS_MFP_P02_CTS0    0x00000400UL /*!< P0_MFP pin 2 setting for CTS0 */
 #define SYS_MFP_P02_TXD0    0x00000404UL /*!< P0_MFP pin 2 setting for TXD0 */
+#define SYS_MFP_P02_TXD     0x00000404UL /*!< P0_MFP pin 2 setting for TXD  */
 #define SYS_MFP_P02_Msk     0x00000404UL /*!< P0_MFP pin 2 mask             */
 
 #define SYS_MFP_P03_GPIO    0x00000000UL /*!< P0_MFP pin 3 setting for GPIO */
 #define SYS_MFP_P03_AD3     0x00000008UL /*!< P0_MFP pin 3 setting for AD3  */
 #define SYS_MFP_P03_RTS0    0x00000800UL /*!< P0_MFP pin 3 setting for RTS0 */
 #define SYS_MFP_P03_RXD0    0x00000808UL /*!< P0_MFP pin 3 setting for RXD0 */
+#define SYS_MFP_P03_RXD     0x00000808UL /*!< P0_MFP pin 3 setting for RXD  */
 #define SYS_MFP_P03_Msk     0x00000808UL /*!< P0_MFP pin 3 mask             */
 
 #define SYS_MFP_P04_GPIO    0x00000000UL /*!< P0_MFP pin 4 setting for GPIO   */
@@ -216,23 +224,27 @@ extern "C"
 
 #define SYS_MFP_P30_GPIO    0x00000000UL /*!< P3_MFP pin 0 setting for GPIO */
 #define SYS_MFP_P30_RXD0    0x00000001UL /*!< P3_MFP pin 0 setting for RXD0 */
+#define SYS_MFP_P30_RXD     0x00000001UL /*!< P3_MFP pin 0 setting for RXD  */
 #define SYS_MFP_P30_CPN1    0x00000100UL /*!< P3_MFP pin 0 setting for CPN1 */
 #define SYS_MFP_P30_ACMP1_N 0x00000100UL /*!< P3_MFP pin 0 setting for ACMP1_N */
 #define SYS_MFP_P30_Msk     0x00000101UL /*!< P3_MFP pin 0 mask             */
 
 #define SYS_MFP_P31_GPIO    0x00000000UL /*!< P3_MFP pin 1 setting for GPIO */
 #define SYS_MFP_P31_TXD0    0x00000002UL /*!< P3_MFP pin 1 setting for TXD0 */
+#define SYS_MFP_P31_TXD     0x00000002UL /*!< P3_MFP pin 1 setting for TXD  */
 #define SYS_MFP_P31_CPP1    0x00000200UL /*!< P3_MFP pin 1 setting for CPP1 */
 #define SYS_MFP_P31_ACMP1_P 0x00000200UL /*!< P3_MFP pin 1 setting for ACMP1_P */
 #define SYS_MFP_P31_Msk     0x00000202UL /*!< P3_MFP pin 1 mask             */
 
 #define SYS_MFP_P32_GPIO    0x00000000UL /*!< P3_MFP pin 2 setting for GPIO  */
 #define SYS_MFP_P32_INT0    0x00000004UL /*!< P3_MFP pin 2 setting for /INT0 */
+#define SYS_MFP_P32_nINT0   0x00000004UL /*!< P3_MFP pin 2 setting for /INT0 */
 #define SYS_MFP_P32_T0EX    0x00000400UL /*!< P3_MFP pin 2 setting for T0EX  */
 #define SYS_MFP_P32_Msk     0x00000404UL /*!< P3_MFP pin 2 mask              */
 
 #define SYS_MFP_P33_GPIO    0x00000000UL /*!< P3_MFP pin 3 setting for GPIO  */
 #define SYS_MFP_P33_INT1    0x00000008UL /*!< P3_MFP pin 3 setting for /INT1 */
+#define SYS_MFP_P33_nINT1   0x00000008UL /*!< P3_MFP pin 3 setting for /INT1 */
 #define SYS_MFP_P33_MCLK    0x00000800UL /*!< P3_MFP pin 3 setting for MCLK  */
 #define SYS_MFP_P33_T1EX    0x00000808UL /*!< P3_MFP pin 3 setting for T1EX  */
 #define SYS_MFP_P33_Msk     0x00000808UL /*!< P3_MFP pin 3 mask              */
@@ -297,170 +309,242 @@ extern "C"
 
 
 
-/*@}*/ /* end of group M051_SYS_EXPORTED_CONSTANTS */
+/*@}*/ /* end of group SYS_EXPORTED_CONSTANTS */
 
-/** @addtogroup M051_SYS_EXPORTED_FUNCTIONS SYS Exported Functions
+/** @addtogroup SYS_EXPORTED_FUNCTIONS SYS Exported Functions
   @{
 */
 
 
 /**
-  * @brief  This macro clear Brown-out interrupt flag.
-  * @return None
+  * @brief      Clear Brown-out detector interrupt flag
+  * @param      None  
+  * @return     None
+  * @details    This macro clear Brown-out detector interrupt flag.
   */
 #define SYS_CLEAR_BOD_INT_FLAG()        (SYS->BODCR |= SYS_BODCR_BOD_INTF_Msk)
 
 /**
-  * @brief  This macro set Brown-out detect to normal mode.
-  * @return None
+  * @brief      Set Brown-out detector function to normal mode
+  * @param      None  
+  * @return     None
+  * @details    This macro set Brown-out detector to normal mode.
+  *             The register write-protection function should be disabled before using this macro.  
   */
 #define SYS_CLEAR_BOD_LPM()             (SYS->BODCR &= ~SYS_BODCR_BOD_LPM_Msk)
 
 /**
-  * @brief  This macro disable Brown-out detect function.
-  * @return None
+  * @brief      Disable Brown-out detector function
+  * @param      None  
+  * @return     None
+  * @details    This macro disable Brown-out detector function.
+  *             The register write-protection function should be disabled before using this macro.  
   */
 #define SYS_DISABLE_BOD()               (SYS->BODCR &= ~SYS_BODCR_BOD_EN_Msk)
 
 /**
-  * @brief  This macro enable Brown-out detect function.
-  * @return None
+  * @brief      Enable Brown-out detector function
+  * @param      None  
+  * @return     None
+  * @details    This macro enable Brown-out detector function.  
+  *             The register write-protection function should be disabled before using this macro.  
   */
 #define SYS_ENABLE_BOD()                (SYS->BODCR |= SYS_BODCR_BOD_EN_Msk)
 
 /**
-  * @brief  This macro get Brown-out detect interrupt flag.
-  * @return 0: Brown-out detect interrupt flag is not set.
-  *         1: Brown-out detect interrupt flag is set.
+  * @brief      Get Brown-out detector interrupt flag
+  * @param      None    
+  * @retval     0   Brown-out detect interrupt flag is not set.
+  * @retval     >=1 Brown-out detect interrupt flag is set.
+  * @details    This macro get Brown-out detector interrupt flag.    
   */
-#define SYS_GET_BOD_INT_FLAG()          ((SYS->BODCR & SYS_BODCR_BOD_INTF_Msk)>>SYS_BODCR_BOD_INTF_Pos)
+#define SYS_GET_BOD_INT_FLAG()          (SYS->BODCR & SYS_BODCR_BOD_INTF_Msk)
 
 /**
-  * @brief      This macro get Brown-out detector output status.
-  * @return     0: System voltage is higher than BOD_VL setting or BOD_EN is 0.
-  *             1: System voltage is lower than BOD_VL setting.
-  * @details    If the BOD_EN is 0, this function always return 0.
+  * @brief      Get Brown-out detector status
+  * @param      None 
+  * @retval     0   System voltage is higher than BOD_VL setting or BOD_EN is 0.
+  * @retval     >=1 System voltage is lower than BOD_VL setting.
+  * @details    This macro get Brown-out detector output status.
+  *             If the BOD_EN is 0, this function always return 0.
   */
-#define SYS_GET_BOD_OUTPUT()            ((SYS->BODCR & SYS_BODCR_BOD_OUT_Msk)>>SYS_BODCR_BOD_OUT_Msk)
+#define SYS_GET_BOD_OUTPUT()            (SYS->BODCR & SYS_BODCR_BOD_OUT_Msk)
 
 /**
-  * @brief  This macro enable Brown-out detect interrupt function.
-  * @return None
+  * @brief      Enable Brown-out detector interrupt function
+  * @param      None   
+  * @return     None
+  * @details    This macro enable Brown-out detector interrupt function.
+  *             The register write-protection function should be disabled before using this macro.  
   */
 #define SYS_DISABLE_BOD_RST()           (SYS->BODCR &= ~SYS_BODCR_BOD_RSTEN_Msk)
 
 /**
-  * @brief  This macro enable Brown-out detect reset function.
-  * @return None
+  * @brief      Enable Brown-out detector reset function
+  * @param      None     
+  * @return     None
+  * @details    This macro enable Brown-out detect reset function.  
+  *             The register write-protection function should be disabled before using this macro.  
   */
 #define SYS_ENABLE_BOD_RST()            (SYS->BODCR |= SYS_BODCR_BOD_RSTEN_Msk)
 
 /**
-  * @brief  This macro set Brown-out detect to low power mode.
-  * @return None
+  * @brief      Set Brown-out detector function low power mode
+  * @param      None
+  * @return     None
+  * @details    This macro set Brown-out detector to low power mode.
+  *             The register write-protection function should be disabled before using this macro.
   */
 #define SYS_SET_BOD_LPM()               (SYS->BODCR |= SYS_BODCR_BOD_LPM_Msk)
 
 /**
-  * @brief  This macro set Brown-out detect voltage level.
-  * @param  u32Level is Brown-out voltage level. Including :
-  *         - \ref SYS_BODCR_BOD_VL_4_4V
-  *         - \ref SYS_BODCR_BOD_VL_3_7V
-  *         - \ref SYS_BODCR_BOD_VL_2_7V
-  *         - \ref SYS_BODCR_BOD_VL_2_2V
-  * @return None
+  * @brief      Set Brown-out detector voltage level
+  * @param[in]  u32Level is Brown-out voltage level. Including :
+  *             - \ref SYS_BODCR_BOD_VL_4_4V
+  *             - \ref SYS_BODCR_BOD_VL_3_7V
+  *             - \ref SYS_BODCR_BOD_VL_2_7V
+  *             - \ref SYS_BODCR_BOD_VL_2_2V
+  * @return     None
+  * @details    This macro set Brown-out detector voltage level.
+  *             The register write-protection function should be disabled before using this macro.  
   */
-#define SYS_SET_BOD_LEVEL(u32Level)     (SYS->BODCR = (SYS->BODCR & ~SYS_BODCR_BOD_VL_Msk) | u32Level)
+#define SYS_SET_BOD_LEVEL(u32Level)     (SYS->BODCR = (SYS->BODCR & ~SYS_BODCR_BOD_VL_Msk) | (u32Level))
 
 /**
-  * @brief  This macro get previous reset source is from Brown-out detect reset.
-  * @return 0: Previous reset source is not from Brown-out detect reset
-  *         1: Previous reset source is from Brown-out detect reset
+  * @brief      Get reset source is from Brown-out detector reset
+  * @param      None    
+  * @retval     0   Previous reset source is not from Brown-out detector reset
+  * @retval     >=1 Previous reset source is from Brown-out detector reset
+  * @details    This macro get previous reset source is from Brown-out detect reset or not.    
   */
 #define SYS_IS_BOD_RST()                (SYS->RSTSRC & SYS_RSTSRC_RSTS_BOD_Msk)
 
 /**
-  * @brief  This macro get previous reset source is from Low-Voltage-Reset.
-  * @return 0: Previous reset source is not from CPU reset
-  *         1: Previous reset source is from CPU reset
+  * @brief      Get reset source is from CPU reset
+  * @param      None     
+  * @retval     0   Previous reset source is not from CPU reset
+  * @retval     >=1 Previous reset source is from CPU reset
+  * @details    This macro get previous reset source is from CPU reset. 
   */
 #define SYS_IS_CPU_RST()                (SYS->RSTSRC & SYS_RSTSRC_RSTS_CPU_Msk)
 
 /**
-  * @brief  This macro get previous reset source is from Power-on Reset.
-  * @return 0: Previous reset source is not from Low-Voltage-Reset
-  *         1: Previous reset source is from Low-Voltage-Reset
+  * @brief      Get reset source is from Low-Voltage-Reset
+  * @param      None     
+  * @retval     0   Previous reset source is not from Low-Voltage-Reset
+  * @retval     >=1 Previous reset source is from Low-Voltage-Reset
+  * @details    This macro get previous reset source is from Low-Voltage-Reset.   
+  */
+#define SYS_IS_LVR_RST()                (SYS->RSTSRC & SYS_RSTSRC_RSTS_LVR_Msk)
+
+
+/**
+  * @brief      Get reset source is from Power-on Reset
+  * @param      None     
+  * @retval     0   Previous reset source is not from Power-on Reset
+  * @retval     >=1 Previous reset source is from Power-on Reset
+  * @details    This macro get previous reset source is from Power-on Reset.   
   */
 #define SYS_IS_POR_RST()                (SYS->RSTSRC & SYS_RSTSRC_RSTS_POR_Msk)
 
 /**
-  * @brief  This macro get previous reset source is from reset pin reset.
-  * @return 0: Previous reset source is not from Power-on Reset
-  *         1: Previous reset source is from Power-on Reset
+  * @brief      Get reset source is from reset pin reset
+  * @param      None     
+  * @retval     0   Previous reset source is not from reset pin reset
+  * @retval     >=1 Previous reset source is from reset pin reset
+  * @details    This macro get previous reset source is from reset pin reset.  
   */
 #define SYS_IS_RSTPIN_RST()             (SYS->RSTSRC & SYS_RSTSRC_RSTS_RESET_Msk)
 
 /**
-  * @brief  This macro get previous reset source is from system reset.
-  * @return 0: Previous reset source is not from reset pin reset
-  *         1: Previous reset source is from reset pin reset
+  * @brief      Get reset source is from system reset
+  * @param      None     
+  * @retval     0   Previous reset source is not from system reset
+  * @retval     >=1 Previous reset source is from system reset
+  * @details    This macro get previous reset source is from system reset.   
   */
 #define SYS_IS_SYSTEM_RST()             (SYS->RSTSRC & SYS_RSTSRC_RSTS_MCU_Msk)
 
 /**
-  * @brief  This macro get previous reset source is from window watch dog reset.
-  * @return 0: Previous reset source is not from reset system reset
-  *         1: Previous reset source is from reset system reset
+  * @brief      Get reset source is from window watch dog reset
+  * @param      None
+  * @retval     0   Previous reset source is not from window watch dog reset
+  * @retval     >=1 Previous reset source is from window watch dog reset
+  * @details    This macro get previous reset source is from window watch dog reset.    
   */
 #define SYS_IS_WDT_RST()                (SYS->RSTSRC & SYS_RSTSRC_RSTS_WDT_Msk)
 
 /**
-  * @brief  This macro disable Low-Voltage-Reset function.
-  * @return None
+  * @brief      Disable Low-Voltage-Reset function
+  * @param      None  
+  * @return     None
+  * @details    This macro disable Low-Voltage-Reset function.
+  *             The register write-protection function should be disabled before using this macro.  
   */
 #define SYS_DISABLE_LVR()               (SYS->BODCR &= ~SYS_BODCR_LVR_EN_Msk)
 
 /**
-  * @brief  This macro enable Low-Voltage-Reset function.
-  * @return None
+  * @brief      Enable Low-Voltage-Reset function
+  * @param      None  
+  * @return     None
+  * @details    This macro enable Low-Voltage-Reset function.
+  *             The register write-protection function should be disabled before using this macro.  
   */
 #define SYS_ENABLE_LVR()                (SYS->BODCR |= SYS_BODCR_LVR_EN_Msk)
 
 /**
-  * @brief  This macro disable Power-on Reset function.
-  * @return None
+  * @brief      Disable Power-on Reset function
+  * @param      None  
+  * @return     None
+  * @details    This macro disable Power-on Reset function.
+  *             The register write-protection function should be disabled before using this macro.  
   */
 #define SYS_DISABLE_POR()               (SYS->PORCR = 0x5AA5)
 
 /**
-  * @brief  This macro enable Power-on Reset function.
-  * @return None
+  * @brief      Enable Power-on Reset function
+  * @param      None  
+  * @return     None
+  * @details    This macro enable Power-on Reset function.
+  *             The register write-protection function should be disabled before using this macro.  
   */
 #define SYS_ENABLE_POR()                (SYS->PORCR = 0)
 
 /**
-  * @brief  This macro clear reset source flag.
-  * @param  u32RstSrc is reset source.
-  * @return None
+  * @brief      Clear reset source flag
+  * @param[in]  u32RstSrc is reset source. Including:
+  *             - \ref SYS_RSTSRC_RSTS_CPU_Msk
+  *             - \ref SYS_RSTSRC_RSTS_MCU_Msk
+  *             - \ref SYS_RSTSRC_RSTS_BOD_Msk
+  *             - \ref SYS_RSTSRC_RSTS_LVR_Msk
+  *             - \ref SYS_RSTSRC_RSTS_WDT_Msk 
+  *             - \ref SYS_RSTSRC_RSTS_RESET_Msk 
+  *             - \ref SYS_RSTSRC_RSTS_POR_Msk   
+  * @return     None
+  * @details    This macro clear reset source flag.   
   */
-#define SYS_CLEAR_RST_SOURCE(u32RstSrc) (SYS->RSTSRC | u32RstSrc )
+#define SYS_CLEAR_RST_SOURCE(u32RstSrc) (SYS->RSTSRC = (u32RstSrc) )
 
 /**
-  * @brief   This function enable register write-protection function
-  * @return  None
-  * @details To lock the protected register to forbid write access
+  * @brief      Enable register write-protection function
+  * @param      None    
+  * @return     None
+  * @details    This function enable register write-protection function.
+  *             To lock the protected register to forbid write access.
   */
-static __INLINE void SYS_LockReg(void)
+__STATIC_INLINE void SYS_LockReg(void)
 {
     SYS->REGWRPROT = 0;
 }
 
 /**
-  * @brief   This function disable register write-protection function
-  * @return  None
-  * @details To unlock the protected register to allow write access
+  * @brief      Disable register write-protection function
+  * @param      None    
+  * @return     None
+  * @details    This function disable register write-protection function.
+  *             To unlock the protected register to allow write access.           
   */
-static __INLINE void SYS_UnlockReg(void)
+__STATIC_INLINE void SYS_UnlockReg(void)
 {
     while(SYS->REGWRPROT != SYS_REGWRPROT_REGPROTDIS_Msk)
     {
@@ -477,7 +561,7 @@ void SYS_ClearResetSrc(uint32_t u32Src);
 uint32_t SYS_GetBODStatus(void);
 uint32_t SYS_GetResetSrc(void);
 uint32_t SYS_IsRegLocked(void);
-uint32_t  SYS_ReadPDID(void);
+uint32_t SYS_ReadPDID(void);
 void SYS_ResetChip(void);
 void SYS_ResetCPU(void);
 void SYS_ResetModule(uint32_t u32ModuleIndex);
@@ -485,11 +569,11 @@ void SYS_EnableBOD(int32_t i32Mode, uint32_t u32BODLevel);
 void SYS_DisableBOD(void);
 
 
-/*@}*/ /* end of group M051_SYS_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group SYS_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_SYS_Driver */
+/*@}*/ /* end of group SYS_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 
 #ifdef __cplusplus

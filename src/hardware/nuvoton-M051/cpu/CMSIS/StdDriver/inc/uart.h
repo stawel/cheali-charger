@@ -1,17 +1,18 @@
 /**************************************************************************//**
  * @file     UART.h
- * @version  V1.00
- * $Revision: 7 $
- * $Date: 14/02/05 10:27a $
- * @brief    Mini51 series UART driver header file
+ * @version  V3.00
+ * $Revision: 23 $
+ * $Date: 15/05/29 4:19p $
+ * @brief    M051 series UART driver header file
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 #ifndef __UART_H__
 #define __UART_H__
 
-#include "M051Series.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -19,31 +20,38 @@ extern "C"
 #endif
 
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_UART_Driver UART Driver
+/** @addtogroup UART_Driver UART Driver
   @{
 */
 
-/** @addtogroup M051_UART_EXPORTED_CONSTANTS UART Exported Constants
+/** @addtogroup UART_EXPORTED_CONSTANTS UART Exported Constants
   @{
 */
 
+/*---------------------------------------------------------------------------------------------------------*/
+/* UART FIFO size constants definitions                                                                    */
+/*---------------------------------------------------------------------------------------------------------*/
+
+#define UART0_FIFO_SIZE 16 /*!< UART0 supports separated receive/transmit 16/16 bytes entry FIFO */
+#define UART1_FIFO_SIZE 16 /*!< UART1 supports separated receive/transmit 16/16 bytes entry FIFO */   
+    
 /*---------------------------------------------------------------------------------------------------------*/
 /* UA_FCR constants definitions                                                                            */
 /*---------------------------------------------------------------------------------------------------------*/
 
-#define UART_FCR_RFITL_1BYTE        (0x0 << UART_FCR_RFITL_Pos)   /*!< UA_FCR setting to set RX FIFO Trigger Level to 1 bit */
-#define UART_FCR_RFITL_4BYTES       (0x1 << UART_FCR_RFITL_Pos)   /*!< UA_FCR setting to set RX FIFO Trigger Level to 4 bits */
-#define UART_FCR_RFITL_8BYTES       (0x2 << UART_FCR_RFITL_Pos)   /*!< UA_FCR setting to set RX FIFO Trigger Level to 8 bits */
-#define UART_FCR_RFITL_14BYTES      (0x3 << UART_FCR_RFITL_Pos)   /*!< UA_FCR setting to set RX FIFO Trigger Level to 14 bits */
+#define UART_FCR_RFITL_1BYTE        (0x0 << UART_FCR_RFITL_Pos)   /*!< UA_FCR setting to set RX FIFO Trigger Level to 1 byte */
+#define UART_FCR_RFITL_4BYTES       (0x1 << UART_FCR_RFITL_Pos)   /*!< UA_FCR setting to set RX FIFO Trigger Level to 4 bytes */
+#define UART_FCR_RFITL_8BYTES       (0x2 << UART_FCR_RFITL_Pos)   /*!< UA_FCR setting to set RX FIFO Trigger Level to 8 bytes */
+#define UART_FCR_RFITL_14BYTES      (0x3 << UART_FCR_RFITL_Pos)   /*!< UA_FCR setting to set RX FIFO Trigger Level to 14 bytes */
 
-#define UART_FCR_RTS_TRI_LEV_1BYTE        (0x0 << UART_FCR_RTS_TRI_LEV_Pos)  /*!< UA_FCR setting to set RTS Trigger Level to 1 bit */
-#define UART_FCR_RTS_TRI_LEV_4BYTES       (0x1 << UART_FCR_RTS_TRI_LEV_Pos)  /*!< UA_FCR setting to set RTS Trigger Level to 4 bits */
-#define UART_FCR_RTS_TRI_LEV_8BYTES       (0x2 << UART_FCR_RTS_TRI_LEV_Pos)  /*!< UA_FCR setting to set RTS Trigger Level to 8 bits */
-#define UART_FCR_RTS_TRI_LEV_14BYTES      (0x3 << UART_FCR_RTS_TRI_LEV_Pos)  /*!< UA_FCR setting to set RTS Trigger Level to 14 bits */
+#define UART_FCR_RTS_TRI_LEV_1BYTE        (0x0 << UART_FCR_RTS_TRI_LEV_Pos)  /*!< UA_FCR setting to set RTS Trigger Level to 1 byte */
+#define UART_FCR_RTS_TRI_LEV_4BYTES       (0x1 << UART_FCR_RTS_TRI_LEV_Pos)  /*!< UA_FCR setting to set RTS Trigger Level to 4 bytes */
+#define UART_FCR_RTS_TRI_LEV_8BYTES       (0x2 << UART_FCR_RTS_TRI_LEV_Pos)  /*!< UA_FCR setting to set RTS Trigger Level to 8 bytes */
+#define UART_FCR_RTS_TRI_LEV_14BYTES      (0x3 << UART_FCR_RTS_TRI_LEV_Pos)  /*!< UA_FCR setting to set RTS Trigger Level to 14 bytes */
 
 /*---------------------------------------------------------------------------------------------------------*/
 /* UA_LCR constants definitions                                                                            */
@@ -67,14 +75,14 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /* UART RTS LEVEL TRIGGER constants definitions                                                            */
 /*---------------------------------------------------------------------------------------------------------*/
-#define UART_RTS_IS_HIGH_LEV_ACTIVE    (0x1 << UART_MCR_LEV_RTS_Pos) /*!< Set RTS is High Level Active */
-#define UART_RTS_IS_LOW_LEV_ACTIVE     (0x0 << UART_MCR_LEV_RTS_Pos) /*!< Set RTS is Low Level Active */
+#define UART_RTS_IS_LOW_LEV_ACTIVE    (0x1 << UART_MCR_LEV_RTS_Pos) /*!< Set RTS is Low Level Active */
+#define UART_RTS_IS_HIGH_LEV_ACTIVE   (0x0 << UART_MCR_LEV_RTS_Pos) /*!< Set RTS is High Level Active */
 
 /*---------------------------------------------------------------------------------------------------------*/
 /* UA_IRCR constants definitions                                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
-#define UART_IRCR_TX_SELECT         (1) /*!< Set IrDA function Tx mode */
-#define UART_IRCR_RX_SELECT         (0) /*!< Set IrDA function Rx mode */
+#define UART_IRCR_TX_SELECT         (0x1 << UART_IRCR_TX_SELECT_Pos) /*!< Set IrDA function Tx mode */
+#define UART_IRCR_RX_SELECT         (0x0 << UART_IRCR_TX_SELECT_Pos) /*!< Set IrDA function Rx mode */
 
 /*---------------------------------------------------------------------------------------------------------*/
 /* UA_FUNC_SEL constants definitions                                                                       */
@@ -84,176 +92,191 @@ extern "C"
 #define UART_FUNC_SEL_IrDA    (0x2 << UART_FUN_SEL_FUN_SEL_Pos) /*!< UA_FUNC_SEL setting to set IrDA Function            */
 #define UART_FUNC_SEL_RS485   (0x3 << UART_FUN_SEL_FUN_SEL_Pos) /*!< UA_FUNC_SEL setting to set RS485 Function           */
 
+/*---------------------------------------------------------------------------------------------------------*/
+/* UART BAUDRATE MODE constants definitions                                                                       */
+/*---------------------------------------------------------------------------------------------------------*/
+#define UART_BAUD_MODE0     (0) /*!< Set UART Baudrate Mode is Mode0 */
+#define UART_BAUD_MODE2     (UART_BAUD_DIV_X_EN_Msk | UART_BAUD_DIV_X_ONE_Msk) /*!< Set UART Baudrate Mode is Mode2 */
 
-/*@}*/ /* end of group M051_UART_EXPORTED_CONSTANTS */
 
 
-/** @addtogroup M051_UART_EXPORTED_FUNCTIONS UART Exported Functions
+/*@}*/ /* end of group UART_EXPORTED_CONSTANTS */
+
+
+/** @addtogroup UART_EXPORTED_FUNCTIONS UART Exported Functions
   @{
 */
 
+
 /**
- *    @brief    Calculate UART baudrate mode0 divider
+ *    @brief        Calculate UART baudrate mode0 divider
  *
- *    @param    None
+ *    @param[in]    u32SrcFreq      UART clock frequency
+ *    @param[in]    u32BaudRate     Baudrate of UART module
  *
- *    @return    UART baudrate mode0 register setting value
+ *    @return       UART baudrate mode0 divider
  *
+ *    @details      This macro calculate UART baudrate mode0 divider.
  */
-#define UART_BAUD_MODE0        (0)
+#define UART_BAUD_MODE0_DIVIDER(u32SrcFreq, u32BaudRate)    ((((u32SrcFreq) + ((u32BaudRate)*8)) / (u32BaudRate) >> 4)-2)
 
 /**
- *    @brief    Calculate UART baudrate mode0 divider
+ *    @brief        Calculate UART baudrate mode2 divider
  *
- *    @param    None
+ *    @param[in]    u32SrcFreq      UART clock frequency
+ *    @param[in]    u32BaudRate     Baudrate of UART module
  *
- *    @return    UART baudrate mode2 register setting value
+ *    @return       UART baudrate mode2 divider
  *
+ *    @details      This macro calculate UART baudrate mode2 divider.
  */
-#define UART_BAUD_MODE2        (UART_BAUD_DIV_X_EN_Msk | UART_BAUD_DIV_X_ONE_Msk)
+#define UART_BAUD_MODE2_DIVIDER(u32SrcFreq, u32BaudRate)    ((((u32SrcFreq) + ((u32BaudRate)/2)) / (u32BaudRate))-2)
 
 
 /**
- *    @brief    Calculate UART baudrate mode0 divider
+ *    @brief        Write data
  *
- *    @param    u32SrcFreq      UART clock frequency
- *    @param    u32BaudRate     Baudrate of UART module
+ *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    u8Data  Data byte to transmit
  *
- *    @return    UART baudrate mode0 divider
+ *    @return       None
  *
+ *    @details      This macro write Data to Tx data register.
  */
-#define UART_BAUD_MODE0_DIVIDER(u32SrcFreq, u32BaudRate)    (((u32SrcFreq + (u32BaudRate*8)) / u32BaudRate >> 4)-2)
+#define UART_WRITE(uart, u8Data)    ((uart)->THR = (u8Data))
+
 
 /**
- *    @brief    Calculate UART baudrate mode2 divider
+ *    @brief        Read data
  *
- *    @param    u32SrcFreq    UART clock frequency
- *    @param    u32BaudRate    Baudrate of UART module
+ *    @param[in]    uart    The pointer of the specified UART module
  *
- *    @return    UART baudrate mode2 divider
+ *    @return       The oldest data byte in RX FIFO
+ *
+ *    @details      This macro read Rx data register.
  */
-#define UART_BAUD_MODE2_DIVIDER(u32SrcFreq, u32BaudRate)    (((u32SrcFreq + (u32BaudRate/2)) / u32BaudRate)-2)
+#define UART_READ(uart)    ((uart)->RBR)
 
 
 /**
- *    @brief    Write Data to Tx data register
+ *    @brief        Get Tx empty
  *
- *    @param    uart        The base address of UART module.
- *    @param    u8Data  Data byte to transmit
+ *    @param[in]    uart    The pointer of the specified UART module
  *
- *    @return    None
+ *    @retval       0   Tx FIFO is not empty
+ *    @retval       >=1 Tx FIFO is empty
+ *
+ *    @details      This macro get Tx empty register value.
  */
-#define UART_WRITE(uart, u8Data)    (uart->THR = (u8Data))
+#define UART_GET_TX_EMPTY(uart)    ((uart)->FSR & UART_FSR_TX_EMPTY_Msk)
+
 
 /**
- *    @brief    Read Rx data register
+ *    @brief        Get Rx empty
  *
- *    @param    uart        The base address of UART module.
+ *    @param[in]    uart    The pointer of the specified UART module
  *
- *    @return    The oldest data byte in RX FIFO
+ *    @retval       0   Rx FIFO is not empty
+ *    @retval       >=1 Rx FIFO is empty
+ *
+ *    @details      This macro get Rx empty register value.
  */
-#define UART_READ(uart)    (uart->RBR)
-
+#define UART_GET_RX_EMPTY(uart)    ((uart)->FSR & UART_FSR_RX_EMPTY_Msk)
 
 /**
- *    @brief    Get Tx empty register value.
+ *    @brief        Check specified uart port transmission is over.
  *
- *    @param    uart        The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module
  *
- *    @return    Tx empty register value.
+ *    @retval       0   Transmission is not over.
+ *    @retval       1   Transmission is over.
+ *
+ *    @details      This macro return if Tx FIFO is empty and specified uart port transmission is over nor not.
  */
-#define UART_GET_TX_EMPTY(uart)    (uart->FSR & UART_FSR_TX_EMPTY_Msk)
+#define UART_IS_TX_EMPTY(uart)    (((uart)->FSR & UART_FSR_TE_FLAG_Msk) >> UART_FSR_TE_FLAG_Pos)
 
 
 /**
- *    @brief    Get Rx empty register value.
+ *    @brief        Wait specified uart port transmission is over
  *
- *    @param    uart        The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module
  *
- *    @return    Rx empty register value.
+ *    @return       None
+ *
+ *    @details      This macro wait specified uart port transmission is over.
  */
-#define UART_GET_RX_EMPTY(uart)    (uart->FSR & UART_FSR_RX_EMPTY_Msk)
+#define UART_WAIT_TX_EMPTY(uart)    while(!((((uart)->FSR) & UART_FSR_TE_FLAG_Msk) >> UART_FSR_TE_FLAG_Pos))
 
 /**
- *    @brief    Check specified uart port transmission is over.
+ *    @brief        Check RX is ready or not
  *
- *    @param    uart        The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module
  *
- *    @return    TE_Flag.
+ *    @retval       0 The number of bytes in the RX FIFO is less than the RFITL
+ *    @retval       1 The number of bytes in the RX FIFO equals or larger than RFITL
+ *
+ *    @details      This macro check receive data available interrupt flag is set or not.
  */
-#define UART_IS_TX_EMPTY(uart)    ((uart->FSR & UART_FSR_TE_FLAG_Msk) >> UART_FSR_TE_FLAG_Pos)
+#define UART_IS_RX_READY(uart)    (((uart)->ISR & UART_ISR_RDA_IF_Msk)>>UART_ISR_RDA_IF_Pos)
 
 
 /**
- *    @brief    Wait specified uart port transmission is over
+ *    @brief        Check TX FIFO is full or not
  *
- *    @param    uart        The base address of UART module
+ *    @param[in]    uart   The pointer of the specified UART module
  *
- *    @return    None
+ *    @retval       1 TX FIFO is full
+ *    @retval       0 TX FIFO is not full
+ *
+ *    @details      This macro check TX FIFO is full or not.
  */
-#define UART_WAIT_TX_EMPTY(uart)    while(!(((uart->FSR) & UART_FSR_TE_FLAG_Msk) >> UART_FSR_TE_FLAG_Pos))
+#define UART_IS_TX_FULL(uart)    (((uart)->FSR & UART_FSR_TX_FULL_Msk)>>UART_FSR_TX_FULL_Pos)
 
 /**
- *    @brief    Check RDA_IF is set or not
+ *    @brief        Check RX FIFO is full or not
  *
- *    @param    uart        The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module
  *
- *    @return
- *            0 : The number of bytes in the RX FIFO is less than the RFITL
- *            1 : The number of bytes in the RX FIFO equals or larger than RFITL
+ *    @retval       1 RX FIFO is full
+ *    @retval       0 RX FIFO is not full
+ *
+ *    @details      This macro check RX FIFO is full or not.
  */
-#define UART_IS_RX_READY(uart)    ((uart->ISR & UART_ISR_RDA_IF_Msk)>>UART_ISR_RDA_IF_Pos)
+#define UART_IS_RX_FULL(uart)    (((uart)->FSR & UART_FSR_RX_FULL_Msk)>>UART_FSR_RX_FULL_Pos)
 
 
 /**
- *    @brief    Check TX FIFO is full or not
+ *    @brief        Get Tx full register value
  *
- *    @param    uart        The base address of UART module
+ *    @param[in]    uart    The pointer of the specified UART module
  *
- *    @return
- *            1 = TX FIFO is full
- *            0 = TX FIFO is not full
+ *    @retval       0   Tx FIFO is not full.
+ *    @retval       >=1 Tx FIFO is full.
+ *
+ *    @details      This macro get Tx full register value.
  */
-#define UART_IS_TX_FULL(uart)    ((uart->FSR & UART_FSR_TX_FULL_Msk)>>UART_FSR_TX_FULL_Pos)
+#define UART_GET_TX_FULL(uart)    ((uart)->FSR & UART_FSR_TX_FULL_Msk)
+
 
 /**
- *    @brief    Check RX FIFO is full or not
+ *    @brief        Get Rx full register value
  *
- *    @param    uart        The base address of UART module
+ *    @param[in]    uart   The pointer of the specified UART module
  *
- *    @return
- *            1 = RX FIFO is full
- *            0 = RX FIFO is not full
+ *    @retval       0   Rx FIFO is not full.
+ *    @retval       >=1 Rx FIFO is full.
  *
+ *    @details      This macro get Rx full register value.
  */
-#define UART_IS_RX_FULL(uart)    ((uart->FSR & UART_FSR_RX_FULL_Msk)>>UART_FSR_RX_FULL_Pos)
+#define UART_GET_RX_FULL(uart)    ((uart)->FSR & UART_FSR_RX_FULL_Msk)
 
-
-/**
- *    @brief    Get Tx full register value
- *
- *    @param    uart        The base address of UART module
- *
- *    @return    Tx full register value
- */
-#define UART_GET_TX_FULL(uart)    (uart->FSR & UART_FSR_TX_FULL_Msk)
 
 
 /**
- *    @brief    Get Rx full register value
+ *    @brief        Enable specified UART interrupt
  *
- *    @param    uart        The base address of UART module
- *
- *    @return    Rx full register value
- */
-#define UART_GET_RX_FULL(uart)    (uart->FSR & UART_FSR_RX_FULL_Msk)
-
-
-/**
- *    @brief    Enable specified interrupt
- *
- *    @param    uart            The base address of UART module
- *    @param    u32eIntSel      Interrupt type select
+ *    @param[in]    uart        The pointer of the specified UART module
+ *    @param[in]    u32eIntSel  Interrupt type select
  *                              - UART_IER_LIN_RX_BRK_IEN_Msk  : Lin bus Rx break field interrupt
  *                              - UART_IER_WAKE_EN_Msk         : Wakeup interrupt
  *                              - UART_IER_BUF_ERR_IEN_Msk     : Buffer Error interrupt
@@ -263,16 +286,18 @@ extern "C"
  *                              - UART_IER_THRE_IEN_Msk        : Tx empty interrupt
  *                              - UART_IER_RDA_IEN_Msk         : Rx ready interrupt
  *
- *    @return    None
+ *    @return       None
+ *
+ *    @details      This macro enable specified UART interrupt.
  */
-#define UART_ENABLE_INT(uart, u32eIntSel)    (uart->IER |= (u32eIntSel))
+#define UART_ENABLE_INT(uart, u32eIntSel)    ((uart)->IER |= (u32eIntSel))
 
 
 /**
- *    @brief    Disable specified interrupt
+ *    @brief        Disable specified UART interrupt
  *
- *    @param    uart            The base address of UART module
- *    @param    u32eIntSel      Interrupt type select
+ *    @param[in]    uart        The pointer of the specified UART module
+ *    @param[in]    u32eIntSel  Interrupt type select
  *                              - UART_IER_LIN_RX_BRK_IEN_Msk  : Lin bus Rx break field interrupt
  *                              - UART_IER_WAKE_EN_Msk         : Wakeup interrupt
  *                              - UART_IER_BUF_ERR_IEN_Msk     : Buffer Error interrupt
@@ -281,71 +306,94 @@ extern "C"
  *                              - UART_IER_RLS_IEN_Msk         : Rx Line status interrupt
  *                              - UART_IER_THRE_IEN_Msk        : Tx empty interrupt
  *                              - UART_IER_RDA_IEN_Msk         : Rx ready interrupt
- *    @return    None
+ *
+ *    @return       None
+ *
+ *    @details      This macro enable specified UART interrupt.
  */
-#define UART_DISABLE_INT(uart, u32eIntSel)    (uart->IER &= ~ (u32eIntSel))
+#define UART_DISABLE_INT(uart, u32eIntSel)    ((uart)->IER &= ~ (u32eIntSel))
 
 
 /**
- *    @brief    Get specified interrupt flag/status
+ *    @brief        Get specified interrupt indicator status
  *
- *    @param    uart                The base address of UART module
- *    @param    u32eIntTypeFlag     Interrupt Type Flag,should be
-  *                                 - UART_ISR_LIN_RX_BREAK_INT_Msk : Lin bus interrupt
- *                                  - UART_ISR_BUF_ERR_INT_Msk      : Buffer Error interrupt
- *                                  - UART_ISR_TOUT_INT_Msk         : Rx time-out interrupt
- *                                  - UART_ISR_MODEM_INT_Msk        : Modem interrupt
- *                                  - UART_ISR_RLS_INT_Msk          : Rx Line status interrupt
- *                                  - UART_ISR_THRE_INT_Msk         : Tx empty interrupt
- *                                  - UART_ISR_RDA_INT_Msk          : Rx ready interrupt
+ *    @param[in]    uart            The pointer of the specified UART module
+ *    @param[in]    u32eIntTypeFlag Interrupt Type Flag, should be
+  *                                 - UART_ISR_LIN_RX_BREAK_INT_Msk : LIN Bus Interrupt Indicator
+ *                                  - UART_ISR_BUF_ERR_INT_Msk      : Buffer Error Interrupt Indicator
+ *                                  - UART_ISR_TOUT_INT_Msk         : Rx Time-out Interrupt Indicator
+ *                                  - UART_ISR_MODEM_INT_Msk        : MODEM Status Interrupt Indicator
+ *                                  - UART_ISR_RLS_INT_Msk          : Rx Line Status Interrupt Indicator
+ *                                  - UART_ISR_THRE_INT_Msk         : Tx Empty Interrupt Indicator
+ *                                  - UART_ISR_RDA_INT_Msk          : Rx Ready Interrupt Indicator
+ *                                  - UART_ISR_LIN_RX_BREAK_IF_Msk  : LIN Bus Interrupt Flag
+ *                                  - UART_ISR_BUF_ERR_IF_Msk       : Buffer Error Interrupt Flag
+ *                                  - UART_ISR_TOUT_IF_Msk          : Rx Time-out Interrupt Flag
+ *                                  - UART_ISR_MODEM_IF_Msk         : MODEM Status Interrupt Flag
+ *                                  - UART_ISR_RLS_IF_Msk           : Rx Line Status Interrupt Flag
+ *                                  - UART_ISR_THRE_IF_Msk          : Tx Empty Interrupt Flag
+ *                                  - UART_ISR_RDA_IF_Msk           : Rx Ready Interrupt Flag
  *
- *    @return
- *            0 = The specified interrupt is not happened.
- *            1 = The specified interrupt is happened.
+ *    @retval       0 The specified interrupt is not happened.
+ *                  1 The specified interrupt is happened.
+ *
+ *    @details      This macro get specified interrupt flag or interrupt indicator status.
  */
-#define UART_GET_INT_FLAG(uart,u32eIntTypeFlag)    ((uart->ISR & (u32eIntTypeFlag))?1:0)
+#define UART_GET_INT_FLAG(uart,u32eIntTypeFlag)    (((uart)->ISR & (u32eIntTypeFlag))?1:0)
 
 
 /**
- *    @brief    Set RTS pin is low
+ *    @brief        Set RTS pin to low
  *
- *    @param    uart    The base address of UART module
- *    @return   None
+ *    @param[in]    uart    The pointer of the specified UART module
+ *
+ *    @return       None
+ *
+ *    @details      This macro set RTS pin to low.
  */
-static __INLINE void UART_CLEAR_RTS(UART_T* uart)
+__STATIC_INLINE void UART_CLEAR_RTS(UART_T* uart)
 {
-    uart->MCR |= UART_MCR_LEV_RTS_Msk;
-    uart->MCR &= ~UART_MCR_RTS_Msk;
+    (uart)->MCR |= UART_MCR_LEV_RTS_Msk;
+    (uart)->MCR &= ~UART_MCR_RTS_Msk;
 }
 
 /**
- *    @brief    Set RTS pin is high
+ *    @brief        Set RTS pin to high
  *
- *    @param    uart    The base address of UART module
- *    @return   None
+ *    @param[in]    uart    The pointer of the specified UART module
+ *    @return       None
+ *
+ *    @details      This macro set RTS pin to high.
  */
-static __INLINE void UART_SET_RTS(UART_T* uart)
+__STATIC_INLINE void UART_SET_RTS(UART_T* uart)
 {
-    uart->MCR |= UART_MCR_LEV_RTS_Msk | UART_MCR_RTS_Msk;
+    (uart)->MCR |= UART_MCR_LEV_RTS_Msk | UART_MCR_RTS_Msk;
 }
 
 
 /**
- *    @brief    Clear RS-485 Address Byte Detection Flag
+ *    @brief        Clear RS-485 Address Byte Detection Flag
  *
- *    @param    uart    The base address of UART module
- *    @return   None
+ *    @param[in]    uart    The pointer of the specified UART module
+ *
+ *    @return       None
+ *
+ *    @details      This macro clear RS-485 address byte detection flag.
  */
-#define UART_RS485_CLEAR_ADDR_FLAG(uart)    (uart->FSR  |= UART_FSR_RS485_ADD_DETF_Msk)
+#define UART_RS485_CLEAR_ADDR_FLAG(uart)    ((uart)->FSR = UART_FSR_RS485_ADD_DETF_Msk)
 
 
 /**
- *    @brief    Get RS-485 Address Byte Detection Flag
+ *    @brief        Get RS-485 Address Byte Detection Flag
  *
- *    @param    uart    The base address of UART module
- *    @return   RS-485 Address Byte Detection Flag
+ *    @param[in]    uart    The pointer of the specified UART module
+ *
+ *    @retval       0 Receiver detects a data that is not an address bit.
+ *    @retval       1 Receiver detects a data that is an address bit.
+ *
+ *    @details      This macro get RS-485 address byte detection flag.
  */
-#define UART_RS485_GET_ADDR_FLAG(uart)    ((uart->FSR  & UART_FSR_RS485_ADD_DETF_Msk) >> UART_FSR_RS485_ADD_DETF_Pos)
+#define UART_RS485_GET_ADDR_FLAG(uart)    (((uart)->FSR  & UART_FSR_RS485_ADD_DETF_Msk) >> UART_FSR_RS485_ADD_DETF_Pos)
 
 
 void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag);
@@ -364,11 +412,11 @@ void UART_SelectLINMode(UART_T* uart, uint32_t u32Mode, uint32_t u32BreakLength)
 uint32_t UART_Write(UART_T* uart, uint8_t *pu8TxBuf, uint32_t u32WriteBytes);
 
 
-/*@}*/ /* end of group M051_UART_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group UART_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_UART_Driver */
+/*@}*/ /* end of group UART_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 #ifdef __cplusplus
 }

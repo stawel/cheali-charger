@@ -1,11 +1,13 @@
 /**************************************************************************//**
  * @file     system_M051Series.h
  * @version  V3.00
- * $Revision: 9 $
- * $Date: 14/01/28 10:49a $
+ * $Revision: 10 $
+ * $Date: 14/07/11 2:20p $
  * @brief    M051 Series System Setting Header File
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
@@ -27,7 +29,7 @@ extern "C" {
  *
  * @details    This is used to enable PLL to speed up booting at startup. Remove it will cause system using
  *             default clock source (External crystal or internal 22.1184MHz IRC).
- *             Enable this option will casue system booting in 50MHz(By XTAL) or 50.1918MHz(By IRC22M) according to
+ *             Enable this option will cause system booting in 50MHz(By XTAL) or 50.1918MHz(By IRC22M) according to
  *             user configuration setting in CONFIG0
  *
  */
@@ -36,8 +38,7 @@ extern "C" {
 /*----------------------------------------------------------------------------
   Define SYSCLK
  *----------------------------------------------------------------------------*/
-//TODO:cheali-charger 16MHz
-#define __HXT       (16000000UL)    /*!< External Crystal Clock Frequency     */
+#define __HXT       (12000000UL)    /*!< External Crystal Clock Frequency     */
 #define __LIRC      (10000UL)       /*!< Internal 10K RC Oscillator Frequency */
 #define __HIRC      (22118400UL)    /*!< Internal 22M RC Oscillator Frequency */
 #define __HSI       (50000000UL)    /*!< PLL default output is 48MHz@12M X'tal */
@@ -68,13 +69,13 @@ void AssertError(uint8_t* file, uint32_t line);
 
 
 /**
- * @brief    System Initializaiton
+ * @brief    System Initialization
  *
  * @param    None
  *
  * @return   None
  *
- * @details  The necessary initializaiton of system.
+ * @details  The necessary initialization of system.
  */
 extern void SystemInit(void);
 

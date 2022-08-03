@@ -1,11 +1,13 @@
 /**************************************************************************//**
  * @file     GPIO.h
  * @version  V2.1
- * $Revision: 5 $
- * $Date: 14/01/28 10:49a $
+ * $Revision: 15 $
+ * $Date: 17/10/05 1:49p $
  * @brief    M051 Series General Purpose I/O Driver Header File
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2011 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
@@ -18,15 +20,15 @@ extern "C"
 #endif
 
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_GPIO_Driver GPIO Driver
+/** @addtogroup GPIO_Driver GPIO Driver
   @{
 */
 
-/** @addtogroup M051_GPIO_EXPORTED_CONSTANTS GPIO Exported Constants
+/** @addtogroup GPIO_EXPORTED_CONSTANTS GPIO Exported Constants
   @{
 */
 #define GPIO_PIN_MAX            8 /*!< Specify Maximum Pins of Each GPIO Port */
@@ -135,10 +137,10 @@ extern "C"
 #define P45             GPIO_PIN_ADDR(4, 5) /*!< Specify P45 Pin Data Input/Output */
 #define P46             GPIO_PIN_ADDR(4, 6) /*!< Specify P46 Pin Data Input/Output */
 #define P47             GPIO_PIN_ADDR(4, 7) /*!< Specify P47 Pin Data Input/Output */
-/*@}*/ /* end of group M051_GPIO_EXPORTED_CONSTANTS */
+/*@}*/ /* end of group GPIO_EXPORTED_CONSTANTS */
 
 
-/** @addtogroup M051_GPIO_EXPORTED_FUNCTIONS GPIO Exported Functions
+/** @addtogroup GPIO_EXPORTED_FUNCTIONS GPIO Exported Functions
   @{
 */
 
@@ -153,7 +155,7 @@ extern "C"
  *
  * @details     Clear the interrupt status of specified GPIO pin.
  */
-#define GPIO_CLR_INT_FLAG(port, u32PinMask)         ((port)->ISRC = u32PinMask)
+#define GPIO_CLR_INT_FLAG(port, u32PinMask)         ((port)->ISRC = (u32PinMask))
 
 /**
  * @brief       Disable Pin De-bounce Function
@@ -166,7 +168,7 @@ extern "C"
  *
  * @details     Disable the interrupt de-bounce function of specified GPIO pin.
  */
-#define GPIO_DISABLE_DEBOUNCE(port, u32PinMask)     ((port)->DBEN &= ~u32PinMask)
+#define GPIO_DISABLE_DEBOUNCE(port, u32PinMask)     ((port)->DBEN &= ~(u32PinMask))
 
 /**
  * @brief       Enable Pin De-bounce Function
@@ -178,7 +180,7 @@ extern "C"
  *
  * @details     Enable the interrupt de-bounce function of specified GPIO pin.
  */
-#define GPIO_ENABLE_DEBOUNCE(port, u32PinMask)      ((port)->DBEN |= u32PinMask)
+#define GPIO_ENABLE_DEBOUNCE(port, u32PinMask)      ((port)->DBEN |= (u32PinMask))
 
 /**
  * @brief       Disable I/O Digital Input Path
@@ -191,7 +193,7 @@ extern "C"
  *
  * @details     Disable I/O digital input path of specified GPIO pin.
  */
-#define GPIO_DISABLE_DIGITAL_PATH(port, u32PinMask) ((port)->OFFD |= u32PinMask)
+#define GPIO_DISABLE_DIGITAL_PATH(port, u32PinMask) ((port)->OFFD |= ((u32PinMask)<<16))
 
 /**
  * @brief       Enable I/O Digital Input Path
@@ -204,7 +206,7 @@ extern "C"
  *
  * @details     Enable I/O digital input path of specified GPIO pin.
  */
-#define GPIO_ENABLE_DIGITAL_PATH(port, u32PinMask)  ((port)->OFFD &= ~u32PinMask)
+#define GPIO_ENABLE_DIGITAL_PATH(port, u32PinMask)  ((port)->OFFD &= ~((u32PinMask)<<16))
 
 /**
  * @brief       Disable I/O DOUT mask
@@ -217,7 +219,7 @@ extern "C"
  *
  * @details     Disable I/O DOUT mask of specified GPIO pin.
  */
-#define GPIO_DISABLE_DOUT_MASK(port, u32PinMask)    ((port)->DMASK |= u32PinMask)
+#define GPIO_DISABLE_DOUT_MASK(port, u32PinMask)    ((port)->DMASK &= ~(u32PinMask))    
 
 /**
  * @brief       Enable I/O DOUT mask
@@ -230,7 +232,7 @@ extern "C"
  *
  * @details     Enable I/O DOUT mask of specified GPIO pin.
  */
-#define GPIO_ENABLE_DOUT_MASK(port, u32PinMask) ((port)->DMASK &= ~u32PinMask)
+#define GPIO_ENABLE_DOUT_MASK(port, u32PinMask) ((port)->DMASK |= (u32PinMask))
 
 /**
  * @brief       Get GPIO Pin Interrupt Flag
@@ -244,34 +246,46 @@ extern "C"
  *
  * @details     Get the interrupt status of specified GPIO pin.
  */
-#define GPIO_GET_INT_FLAG(port, u32PinMask)     ((port)->ISRC & u32PinMask)
+#define GPIO_GET_INT_FLAG(port, u32PinMask)     ((port)->ISRC & (u32PinMask))
 
 /**
  * @brief       Set De-bounce Sampling Cycle Time
  *
- * @param[in]   clksrc      The de-bounce counter clock source. It could be GPIO_DBCLKSRC_HCLK or GPIO_DBCLKSRC_LIRC.
- * @param[in]   clksel      The de-bounce sampling cycle selection. It could be \n
- *                              GPIO_DBCLKSEL_1, GPIO_DBCLKSEL_2, GPIO_DBCLKSEL_4, GPIO_DBCLKSEL_8, \n
- *                              GPIO_DBCLKSEL_16, GPIO_DBCLKSEL_32, GPIO_DBCLKSEL_64, GPIO_DBCLKSEL_128, \n
- *                              GPIO_DBCLKSEL_256, GPIO_DBCLKSEL_512, GPIO_DBCLKSEL_1024, GPIO_DBCLKSEL_2048, \n
- *                              GPIO_DBCLKSEL_4096, GPIO_DBCLKSEL_8192, GPIO_DBCLKSEL_16384, GPIO_DBCLKSEL_32768.
+ * @param[in]   u32ClkSrc   The de-bounce counter clock source. It could be GPIO_DBCLKSRC_HCLK or GPIO_DBCLKSRC_LIRC.
+ * @param[in]   u32ClkSel   The de-bounce sampling cycle selection. It could be 
+ *                            - \ref GPIO_DBCLKSEL_1
+ *                            - \ref GPIO_DBCLKSEL_2
+ *                            - \ref GPIO_DBCLKSEL_4
+ *                            - \ref GPIO_DBCLKSEL_8
+ *                            - \ref GPIO_DBCLKSEL_16 
+ *                            - \ref GPIO_DBCLKSEL_32 
+ *                            - \ref GPIO_DBCLKSEL_64 
+ *                            - \ref GPIO_DBCLKSEL_128 
+ *                            - \ref GPIO_DBCLKSEL_256 
+ *                            - \ref GPIO_DBCLKSEL_512 
+ *                            - \ref GPIO_DBCLKSEL_1024 
+ *                            - \ref GPIO_DBCLKSEL_2048 
+ *                            - \ref GPIO_DBCLKSEL_4096 
+ *                            - \ref GPIO_DBCLKSEL_8192 
+ *                            - \ref GPIO_DBCLKSEL_16384 
+ *                            - \ref GPIO_DBCLKSEL_32768
  *
  * @return      None
  *
  * @details     Set the interrupt de-bounce sampling cycle time based on the debounce counter clock source. \n
- *              Example: _GPIO_SET_DEBOUNCE_TIME(GPIO_DBNCECON_DBCLKSRC_IRC10K, GPIO_DBNCECON_DBCLKSEL_4). \n
+ *              Example: _GPIO_SET_DEBOUNCE_TIME(GPIO_DBCLKSRC_LIRC, GPIO_DBCLKSEL_4). \n
  *              It's meaning the De-debounce counter clock source is internal 10 KHz and sampling cycle selection is 4. \n
- *              Then the target de-bounce sampling cycle time is (2^4)*(1/(10*1000)) s = 16*0.0001 s = 1600 us,
- *              and system will sampling interrupt input once per 1600 us.
+ *              Then the target de-bounce sampling cycle time is (4)*(1/(10*1000)) s = 4*0.0001 s = 400 us,
+ *              and system will sampling interrupt input once per 400 us.
  */
-#define GPIO_SET_DEBOUNCE_TIME(u32ClkSrc, u32ClkSel)    (GPIO->DBNCECON = (GPIO_DBNCECON_ICLK_ON_Msk | u32ClkSrc | u32ClkSel))
+#define GPIO_SET_DEBOUNCE_TIME(u32ClkSrc, u32ClkSel)    (GPIO->DBNCECON = (GPIO_DBNCECON_ICLK_ON_Msk | (u32ClkSrc) | (u32ClkSel)))
 
 /**
  * @brief       Get GPIO Port IN Data
  *
  * @param[in]   port        GPIO port. It could be P0, P1, P2, P3 or P4.
  *
- * @retval      The specified port data
+ * @return      The specified port data
  *
  * @details     Get the PIN register of specified GPIO port.
  */
@@ -283,7 +297,7 @@ extern "C"
  * @param[in]   port        GPIO port. It could be P0, P1, P2, P3 or P4.
  * @param[in]   u32Data     GPIO port data.
  *
- * @retval      None
+ * @return      None
  *
  * @details     Set the Data into specified GPIO port.
  */
@@ -294,7 +308,7 @@ extern "C"
  *
  * @param[in]   u32Pin      Pxy
  *
- * @retval      None
+ * @return      None
  *
  * @details     Toggle the specified GPIO pint.
  */
@@ -361,11 +375,11 @@ void GPIO_EnableInt(GPIO_T *port, uint32_t u32Pin, uint32_t u32IntAttribs);
 void GPIO_DisableInt(GPIO_T *port, uint32_t u32Pin);
 
 
-/*@}*/ /* end of group M051_GPIO_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group GPIO_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_GPIO_Driver */
+/*@}*/ /* end of group GPIO_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 #ifdef __cplusplus
 }

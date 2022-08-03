@@ -1,11 +1,13 @@
 /**************************************************************************//**
  * @file     ebi.h
  * @version  V3.00
- * $Revision: 4 $
- * $Date: 14/01/28 10:49a $
+ * $Revision: 7 $
+ * $Date: 15/05/20 2:07p $
  * @brief    M051 series EBI driver header file
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 #ifndef __EBI_H__
@@ -17,15 +19,15 @@ extern "C"
 #endif
 
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_EBI_Driver EBI Driver
+/** @addtogroup EBI_Driver EBI Driver
   @{
 */
 
-/** @addtogroup M051_EBI_EXPORTED_CONSTANTS EBI Exported Constants
+/** @addtogroup EBI_EXPORTED_CONSTANTS EBI Exported Constants
   @{
 */
 /*---------------------------------------------------------------------------------------------------------*/
@@ -58,52 +60,91 @@ extern "C"
 #define EBI_TIMING_VERYSLOW     0x5UL /*!< EBI timing is very slow */
 #define EBI_TIMING_SLOWEST      0x6UL /*!< EBI timing is the slowest */
 
-/*@}*/ /* end of group M051_EBI_EXPORTED_CONSTANTS */
+/*@}*/ /* end of group EBI_EXPORTED_CONSTANTS */
 
 
-/** @addtogroup M051_EBI_EXPORTED_FUNCTIONS EBI Exported Functions
+/** @addtogroup EBI_EXPORTED_FUNCTIONS EBI Exported Functions
   @{
 */
 
 /**
+  * @brief      Read 8-bit data
+  *
+  * @param[in]  u32Addr     The data address on EBI bus.
+  *
+  * @return     8-bit Data
+  *
   * @details    This macro read 8-bit data from specify EBI address.
   */
-#define EBI_READ_DATA8(u32Addr)             (*((volatile unsigned char *)(EBI_BASE_ADDR+u32Addr)))
+#define EBI_READ_DATA8(u32Addr)             (*((volatile unsigned char *)(EBI_BASE_ADDR+(u32Addr))))
 
 /**
+  * @brief      Write 8-bit data
+  *
+  * @param[in]  u32Addr     The data address on EBI bus.
+  * @param[in]  u32Data     Specify data to be written.
+  *
+  * @return     None
+  *
   * @details    This macro write 8-bit data to specify EBI address.
   */
-#define EBI_WRITE_DATA8(u32Addr, u32Data)   (*((volatile unsigned char *)(EBI_BASE_ADDR+u32Addr)) = u32Data)
+#define EBI_WRITE_DATA8(u32Addr, u32Data)   (*((volatile unsigned char *)(EBI_BASE_ADDR+(u32Addr))) = (u32Data))
 
 /**
+  * @brief      Read 16-bit data
+  *
+  * @param[in]  u32Addr     The data address on EBI bus.
+  *
+  * @return     16-bit Data
+  *
   * @details    This macro read 16-bit data from specify EBI address.
   */
-#define EBI_READ_DATA16(u32Addr)            (*((volatile unsigned short *)(EBI_BASE_ADDR+u32Addr)))
+#define EBI_READ_DATA16(u32Addr)            (*((volatile unsigned short *)(EBI_BASE_ADDR+(u32Addr))))
 
 /**
+  * @brief      Write 16-bit data
+  *
+  * @param[in]  u32Addr     The data address on EBI bus.
+  * @param[in]  u32Data     Specify data to be written.
+  *
+  * @return     None
+  *
   * @details    This macro write 16-bit data to specify EBI address.
   */
-#define EBI_WRITE_DATA16(u32Addr, u32Data)  (*((volatile unsigned short *)(EBI_BASE_ADDR+u32Addr)) = u32Data)
+#define EBI_WRITE_DATA16(u32Addr, u32Data)  (*((volatile unsigned short *)(EBI_BASE_ADDR+(u32Addr))) = (u32Data))
 
 /**
+  * @brief      Read 32-bit data
+  *
+  * @param[in]  u32Addr     The data address on EBI bus.
+  *
+  * @return     32-bit Data
+  *
   * @details    This macro read 32-bit data from specify EBI address.
   */
-#define EBI_READ_DATA32(u32Addr)            (*((volatile unsigned int *)(EBI_BASE_ADDR+u32Addr)))
+#define EBI_READ_DATA32(u32Addr)            (*((volatile unsigned int *)(EBI_BASE_ADDR+(u32Addr))))
 
 /**
+  * @brief      Write 32-bit data
+  *
+  * @param[in]  u32Addr     The data address on EBI bus.
+  * @param[in]  u32Data     Specify data to be written.
+  *
+  * @return     None
+  *
   * @details    This macro write 32-bit data to specify EBI address.
   */
-#define EBI_WRITE_DATA32(u32Addr, u32Data)  (*((volatile unsigned int *)(EBI_BASE_ADDR+u32Addr)) = u32Data)Write 32-bit data to EBI bank 0
+#define EBI_WRITE_DATA32(u32Addr, u32Data)  (*((volatile unsigned int *)(EBI_BASE_ADDR+(u32Addr))) = (u32Data))
 
 void EBI_Open(uint32_t u32Bank, uint32_t u32DataWidth, uint32_t u32TimingClass, uint32_t u32BusMode, uint32_t u32CSActiveLevel);
 void EBI_Close(uint32_t u32Bank);
 void EBI_SetBusTiming(uint32_t u32Bank, uint32_t u32TimingConfig, uint32_t u32MclkDiv);
 
-/*@}*/ /* end of group M051_EBI_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group EBI_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_EBI_Driver */
+/*@}*/ /* end of group EBI_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 #ifdef __cplusplus
 }

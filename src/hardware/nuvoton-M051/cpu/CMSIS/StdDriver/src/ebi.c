@@ -1,26 +1,28 @@
 /**************************************************************************//**
  * @file     ebi.c
  * @version  V3.00
- * $Revision: 3 $
- * $Date: 14/01/28 10:49a $
+ * $Revision: 4 $
+ * $Date: 15/05/20 2:07p $
  * @brief    M051 series EBI driver source file
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 #include "M051Series.h"
 
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_EBI_Driver EBI Driver
+/** @addtogroup EBI_Driver EBI Driver
   @{
 */
 
 
-/** @addtogroup M051_EBI_EXPORTED_FUNCTIONS EBI Exported Functions
+/** @addtogroup EBI_EXPORTED_FUNCTIONS EBI Exported Functions
   @{
 */
 
@@ -147,10 +149,10 @@ void EBI_SetBusTiming(uint32_t u32Bank, uint32_t u32TimingConfig, uint32_t u32Mc
     EBI->EXTIME = u32TimingConfig;
 }
 
-/*@}*/ /* end of group M051_EBI_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group EBI_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_EBI_Driver */
+/*@}*/ /* end of group EBI_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 /*** (C) COPYRIGHT 2013 Nuvoton Technology Corp. ***/

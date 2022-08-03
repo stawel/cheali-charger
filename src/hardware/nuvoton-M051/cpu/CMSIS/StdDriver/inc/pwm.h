@@ -1,11 +1,13 @@
 /**************************************************************************//**
  * @file     pwm.h
  * @version  V1.00
- * $Revision: 8 $
- * $Date: 14/01/28 10:49a $
+ * $Revision: 11 $
+ * $Date: 15/05/20 2:07p $
  * @brief    M051 series PWM driver header file
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 #ifndef __PWM_H__
@@ -17,15 +19,15 @@ extern "C"
 #endif
 
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_PWM_Driver PWM Driver
+/** @addtogroup PWM_Driver PWM Driver
   @{
 */
 
-/** @addtogroup M051_PWM_EXPORTED_CONSTANTS PWM Exported Constants
+/** @addtogroup PWM_EXPORTED_CONSTANTS PWM Exported Constants
   @{
 */
 #define PWM_CHANNEL_NUM                     (4)   /*!< PWM channel number */
@@ -53,16 +55,16 @@ extern "C"
 #define PWM_CH3                             0x3                         /*!< PWM Group A/B channel 3 */
 #define PWM_CCR_MASK                        0x000F000F                  /*!< PWM CCR0/CCR2 bit0~3 and bit16~19 mask */
 
-/*@}*/ /* end of group M051_PWM_EXPORTED_CONSTANTS */
+/*@}*/ /* end of group PWM_EXPORTED_CONSTANTS */
 
 
-/** @addtogroup M051_PWM_EXPORTED_FUNCTIONS PWM Exported Functions
+/** @addtogroup PWM_EXPORTED_FUNCTIONS PWM Exported Functions
   @{
 */
 
 /**
  * @brief Enable timer synchronous mode of specified channel(s)
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelMask Combination of enabled channels. Each bit corresponds to a channel
@@ -81,7 +83,7 @@ extern "C"
 
 /**
  * @brief Disable timer synchronous mode of specified channel(s)
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelMask Combination of enabled channels. Each bit corresponds to a channel
@@ -100,7 +102,7 @@ extern "C"
 
 /**
  * @brief Enable output inverter of specified channel(s)
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelMask Combination of enabled channels. Each bit corresponds to a channel
@@ -120,7 +122,7 @@ extern "C"
 
 /**
  * @brief Get captured rising data of specified channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
@@ -131,7 +133,7 @@ extern "C"
 
 /**
  * @brief Get captured falling data of specified channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
@@ -142,7 +144,7 @@ extern "C"
 
 /**
  * @brief Set the prescaler of the selected channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
@@ -157,7 +159,7 @@ extern "C"
 
 /**
  * @brief Set the divider of the selected channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
@@ -175,7 +177,7 @@ extern "C"
 
 /**
  * @brief Set the duty of the selected channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
@@ -184,11 +186,11 @@ extern "C"
  * @details    This macro is used to set PWM Comparator value for specified channel
  * @note This new setting will take effect on next PWM period
  */
-#define PWM_SET_CMR(pwm, u32ChannelNum, u32CMR) (*((__IO uint32_t *) ((((uint32_t)&((pwm)->CMR0)) + (u32ChannelNum) * 12))) = u32CMR)
+#define PWM_SET_CMR(pwm, u32ChannelNum, u32CMR) (*((__IO uint32_t *) ((((uint32_t)&((pwm)->CMR0)) + (u32ChannelNum) * 12))) = (u32CMR))
 
 /**
  * @brief Set the period of the selected channel
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~3
@@ -199,11 +201,11 @@ extern "C"
  * @note This new setting will take effect on next PWM period
  * @note PWM counter will stop if period length set to 0
  */
-#define PWM_SET_CNR(pwm, u32ChannelNum, u32CNR)  (*((__IO uint32_t *) ((((uint32_t)&((pwm)->CNR0)) + (u32ChannelNum) * 12))) = u32CNR)
+#define PWM_SET_CNR(pwm, u32ChannelNum, u32CNR)  (*((__IO uint32_t *) ((((uint32_t)&((pwm)->CNR0)) + (u32ChannelNum) * 12))) = (u32CNR))
 
 /**
  * @brief Set the PWM aligned type
- * @param[in] pwm The base address of PWM module
+ * @param[in] pwm The pointer of the specified PWM module
  *                - PWMA : PWM Group A
  *                - PWMB : PWM Group B
  * @param[in] u32ChannelMask Combination of enabled channels. Each bit corresponds to a channel
@@ -219,7 +221,7 @@ extern "C"
         int i; \
         for(i = 0; i < 4; i++) { \
             if((u32ChannelMask) & (1 << i)) \
-                (pwm)->PCR = ((pwm)->PCR & ~(PWM_PCR_PWM01TYPE_Msk << (i >> 1))) | (u32AlignedType << (PWM_PCR_PWM01TYPE_Pos + (i >> 1))); \
+                (pwm)->PCR = ((pwm)->PCR & ~(PWM_PCR_PWM01TYPE_Msk << (i >> 1))) | ((u32AlignedType) << (PWM_PCR_PWM01TYPE_Pos + (i >> 1))); \
         } \
     }while(0)
 
@@ -260,11 +262,11 @@ uint32_t PWM_GetPeriodIntFlag(PWM_T *pwm, uint32_t u32ChannelNum);
 
 
 
-/*@}*/ /* end of group M051_PWM_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group PWM_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_PWM_Driver */
+/*@}*/ /* end of group PWM_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 #ifdef __cplusplus
 }
