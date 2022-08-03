@@ -308,6 +308,6 @@ extern "C" {
             }
         }
 
-        ADC_CLR_INT_FLAG(ADC0, ADC_ADF_INT);
+        ADC_CLR_INT_FLAG(ADC, ADC_ADF_INT);
     }
 } //extern "C"
