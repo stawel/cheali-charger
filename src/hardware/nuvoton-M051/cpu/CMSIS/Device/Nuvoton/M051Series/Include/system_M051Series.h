@@ -38,7 +38,8 @@ extern "C" {
 /*----------------------------------------------------------------------------
   Define SYSCLK
  *----------------------------------------------------------------------------*/
-#define __HXT       (12000000UL)    /*!< External Crystal Clock Frequency     */
+//TODO cheali-charger: define crystal frequency per charger
+//#define __HXT       (12000000UL)    /*!< External Crystal Clock Frequency     */
 #define __LIRC      (10000UL)       /*!< Internal 10K RC Oscillator Frequency */
 #define __HIRC      (22118400UL)    /*!< Internal 22M RC Oscillator Frequency */
 #define __HSI       (50000000UL)    /*!< PLL default output is 48MHz@12M X'tal */
