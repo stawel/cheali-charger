@@ -17,7 +17,7 @@
 */
 
 #include "Utils.h"
-#include "clk.h"
+#include "M051Series.h"
 
 namespace Utils
 {
