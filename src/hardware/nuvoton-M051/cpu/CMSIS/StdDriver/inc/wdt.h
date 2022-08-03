@@ -1,11 +1,13 @@
 /**************************************************************************//**
  * @file     wdt.h
  * @version  V3.00
- * $Revision: 3 $
- * $Date: 14/01/28 10:49a $
+ * $Revision: 5 $
+ * $Date: 15/05/20 2:07p $
  * @brief    M051 series WDT driver header file
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 #ifndef __WDT_H__
@@ -17,15 +19,15 @@ extern "C"
 #endif
 
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_WDT_Driver WDT Driver
+/** @addtogroup WDT_Driver WDT Driver
   @{
 */
 
-/** @addtogroup M051_WDT_EXPORTED_CONSTANTS WDT Exported Constants
+/** @addtogroup WDT_EXPORTED_CONSTANTS WDT Exported Constants
   @{
 */
 /*---------------------------------------------------------------------------------------------------------*/
@@ -48,65 +50,93 @@ extern "C"
 #define WDT_RESET_DELAY_18CLK       (2UL << WDT_WTCRALT_WTRDSEL_Pos) /*!< Setting WDT reset delay period to 18 * WDT clocks */
 #define WDT_RESET_DELAY_3CLK        (3UL << WDT_WTCRALT_WTRDSEL_Pos) /*!< Setting WDT reset delay period to 3 * WDT clocks */
 
-/*@}*/ /* end of group M051_WDT_EXPORTED_CONSTANTS */
+/*@}*/ /* end of group WDT_EXPORTED_CONSTANTS */
 
 
-/** @addtogroup M051_WDT_EXPORTED_FUNCTIONS WDT Exported Functions
+/** @addtogroup WDT_EXPORTED_FUNCTIONS WDT Exported Functions
   @{
 */
 
 /**
-  * @details    This macro clear WDT time-out reset system flag.
+  * @brief      Clear WDT Reset System Flag
+  *
+  * @param      None
+  *
+  * @return     None
+  *
+  * @details    This macro clears WDT time-out reset system flag.
   */
 #define WDT_CLEAR_RESET_FLAG()          (WDT->WTCR = (WDT->WTCR & ~(WDT_WTCR_WTIF_Msk | WDT_WTCR_WTWKF_Msk)) | WDT_WTCR_WTRF_Msk)
 
 /**
-  * @details    This macro clear WDT time-out interrupt flag.
+  * @brief      Clear WDT Time-out Interrupt Flag
+  *
+  * @param      None
+  *
+  * @return     None
+  *
+  * @details    This macro clears WDT time-out interrupt flag.
   */
 #define WDT_CLEAR_TIMEOUT_INT_FLAG()    (WDT->WTCR = (WDT->WTCR & ~(WDT_WTCR_WTRF_Msk | WDT_WTCR_WTWKF_Msk)) | WDT_WTCR_WTIF_Msk)
 
 /**
-  * @details    This macro clear WDT time-out wake-up system flag.
+  * @brief      Clear WDT Wake-up Flag
+  *
+  * @param      None
+  *
+  * @return     None
+  *
+  * @details    This macro clears WDT time-out wake-up system flag.
   */
 #define WDT_CLEAR_TIMEOUT_WAKEUP_FLAG() (WDT->WTCR = (WDT->WTCR & ~(WDT_WTCR_WTRF_Msk | WDT_WTCR_WTIF_Msk)) | WDT_WTCR_WTWKF_Msk)
 
 /**
   * @brief      Get WDT Time-out Reset Flag
   *
-  * @return     WDT reset system or not
-  * @retval     0   WDT did not cause system reset
-  * @retval     1   WDT caused system reset
+  * @param      None
   *
-  * @details    This macro indicate WDT time-out to reset system or not.
+  * @retval     0   WDT time-out reset system did not occur
+  * @retval     1   WDT time-out reset system occurred
+  *
+  * @details    This macro indicates system has been reset by WDT time-out reset or not.
   */
 #define WDT_GET_RESET_FLAG()            (WDT->WTCR & WDT_WTCR_WTRF_Msk ? 1 : 0)
 
 /**
   * @brief      Get WDT Time-out Interrupt Flag
   *
-  * @return     WDT time-out interrupt occurred or not
+  * @param      None
+  *
   * @retval     0   WDT time-out interrupt did not occur
   * @retval     1   WDT time-out interrupt occurred
   *
-  * @details    This macro indicate WDT time-out interrupt occurred or not.
+  * @details    This macro indicates WDT time-out interrupt occurred or not.
   */
 #define WDT_GET_TIMEOUT_INT_FLAG()      (WDT->WTCR & WDT_WTCR_WTIF_Msk ? 1 : 0)
 
 /**
   * @brief      Get WDT Time-out Wake-up Flag
   *
-  * @return     WDT time-out waked system up or not
-  * @retval     0   WDT did not wake up system
-  * @retval     1   WDT waked up system
+  * @param      None
   *
-  * @details    This macro indicate WDT time-out waked system up or not
+  * @retval     0   WDT time-out interrupt does not cause CPU wake-up
+  * @retval     1   WDT time-out interrupt event cause CPU wake-up
+  *
+  * @details    This macro indicates WDT time-out interrupt event has waked up system or not.
   */
 #define WDT_GET_TIMEOUT_WAKEUP_FLAG()   (WDT->WTCR & WDT_WTCR_WTWKF_Msk ? 1 : 0)
 
 /**
-  * @details    This macro is used to reset 18-bit WDT counter.
-  * @note       If WDT is activated and enabled to reset system, software must reset WDT counter \n
-  *             before WDT time-out plus reset delay reached. Or WDT generate a reset signal.
+  * @brief      Reset WDT Counter
+  *
+  * @param      None
+  *
+  * @return     None
+  *
+  * @details    This macro is used to reset the internal 18-bit WDT up counter value.
+  * @note       If WDT is activated and time-out reset system function is enabled also, user should \n
+  *             reset the 18-bit WDT up counter value to avoid generate WDT time-out reset signal to \n
+  *             reset system before the WDT time-out reset delay period expires.
   */
 #define WDT_RESET_COUNTER()             (WDT->WTCR  = (WDT->WTCR & ~(WDT_WTCR_WTIF_Msk | WDT_WTCR_WTWKF_Msk | WDT_WTCR_WTRF_Msk)) | WDT_WTCR_WTR_Msk)
 
@@ -117,7 +147,7 @@ extern "C"
   *
   * @return     None
   *
-  * @details    This function stops WDT counting and disable WDT module.
+  * @details    This function will stop WDT counting and disable WDT module.
   */
 static __INLINE void WDT_Close(void)
 {
@@ -132,7 +162,7 @@ static __INLINE void WDT_Close(void)
   *
   * @return     None
   *
-  * @details    This function enable the WDT time-out interrupt.
+  * @details    This function will enable the WDT time-out interrupt function.
   */
 static __INLINE void WDT_EnableInt(void)
 {
@@ -147,7 +177,7 @@ static __INLINE void WDT_EnableInt(void)
   *
   * @return     None
   *
-  * @details    This function disables the WDT time-out interrupt.
+  * @details    This function will disable the WDT time-out interrupt function.
   */
 static __INLINE void WDT_DisableInt(void)
 {
@@ -158,11 +188,11 @@ static __INLINE void WDT_DisableInt(void)
 
 void WDT_Open(uint32_t u32TimeoutInterval, uint32_t u32ResetDelay, uint32_t u32EnableReset, uint32_t u32EnableWakeup);
 
-/*@}*/ /* end of group M051_WDT_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group WDT_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_WDT_Driver */
+/*@}*/ /* end of group WDT_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 #ifdef __cplusplus
 }

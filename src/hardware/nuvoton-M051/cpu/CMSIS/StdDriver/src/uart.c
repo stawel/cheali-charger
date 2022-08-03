@@ -1,49 +1,53 @@
 /**************************************************************************//**
  * @file     uart.c
  * @version  V3.00
- * $Revision: 27 $
- * $Date: 14/01/29 11:05a $
+ * $Revision: 42 $
+ * $Date: 16/03/04 9:39a $
  * @brief    M051 series UART driver source file
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 
 #include <stdio.h>
 #include "M051Series.h"
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_UART_Driver UART Driver
+/** @addtogroup UART_Driver UART Driver
   @{
 */
 
 
-/** @addtogroup M051_UART_EXPORTED_FUNCTIONS UART Exported Functions
+/** @addtogroup UART_EXPORTED_FUNCTIONS UART Exported Functions
   @{
 */
 
 /**
- *    @brief The function is used to clear UART specified interrupt flag.
+ *    @brief        Clear UART specified interrupt flag
  *
- *    @param uart                The base address of UART module.
- *    @param u32InterruptFlag    The specified interrupt of UART module.
- *                               - UART_ISR_LIN_RX_BREAK_INT_Msk : LIN bus interrupt
- *                               - UART_ISR_BUF_ERR_INT_Msk       : Buffer Error interrupt
- *                               - UART_ISR_MODEM_INT_Msk         : Modem interrupt
- *                               - UART_ISR_RLS_INT_Msk           : Rx Line status interrupt
+ *    @param[in]    uart                The pointer of the specified UART module.
+ *    @param[in]    u32InterruptFlag    The specified interrupt of UART module.
+ *                                      - UART_ISR_LIN_RX_BREAK_INT_Msk  : LIN bus interrupt
+ *                                      - UART_ISR_BUF_ERR_INT_Msk       : Buffer Error interrupt
+ *                                      - UART_ISR_MODEM_INT_Msk         : Modem interrupt
+ *                                      - UART_ISR_RLS_INT_Msk           : Rx Line status interrupt
  *
- *    @return None
+ *    @return       None
+ *
+ *    @details      The function is used to clear UART specified interrupt flag.
  */
 void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
 {
 
     if(u32InterruptFlag & UART_ISR_RLS_INT_Msk) /* clear Receive Line Status Interrupt */
     {
-        uart->FSR |= UART_FSR_BIF_Msk | UART_FSR_FEF_Msk | UART_FSR_FEF_Msk;
-        uart->FSR |= UART_FSR_RS485_ADD_DETF_Msk;
+        uart->FSR = UART_FSR_BIF_Msk | UART_FSR_FEF_Msk | UART_FSR_PEF_Msk;
+        uart->FSR = UART_FSR_RS485_ADD_DETF_Msk;
     }
 
     if(u32InterruptFlag & UART_ISR_MODEM_INT_Msk)  /* clear Modem Interrupt */
@@ -51,21 +55,23 @@ void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
 
     if(u32InterruptFlag & UART_ISR_BUF_ERR_INT_Msk)  /* clear Buffer Error Interrupt */
     {
-        uart->FSR |= UART_FSR_RX_OVER_IF_Msk | UART_FSR_TX_OVER_IF_Msk;
+        uart->FSR = UART_FSR_RX_OVER_IF_Msk | UART_FSR_TX_OVER_IF_Msk;
     }
 
     if(u32InterruptFlag & UART_ISR_LIN_RX_BREAK_INT_Msk) /* clear LIN break Interrupt */
-        uart->ISR |= UART_ISR_LIN_RX_BREAK_IF_Msk;
+        uart->ISR = UART_ISR_LIN_RX_BREAK_IF_Msk;
 
 }
 
 
 /**
- *  @brief The function is used to disable UART.
+ *  @brief      Disable UART interrupt
  *
- *  @param uart The base address of UART module.
+ *  @param[in]  uart The pointer of the specified UART module.
  *
- *  @return None
+ *  @return     None
+ *
+ *  @details    The function is used to disable UART interrupt.
  */
 void UART_Close(UART_T* uart)
 {
@@ -74,11 +80,13 @@ void UART_Close(UART_T* uart)
 
 
 /**
- *  @brief The function is used to disable UART auto flow control.
+ *  @brief      Disable UART auto flow control function
  *
- *  @param uart The base address of UART module.
+ *  @param[in]  uart The pointer of the specified UART module.
  *
- *  @return None
+ *  @return     None
+ *
+ *  @details    The function is used to disable UART auto flow control.
  */
 void UART_DisableFlowCtrl(UART_T* uart)
 {
@@ -87,20 +95,22 @@ void UART_DisableFlowCtrl(UART_T* uart)
 
 
 /**
- *    @brief    The function is used to disable UART specified interrupt and disable NVIC UART IRQ.
+ *    @brief        Disable UART specified interrupt
  *
- *    @param    uart                The base address of UART module.
- *    @param    u32InterruptFlag    The specified interrupt of UART module.
- *                                  - UART_IER_LIN_RX_BRK_IEN_Msk : LIN bus interrupt
- *                                  - UART_IER_WAKE_EN_Msk        : Wakeup interrupt
- *                                  - UART_IER_BUF_ERR_IEN_Msk    : Buffer Error interrupt
- *                                  - UART_IER_RTO_IEN_Msk        : Rx time-out interrupt
- *                                  - UART_IER_MODEM_IEN_Msk      : Modem interrupt
- *                                  - UART_IER_RLS_IEN_Msk        : Rx Line status interrupt
- *                                  - UART_IER_THRE_IEN_Msk       : Tx empty interrupt
- *                                  - UART_IER_RDA_IEN_Msk        : Rx ready interrupt
+ *    @param[in]    uart                The pointer of the specified UART module.
+ *    @param[in]    u32InterruptFlag    The specified interrupt of UART module.
+ *                                      - UART_IER_LIN_RX_BRK_IEN_Msk : LIN bus interrupt
+ *                                      - UART_IER_WAKE_EN_Msk        : Wakeup interrupt
+ *                                      - UART_IER_BUF_ERR_IEN_Msk    : Buffer Error interrupt
+ *                                      - UART_IER_RTO_IEN_Msk        : Rx time-out interrupt
+ *                                      - UART_IER_MODEM_IEN_Msk      : Modem interrupt
+ *                                      - UART_IER_RLS_IEN_Msk        : Rx Line status interrupt
+ *                                      - UART_IER_THRE_IEN_Msk       : Tx empty interrupt
+ *                                      - UART_IER_RDA_IEN_Msk        : Rx ready interrupt
  *
- *    @return    None
+ *    @return       None
+ *
+ *    @details      The function is used to disable UART specified interrupt and disable NVIC UART IRQ.
  */
 void UART_DisableInt(UART_T*  uart, uint32_t u32InterruptFlag)
 {
@@ -116,11 +126,13 @@ void UART_DisableInt(UART_T*  uart, uint32_t u32InterruptFlag)
 
 
 /**
- *    @brief    The function is used to Enable UART auto flow control.
+ *    @brief        Enable UART auto flow control function
  *
- *    @param    uart    The base address of UART module.
+ *    @param[in]    uart    The pointer of the specified UART module.
  *
- *    @return   None
+ *    @return       None
+ *
+ *    @details      The function is used to Enable UART auto flow control.
  */
 void UART_EnableFlowCtrl(UART_T* uart)
 {
@@ -135,21 +147,24 @@ void UART_EnableFlowCtrl(UART_T* uart)
 }
 
 
+
 /**
- *    @brief    The function is used to enable UART specified interrupt and enable NVIC UART IRQ.
+ *    @brief        Enable UART specified interrupt
  *
- *    @param    uart                The base address of UART module.
- *    @param    u32InterruptFlag    The specified interrupt of UART module:
- *                                  - UART_IER_LIN_RX_BRK_IEN_Msk  : LIN bus interrupt *                                  - UART_IER_WAKE_EN_Msk        : Wakeup interrupt
- *                                  - UART_IER_WAKE_EN_Msk         : Wakeup interrupt
- *                                  - UART_IER_BUF_ERR_IEN_Msk     : Buffer Error interrupt
- *                                  - UART_IER_RTO_IEN_Msk         : Rx time-out interrupt
- *                                  - UART_IER_MODEM_IEN_Msk       : Modem interrupt
- *                                  - UART_IER_RLS_IEN_Msk         : Rx Line status interrupt
- *                                  - UART_IER_THRE_IEN_Msk        : Tx empty interrupt
- *                                  - UART_IER_RDA_IEN_Msk         : Rx ready interrupt
+ *    @param[in]    uart                The pointer of the specified UART module.
+ *    @param[in]    u32InterruptFlag    The specified interrupt of UART module:
+ *                                      - UART_IER_LIN_RX_BRK_IEN_Msk  : LIN bus interrupt                                  
+ *                                      - UART_IER_WAKE_EN_Msk         : Wakeup interrupt
+ *                                      - UART_IER_BUF_ERR_IEN_Msk     : Buffer Error interrupt
+ *                                      - UART_IER_RTO_IEN_Msk         : Rx time-out interrupt
+ *                                      - UART_IER_MODEM_IEN_Msk       : Modem interrupt
+ *                                      - UART_IER_RLS_IEN_Msk         : Rx Line status interrupt
+ *                                      - UART_IER_THRE_IEN_Msk        : Tx empty interrupt
+ *                                      - UART_IER_RDA_IEN_Msk         : Rx ready interrupt
  *
- *    @return None
+ *    @return       None
+ *
+ *    @details      The function is used to enable UART specified interrupt and enable NVIC UART IRQ.
  */
 void UART_EnableInt(UART_T*  uart, uint32_t u32InterruptFlag)
 {
@@ -167,21 +182,26 @@ void UART_EnableInt(UART_T*  uart, uint32_t u32InterruptFlag)
 
 
 /**
- *    @brief    This function use to enable UART function and set baud-rate.
+ *    @brief        Open and set UART function
  *
- *    @param    uart            The base address of UART module.
- *    @param    u32baudrate     The baudrate of UART module.
+ *    @param[in]    uart            The pointer of the specified UART module.
+ *    @param[in]    u32baudrate     The baudrate of UART module.
  *
- *    @return    None
+ *    @return       None
+ *
+ *    @details      This function use to enable UART function and set baud-rate.
  */
 void UART_Open(UART_T* uart, uint32_t u32baudrate)
 {
-    uint8_t u8UartClkSrcSel;
+    uint8_t u8UartClkSrcSel, u8UartClkDivNum;
     uint32_t u32ClkTbl[4] = {__HXT, 0, 0, __HIRC};
     uint32_t u32Baud_Div = 0;
 
     /* Get UART clock source selection */
     u8UartClkSrcSel = (CLK->CLKSEL1 & CLK_CLKSEL1_UART_S_Msk) >> CLK_CLKSEL1_UART_S_Pos;
+
+    /* Get UART clock divider number */
+    u8UartClkDivNum = (CLK->CLKDIV & CLK_CLKDIV_UART_N_Msk) >> CLK_CLKDIV_UART_N_Pos;
 
     /* Select UART function */
     uart->FUN_SEL = UART_FUNC_SEL_UART;
@@ -199,10 +219,10 @@ void UART_Open(UART_T* uart, uint32_t u32baudrate)
     /* Set UART baud rate */
     if(u32baudrate != 0)
     {
-        u32Baud_Div = UART_BAUD_MODE2_DIVIDER(u32ClkTbl[u8UartClkSrcSel], u32baudrate);
+        u32Baud_Div = UART_BAUD_MODE2_DIVIDER((u32ClkTbl[u8UartClkSrcSel]) / (u8UartClkDivNum + 1), u32baudrate);
 
         if(u32Baud_Div > 0xFFFF)
-            uart->BAUD = (UART_BAUD_MODE0 | UART_BAUD_MODE0_DIVIDER(u32ClkTbl[u8UartClkSrcSel], u32baudrate));
+            uart->BAUD = (UART_BAUD_MODE0 | UART_BAUD_MODE0_DIVIDER((u32ClkTbl[u8UartClkSrcSel]) / (u8UartClkDivNum + 1), u32baudrate));
         else
             uart->BAUD = (UART_BAUD_MODE2 | u32Baud_Div);
     }
@@ -210,14 +230,15 @@ void UART_Open(UART_T* uart, uint32_t u32baudrate)
 
 
 /**
- *    @brief    The function is used to read Rx data from RX FIFO and the data will be stored in pu8RxBuf.
+ *    @brief        Read UART data
  *
- *    @param    uart            The base address of UART module.
- *    @param    pu8RxBuf        The buffer to receive the data of receive FIFO.
- *    @param    u32ReadBytes    The the read bytes number of data.
+ *    @param[in]    uart            The pointer of the specified UART module.
+ *    @param[in]    pu8RxBuf        The buffer to receive the data of receive FIFO.
+ *    @param[in]    u32ReadBytes    The read bytes number of data.
  *
- *  @return     u32Count: Receive byte count
+ *    @return       u32Count Receive byte count
  *
+ *    @details      The function is used to read Rx data from RX FIFO and the data will be stored in pu8RxBuf.
  */
 uint32_t UART_Read(UART_T* uart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
 {
@@ -242,37 +263,42 @@ uint32_t UART_Read(UART_T* uart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
 
 
 /**
- *    @brief    This function use to config UART line setting.
+ *    @brief        Set UART line configuration
  *
- *    @param    uart            The base address of UART module.
- *    @param    u32baudrate     The register value of baudrate of UART module.
- *                              If u32baudrate = 0, UART baudrate will not change.
- *    @param    u32data_width   The data length of UART module.
- *                              - UART_WORD_LEN_5
- *                              - UART_WORD_LEN_6
- *                              - UART_WORD_LEN_7
- *                              - UART_WORD_LEN_8
- *    @param    u32parity       The parity setting (none/odd/even/mark/space) of UART module.
- *                              - UART_PARITY_NONE
- *                              - UART_PARITY_ODD
- *                              - UART_PARITY_EVEN
- *                              - UART_PARITY_MARK
- *                              - UART_PARITY_SPACE
- *    @param    u32stop_bits    The stop bit length (1/1.5/2 bit) of UART module.
- *                              - UART_STOP_BIT_1
- *                              - UART_STOP_BIT_1_1.5
- *                              - UART_STOP_BIT_2
+ *    @param[in]    uart            The pointer of the specified UART module.
+ *    @param[in]    u32baudrate     The baudrate of UART module.
+ *                                  If u32baudrate = 0, UART baudrate will not change.
+ *    @param[in]    u32data_width   The data length of UART module.
+ *                                  - UART_WORD_LEN_5
+ *                                  - UART_WORD_LEN_6
+ *                                  - UART_WORD_LEN_7
+ *                                  - UART_WORD_LEN_8
+ *    @param[in]    u32parity       The parity setting (none/odd/even/mark/space) of UART module.
+ *                                  - UART_PARITY_NONE
+ *                                  - UART_PARITY_ODD
+ *                                  - UART_PARITY_EVEN
+ *                                  - UART_PARITY_MARK
+ *                                  - UART_PARITY_SPACE
+ *    @param[in]    u32stop_bits    The stop bit length (1/1.5/2 bit) of UART module.
+ *                                  - UART_STOP_BIT_1
+ *                                  - UART_STOP_BIT_1_5
+ *                                  - UART_STOP_BIT_2
  *
- *    @return    None
+ *    @return       None
+ *
+ *    @details      This function use to config UART line setting.
  */
 void UART_SetLine_Config(UART_T* uart, uint32_t u32baudrate, uint32_t u32data_width, uint32_t u32parity, uint32_t  u32stop_bits)
 {
-    uint8_t u8UartClkSrcSel;
+    uint8_t u8UartClkSrcSel, u8UartClkDivNum;
     uint32_t u32ClkTbl[4] = {__HXT, 0, 0, __HIRC};
     uint32_t u32Baud_Div = 0;
 
     /* Get UART clock source selection */
     u8UartClkSrcSel = (CLK->CLKSEL1 & CLK_CLKSEL1_UART_S_Msk) >> CLK_CLKSEL1_UART_S_Pos;
+
+    /* Get UART clock divider number */
+    u8UartClkDivNum = (CLK->CLKDIV & CLK_CLKDIV_UART_N_Msk) >> CLK_CLKDIV_UART_N_Pos;
 
     /* Get PLL clock frequency if UART clock source selection is PLL */
     if(u8UartClkSrcSel == 1)
@@ -281,10 +307,10 @@ void UART_SetLine_Config(UART_T* uart, uint32_t u32baudrate, uint32_t u32data_wi
     /* Set UART baud rate */
     if(u32baudrate != 0)
     {
-        u32Baud_Div = UART_BAUD_MODE2_DIVIDER(u32ClkTbl[u8UartClkSrcSel], u32baudrate);
+        u32Baud_Div = UART_BAUD_MODE2_DIVIDER((u32ClkTbl[u8UartClkSrcSel]) / (u8UartClkDivNum + 1), u32baudrate);
 
         if(u32Baud_Div > 0xFFFF)
-            uart->BAUD = (UART_BAUD_MODE0 | UART_BAUD_MODE0_DIVIDER(u32ClkTbl[u8UartClkSrcSel], u32baudrate));
+            uart->BAUD = (UART_BAUD_MODE0 | UART_BAUD_MODE0_DIVIDER((u32ClkTbl[u8UartClkSrcSel]) / (u8UartClkDivNum + 1), u32baudrate));
         else
             uart->BAUD = (UART_BAUD_MODE2 | u32Baud_Div);
     }
@@ -295,12 +321,14 @@ void UART_SetLine_Config(UART_T* uart, uint32_t u32baudrate, uint32_t u32data_wi
 
 
 /**
- *    @brief    This function use to set Rx timeout count.
+ *    @brief        Set Rx timeout count
  *
- *    @param    uart    The base address of UART module.
- *    @param    u32TOC  Rx timeout counter.
+ *    @param[in]    uart    The pointer of the specified UART module.
+ *    @param[in]    u32TOC  Rx timeout counter.
  *
- *    @return   None
+ *    @return       None
+ *
+ *    @details      This function use to set Rx timeout count.
  */
 void UART_SetTimeoutCnt(UART_T* uart, uint32_t u32TOC)
 {
@@ -313,28 +341,21 @@ void UART_SetTimeoutCnt(UART_T* uart, uint32_t u32TOC)
 
 
 /**
- *    @brief    The function is used to configure IrDA relative settings. It consists of TX or RX mode and baudrate.
+ *    @brief        Select and configure IrDA function
  *
- *    @param    uart            The base address of UART module.
- *    @param    u32Buadrate        The baudrate of UART module.
- *    @param    u32Direction    The direction(transmit:1/receive:0) of UART module in IrDA mode.
+ *    @param[in]    uart            The pointer of the specified UART module
+ *    @param[in]    u32Buadrate     The baudrate of UART module.
+ *    @param[in]    u32Direction    The direction of UART module in IrDA mode:
+ *                                  - UART_IRCR_TX_SELECT
+ *                                  - UART_IRCR_RX_SELECT
  *
- *    @return    None
- */
-/**
- *    @brief    The function is used to configure IrDA relative settings. It consists of TX or RX mode and baudrate.
+ *    @return       None
  *
- *    @param    uart            The base address of UART module.
- *    @param    u32Buadrate     The baudrate of UART module.
- *    @param    u32Direction    The direction(transmit:1/receive:0) of UART module in IrDA mode:
- *                              - UART_IRCR_TX_SELECT
- *                              - UART_IRCR_RX_SELECT
- *
- *    @return    None
+ *    @details      The function is used to configure IrDA relative settings. It consists of TX or RX mode and baudrate.
  */
 void UART_SelectIrDAMode(UART_T* uart, uint32_t u32Buadrate, uint32_t u32Direction)
 {
-    uint8_t u8UartClkSrcSel;
+    uint8_t u8UartClkSrcSel, u8UartClkDivNum;
     uint32_t u32ClkTbl[4] = {__HXT, 0, 0, __HIRC};
     uint32_t u32Baud_Div;
 
@@ -344,6 +365,9 @@ void UART_SelectIrDAMode(UART_T* uart, uint32_t u32Buadrate, uint32_t u32Directi
     /* Get UART clock source selection */
     u8UartClkSrcSel = (CLK->CLKSEL1 & CLK_CLKSEL1_UART_S_Msk) >> CLK_CLKSEL1_UART_S_Pos;
 
+    /* Get UART clock divider number */
+    u8UartClkDivNum = (CLK->CLKDIV & CLK_CLKDIV_UART_N_Msk) >> CLK_CLKDIV_UART_N_Pos;
+
     /* Get PLL clock frequency if UART clock source selection is PLL */
     if(u8UartClkSrcSel == 1)
         u32ClkTbl[u8UartClkSrcSel] = CLK_GetPLLClockFreq();
@@ -351,37 +375,39 @@ void UART_SelectIrDAMode(UART_T* uart, uint32_t u32Buadrate, uint32_t u32Directi
     /* Set UART IrDA baud rate in mode 0 */
     if(u32Buadrate != 0)
     {
-        u32Baud_Div = UART_BAUD_MODE0_DIVIDER(u32ClkTbl[u8UartClkSrcSel], u32Buadrate);
+        u32Baud_Div = UART_BAUD_MODE0_DIVIDER((u32ClkTbl[u8UartClkSrcSel]) / (u8UartClkDivNum + 1), u32Buadrate);
 
         if(u32Baud_Div < 0xFFFF)
             uart->BAUD = (UART_BAUD_MODE0 | u32Baud_Div);
     }
 
     /* Configure IrDA relative settings */
-    if(u32Direction == UART_IRCR_TX_SELECT)
+    if(u32Direction == UART_IRCR_RX_SELECT)
     {
-        uart->IRCR &= ~UART_IRCR_INV_TX_Msk;    //Tx signal is not inversed
-        uart->IRCR |= UART_IRCR_TX_SELECT_Msk;
+        uart->IRCR |= UART_IRCR_INV_RX_Msk;     //Rx signal is inverted
+        uart->IRCR &= ~UART_IRCR_TX_SELECT_Msk;
     }
     else
     {
-        uart->IRCR |= UART_IRCR_INV_RX_Msk;     //Rx signal is inversed
-        uart->IRCR &= ~UART_IRCR_TX_SELECT_Msk;
+        uart->IRCR &= ~UART_IRCR_INV_TX_Msk;    //Tx signal is not inverted
+        uart->IRCR |= UART_IRCR_TX_SELECT_Msk;        
     }
 }
 
 
 /**
- *    @brief    The function is used to set RS485 relative setting.
+ *    @brief        Select and configure RS485 function
  *
- *    @param    uart        The base address of UART module.
- *    @param    u32Mode     The operation mode(NMM/AUD/AAD).
- *                          - UART_ALT_CSR_RS485_NMM_Msk
- *                          - UART_ALT_CSR_RS485_AUD_Msk
- *                          - UART_ALT_CSR_RS485_AAD_Msk
- *    @param    u32Addr     The RS485 address.
+ *    @param[in]    uart        The pointer of the specified UART module.
+ *    @param[in]    u32Mode     The operation mode(NMM/AUD/AAD).
+ *                              - UART_ALT_CSR_RS485_NMM_Msk
+ *                              - UART_ALT_CSR_RS485_AUD_Msk
+ *                              - UART_ALT_CSR_RS485_AAD_Msk
+ *    @param[in]    u32Addr     The RS485 address.
  *
- *    @return    None
+ *    @return       None
+ *
+ *    @details      The function is used to set RS485 relative setting.
  */
 void UART_SelectRS485Mode(UART_T* uart, uint32_t u32Mode, uint32_t u32Addr)
 {
@@ -395,16 +421,17 @@ void UART_SelectRS485Mode(UART_T* uart, uint32_t u32Mode, uint32_t u32Addr)
 
 
 /**
- *    @brief    The function is used to set LIN relative setting.
+ *    @brief        Select and configure LIN function
  *
- *    @param    uart            The base address of UART module.
- *    @param    u32Mode         The LIN direction :
- *                              - UART_ALT_CSR_LIN_TX_EN_Msk
- *                              - UART_ALT_CSR_LIN_RX_EN_Msk
- *                              - (UART_ALT_CSR_LIN_TX_EN_Msk|UART_ALT_CSR_LIN_RX_EN_Msk)
- *    @param    u32BreakLength  The breakfield length is u32BreakLength+2.
+ *    @param[in]    uart            The pointer of the specified UART module.
+ *    @param[in]    u32Mode         The LIN direction :
+ *                                  - UART_ALT_CSR_LIN_TX_EN_Msk
+ *                                  - UART_ALT_CSR_LIN_RX_EN_Msk
+ *    @param[in]    u32BreakLength  The breakfield length.
  *
- *    @return   None
+ *    @return       None
+ *
+ *    @details      The function is used to set LIN relative setting.
  */
 void UART_SelectLINMode(UART_T* uart, uint32_t u32Mode, uint32_t u32BreakLength)
 {
@@ -412,19 +439,21 @@ void UART_SelectLINMode(UART_T* uart, uint32_t u32Mode, uint32_t u32BreakLength)
     uart->FUN_SEL = UART_FUNC_SEL_LIN;
 
     /* Select LIN function setting : Tx enable, Rx enable and break field length */
-    uart->ALT_CSR &= ~(UART_ALT_CSR_LIN_TX_EN_Msk | UART_ALT_CSR_LIN_TX_EN_Msk | UART_ALT_CSR_UA_LIN_BKFL_Msk);
+    uart->ALT_CSR &= ~(UART_ALT_CSR_LIN_TX_EN_Msk | UART_ALT_CSR_LIN_RX_EN_Msk | UART_ALT_CSR_UA_LIN_BKFL_Msk);
     uart->ALT_CSR |= (u32Mode | (u32BreakLength << UART_ALT_CSR_UA_LIN_BKFL_Pos));
 }
 
 
 /**
- *    @brief    The function is to write data into TX buffer to transmit data by UART.
+ *    @brief        Write UART data
  *
- *    @param    uart            The base address of UART module.
- *    @param    pu8TxBuf        The buffer to send the data to UART transmission FIFO.
- *    @param    u32WriteBytes    The byte number of data.
+ *    @param[in]    uart            The pointer of the specified UART module.
+ *    @param[in]    pu8TxBuf        The buffer to send the data to UART transmission FIFO.
+ *    @param[out]   u32WriteBytes   The byte number of data.
  *
- *  @return u32Count: transfer byte count
+ *    @return       u32Count transfer byte count
+ *
+ *    @details      The function is to write data into TX buffer to transmit data by UART.
  */
 uint32_t UART_Write(UART_T* uart, uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 {
@@ -447,11 +476,11 @@ uint32_t UART_Write(UART_T* uart, uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 }
 
 
-/*@}*/ /* end of group M051_UART_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group UART_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_UART_Driver */
+/*@}*/ /* end of group UART_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 /*** (C) COPYRIGHT 2012 Nuvoton Technology Corp. ***/
 

@@ -1,25 +1,27 @@
 /**************************************************************************//**
  * @file     wwdt.c
  * @version  V3.00
- * $Revision: 4 $
- * $Date: 14/01/28 10:49a $
+ * $Revision: 5 $
+ * $Date: 15/05/20 2:07p $
  * @brief    M051 series WWDT driver source file
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 #include "M051Series.h"
 
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_WWDT_Driver WWDT Driver
+/** @addtogroup WWDT_Driver WWDT Driver
   @{
 */
 
-/** @addtogroup M051_WWDT_EXPORTED_FUNCTIONS WWDT Exported Functions
+/** @addtogroup WWDT_EXPORTED_FUNCTIONS WWDT Exported Functions
   @{
 */
 
@@ -62,10 +64,10 @@ void WWDT_Open(uint32_t u32PreScale,
     return;
 }
 
-/*@}*/ /* end of group M051_WWDT_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group WWDT_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_WWDT_Driver */
+/*@}*/ /* end of group WWDT_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 /*** (C) COPYRIGHT 2013 Nuvoton Technology Corp. ***/

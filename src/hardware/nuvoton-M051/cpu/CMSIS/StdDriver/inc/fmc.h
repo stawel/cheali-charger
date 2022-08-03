@@ -1,11 +1,13 @@
 /**************************************************************************//**
  * @file     FMC.h
  * @version  V3.0
- * $Revision: 13 $
- * $Date: 14/01/28 10:49a $
+ * $Revision: 19 $
+ * $Date: 15/05/22 3:06p $
  * @brief    M051 Series Flash Memory Controller Driver Header File
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
@@ -20,15 +22,15 @@ extern "C"
 #endif
 
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_FMC_Driver FMC Driver
+/** @addtogroup FMC_Driver FMC Driver
   @{
 */
 
-/** @addtogroup M051_FMC_EXPORTED_CONSTANTS FMC Exported Constants
+/** @addtogroup FMC_EXPORTED_CONSTANTS FMC Exported Constants
   @{
 */
 
@@ -61,26 +63,166 @@ extern "C"
 #define FMC_ISPCMD_READ_DID    0x0C     /*!< ISP Command: Read Device ID    */
 
 
-/*@}*/ /* end of group M051_FMC_EXPORTED_CONSTANTS */
+/*@}*/ /* end of group FMC_EXPORTED_CONSTANTS */
 
-/** @addtogroup M051_FMC_EXPORTED_FUNCTIONS FMC Exported Functions
+/** @addtogroup FMC_EXPORTED_FUNCTIONS FMC Exported Functions
   @{
 */
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  FMC Macro Definitions                                                                                  */
 /*---------------------------------------------------------------------------------------------------------*/
-#define FMC_ENABLE_ISP()          (FMC->ISPCON |=  FMC_ISPCON_ISPEN_Msk)  /*!< Enable ISP Function  */
-#define FMC_DISABLE_ISP()         (FMC->ISPCON &= ~FMC_ISPCON_ISPEN_Msk)  /*!< Disable ISP Function */
-#define FMC_ENABLE_LD_UPDATE()    (FMC->ISPCON |=  FMC_ISPCON_LDUEN_Msk)  /*!< Enable LDROM Update Function   */
+/**
+ * @brief      Enable ISP Function
+ *
+ * @param      None
+ *
+ * @return     None
+ *
+ * @details    This function will set ISPEN bit of ISPCON control register to enable ISP function.
+ *
+ */
+#define FMC_ENABLE_ISP()          (FMC->ISPCON |=  FMC_ISPCON_ISPEN_Msk)
+
+
+/**
+ * @brief      Disable ISP Function
+ *
+ * @param      None
+ *
+ * @return     None
+ *
+ * @details    This function will clear ISPEN bit of ISPCON control register to disable ISP function.
+ *
+ */
+#define FMC_DISABLE_ISP()         (FMC->ISPCON &= ~FMC_ISPCON_ISPEN_Msk)
+
+
+/**
+ * @brief      Enable LDROM Update Function
+ *
+ * @param      None
+ *
+ * @return     None
+ *
+ * @details    This function will set LDUEN bit of ISPCON control register to enable LDROM update function.
+ *             User needs to set LDUEN bit before they can update LDROM.
+ *
+ */
+#define FMC_ENABLE_LD_UPDATE()    (FMC->ISPCON |=  FMC_ISPCON_LDUEN_Msk)
+
+
+
+/**
+ * @brief      Disable LDROM Update Function
+ *
+ * @param      None
+ *
+ * @return     None
+ *
+ * @details    This function will set ISPEN bit of ISPCON control register to disable LDROM update function.
+ *
+ */
 #define FMC_DISABLE_LD_UPDATE()   (FMC->ISPCON &= ~FMC_ISPCON_LDUEN_Msk)  /*!< Disable LDROM Update Function  */
-#define FMC_ENABLE_CFG_UPDATE()   (FMC->ISPCON |=  FMC_ISPCON_CFGUEN_Msk) /*!< Enable CONFIG Update Function  */
+
+
+
+/**
+ * @brief      Enable User Configuration Update Function
+ *
+ * @param      None
+ *
+ * @return     None
+ *
+ * @details    This function will set CFGUEN bit of ISPCON control register to enable User Configuration update function.
+ *             User needs to set CFGUEN bit before they can update User Configuration area.
+ *
+ */
+#define FMC_ENABLE_CFG_UPDATE()   (FMC->ISPCON |=  FMC_ISPCON_CFGUEN_Msk)
+
+/**
+ * @brief      Disable User Configuration Update Function
+ *
+ * @param      None
+ *
+ * @return     None
+ *
+ * @details    This function will clear CFGUEN bit of ISPCON control register to disable User Configuration update function.
+ *
+ */
 #define FMC_DISABLE_CFG_UPDATE()  (FMC->ISPCON &= ~FMC_ISPCON_CFGUEN_Msk) /*!< Disable CONFIG Update Function */
-#define FMC_ENABLE_AP_UPDATE()    (FMC->ISPCON |=  FMC_ISPCON_APUEN_Msk)  /*!< Enable APROM Update Function   */
+
+
+/**
+ * @brief      Enable APROM Update Function
+ *
+ * @param      None
+ *
+ * @return     None
+ *
+ * @details    This function will set APUEN bit of ISPCON control register to enable APROM update function.
+ *             User needs to set APUEN bit before they can update APROM in APROM boot mode.
+ *
+ */
+#define FMC_ENABLE_AP_UPDATE()    (FMC->ISPCON |=  FMC_ISPCON_APUEN_Msk)
+
+
+/**
+ * @brief      Disable APROM Update Function
+ *
+ * @param      None
+ *
+ * @return     None
+ *
+ * @details    This function will clear APUEN bit of ISPCON control register to disable APROM update function.
+ *
+ */
 #define FMC_DISABLE_AP_UPDATE()   (FMC->ISPCON &= ~FMC_ISPCON_APUEN_Msk)  /*!< Disable APROM Update Function  */
-#define FMC_GET_FAIL_FLAG()       ((FMC->ISPCON & FMC_ISPCON_ISPFF_Msk) ? 1 : 0)  /*!< Get ISP fail flag  */
-#define FMC_SET_APROM_BOOT()      (FMC->ISPCON &= ~FMC_ISPCON_BS_Msk)     /*!< Select booting from APROM  */
-#define FMC_SET_LDROM_BOOT()      (FMC->ISPCON |= FMC_ISPCON_BS_Msk)      /*!< Select booting from LDROM  */
+
+/**
+ * @brief      Get ISP fail flag
+ *
+ * @param      None
+ *
+ * @retval     0 Previous ISP command execution result is successful
+ * @retval     1 Previous ISP command execution result is fail
+ *
+ * @details    ISPFF flag of ISPCON is used to indicate ISP command success or fail.
+ *             This function will return the ISPFF flag to identify ISP command OK or fail.
+ *
+ */
+#define FMC_GET_FAIL_FLAG()       ((FMC->ISPCON & FMC_ISPCON_ISPFF_Msk) ? 1 : 0)
+
+
+/**
+ * @brief      Select booting from APROM
+ *
+ * @param      None
+ *
+ * @return     None
+ *
+ * @details    If MCU is working without IAP, user need to set BS bit of ISPCON and reset CPU to execute the code of LDROM/APROM.
+ *             This function is used to set BS bit of ISPCON to boot to APROM.
+ *
+ * @note       To valid new BS bit setting, user also need to trigger CPU reset or System Reset Request after setting BS bit.
+ *
+ */
+#define FMC_SET_APROM_BOOT()      (FMC->ISPCON &= ~FMC_ISPCON_BS_Msk)
+
+/**
+ * @brief      Select booting from APROM
+ *
+ * @param      None
+ *
+ * @return     None
+ *
+ * @details    If MCU is working without IAP, user need to set/clear BS bit of ISPCON and reset CPU to execute the code of APROM/LDROM.
+ *             This function is used to clear BS bit of ISPCON to boot to LDROM.
+ *
+ * @note       To valid new BS bit setting, user also need to trigger CPU reset or System Reset Request after clear BS bit.
+ *
+ */
+#define FMC_SET_LDROM_BOOT()      (FMC->ISPCON |= FMC_ISPCON_BS_Msk)
 
 
 /*---------------------------------------------------------------------------------------------------------*/
@@ -92,12 +234,11 @@ extern "C"
  * @param[in]  u32addr  Flash address include APROM, LDROM, Data Flash, and CONFIG
  * @param[in]  u32data  32-bit Data to program
  *
+ * @return     None
+ *
  * @details    To program word data into Flash include APROM, LDROM, Data Flash, and CONFIG.
  *             The corresponding functions in CONFIG are listed in FMC section of Technical Reference Manual.
  *
- * @note
- *             Please make sure that Register Write-Protection Function has been disabled
- *             before using this function.
  */
 static __INLINE void FMC_Write(uint32_t u32addr, uint32_t u32data)
 {
@@ -118,9 +259,6 @@ static __INLINE void FMC_Write(uint32_t u32addr, uint32_t u32data)
  *
  * @details     To read word data from Flash include APROM, LDROM, Data Flash, and CONFIG.
  *
- * @note
- *              Please make sure that Register Write-Protection Function has been disabled
- *              before using this function.
  */
 static __INLINE uint32_t FMC_Read(uint32_t u32addr)
 {
@@ -142,12 +280,9 @@ static __INLINE uint32_t FMC_Read(uint32_t u32addr)
  * @details    To do flash page erase. The target address could be APROM, LDROM, Data Flash, or CONFIG.
  *             The page size is 512 bytes.
  *
- * @retval      0: Success
- * @retval     -1: Erase failed
+ * @retval      0 Success
+ * @retval     -1 Erase failed
  *
- * @note
- *             Please make sure that Register Write-Protection Function has been disabled
- *             before using this function.
  */
 static __INLINE int32_t FMC_Erase(uint32_t u32addr)
 {
@@ -160,7 +295,7 @@ static __INLINE int32_t FMC_Erase(uint32_t u32addr)
     /* Check ISPFF flag to know whether erase OK or fail. */
     if(FMC->ISPCON & FMC_ISPCON_ISPFF_Msk)
     {
-        FMC->ISPCON = FMC_ISPCON_ISPFF_Msk;
+        FMC->ISPCON |= FMC_ISPCON_ISPFF_Msk;
         return -1;
     }
     return 0;
@@ -175,9 +310,6 @@ static __INLINE int32_t FMC_Erase(uint32_t u32addr)
  *
  * @details     To read out 96-bit Unique ID.
  *
- * @note
- *              Please make sure that Register Write-Protection Function has been disabled
- *              before using this function.
  */
 static __INLINE uint32_t FMC_ReadUID(uint8_t u8index)
 {
@@ -194,9 +326,12 @@ static __INLINE uint32_t FMC_ReadUID(uint8_t u8index)
 /**
   * @brief    Read company ID
   *
-  * @retval   The company ID (32-bit)
+  * @param    None
+  *
+  * @return   The company ID (32-bit)
   *
   * @details  The company ID of Nuvoton is fixed to be 0xDA
+  *
   */
 static __INLINE uint32_t FMC_ReadCID(void)
 {
@@ -209,30 +344,14 @@ static __INLINE uint32_t FMC_ReadCID(void)
     return FMC->ISPDAT;
 }
 
-
-/**
-  * @brief    Read device ID
-  *
-  * @retval   The device ID (32-bit)
-  *
-  */
-static __INLINE uint32_t FMC_ReadDID(void)
-{
-    FMC->ISPCMD = FMC_ISPCMD_READ_DID;          /* Set ISP Command Code */
-    FMC->ISPADR = 0;                            /* Must keep 0x0 when read DID */
-    FMC->ISPTRG = FMC_ISPTRG_ISPGO_Msk;         /* Trigger to start ISP procedure */
-    __ISB();                                    /* To make sure ISP/CPU be Synchronized */
-    while(FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk);  /* Waiting for ISP Done */
-
-    return FMC->ISPDAT;
-}
-
-
-
 /**
   * @brief    Read product ID
   *
-  * @retval   The product ID (32-bit)
+  * @param    None
+  *
+  * @return   The product ID (32-bit)
+  *
+  * @details  This function is used to read product ID.
   *
   */
 static __INLINE uint32_t FMC_ReadPID(void)
@@ -251,7 +370,9 @@ static __INLINE uint32_t FMC_ReadPID(void)
   *
   * @param[in]  u32Index    Index of the UCID to read. u32Index must be 0, 1, 2, or 3.
   *
-  * @retval     The UCID of specified index
+  * @return     The UCID of specified index
+  *
+  * @details    This function is used to read unique chip ID (UCID).
   *
   */
 static __INLINE uint32_t FMC_ReadUCID(uint32_t u32Index)
@@ -270,9 +391,11 @@ static __INLINE uint32_t FMC_ReadUCID(uint32_t u32Index)
 /**
  * @brief       Set vector mapping address
  *
- * @param[in]   u32MapAddr  The page address to remap to address 0x0. The address must be page alignment.
+ * @param[in]   u32PageAddr  The page address to remap to address 0x0. The address must be page alignment.
  *
- * @details     To set VECMAP to remap specified page address to 0x0.
+ * @return      None
+ *
+ * @details     This function is used to set VECMAP to map specified page to vector page (0x0).
  *
  * @note
  *              VECMAP only valid when new IAP function is enabled. (CBS = 10'b or 00'b)
@@ -291,9 +414,11 @@ static __INLINE void FMC_SetVectorPageAddr(uint32_t u32PageAddr)
 /**
  * @brief       Get current vector mapping address.
  *
+ * @param       None
+ *
  * @return      The current vector mapping address.
  *
- * @details     To get VECMAP value which is the page address for remapping to 0x0.
+ * @details     To get VECMAP value which is the page address for remapping to vector page (0x0).
  *
  * @note
  *              VECMAP only valid when new IAP function is enabled. (CBS = 10'b or 00'b)
@@ -318,11 +443,11 @@ extern void FMC_SetBootSource(int32_t i32BootSrc);
 extern int32_t FMC_GetBootSource(void);
 extern uint32_t FMC_ReadDataFlashBaseAddr(void);
 
-/*@}*/ /* end of group M051_FMC_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group FMC_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_FMC_Driver */
+/*@}*/ /* end of group FMC_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 #ifdef __cplusplus
 }

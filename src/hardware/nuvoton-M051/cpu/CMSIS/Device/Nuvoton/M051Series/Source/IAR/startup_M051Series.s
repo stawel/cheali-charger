@@ -1,11 +1,13 @@
 ;/**************************************************************************//**
 ; * @file     startup_M051Series.s
 ; * @version  V2.00
-; * $Revision: 8 $
-; * $Date: 14/02/12 10:11a $ 
+; * $Revision: 10 $
+; * $Date: 15/05/22 3:31p $ 
 ; * @brief    M051 Series Startup Source File for IAR Platform
 ; *
 ; * @note
+; * SPDX-License-Identifier: Apache-2.0
+; *
 ; * Copyright (C) 2011 Nuvoton Technology Corp. All rights reserved.
 ; *
 ; ******************************************************************************/
@@ -27,7 +29,7 @@
     DATA
 __vector_table
     DCD     sfe(CSTACK)
-    DCD     __iar_program_start
+    DCD     Reset_Handler
 
     DCD     NMI_Handler
     DCD     HardFault_Handler
@@ -114,6 +116,7 @@ Reset_Handler
         LDR      R0, =__iar_program_start
         BX       R0
 
+    PUBWEAK HardFault_Handler
     PUBWEAK NMI_Handler       
     PUBWEAK SVC_Handler       
     PUBWEAK PendSV_Handler    

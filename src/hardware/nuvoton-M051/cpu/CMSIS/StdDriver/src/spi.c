@@ -1,41 +1,44 @@
 /**************************************************************************//**
  * @file     spi.c
  * @version  V3.00
- * $Revision: 4 $
- * $Date: 2/07/14 6:59p $
+ * $Revision: 11 $
+ * $Date: 15/05/22 7:35p $
  * @brief    M051 series SPI driver source file
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 #include "M051Series.h"
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_SPI_Driver SPI Driver
+/** @addtogroup SPI_Driver SPI Driver
   @{
 */
 
 
-/** @addtogroup M051_SPI_EXPORTED_FUNCTIONS SPI Exported Functions
+/** @addtogroup SPI_EXPORTED_FUNCTIONS SPI Exported Functions
   @{
 */
 
 /**
   * @brief  This function make SPI module be ready to transfer.
-  *         By default, the SPI transfer sequence is MSB first and
-  *         the automatic slave select function is disabled. In
-  *         Slave mode, the u32BusClock must be NULL and the SPI clock
-  *         divider setting will be 0.
-  * @param  spi is the base address of SPI module.
-  * @param  u32MasterSlave decides the SPI module is operating in master mode or in slave mode. (SPI_SLAVE, SPI_MASTER)
-  * @param  u32SPIMode decides the transfer timing. (SPI_MODE_0, SPI_MODE_1, SPI_MODE_2, SPI_MODE_03)
-  * @param  u32DataWidth decides the data width of a SPI transaction.
-  * @param  u32BusClock is the expected frequency of SPI bus clock in Hz.
+  * @param[in]  spi The pointer of the specified SPI module.
+  * @param[in]  u32MasterSlave Decides the SPI module is operating in master mode or in Slave mode. (SPI_SLAVE, SPI_MASTER)
+  * @param[in]  u32SPIMode Decides the transfer timing. (SPI_MODE_0, SPI_MODE_1, SPI_MODE_2, SPI_MODE_3)
+  * @param[in]  u32DataWidth Decides the data width of a SPI transaction.
+  * @param[in]  u32BusClock The expected frequency of SPI bus clock in Hz.
   * @return Actual frequency of SPI peripheral clock.
+  * @details By default, the SPI transfer sequence is MSB first and the automatic slave selection function is disabled.
+  *          In Slave mode, the u32BusClock parameter is useless and the SPI clock divider setting will be 0.
+  *          The actual clock rate may be different from the target SPI clock rate.
+  *          For example, if the SPI source clock rate is 12 MHz and the target SPI bus clock rate is 7 MHz, the
+  *          actual SPI clock rate will be 6MHz.
   * @note   If u32BusClock = 0, DIVIDER setting will be set to the maximum value.
-  * @note   In slave mode, the SPI peripheral clock rate will be set to equal to system clock rate.
+  * @note   In Slave mode, the SPI peripheral clock rate will be set to equal to system clock rate.
   * @note   On M05xxBN, if u32BusClock is equal to system clock rate, DIV_ONE will be set to 1.
   *            So that byte reorder function, byte suspend function and variable clock function must be disabled.
   * @note   On M05xxBN, if u32BusClock is larger than system clock rate, the SPI peripheral clock rate will be set to a half of system clock rate.
@@ -181,7 +184,7 @@ uint32_t SPI_Open(SPI_T *spi,
             else
                 CLK->CLKSEL1 = (CLK->CLKSEL1 & (~CLK_CLKSEL1_SPI1_S_Msk)) | CLK_CLKSEL1_SPI1_S_HCLK;
 
-
+            u32ClkSrc = CLK_GetHCLKFreq();
             /* Set DIVIDER = 0 */
             spi->DIVIDER = 0;
             /* Return slave peripheral clock rate */
@@ -192,9 +195,10 @@ uint32_t SPI_Open(SPI_T *spi,
 }
 
 /**
-  * @brief  Reset SPI module and disable SPI peripheral clock.
-  * @param  spi is the base address of SPI module.
+  * @brief  Disable SPI controller.
+  * @param[in]  spi The pointer of the specified SPI module.
   * @return None
+  * @details This function will reset SPI controller.
   */
 void SPI_Close(SPI_T *spi)
 {
@@ -203,25 +207,20 @@ void SPI_Close(SPI_T *spi)
         /* Reset SPI */
         SYS->IPRSTC2 |= SYS_IPRSTC2_SPI0_RST_Msk;
         SYS->IPRSTC2 &= ~SYS_IPRSTC2_SPI0_RST_Msk;
-
-        /* Disable SPI clock */
-        CLK->APBCLK &= ~CLK_APBCLK_SPI0_EN_Msk;
     }
     else
     {
         /* Reset SPI */
         SYS->IPRSTC2 |= SYS_IPRSTC2_SPI1_RST_Msk;
         SYS->IPRSTC2 &= ~SYS_IPRSTC2_SPI1_RST_Msk;
-
-        /* Disable SPI clock */
-        CLK->APBCLK &= ~CLK_APBCLK_SPI1_EN_Msk;
     }
 }
 
 /**
   * @brief  Clear RX FIFO buffer.
-  * @param  spi is the base address of SPI module.
+  * @param[in]  spi The pointer of the specified SPI module.
   * @return None
+  * @details This function will clear SPI RX FIFO buffer.
   */
 void SPI_ClearRxFIFO(SPI_T *spi)
 {
@@ -230,8 +229,9 @@ void SPI_ClearRxFIFO(SPI_T *spi)
 
 /**
   * @brief  Clear TX FIFO buffer.
-  * @param  spi is the base address of SPI module.
+  * @param[in]  spi The pointer of the specified SPI module.
   * @return None
+  * @details This function will clear SPI TX FIFO buffer.
   */
 void SPI_ClearTxFIFO(SPI_T *spi)
 {
@@ -239,9 +239,10 @@ void SPI_ClearTxFIFO(SPI_T *spi)
 }
 
 /**
-  * @brief  Disable the automatic slave select function and set slave select signal to inactive state.
-  * @param  spi is the base address of SPI module.
+  * @brief  Disable the automatic slave selection function. Only available in Master mode.
+  * @param[in]  spi The pointer of the specified SPI module.
   * @return None
+  * @details This function will disable the automatic slave selection function and set slave selection signal to inactive state.
   */
 void SPI_DisableAutoSS(SPI_T *spi)
 {
@@ -249,11 +250,13 @@ void SPI_DisableAutoSS(SPI_T *spi)
 }
 
 /**
-  * @brief  Enable the automatic slave select function. Only available in Master mode.
-  * @param  spi is the base address of SPI module.
-  * @param  u32SSPinMask specifies slave select pins. (SPI_SS)
-  * @param  u32ActiveLevel specifies the active level of slave select signal. (SPI_SS_ACTIVE_HIGH, SPI_SS_ACTIVE_LOW)
+  * @brief  Enable the automatic slave selection function. Only available in Master mode.
+  * @param[in]  spi The pointer of the specified SPI module.
+  * @param[in]  u32SSPinMask Specifies slave select pins. (SPI_SS)
+  * @param[in]  u32ActiveLevel Specifies the active level of slave select signal. (SPI_SS_ACTIVE_HIGH, SPI_SS_ACTIVE_LOW)
   * @return None
+  * @details This function will enable the automatic slave selection function. Only available in Master mode.
+  *          The slave selection pin and the active level will be set in this function.
   */
 void SPI_EnableAutoSS(SPI_T *spi, uint32_t u32SSPinMask, uint32_t u32ActiveLevel)
 {
@@ -261,10 +264,13 @@ void SPI_EnableAutoSS(SPI_T *spi, uint32_t u32SSPinMask, uint32_t u32ActiveLevel
 }
 
 /**
-  * @brief  Set the SPI bus clock. Only available in Master mode.
-  * @param  spi is the base address of SPI module.
-  * @param  u32BusClock is the expected frequency of SPI bus clock in Hz.
-  * @return Actual frequency of SPI peripheral clock.
+  * @brief  Set the SPI bus clock.
+  * @param[in]  spi The pointer of the specified SPI module.
+  * @param[in]  u32BusClock The expected frequency of SPI bus clock in Hz.
+  * @return Actual frequency of SPI bus clock.
+  * @details This function is only available in Master mode. The actual clock rate may be different from the target SPI bus clock rate.
+  *          For example, if the SPI source clock rate is 12MHz and the target SPI bus clock rate is 7MHz, the actual SPI bus clock
+  *          rate will be 6MHz.
   * @note   If u32BusClock = 0, DIVIDER setting will be set to the maximum value.
   * @note   On M05xxBN, if u32BusClock is equal to system clock rate, DIV_ONE will be set to 1.
   *            So that byte reorder function, byte suspend function and variable clock function must be disabled.
@@ -375,25 +381,27 @@ uint32_t SPI_SetBusClock(SPI_T *spi, uint32_t u32BusClock)
 }
 
 /**
-  * @brief  Enable FIFO mode with user-specified TX FIFO threshold and RX FIFO threshold configurations.
-  * @param  spi is the base address of SPI module.
-  * @param  u32TxThreshold decides the TX FIFO threshold.
-  * @param  u32RxThreshold decides the RX FIFO threshold.
+  * @brief  Enable FIFO mode.
+  * @param[in]  spi The pointer of the specified SPI module.
+  * @param[in]  u32TxThreshold Decides the TX FIFO threshold.
+  * @param[in]  u32RxThreshold Decides the RX FIFO threshold.
   * @return None
+  * @details Enable FIFO mode with user-specified TX FIFO threshold and RX FIFO threshold configurations.
   */
 void SPI_EnableFIFO(SPI_T *spi, uint32_t u32TxThreshold, uint32_t u32RxThreshold)
 {
-    spi->FIFO_CTL = (spi->FIFO_CTL & ~(SPI_FIFO_CTL_TX_THRESHOLD_Msk | SPI_FIFO_CTL_RX_THRESHOLD_Msk) |
+    spi->FIFO_CTL = (spi->FIFO_CTL & ~(SPI_FIFO_CTL_TX_THRESHOLD_Msk | SPI_FIFO_CTL_RX_THRESHOLD_Msk)) |
                      (u32TxThreshold << SPI_FIFO_CTL_TX_THRESHOLD_Pos) |
-                     (u32RxThreshold << SPI_FIFO_CTL_RX_THRESHOLD_Pos));
+                     (u32RxThreshold << SPI_FIFO_CTL_RX_THRESHOLD_Pos);
 
     spi->CNTRL |= SPI_CNTRL_FIFO_Msk;
 }
 
 /**
   * @brief  Disable FIFO mode.
-  * @param  spi is the base address of SPI module.
+  * @param[in]  spi The pointer of the specified SPI module.
   * @return None
+  * @details Clear FIFO bit of SPI_CNTRL register to disable FIFO mode.
   */
 void SPI_DisableFIFO(SPI_T *spi)
 {
@@ -402,8 +410,9 @@ void SPI_DisableFIFO(SPI_T *spi)
 
 /**
   * @brief  Get the actual frequency of SPI bus clock. Only available in Master mode.
-  * @param  spi is the base address of SPI module.
+  * @param[in]  spi The pointer of the specified SPI module.
   * @return Actual SPI bus clock frequency.
+  * @details This function will calculate the actual SPI bus clock rate according to the settings of DIVIDER. Only available in Master mode.
   */
 uint32_t SPI_GetBusClock(SPI_T *spi)
 {
@@ -461,14 +470,16 @@ uint32_t SPI_GetBusClock(SPI_T *spi)
 }
 
 /**
-  * @brief  Enable SPI related interrupts specified by u32Mask parameter.
-  * @param  spi is the base address of SPI module.
-  * @param  u32Mask is the combination of all related interrupt enable bits.
-  *         Each bit corresponds to a interrupt bit.
-  *         This parameter decides which interrupts will be enabled.
-  *            (SPI_UNIT_INT_MASK, SPI_SSTA_INT_MASK, SPI_FIFO_TX_INT_MASK,
-  *            SPI_FIFO_RX_INT_MASK, SPI_FIFO_RXOV_INT_MASK, SPI_FIFO_TIMEOUT_INT_MASK)
+  * @brief  Enable SPI interrupt function.
+  * @param[in]  spi The pointer of the specified SPI module.
+  * @param[in]  u32Mask The combination of all related interrupt enable bits.
+  *                     Each bit corresponds to a interrupt bit.
+  *                     This parameter decides which interrupts will be enabled.
+  *                     (SPI_UNIT_INT_MASK, SPI_SSTA_INT_MASK, SPI_FIFO_TX_INT_MASK,
+  *                     SPI_FIFO_RX_INT_MASK, SPI_FIFO_RXOV_INT_MASK, SPI_FIFO_TIMEOUT_INT_MASK)
   * @return None
+  * @details Enable SPI related interrupts specified by u32Mask parameter.
+  * @note   M05xxBN only supports SPI_UNIT_INT_MASK and SPI_SSTA_INT_MASK in u32Mask parameter.
   */
 void SPI_EnableInt(SPI_T *spi, uint32_t u32Mask)
 {
@@ -480,9 +491,8 @@ void SPI_EnableInt(SPI_T *spi, uint32_t u32Mask)
     if((u32Mask & SPI_SSTA_INT_MASK) == SPI_SSTA_INT_MASK)
         spi->CNTRL2 |= SPI_CNTRL2_SSTA_INTEN_Msk;
 
-    if(((SYS->PDID & 0xF0000000) == 0) || ((SYS->PDID & 0xF0000000) == 0x10000000)) /* M05xxAN or M05xxBN */
-        return; /* M05xxAN and M05xxBN does not support the following functions */
-
+    /* M05xxBN does not support the following functions */
+    
     /* Enable TX threshold interrupt flag */
     if((u32Mask & SPI_FIFO_TX_INT_MASK) == SPI_FIFO_TX_INT_MASK)
         spi->FIFO_CTL |= SPI_FIFO_CTL_TX_INTEN_Msk;
@@ -501,14 +511,16 @@ void SPI_EnableInt(SPI_T *spi, uint32_t u32Mask)
 }
 
 /**
-  * @brief  Disable SPI related interrupts specified by u32Mask parameter.
-  * @param  spi is the base address of SPI module.
-  * @param  u32Mask is the combination of all related interrupt enable bits.
-  *         Each bit corresponds to a interrupt bit.
-  *         This parameter decides which interrupts will be disabled.
-  *            (SPI_UNIT_INT_MASK, SPI_SSTA_INT_MASK, SPI_FIFO_TX_INT_MASK,
-  *            SPI_FIFO_RX_INT_MASK, SPI_FIFO_RXOV_INT_MASK, SPI_FIFO_TIMEOUT_INT_MASK)
+  * @brief  Disable interrupt function.
+  * @param[in]  spi The pointer of the specified SPI module.
+  * @param[in]  u32Mask The combination of all related interrupt enable bits.
+  *                     Each bit corresponds to a interrupt bit.
+  *                     This parameter decides which interrupts will be disabled.
+  *                     (SPI_UNIT_INT_MASK, SPI_SSTA_INT_MASK, SPI_FIFO_TX_INT_MASK,
+  *                     SPI_FIFO_RX_INT_MASK, SPI_FIFO_RXOV_INT_MASK, SPI_FIFO_TIMEOUT_INT_MASK)
   * @return None
+  * @details Disable SPI related interrupts specified by u32Mask parameter.
+  * @note   M05xxBN only supports SPI_UNIT_INT_MASK and SPI_SSTA_INT_MASK in u32Mask parameter.
   */
 void SPI_DisableInt(SPI_T *spi, uint32_t u32Mask)
 {
@@ -520,9 +532,8 @@ void SPI_DisableInt(SPI_T *spi, uint32_t u32Mask)
     if((u32Mask & SPI_SSTA_INT_MASK) == SPI_SSTA_INT_MASK)
         spi->CNTRL2 &= ~SPI_CNTRL2_SSTA_INTEN_Msk;
 
-    if(((SYS->PDID & 0xF0000000) == 0) || ((SYS->PDID & 0xF0000000) == 0x10000000)) /* M05xxAN or M05xxBN */
-        return; /* M05xxAN and M05xxBN does not support the following functions */
-
+    /* M05xxBN does not support the following functions */
+    
     /* Disable TX threshold interrupt flag */
     if((u32Mask & SPI_FIFO_TX_INT_MASK) == SPI_FIFO_TX_INT_MASK)
         spi->FIFO_CTL &= ~SPI_FIFO_CTL_TX_INTEN_Msk;
@@ -541,14 +552,16 @@ void SPI_DisableInt(SPI_T *spi, uint32_t u32Mask)
 }
 
 /**
-  * @brief  Get SPI related interrupt flags specified by u32Mask parameter.
-  * @param  spi is the base address of SPI module.
-  * @param  u32Mask is the combination of all related interrupt sources.
-  *         Each bit corresponds to a interrupt source.
-  *         This parameter decides which interrupt flags will be read.
-  *            (SPI_UNIT_INT_MASK, SPI_SSTA_INT_MASK, SPI_FIFO_TX_INT_MASK,
-  *            SPI_FIFO_RX_INT_MASK, SPI_FIFO_RXOV_INT_MASK, SPI_FIFO_TIMEOUT_INT_MASK)
+  * @brief  Get interrupt flag.
+  * @param[in]  spi The pointer of the specified SPI module.
+  * @param[in]  u32Mask The combination of all related interrupt sources.
+  *                     Each bit corresponds to a interrupt source.
+  *                     This parameter decides which interrupt flags will be read.
+  *                     (SPI_UNIT_INT_MASK, SPI_SSTA_INT_MASK, SPI_FIFO_TX_INT_MASK,
+  *                     SPI_FIFO_RX_INT_MASK, SPI_FIFO_RXOV_INT_MASK, SPI_FIFO_TIMEOUT_INT_MASK)
   * @return Interrupt flags of selected sources.
+  * @details Get SPI related interrupt flags specified by u32Mask parameter.
+  * @note   M05xxBN only supports SPI_UNIT_INT_MASK and SPI_SSTA_INT_MASK in u32Mask parameter.
   */
 uint32_t SPI_GetIntFlag(SPI_T *spi, uint32_t u32Mask)
 {
@@ -562,9 +575,8 @@ uint32_t SPI_GetIntFlag(SPI_T *spi, uint32_t u32Mask)
     if((u32Mask & SPI_SSTA_INT_MASK) && (spi->CNTRL2 & SPI_CNTRL2_SLV_START_INTSTS_Msk))
         u32IntFlag |= SPI_SSTA_INT_MASK;
 
-    if(((SYS->PDID & 0xF0000000) == 0) || ((SYS->PDID & 0xF0000000) == 0x10000000)) /* M05xxAN or M05xxBN */
-        return u32IntFlag; /* M05xxAN and M05xxBN does not support the following functions */
-
+    /* M05xxBN does not support the following functions */
+    
     /* Check TX threshold interrupt flag */
     if((u32Mask & SPI_FIFO_TX_INT_MASK) && (spi->STATUS & SPI_STATUS_TX_INTSTS_Msk))
         u32IntFlag |= SPI_FIFO_TX_INT_MASK;
@@ -585,14 +597,16 @@ uint32_t SPI_GetIntFlag(SPI_T *spi, uint32_t u32Mask)
 }
 
 /**
-  * @brief  Clear SPI related interrupt flags specified by u32Mask parameter.
-  * @param  spi is the base address of SPI module.
-  * @param  u32Mask is the combination of all related interrupt sources.
-  *         Each bit corresponds to a interrupt source.
-  *         This parameter decides which interrupt flags will be cleared.
-  *            (SPI_UNIT_INT_MASK, SPI_SSTA_INT_MASK,
-  *            SPI_FIFO_RXOV_INT_MASK, SPI_FIFO_TIMEOUT_INT_MASK)
+  * @brief  Clear interrupt flag.
+  * @param[in]  spi The pointer of the specified SPI module.
+  * @param[in]  u32Mask The combination of all related interrupt sources.
+  *                     Each bit corresponds to a interrupt source.
+  *                     This parameter decides which interrupt flags will be cleared.
+  *                     (SPI_UNIT_INT_MASK, SPI_SSTA_INT_MASK,
+  *                     SPI_FIFO_RXOV_INT_MASK, SPI_FIFO_TIMEOUT_INT_MASK)
   * @return None
+  * @details Clear SPI related interrupt flags specified by u32Mask parameter.
+  * @note   M05xxBN only supports SPI_UNIT_INT_MASK and SPI_SSTA_INT_MASK in u32Mask parameter.
   */
 void SPI_ClearIntFlag(SPI_T *spi, uint32_t u32Mask)
 {
@@ -602,9 +616,8 @@ void SPI_ClearIntFlag(SPI_T *spi, uint32_t u32Mask)
     if(u32Mask & SPI_SSTA_INT_MASK)
         spi->CNTRL2 |= SPI_CNTRL2_SLV_START_INTSTS_Msk; /* Clear slave 3-wire mode start interrupt flag */
 
-    if(((SYS->PDID & 0xF0000000) == 0) || ((SYS->PDID & 0xF0000000) == 0x10000000)) /* M05xxAN or M05xxBN */
-        return; /* M05xxAN and M05xxBN does not support the following functions */
-
+    /* M05xxBN does not support the following functions */
+    
     if(u32Mask & SPI_FIFO_RXOV_INT_MASK)
         spi->STATUS = SPI_STATUS_RX_OVERRUN_Msk; /* Clear RX overrun interrupt flag */
 
@@ -613,14 +626,16 @@ void SPI_ClearIntFlag(SPI_T *spi, uint32_t u32Mask)
 }
 
 /**
-  * @brief  Get SPI related status specified by u32Mask parameter.
-  * @param  spi is the base address of SPI module.
-  * @param  u32Mask is the combination of all related sources.
-  *         Each bit corresponds to a source.
-  *         This parameter decides which flags will be read.
-  *            (SPI_BUSY_MASK, SPI_RX_EMPTY_MASK, SPI_RX_FULL_MASK,
-  *            SPI_TX_EMPTY_MASK, SPI_TX_FULL_MASK)
+  * @brief  Get SPI status.
+  * @param[in]  spi The pointer of the specified SPI module.
+  * @param[in]  u32Mask The combination of all related sources.
+  *             Each bit corresponds to a source.
+  *             This parameter decides which flags will be read.
+  *             (SPI_BUSY_MASK, SPI_RX_EMPTY_MASK, SPI_RX_FULL_MASK,
+  *             SPI_TX_EMPTY_MASK, SPI_TX_FULL_MASK)
   * @return Flags of selected sources.
+  * @details Get SPI related status specified by u32Mask parameter.
+  * @note   M05xxBN only supports SPI_BUSY_MASK in u32Mask parameter.
   */
 uint32_t SPI_GetStatus(SPI_T *spi, uint32_t u32Mask)
 {
@@ -630,9 +645,8 @@ uint32_t SPI_GetStatus(SPI_T *spi, uint32_t u32Mask)
     if((u32Mask & SPI_BUSY_MASK) && (spi->CNTRL & SPI_CNTRL_GO_BUSY_Msk))
         u32Flag |= SPI_BUSY_MASK;
 
-    if(((SYS->PDID & 0xF0000000) == 0) || ((SYS->PDID & 0xF0000000) == 0x10000000)) /* M05xxAN or M05xxBN */
-        return u32Flag; /* M05xxAN and M05xxBN does not support the following functions */
-
+    /* M05xxBN does not support the following functions */
+    
     /* Check RX empty flag */
     if((u32Mask & SPI_RX_EMPTY_MASK) && (spi->CNTRL & SPI_CNTRL_RX_EMPTY_Msk))
         u32Flag |= SPI_RX_EMPTY_MASK;
@@ -652,10 +666,10 @@ uint32_t SPI_GetStatus(SPI_T *spi, uint32_t u32Mask)
     return u32Flag;
 }
 
-/*@}*/ /* end of group M051_SPI_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group SPI_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_SPI_Driver */
+/*@}*/ /* end of group SPI_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 /*** (C) COPYRIGHT 2014 Nuvoton Technology Corp. ***/

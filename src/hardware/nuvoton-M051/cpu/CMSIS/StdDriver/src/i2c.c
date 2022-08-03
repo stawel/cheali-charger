@@ -1,39 +1,41 @@
 /**************************************************************************//**
  * @file     i2c.c
  * @version  V3.00
- * $Revision: 4 $
- * $Date: 14/01/28 10:49a $
+ * $Revision: 7 $
+ * $Date: 15/05/20 2:07p $
  * @brief    M051 series I2C driver source file
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 #include "M051Series.h"
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_I2C_Driver I2C Driver
+/** @addtogroup I2C_Driver I2C Driver
   @{
 */
 
 
-/** @addtogroup M051_I2C_EXPORTED_FUNCTIONS I2C Exported Functions
+/** @addtogroup I2C_EXPORTED_FUNCTIONS I2C Exported Functions
   @{
 */
 
 /**
-  * @brief      Enable specify I2C controller and set divider
+  * @brief      Enable specify I2C Controller and set Clock Divider
   *
   * @param[in]  i2c         Specify I2C port
-  * @param[in]  u32BusClock The target I2C bus clock in Hz
+  * @param[in]  u32BusClock The target I2C Bus clock in Hz
   *
-  * @return     Actual I2C bus clock frequency
+  * @return     Actual I2C Bus Clock frequency
   *
-  * @details    The function enable the specify I2C controller and set proper clock divider
+  * @details    The function enable the specify I2C Controller and set proper Clock Divider
   *             in I2C CLOCK DIVIDED REGISTER (I2CLK) according to the target I2C Bus clock.
-  *             I2C bus clock = PCLK / (4*(divider+1).
+  *             I2C Bus clock = PCLK / (4*(divider+1).
   *
   */
 uint32_t I2C_Open(I2C_T *i2c, uint32_t u32BusClock)
@@ -50,34 +52,39 @@ uint32_t I2C_Open(I2C_T *i2c, uint32_t u32BusClock)
 }
 
 /**
-  * @brief      Disable specify I2C controller
+  * @brief      Disable specify I2C Controller
   *
   * @param[in]  i2c         Specify I2C port
     *
   * @return     None
   *
-  * @details    Reset I2C controller and disable specify I2C port.
+  * @details    Reset I2C Controller and disable specify I2C port.
     *
   */
 
 void I2C_Close(I2C_T *i2c)
 {
     /* Reset I2C controller */
-    SYS->IPRSTC2 |= SYS_IPRSTC2_I2C_RST_Msk;
-    SYS->IPRSTC2 &= ~SYS_IPRSTC2_I2C_RST_Msk;
+	  if((uint32_t)i2c == I2C0_BASE) {
+        SYS->IPRSTC2 |= SYS_IPRSTC2_I2C0_RST_Msk;
+        SYS->IPRSTC2 &= ~SYS_IPRSTC2_I2C0_RST_Msk;
+    } else if((uint32_t)i2c == I2C1_BASE) {
+        SYS->IPRSTC2 |= SYS_IPRSTC2_I2C1_RST_Msk;
+        SYS->IPRSTC2 &= ~SYS_IPRSTC2_I2C1_RST_Msk;
+    }
 
     /* Disable I2C */
     i2c->I2CON &= ~I2C_I2CON_ENS1_Msk;
 }
 
 /**
-  * @brief      Clear time-out flag
+  * @brief      Clear Time-out Counter flag
   *
   * @param[in]  i2c         Specify I2C port
     *
   * @return     None
   *
-  * @details    The function is used for clear I2C bus time-out flag.
+  * @details    When Time-out flag will be set, use this function to clear I2C Bus Time-out Counter flag .
     *
   */
 void I2C_ClearTimeoutFlag(I2C_T *i2c)
@@ -86,7 +93,7 @@ void I2C_ClearTimeoutFlag(I2C_T *i2c)
 }
 
 /**
-  * @brief      Set control bit of I2C controller
+  * @brief      Set control bit of I2C Controller
   *
   * @param[in]  i2c         Specify I2C port
   * @param[in]  u8Start     Set I2C START condition
@@ -96,7 +103,7 @@ void I2C_ClearTimeoutFlag(I2C_T *i2c)
   *
   * @return     None
   *
-  * @details    The function set I2C control bit of I2C bus protocol.
+  * @details    The function set I2C control bit of I2C Bus protocol.
   *
   */
 void I2C_Trigger(I2C_T *i2c, uint8_t u8Start, uint8_t u8Stop, uint8_t u8Si, uint8_t u8Ack)
@@ -146,13 +153,13 @@ void I2C_EnableInt(I2C_T *i2c)
 }
 
 /**
- * @brief      Get I2C Bus Clock
+ * @brief      Get I2C Bus clock
  *
  * @param[in]  i2c          Specify I2C port
  *
  * @return     The actual I2C Bus clock in Hz
  *
- * @details    To get the actual I2C Bus Clock frequency.
+ * @details    To get the actual I2C Bus clock frequency.
  */
 uint32_t I2C_GetBusClockFreq(I2C_T *i2c)
 {
@@ -162,14 +169,14 @@ uint32_t I2C_GetBusClockFreq(I2C_T *i2c)
 }
 
 /**
- * @brief      Set I2C Bus Clock
+ * @brief      Set I2C Bus clock
  *
  * @param[in]  i2c          Specify I2C port
- * @param[in]  u32BusClock  The target I2C Bus Clock in Hz
+ * @param[in]  u32BusClock  The target I2C Bus clock in Hz
  *
  * @return     The actual I2C Bus clock in Hz
  *
- * @details    To set the actual I2C Bus Clock frequency.
+ * @details    To set the actual I2C Bus clock frequency.
  */
 uint32_t I2C_SetBusClockFreq(I2C_T *i2c, uint32_t u32BusClock)
 {
@@ -196,13 +203,13 @@ uint32_t I2C_GetIntFlag(I2C_T *i2c)
 }
 
 /**
- * @brief      Get I2C bus Status code
+ * @brief      Get I2C bus Status Code
  *
  * @param[in]  i2c          Specify I2C port
  *
  * @return     I2C status code
  *
- * @details    To get I2C bus status code.
+ * @details    To get I2C Bus Status Code.
  */
 uint32_t I2C_GetStatus(I2C_T *i2c)
 {
@@ -244,12 +251,12 @@ void I2C_SetData(I2C_T *i2c, uint8_t u8Data)
  * @param[in]  i2c          I2C port
  * @param[in]  u8SlaveNo    Set the number of I2C address register (0~3)
  * @param[in]  u8SlaveAddr  7-bit slave address
- * @param[in]  u8GCMode     Enable GC mode
+ * @param[in]  u8GCMode     Enable/Disable GC Mode (I2C_GCMODE_ENABLE / I2C_GCMODE_DISABLE)
  *
  * @return     None
  *
  * @details    This function is used to set 7-bit slave addresses in I2C SLAVE ADDRESS REGISTER (I2CADDR0~3)
- *             and enable GC mode.
+ *             and enable GC Mode.
  *
  */
 void I2C_SetSlaveAddr(I2C_T *i2c, uint8_t u8SlaveNo, uint8_t u8SlaveAddr, uint8_t u8GCMode)
@@ -305,15 +312,15 @@ void I2C_SetSlaveAddrMask(I2C_T *i2c, uint8_t u8SlaveNo, uint8_t u8SlaveAddrMask
 }
 
 /**
- * @brief      Enable Time-out Function and support long time-out
+ * @brief      Enable Time-out Counter Function and support Long Time-out
  *
  * @param[in]  i2c              I2C port
- * @param[in]  u8LongTimeout    Configure DIV4 to enable long time-out
+ * @param[in]  u8LongTimeout    Configure DIV4 to enable Long Time-out (0/1)
  *
  * @return     None
  *
- * @details    This function enable time-out function and configure DIV4 to support long
- *             time-out.
+ * @details    This function enable Time-out counter function and configure DIV4 to support Long
+ *             Time-out.
  *
  */
 void I2C_EnableTimeout(I2C_T *i2c, uint8_t u8LongTimeout)
@@ -327,13 +334,13 @@ void I2C_EnableTimeout(I2C_T *i2c, uint8_t u8LongTimeout)
 }
 
 /**
- * @brief      Disable Time-out Function
+ * @brief      Disable Time-out Counter Function
  *
  * @param[in]  i2c          I2C port
  *
  * @return     None
  *
- * @details    This function disable time-out function.
+ * @details    To disable Time-out counter function in I2CTOC register.
  *
  */
 void I2C_DisableTimeout(I2C_T *i2c)
@@ -348,7 +355,7 @@ void I2C_DisableTimeout(I2C_T *i2c)
  *
  * @return     None
  *
- * @details    The function is used to enable wake-up function of I2C controller
+ * @details    To enable Wake-up function of I2C Wake-up control register.
  *
  */
 void I2C_EnableWakeup(I2C_T *i2c)
@@ -363,7 +370,7 @@ void I2C_EnableWakeup(I2C_T *i2c)
  *
  * @return     None
  *
- * @details    The function is used to disable wake-up function of I2C controller
+ * @details    To disable Wake-up function of I2C Wake-up control register.
  *
  */
 void I2C_DisableWakeup(I2C_T *i2c)
@@ -371,10 +378,10 @@ void I2C_DisableWakeup(I2C_T *i2c)
     i2c->I2CWKUPCON &= ~I2C_I2CWKUPCON_WKUPEN_Msk;
 }
 
-/*@}*/ /* end of group M051_I2C_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group I2C_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_I2C_Driver */
+/*@}*/ /* end of group I2C_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 /*** (C) COPYRIGHT 2014 Nuvoton Technology Corp. ***/

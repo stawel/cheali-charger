@@ -1,11 +1,13 @@
 /**************************************************************************//**
  * @file     clk.h
  * @version  V3.0
- * $Revision: 17 $
- * $Date: 14/01/28 1:11p $
+ * $Revision: 33 $
+ * $Date: 17/07/24 1:30p $
  * @brief    M051 Series Clock Control Driver Header File
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
@@ -13,22 +15,22 @@
 #define __CLK_H__
 
 
-#include "M051Series.h"
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+
+
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_CLK_Driver CLK Driver
+/** @addtogroup CLK_Driver CLK Driver
   @{
 */
 
-/** @addtogroup M051_CLK_EXPORTED_FUNCTIONS CLK Exported Constants
+/** @addtogroup CLK_EXPORTED_CONSTANTS CLK Exported Constants
   @{
 */
 
@@ -37,13 +39,6 @@ extern "C"
 #define FREQ_100MHZ       100000000
 #define FREQ_200MHZ       200000000
 
-/*---------------------------------------------------------------------------------------------------------*/
-/*  PWRCON constant definitions.                                                                           */
-/*---------------------------------------------------------------------------------------------------------*/
-#define CLK_PWRCON_HXT_EN       (0x01UL<<CLK_PWRCON_XTL12M_EN_Pos) /*!< Enable 4~24 MHz External High Speed Crystal (HXT) */
-#define CLK_PWRCON_HIRC_EN      (0x01UL<<CLK_PWRCON_OSC22M_EN_Pos) /*!< Enable 22.1184 MHz Internal High Speed RC Oscillator (HIRC) */
-#define CLK_PWRCON_LIRC_EN      (0x01UL<<CLK_PWRCON_OSC10K_EN_Pos) /*!< Enable 10 kHz Internal Low Speed RC Oscillator (LIRC) */
-
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  CLKSEL0 constant definitions.                                                                          */
@@ -51,11 +46,12 @@ extern "C"
 #define CLK_CLKSEL0_HCLK_S_HXT          0x00UL /*!< Setting HCLK clock source as HXT */
 #define CLK_CLKSEL0_HCLK_S_PLL          0x02UL /*!< Setting HCLK clock source as PLL */
 #define CLK_CLKSEL0_HCLK_S_LIRC         0x03UL /*!< Setting HCLK clock source as LIRC */
-#define CLK_CLKSEL0_HCLK_S_HIRC         0x07UL /*!< Setting HCLKclock source as HIRC */
+#define CLK_CLKSEL0_HCLK_S_HIRC         0x07UL /*!< Setting HCLK clock source as HIRC */
 #define CLK_CLKSEL0_STCLK_S_HXT         0x00UL /*!< Setting SysTick clock source as HXT */
 #define CLK_CLKSEL0_STCLK_S_HXT_DIV2    0x10UL /*!< Setting SysTick clock source as HXT/2 */
 #define CLK_CLKSEL0_STCLK_S_HCLK_DIV2   0x18UL /*!< Setting SysTick clock source as HCLK/2 */
-#define CLK_CLKSEL0_STCLK_S_HIRC_DIV2   0x38UL /*!< Setting SysTick clock source as internal HIRC/2 */
+#define CLK_CLKSEL0_STCLK_S_HIRC_DIV2   0x38UL /*!< Setting SysTick clock source as HIRC/2 */
+#define CLK_CLKSEL0_STCLK_S_HCLK        0x04UL /*!< Setting SysTick clock source as HCLK */
 
 
 /*---------------------------------------------------------------------------------------------------------*/
@@ -88,7 +84,7 @@ extern "C"
 #define CLK_CLKSEL1_TMR2_S_HIRC         0x00070000UL /*!< Setting Timer 2 clock source as HIRC */
 #define CLK_CLKSEL1_TMR3_S_HXT          0x00000000UL /*!< Setting Timer 3 clock source as HXT */
 #define CLK_CLKSEL1_TMR3_S_HCLK         0x00200000UL /*!< Setting Timer 3 clock source as HCLK */
-#define CLK_CLKSEL1_TMR3_S_S_T3         0x00300000UL /*!< Setting Timer 3 clock source as T3 */
+#define CLK_CLKSEL1_TMR3_S_T3           0x00300000UL /*!< Setting Timer 3 clock source as T3 */
 #define CLK_CLKSEL1_TMR3_S_LIRC         0x00500000UL /*!< Setting Timer 3 clock source as LIRC */
 #define CLK_CLKSEL1_TMR3_S_HIRC         0x00700000UL /*!< Setting Timer 3 clock source as HIRC */
 #define CLK_CLKSEL1_UART_S_HXT          0x00000000UL /*!< Setting UART clock source as HXT */
@@ -151,53 +147,59 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /*  MODULE constant definitions.                                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
-#define MODULE_APBCLK(x)         ((x >>31) & 0x1)    /*!< Calculate APBCLK offset on MODULE index */
-#define MODULE_CLKSEL(x)         ((x >>29) & 0x3)    /*!< Calculate CLKSEL offset on MODULE index */
-#define MODULE_CLKSEL_Msk(x)     ((x >>25) & 0xf)    /*!< Calculate CLKSEL mask offset on MODULE index */
-#define MODULE_CLKSEL_Pos(x)     ((x >>20) & 0x1f)   /*!< Calculate CLKSEL position offset on MODULE index */
-#define MODULE_CLKDIV(x)         ((x >>18) & 0x3)    /*!< Calculate APBCLK CLKDIV on MODULE index */
-#define MODULE_CLKDIV_Msk(x)     ((x >>10) & 0xff)   /*!< Calculate CLKDIV mask offset on MODULE index */
-#define MODULE_CLKDIV_Pos(x)     ((x >>5 ) & 0x1f)   /*!< Calculate CLKDIV position offset on MODULE index */
-#define MODULE_IP_EN_Pos(x)      ((x >>0 ) & 0x1f)   /*!< Calculate APBCLK offset on MODULE index */
+#define MODULE_APBCLK(x)         (((x) >>30) & 0x3)    /*!< Calculate APBCLK offset on MODULE index, 0x0:AHBCLK, 0x1:APBCLK */
+#define MODULE_CLKSEL(x)         (((x) >>28) & 0x3)    /*!< Calculate CLKSEL offset on MODULE index, 0x0:CLKSEL0, 0x1:CLKSEL1, 0x3:CLKSEL2 */
+#define MODULE_CLKSEL_Msk(x)     (((x) >>25) & 0x7)    /*!< Calculate CLKSEL mask offset on MODULE index */
+#define MODULE_CLKSEL_Pos(x)     (((x) >>20) & 0x1f)   /*!< Calculate CLKSEL position offset on MODULE index */
+#define MODULE_CLKDIV(x)         (((x) >>18) & 0x3)    /*!< Calculate APBCLK CLKDIV on MODULE index, 0x0:CLKDIV */
+#define MODULE_CLKDIV_Msk(x)     (((x) >>10) & 0xff)   /*!< Calculate CLKDIV mask offset on MODULE index */
+#define MODULE_CLKDIV_Pos(x)     (((x) >>5 ) & 0x1f)   /*!< Calculate CLKDIV position offset on MODULE index */
+#define MODULE_IP_EN_Pos(x)      (((x) >>0 ) & 0x1f)   /*!< Calculate APBCLK offset on MODULE index */
 #define MODULE_NoMsk             0x0                 /*!< Not mask on MODULE index */
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
-/*                     APBCLK(31)|CLKSEL(30:29)|CLKSEL_Msk(28:25) |CLKSEL_Pos(24:20)|CLKDIV(19:18)|CLKDIV_Msk(17:10)|CLKDIV_Pos(9:5)|IP_EN_Pos(4:0)*/
+/*                     APBCLK(31:30)|CLKSEL(29:28)|CLKSEL_Msk(27:25)|CLKSEL_Pos(24:20)|CLKDIV(19:18)|CLKDIV_Msk(17:10)|CLKDIV_Pos(9:5)|IP_EN_Pos(4:0)*/
 /*-------------------------------------------------------------------------------------------------------------------------------------------------*/
-#define WDT_MODULE     ((0x0<<31)|(0x1<<29)    |(0x3<<25)         |( 0<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_WDT_EN_Pos )     /*!< WDT Module */
-#define TMR0_MODULE    ((0x0<<31)|(0x1<<29)    |(0x7<<25)         |( 8<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_TMR0_EN_Pos)     /*!< TMR0 Module */
-#define TMR1_MODULE    ((0x0<<31)|(0x1<<29)    |(0x7<<25)         |(12<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_TMR1_EN_Pos)     /*!< TMR1 Module */
-#define TMR2_MODULE    ((0x0<<31)|(0x1<<29)    |(0x7<<25)         |(16<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_TMR2_EN_Pos)     /*!< TMR2 Module */
-#define TMR3_MODULE    ((0x0<<31)|(0x1<<29)    |(0x7<<25)         |(20<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_TMR3_EN_Pos)     /*!< TMR3 Module */
-#define FDIV_MODULE    ((0x0<<31)|(0x3<<29)    |(0x3<<25)         |( 2<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_FDIV_EN_Pos)     /*!< FDIV Module */
-#define I2C0_MODULE    ((0x0<<31)              |(MODULE_NoMsk<<25)                                |(MODULE_NoMsk<<10)               |CLK_APBCLK_I2C0_EN_Pos)     /*!< I2C0 Module */
-#define I2C1_MODULE    ((0x0<<31)              |(MODULE_NoMsk<<25)                                |(MODULE_NoMsk<<10)               |CLK_APBCLK_I2C1_EN_Pos)     /*!< I2C1 Module */
-#define SPI0_MODULE    ((0x0<<31)|(0x1<<29)    |(0x1<<25)         |( 4<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_SPI0_EN_Pos)     /*!< SPI0 Module */
-#define SPI1_MODULE    ((0x0<<31)|(0x1<<29)    |(0x1<<25)         |( 5<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_SPI1_EN_Pos)     /*!< SPI1 Module */
-#define UART0_MODULE   ((0x0<<31)|(0x1<<29)    |(0x3<<25)         |(24<<20)         |(0x0<<18)    |(0x0F<<10)       |( 8<<5)        |CLK_APBCLK_UART0_EN_Pos)    /*!< UART0 Module */
-#define UART1_MODULE   ((0x0<<31)|(0x1<<29)    |(0x3<<25)         |(24<<20)         |(0x0<<18)    |(0x0F<<10)       |( 8<<5)        |CLK_APBCLK_UART1_EN_Pos)    /*!< UART1 Module */
-#define PWM01_MODULE   ((0x0<<31)|(0x1<<29)    |(0x3<<25)         |(28<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_PWM01_EN_Pos)    /*!< PWM01 Module */
-#define PWM23_MODULE   ((0x0<<31)|(0x1<<29)    |(0x3<<25)         |(30<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_PWM23_EN_Pos)    /*!< PWM23 Module */
-#define PWM45_MODULE   ((0x0<<31)|(0x3<<29)    |(0x3<<25)         |( 4<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_PWM45_EN_Pos)    /*!< PWM45 Module */
-#define PWM67_MODULE   ((0x0<<31)|(0x3<<29)    |(0x3<<25)         |( 6<<20)                       |(MODULE_NoMsk<<10)               |CLK_APBCLK_PWM67_EN_Pos)    /*!< PWM67 Module */
-#define ADC_MODULE     ((0x0<<31)|(0x1<<29)    |(0x3<<25)         |( 2<<20)         |(0x0<<18)    |(0xFF<<10)        |(16<<5)       |CLK_APBCLK_ADC_EN_Pos)      /*!< ADC Module */
-#define ACMP01_MODULE  ((0x0<<31)              |(MODULE_NoMsk<<25)                                |(MODULE_NoMsk<<10)               |CLK_APBCLK_ACMP01_EN_Pos)   /*!< ACMP01 Module */
-#define ACMP23_MODULE  ((0x0<<31)              |(MODULE_NoMsk<<25)                                |(MODULE_NoMsk<<10)               |CLK_APBCLK_ACMP23_EN_Pos)   /*!< ACMP23 Module */
-#define WWDT_MODULE    ((MODULE_NoMsk<<31)|(0x3<<29)|(0x3<<25)    |(16<<20)                       |(MODULE_NoMsk<<10)               |MODULE_NoMsk )              /*!< WWDT Module */
+
+#define ISP_MODULE     ((0UL<<30)          |(MODULE_NoMsk<<25)                   |(MODULE_NoMsk<<10)        |CLK_AHBCLK_ISP_EN_Pos )     /*!< ISP Module */
+#define EBI_MODULE     ((0UL<<30)          |(MODULE_NoMsk<<25)                   |(MODULE_NoMsk<<10)        |CLK_AHBCLK_EBI_EN_Pos )     /*!< EBI Module */
+#define HDIV_MODULE    ((0UL<<30)          |(MODULE_NoMsk<<25)                   |(MODULE_NoMsk<<10)        |CLK_AHBCLK_HDIV_EN_Pos )    /*!< HDIV Module */
+
+#define WDT_MODULE     ((1UL<<30)|(0x1<<28)|(0x3<<25)         |( 0<<20)          |(MODULE_NoMsk<<10)        |CLK_APBCLK_WDT_EN_Pos )     /*!< WDT Module */
+#define TMR0_MODULE    ((1UL<<30)|(0x1<<28)|(0x7<<25)         |( 8<<20)          |(MODULE_NoMsk<<10)        |CLK_APBCLK_TMR0_EN_Pos)     /*!< TMR0 Module */
+#define TMR1_MODULE    ((1UL<<30)|(0x1<<28)|(0x7<<25)         |(12<<20)          |(MODULE_NoMsk<<10)        |CLK_APBCLK_TMR1_EN_Pos)     /*!< TMR1 Module */
+#define TMR2_MODULE    ((1UL<<30)|(0x1<<28)|(0x7<<25)         |(16<<20)          |(MODULE_NoMsk<<10)        |CLK_APBCLK_TMR2_EN_Pos)     /*!< TMR2 Module */
+#define TMR3_MODULE    ((1UL<<30)|(0x1<<28)|(0x7<<25)         |(20<<20)          |(MODULE_NoMsk<<10)        |CLK_APBCLK_TMR3_EN_Pos)     /*!< TMR3 Module */
+#define FDIV_MODULE    ((1UL<<30)|(0x3<<28)|(0x3<<25)         |( 2<<20)          |(MODULE_NoMsk<<10)        |CLK_APBCLK_FDIV_EN_Pos)     /*!< FDIV Module */
+#define I2C0_MODULE    ((1UL<<30)          |(MODULE_NoMsk<<25)                   |(MODULE_NoMsk<<10)        |CLK_APBCLK_I2C0_EN_Pos)     /*!< I2C0 Module */
+#define I2C1_MODULE    ((1UL<<30)          |(MODULE_NoMsk<<25)                   |(MODULE_NoMsk<<10)        |CLK_APBCLK_I2C1_EN_Pos)     /*!< I2C1 Module */
+#define SPI0_MODULE    ((1UL<<30)|(0x1<<28)|(0x1<<25)         |( 4<<20)          |(MODULE_NoMsk<<10)        |CLK_APBCLK_SPI0_EN_Pos)     /*!< SPI0 Module */
+#define SPI1_MODULE    ((1UL<<30)|(0x1<<28)|(0x1<<25)         |( 5<<20)          |(MODULE_NoMsk<<10)        |CLK_APBCLK_SPI1_EN_Pos)     /*!< SPI1 Module */
+#define UART0_MODULE   ((1UL<<30)|(0x1<<28)|(0x3<<25)         |(24<<20)|(0x0<<18)|(0x0F<<10)        |( 8<<5)|CLK_APBCLK_UART0_EN_Pos)    /*!< UART0 Module */
+#define UART1_MODULE   ((1UL<<30)|(0x1<<28)|(0x3<<25)         |(24<<20)|(0x0<<18)|(0x0F<<10)        |( 8<<5)|CLK_APBCLK_UART1_EN_Pos)    /*!< UART1 Module */
+#define PWM01_MODULE   ((1UL<<30)|(0x1<<28)|(0x3<<25)         |(28<<20)          |(MODULE_NoMsk<<10)        |CLK_APBCLK_PWM01_EN_Pos)    /*!< PWM01 Module */
+#define PWM23_MODULE   ((1UL<<30)|(0x1<<28)|(0x3<<25)         |(30<<20)          |(MODULE_NoMsk<<10)        |CLK_APBCLK_PWM23_EN_Pos)    /*!< PWM23 Module */
+#define PWM45_MODULE   ((1UL<<30)|(0x3<<28)|(0x3<<25)         |( 4<<20)          |(MODULE_NoMsk<<10)        |CLK_APBCLK_PWM45_EN_Pos)    /*!< PWM45 Module */
+#define PWM67_MODULE   ((1UL<<30)|(0x3<<28)|(0x3<<25)         |( 6<<20)          |(MODULE_NoMsk<<10)        |CLK_APBCLK_PWM67_EN_Pos)    /*!< PWM67 Module */
+#define ADC_MODULE     ((1UL<<30)|(0x1<<28)|(0x3<<25)         |( 2<<20)|(0x0<<18)|(0xFF<<10)        |(16<<5)|CLK_APBCLK_ADC_EN_Pos)      /*!< ADC Module */
+#define ACMP01_MODULE  ((1UL<<30)          |(MODULE_NoMsk<<25)                   |(MODULE_NoMsk<<10)        |CLK_APBCLK_ACMP01_EN_Pos)   /*!< ACMP01 Module */
+#define ACMP23_MODULE  ((1UL<<30)          |(MODULE_NoMsk<<25)                   |(MODULE_NoMsk<<10)        |CLK_APBCLK_ACMP23_EN_Pos)   /*!< ACMP23 Module */
+#define WWDT_MODULE    ((1UL<<30)|(0x3<<28)|(0x3<<25)         |(16<<20)          |(MODULE_NoMsk<<10)        |CLK_APBCLK_WDT_EN_Pos )     /*!< WWDT Module */
 
 
-/*@}*/ /* end of group M051_CLK_EXPORTED_CONSTANTS */
+/*@}*/ /* end of group CLK_EXPORTED_CONSTANTS */
 
-
-/** @addtogroup M051_CLK_EXPORTED_FUNCTIONS CLK Exported Functions
+/** @addtogroup CLK_EXPORTED_FUNCTIONS CLK Exported Functions
   @{
 */
 
 
 /**
-  * @brief  This function get PLL frequency. The frequency unit is Hz.
-  * @return PLL frequency
+  * @brief      Get PLL clock frequency
+  * @param      None     
+  * @return     PLL frequency
+  * @details    This function get PLL frequency. The frequency unit is Hz.    
   */
-static __INLINE uint32_t CLK_GetPLLClockFreq(void)
+__STATIC_INLINE uint32_t CLK_GetPLLClockFreq(void)
 {
     uint32_t u32PllFreq = 0, u32PllReg;
     uint32_t u32FIN, u32NF, u32NR, u32NO;
@@ -229,13 +231,14 @@ static __INLINE uint32_t CLK_GetPLLClockFreq(void)
 
 /**
   * @brief      This function execute delay function.
-  * @param      us  Delay time. The Max value is 2^24 / CPU Clock(MHz). Ex:
+  * @param[in]  us  Delay time. The Max value is 2^24 / CPU Clock(MHz). Ex:
   *                             50MHz => 335544us, 48MHz => 349525us, 28MHz => 699050us ...
   * @return     None
   * @details    Use the SysTick to generate the delay time and the UNIT is in us.
   *             The SysTick clock source is from HCLK, i.e the same as system core clock.
+  *             User can use SystemCoreClockUpdate() to calculate CyclesPerUs automatically before using this function.
   */
-static __INLINE void CLK_SysTickDelay(uint32_t us)
+__STATIC_INLINE void CLK_SysTickDelay(uint32_t us)
 {
     SysTick->LOAD = us * CyclesPerUs;
     SysTick->VAL  = (0x00);
@@ -243,6 +246,50 @@ static __INLINE void CLK_SysTickDelay(uint32_t us)
 
     /* Waiting for down-count to zero */
     while((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == 0);
+    
+    /* Disable SysTick counter */
+    SysTick->CTRL = 0;    
+}
+
+/**
+  * @brief      This function execute long delay function.
+  * @param[in]  us  Delay time. 
+  * @return     None
+  * @details    Use the SysTick to generate the long delay time and the UNIT is in us.
+  *             The SysTick clock source is from HCLK, i.e the same as system core clock.
+  *             User can use SystemCoreClockUpdate() to calculate CyclesPerUs automatically before using this function.
+  */
+__STATIC_INLINE void CLK_SysTickLongDelay(uint32_t us)
+{
+    uint32_t delay;
+        
+    /* It should <= 335544us for each delay loop */
+    delay = 335544UL;
+
+    do
+    {
+        if(us > delay)
+        {
+            us -= delay;
+        }
+        else
+        {
+            delay = us;
+            us = 0UL;
+        }        
+        
+        SysTick->LOAD = delay * CyclesPerUs;
+        SysTick->VAL  = (0x0UL);
+        SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+
+        /* Waiting for down-count to zero */
+        while((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == 0UL);
+
+        /* Disable SysTick counter */
+        SysTick->CTRL = 0UL;
+    
+    }while(us > 0UL);
+    
 }
 
 
@@ -251,7 +298,6 @@ void CLK_EnableCKO(uint32_t u32ClkSrc, uint32_t u32ClkDiv, uint32_t u32ClkDivBy1
 void CLK_PowerDown(void);
 void CLK_Idle(void);
 uint32_t CLK_GetHXTFreq(void);
-uint32_t CLK_GetLXTFreq(void);
 uint32_t CLK_GetHCLKFreq(void);
 uint32_t CLK_GetPCLKFreq(void);
 uint32_t CLK_GetCPUFreq(void);
@@ -265,14 +311,19 @@ void CLK_EnableModuleClock(uint32_t u32ModuleIdx);
 void CLK_DisableModuleClock(uint32_t u32ModuleIdx);
 uint32_t CLK_EnablePLL(uint32_t u32PllClkSrc, uint32_t u32PllFreq);
 void CLK_DisablePLL(void);
-void CLK_WaitClockReady(uint32_t u32ClkMask);
+uint32_t CLK_WaitClockReady(uint32_t u32ClkMask);
+void CLK_EnableSysTick(uint32_t u32ClkSrc, uint32_t u32Count);
+void CLK_DisableSysTick(void);
 
 
-/*@}*/ /* end of group M051_CLK_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_CLK_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group CLK_EXPORTED_FUNCTIONS */
+
+/*@}*/ /* end of group CLK_Driver */
+
+/*@}*/ /* end of group Standard_Driver */
+
 
 #ifdef __cplusplus
 }

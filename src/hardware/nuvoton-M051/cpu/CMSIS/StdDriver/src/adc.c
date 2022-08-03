@@ -1,30 +1,32 @@
 /**************************************************************************//**
  * @file     adc.c
  * @version  V3.00
- * $Revision: 5 $
- * $Date: 14/02/10 2:47p $
+ * $Revision: 8 $
+ * $Date: 15/08/11 2:15p $
  * @brief    M051 series ADC driver source file
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 #include "M051Series.h"
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_ADC_Driver ADC Driver
+/** @addtogroup ADC_Driver ADC Driver
   @{
 */
 
-/** @addtogroup M051_ADC_EXPORTED_FUNCTIONS ADC Exported Functions
+/** @addtogroup ADC_EXPORTED_FUNCTIONS ADC Exported Functions
   @{
 */
 
 /**
   * @brief This API configures ADC module to be ready for convert the input from selected channel
-  * @param[in] adc Base address of ADC module
+  * @param[in] adc The pointer of the specified ADC module
   * @param[in] u32InputMode Decides the ADC analog input mode. Valid values are:
   *                          - \ref ADC_ADCR_DIFFEN_SINGLE_END      :Single end input mode
   *                          - \ref ADC_ADCR_DIFFEN_DIFFERENTIAL    :Differential input type
@@ -35,7 +37,7 @@
   *                       - \ref ADC_ADCR_ADMD_CONTINUOUS           :Continuous scan mode.
   * @param[in] u32ChMask Channel enable bit. Each bit corresponds to a input channel. Bit 0 is channel 0, bit 1 is channel 1..., bit 7 is channel 7.
   * @return  None
-  * @note M051 series MCU ADC can only convert 1 channel at a time. If more than 1 channels are enabled, only channel
+  * @note M051 series MCU ADC can only convert 1 channel at a time in single and burst mode. If more than 1 channels are enabled, only channel
   *       with smallest number will be convert.
   * @note This API does not turn on ADC power nor does trigger ADC conversion
   */
@@ -45,22 +47,23 @@ void ADC_Open(ADC_T *adc,
               uint32_t u32ChMask)
 {
 
-    ADC->ADCR = (ADC->ADCR & (~(ADC_ADCR_DIFFEN_Msk | ADC_ADCR_ADMD_Msk))) | \
-                u32InputMode | \
-                u32OpMode;
+    (adc)->ADCR = ((adc)->ADCR & (~(ADC_ADCR_DIFFEN_Msk | ADC_ADCR_ADMD_Msk))) | \
+                (u32InputMode) | \
+                (u32OpMode);
 
-    ADC->ADCHER = (ADC->ADCHER & ~ADC_ADCHER_CHEN_Msk) | (u32ChMask);
+    (adc)->ADCHER = ((adc)->ADCHER & ~ADC_ADCHER_CHEN_Msk) | (u32ChMask);
 
     return;
 }
 
 /**
   * @brief Disable ADC module
-  * @param[in] adc Base address of ADC module
+  * @param[in] adc The pointer of the specified ADC module
   * @return None
   */
 void ADC_Close(ADC_T *adc)
 {
+    (void) adc;
     SYS->IPRSTC2 |= SYS_IPRSTC2_ADC_RST_Msk;
     SYS->IPRSTC2 &= ~SYS_IPRSTC2_ADC_RST_Msk;
     return;
@@ -69,7 +72,7 @@ void ADC_Close(ADC_T *adc)
 
 /**
   * @brief Configure the hardware trigger condition and enable hardware trigger
-  * @param[in] adc Base address of ADC module
+  * @param[in] adc The pointer of the specified ADC module
   * @param[in] u32Source Decides the hardware trigger source. Valid values are:
   *                       - \ref ADC_ADCR_TRGS_STADC            :A/D conversion is started by external STADC pin.
   *                       - \ref ADC_ADCR_TRGS_PWM              :A/D conversion is started by PWM.
@@ -88,33 +91,33 @@ void ADC_EnableHWTrigger(ADC_T *adc,
                          uint32_t u32Source,
                          uint32_t u32Param)
 {
-    ADC->ADCR &= ~(ADC_ADCR_TRGS_Msk | ADC_ADCR_TRGCOND_Msk | ADC_ADCR_TRGEN_Msk);
+    (adc)->ADCR &= ~(ADC_ADCR_TRGS_Msk | ADC_ADCR_TRGCOND_Msk | ADC_ADCR_TRGEN_Msk);
     if(u32Source == ADC_ADCR_TRGS_STADC)
     {
-        ADC->ADCR |= u32Source | u32Param | ADC_ADCR_TRGEN_Msk;
+        (adc)->ADCR |= (u32Source) | (u32Param) | ADC_ADCR_TRGEN_Msk;
     }
     else
     {
-        ADC->ADTDCR = (ADC->ADTDCR & ~ADC_ADTDCR_PTDT_Msk) | u32Param;
-        ADC->ADCR |= u32Source | ADC_ADCR_TRGEN_Msk;
+        (adc)->ADTDCR = ((adc)->ADTDCR & ~ADC_ADTDCR_PTDT_Msk) | (u32Param);
+        (adc)->ADCR |= (u32Source) | ADC_ADCR_TRGEN_Msk;
     }
     return;
 }
 
 /**
   * @brief Disable hardware trigger ADC function.
-  * @param[in] adc Base address of ADC module
+  * @param[in] adc The pointer of the specified ADC module
   * @return None
   */
 void ADC_DisableHWTrigger(ADC_T *adc)
 {
-    ADC->ADCR &= ~(ADC_ADCR_TRGS_Msk | ADC_ADCR_TRGCOND_Msk | ADC_ADCR_TRGEN_Msk);
+    (adc)->ADCR &= ~(ADC_ADCR_TRGS_Msk | ADC_ADCR_TRGCOND_Msk | ADC_ADCR_TRGEN_Msk);
     return;
 }
 
 /**
   * @brief Enable the interrupt(s) selected by u32Mask parameter.
-  * @param[in] adc Base address of ADC module
+  * @param[in] adc The pointer of the specified ADC module
   * @param[in] u32Mask The combination of interrupt status bits listed below. Each bit
   *                    corresponds to a interrupt status. This parameter decides which
   *                    interrupts will be enabled.
@@ -125,19 +128,19 @@ void ADC_DisableHWTrigger(ADC_T *adc)
   */
 void ADC_EnableInt(ADC_T *adc, uint32_t u32Mask)
 {
-    if(u32Mask & ADC_ADF_INT)
-        ADC->ADCR |= ADC_ADCR_ADIE_Msk;
-    if(u32Mask & ADC_CMP0_INT)
-        ADC->ADCMPR[0] |= ADC_ADCMPR_CMPIE_Msk;
-    if(u32Mask & ADC_CMP1_INT)
-        ADC->ADCMPR[1] |= ADC_ADCMPR_CMPIE_Msk;
+    if((u32Mask) & ADC_ADF_INT)
+        (adc)->ADCR |= ADC_ADCR_ADIE_Msk;
+    if((u32Mask) & ADC_CMP0_INT)
+        (adc)->ADCMPR[0] |= ADC_ADCMPR_CMPIE_Msk;
+    if((u32Mask) & ADC_CMP1_INT)
+        (adc)->ADCMPR[1] |= ADC_ADCMPR_CMPIE_Msk;
 
     return;
 }
 
 /**
   * @brief Disable the interrupt(s) selected by u32Mask parameter.
-  * @param[in] adc Base address of ADC module
+  * @param[in] adc The pointer of the specified ADC module
   * @param[in] u32Mask The combination of interrupt status bits listed below. Each bit
   *                    corresponds to a interrupt status. This parameter decides which
   *                    interrupts will be disabled.
@@ -148,23 +151,23 @@ void ADC_EnableInt(ADC_T *adc, uint32_t u32Mask)
   */
 void ADC_DisableInt(ADC_T *adc, uint32_t u32Mask)
 {
-    if(u32Mask & ADC_ADF_INT)
-        ADC->ADCR &= ~ADC_ADCR_ADIE_Msk;
-    if(u32Mask & ADC_CMP0_INT)
-        ADC->ADCMPR[0] &= ~ADC_ADCMPR_CMPIE_Msk;
-    if(u32Mask & ADC_CMP1_INT)
-        ADC->ADCMPR[1] &= ~ADC_ADCMPR_CMPIE_Msk;
+    if((u32Mask) & ADC_ADF_INT)
+        (adc)->ADCR &= ~ADC_ADCR_ADIE_Msk;
+    if((u32Mask) & ADC_CMP0_INT)
+        (adc)->ADCMPR[0] &= ~ADC_ADCMPR_CMPIE_Msk;
+    if((u32Mask) & ADC_CMP1_INT)
+        (adc)->ADCMPR[1] &= ~ADC_ADCMPR_CMPIE_Msk;
 
     return;
 }
 
 
 
-/*@}*/ /* end of group M051_ADC_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group ADC_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_ADC_Driver */
+/*@}*/ /* end of group ADC_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 /*** (C) COPYRIGHT 2014 Nuvoton Technology Corp. ***/
 

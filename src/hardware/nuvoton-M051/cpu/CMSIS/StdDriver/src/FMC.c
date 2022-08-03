@@ -1,11 +1,13 @@
 /**************************************************************************//**
  * @file     fmc.c
  * @version  V3.00
- * $Revision: 11 $
- * $Date: 14/01/28 10:49a $
+ * $Revision: 14 $
+ * $Date: 15/05/20 2:07p $
  * @brief    M051 series FMC driver source file
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 
@@ -13,30 +15,32 @@
 #include <stdio.h>
 #include "M051Series.h"
 
-/** @addtogroup M051_Device_Driver M051 Device Driver
+/** @addtogroup Standard_Driver Standard Driver
   @{
 */
 
-/** @addtogroup M051_FMC_Driver FMC Driver
+/** @addtogroup FMC_Driver FMC Driver
   @{
 */
 
 
-/** @addtogroup M051_FMC_EXPORTED_FUNCTIONS FMC Exported Functions
+/** @addtogroup FMC_EXPORTED_FUNCTIONS FMC Exported Functions
   @{
 */
 
 
 /**
-  * @brief    Set boot source from LDROM or APROM after next software reset.
+  * @brief      Set boot source from LDROM or APROM after next software reset
   *
-  * @param    i32BootSrc[in]
-  *                             1: Boot from LDROM
-  *                             0: Boot from APROM
+  * @param[in]  i32BootSrc
+  *                1: Boot from LDROM
+  *                0: Boot from APROM
   *
-  * @details  This function is used to switch APROM boot or LDROM boot. User need to call
-  *           FMC_SetBootSource to select boot source first, then use CPU reset or
-  *           System Reset Request to reset system.
+  * @return   None
+  *
+  * @details   This function is used to switch APROM boot or LDROM boot. User need to call
+  *            FMC_SetBootSource to select boot source first, then use CPU reset or
+  *            System Reset Request to reset system.
   *
   */
 void FMC_SetBootSource(int32_t i32BootSrc)
@@ -50,6 +54,13 @@ void FMC_SetBootSource(int32_t i32BootSrc)
 
 /**
   * @brief    Disable ISP Functions
+  *
+  * @param    None
+  *
+  * @return   None
+  *
+  * @details  This function will clear ISPEN bit of ISPCON to disable ISP function
+  *
   */
 void FMC_Close(void)
 {
@@ -59,6 +70,10 @@ void FMC_Close(void)
 
 /**
   * @brief    Disable APROM update function
+  *
+  * @param    None
+  *
+  * @return   None
   *
   * @details  Disable APROM update function will forbid APROM programming when boot form APROM.
   *           APROM update is default to be disable.
@@ -73,6 +88,10 @@ void FMC_DisableAPUpdate(void)
 /**
   * @brief    Disable User Configuration update function
   *
+  * @param    None
+  *
+  * @return   None
+  *
   * @details  Disable User Configuration update function will forbid User Configuration programming.
   *           User Configuration update is default to be disable.
   */
@@ -85,6 +104,10 @@ void FMC_DisableConfigUpdate(void)
 /**
   * @brief    Disable LDROM update function
   *
+  * @param    None
+  *
+  * @return   None
+
   * @details  Disable LDROM update function will forbid LDROM programming.
   *           LDROM update is default to be disable.
   */
@@ -96,6 +119,10 @@ void FMC_DisableLDUpdate(void)
 
 /**
   * @brief    Enable APROM update function
+  *
+  * @param    None
+  *
+  * @return   None
   *
   * @details  Enable APROM to be able to program when boot from APROM.
   *
@@ -109,6 +136,10 @@ void FMC_EnableAPUpdate(void)
 /**
   * @brief    Enable User Configuration update function
   *
+  * @param    None
+  *
+  * @return   None
+  *
   * @details  Enable User Configuration to be able to program.
   *
   */
@@ -120,6 +151,10 @@ void FMC_EnableConfigUpdate(void)
 
 /**
   * @brief    Enable LDROM update function
+  *
+  * @param    None
+  *
+  * @return   None
   *
   * @details  Enable LDROM to be able to program.
   *
@@ -133,8 +168,10 @@ void FMC_EnableLDUpdate(void)
 /**
   * @brief    Get the current boot source
   *
-  * @retval   0: This chip is currently booting from APROM
-  * @retval   1: This chip is currently booting from LDROM
+  * @param    None
+  *
+  * @retval   0 This chip is currently booting from APROM
+  * @retval   1 This chip is currently booting from LDROM
   *
   * @note     This function only show the boot source.
   *           User need to read ISPSTA register to know if IAP mode supported or not in relative boot.
@@ -151,7 +188,14 @@ int32_t FMC_GetBootSource(void)
 /**
   * @brief    Enable FMC ISP function
   *
+  * @param    None
+  *
+  * @return   None
+  *
   * @details  ISPEN bit of ISPCON must be set before we can use ISP commands.
+  *           Therefore, To use all FMC function APIs, user needs to call FMC_Open() first to enable ISP functions.
+  *
+  * @note     ISP functions are write-protected. user also needs to unlock it by calling SYS_UnlockReg() before using all ISP functions.
   *
   */
 void FMC_Open(void)
@@ -161,7 +205,13 @@ void FMC_Open(void)
 
 /**
   * @brief    Get the base address of Data Flash if enabled.
-  * @retval   The base address of Data Flash
+  *
+  * @param    None
+  *
+  * @return   The base address of Data Flash
+  *
+  * @details  This function is used to return the base address of Data Flash.
+  *
   */
 uint32_t FMC_ReadDataFlashBaseAddr(void)
 {
@@ -171,10 +221,16 @@ uint32_t FMC_ReadDataFlashBaseAddr(void)
 
 /**
   * @brief       Read the User Configuration words.
+  *
   * @param[out]  u32Config  The word buffer to store the User Configuration data.
   * @param[in]   u32Count   The word count to be read.
-  * @retval       0: Success
-  * @retval      -1: Failed
+  *
+  * @retval       0 Success
+  * @retval      -1 Failed
+  *
+  * @details     This function is used to read the settings of user configuration.
+  *              if u32Count = 1, Only CONFIG0 will be returned to the buffer specified by u32Config.
+  *              if u32Count = 2, Both CONFIG0 and CONFIG1 will be returned.
   */
 int32_t FMC_ReadConfig(uint32_t *u32Config, uint32_t u32Count)
 {
@@ -190,11 +246,11 @@ int32_t FMC_ReadConfig(uint32_t *u32Config, uint32_t u32Count)
 /**
   * @brief    Write User Configuration
   *
-  * @param    u32Config: The word buffer to store the User Configuration data.
-  * @param    u32Count:  The word count to program to User Configuration.
+  * @param[in]  u32Config The word buffer to store the User Configuration data.
+  * @param[in]  u32Count The word count to program to User Configuration.
   *
-  * @retval    0:  Success
-  * @retval   -1: Failed
+  * @retval     0 Success
+  * @retval    -1 Failed
   *
   * @details  User must enable User Configuration update before writing it.
   *           User must erase User Configuration before writing it.
@@ -216,11 +272,11 @@ int32_t FMC_WriteConfig(uint32_t *u32Config, uint32_t u32Count)
 }
 
 
-/*@}*/ /* end of group M051_FMC_EXPORTED_FUNCTIONS */
+/*@}*/ /* end of group FMC_EXPORTED_FUNCTIONS */
 
-/*@}*/ /* end of group M051_FMC_Driver */
+/*@}*/ /* end of group FMC_Driver */
 
-/*@}*/ /* end of group M051_Device_Driver */
+/*@}*/ /* end of group Standard_Driver */
 
 /*** (C) COPYRIGHT 2014 Nuvoton Technology Corp. ***/
 

@@ -1,11 +1,13 @@
 /**************************************************************************//**
- * @file     DIV.h
+ * @file     hdiv.h
  * @version  V2.1
- * $Revision: 4 $
- * $Date: 14/01/28 10:49a $
+ * $Revision: 5 $
+ * $Date: 14/07/18 4:37p $
  * @brief    M051 Series DIV Driver Header File
  *
  * @note
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/

@@ -1,16 +1,19 @@
 ;/**************************************************************************//**
 ; * @file     startup_M051Series.s
 ; * @version  V2.00
-; * $Revision: 9 $
-; * $Date: 14/01/10 9:11a $ 
+; * $Revision: 10 $
+; * $Date: 15/05/15 3:32p $ 
 ; * @brief    M051 Series Startup Source File
 ; *
 ; * @note
+; * SPDX-License-Identifier: Apache-2.0
+; *
 ; * Copyright (C) 2011 Nuvoton Technology Corp. All rights reserved.
 ; *
 ; ******************************************************************************/
-
+    IF :LNOT: :DEF: Stack_Size
 Stack_Size      EQU     0x00000200
+    ENDIF
 
                 AREA    STACK, NOINIT, READWRITE, ALIGN=3
 Stack_Mem       SPACE   Stack_Size
@@ -20,9 +23,9 @@ __initial_sp
 ; <h> Heap Configuration
 ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ; </h>
-
+    IF :LNOT: :DEF: Heap_Size
 Heap_Size       EQU     0x00000000
-
+    ENDIF
                 AREA    HEAP, NOINIT, READWRITE, ALIGN=3
 __heap_base
 Heap_Mem        SPACE   Heap_Size
