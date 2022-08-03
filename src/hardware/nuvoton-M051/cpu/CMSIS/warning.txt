@@ -1,0 +1,12 @@
+Nuvoton software:
+   "The Board Support Package (BSP) CMSIS for M051 series."
+version:
+   V3.01.004
+filename:
+   M051_Series_BSP_CMSIS_V3.01.004.zip
+
+
+when updating to a newer version take into account
+commits:
+  "M051: Define crystal frequency in targets CMakeLists.txt"
+  "M051: Add data_flash section to gcc_arm.ld"
