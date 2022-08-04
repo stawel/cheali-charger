@@ -15,6 +15,7 @@ src/hardware/atmega32/targets/*/cmake_install.cmake
 src/hardware/atmega32/targets/*/Makefile
 .cproject
 .project
+.settings
 CMakeCache.txt
 CMakeFiles/
 Makefile
