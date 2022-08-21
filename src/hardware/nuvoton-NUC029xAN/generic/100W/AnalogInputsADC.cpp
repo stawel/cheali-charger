@@ -31,36 +31,10 @@
 
 #include "adc.h"
 
-/* ADC - measurement:
- * uses Timer1 to discharge Multiplexer Capacitor
- * program flow:
- *     ADC routine                          |  multiplexer routine
- * -----------------------------------------------------------------------------
- * start ADC (no MUX) conversion            |  1. switch MUX to op-amp (cell 6)
- *                                          |  2. start discharging C_adc (MUX capacitor), start Timer1
- *                                          |  3. wait 20us (timer1 50kHz)
- *                                          |  4. switch to MUX desired output, stop disch. C_adc
- *                                          |  (wait - for C_adc to charge)
- *                                          |
- *                                          |
- * start ADC (MUX) conversion               |
- *                                          |
- *                                          |
- *                                          |
- *                                          |
- *                                          |
- *                                          |
- * start ADC (no MUX) conversion            |  repeat 1..4
- * ...
- *
- * note: 1-4 are in setMuxAddress()
- * note: for each ADC pin (start ADC) we do 70 measurements,
- *       all in all we do 70*100=7000 measurements for a "fullMeasurement" per input.
- */
 
 
 #define ADC_I_SMPS_PER_ROUND 4
-#define ADC_CLOCK_FREQUENCY 4000000UL
+#define ADC_CLOCK_FREQUENCY 1250000UL
 
 
 
@@ -150,6 +124,14 @@ void initialize()
     //initialize internal temperature sensor
     SYS->TEMPCR |= 1;
 
+    //initialize mux/capacitor delay
+    CLK_EnableModuleClock(TMR1_MODULE);
+    CLK_SetModuleClock(TMR1_MODULE,CLK_CLKSEL1_TMR1_S_HCLK,CLK_CLKDIV_UART(1));
+    TIMER_Open(TIMER1, TIMER_ONESHOT_MODE, ADC_CLOCK_FREQUENCY / 8);
+    TIMER_EnableInt(TIMER1);
+    NVIC_EnableIRQ(TMR1_IRQn);
+    NVIC_SetPriority(TMR1_IRQn, TIMER_IRQ_PRIORITY);
+
     //initialize ADC
     //init clock
     CLK_EnableModuleClock(ADC_MODULE);
@@ -197,7 +179,15 @@ void startConversion()
     } else {
         ADC_CONFIG_CH7(ADC, ADC_ADCHER_PRESEL_EXT_INPUT_SIGNAL);
     }
+    TIMER_Start(TIMER1);  // Delay until mux/capacitor stabilizes
+}
+
+extern "C" {
+void TMR1_IRQHandler(void)
+{
+    TIMER_ClearIntFlag(TIMER1);
     ADC_START_CONV(ADC);
+}
 }
 
 void finalizeMeasurement();
