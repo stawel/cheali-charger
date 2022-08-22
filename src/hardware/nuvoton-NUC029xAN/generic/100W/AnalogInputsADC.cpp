@@ -127,7 +127,7 @@ void initialize()
     //initialize mux/capacitor delay
     CLK_EnableModuleClock(TMR1_MODULE);
     CLK_SetModuleClock(TMR1_MODULE,CLK_CLKSEL1_TMR1_S_HCLK,CLK_CLKDIV_UART(1));
-    TIMER_Open(TIMER1, TIMER_ONESHOT_MODE, ADC_CLOCK_FREQUENCY / 8);
+    TIMER_Open(TIMER1, TIMER_ONESHOT_MODE, ADC_CLOCK_FREQUENCY / 10);
     TIMER_EnableInt(TIMER1);
     NVIC_EnableIRQ(TMR1_IRQn);
     NVIC_SetPriority(TMR1_IRQn, TIMER_IRQ_PRIORITY);
