@@ -1,8 +1,5 @@
- # This is a basic workflow to help you get started with Actions
-
 name: Build firmware
 
-# Controls when the action will run. 
 on:
   push:
   pull_request:
@@ -22,30 +19,12 @@ jobs:
             git submodule init
             git submodule update
             ./bootstrap-avr
-            make
-      
-#       - name: Build Submodules
-#         run: |    
-#             ./scripts/compile_ci_pre.sh
-
-#       - name: Build stuff
-#         run: |    
-#             ./scripts/compile_ci_post.sh
-
-#       - name: Pack stuff
-#         run: |    
-#             sudo ./scripts/pack_fw.all.sh
-#             ls -la
-#             pwd           
+            make       
             
-#       - name: Upload Artifact GK-200MP2B
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: GK-200MP2B.tar.gz
-#           path: out/GK-200MP2B/**.tgz
-
-#       - name: Upload Artifact GK-200MP2C
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: GK-200MP2C.tar.gz
-#           path: out/GK-200MP2C/**.tgz%    
+      - name: Upload Artifacts 
+        uses: actions/upload-artifact@v3
+        with:
+          name: firmwares.tar.gz
+          path: | 
+                src/hardware/atmega32/targets/**/*.hex
+                src/hardware/atmega32/targets/**/progUSBasp.sh
