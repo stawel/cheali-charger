@@ -25,5 +25,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: | 
-                src/hardware/atmega32/targets/**/progUSBasp.sh
-                src/hardware/atmega32/targets/**/**.hex
+                src/hardware/atmega32/targets/**
