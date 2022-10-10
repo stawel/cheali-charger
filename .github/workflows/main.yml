@@ -24,7 +24,6 @@ jobs:
       - name: Upload Artifacts 
         uses: actions/upload-artifact@v3
         with:
-          name: firmwares.tar.gz
           path: | 
                 src/hardware/atmega32/targets/**/*.hex
                 src/hardware/atmega32/targets/**/progUSBasp.sh
