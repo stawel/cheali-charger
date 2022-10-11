@@ -27,7 +27,7 @@ jobs:
         with:
           name: atmega32
           path: | 
-                src/hardware/atmega32/targets/*.hex
+                src/hardware/atmega32/targets/**/*.hex
                 
       - name: Upload Artifacts 
         uses: actions/upload-artifact@v3
