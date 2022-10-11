@@ -6,12 +6,14 @@ on:
       - 'docs/**'
       - 'README.md'
       - 'src/hardware/atmega32/**'
+      - '.github/workflows/atmega.yml'
 
   pull_request:
     paths-ignore:
       - 'docs/**'
       - 'README.md'
       - 'src/hardware/atmega32/**'
+      - '.github/workflows/atmega.yml'
 
 jobs:
   build:
