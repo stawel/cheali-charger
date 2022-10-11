@@ -20,10 +20,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: git cmake openocd gcc-arm-none-eabi 
-          version: 1.0
+      # - uses: awalsh128/cache-apt-pkgs-action@latest
+      #   with:
+      #     packages: git cmake openocd gcc-arm-none-eabi 
+      #     version: 1.0
+      
+      - name: Install Packages old way
+        run: | 
+            sudo apt-get install -y git cmake openocd gcc-arm-none-eabi 
+
       - uses: actions/checkout@v3
 
       - name: Build Project
