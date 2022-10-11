@@ -2,7 +2,16 @@ name: Build firmware for Atmega
 
 on:
   push:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'src/hardware/nuvoton*/**'
+
   pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'src/hardware/nuvoton*/**'
 
 jobs:
   build:

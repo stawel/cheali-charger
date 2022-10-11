@@ -2,8 +2,17 @@ name: Build firmware for Nuvoton
 
 on:
   push:
-  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'src/hardware/atmega32/**'
 
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'src/hardware/atmega32/**'
+      
 jobs:
   build:
     runs-on: ubuntu-latest
