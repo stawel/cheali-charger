@@ -14,12 +14,11 @@ jobs:
       - name: Prepare Env
         run: | 
             sudo apt-get install cmake avrdude avr-libc gcc-avr git
-            git clone https://github.com/stawel/cheali-charger.git
             cd cheali-charger
             git submodule init
             git submodule update
             ./bootstrap-avr
-            make       
+            make
             
       - name: Upload Artifacts 
         uses: actions/upload-artifact@v3
