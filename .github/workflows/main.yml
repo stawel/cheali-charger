@@ -10,10 +10,15 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      
+      - name: Install Dependencies
+        run: | 
+            sudo apt-get install cmake avr-libc gcc-avr git
+      
       - name: Prepare Env
         run: | 
-            sudo apt-get install cmake avrdude avr-libc gcc-avr git
+            ls -la
             cd cheali-charger
             git submodule init
             git submodule update
