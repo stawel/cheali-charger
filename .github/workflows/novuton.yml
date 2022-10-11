@@ -31,10 +31,16 @@ jobs:
             ./bootstrap-arm
             make
             
+      - name: Print contents
+        run: | 
+            ls -la src/hardware/
+            find src/hardware
+
+
       - name: Upload Artifacts 
         uses: actions/upload-artifact@v3
         with:
           name: novuton
           path: | 
-                src/hardware/nuvoton-M0517/targets/**/*.hex
-                src/hardware/nuvoton-M0517/targets/**/progStLink*.sh
+                src/hardware/nuvoton**/targets/**/*.hex
+                src/hardware/nuvoton**/targets/**/progStLink*.sh
