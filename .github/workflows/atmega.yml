@@ -1,0 +1,42 @@
+name: Build firmware for Atmega
+
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'src/hardware/nuvoton*/**'
+      - '.github/workflows/novuton.yml'
+
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'src/hardware/nuvoton*/**'
+      - '.github/workflows/novuton.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Packages 
+        run: | 
+            sudo apt-get install -y cmake avr-libc gcc-avr git
+            
+      - uses: actions/checkout@v3
+
+      - name: Build Project
+        run: | 
+            git submodule init
+            git submodule update
+            ./bootstrap-avr
+            make
+            
+      - name: Upload Artifacts 
+        uses: actions/upload-artifact@v3
+        with:
+          name: atmega32
+          path: | 
+                src/hardware/atmega32/targets/**/*.hex
+                src/hardware/atmega32/targets/**/progUSBasp.sh
