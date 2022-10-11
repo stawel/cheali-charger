@@ -1,0 +1,48 @@
+name: Build firmware for Nuvoton
+
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'src/hardware/atmega32/**'
+      - '.github/workflows/atmega.yml'
+
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'src/hardware/atmega32/**'
+      - '.github/workflows/atmega.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:    
+      - name: Install Packages
+        run: | 
+            sudo apt-get install -y git cmake openocd gcc-arm-none-eabi 
+
+      - uses: actions/checkout@v3
+
+      - name: Build Project
+        run: | 
+            git submodule init
+            git submodule update
+            ./bootstrap-arm
+            make
+            
+      - name: Print contents
+        run: | 
+            ls -la src/hardware/
+            find src/hardware
+
+
+      - name: Upload Artifacts 
+        uses: actions/upload-artifact@v3
+        with:
+          name: novuton
+          path: | 
+                src/hardware/nuvoton**/targets/**/*.hex
+                src/hardware/nuvoton**/targets/**/progStLink*.sh
