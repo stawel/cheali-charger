@@ -12,7 +12,7 @@ on:
       - 'docs/**'
       - 'README.md'
       - 'src/hardware/atmega32/**'
-      
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: git cmake openocd
+          packages: git cmake openocd gcc-arm-none-eabi 
           version: 1.0
       - uses: actions/checkout@v3
 
