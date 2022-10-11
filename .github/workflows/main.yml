@@ -14,10 +14,8 @@ jobs:
           packages: cmake avr-libc gcc-avr git
           version: 1.0
       - uses: actions/checkout@v3
-#       - name: Install Dependencies
-#         run: | 
-#             sudo apt-get install cmake avr-libc gcc-avr git
-      - name: Prepare Env
+
+      - name: Build Project
         run: | 
             git submodule init
             git submodule update
@@ -27,5 +25,7 @@ jobs:
       - name: Upload Artifacts 
         uses: actions/upload-artifact@v3
         with:
+          name: atmega32
           path: | 
-                src/hardware/atmega32/targets/**
+                src/hardware/atmega32/targets/*.hex
+                src/hardware/atmega32/targets/*.sh
