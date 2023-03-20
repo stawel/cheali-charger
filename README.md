@@ -164,8 +164,9 @@ Troubleshooting
 ---------------
 
 1. After flashing I see "options" and some strange characters in the second line (for example: squares), what should I do?
-  - reset the charger to default settings (go to: "options"->"reset default" and press the "start" button)
+    - reset the charger to default settings (go to: "options"->"reset default" and press the "start" button)
 2. I get **"calib. error"**: see [this.](docs/calibration_error_codes.md)
+3. Occasionally when the power is turned on, the error "eeprom error: 2 yes" pops up (or any other number): see [#291](https://github.com/stawel/cheali-charger/issues/291)
 
 **Atmega32 CPU:**
 
