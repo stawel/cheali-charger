@@ -71,6 +71,15 @@ void hardware::initializePins()
     IO::pinMode(SMPS_VALUE_BUCK_PIN, OUTPUT);
     IO::pinMode(SMPS_VALUE_BOOST_PIN, OUTPUT);
     IO::pinMode(SMPS_DISABLE_PIN, OUTPUT);
+
+#ifdef ENABLE_KEYBOARD_PULLUP_RESISTORS
+    // not needed - all encountered chargers have external pull-up resistors
+    IO::digitalWrite(BUTTON_STOP_PIN, HIGH);
+    IO::digitalWrite(BUTTON_DEC_PIN, HIGH);
+    IO::digitalWrite(BUTTON_INC_PIN, HIGH);
+    IO::digitalWrite(BUTTON_START_PIN, HIGH);
+#endif
+
 }
 
 void hardware::initialize()
