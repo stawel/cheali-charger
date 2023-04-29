@@ -167,19 +167,16 @@ Troubleshooting
     - reset the charger to default settings (go to: "options"->"reset default" and press the "start" button)
 2. I get **"calib. error"**: see [this.](docs/calibration_error_codes.md)
 3. Occasionally when the power is turned on, the error "eeprom error: 2 yes" pops up (or any other number): see [#291](https://github.com/stawel/cheali-charger/issues/291)
-
-**Atmega32 CPU:**
-
-1. After flashing charger doesn't work (display shows squares):
-  - download the *.hex again, use the "RAW" button in github
-  - check the sha1 sum of the file, compare it with *.sha1:
-    - linux: $sha1sum cheali-charger*.hex
-    - windows: install [Microsoft File Checksum Integrity Verifier](http://www.microsoft.com/en-us/download/details.aspx?id=11533)
-      - in cmd.exe: fciv.exe -sha1 -add cheali-charger-*.hex
-2. Sha1 sum is correct and the charger still doesn't work (display shows squares):
-  - reset atmega32 fuses using avrdude:
-    - windows: avrdude.exe -patmega32 -cusbasp -Uhfuse:w:0xc5:m -Ulfuse:w:0x3f:m
-    - linux:   avrdude     -patmega32 -cusbasp -Uhfuse:w:0xc5:m -Ulfuse:w:0x3f:m
+4. After flashing charger doesn't work (display shows squares):
+    - download the *.hex again, use the "RAW" button in github
+    - check the sha1 sum of the file, compare it with *.sha1:
+      - linux: $sha1sum cheali-charger*.hex
+      - windows: install [Microsoft File Checksum Integrity Verifier](http://www.microsoft.com/en-us/download/details.aspx?id=11533)
+        - in cmd.exe: fciv.exe -sha1 -add cheali-charger-*.hex
+5. [Atmega32 CPU] Sha1 sum is correct and the charger still doesn't work (display shows squares):
+    - reset atmega32 fuses using avrdude:
+      - windows: avrdude.exe -patmega32 -cusbasp -Uhfuse:w:0xc5:m -Ulfuse:w:0x3f:m
+      - linux:   avrdude     -patmega32 -cusbasp -Uhfuse:w:0xc5:m -Ulfuse:w:0x3f:m
 
 
 Useful materials
