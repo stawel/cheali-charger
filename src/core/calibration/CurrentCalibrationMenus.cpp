@@ -111,7 +111,6 @@ static void currentCalibration(uint8_t point)
     AnalogInputs::CalibrationPoint p;
     bool save = false;
 
-    Program::dischargeOutputCapacitor();
     AnalogInputs::powerOn();
     if(testVout(false)) {
 

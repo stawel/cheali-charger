@@ -52,8 +52,6 @@ namespace Program {
     void setupPowerSupplyCharge();
     void setupProgramType(ProgramType prog);
 
-    void dischargeOutputCapacitor();
-
 } //namespace Program
 
 bool Program::startInfo()
@@ -91,8 +89,23 @@ void Program::setupDischarge()
     Strategy::strategy = &TheveninDischargeStrategy::vtable;
 }
 
+static void dischargeOutputCapacitor()
+{
+    Discharger::powerOn();
+    Discharger::trySetIout(DISCHARGE_OUTPUT_CAPACITOR_CURRENT);
+    Time::delayDoIdle(50);
+    Discharger::powerOff();
+}
+
+
 void Program::setupPowerSupplyCharge()
 {
+    // When powering a LED we want to discharge the output capacitor
+    // so the LED doesn't burn.
+    // Warning: this function will discharge also a battery connected to the output,
+    // so for a real power supply it is not suitable, but currently we only support LEDs
+    dischargeOutputCapacitor();
+
     Strategy::setVI(ProgramData::VCharged, true);
     Strategy::strategy = &SimpleChargeStrategy::vtable;
 }
@@ -166,23 +179,12 @@ Strategy::statusType Program::runWithoutInfo(ProgramType prog)
     }
 }
 
-void Program::dischargeOutputCapacitor()
-{
-    Discharger::powerOn();
-    Discharger::trySetIout(DISCHARGE_OUTPUT_CAPACITOR_CURRENT);
-    Time::delayDoIdle(100);
-    Discharger::powerOff();
-}
-
-
 void Program::run(ProgramType prog)
 {
 #ifdef ENABLE_CALIBRATION_CHECK
     if(!Calibration::check())
         return;
 #endif
-
-    dischargeOutputCapacitor();
 
     programType = prog;
     setupProgramType(prog);

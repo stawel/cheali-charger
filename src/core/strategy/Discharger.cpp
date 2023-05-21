@@ -97,6 +97,8 @@ void Discharger::powerOff()
 
     setValue(0);
     IoutSet_ = 0;
-    hardware::setDischargerOutput(false);
     on_ = false;
+    Time::delayDoIdle(10);
+    hardware::setDischargerOutput(false);
+    Time::delayDoIdle(10);
 }
