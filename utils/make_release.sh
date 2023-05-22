@@ -6,7 +6,7 @@ FIND_DIR=../src/hardware
 
 
 mkdir $OUTPUT
-[ ! -d $OUTPUT ] && echo "OUTPUT: $OUTPUT is not a directory"
+[ ! -d "$OUTPUT" ] && echo "OUTPUT: $OUTPUT is not a directory" && echo "usage:" && echo "    $0 output_dir" && exit
 
 git rm  $OUTPUT/cheali-charger*
 
