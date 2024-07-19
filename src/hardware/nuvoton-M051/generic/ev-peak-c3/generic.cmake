@@ -1,8 +1,8 @@
 
 set(GENERIC_SOURCE
-    CQ3.cpp
-    CQ3.h
-    CQ3-pins.h
+    C3.cpp
+    C3.h
+    C3-pins.h
     SMPS_PID.h
     SMPS_PID.cpp
     AnalogInputsADC.cpp

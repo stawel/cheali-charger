@@ -24,7 +24,7 @@
 #include "debug.h"
 
 extern "C" {
-#include "NUC029xAN.h"
+#include "M051Series.h"
 }
 
 #define PWM_GET_CNR(pwm, u32ChannelNum)  (*((__IO uint32_t *) ((((uint32_t)&((pwm)->CNR0)) + (u32ChannelNum) * 12))))

@@ -15,9 +15,33 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef HARDWARE_H_
-#define HARDWARE_H_
+#ifndef HARDWARE_CONFIG_H_
+#define HARDWARE_CONFIG_H_
 
-#include "C3.h"
+#include "GlobalConfig.h"
+#include "HardwareConfigGeneric.h"
+#include "C3-pins.h"
 
-#endif /* HARDWARE_H_ */
+// workaround for building, remove
+#ifndef PINS_H_
+#define PINS_H_
+#endif
+
+// #define ENABLE_HELPER
+// #define ENABLE_HELPER_ANALOG_INPUTS_ANALYZER
+
+#define MAX_CHARGE_V            ANALOG_VOLT(27.000)
+#define MAX_CHARGE_I            ANALOG_AMP(5.000)
+#define MAX_CHARGE_P            ANALOG_WATT(50.000)
+
+#define MAX_DISCHARGE_P         ANALOG_WATT(5.000)
+#define MAX_DISCHARGE_I         ANALOG_AMP(1.000)
+
+//1-13? correlation
+#define SMPS_UPPERBOUND_VALUE               (60000)
+//TODO: ?? pwm_n in outputPWM.cpp
+#define DISCHARGER_UPPERBOUND_VALUE         32760
+
+
+
+#endif /* HARDWARE_CONFIG_H_ */
