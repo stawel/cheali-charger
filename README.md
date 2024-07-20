@@ -1,69 +1,56 @@
-Welcome to cheali-charger!
-==========================
+# cheali-charger
+Alternative firmware for various LiPo chargers. [Supported Hardware](README.md#hardware)
 
-This project is an alternative firmware to a variety of lipo chargers,  
-see [hardware.](README.md#hardware)
+**Note:** Not fully implemented yet. Only use if needed.
 
-Don't use it if You don't need to  
-(not everything is implemented yet).  
+Feedback is welcome: [cheali-charger Google Group](http://groups.google.com/group/cheali-charger)
 
-Any feedback is very welcome!  
-http://groups.google.com/group/cheali-charger
+## Features
+- **Li-ion, LiPo, LiHV, LiFe:**
+  - Charging (terminates at 10% of Ic, adjustable)
+  - Fast charging (terminates at 20% of Ic)
+  - Charging + balancing
+  - Discharging
+  - Balancing
+  - Storage
+  - Storage + balancing
+- **NiCd and NiMH:**
+  - Charging (-dV/dT method)
+  - Discharging
+  - Cycling
+- **NiZn:**
+  - Charging
+  - Fast charging
+  - Charging + balancing
+  - Discharging
+  - Balancing
+- **Pb (not well tested):**
+  - Charging
+  - Discharging
+- **Other:**
+  - Internal resistance display
+     - Single cell resistance
+     - Whole battery resistance
+     - Battery leads resistance
+  - Internal/external temperature monitoring
+  - Overcharge/discharge monitoring
+  - Input voltage monitoring
+  - Memory for 30 batteries
+  - LogView support
 
-Features
---------
-- Li-ion, LiPo, LiPo-4.30V, LiPo-4.35V, LiFe:
-  - charging
-    - terminates charging when the current lowers to 10% of Ic (by default, adjustable in battery settings)
-  - fast charging
-    - terminates charging when the current lowers to 20% of Ic
-  - charging + balancing
-  - discharging
-  - balancing
-  - storage
-  - storage + balancing
-- NiCd and NiMH:
-  - charging, method: -dV/dT
-  - discharging
-  - cycling
-- NiZn:
-  - charging
-  - fast charging
-  - charging + balancing
-  - discharging
-  - balancing
-- Pb: - not well tested!
-  - charging
-  - discharging
-- Internal resistance display
-  - single cell resistance
-  - whole battery resistance
-  - battery leads resistance
-- Internal and external temperature monitoring
-- Overcharge and overdischarge monitoring
-- Input voltage monitoring
-- Memory for 30 batteries
-- LogView support
-- CALIBRATION!
-
-
-WARNING
--------
-Please [CALIBRATE](README.md#calibration) charger before use!  
-Use an external temperature probe  
-(if You like your house ;) )
-
-**ALWAYS** connect the power supply **first**, then the battery!
-
-**ALWAYS** disconnect the battery **before** disconnecting the power supply!
+## Warnings
+- [Calibrate](README.md#calibration) charger before use.
+- Use an external temperature probe (if you like your house ;) )
+- **ALWAYS** Connect power supply **first**, then battery.
+- **ALWAYS** Disconnect battery **before** disconnecting power supply.
 
 Hardware
 --------
 
 **WARNING:** You can get two chargers with the same name but different CPUs even if you buy from the same seller.  
- Only chargers with a atmega32 or M0517LBN CPU are supported.
+ Only chargers with a ATmega32 or M0517LBN CPU are supported.
 
-**Atmega32 CPU:**
+**ATmega32 CPU:**
 - G.T. POWER A6-10 200W
 - IMAX B6 Charger/Discharger 1-6 Cells
 - AC/DC Dual Power B6AC 80W RC Balance Charger/Discharger
@@ -84,103 +71,109 @@ Hardware
 - IMAX B6 V2 Balancer/Charger
 - ... others, do your research or ask on the forum
 
-Usage:
-------
 
-After [flashing](docs/flashing.md) your charger the first thing you should do is to 
-reset the charger to its default settings ("options"->"reset default")
-and then [calibrate](README.md#calibration) it, now your charger is ready to use.
+## Usage
+1. **Flash** your charger and reset to default settings ("options" -> "reset default").
+2. Then [calibrate](README.md#calibration) it, now your charger is ready to use.
 
-programming you charger:
-- select a free battery slot (indicated as 1., 2.,...)
-- go to "edit battery"
- - change battery type "Bat:"
- - set battery voltage (number of cells) "V:"
- - set battery capacity "Ch:"
- - set charge current "Ic:"
- - set discharge current "Id:"
- - set time limit "Tlim:" (can be unlimited)
- - press "create name"
-
-charing/discharging...:
-- select battery
-- select program: "charge", "discharge"...
-- you should see a "info" screen,  
-  (if you hear beeps, check your battery connections)
-- hold "start" button for 2s to start the program
-- charger is working now, press "inc", "dec" to see more screens
-- to exit the program press "stop"
-
-1. informations about [settings](docs/settings/settings.md)
-2. [charging NiMH and NiCd batteries](docs/nimh_nicd_charging.md)
-
-[Flashing](docs/flashing.md)
-----------------------------
-
-Calibration
------------
-Connect a NOT fully charged LiPo battery to the main leads  
-and the balance port, if you don't own a battery with a  
-balance connector, just connect a regular one (~4V)  
-to the main leads and the balance port first two [pins](docs/connectors/balancePortPins.jpeg)  
-(pin "0" <--> Bat-, pin "1" <--> Bat+). 
-
-go to: "options"->"calibrate":
-- voltage calibration: go to "voltage"
-   - use a voltmeter to measure voltage on all cells and the power supply voltage (Vin)  
-     and set voltage on Vin, Vb1, Vb2, .., Vb6  
-      - only Vb1 is mandatory, battery main leads and balance port must be connected
-      - you need to change at least one value (this will copy V1-6 voltage to Vbat)
-- charge current calibration: 
-  - connect your amperemeter in series with the battery, use the 10A(20A) input  
-  - disconnect balance port
-  - go to "I charge"  
-    - go to: "50mA" (100mA on some versions)  
-      press "start" button (current flow should be visible on amperemeter)  
-      press "Inc", "Dec" buttons until the amperemeter shows 50mA (100mA on some versions)  
-      press "start" button to save the setting  
-    - go to: "1000mA"  
-      press "start" button  
-      press "Inc", "Dec" buttons until the amperemeter shows 1000mA  
-      press "start" button to save the setting  
-      WARNING: the battery will be charged with high current!
-- discharge current calibration: go to "I discharge"  
-    Repeat the same steps as before  
-    WARNING: the battery will be discharged with high current!
-- when needed: external (or internal) temperature probe calibration: go to "temp extern" ("temp intern")
-    You have to set two calibration points
-
-Done.  
-If you have any problems with calibration, go to "options"->"reset default" and try again.
+### Programming Charger:
+- Select a battery slot (1., 2., ...)
+- Go to "Edit Battery":
+ - Change battery type "Bat:"
+ - Set battery voltage (number of cells) "V:"
+ - Set battery capacity "Ch:"
+ - Set charge current "Ic:"
+ - Set discharge current "Id:"
+ - Set time limit "Tlim:" (can be unlimited)
+ - Press "create name"
 
 
-[Calibration - Expert (IMAX B6) - optional](docs/calibration_expert.md)
------------------------------------------------------------------------
+### Charging/Discharging:
+- Select battery.
+- Choose program: "Charge", "Discharge", etc.
+- You should see an "Info" screen.
+  (If you hear beeps, check your battery connections)
+- Hold "Start" for 2s to begin.
+- Use "inc"/"dec" to navigate screens.
+- Press "Stop" to exit.
 
-[Building from Source](docs/building.md)
-----------------------------------------
-
-Troubleshooting
----------------
-
-1. After flashing I see "options" and some strange characters in the second line (for example: squares), what should I do?
-    - reset the charger to default settings (go to: "options"->"reset default" and press the "start" button)
-2. I get **"calib. error"**: see [this.](docs/calibration_error_codes.md)
-3. Occasionally when the power is turned on, the error "eeprom error: 2 yes" pops up (or any other number): see [#291](https://github.com/stawel/cheali-charger/issues/291)
-4. After flashing charger doesn't work (display shows squares):
-    - download the *.hex again, use the "RAW" button in github
-    - check the sha1 sum of the file, compare it with *.sha1:
-      - linux: $sha1sum cheali-charger*.hex
-      - windows: install [Microsoft File Checksum Integrity Verifier](http://www.microsoft.com/en-us/download/details.aspx?id=11533)
-        - in cmd.exe: fciv.exe -sha1 -add cheali-charger-*.hex
-5. [Atmega32 CPU] Sha1 sum is correct and the charger still doesn't work (display shows squares):
-    - reset atmega32 fuses using avrdude:
-      - windows: avrdude.exe -patmega32 -cusbasp -Uhfuse:w:0xc5:m -Ulfuse:w:0x3f:m
-      - linux:   avrdude     -patmega32 -cusbasp -Uhfuse:w:0xc5:m -Ulfuse:w:0x3f:m
+1. Information about [settings](docs/settings/settings.md)
+2. [Charging NiMH and NiCd batteries](docs/nimh_nicd_charging.md)
 
 
-Useful materials
-----------------
+### Calibration 
+
+**Important:** Do NOT connect a fully charged LiPo battery to both the main leads and the balance port. 
+If you don't have a battery with a balance connector, use a regular one (~4V). Connect it to the main leads and the first two pins of the balance port [pins](docs/connectors/balancePortPins.jpeg) 
+(pin "0" to Bat-, pin "1" to Bat+).
+
+**Steps:**
+
+1. **Voltage Calibration:**
+   - Go to: "options" -> "calibrate" -> "voltage".
+   - Measure the voltage on all cells and the power supply voltage (Vin) using a voltmeter.
+   - Set the voltage for Vin, Vb1, Vb2, ..., Vb6.
+     - Only Vb1 is mandatory. The battery main leads and balance port must be connected.
+     - Change at least one value (this will copy V1-6 voltage to Vbat).
+
+2. **Charge Current Calibration:**
+   - Connect your ammeter in series with the battery, using the 10A(20A) input.
+   - Disconnect the balance port.
+   - Go to: "I charge".
+     - For "50mA" (or "100mA" on some versions):
+       - Press the "start" button (current flow should be visible on the ammeter).
+       - Use the "Inc" and "Dec" buttons until the ammeter shows 50mA (or 100mA on some versions).
+       - Press the "start" button to save the setting.
+     - For "1000mA":
+       - Press the "start" button.
+       - Use the "Inc" and "Dec" buttons until the ammeter shows 1000mA.
+       - Press the "start" button to save the setting.
+       - **WARNING:** The battery will be charged with high current!
+
+3. **Discharge Current Calibration:**
+   - Go to: "I discharge".
+   - Repeat the same steps as in the charge current calibration.
+   - **WARNING:** The battery will be discharged with high current!
+
+4. **Temperature Probe Calibration (if needed):**
+   - Go to: "temp extern" (or "temp intern").
+   - Set two calibration points.
+
+**Done.**
+
+If you encounter any problems with calibration, go to "options" -> "reset default" and try again.
+
+
+## Troubleshooting
+
+1. After flashing, I see "options" and some strange characters (e.g., squares) on the second line. What should I do?
+    - Reset the charger to default settings: Go to "options" -> "reset default" and press the "start" button.
+  
+2. I get **"calib. error"**. See [this guide](docs/calibration_error_codes.md).
+
+3. Occasionally, when the power is turned on, an "eeprom error: 2 yes" (or any other number) pops up. See [issue #291](https://github.com/stawel/cheali-charger/issues/291).
+
+4. After flashing, the charger doesn't work (display shows squares):
+    - Download the *.hex file again using the "RAW" button on GitHub.
+    - Check the SHA-1 sum of the file and compare it with the *.sha1:
+        - Linux: `$ sha1sum cheali-charger*.hex`
+        - Windows: Install [Microsoft File Checksum Integrity Verifier](http://www.microsoft.com/en-us/download/details.aspx?id=11533)
+            - In cmd.exe: `fciv.exe -sha1 -add cheali-charger-*.hex`
+
+5. [Atmega32 CPU] If the SHA-1 sum is correct and the charger still doesn't work (display shows squares):
+    - Reset Atmega32 fuses using avrdude:
+        - Windows: `avrdude.exe -patmega32 -cusbasp -Uhfuse:w:0xc5:m -Ulfuse:w:0x3f:m`
+        - Linux: `avrdude -patmega32 -cusbasp -Uhfuse:w:0xc5:m -Ulfuse:w:0x3f:m`
+
+
+## Additional Resources
+- [Flashing](docs/flashing.md)
+- [Calibration - Expert (IMAX B6)](docs/calibration_expert.md)
+- [Building from Source](docs/building.md)
+- [Troubleshooting](docs/troubleshooting.md)
+- [User Guides and Documentation](docs/users_docs)
+
+### Useful materials
 - [Iggnus fork](https://github.com/Iggnus/cheali-charger-i1), branch: [v0.99](https://github.com/Iggnus/cheali-charger-i1/tree/v0.99), [v0.33+](https://github.com/Iggnus/cheali-charger-i1/tree/v0.33+)
 - [sasam M0517 flash tools](https://github.com/sasam/M0517_flash_tools)
 - [Cheali Charger v1.00 Manual / User Guide](<docs/users_docs/Cheali Charger 1.00 User Manual English_draft_002.pdf>) (draft 002) by PascalRZ
@@ -196,8 +189,7 @@ Useful materials
 - Pulse Charging NiMh Batteries [Candle Power Forums](http://www.candlepowerforums.com/vb/showthread.php?312094-Pulse-Charging-NiMh-Batteries&p=3609673&viewfull=1#post3609673)
 - [9 stages Charge algorithm](http://www.hkwp.com/2006/ASIA/web/specification.html)
 
-Mailing list
-------------
+### Mailing list
 
 If you have any questions or suggestions please write to us at: cheali-chargerATgooglegroups.com  
 or visit: http://groups.google.com/group/cheali-charger  
