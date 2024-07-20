@@ -4,7 +4,7 @@ Welcome to cheali-charger!
 This project is an alternative firmware to a variety of lipo chargers,  
 see [hardware.](README.md#hardware)
 
-Don't use it if You don't need to  
+Don't use it if you don't need to  
 (not everything is implemented yet).  
 
 Any feedback is very welcome!  
@@ -13,32 +13,32 @@ http://groups.google.com/group/cheali-charger
 Features
 --------
 - Li-ion, LiPo, LiPo-4.30V, LiPo-4.35V, LiFe:
-  - charging
-    - terminates charging when the current lowers to 10% of Ic (by default, adjustable in battery settings)
-  - fast charging
-    - terminates charging when the current lowers to 20% of Ic
-  - charging + balancing
-  - discharging
-  - balancing
-  - storage
-  - storage + balancing
+  - Charging
+    - Terminates charging when the current lowers to 10% of Ic (by default, adjustable in battery settings)
+  - Fast charging
+    - Terminates charging when the current lowers to 20% of Ic
+  - Charging + balancing
+  - Discharging
+  - Balancing
+  - Storage
+  - Storage + balancing
 - NiCd and NiMH:
-  - charging, method: -dV/dT
-  - discharging
-  - cycling
+  - Charging, method: -dV/dT
+  - Discharging
+  - Cycling
 - NiZn:
-  - charging
-  - fast charging
-  - charging + balancing
-  - discharging
-  - balancing
+  - Charging
+  - Fast charging
+  - Charging + balancing
+  - Discharging
+  - Balancing
 - Pb: - not well tested!
-  - charging
-  - discharging
+  - Charging
+  - Discharging
 - Internal resistance display
-  - single cell resistance
-  - whole battery resistance
-  - battery leads resistance
+  - Single cell resistance
+  - Whole battery resistance
+  - Battery leads resistance
 - Internal and external temperature monitoring
 - Overcharge and overdischarge monitoring
 - Input voltage monitoring
@@ -51,7 +51,7 @@ WARNING
 -------
 Please [CALIBRATE](README.md#calibration) charger before use!  
 Use an external temperature probe  
-(if You like your house ;) )
+(if you like your house ;) )
 
 **ALWAYS** connect the power supply **first**, then the battery!
 
@@ -91,47 +91,47 @@ After [flashing](docs/flashing.md) your charger the first thing you should do is
 reset the charger to its default settings ("options"->"reset default")
 and then [calibrate](README.md#calibration) it, now your charger is ready to use.
 
-programming you charger:
-- select a free battery slot (indicated as 1., 2.,...)
-- go to "edit battery"
- - change battery type "Bat:"
- - set battery voltage (number of cells) "V:"
- - set battery capacity "Ch:"
- - set charge current "Ic:"
- - set discharge current "Id:"
- - set time limit "Tlim:" (can be unlimited)
- - press "create name"
+programming your charger:
+- Select a free battery slot (indicated as 1., 2.,...)
+- Go to "edit battery"
+ - Change battery type "Bat:"
+ - Set battery voltage (number of cells) "V:"
+ - Set battery capacity "Ch:"
+ - Set charge current "Ic:"
+ - Set discharge current "Id:"
+ - Set time limit "Tlim:" (can be unlimited)
+ - Press "create name"
 
-charing/discharging...:
-- select battery
-- select program: "charge", "discharge"...
-- you should see a "info" screen,  
+Charging/discharging...:
+- Select battery
+- Select program: "charge", "discharge"...
+- You should see a "info" screen,  
   (if you hear beeps, check your battery connections)
-- hold "start" button for 2s to start the program
-- charger is working now, press "inc", "dec" to see more screens
-- to exit the program press "stop"
+- Hold "start" button for 2s to start the program
+- Charger is working now, press "inc", "dec" to see more screens
+- To exit the program press "stop"
 
-1. informations about [settings](docs/settings/settings.md)
-2. [charging NiMH and NiCd batteries](docs/nimh_nicd_charging.md)
+1. Information about [settings](docs/settings/settings.md)
+2. [Charging NiMH and NiCd batteries](docs/nimh_nicd_charging.md)
 
 [Flashing](docs/flashing.md)
 ----------------------------
 
 Calibration
 -----------
-Connect a NOT fully charged LiPo battery to the main leads  
+Do NOT connect a fully charged LiPo battery to the main leads  
 and the balance port, if you don't own a battery with a  
-balance connector, just connect a regular one (~4V)  
+balance connector, just connect a regular one (~4V)
 to the main leads and the balance port first two [pins](docs/connectors/balancePortPins.jpeg)  
 (pin "0" <--> Bat-, pin "1" <--> Bat+). 
 
-go to: "options"->"calibrate":
-- voltage calibration: go to "voltage"
+Go to: "options"->"calibrate":
+- Voltage calibration: go to "voltage"
    - use a voltmeter to measure voltage on all cells and the power supply voltage (Vin)  
      and set voltage on Vin, Vb1, Vb2, .., Vb6  
       - only Vb1 is mandatory, battery main leads and balance port must be connected
       - you need to change at least one value (this will copy V1-6 voltage to Vbat)
-- charge current calibration: 
+- Charge current calibration: 
   - connect your amperemeter in series with the battery, use the 10A(20A) input  
   - disconnect balance port
   - go to "I charge"  
@@ -144,10 +144,10 @@ go to: "options"->"calibrate":
       press "Inc", "Dec" buttons until the amperemeter shows 1000mA  
       press "start" button to save the setting  
       WARNING: the battery will be charged with high current!
-- discharge current calibration: go to "I discharge"  
+- Discharge current calibration: go to "I discharge"  
     Repeat the same steps as before  
     WARNING: the battery will be discharged with high current!
-- when needed: external (or internal) temperature probe calibration: go to "temp extern" ("temp intern")
+- When needed: external (or internal) temperature probe calibration: go to "temp extern" ("temp intern")
     You have to set two calibration points
 
 Done.  
