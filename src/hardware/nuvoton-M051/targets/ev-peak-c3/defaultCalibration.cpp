@@ -21,26 +21,26 @@
 #include "Utils.h"
 
 const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
-    {{0,      50}, {25540, 23735}}, // Vout_plus_pin
-    {{0,      50}, {25540, 23735}}, // Vout_minus_pin
-    {{417,   100}, {5062,   1000}}, // Ismps
-    {{1983,  100}, {5839,    300}}, // Idischarge
+    {{0,       0}, {49676, 22830}}, // Vout_plus_pin
+    {{0,       0}, {0,         0}}, // Vout_minus_pin (dummy values)
+    {{140,   100}, {2567,   1000}}, // Ismps
+    {{282,   100}, {1652,    500}}, // Idischarge
 
-    {{0,       0}, {1,         1}}, // VoutMux
-    {{8000, 5940}, {8642,   3479}}, // Tintern
-    {{0,       0}, {23492, 14052}}, // Vin
-    {{4701, 3660}, {0,         0}}, // Textern
+    {{14,      0}, {42461, 22830}}, // VoutMux
+    {{8684, 3780}, {8970,   1000}}, // Tintern (borrowed from CQ3)
+    {{0,       0}, {27860, 14950}}, // Vin
+    {{4701, 3660}, {0,         0}}, // Textern (borrowed from CQ3)
 
-    {{0,       0}, {25219,  3946}}, // Vb0_pin
-    {{0,       0}, {25219,  3946}}, // Vb1_pin
-    {{0,       0}, {50664,  7892}}, // Vb2_pin
-    {{0,       0}, {26372,  4082}}, // Vb3_pin
-    {{0,       0}, {25184,  3912}}, // Vb4_pin
-    {{0,       0}, {25169,  3916}}, // Vb5_pin
-    {{0,       0}, {25405,  3933}}, // Vb6_pin
+    {{0,       0}, {1,         1}}, // Vb0_pin
+    {{0,       0}, {24716,  3803}}, // Vb1_pin
+    {{0,       0}, {24559,  3793}}, // Vb2_pin
+    {{0,       0}, {24683,  3802}}, // Vb3_pin
+    {{0,       0}, {24564,  3804}}, // Vb4_pin
+    {{0,       0}, {25068,  3803}}, // Vb5_pin
+    {{0,       0}, {24915,  3803}}, // Vb6_pin
 
-    {{415,   100}, {5066,   1000}}, // IsmpsSet
-    {{3175,  100}, {9278,    300}}, // IdischargeSet
+    {{140,   100}, {2567,   1000}}, // IsmpsSet
+    {{282,   100}, {1652,    500}}, // IdischargeSet
 };
 
 STATIC_ASSERT(sizeOfArray(AnalogInputs::inputsP_) == AnalogInputs::PHYSICAL_INPUTS);

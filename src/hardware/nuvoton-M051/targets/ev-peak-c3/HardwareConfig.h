@@ -22,11 +22,6 @@
 #include "HardwareConfigGeneric.h"
 #include "C3-pins.h"
 
-// workaround for building, remove
-#ifndef PINS_H_
-#define PINS_H_
-#endif
-
 // #define ENABLE_HELPER
 // #define ENABLE_HELPER_ANALOG_INPUTS_ANALYZER
 
@@ -41,7 +36,5 @@
 #define SMPS_UPPERBOUND_VALUE               (60000)
 //TODO: ?? pwm_n in outputPWM.cpp
 #define DISCHARGER_UPPERBOUND_VALUE         32760
-
-
 
 #endif /* HARDWARE_CONFIG_H_ */
