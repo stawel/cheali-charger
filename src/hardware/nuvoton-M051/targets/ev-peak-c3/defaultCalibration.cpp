@@ -31,7 +31,7 @@ const AnalogInputs::DefaultValues AnalogInputs::inputsP_[] PROGMEM = {
     {{0,       0}, {27860, 14950}}, // Vin
     {{4701, 3660}, {0,         0}}, // Textern (borrowed from CQ3)
 
-    {{0,       0}, {1,         1}}, // Vb0_pin
+    {{0,       0}, {0,         0}}, // Vb0_pin (dummy values)
     {{0,       0}, {24716,  3803}}, // Vb1_pin
     {{0,       0}, {24559,  3793}}, // Vb2_pin
     {{0,       0}, {24683,  3802}}, // Vb3_pin
